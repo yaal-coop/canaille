@@ -9,7 +9,7 @@ def test_fieldlist_add(testclient, logged_admin, backend):
     assert not backend.query(models.Client)
 
     res = testclient.get("/admin/client/add")
-    assert "redirect_uris-1" not in res.form.fields
+    assert "redirect_uris-1" not in res.forms["clientaddform"].fields
 
     data = {
         "client_name": "foobar",
@@ -20,16 +20,18 @@ def test_fieldlist_add(testclient, logged_admin, backend):
         "token_endpoint_auth_method": "none",
     }
     for k, v in data.items():
-        res.form[k].force_value(v)
+        res.forms["clientaddform"][k].force_value(v)
 
-    res = res.form.submit(status=200, name="fieldlist_add", value="redirect_uris-0")
+    res = res.forms["clientaddform"].submit(
+        status=200, name="fieldlist_add", value="redirect_uris-0"
+    )
     assert not backend.query(models.Client)
 
     data["redirect_uris-1"] = "https://foobar.test/callback2"
     for k, v in data.items():
-        res.form[k].force_value(v)
+        res.forms["clientaddform"][k].force_value(v)
 
-    res = res.form.submit(status=302, name="action", value="edit")
+    res = res.forms["clientaddform"].submit(status=302, name="action", value="add")
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
@@ -56,15 +58,19 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
         "token_endpoint_auth_method": "none",
     }
     for k, v in data.items():
-        res.form[k].force_value(v)
-    res = res.form.submit(status=200, name="fieldlist_add", value="redirect_uris-0")
+        res.forms["clientaddform"][k].force_value(v)
+    res = res.forms["clientaddform"].submit(
+        status=200, name="fieldlist_add", value="redirect_uris-0"
+    )
 
-    res.form["redirect_uris-1"] = "https://foobar.test/callback2"
-    res = res.form.submit(status=200, name="fieldlist_remove", value="redirect_uris-1")
+    res.forms["clientaddform"]["redirect_uris-1"] = "https://foobar.test/callback2"
+    res = res.forms["clientaddform"].submit(
+        status=200, name="fieldlist_remove", value="redirect_uris-1"
+    )
     assert not backend.query(models.Client)
-    assert "redirect_uris-1" not in res.form.fields
+    assert "redirect_uris-1" not in res.forms["clientaddform"].fields
 
-    res = res.form.submit(status=302, name="action", value="edit")
+    res = res.forms["clientaddform"].submit(status=302, name="action", value="add")
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
@@ -79,8 +85,9 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
 
 def test_fieldlist_add_invalid_field(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
+    csrf_token = res.pyquery("#csrf_token").val()
     data = {
-        "csrf_token": res.form["csrf_token"].value,
+        "csrf_token": csrf_token,
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "https://foobar.test/callback",
@@ -95,9 +102,10 @@ def test_fieldlist_add_invalid_field(testclient, logged_admin):
 def test_fieldlist_delete_invalid_field(testclient, logged_admin, backend):
     assert not backend.query(models.Client)
     res = testclient.get("/admin/client/add")
+    csrf_token = res.pyquery("#csrf_token").val()
 
     data = {
-        "csrf_token": res.form["csrf_token"].value,
+        "csrf_token": csrf_token,
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "https://foobar.test/callback1",
@@ -121,10 +129,12 @@ def test_fieldlist_duplicate_value(testclient, logged_admin, client):
         "token_endpoint_auth_method": "none",
     }
     for k, v in data.items():
-        res.form[k].force_value(v)
-    res = res.form.submit(status=200, name="fieldlist_add", value="redirect_uris-0")
-    res.form["redirect_uris-1"] = "https://foobar.test/samecallback"
-    res = res.form.submit(status=200, name="action", value="edit")
+        res.forms["clientaddform"][k].force_value(v)
+    res = res.forms["clientaddform"].submit(
+        status=200, name="fieldlist_add", value="redirect_uris-0"
+    )
+    res.forms["clientaddform"]["redirect_uris-1"] = "https://foobar.test/samecallback"
+    res = res.forms["clientaddform"].submit(status=200, name="action", value="add")
     res.mustcontain("This value is a duplicate")
 
 
@@ -140,19 +150,20 @@ def test_fieldlist_empty_value(testclient, logged_admin, backend):
         "token_endpoint_auth_method": "none",
     }
     for k, v in data.items():
-        res.form[k].force_value(v)
-    res = res.form.submit(
+        res.forms["clientaddform"][k].force_value(v)
+    res = res.forms["clientaddform"].submit(
         status=200, name="fieldlist_add", value="post_logout_redirect_uris-0"
     )
-    res.form.submit(status=302, name="action", value="edit")
+    res.forms["clientaddform"].submit(status=302, name="action", value="add")
     client = backend.get(models.Client)
     backend.delete(client)
 
 
 def test_fieldlist_add_field_htmx(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
+    csrf_token = res.pyquery("#csrf_token").val()
     data = {
-        "csrf_token": res.form["csrf_token"].value,
+        "csrf_token": csrf_token,
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "https://foobar.test/callback",
@@ -175,8 +186,9 @@ def test_fieldlist_add_field_htmx(testclient, logged_admin):
 
 def test_fieldlist_add_field_htmx_validation(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
+    csrf_token = res.pyquery("#csrf_token").val()
     data = {
-        "csrf_token": res.form["csrf_token"].value,
+        "csrf_token": csrf_token,
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "not-a-valid-uri",
@@ -200,8 +212,9 @@ def test_fieldlist_add_field_htmx_validation(testclient, logged_admin):
 
 def test_fieldlist_remove_field_htmx(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
+    csrf_token = res.pyquery("#csrf_token").val()
     data = {
-        "csrf_token": res.form["csrf_token"].value,
+        "csrf_token": csrf_token,
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "https://foobar.test/callback1",
@@ -225,8 +238,9 @@ def test_fieldlist_remove_field_htmx(testclient, logged_admin):
 
 def test_fieldlist_inline_validation(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
+    csrf_token = res.pyquery("#csrf_token").val()
     data = {
-        "csrf_token": res.form["csrf_token"].value,
+        "csrf_token": csrf_token,
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "invalid-url",

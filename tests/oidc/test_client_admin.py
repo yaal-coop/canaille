@@ -109,9 +109,9 @@ def test_client_add(testclient, logged_admin, backend):
         "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
-        res.form[k].force_value(v)
+        res.forms["clientaddform"][k].force_value(v)
 
-    res = res.form.submit(status=302, name="action", value="add")
+    res = res.forms["clientaddform"].submit(status=302, name="action", value="add")
     res = res.follow(status=200)
 
     client_id = res.forms["readonly"]["client_id"].value
@@ -140,11 +140,23 @@ def test_client_add(testclient, logged_admin, backend):
 
 def test_add_missing_fields(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
-    res = res.form.submit(status=200, name="action", value="edit")
+    res = res.forms["clientaddform"].submit(status=200, name="action", value="add")
     assert (
         "error",
         "The client has not been added. Please check your information.",
     ) in res.flashes
+
+
+def test_new_registration_token(testclient, logged_admin):
+    """Test that clicking renew generates a new registration token."""
+    res = testclient.get("/admin/client/add")
+    old_token = res.pyquery("#registration-token").val()
+    res = res.forms["clientaddform"].submit(
+        name="action", value="new-registration-token"
+    )
+    assert ("info", "A new registration token has been generated.") in res.flashes
+    new_token = res.pyquery("#registration-token").val()
+    assert new_token != old_token
 
 
 def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
@@ -247,11 +259,12 @@ def test_client_delete(testclient, logged_admin, backend):
 
 def test_client_delete_invalid_client(testclient, logged_admin, client):
     res = testclient.get(f"/admin/client/edit/{client.client_id}")
+    csrf_token = res.pyquery("#csrf_token").val()
     testclient.post(
         "/admin/client/edit/invalid",
         {
             "action": "delete",
-            "csrf_token": res.forms["clientaddform"]["csrf_token"].value,
+            "csrf_token": csrf_token,
         },
         status=404,
     )
@@ -290,7 +303,7 @@ def test_client_edit_invalid_uri(testclient, client, logged_admin, trusted_clien
 
 def test_client_new_token(testclient, logged_admin, backend, client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientaddform"].submit(name="action", value="new-token")
+    res = res.forms["clientaddform"].submit(name="action", value="new-access-token")
     assert (
         "success",
         "A token have been created for the client Some client",
@@ -305,6 +318,16 @@ def test_client_new_token(testclient, logged_admin, backend, client):
 
     res = res.follow()
     assert res.template == "oidc/token_view.html"
+
+
+def test_new_management_token(testclient, logged_admin, client):
+    """Test that clicking renew generates a new management token."""
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    old_token = res.pyquery("#management-token").val()
+    res = res.forms["clientaddform"].submit(name="action", value="new-management-token")
+    assert ("info", "A new management token has been generated.") in res.flashes
+    new_token = res.pyquery("#management-token").val()
+    assert new_token != old_token
 
 
 def test_jwks_is_not_json(testclient, client, logged_admin, trusted_client, backend):

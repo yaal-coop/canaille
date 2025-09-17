@@ -1,6 +1,8 @@
 import json
+from datetime import timedelta
 
 import click
+from flask import current_app
 from flask.cli import with_appcontext
 from joserfc.jwk import ECKey
 from joserfc.jwk import OctKey
@@ -10,6 +12,8 @@ from joserfc.jwk import RSAKey
 from canaille.app import models
 from canaille.app.commands import with_backendcontext
 from canaille.backends import Backend
+
+from .jose import build_client_management_token
 
 
 @click.command()
@@ -70,6 +74,53 @@ def okp(crv: str):
     click.echo(json.dumps(key.as_dict()))
 
 
+@click.group()
+def jwt():
+    """Client registration management."""
+    pass
+
+
+@jwt.command()
+@click.option("--lifetime", default=86400, type=int, help="Token lifetime in seconds")
+@with_appcontext
+def registration(lifetime: int):
+    """Generate a JWT token for dynamic client registration.
+
+    Creates a JWT token with an auto-generated client_id that can be used
+    to register a new OAuth2 client.
+    """
+    if not current_app.config["SERVER_NAME"]:
+        raise click.ClickException(
+            "You must define SERVER_NAME to issue tokens from the CLI"
+        )
+
+    token = build_client_management_token(
+        "client:register", timedelta(seconds=lifetime)
+    )
+    click.echo(token)
+
+
+@jwt.command()
+@click.argument("client-id", required=True)
+@click.option("--lifetime", default=86400, type=int, help="Token lifetime in seconds")
+@with_appcontext
+def management(client_id: str, lifetime: int):
+    """Generate a JWT token for client management.
+
+    Creates a JWT token that can be used to manage an existing OAuth2 client.
+    """
+    if not current_app.config["SERVER_NAME"]:
+        raise click.ClickException(
+            "You must define SERVER_NAME to issue tokens from the CLI"
+        )
+
+    token = build_client_management_token(
+        "client:manage", timedelta(seconds=lifetime), client_id
+    )
+    click.echo(token)
+
+
 def register(cli):
     cli.add_command(clean)
     cli.add_command(jwk)
+    cli.add_command(jwt)

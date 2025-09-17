@@ -20,6 +20,10 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
     {%- trans %}Add an application{% endtrans -%}
 {%- endblock -%}
 
+{% block script %}
+    <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
+{% endblock %}
+
 {% block submenu %}
     <a class="item" href="{{ url_for('core.admin.mail_index') }}">
         <i class="user mail icon"></i>
@@ -36,11 +40,43 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
 {% endblock %}
 
 {% block content %}
-    <div class="ui top attached segment">
-        <h2 class="ui center aligned header">
-            {% trans %}Add an application{% endtrans %}
-        </h2>
 
-        {{ fui.render_form(form, _("Create"), csrf=false) }}
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            {% trans %}Registration token{% endtrans %}
+        </h2>
+        <p>
+            {% trans %}This token can be used to register a new application through the OAuth 2.0 Dynamic Client Registration Protocol.{% endtrans %}
+            <a href="https://datatracker.ietf.org/doc/html/rfc7591">{% trans %}Read more…{% endtrans %}</a>
+        </p>
+        {% call fui.render_form(form) %}
+            <div class="ui fluid action input">
+                <input type="text" value="{{ registration_token }}" readonly class="copy-text" id="registration-token" data-copy="registration-token">
+                <button type="submit" class="ui teal right labeled icon button copy-button" name="action" value="new-registration-token" id="new-registration-token">
+                    <i class="redo icon"></i>
+                    {% trans %}Renew{% endtrans %}
+                </button>
+                <button type="button" class="ui primary right labeled icon button copy-button" data-copy="registration-token">
+                    <i class="copy icon"></i>
+                    {% trans %}Copy{% endtrans %}
+                </button>
+            </div>
+        {% endcall %}
+    </div>
+
+    <div class="ui segment">
+        {% call fui.render_form(form, csrf=false) %}
+            <h2 class="ui center aligned header">
+                {% trans %}Add an application{% endtrans %}
+            </h2>
+
+            {{ fui.render_fields(form) }}
+
+            <div class="ui right aligned container">
+                <button type="submit" class="ui primary button" name="action" value="add" id="add">
+                    {% trans %}Create{% endtrans %}
+                </button>
+            </div>
+        {% endcall %}
     </div>
 {% endblock %}

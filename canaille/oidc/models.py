@@ -127,7 +127,10 @@ class Client(BaseClient, ClientMixin):
             attribute_name: getattr(self, attribute_name)
             for attribute_name in self.client_metadata_attributes
         }
-        metadata["scope"] = " ".join(metadata["scope"])
+
+        if scope := metadata.get("scope"):
+            metadata["scope"] = " ".join(scope)
+
         return metadata
 
     @classmethod

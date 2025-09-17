@@ -1,5 +1,6 @@
 import datetime
 import json
+import uuid
 
 import httpx
 from authlib.integrations.flask_oauth2 import AuthorizationServer
@@ -22,6 +23,8 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
+from joserfc import jwt
+from joserfc.errors import JoseError
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -32,12 +35,22 @@ from canaille.core.auth import get_user_from_login
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
 from .jose import make_default_jwk
+from .jose import registry
 from .jose import server_jwks
 from .userinfo import UserInfo
 from .userinfo import generate_user_claims
 
 AUTHORIZATION_CODE_LIFETIME = 84400
 JWT_JTI_CACHE_LIFETIME = 3600
+
+
+def get_bearer_token(request):
+    """Get the Bearer token from the request headers."""
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.lower().startswith("bearer "):
+        return None
+
+    return auth_header.split()[1]
 
 
 def exists_nonce(nonce, request):
@@ -336,21 +349,45 @@ class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
 
 
 class ClientManagementMixin:
+    def _validate_jwt_claims(self, claims):
+        """Validate common JWT claims for client registration/management.
+
+        Returns True if claims are valid, None otherwise.
+        This method validates common claims. Subclasses should override this
+        to add specific validation logic and call super()._validate_jwt_claims().
+        """
+        now = datetime.datetime.now(datetime.timezone.utc)
+
+        if claims.get("exp", 0) < now.timestamp():
+            return None
+
+        issuer = get_issuer()
+        if claims.get("iss") != issuer or claims.get("aud") != issuer:
+            return None
+
+        return True
+
     def authenticate_token(self, request):
-        if current_app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"]:
-            return True
+        """Authenticate JWT tokens for dynamic client registration.
 
-        auth_header = request.headers.get("Authorization")
-        if not auth_header or not auth_header.lower().startswith("bearer "):
+        Returns True if authentication succeeds, None if it fails.
+        Stores the validated JWT claims in request.jwt_claims for later use.
+        """
+        if not (bearer_token := get_bearer_token(request)):
+            if current_app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"]:
+                return True
             return None
 
-        bearer_token = auth_header.split()[1]
-        if bearer_token not in (
-            current_app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"]
-            or []
-        ):
+        jwks = server_jwks(include_inactive=False)
+        try:
+            decoded = jwt.decode(bearer_token, jwks.keys[0], registry=registry)
+        except (JoseError, ValueError, KeyError):
             return None
 
+        if not self._validate_jwt_claims(decoded.claims):
+            return None
+
+        request.jwt_claims = decoded.claims
         return True
 
     def get_server_metadata(self):
@@ -402,6 +439,25 @@ class ClientRegistrationEndpoint(
         "EdDSA",
     ]
 
+    def _validate_jwt_claims(self, claims):
+        """Validate JWT claims for client registration.
+
+        Returns True if claims are valid, None otherwise.
+        """
+        if not super()._validate_jwt_claims(claims):
+            return None
+
+        scope = claims.get("scope")
+        if scope != "client:register":
+            return None
+
+        client_id = claims.get("sub")
+        existing_client = Backend.instance.get(models.Client, client_id=client_id)
+        if existing_client:
+            return None
+
+        return True
+
     def generate_client_registration_info(self, client, request):
         payload = {
             "scope": " ".join(client.scope) if client.scope else "",
@@ -412,11 +468,22 @@ class ClientRegistrationEndpoint(
             ),
         }
 
-        if "Authorization" in request.headers:
-            access_token = request.headers["Authorization"].split(" ")[1]
+        if access_token := get_bearer_token(request):
             payload["registration_access_token"] = access_token
 
         return payload
+
+    def generate_client_id(self, request):
+        """Generate client_id for new client registration.
+
+        Read the value from the value passed in the JWT if present,
+        create a random value if there is not authentication.
+        """
+        return (
+            request.jwt_claims.get("sub")
+            if hasattr(request, "jwt_claims")
+            else str(uuid.uuid4())
+        )
 
     def save_client(self, client_info, client_metadata, request):
         client = models.Client(
@@ -437,6 +504,24 @@ class ClientRegistrationEndpoint(
 class ClientConfigurationEndpoint(
     ClientManagementMixin, rfc7592.ClientConfigurationEndpoint
 ):
+    def _validate_jwt_claims(self, claims):
+        """Validate JWT claims for client management.
+
+        Returns True if claims are valid, None otherwise.
+        """
+        if not super()._validate_jwt_claims(claims):
+            return None
+
+        scope = claims.get("scope")
+        if scope != "client:manage":
+            return None
+
+        client_id = claims.get("sub")
+        if not Backend.instance.get(models.Client, client_id=client_id):
+            return None
+
+        return True
+
     def authenticate_client(self, request):
         client_id = request.uri.split("/")[-1]
         return Backend.instance.get(models.Client, client_id=client_id)
@@ -456,7 +541,7 @@ class ClientConfigurationEndpoint(
         return client
 
     def generate_client_registration_info(self, client, request):
-        access_token = request.headers["Authorization"].split(" ")[1]
+        access_token = get_bearer_token(request)
         return {
             "registration_client_uri": request.uri,
             "registration_access_token": access_token,
