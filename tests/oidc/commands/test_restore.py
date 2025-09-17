@@ -12,14 +12,13 @@ def test_restore_stdin(cli_runner, backend):
                 "id": "45fb7f55-816a-41bf-a9f0-16bb1d60f448",
                 "created": "2025-03-15T12:55:32+00:00",
                 "last_modified": "2025-03-15T12:55:32+00:00",
-                "trusted": True,
                 "audience": ["45fb7f55-816a-41bf-a9f0-16bb1d60f448"],
                 "client_id": "dx8HWLJOM2GRQtkR92fjwHZ7",
                 "client_secret": "1pwUfTGWJCsvPVJdoNyMZIJiQuUEO6KBX5HA49G8OTsAtdXY",
                 "client_id_issued_at": "2025-03-15T12:55:32.745494+00:00",
                 "redirect_uris": [
-                    "https://myotherdomain.test/redirect1",
-                    "https://myotherdomain.test/redirect2",
+                    "https://client.trusted.test/redirect1",
+                    "https://client.trusted.test/redirect2",
                 ],
                 "token_endpoint_auth_method": "client_secret_basic",
                 "grant_types": [
@@ -33,15 +32,15 @@ def test_restore_stdin(cli_runner, backend):
                 ],
                 "response_types": ["code", "token", "id_token"],
                 "client_name": "Some other client",
-                "client_uri": "https://myotherdomain.test",
-                "logo_uri": "https://myotherdomain.test/logo.webp",
+                "client_uri": "https://client.trusted.test",
+                "logo_uri": "https://client.trusted.test/logo.webp",
                 "scope": ["openid", "profile", "groups"],
-                "contacts": ["contact@myotherdomain.test"],
-                "tos_uri": "https://myotherdomain.test/tos",
-                "policy_uri": "https://myotherdomain.test/policy",
+                "contacts": ["contact@trusted.test"],
+                "tos_uri": "https://client.trusted.test/tos",
+                "policy_uri": "https://client.trusted.test/policy",
                 "jwks": '{"keys": [{"n": "02uEn7s1vpHLEwNRV-5mQn0W-N--KhPoFuJ28NoRuGGBVoFmCLxnd70qdqu_8tQRuu6R65566PGiDLavkbNqe0cFZB7VSk2vnhpfJGLzUo_FYQeSK-XafnfIiuhd1IdCG6-ck7YfKJMnfqpQW_hFnq-k1SXkZVhcEsYtZ-wtXfa3hiTPrT4oFzEf0gAAvluaTTKOXaGELo-8NDv4HycQPzWLSvpAqtAEyVo_pjfAUrdDTaNPtiQG1-ISrx3UKxji0Wmt8oaJyOABQ0y3dpvT5EyvWfkooOjlebK4dI-a8ZmSU6ev_x3-HWy-9W3wkWiBCscBgiR_vmd1dCz2RF9QVQ", "e": "AQAB", "kty": "RSA", "kid": "xrELM5bzoeSWozMrhtcrLKnmx3ZGGjycukSee3_zyks"}]}',
                 "post_logout_redirect_uris": [
-                    "https://myotherdomain.test/disconnected"
+                    "https://client.trusted.test/disconnected"
                 ],
             },
             {

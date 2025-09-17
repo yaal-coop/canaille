@@ -17,9 +17,9 @@ def test_dump_stdout(cli_runner, backend, user, client, trusted_client, consent,
         "client_id_issued_at": mock.ANY,
         "client_name": "Some other client",
         "client_secret": mock.ANY,
-        "client_uri": "https://myotherdomain.test",
+        "client_uri": "https://client.trusted.test",
         "contacts": [
-            "contact@myotherdomain.test",
+            "contact@trusted.test",
         ],
         "created": mock.ANY,
         "grant_types": [
@@ -34,14 +34,14 @@ def test_dump_stdout(cli_runner, backend, user, client, trusted_client, consent,
         "id": trusted_client.id,
         "jwks": mock.ANY,
         "last_modified": mock.ANY,
-        "logo_uri": "https://myotherdomain.test/logo.webp",
-        "policy_uri": "https://myotherdomain.test/policy",
+        "logo_uri": "https://client.trusted.test/logo.webp",
+        "policy_uri": "https://client.trusted.test/policy",
         "post_logout_redirect_uris": [
-            "https://myotherdomain.test/disconnected",
+            "https://client.trusted.test/disconnected",
         ],
         "redirect_uris": [
-            "https://myotherdomain.test/redirect1",
-            "https://myotherdomain.test/redirect2",
+            "https://client.trusted.test/redirect1",
+            "https://client.trusted.test/redirect2",
         ],
         "response_types": [
             "code",
@@ -54,8 +54,7 @@ def test_dump_stdout(cli_runner, backend, user, client, trusted_client, consent,
             "groups",
         ],
         "token_endpoint_auth_method": "client_secret_basic",
-        "tos_uri": "https://myotherdomain.test/tos",
-        "trusted": True,
+        "tos_uri": "https://client.trusted.test/tos",
     } in payload["client"]
     assert {
         "audience": [

@@ -251,7 +251,7 @@ def test_trusted_client(testclient, logged_user, client, trusted_client, backend
     """Trusted clients don't need the consent page to be displayed."""
     assert not backend.query(models.Consent)
 
-    client.trusted = True
+    client.client_uri = "https://client.trusted.test"
     backend.save(client)
 
     res = testclient.get(

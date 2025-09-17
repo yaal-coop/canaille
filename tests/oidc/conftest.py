@@ -41,6 +41,7 @@ def configuration(configuration, server_jwk, old_server_jwk):
     configuration["CANAILLE_OIDC"] = {
         "ACTIVE_JWKS": [server_jwk.as_dict()],
         "INACTIVE_JWKS": [old_server_jwk.as_dict()],
+        "TRUSTED_DOMAINS": [".localhost", "127.0.0.1", ".trusted.test"],
     }
     configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {
         "level": "DEBUG",
@@ -100,13 +101,13 @@ def trusted_client(testclient, backend, client_jwk):
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some other client",
-        contacts=["contact@myotherdomain.test"],
-        client_uri="https://myotherdomain.test",
+        contacts=["contact@trusted.test"],
+        client_uri="https://client.trusted.test",
         redirect_uris=[
-            "https://myotherdomain.test/redirect1",
-            "https://myotherdomain.test/redirect2",
+            "https://client.trusted.test/redirect1",
+            "https://client.trusted.test/redirect2",
         ],
-        logo_uri="https://myotherdomain.test/logo.webp",
+        logo_uri="https://client.trusted.test/logo.webp",
         client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
         client_secret=gen_salt(48),
         grant_types=[
@@ -120,12 +121,11 @@ def trusted_client(testclient, backend, client_jwk):
         ],
         response_types=["code", "token", "id_token"],
         scope=["openid", "profile", "groups"],
-        tos_uri="https://myotherdomain.test/tos",
-        policy_uri="https://myotherdomain.test/policy",
+        tos_uri="https://client.trusted.test/tos",
+        policy_uri="https://client.trusted.test/policy",
         jwks=json.dumps(key_set),
         token_endpoint_auth_method="client_secret_basic",
-        post_logout_redirect_uris=["https://myotherdomain.test/disconnected"],
-        trusted=True,
+        post_logout_redirect_uris=["https://client.trusted.test/disconnected"],
     )
     backend.save(c)
     c.audience = [c]

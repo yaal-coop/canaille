@@ -71,6 +71,7 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 USER_CLASS = ["inetOrgPerson", "oathHOTPToken"]
 
 [CANAILLE_OIDC]
+TRUSTED_DOMAINS = ["client2.localhost"]
 DYNAMIC_CLIENT_REGISTRATION_OPEN = true
 DYNAMIC_CLIENT_REGISTRATION_TOKENS = [
     "xxxxxxx-yyyyyyy-zzzzzz",

@@ -80,3 +80,23 @@ class OIDCSettings(BaseModel):
     """"Attribute mapping used to build an OIDC UserInfo object.
 
     UserInfo is used to fill the id_token and the userinfo endpoint."""
+
+    TRUSTED_DOMAINS: list[str] = [".localhost", "127.0.0.1"]
+    """Trusted domains for automatic client trust.
+
+    Clients with a :attr:`~canaille.oidc.basemodels.Client.client_uri` matching
+    these domains will be automatically considered as trusted and will not
+    display the consent page to users.
+    This is particularly useful for development environments.
+
+    Supports these patterns:
+
+    - Exact match: ``example.com`` matches ``example.com``
+    - Wildcard match: ``.example.com`` matches ``example.com`` and all its subdomains
+
+    Examples:
+
+    - ``[".localhost", "127.0.0.1"]`` (default for development)
+    - ``[".dev.company.com", "staging.company.com"]``
+    - ``[".local", "localhost"]``
+    """

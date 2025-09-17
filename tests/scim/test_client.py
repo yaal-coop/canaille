@@ -222,8 +222,9 @@ def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplo
 
 
 def test_save_group_when_client_doesnt_support_scim(
-    backend, bar_group, consent, caplog
+    backend, bar_group, consent, caplog, user
 ):
+    bar_group.members = [user]
     backend.save(bar_group)
     assert (
         "canaille",

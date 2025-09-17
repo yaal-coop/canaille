@@ -231,13 +231,6 @@ class ClientAddForm(Form):
         description=_("The URI that points to the public JSON Web Keys of the client."),
     )
 
-    trusted = wtforms.BooleanField(
-        _("Trusted"),
-        validators=[wtforms.validators.Optional()],
-        default=False,
-        description=_("Whether the clients needs to display consent dialogs."),
-    )
-
 
 class TokenRevokationForm(Form):
     pass

@@ -71,7 +71,6 @@ def add(user):
         software_version=form["software_version"].data,
         jwks=form["jwks"].data,
         jwks_uri=form["jwks_uri"].data,
-        trusted=form["trusted"].data,
         client_secret=""
         if form["token_endpoint_auth_method"].data == "none"
         else gen_salt(48),
@@ -106,7 +105,6 @@ def client_edit(client):
     data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     if data["scope"]:
         data["scope"] = " ".join(data["scope"])
-    data["trusted"] = client.trusted
     form = ClientAddForm(request.form or None, data=data, client=client)
 
     if not request.form or form.form_control():
@@ -142,7 +140,6 @@ def client_edit(client):
         jwks=form["jwks"].data,
         jwks_uri=form["jwks_uri"].data,
         audience=form["audience"].data,
-        trusted=form["trusted"].data,
     )
     Backend.instance.save(client)
     flash(

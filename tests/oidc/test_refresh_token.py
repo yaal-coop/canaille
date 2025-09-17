@@ -200,7 +200,7 @@ def test_jwt_auth(testclient, client_jwk, client, token, caplog, backend, user):
     """Test client JWT authentication as defined per RFC7523, for a refresh_token."""
     now = time.time()
 
-    client.trusted = True
+    client.client_uri = "https://client.trusted.test"
     client.token_endpoint_auth_method = "client_secret_jwt"
     backend.save(client)
 

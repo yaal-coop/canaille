@@ -3,6 +3,9 @@ from typing import ClassVar
 
 # keep 'List' instead of 'list' for audiences to not break py310 with the memory backend
 from typing import List  # noqa: UP035
+from urllib.parse import urlparse
+
+from flask import current_app
 
 from canaille.backends.models import Model
 from canaille.core.models import User
@@ -19,8 +22,37 @@ class Client(Model):
 
     description: str | None = None
 
-    trusted: bool | None = False
-    """Trusted clients don't require to display the consent page to users."""
+    @property
+    def trusted(self) -> bool:
+        """Trusted clients don't require to display the consent page to users.
+
+        A client is trusted if its client_uri domain matches one of the domains
+        listed in TRUSTED_DOMAINS configuration. Supports:
+        - Exact match: "example.com" matches "example.com"
+        - Subdomain match: "example.com" also matches "sub.example.com"
+        - Wildcard match: ".example.com" matches "example.com" and all its subdomains
+        """
+        if not self.client_uri:
+            return False
+
+        parsed = urlparse(self.client_uri)
+        hostname = parsed.hostname
+        if not hostname:
+            return False
+
+        trusted_domains = current_app.config["CANAILLE_OIDC"]["TRUSTED_DOMAINS"]
+        for domain in trusted_domains:
+            # Wildcard match: .example.com matches example.com and all subdomains
+            if domain.startswith("."):
+                domain_without_dot = domain[1:]
+                if hostname == domain_without_dot or hostname.endswith(domain):
+                    return True
+
+            # Exact match only for non-wildcard domains
+            elif hostname == domain:
+                return True
+
+        return False
 
     # keep 'List' instead of 'list' do not break py310 with the memory backend
     audience: List["Client"] = []  # noqa: UP006
