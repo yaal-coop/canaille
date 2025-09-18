@@ -201,8 +201,8 @@ del_button=false
 {%- endmacro %}
 
 {% macro render_checkbox(field, display=true, label_visible=true) -%}
-    <div class="field {% if not display %}hidden{% endif %}">
-        <div class="ui toggle checkbox">
+    <div class="field{% if not display %} hidden{% endif %}">
+        <div class="ui toggle checkbox {{ kwargs.pop('class_', '') }}">
             {{ field(**kwargs) }}
             {% if label_visible %}{{ field.label() }}{% endif %}
         </div>

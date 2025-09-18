@@ -94,13 +94,13 @@ This page displays a form to get the user identifier.
 
                         {% block buttons %}
                             <div class="ui stackable grid">
-                                <div class="left aligned nine wide column">
+                                <div class="left aligned three wide column">
                                     {% if features.has_registration %}
                                         <a type="button" class="ui button" href="{{ url_for('core.account.join') }}">{{ _("Create an account") }}</a>
                                     {% endif %}
                                 </div>
-                                <div class="middle aligned four wide column">
-                                    {{ fui.render_field(form.remember) }}
+                                <div class="middle aligned right aligned ten wide column">
+                                    {{ fui.render_field(form.remember, class_="right aligned") }}
                                 </div>
                                 <div class="right aligned three wide column">
                                     <button type="submit" name="answer" class="ui primary button" hx-boost="false">{{ _("Continue") }}</button>
