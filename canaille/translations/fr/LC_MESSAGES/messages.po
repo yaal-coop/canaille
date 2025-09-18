@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-09-18 10:29+0200\n"
-"PO-Revision-Date: 2025-09-18 08:01+0000\n"
+"PO-Revision-Date: 2025-09-18 10:03+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -445,11 +445,11 @@ msgstr "Identifiant"
 
 #: canaille/core/endpoints/forms.py:47
 msgid "Remember me"
-msgstr ""
+msgstr "Se souvenir de moi"
 
 #: canaille/core/endpoints/forms.py:51
 msgid "If unchecked, the session will close when the browser is closed"
-msgstr ""
+msgstr "Si décoché, la session se terminera à la fermeture du navigateur"
 
 #: canaille/core/endpoints/forms.py:59 canaille/core/endpoints/forms.py:96
 #: canaille/core/endpoints/forms.py:245
@@ -1308,24 +1308,20 @@ msgid "Manage your information and your authorizations"
 msgstr "Gérez vos informations et vos autorisations"
 
 #: canaille/templates/core/login.html:49
-#, fuzzy
-#| msgid "Create an account"
 msgid "Choose an account"
-msgstr "S’inscrire"
+msgstr "Choisissez un compte"
 
 #: canaille/templates/core/login.html:58
 msgid "Remove from account list"
-msgstr ""
+msgstr "Supprimer de la liste des comptes"
 
 #: canaille/templates/core/login.html:81
 msgid "Or"
-msgstr ""
+msgstr "Ou"
 
 #: canaille/templates/core/login.html:87
-#, fuzzy
-#| msgid "Lock the account"
 msgid "Use another account"
-msgstr "Verrouiller le compte"
+msgstr "Utilisez un autre compte"
 
 #: canaille/templates/core/auth/forgotten-password-code.html:52
 #: canaille/templates/core/auth/forgotten-password.html:53
