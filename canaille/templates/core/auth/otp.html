@@ -9,6 +9,7 @@ Displays a form that asks for the multi-factor authentication code.
 {% import 'macro/flask.html' as flask %}
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/login_field.html' as login_field %}
+{% import 'core/auth/macro.html' as auth_macro %}
 
 {% block script %}
     <script src="{{ url_for("static", filename="js/verify-mfa.js") }}" defer></script>
@@ -28,10 +29,7 @@ Displays a form that asks for the multi-factor authentication code.
                     {% endif %}
 
                     <h2 class="ui center aligned header">
-                        <div class="content">
-                            {{ _("Sign in as %(username)s", username=g.auth.user_name) }}
-                        </div>
-                        <div class="sub header">{% trans %}One-time passcode authentication.{% endtrans %}</div>
+                        {{ auth_macro.user_header(_("One-time passcode authentication.")) }}
                     </h2>
                 {% endblock %}
 
@@ -59,7 +57,7 @@ Displays a form that asks for the multi-factor authentication code.
                     {% block buttons %}
                         <div class="ui left floated stackable buttons">
                             <a type="button" class="ui button" href="{{ url_for('core.auth.login') }}">
-                                {{ _("I am not %(username)s", username=g.auth.user_name) }}
+                                {{ auth_macro.not_user_button() }}
                             </a>
                         </div>
                         <div class="ui right floated stackable buttons">

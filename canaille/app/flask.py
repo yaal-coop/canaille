@@ -1,4 +1,3 @@
-import datetime
 import logging
 import re
 from functools import wraps
@@ -10,7 +9,6 @@ from flask import g
 from flask import make_response
 from flask import redirect
 from flask import request
-from flask import session
 from flask import url_for
 from flask_caching import Cache
 from flask_wtf.csrf import CSRFProtect
@@ -18,6 +16,7 @@ from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
 
 from canaille.app.i18n import gettext as _
+from canaille.app.session import _set_login_history_cookie
 from canaille.app.session import current_user_session
 from canaille.app.templating import render_template
 
@@ -196,10 +195,16 @@ def setup_flask(app):
 
     @app.before_request
     def session_setup():
-        session.permanent = True
-        app.permanent_session_lifetime = datetime.timedelta(days=365)
+        # Let login_user() manage session.permanent based on remember choice
         if "session" not in g:
             g.session = current_user_session()
+
+    @app.after_request
+    def update_login_history_cookie(response):
+        """Update login history cookie if needed."""
+        if login_history := g.pop("login_history_needs_update", None):
+            _set_login_history_cookie(login_history, response)
+        return response
 
     @app.errorhandler(400)
     def bad_request(error):

@@ -10,6 +10,7 @@ from flask import session
 from flask import url_for
 
 from canaille.app.i18n import gettext as _
+from canaille.app.session import is_user_in_login_history
 from canaille.app.session import login_user
 from canaille.app.session import save_user_session
 from canaille.backends import Backend
@@ -75,6 +76,9 @@ class AuthenticationSession:
     data: dict[str, str]
     """Custom auth factor data."""
 
+    remember: bool = True
+    """Whether to create permanent session and add to login history."""
+
     _user: User | None = None
 
     def __init__(
@@ -86,6 +90,8 @@ class AuthenticationSession:
         current_step_try_dt=None,
         welcome_flash=None,
         data=None,
+        known_user=None,
+        remember=None,
     ):
         self.user_name = user_name
         self.remaining = (
@@ -96,12 +102,20 @@ class AuthenticationSession:
         self.current_step_try_dt = current_step_try_dt or None
         self.data = data or {}
         self.welcome_flash = welcome_flash if welcome_flash is not None else True
+        self.known_user = (
+            known_user
+            if known_user is not None
+            else is_user_in_login_history(user_name)
+        )
+        self.remember = remember if remember is not None else True
 
     def serialize(self):
         payload = {
             "user_name": self.user_name,
             "welcome_flash": self.welcome_flash,
             "remaining": self.remaining,
+            "known_user": self.known_user,
+            "remember": self.remember,
         }
 
         if self.current_step_start_dt:
@@ -167,7 +181,7 @@ def redirect_to_next_auth_step():
             g.session.last_login_datetime = datetime.datetime.now(datetime.timezone.utc)
             save_user_session()
         else:
-            login_user(g.auth.user)
+            login_user(g.auth.user, remember=g.auth.remember)
 
         redirection = session.pop("redirect-after-login", None)
         if g.auth.welcome_flash and not redirection:

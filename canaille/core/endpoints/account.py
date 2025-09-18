@@ -871,7 +871,7 @@ def impersonate(user, puppet):
     if puppet.locked:
         abort(403, _("Locked users cannot be impersonated."))
 
-    login_user(puppet)
+    login_user(puppet, remember=False)
     flash(
         _("Connection successful. Welcome %(user)s", user=puppet.name),
         "success",

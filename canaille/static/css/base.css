@@ -106,6 +106,22 @@ footer a {
 
 /* end of contrast ratio fixes */
 
+/* hotfixes for https://github.com/fomantic/Fomantic-UI/issues/3358 */
+i.icon.login-avatar{
+    line-height: 150px;
+    font-size: 75px;
+}
+
+.ui.card .content .right.floated {
+    position: relative;
+    z-index: 1;
+}
+
+.ui.image img.login-avatar {
+    width: 150px;
+    height: 150px;
+}
+
 .ui.masthead .ui.header {
     margin-bottom: 1em;
 }
@@ -407,5 +423,8 @@ select.ui.multiple.dropdown option[selected] {
     }
     .ui.progress {
         background: #222222;
+    }
+    .card .ui.center.aligned.basic.segment {
+        background-color: transparent !important;
     }
 }

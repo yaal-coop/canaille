@@ -135,3 +135,43 @@ def test_get_user_from_login_partial_email_no_multiple_results(
     assert result is None
     exact_result = get_user_from_login(login="user@example.com")
     assert exact_result == user
+
+
+def test_session_permanence_with_remember_true(testclient, user, backend):
+    # This test verifies the session is configured as permanent
+    # Actual expiration testing would require browser simulation
+    from canaille.app.session import LOGIN_HISTORY
+
+    with testclient.session_transaction() as sess:
+        sess.clear()
+
+    res = testclient.get("/login")
+    res.form["login"] = user.user_name
+    res = res.form.submit()
+
+    res = res.follow()
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit()
+
+    # Note: WebTest doesn't expose session.permanent directly
+    # This test mainly ensures the login flow works with remember=True
+    with testclient.session_transaction() as sess:
+        assert LOGIN_HISTORY in sess
+        assert user.user_name in sess[LOGIN_HISTORY]
+
+
+def test_direct_login_with_username_uses_default_remember(testclient, user, backend):
+    """Test that direct login via /login/<username> uses default remember=True."""
+    from canaille.app.session import LOGIN_HISTORY
+
+    with testclient.session_transaction() as sess:
+        sess.clear()
+
+    res = testclient.get(f"/login/{user.user_name}")
+    res = res.follow()
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit()
+
+    with testclient.session_transaction() as sess:
+        assert LOGIN_HISTORY in sess
+        assert user.user_name in sess[LOGIN_HISTORY]

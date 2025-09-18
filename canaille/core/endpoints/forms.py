@@ -43,6 +43,15 @@ class LoginForm(Form):
             "autocomplete": "section-login username",
         },
     )
+    remember = wtforms.BooleanField(
+        _("Remember me"),
+        default=True,
+        render_kw={
+            "title": _(
+                "If unchecked, the session will close when the browser is closed"
+            )
+        },
+    )
 
 
 class PasswordForm(Form):
