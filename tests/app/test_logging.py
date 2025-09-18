@@ -111,11 +111,13 @@ def test_dict_log_config(configuration, backend, tmp_path, admin):
 def test_custom_root_logger(caplog):
     """Checks adding custom log levels to the root logger."""
     add_log_level("FOOBAR", logging.INFO + 6)
-    logging.foobar("foobar")
+    with caplog.at_level(logging.INFO):
+        logging.foobar("foobar")
     assert ("root", logging.FOOBAR, "foobar") in caplog.record_tuples
 
     add_log_level("FOOBAZ", logging.INFO + 7, "baz")
-    logging.baz("foobar")
+    with caplog.at_level(logging.INFO):
+        logging.baz("foobar")
     assert ("root", logging.FOOBAZ, "foobar") in caplog.record_tuples
 
 
