@@ -2716,16 +2716,9 @@ msgstr "Esta cuenta está bloqueada"
 msgid "Token"
 msgstr "Token"
 
-#, fuzzy
-#~ msgid "Profile updated successfully."
 #~ msgid "Passcode successfully sent!"
 #~ msgstr "Perfil actualizado correctamente."
 
-#, fuzzy, python-format
-#~ msgid ""
-#~ "Are you sure you want to reset one-time password (OTP) authentication "
-#~ "for %(user_name)s ? The user will have to perform OTP setup again at "
-#~ "next login."
 #~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication for "
 #~ "%(user_name)s ? The user will have to perform OTP setup again at next "
@@ -2735,10 +2728,6 @@ msgstr "Token"
 #~ "única (OTP) para %(user_name)s? El usuario tendrá que realizar la "
 #~ "configuración de OTP nuevamente en el próximo inicio de sesión."
 
-#, fuzzy
-#~ msgid ""
-#~ "Are you sure you want to reset one-time password (OTP) authentication? "
-#~ "You will have to perform OTP setup again at next login."
 #~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication? "
 #~ "You will have to perform OTP setup again at next login."
@@ -2747,8 +2736,6 @@ msgstr "Token"
 #~ "única (OTP)? Tendrás que realizar la configuración de OTP nuevamente en "
 #~ "el próximo inicio de sesión."
 
-#, fuzzy
-#~ msgid "Reset one-time password authentication"
 #~ msgid "Reset one-time passcode authentication"
 #~ msgstr "Restablecer la autenticación de contraseña de un solo uso"
 

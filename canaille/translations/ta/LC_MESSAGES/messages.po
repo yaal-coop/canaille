@@ -1864,7 +1864,7 @@ msgid ""
 "You have to check manually if the new password of the user %(user_name)s is "
 "compromised."
 msgstr ""
-"பயனரின் புதிய கடவுச்சொல் (பயனர்_பெயர்) கள் வேறுபாடின்மை செய்யப்பட்டால் நீங்கள் கைமுறையாக "
+"பயனரின் புதிய கடவுச்சொல் %(user_name)s கள் வேறுபாடின்மை செய்யப்பட்டால் நீங்கள் கைமுறையாக "
 "சரிபார்க்க வேண்டும்."
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:32
@@ -2661,14 +2661,10 @@ msgid "Token"
 msgstr "கிள்ளாக்கு"
 
 #, fuzzy
-#~ msgid "Profile updated successfully."
 #~ msgid "Passcode successfully sent!"
 #~ msgstr "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
 
 #, fuzzy, python-format
-#~ msgid ""
-#~ "Are you sure you want to lock the account of %(user_name)s ? The user "
-#~ "won't be able to login until their account is unlocked."
 #~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication for "
 #~ "%(user_name)s ? The user will have to perform OTP setup again at next "
@@ -2679,9 +2675,6 @@ msgstr "கிள்ளாக்கு"
 
 #, fuzzy
 #~ msgid ""
-#~ "Are you sure you want to lock the account of %(user_name)s ? The user "
-#~ "won't be able to login until their account is unlocked."
-#~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication? "
 #~ "You will have to perform OTP setup again at next login."
 #~ msgstr ""
@@ -2689,7 +2682,6 @@ msgstr "கிள்ளாக்கு"
 #~ "உள்நுழைய முடியாது."
 
 #, fuzzy
-#~ msgid "Please enter your password for this account."
 #~ msgid "Reset one-time passcode authentication"
 #~ msgstr "இந்த கணக்கிற்கான உங்கள் கடவுச்சொல்லை உள்ளிடவும்."
 

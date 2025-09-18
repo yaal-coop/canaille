@@ -2720,14 +2720,10 @@ msgid "Token"
 msgstr "Token"
 
 #, fuzzy
-#~ msgid "Profile updated successfully."
 #~ msgid "Passcode successfully sent!"
 #~ msgstr "Profil erfolgreich aktualisiert."
 
 #, fuzzy, python-format
-#~ msgid ""
-#~ "Are you sure you want to lock the account of %(user_name)s ? The user "
-#~ "won't be able to login until their account is unlocked."
 #~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication for "
 #~ "%(user_name)s ? The user will have to perform OTP setup again at next "
@@ -2738,9 +2734,6 @@ msgstr "Token"
 
 #, fuzzy
 #~ msgid ""
-#~ "Are you sure you want to lock the account of %(user_name)s ? The user "
-#~ "won't be able to login until their account is unlocked."
-#~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication? "
 #~ "You will have to perform OTP setup again at next login."
 #~ msgstr ""
@@ -2748,7 +2741,6 @@ msgstr "Token"
 #~ "Benutzer kann sich erst anmelden, wenn sein Konto entsperrt ist."
 
 #, fuzzy
-#~ msgid "Please enter your password for this account."
 #~ msgid "Reset one-time passcode authentication"
 #~ msgstr "Bitte geben Sie Ihr Passwort für dieses Konto ein."
 

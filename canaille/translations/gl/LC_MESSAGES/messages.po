@@ -2812,13 +2812,10 @@ msgid "Token"
 msgstr "Token"
 
 #, fuzzy
-#~ msgid "Profile updated successfuly."
 #~ msgid "Passcode successfully sent!"
 #~ msgstr "Perfil actualizado correctamente."
 
 #, fuzzy, python-format
-#~ msgid ""
-#~ "Are you sure you want to revoke this token? This action is unrevokable."
 #~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication for "
 #~ "%(user_name)s ? The user will have to perform OTP setup again at next "
@@ -2829,8 +2826,6 @@ msgstr "Token"
 
 #, fuzzy
 #~ msgid ""
-#~ "Are you sure you want to revoke this token? This action is unrevokable."
-#~ msgid ""
 #~ "Are you sure you want to reset one-time passcode (OTP) authentication? "
 #~ "You will have to perform OTP setup again at next login."
 #~ msgstr ""
@@ -2838,7 +2833,6 @@ msgstr "Token"
 #~ "desfeita."
 
 #, fuzzy
-#~ msgid "Please enter your password for this account."
 #~ msgid "Reset one-time passcode authentication"
 #~ msgstr "Introduce o teu contrasinal para esta conta."
 

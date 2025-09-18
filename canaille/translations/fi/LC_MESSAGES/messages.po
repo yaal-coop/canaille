@@ -2518,12 +2518,10 @@ msgid "Token"
 msgstr ""
 
 #, fuzzy
-#~ msgid "Profile updated successfully."
 #~ msgid "Passcode successfully sent!"
 #~ msgstr "Profiilin päivitys onnistui."
 
 #, fuzzy
-#~ msgid "One-time password authentication has been reset"
 #~ msgid "Reset one-time passcode authentication"
 #~ msgstr "Kertaluonteinen salasanatodennus on nollattu"
 

@@ -2502,12 +2502,10 @@ msgid "Token"
 msgstr ""
 
 #, fuzzy
-#~ msgid "Profile updated successfully."
 #~ msgid "Passcode successfully sent!"
 #~ msgstr "Hizivaet eo bet an aelad gant berzh."
 
 #, fuzzy
-#~ msgid "Password initialization on {website_name}"
 #~ msgid "Reset one-time passcode authentication"
 #~ msgstr "O teraouekaat ho ger-tremen war {website_name}"
 
