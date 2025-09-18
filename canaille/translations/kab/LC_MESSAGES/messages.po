@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-16 23:20+0200\n"
+"POT-Creation-Date: 2025-09-18 10:29+0200\n"
 "PO-Revision-Date: 2025-05-24 14:03+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -20,11 +20,11 @@ msgstr ""
 "X-Generator: Weblate 5.12-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: canaille/app/flask.py:39
+#: canaille/app/flask.py:37
 msgid "Your password has expired, please choose a new password."
 msgstr ""
 
-#: canaille/app/flask.py:63
+#: canaille/app/flask.py:61
 msgid "No SMTP server has been configured"
 msgstr ""
 
@@ -99,33 +99,33 @@ msgstr ""
 msgid "You should change your password."
 msgstr ""
 
-#: canaille/core/auth.py:34 canaille/core/endpoints/auth/otp.py:83
+#: canaille/core/auth.py:35 canaille/core/endpoints/auth/otp.py:83
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr ""
 
-#: canaille/core/auth.py:175 canaille/core/endpoints/account.py:876
+#: canaille/core/auth.py:189 canaille/core/endpoints/account.py:876
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
 
-#: canaille/core/auth.py:190
+#: canaille/core/auth.py:204
 msgid "An error happened during your authentication process. Please try again."
 msgstr ""
 
-#: canaille/core/auth.py:224
+#: canaille/core/auth.py:238
 msgid "John Doe"
 msgstr ""
 
-#: canaille/core/auth.py:225 canaille/core/endpoints/forms.py:128
-#: canaille/core/endpoints/forms.py:410
+#: canaille/core/auth.py:239 canaille/core/endpoints/forms.py:137
+#: canaille/core/endpoints/forms.py:419
 msgid "jdoe"
 msgstr ""
 
-#: canaille/core/auth.py:226
+#: canaille/core/auth.py:240
 msgid "john.doe@example.com"
 msgstr ""
 
-#: canaille/core/auth.py:233
+#: canaille/core/auth.py:247
 msgid " or "
 msgstr " neɣ "
 
@@ -235,8 +235,8 @@ msgstr ""
 msgid "You are already logged in, you cannot create an account."
 msgstr "Teqqneḍ yakan, ur tezmireḍ ad d-tesnulfuḍ amiḍan."
 
-#: canaille/core/endpoints/account.py:300 canaille/core/endpoints/forms.py:291
-#: canaille/core/endpoints/forms.py:428 canaille/templates/base.html:111
+#: canaille/core/endpoints/account.py:300 canaille/core/endpoints/forms.py:300
+#: canaille/core/endpoints/forms.py:437 canaille/templates/base.html:111
 #: canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
 #: canaille/templates/core/partial/group-members.html:15
@@ -244,8 +244,8 @@ msgstr "Teqqneḍ yakan, ur tezmireḍ ad d-tesnulfuḍ amiḍan."
 msgid "Groups"
 msgstr "Igrawen"
 
-#: canaille/core/endpoints/account.py:325 canaille/core/endpoints/forms.py:103
-#: canaille/core/endpoints/forms.py:252
+#: canaille/core/endpoints/account.py:325 canaille/core/endpoints/forms.py:112
+#: canaille/core/endpoints/forms.py:261
 msgid "Password and confirmation do not match."
 msgstr ""
 
@@ -374,9 +374,9 @@ msgid "Email"
 msgstr "Imayl"
 
 #: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:39
-#: canaille/core/endpoints/forms.py:63 canaille/core/endpoints/forms.py:177
-#: canaille/core/endpoints/forms.py:394 canaille/core/endpoints/forms.py:422
-#: canaille/core/endpoints/forms.py:446 canaille/core/endpoints/forms.py:462
+#: canaille/core/endpoints/forms.py:72 canaille/core/endpoints/forms.py:186
+#: canaille/core/endpoints/forms.py:403 canaille/core/endpoints/forms.py:431
+#: canaille/core/endpoints/forms.py:455 canaille/core/endpoints/forms.py:471
 msgid "jane.doe@example.com"
 msgstr ""
 
@@ -403,43 +403,51 @@ msgstr ""
 msgid "Passcode authentication on {website_name}"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:60
+#: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:69
 #: canaille/templates/core/partial/group-members.html:9
 #: canaille/templates/core/partial/users.html:9
 msgid "Login"
 msgstr "Aseqdac"
 
-#: canaille/core/endpoints/forms.py:50 canaille/core/endpoints/forms.py:87
-#: canaille/core/endpoints/forms.py:236
+#: canaille/core/endpoints/forms.py:47
+msgid "Remember me"
+msgstr ""
+
+#: canaille/core/endpoints/forms.py:51
+msgid "If unchecked, the session will close when the browser is closed"
+msgstr ""
+
+#: canaille/core/endpoints/forms.py:59 canaille/core/endpoints/forms.py:96
+#: canaille/core/endpoints/forms.py:245
 #: canaille/templates/core/profile_settings.html:113
 msgid "Password"
 msgstr "Awal n uɛeddi"
 
-#: canaille/core/endpoints/forms.py:72
+#: canaille/core/endpoints/forms.py:81
 #: canaille/templates/oidc/partial/authorization_list.html:5
 msgid "Code"
 msgstr "Tangalt"
 
-#: canaille/core/endpoints/forms.py:78 canaille/core/endpoints/forms.py:477
+#: canaille/core/endpoints/forms.py:87 canaille/core/endpoints/forms.py:486
 #, fuzzy
 #| msgid "1234"
 msgid "123456"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:100 canaille/core/endpoints/forms.py:249
+#: canaille/core/endpoints/forms.py:109 canaille/core/endpoints/forms.py:258
 msgid "Password confirmation"
 msgstr "Sentem awal n uɛeddi"
 
-#: canaille/core/endpoints/forms.py:122
+#: canaille/core/endpoints/forms.py:131
 msgid "Automatic"
 msgstr "Awurman"
 
-#: canaille/core/endpoints/forms.py:127
+#: canaille/core/endpoints/forms.py:136
 msgid "Username"
 msgstr "Isem n useqdac"
 
-#: canaille/core/endpoints/forms.py:131 canaille/core/endpoints/forms.py:348
-#: canaille/core/endpoints/forms.py:364 canaille/oidc/endpoints/forms.py:46
+#: canaille/core/endpoints/forms.py:140 canaille/core/endpoints/forms.py:357
+#: canaille/core/endpoints/forms.py:373 canaille/oidc/endpoints/forms.py:46
 #: canaille/templates/core/partial/group-members.html:12
 #: canaille/templates/core/partial/groups.html:6
 #: canaille/templates/core/partial/users.html:12
@@ -447,170 +455,170 @@ msgstr "Isem n useqdac"
 msgid "Name"
 msgstr "Isem"
 
-#: canaille/core/endpoints/forms.py:133
+#: canaille/core/endpoints/forms.py:142
 msgid "Title"
 msgstr "Azwel"
 
-#: canaille/core/endpoints/forms.py:135
+#: canaille/core/endpoints/forms.py:144
 msgid "Vice president"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:140
+#: canaille/core/endpoints/forms.py:149
 msgid "Given name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:142
+#: canaille/core/endpoints/forms.py:151
 msgid "John"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:148
+#: canaille/core/endpoints/forms.py:157
 msgid "Family Name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:151
+#: canaille/core/endpoints/forms.py:160
 msgid "Doe"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:157
+#: canaille/core/endpoints/forms.py:166
 msgid "Display Name"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:160
+#: canaille/core/endpoints/forms.py:169
 msgid "Johnny"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:167 canaille/core/endpoints/forms.py:452
+#: canaille/core/endpoints/forms.py:176 canaille/core/endpoints/forms.py:461
 #: canaille/templates/core/profile_edit.html:195
 msgid "Email addresses"
 msgstr "Tansiwin n yimayl"
 
-#: canaille/core/endpoints/forms.py:174 canaille/core/endpoints/forms.py:443
+#: canaille/core/endpoints/forms.py:183 canaille/core/endpoints/forms.py:452
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:188
+#: canaille/core/endpoints/forms.py:197
 msgid "Phone numbers"
 msgstr "Uṭṭunen n tiliɣri"
 
-#: canaille/core/endpoints/forms.py:189
+#: canaille/core/endpoints/forms.py:198
 msgid "555-000-555"
 msgstr "06 01 02 03 04"
 
-#: canaille/core/endpoints/forms.py:196
+#: canaille/core/endpoints/forms.py:205
 msgid "Address"
 msgstr "Tansa"
 
-#: canaille/core/endpoints/forms.py:198
+#: canaille/core/endpoints/forms.py:207
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:202
+#: canaille/core/endpoints/forms.py:211
 msgid "Street"
 msgstr "Azniq"
 
-#: canaille/core/endpoints/forms.py:204
+#: canaille/core/endpoints/forms.py:213
 msgid "132, Foobar Street"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:209
+#: canaille/core/endpoints/forms.py:218
 msgid "Postal Code"
 msgstr "Tangalt n lbuṣṭa"
 
-#: canaille/core/endpoints/forms.py:216
+#: canaille/core/endpoints/forms.py:225
 msgid "Locality"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:218
+#: canaille/core/endpoints/forms.py:227
 msgid "Gotham City"
 msgstr "Gotham City"
 
-#: canaille/core/endpoints/forms.py:223
+#: canaille/core/endpoints/forms.py:232
 msgid "Region"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:225
+#: canaille/core/endpoints/forms.py:234
 msgid "North Pole"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:230
+#: canaille/core/endpoints/forms.py:239
 msgid "Photo"
 msgstr "Tawlaft"
 
-#: canaille/core/endpoints/forms.py:234
+#: canaille/core/endpoints/forms.py:243
 #: canaille/templates/core/profile_add.html:71
 #: canaille/templates/core/profile_edit.html:84
 msgid "Delete the photo"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:260
+#: canaille/core/endpoints/forms.py:269
 msgid "User number"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:262 canaille/core/endpoints/forms.py:268
+#: canaille/core/endpoints/forms.py:271 canaille/core/endpoints/forms.py:277
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:266
+#: canaille/core/endpoints/forms.py:275
 msgid "Department"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:272
+#: canaille/core/endpoints/forms.py:281
 msgid "Organization"
 msgstr "Tuddsa"
 
-#: canaille/core/endpoints/forms.py:274
+#: canaille/core/endpoints/forms.py:283
 msgid "Cogip LTD."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:279
+#: canaille/core/endpoints/forms.py:288
 msgid "Website"
 msgstr "Asmel web"
 
-#: canaille/core/endpoints/forms.py:281
+#: canaille/core/endpoints/forms.py:290
 #, fuzzy
 #| msgid "https://mywebsite.tld"
 msgid "https://mywebsite.example"
 msgstr "https://asmel-inu.tld"
 
-#: canaille/core/endpoints/forms.py:286
+#: canaille/core/endpoints/forms.py:295
 msgid "Preferred language"
 msgstr "Tutlayt tamenyaft"
 
-#: canaille/core/endpoints/forms.py:300
+#: canaille/core/endpoints/forms.py:309
 msgid "users, admins …"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:325
+#: canaille/core/endpoints/forms.py:334
 msgid "Account expiration"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:351
+#: canaille/core/endpoints/forms.py:360
 msgid "group"
 msgstr "agraw"
 
-#: canaille/core/endpoints/forms.py:355 canaille/core/endpoints/forms.py:374
+#: canaille/core/endpoints/forms.py:364 canaille/core/endpoints/forms.py:383
 #: canaille/templates/core/partial/groups.html:7
 msgid "Description"
 msgstr "Aglam"
 
-#: canaille/core/endpoints/forms.py:388 canaille/core/endpoints/forms.py:415
+#: canaille/core/endpoints/forms.py:397 canaille/core/endpoints/forms.py:424
 msgid "Email address"
 msgstr "Tansa imayl"
 
-#: canaille/core/endpoints/forms.py:409
+#: canaille/core/endpoints/forms.py:418
 msgid "User name"
 msgstr "Isem n useqdac"
 
-#: canaille/core/endpoints/forms.py:413
+#: canaille/core/endpoints/forms.py:422
 msgid "Username editable by the invitee"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:455
+#: canaille/core/endpoints/forms.py:464
 msgid "New email address"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:471
+#: canaille/core/endpoints/forms.py:480
 msgid "Passcode"
 msgstr "Awal n uɛeddi"
 
@@ -642,13 +650,13 @@ msgstr ""
 msgid "The group %(group)s has been successfully deleted"
 msgstr ""
 
-#: canaille/core/endpoints/auth/__init__.py:69
+#: canaille/core/endpoints/auth/__init__.py:93
 #: canaille/core/endpoints/auth/password.py:54
 #: canaille/core/endpoints/auth/password.py:65
 msgid "Login failed, please check your information"
 msgstr ""
 
-#: canaille/core/endpoints/auth/__init__.py:83
+#: canaille/core/endpoints/auth/__init__.py:112
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr ""
@@ -979,7 +987,7 @@ msgid "Log out"
 msgstr "Senser tuqqna"
 
 #: canaille/templates/base.html:127
-#: canaille/templates/core/auth/password.html:48
+#: canaille/templates/core/auth/password.html:46
 msgid "Sign in"
 msgstr "Qqen"
 
@@ -1206,7 +1214,7 @@ msgstr "Astebter n tuqqna"
 #: canaille/templates/core/auth/forgotten-password-code.html:29
 #: canaille/templates/core/auth/forgotten-password.html:17
 #: canaille/templates/core/auth/forgotten-password.html:28
-#: canaille/templates/core/auth/password.html:45
+#: canaille/templates/core/auth/password.html:43
 #: canaille/templates/core/join.html:49
 msgid "Forgotten password"
 msgstr "Tettuḍ awal n uɛeddi"
@@ -1217,27 +1225,47 @@ msgstr "Tettuḍ awal n uɛeddi"
 msgid "Submit"
 msgstr ""
 
-#: canaille/templates/core/login.html:35
+#: canaille/templates/core/login.html:36
 #, python-format
 msgid "Sign in at %(website)s"
 msgstr "Qqen ɣer %(website)s"
 
-#: canaille/templates/core/login.html:37
+#: canaille/templates/core/login.html:38
 msgid "Manage your information and your authorizations"
 msgstr ""
 
+#: canaille/templates/core/login.html:49
+#, fuzzy
+#| msgid "Create an account"
+msgid "Choose an account"
+msgstr "Snulfu-d amiḍan"
+
+#: canaille/templates/core/login.html:58
+msgid "Remove from account list"
+msgstr ""
+
+#: canaille/templates/core/login.html:81
+msgid "Or"
+msgstr ""
+
+#: canaille/templates/core/login.html:87
+#, fuzzy
+#| msgid "Create an account"
+msgid "Use another account"
+msgstr "Snulfu-d amiḍan"
+
 #: canaille/templates/core/auth/forgotten-password-code.html:52
 #: canaille/templates/core/auth/forgotten-password.html:53
-#: canaille/templates/core/login.html:53
+#: canaille/templates/core/login.html:99
 msgid "Create an account"
 msgstr "Snulfu-d amiḍan"
 
-#: canaille/templates/core/login.html:57
+#: canaille/templates/core/login.html:106
 #: canaille/templates/core/mails/registration.txt:5
 msgid "Continue"
 msgstr "Ddu"
 
-#: canaille/templates/core/auth/setup-otp.html:22
+#: canaille/templates/core/auth/setup-otp.html:23
 #: canaille/templates/core/profile_add.html:58
 #: canaille/templates/core/profile_edit.html:43
 #: canaille/templates/core/profile_settings.html:34
@@ -1251,7 +1279,7 @@ msgstr ""
 msgid "Click to upload a photo"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:26
+#: canaille/templates/core/auth/setup-otp.html:27
 #: canaille/templates/core/profile_add.html:167
 #: canaille/templates/core/profile_edit.html:47
 #: canaille/templates/core/profile_settings.html:38
@@ -1427,47 +1455,29 @@ msgid "Set-up"
 msgstr ""
 
 #: canaille/templates/core/auth/email.html:32
-#: canaille/templates/core/auth/otp.html:32
-#: canaille/templates/core/auth/password.html:21
-#: canaille/templates/core/auth/setup-otp.html:49
-#: canaille/templates/core/auth/sms.html:32
-#, python-format
-msgid "Sign in as %(username)s"
-msgstr "Qqen amzun d %(username)s"
-
-#: canaille/templates/core/auth/email.html:34
 msgid "Email verification code."
 msgstr ""
 
-#: canaille/templates/core/auth/email.html:47
+#: canaille/templates/core/auth/email.html:45
 msgid "Check your mailbox"
 msgstr ""
 
-#: canaille/templates/core/auth/email.html:49
+#: canaille/templates/core/auth/email.html:47
 msgid ""
 "If the login you filled exists, an email containing a verification code has "
 "been sent to your mail address. Please fill the code in the following form "
 "to continue."
 msgstr ""
 
-#: canaille/templates/core/auth/email.html:63
-#: canaille/templates/core/auth/otp.html:62
-#: canaille/templates/core/auth/password.html:39
-#: canaille/templates/core/auth/setup-otp.html:156
-#: canaille/templates/core/auth/sms.html:63
-#, python-format
-msgid "I am not %(username)s"
-msgstr ""
-
-#: canaille/templates/core/auth/email.html:72
-#: canaille/templates/core/auth/sms.html:73
+#: canaille/templates/core/auth/email.html:70
+#: canaille/templates/core/auth/sms.html:71
 msgid "Send another code"
 msgstr ""
 
-#: canaille/templates/core/auth/email.html:75
-#: canaille/templates/core/auth/otp.html:66
-#: canaille/templates/core/auth/setup-otp.html:162
-#: canaille/templates/core/auth/sms.html:76
+#: canaille/templates/core/auth/email.html:73
+#: canaille/templates/core/auth/otp.html:64
+#: canaille/templates/core/auth/setup-otp.html:160
+#: canaille/templates/core/auth/sms.html:74
 #: canaille/templates/core/partial/emails_field.html:14
 msgid "Verify"
 msgstr "Senqed"
@@ -1516,110 +1526,121 @@ msgstr ""
 msgid "Send"
 msgstr "Azen"
 
-#: canaille/templates/core/auth/otp.html:34
+#: canaille/templates/core/auth/macro.html:17
+#: canaille/templates/core/auth/macro.html:22
+#, python-format
+msgid "Sign in as %(username)s"
+msgstr "Qqen amzun d %(username)s"
+
+#: canaille/templates/core/auth/macro.html:31
+#, python-format
+msgid "I am not %(username)s"
+msgstr ""
+
+#: canaille/templates/core/auth/otp.html:32
 msgid "One-time passcode authentication."
 msgstr ""
 
-#: canaille/templates/core/auth/otp.html:47
+#: canaille/templates/core/auth/otp.html:45
 msgid "Open your authenticator application"
 msgstr ""
 
-#: canaille/templates/core/auth/otp.html:49
+#: canaille/templates/core/auth/otp.html:47
 msgid ""
 "Generate a one-time passcode with your authenticator application and fill it "
 "in the form below."
 msgstr ""
 
-#: canaille/templates/core/auth/password.html:23
+#: canaille/templates/core/auth/password.html:21
 msgid "Please enter your password for this account."
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:51
-#: canaille/templates/core/auth/setup-otp.html:59
+#: canaille/templates/core/auth/setup-otp.html:49
+#: canaille/templates/core/auth/setup-otp.html:57
 msgid "Set up multi-factor authentication."
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:72
+#: canaille/templates/core/auth/setup-otp.html:70
 msgid "Authenticator application configuration"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:74
+#: canaille/templates/core/auth/setup-otp.html:72
 #, python-format
 msgid ""
 "You need to install an authenticator application to generate one-time "
 "passcodes for %(website_name)s."
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:75
+#: canaille/templates/core/auth/setup-otp.html:73
 msgid ""
 "Then, configure the authenticator application with one of the following "
 "methods:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:83
+#: canaille/templates/core/auth/setup-otp.html:81
 msgid "1 - Automatic configuration"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:86
+#: canaille/templates/core/auth/setup-otp.html:84
 msgid ""
 "If the authenticator application is installed on the device that you are "
 "currently using, you can configure it by clicking on this button:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:93
+#: canaille/templates/core/auth/setup-otp.html:91
 msgid "Open authenticator application"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:101
+#: canaille/templates/core/auth/setup-otp.html:99
 msgid "2 - QR Code scanning"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:104
+#: canaille/templates/core/auth/setup-otp.html:102
 msgid ""
 "If the previous button did not work or if your authenticator application is "
 "installed on another device, please open it and use it to scan the following "
 "qrcode:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:109
+#: canaille/templates/core/auth/setup-otp.html:107
 msgid "Secret token"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:117
+#: canaille/templates/core/auth/setup-otp.html:115
 msgid "3 - Secret token"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:120
+#: canaille/templates/core/auth/setup-otp.html:118
 msgid ""
 "If your device cannot scan images, you can configure your authenticator "
 "application by manually copying this secret token:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:129
+#: canaille/templates/core/auth/setup-otp.html:127
 msgid "Copy secret"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:139
+#: canaille/templates/core/auth/setup-otp.html:137
 #, fuzzy
 #| msgid "Password confirmation"
 msgid "Passcode confirmation"
 msgstr "Sentem awal n uɛeddi"
 
-#: canaille/templates/core/auth/setup-otp.html:141
+#: canaille/templates/core/auth/setup-otp.html:139
 msgid ""
 "Once your authenticator application is correctly configured, you need to "
 "generate a one-time passcode and fill it in the form below."
 msgstr ""
 
-#: canaille/templates/core/auth/sms.html:34
+#: canaille/templates/core/auth/sms.html:32
 msgid "SMS verification code."
 msgstr ""
 
-#: canaille/templates/core/auth/sms.html:47
+#: canaille/templates/core/auth/sms.html:45
 msgid "Check your messages"
 msgstr ""
 
-#: canaille/templates/core/auth/sms.html:49
+#: canaille/templates/core/auth/sms.html:47
 msgid ""
 "If the login you filled exists, a SMS containing a verification code has "
 "been sent to your phone number. Please fill the code in the following form "
