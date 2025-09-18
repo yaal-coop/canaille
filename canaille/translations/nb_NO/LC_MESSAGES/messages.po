@@ -2653,7 +2653,7 @@ msgid "Token"
 msgstr "Symbol"
 
 #, fuzzy
-#~| msgid "Profile updated successfuly."
+#~ msgid "Profile updated successfuly."
 #~ msgid "Passcode successfully sent!"
 #~ msgstr "Profil redigert."
 
