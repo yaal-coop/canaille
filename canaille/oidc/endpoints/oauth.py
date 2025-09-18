@@ -128,6 +128,24 @@ def check_prompt_value():
         )
 
 
+def start_oidc_auth_session(client_id, username=None, prompt=None):
+    """Create and save an AuthenticationSession for OIDC authentication.
+
+    :param client_id: The OIDC client identifier
+    :param username: The username to authenticate
+    :param prompt: The OIDC prompt parameter value
+    """
+    g.auth = AuthenticationSession(
+        user_name=username,
+        data={
+            "prompt_login": prompt == "login",
+            "client_id": client_id,
+        },
+        template="oidc/auth.html",
+    )
+    g.auth.save()
+
+
 def authorize_login(redirect_url, now):
     """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
@@ -138,8 +156,12 @@ def authorize_login(redirect_url, now):
             "prompt"
         ) == "login" and auth_time < get_authorization_request_datetime(redirect_url):
             session["redirect-after-login"] = redirect_url
-            g.auth = AuthenticationSession(user_name=g.session.user.user_name)
-            g.auth.save()
+
+            start_oidc_auth_session(
+                client_id=request.values.get("client_id"),
+                username=g.session.user.user_name,
+                prompt=request.values.get("prompt"),
+            )
             return redirect_to_next_auth_step()
 
         # hotfix for
@@ -149,8 +171,12 @@ def authorize_login(redirect_url, now):
         )
         if request.values.get("max_age") and max_age < now:
             session["redirect-after-login"] = redirect_url
-            g.auth = AuthenticationSession(user_name=g.session.user.user_name)
-            g.auth.save()
+
+            start_oidc_auth_session(
+                client_id=request.values.get("client_id"),
+                username=g.session.user.user_name,
+                prompt=request.values.get("prompt"),
+            )
             return redirect_to_next_auth_step()
 
         if not user.can_use_oidc:
@@ -166,6 +192,11 @@ def authorize_login(redirect_url, now):
 
         if request.values.get("prompt") != "none":
             session["redirect-after-login"] = redirect_url
+
+            start_oidc_auth_session(
+                client_id=request.values.get("client_id"),
+                prompt=request.values.get("prompt"),
+            )
             return redirect(url_for("core.auth.login"))
 
 

@@ -45,9 +45,23 @@ def setup_themer(app):
 
 def setup_jinja(app):
     from canaille.app.forms import password_strength_calculator
+    from canaille.app.models import MODELS
+    from canaille.backends import Backend
 
     app.jinja_env.filters["len"] = len
     app.jinja_env.filters["password_strength"] = password_strength_calculator
+
+    def create_model_filter(model_class):
+        """Create a filter function for a specific model class."""
+
+        def get_by_id(object_id):
+            return Backend.instance.get(model_class, object_id) if object_id else None
+
+        return get_by_id
+
+    for model_class in MODELS.values():
+        app.jinja_env.filters[model_class.__name__] = create_model_filter(model_class)
+
     app.jinja_env.policies["ext.i18n.trimmed"] = True
 
     @app.context_processor

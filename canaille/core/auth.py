@@ -55,7 +55,7 @@ def auth_step(step_name=None):
 
 @dataclass
 class AuthenticationSession:
-    user_name: str
+    user_name: str | None
     """The user name attempting to log-in."""
 
     remaining: list[str]
@@ -64,10 +64,10 @@ class AuthenticationSession:
     achieved: list[str]
     """The achieved auth factors."""
 
-    current_step_start_dt: datetime.datetime
+    current_step_start_dt: datetime.datetime | None
     """The time when the current step has been started."""
 
-    current_step_try_dt: datetime.datetime
+    current_step_try_dt: datetime.datetime | None
     """The time when the current try of the current step has started."""
 
     welcome_flash: bool
@@ -76,6 +76,12 @@ class AuthenticationSession:
     data: dict[str, str]
     """Custom auth factor data."""
 
+    template: str | None = None
+    """Path to base template for authentication pages."""
+
+    known_user: bool = False
+    """Whether the user has already logged-in on this device."""
+
     remember: bool = True
     """Whether to create permanent session and add to login history."""
 
@@ -83,31 +89,40 @@ class AuthenticationSession:
 
     def __init__(
         self,
-        user_name,
+        user_name=None,
         remaining=None,
         achieved=None,
         current_step_start_dt=None,
         current_step_try_dt=None,
         welcome_flash=None,
         data=None,
+        template=None,
         known_user=None,
         remember=None,
     ):
         self.user_name = user_name
+        self.data = data or {}
+        self.template = template or "core/auth/base.html"
+        self.welcome_flash = welcome_flash if welcome_flash is not None else True
+        self.known_user = known_user or is_user_in_login_history(user_name)
+        self.remember = remember if remember is not None else True
+        self.reset_auth_steps(
+            remaining, achieved, current_step_start_dt, current_step_try_dt
+        )
+
+    def reset_auth_steps(
+        self,
+        remaining=None,
+        achieved=None,
+        current_step_start_dt=None,
+        current_step_try_dt=None,
+    ):
         self.remaining = (
             remaining or current_app.config["CANAILLE"]["AUTHENTICATION_FACTORS"]
         )
         self.achieved = achieved or []
         self.current_step_start_dt = current_step_start_dt or None
         self.current_step_try_dt = current_step_try_dt or None
-        self.data = data or {}
-        self.welcome_flash = welcome_flash if welcome_flash is not None else True
-        self.known_user = (
-            known_user
-            if known_user is not None
-            else is_user_in_login_history(user_name)
-        )
-        self.remember = remember if remember is not None else True
 
     def serialize(self):
         payload = {
@@ -116,6 +131,7 @@ class AuthenticationSession:
             "remaining": self.remaining,
             "known_user": self.known_user,
             "remember": self.remember,
+            "template": self.template,
         }
 
         if self.current_step_start_dt:
@@ -150,6 +166,18 @@ class AuthenticationSession:
     def load(cls):
         if "auth" in session:
             return AuthenticationSession.deserialize(session.pop("auth"))
+
+    @classmethod
+    def update(cls, **kwargs):
+        """Update existing AuthenticationSession from g.auth or create a new one with given parameters."""
+        if g.auth:
+            # Update existing session with new parameters
+            for key, value in kwargs.items():
+                setattr(g.auth, key, value)
+            return g.auth
+        else:
+            # Create new session
+            return cls(**kwargs)
 
     def save(self):
         session["auth"] = self.serialize()
