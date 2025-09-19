@@ -64,12 +64,14 @@ def login(username=None):
             url_for("core.account.profile_edition", edited_user=g.session.user)
         )
 
+    g.auth = AuthenticationSession.update(user_name=username)
+    g.auth.reset_auth_steps()
+
     if username:
         user = get_user_from_login(username)
         if user and not user.has_password() and current_app.features.has_smtp:
             return redirect(url_for("core.auth.password.firstlogin", user=user))
 
-        g.auth = AuthenticationSession(user_name=username)
         return redirect_to_next_auth_step()
 
     form = LoginForm(request.form or None)
@@ -77,9 +79,10 @@ def login(username=None):
     form["login"].render_kw["placeholder"] = login_placeholder()
 
     if not request.form or form.form_control():
-        login_history = get_login_history()
         return render_template(
-            "core/login.html", form=form, login_history=login_history
+            "core/login.html",
+            form=form,
+            login_history=get_login_history(),
         )
 
     user = get_user_from_login(form.login.data)
@@ -89,12 +92,11 @@ def login(username=None):
     if not form.validate():
         logout_user()
         flash(_("Login failed, please check your information"), "error")
-        login_history = get_login_history()
         return render_template(
-            "core/login.html", form=form, login_history=login_history
+            "core/login.html", form=form, login_history=get_login_history()
         )
 
-    g.auth = AuthenticationSession(
+    g.auth = AuthenticationSession.update(
         user_name=form.login.data, remember=form.remember.data
     )
     return redirect_to_next_auth_step()

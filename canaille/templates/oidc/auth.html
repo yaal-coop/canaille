@@ -1,0 +1,94 @@
+{% extends 'core/auth/base.html' %}
+
+{% set client = (g.auth.data.client_id | Client) %}
+{% set prompt_login = g.auth.data.get('prompt_login', false) %}
+
+{% block auth_header %}
+    {% if not client %}
+        {{ super() }}
+    {% else %}
+        {% if client.logo_uri %}
+            {% if client.client_uri %}
+                <a href="{{ client.client_uri }}" target="_blank">
+                    <img class="ui tiny centered image" src="{{ client.logo_uri }}" alt="{{ client.client_name }}">
+                </a>
+            {% else %}
+                <img class="ui tiny centered image" src="{{ client.logo_uri }}" alt="{{ client.client_name }}">
+            {% endif %}
+        {% elif logo_url %}
+            <a href="{{ url_for('core.account.index') }}">
+                <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
+            </a>
+        {% else %}
+            <i class="massive sign in icon image ui"></i>
+        {% endif %}
+
+        <h2 class="ui center aligned header">
+            {% block auth_title %}
+                {% if client.client_name %}
+                    <div class="content">
+                        {% if prompt_login %}
+                            {{ _("Re-authenticate for %(client)s", client=client.client_name) }}
+                        {% else %}
+                            {{ _("Sign in to %(client)s", client=client.client_name) }}
+                        {% endif %}
+                    </div>
+                    <div class="sub header">
+                        {% if g.auth.known_user and g.auth.user %}
+                            {{ g.auth.user.name }}
+                            {% if g.auth.user.photo %}
+                                <img class="ui avatar image" src="{{ url_for('core.account.photo', user=g.auth.user, field='photo') }}" alt="{{ g.auth.user.name }}">
+                            {% else %}
+                                ·
+                            {% endif %}
+                            {{ g.auth.user.user_name }}
+                        {% elif g.auth.user_name %}
+                            {{ g.auth.user_name }}
+                        {% else %}
+                            {% trans client_name=client.client_name %}
+                                The application {{ client_name }} requires that you sign in to your {{ website_name }} account.
+                            {% endtrans %}
+                        {% endif %}
+                    </div>
+                    {% block auth_subtitle %}{% endblock %}
+
+                    {% if prompt_login %}
+                        <div class="ui info message">
+                            <i class="info icon"></i>
+                            {% trans client_name=client.client_name %}
+                                You are already logged in, but {{ client_name }} is requesting identity confirmation.
+                            {% endtrans %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    {{ super() }}
+                {% endif %}
+            {% endblock %}
+
+            {% if not g.auth.user_name and (client.policy_uri or client.tos_uri) %}
+                <div class="ui center aligned mini horizontal list">
+                    {% if client.policy_uri %}
+                        <div class="item">
+                            <a href="{{ client.policy_uri }}" target="_blank">
+                                <i class="privacy icon"></i>
+                                {% trans %}Privacy policy{% endtrans %}
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if client.tos_uri %}
+                        <div class="item">
+                            <a href="{{ client.tos_uri }}" target="_blank">
+                                <i class="file signature icon"></i>
+                                {% trans %}Terms of service{% endtrans %}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </h2>
+
+        {% if not g.auth.user_name and (client.policy_uri or client.tos_uri) %}
+            <div class="ui divider"></div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

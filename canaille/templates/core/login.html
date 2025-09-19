@@ -12,104 +12,77 @@ This page displays a form to get the user identifier.
 :param form: The login form.
 :type form: :class:`~canaille.core.endpoints.forms.LoginForm`
 #}
-{% extends theme('base.html') %}
+{% extends g.auth.template or 'core/auth/base.html' %}
 {% import 'macro/flask.html' as flask %}
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/login_field.html' as login_field %}
 
 
-{% block container %}
-    <div class="ui container" hx-boost="false">
-        <div class="content">
-            <div class="ui clearing segment">
-                {% block header %}
-                    {% if logo_url %}
-                        <a href="{{ url_for('core.account.index') }}">
-                            <img class="ui tiny centered image" src="{{ logo_url }}" alt="{{ website_name }}">
-                        </a>
-                    {% else %}
-                        <i class="massive sign in icon image ui"></i>
-                    {% endif %}
-
-                    <h2 class="ui center aligned header">
-                        <div class="content">
-                            {{ _("Sign in at %(website)s", website=website_name) }}
-                        </div>
-                        <div class="sub header">{% trans %}Manage your information and your authorizations{% endtrans %}</div>
-                    </h2>
-                {% endblock %}
-
-                {% block messages %}
-                    {{ flask.messages() }}
-                {% endblock %}
-
-                {% if login_history %}
-                    {% block login_history %}
-                        <div class="ui basic segment" data-login-history-section>
-                            <h3 class="ui header">{{ _("Choose an account") }}</h3>
-                            <div class="ui stackable three column grid">
-                                {% for user in login_history %}
-                                    <div class="column">
-                                        <div class="ui fluid card">
-                                            <div class="content">
-                                                <div class="right floated">
-                                                    <a href="{{ url_for('core.auth.forget', username=user.user_name) }}"
-                                                       class="ui mini circular icon button"
-                                                       title="{{ _('Remove from account list') }}">
-                                                        <i class="light grey times icon"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="ui center aligned basic segment">
-                                                    <a href="{{ url_for('core.auth.login', username=user.user_name) }}" class="ui link">
-                                                        {% if user.photo %}
-                                                            <div class="ui small circular image">
-                                                                <img class="login-avatar" src="{{ url_for('core.account.photo', user=user, field='photo') }}" alt="{{ user.name }}">
-                                                            </div>
-                                                        {% else %}
-                                                            <i class="login-avatar circular user icon"></i>
-                                                        {% endif %}
-                                                        <div class="header">{{ user.name }}</div>
-                                                        <div class="meta">{{ user.user_name }}</div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
+{% block auth_content %}
+    {% if login_history %}
+        {% block login_history %}
+            <div class="ui basic segment" data-login-history-section>
+                <h3 class="ui header">{{ _("Choose an account") }}</h3>
+                <div class="ui stackable three column grid">
+                    {% for user in login_history %}
+                        <div class="column">
+                            <div class="ui fluid card">
+                                <div class="content">
+                                    <div class="right floated">
+                                        <a href="{{ url_for('core.auth.forget', username=user.user_name) }}"
+                                           class="ui mini circular icon button"
+                                           title="{{ _('Remove from account list') }}">
+                                            <i class="light grey times icon"></i>
+                                        </a>
                                     </div>
-                                {% endfor %}
+                                    <div class="ui center aligned basic segment">
+                                        <a href="{{ url_for('core.auth.login', username=user.user_name) }}" class="ui link">
+                                            {% if user.photo %}
+                                                <div class="ui small circular image">
+                                                    <img class="login-avatar" src="{{ url_for('core.account.photo', user=user, field='photo') }}" alt="{{ user.name }}">
+                                                </div>
+                                            {% else %}
+                                                <i class="login-avatar circular user icon"></i>
+                                            {% endif %}
+                                            <div class="header">{{ user.name }}</div>
+                                            <div class="meta">{{ user.user_name }}</div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="ui horizontal divider">{{ _("Or") }}</div>
-                    {% endblock %}
-                {% endif %}
-
-                <div class="ui basic segment">
-                    {% if login_history %}
-                        <h3 class="ui header">{{ _("Use another account") }}</h3>
-                    {% endif %}
-
-                    {% call fui.render_form(form) %}
-                        {% block fields %}
-                            {% block login_field scoped %}{{ login_field.render_field(form.login, class="autofocus") }}{% endblock %}
-                        {% endblock %}
-
-                        {% block buttons %}
-                            <div class="ui stackable grid">
-                                <div class="left aligned three wide column">
-                                    {% if features.has_registration %}
-                                        <a type="button" class="ui button" href="{{ url_for('core.account.join') }}">{{ _("Create an account") }}</a>
-                                    {% endif %}
-                                </div>
-                                <div class="middle aligned right aligned ten wide column">
-                                    {{ fui.render_field(form.remember, class_="right aligned") }}
-                                </div>
-                                <div class="right aligned three wide column">
-                                    <button type="submit" name="answer" class="ui primary button" hx-boost="false">{{ _("Continue") }}</button>
-                                </div>
-                            </div>
-                        {% endblock %}
-                    {% endcall %}
+                    {% endfor %}
                 </div>
             </div>
-        </div>
+            <div class="ui horizontal divider">{{ _("Or") }}</div>
+        {% endblock %}
+    {% endif %}
+
+    <div class="ui basic segment">
+        {% if login_history %}
+            <h3 class="ui header">{{ _("Use another account") }}</h3>
+        {% endif %}
+
+        {% call fui.render_form(form) %}
+            {% block fields %}
+                {% block login_field scoped %}{{ login_field.render_field(form.login, class="autofocus") }}{% endblock %}
+            {% endblock %}
+
+            {% block buttons %}
+                <div class="ui stackable grid">
+                    <div class="left aligned three wide column">
+                        {% if features.has_registration %}
+                            <a type="button" class="ui button" href="{{ url_for('core.account.join') }}">{{ _("Create an account") }}</a>
+                        {% endif %}
+                    </div>
+                    <div class="middle aligned right aligned ten wide column">
+                        {{ fui.render_field(form.remember, class_="right aligned") }}
+                    </div>
+                    <div class="right aligned three wide column">
+                        <button type="submit" name="answer" class="ui primary button" hx-boost="false">{{ _("Continue") }}</button>
+                    </div>
+                </div>
+            {% endblock %}
+        {% endcall %}
     </div>
 {% endblock %}
