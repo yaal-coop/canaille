@@ -2421,7 +2421,7 @@ msgstr "Solicitudes previamente autorizadas"
 #, fuzzy, python-format
 #| msgid "Sign in at %(website)s"
 msgid "Sign in to %(client)s"
-msgstr "Iniciar sesión en %(website)s"
+msgstr "Iniciar sesión en %(client)s"
 
 #: canaille/templates/oidc/auth.html:48
 #, fuzzy, python-format

@@ -2349,7 +2349,7 @@ msgstr "Legg til en klient"
 #, fuzzy, python-format
 #| msgid "Sign in at %(website)s"
 msgid "Sign in to %(client)s"
-msgstr "Logg inn på %(website)s"
+msgstr "Logg inn på %(client)s"
 
 #: canaille/templates/oidc/auth.html:48
 #, fuzzy, python-format

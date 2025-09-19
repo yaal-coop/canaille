@@ -2200,7 +2200,7 @@ msgstr ""
 #, fuzzy, python-format
 #| msgid "Sign in at %(website)s"
 msgid "Sign in to %(client)s"
-msgstr "Qqen ɣer %(website)s"
+msgstr "Qqen ɣer %(client)s"
 
 #: canaille/templates/oidc/auth.html:48
 #, fuzzy, python-format

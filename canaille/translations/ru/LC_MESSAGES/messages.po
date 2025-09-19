@@ -2368,7 +2368,7 @@ msgstr "Откройте приложения аутентификатора"
 #, fuzzy, python-format
 #| msgid "Sign in at %(website)s"
 msgid "Sign in to %(client)s"
-msgstr "Войти как %(website)s"
+msgstr "Войти как %(client)s"
 
 #: canaille/templates/oidc/auth.html:48
 #, fuzzy, python-format
