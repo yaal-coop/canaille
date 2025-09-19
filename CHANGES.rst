@@ -3,17 +3,14 @@
 
 .. warning::
 
-    This version comes with a breaking change for client trust management.
-
-    The ``trusted`` attribute has been removed from OAuth clients. Client trust is now
-    determined dynamically based on the ``client_uri`` domain matching patterns in the
-    new ``TRUSTED_DOMAINS`` configuration setting.
-
     Manual migration required for LDAP backend: remove any existing ``oauthTrusted``
     attributes from client entries.
+    Please follow the :ref:`ldap_schema_update` section.
 
 Added
 ^^^^^
+- OIDC originated connections display information about the client application on all
+  the authentication pages. :issue:`271`
 - Account selection screen on login page. Previously logged-in users are displayed
   as clickable cards with photos and names for quick re-authentication. :issue:`277`
 - "Remember me" checkbox on login page. When checked (default), creates a 365-day
