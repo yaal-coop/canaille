@@ -70,8 +70,26 @@
                             {% if user.address %}
                                 <div class="extra content">
                                     <i class="map marker alternate icon" title="address"></i>
-                                    {{ user.address }}
-                                </div>
+                                    <div class="content">
+                                        <div class="ui list">
+                                            {% if user.address.get("formatted") %}
+                                                <div class="item">{{ user.address["formatted"] }}</div>
+                                            {% endif %}
+                                            <div class="item">{% if user.address.get("street_address") %}
+                                                {{ user.address["street_address"] }}</div>
+                                            {% endif %}
+                                                {% if user.address.get("postal_code") %}
+                                                    <div class="item">{{ user.address["postal_code"] }}</div>
+                                                {% endif %}
+                                                {% if user.address.get("locality") %}
+                                                    <div class="item">{{ user.address["locality"] }}</div>
+                                                {% endif %}
+                                                {% if user.address.get("region") %}
+                                                    <div class="item">{{ user.address["region"] }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
                             {% endif %}
 
                             {% if user.email %}
