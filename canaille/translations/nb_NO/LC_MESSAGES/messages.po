@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-18 10:29+0200\n"
+"POT-Creation-Date: 2025-09-19 12:05+0200\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -20,11 +20,11 @@ msgstr ""
 "X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: canaille/app/flask.py:37
+#: canaille/app/flask.py:38
 msgid "Your password has expired, please choose a new password."
 msgstr ""
 
-#: canaille/app/flask.py:61
+#: canaille/app/flask.py:62
 msgid "No SMTP server has been configured"
 msgstr "Ingen SMTP-tjener er satt opp"
 
@@ -108,31 +108,31 @@ msgstr ""
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr ""
 
-#: canaille/core/auth.py:189 canaille/core/endpoints/account.py:876
+#: canaille/core/auth.py:208 canaille/core/endpoints/account.py:876
 #, fuzzy, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Velkommen %(user)s"
 
-#: canaille/core/auth.py:204
+#: canaille/core/auth.py:223
 msgid "An error happened during your authentication process. Please try again."
 msgstr ""
 
-#: canaille/core/auth.py:238
+#: canaille/core/auth.py:257
 msgid "John Doe"
 msgstr "Ola Nordmann"
 
-#: canaille/core/auth.py:239 canaille/core/endpoints/forms.py:137
+#: canaille/core/auth.py:258 canaille/core/endpoints/forms.py:137
 #: canaille/core/endpoints/forms.py:419
 msgid "jdoe"
 msgstr "onord"
 
-#: canaille/core/auth.py:240
+#: canaille/core/auth.py:259
 #, fuzzy
 #| msgid "john@doe.com"
 msgid "john.doe@example.com"
 msgstr "ola@nordmann.no"
 
-#: canaille/core/auth.py:247
+#: canaille/core/auth.py:266
 msgid " or "
 msgstr " eller "
 
@@ -720,14 +720,14 @@ msgstr ""
 msgid "The group %(group)s has been successfully deleted"
 msgstr "Gruppen «%(group)s» har blitt slettet"
 
-#: canaille/core/endpoints/auth/__init__.py:93
+#: canaille/core/endpoints/auth/__init__.py:95
 #: canaille/core/endpoints/auth/password.py:54
 #: canaille/core/endpoints/auth/password.py:65
 #, fuzzy
 msgid "Login failed, please check your information"
 msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
-#: canaille/core/endpoints/auth/__init__.py:112
+#: canaille/core/endpoints/auth/__init__.py:113
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Du har blitt frakoblet. På gjensyn %(user)s"
@@ -1018,11 +1018,11 @@ msgstr ""
 msgid "The URI that points to the public JSON Web Keys of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:477
+#: canaille/oidc/endpoints/oauth.py:508
 msgid "You have been disconnected"
 msgstr "Du har blitt frakoblet"
 
-#: canaille/oidc/endpoints/oauth.py:495
+#: canaille/oidc/endpoints/oauth.py:526
 msgid "You have not been disconnected"
 msgstr "Du har ikke blitt koblet fra"
 
@@ -1084,7 +1084,7 @@ msgid "Log out"
 msgstr "Logg ut"
 
 #: canaille/templates/base.html:127
-#: canaille/templates/core/auth/password.html:46
+#: canaille/templates/core/auth/password.html:18
 msgid "Sign in"
 msgstr "Logg inn"
 
@@ -1314,7 +1314,7 @@ msgstr "Innloggingsside"
 #: canaille/templates/core/auth/forgotten-password-code.html:29
 #: canaille/templates/core/auth/forgotten-password.html:17
 #: canaille/templates/core/auth/forgotten-password.html:28
-#: canaille/templates/core/auth/password.html:43
+#: canaille/templates/core/auth/password.html:15
 #: canaille/templates/core/join.html:49
 msgid "Forgotten password"
 msgstr "Glemt passord"
@@ -1325,30 +1325,21 @@ msgstr "Glemt passord"
 msgid "Submit"
 msgstr "Send inn"
 
-#: canaille/templates/core/login.html:36
-#, python-format
-msgid "Sign in at %(website)s"
-msgstr "Logg inn på %(website)s"
-
-#: canaille/templates/core/login.html:38
-msgid "Manage your information and your authorizations"
-msgstr ""
-
-#: canaille/templates/core/login.html:49
+#: canaille/templates/core/login.html:25
 #, fuzzy
 #| msgid "Create my account"
 msgid "Choose an account"
 msgstr "Opprett min konto"
 
-#: canaille/templates/core/login.html:58
+#: canaille/templates/core/login.html:34
 msgid "Remove from account list"
 msgstr ""
 
-#: canaille/templates/core/login.html:81
+#: canaille/templates/core/login.html:57
 msgid "Or"
 msgstr ""
 
-#: canaille/templates/core/login.html:87
+#: canaille/templates/core/login.html:63
 #, fuzzy
 #| msgid "Delete my account"
 msgid "Use another account"
@@ -1356,18 +1347,18 @@ msgstr "Slett kontoen min"
 
 #: canaille/templates/core/auth/forgotten-password-code.html:52
 #: canaille/templates/core/auth/forgotten-password.html:53
-#: canaille/templates/core/login.html:99
+#: canaille/templates/core/login.html:75
 #, fuzzy
 #| msgid "Create my account"
 msgid "Create an account"
 msgstr "Opprett min konto"
 
-#: canaille/templates/core/login.html:106
+#: canaille/templates/core/login.html:82
 #: canaille/templates/core/mails/registration.txt:5
 msgid "Continue"
 msgstr "Fortsett"
 
-#: canaille/templates/core/auth/setup-otp.html:23
+#: canaille/templates/core/auth/setup-otp.html:27
 #: canaille/templates/core/profile_add.html:58
 #: canaille/templates/core/profile_edit.html:43
 #: canaille/templates/core/profile_settings.html:34
@@ -1382,7 +1373,7 @@ msgstr "Personsinfo"
 msgid "Click to upload a photo"
 msgstr "Klikk for å laste opp et bilde"
 
-#: canaille/templates/core/auth/setup-otp.html:27
+#: canaille/templates/core/auth/setup-otp.html:31
 #: canaille/templates/core/profile_add.html:167
 #: canaille/templates/core/profile_edit.html:47
 #: canaille/templates/core/profile_settings.html:38
@@ -1567,33 +1558,50 @@ msgstr ""
 msgid "Set-up"
 msgstr ""
 
-#: canaille/templates/core/auth/email.html:32
+#: canaille/templates/core/auth/base.html:36
+#, python-format
+msgid "Sign in at %(website)s"
+msgstr "Logg inn på %(website)s"
+
+#: canaille/templates/core/auth/base.html:39
+msgid "Manage your information and your authorizations"
+msgstr ""
+
+#: canaille/templates/core/auth/base.html:58
+#: canaille/templates/core/auth/setup-otp.html:53
+#, fuzzy
+#| msgid "Delete my account"
+msgid "Switch account"
+msgstr "Slett kontoen min"
+
+#: canaille/templates/core/auth/email.html:16
 #, fuzzy
 msgid "Email verification code."
 msgstr "Kunne ikke redigere profil."
 
-#: canaille/templates/core/auth/email.html:45
+#: canaille/templates/core/auth/email.html:24
 msgid "Check your mailbox"
 msgstr ""
 
-#: canaille/templates/core/auth/email.html:47
+#: canaille/templates/core/auth/email.html:26
 msgid ""
 "If the login you filled exists, an email containing a verification code has "
 "been sent to your mail address. Please fill the code in the following form "
 "to continue."
 msgstr ""
 
-#: canaille/templates/core/auth/email.html:70
-#: canaille/templates/core/auth/sms.html:71
+#: canaille/templates/core/auth/email.html:42
+#: canaille/templates/core/auth/sms.html:42
 #, fuzzy
 #| msgid "Invite another user"
 msgid "Send another code"
 msgstr "Inviter en annen bruker"
 
-#: canaille/templates/core/auth/email.html:73
-#: canaille/templates/core/auth/otp.html:64
-#: canaille/templates/core/auth/setup-otp.html:160
-#: canaille/templates/core/auth/sms.html:74
+#: canaille/templates/core/auth/email.html:45
+#: canaille/templates/core/auth/otp.html:36
+#: canaille/templates/core/auth/setup-otp.html:59
+#: canaille/templates/core/auth/setup-otp.html:94
+#: canaille/templates/core/auth/sms.html:45
 #: canaille/templates/core/partial/emails_field.html:14
 msgid "Verify"
 msgstr ""
@@ -1635,29 +1643,18 @@ msgstr "Send igjen"
 msgid "Send"
 msgstr "Send"
 
-#: canaille/templates/core/auth/macro.html:17
-#: canaille/templates/core/auth/macro.html:22
-#, python-format
-msgid "Sign in as %(username)s"
-msgstr "Logg inn som %(username)s"
-
-#: canaille/templates/core/auth/macro.html:31
-#, python-format
-msgid "I am not %(username)s"
-msgstr "Jeg er ikke %(username)s"
-
-#: canaille/templates/core/auth/otp.html:32
+#: canaille/templates/core/auth/otp.html:16
 #, fuzzy
 msgid "One-time passcode authentication."
 msgstr "Oppsett av passord på {website_name}"
 
-#: canaille/templates/core/auth/otp.html:45
+#: canaille/templates/core/auth/otp.html:24
 #, fuzzy
 #| msgid "Add a client"
 msgid "Open your authenticator application"
 msgstr "Legg til en klient"
 
-#: canaille/templates/core/auth/otp.html:47
+#: canaille/templates/core/auth/otp.html:26
 #, fuzzy
 #| msgid "Add a client"
 msgid ""
@@ -1665,109 +1662,109 @@ msgid ""
 "in the form below."
 msgstr "Legg til en klient"
 
-#: canaille/templates/core/auth/password.html:21
+#: canaille/templates/core/auth/password.html:5
 msgid "Please enter your password for this account."
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:49
-#: canaille/templates/core/auth/setup-otp.html:57
+#: canaille/templates/core/auth/setup-otp.html:37
+#: canaille/templates/core/auth/setup-otp.html:76
 msgid "Set up multi-factor authentication."
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:70
+#: canaille/templates/core/auth/sms.html:16
+#, fuzzy
+#| msgid "Invitation link"
+msgid "SMS verification code."
+msgstr "Invitasjonslenke"
+
+#: canaille/templates/core/auth/sms.html:24
+msgid "Check your messages"
+msgstr ""
+
+#: canaille/templates/core/auth/sms.html:26
+msgid ""
+"If the login you filled exists, a SMS containing a verification code has "
+"been sent to your phone number. Please fill the code in the following form "
+"to continue."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/otp_setup_content.html:3
 #, fuzzy
 msgid "Authenticator application configuration"
 msgstr "Oppsett av passord på {website_name}"
 
-#: canaille/templates/core/auth/setup-otp.html:72
+#: canaille/templates/core/auth/partials/otp_setup_content.html:5
 #, python-format
 msgid ""
 "You need to install an authenticator application to generate one-time "
 "passcodes for %(website_name)s."
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:73
+#: canaille/templates/core/auth/partials/otp_setup_content.html:6
 msgid ""
 "Then, configure the authenticator application with one of the following "
 "methods:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:81
+#: canaille/templates/core/auth/partials/otp_setup_content.html:14
 msgid "1 - Automatic configuration"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:84
+#: canaille/templates/core/auth/partials/otp_setup_content.html:17
 msgid ""
 "If the authenticator application is installed on the device that you are "
 "currently using, you can configure it by clicking on this button:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:91
+#: canaille/templates/core/auth/partials/otp_setup_content.html:24
 #, fuzzy
 #| msgid "Add a client"
 msgid "Open authenticator application"
 msgstr "Legg til en klient"
 
-#: canaille/templates/core/auth/setup-otp.html:99
+#: canaille/templates/core/auth/partials/otp_setup_content.html:32
 msgid "2 - QR Code scanning"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:102
+#: canaille/templates/core/auth/partials/otp_setup_content.html:35
 msgid ""
 "If the previous button did not work or if your authenticator application is "
 "installed on another device, please open it and use it to scan the following "
 "qrcode:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:107
+#: canaille/templates/core/auth/partials/otp_setup_content.html:40
 #, fuzzy
 #| msgid "Secret"
 msgid "Secret token"
 msgstr "Hemmelighet"
 
-#: canaille/templates/core/auth/setup-otp.html:115
+#: canaille/templates/core/auth/partials/otp_setup_content.html:48
 #, fuzzy
 #| msgid "Secret"
 msgid "3 - Secret token"
 msgstr "Hemmelighet"
 
-#: canaille/templates/core/auth/setup-otp.html:118
+#: canaille/templates/core/auth/partials/otp_setup_content.html:51
 msgid ""
 "If your device cannot scan images, you can configure your authenticator "
 "application by manually copying this secret token:"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:127
+#: canaille/templates/core/auth/partials/otp_setup_content.html:60
 msgid "Copy secret"
 msgstr ""
 
-#: canaille/templates/core/auth/setup-otp.html:137
+#: canaille/templates/core/auth/partials/otp_setup_content.html:70
 #, fuzzy
 #| msgid "Password confirmation"
 msgid "Passcode confirmation"
 msgstr "Passordbekreftelse"
 
-#: canaille/templates/core/auth/setup-otp.html:139
+#: canaille/templates/core/auth/partials/otp_setup_content.html:72
 msgid ""
 "Once your authenticator application is correctly configured, you need to "
 "generate a one-time passcode and fill it in the form below."
-msgstr ""
-
-#: canaille/templates/core/auth/sms.html:32
-#, fuzzy
-#| msgid "Invitation link"
-msgid "SMS verification code."
-msgstr "Invitasjonslenke"
-
-#: canaille/templates/core/auth/sms.html:45
-msgid "Check your messages"
-msgstr ""
-
-#: canaille/templates/core/auth/sms.html:47
-msgid ""
-"If the login you filled exists, a SMS containing a verification code has "
-"been sent to your phone number. Please fill the code in the following form "
-"to continue."
 msgstr ""
 
 #: canaille/templates/core/mails/admin.html:5
@@ -2342,6 +2339,46 @@ msgid_plural "%(nb_items_formatted)s items"
 msgstr[0] ""
 msgstr[1] ""
 
+#: canaille/templates/oidc/auth.html:31
+#, fuzzy, python-format
+#| msgid "Add a client"
+msgid "Re-authenticate for %(client)s"
+msgstr "Legg til en klient"
+
+#: canaille/templates/oidc/auth.html:33
+#, fuzzy, python-format
+#| msgid "Sign in at %(website)s"
+msgid "Sign in to %(client)s"
+msgstr "Logg inn på %(website)s"
+
+#: canaille/templates/oidc/auth.html:48
+#, fuzzy, python-format
+#| msgid "The application %(client_name)s wants to disconnect your account."
+msgid ""
+"The application %(client_name)s requires that you sign in to your "
+"%(website_name)s account."
+msgstr "Programmet %(client_name)s ønsker å koble fra kontoen din."
+
+#: canaille/templates/oidc/auth.html:58
+#, fuzzy, python-format
+msgid ""
+"You are already logged in, but %(client_name)s is requesting identity "
+"confirmation."
+msgstr "Du er allerede innlogget. Du kan ikke opprette konto."
+
+#: canaille/templates/oidc/auth.html:74
+#, fuzzy
+msgid "Privacy policy"
+msgstr "Praksis-URI"
+
+#: canaille/templates/oidc/auth.html:82
+#: canaille/templates/oidc/authorize.html:74
+#: canaille/templates/oidc/consent_list.html:107
+#: canaille/templates/oidc/trusted_list.html:105
+#, fuzzy
+msgid "Terms of service"
+msgstr "Tjenestevilkår-URI"
+
 #: canaille/templates/oidc/authorization_view.html:11
 #: canaille/templates/oidc/authorization_view.html:36
 msgid "View an authorization"
@@ -2368,7 +2405,7 @@ msgstr "Du er innlogget som %(name)s"
 #: canaille/templates/oidc/authorize.html:61
 #, fuzzy, python-format
 #| msgid "The application %(name)s is requesting access to:"
-msgid "Read %(application_name)s's Privacy Policy :"
+msgid "Read %(application_name)s's privacy policy :"
 msgstr "Programmet %(application_name)s forespør tilgang til:"
 
 #: canaille/templates/oidc/authorize.html:65
@@ -2379,16 +2416,10 @@ msgid "Policy"
 msgstr "Praksis-URI"
 
 #: canaille/templates/oidc/authorize.html:70
-#, python-format
-msgid "Read %(application_name)s's Terms of Service :"
-msgstr ""
-
-#: canaille/templates/oidc/authorize.html:74
-#: canaille/templates/oidc/consent_list.html:107
-#: canaille/templates/oidc/trusted_list.html:105
-#, fuzzy
-msgid "Terms of service"
-msgstr "Tjenestevilkår-URI"
+#, fuzzy, python-format
+#| msgid "The application %(name)s is requesting access to:"
+msgid "Read %(application_name)s's terms of service :"
+msgstr "Programmet %(application_name)s forespør tilgang til:"
 
 #: canaille/templates/oidc/authorize.html:88
 msgid "Deny"
@@ -2651,6 +2682,14 @@ msgstr "Programmet %(name)s forespør tilgang til:"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Symbol"
+
+#, python-format
+#~ msgid "Sign in as %(username)s"
+#~ msgstr "Logg inn som %(username)s"
+
+#, python-format
+#~ msgid "I am not %(username)s"
+#~ msgstr "Jeg er ikke %(username)s"
 
 #, fuzzy
 #~ msgid "Passcode successfully sent!"
