@@ -124,7 +124,7 @@ def _set_login_history_cookie(login_history, response):
     response.set_cookie(
         LOGIN_HISTORY_COOKIE,
         cookie_value,
-        max_age=SESSION_LIFETIME.total_seconds(),
+        max_age=int(SESSION_LIFETIME.total_seconds()),
         secure=current_app.config.get("SESSION_COOKIE_SECURE", False),
         httponly=True,
         samesite="Lax",
