@@ -232,6 +232,13 @@ Build
 
     docker build -t canaille .
 
+Authenticate
+~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    docker login --username <hub docker login>
+
 Publish
 ~~~~~~~
 
@@ -242,7 +249,6 @@ Publish
     docker tag canaille:latest "yaalcoop/canaille:latest"
     docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
 
-    docker login --username <hub docker login>
     docker push yaalcoop/canaille:latest
     docker push yaalcoop/canaille:${CANAILLE_VERSION}
 
