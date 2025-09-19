@@ -239,6 +239,41 @@ def test_send_new_email_error(smtpd, testclient, backend, user, caplog):
         ) in caplog.record_tuples
 
 
+def test_no_flash_when_cannot_send_new_otp_on_first_access(
+    testclient, backend, user, caplog, smtpd
+):
+    """Test that the if flashes: condition at line 80 can be false.
+
+    This happens when send_email_otp(flashes=False) is called from line 38
+    but can_send_new_otp() returns False because an OTP was sent too recently.
+    """
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
+        user.generate_sms_or_mail_otp()
+        backend.save(user)
+
+        # Move time forward by 5 seconds (less than SEND_NEW_OTP_DELAY of 10 seconds)
+        traveller.shift(datetime.timedelta(seconds=5))
+
+        res = testclient.get("/login", status=200)
+        res.form["login"] = "user"
+        res = res.form.submit(status=302)
+
+        # At this point:
+        # - g.auth.current_step_start_dt is at T+5 (just now)
+        # - user.one_time_password_emission_date is at T (5 seconds ago)
+        # So g.auth.current_step_start_dt > user.one_time_password_emission_date triggers line 38
+        # But can_send_new_otp() returns False (only 5 seconds passed < 10 seconds)
+        res = res.follow(status=200)
+
+        # No email sent because can_send_new_otp() returned False
+        assert len(smtpd.messages) == 0
+
+        # No flash message because flashes=False at line 38
+        assert res.flashes == []
+
+        assert "Email verification code" in res.text
+
+
 def test_mask_email():
     email = "foo@bar.com"
     assert mask_email(email) == "f#####o@bar.com"

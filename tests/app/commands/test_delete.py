@@ -140,5 +140,4 @@ def test_delete_ignore_errors_partial_failure(cli_runner, backend):
         assert f"{expected_deleted} item(s) deleted." in res.stdout
 
     remaining = backend.get(models.User, user_name="testuser1")
-    if remaining:
-        backend.delete(remaining)
+    backend.delete(remaining)
