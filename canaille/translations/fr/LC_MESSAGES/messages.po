@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-09-19 12:05+0200\n"
-"PO-Revision-Date: 2025-09-18 10:03+0000\n"
+"PO-Revision-Date: 2025-09-19 12:56+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -1548,10 +1548,8 @@ msgstr "Gérez vos informations et vos autorisations"
 
 #: canaille/templates/core/auth/base.html:58
 #: canaille/templates/core/auth/setup-otp.html:53
-#, fuzzy
-#| msgid "Lock the account"
 msgid "Switch account"
-msgstr "Verrouiller le compte"
+msgstr "Changer de compte"
 
 #: canaille/templates/core/auth/email.html:16
 msgid "Email verification code."
@@ -2381,36 +2379,34 @@ msgstr[0] "%(nb_items_formatted)s élément"
 msgstr[1] "%(nb_items_formatted)s éléments"
 
 #: canaille/templates/oidc/auth.html:31
-#, fuzzy, python-format
-#| msgid "Open authenticator application"
+#, python-format
 msgid "Re-authenticate for %(client)s"
-msgstr "Ouvrir l'application d'authentification"
+msgstr "Se ré-authentifier à la demande de %(client)s"
 
 #: canaille/templates/oidc/auth.html:33
-#, fuzzy, python-format
-#| msgid "Sign in at %(website)s"
+#, python-format
 msgid "Sign in to %(client)s"
-msgstr "Connexion à %(website)s"
+msgstr "Connexion à %(client)s"
 
 #: canaille/templates/oidc/auth.html:48
-#, fuzzy, python-format
-#| msgid "The application %(client_name)s wants to disconnect your account."
+#, python-format
 msgid ""
 "The application %(client_name)s requires that you sign in to your "
 "%(website_name)s account."
-msgstr "L'application %(client_name)s demande votre déconnexion."
+msgstr ""
+"L'application %(client_name)s requière une connexion avec votre compte "
+"%(website_name)s."
 
 #: canaille/templates/oidc/auth.html:58
-#, fuzzy, python-format
-#| msgid "You are already logged in, you cannot create an account."
+#, python-format
 msgid ""
 "You are already logged in, but %(client_name)s is requesting identity "
 "confirmation."
-msgstr "Vous êtes déjà connectés, vous ne pouvez pas créer de compte."
+msgstr ""
+"Vous êtes déjà connectés, mais %(client_name)s requière une confirmation de "
+"votre identité."
 
 #: canaille/templates/oidc/auth.html:74
-#, fuzzy
-#| msgid "Policy"
 msgid "Privacy policy"
 msgstr "Politique de confidentialité"
 
@@ -2446,8 +2442,7 @@ msgid "You are logged in as %(name)s"
 msgstr "Vous êtes identifiés en tant que %(name)s"
 
 #: canaille/templates/oidc/authorize.html:61
-#, fuzzy, python-format
-#| msgid "Read %(application_name)s's Privacy Policy :"
+#, python-format
 msgid "Read %(application_name)s's privacy policy :"
 msgstr "Lire la politique de confidentialité de %(application_name)s :"
 
@@ -2458,8 +2453,7 @@ msgid "Policy"
 msgstr "Politique de confidentialité"
 
 #: canaille/templates/oidc/authorize.html:70
-#, fuzzy, python-format
-#| msgid "Read %(application_name)s's Terms of Service :"
+#, python-format
 msgid "Read %(application_name)s's terms of service :"
 msgstr "Lire les conditions d'utilisation de %(application_name)s :"
 
