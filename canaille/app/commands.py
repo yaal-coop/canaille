@@ -6,6 +6,7 @@ import click
 from flask import current_app
 from flask.cli import with_appcontext
 
+from canaille.app.toml import HAS_TOMLKIT
 from canaille.backends import Backend
 
 try:
@@ -106,7 +107,9 @@ def check():
 
 def register(cli):
     cli.add_command(install)
-    cli.add_command(config)
+
+    if HAS_TOMLKIT:  # pragma: no branch
+        cli.add_command(config)
 
     if HAS_HYPERCORN:  # pragma: no branch
         from canaille.hypercorn.commands import run

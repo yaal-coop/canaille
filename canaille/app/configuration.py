@@ -2,11 +2,15 @@ import os
 import smtplib
 import socket
 from dataclasses import dataclass
+from typing import Annotated
+from typing import Any
 
 from pydantic import BaseModel as PydanticBaseModel
+from pydantic import BeforeValidator
 from pydantic import ValidationError
 from pydantic import create_model
 from pydantic_settings import BaseSettings
+from pydantic_settings import NoDecode
 from pydantic_settings import SettingsConfigDict
 from pydantic_settings.sources import TomlConfigSettingsSource
 
@@ -15,9 +19,21 @@ from canaille.app.toml import example_settings
 DEFAULT_CONFIG_FILE = "canaille.toml"
 
 
+def parse_comma_separated(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [item.strip() for item in value.split(",") if item.strip()]
+    return value
+
+
+CommaSeparatedList = Annotated[
+    list[str], NoDecode, BeforeValidator(parse_comma_separated)
+]
+
+
 class BaseModel(PydanticBaseModel):
     model_config = SettingsConfigDict(
         use_attribute_docstrings=True,
+        case_sensitive=False,
     )
 
 
@@ -128,6 +144,7 @@ def settings_factory(
     from canaille.backends.ldap.configuration import LDAPSettings
     from canaille.backends.sql.configuration import SQLSettings
     from canaille.core.configuration import CoreSettings
+    from canaille.hypercorn.configuration import HypercornSettings
     from canaille.oidc.configuration import OIDCSettings
     from canaille.scim.configuration import SCIMSettings
 
@@ -141,6 +158,7 @@ def settings_factory(
         "CANAILLE_LDAP": (LDAPSettings, False),
         "CANAILLE_OIDC": (OIDCSettings, True),
         "CANAILLE_SCIM": (SCIMSettings, True),
+        "CANAILLE_HYPERCORN": (HypercornSettings, True),
     }
 
     for prefix, (setting, enabled_by_default) in additional_settings.items():
@@ -150,7 +168,7 @@ def settings_factory(
                 del config[prefix]
 
         elif enabled_by_default:
-            default_value = setting()
+            default_value = setting.model_construct()
         else:
             default_value = None
 
