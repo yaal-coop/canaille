@@ -8,6 +8,7 @@ from pydantic import ValidationError
 from pydantic import create_model
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
+from pydantic_settings.sources import TomlConfigSettingsSource
 
 from canaille.app.toml import example_settings
 
@@ -48,7 +49,26 @@ class RootSettings(BaseSettings):
         env_nested_delimiter="__",
         case_sensitive=True,
         use_attribute_docstrings=True,
+        toml_file=DEFAULT_CONFIG_FILE,
     )
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls,
+        init_settings,
+        env_settings,
+        dotenv_settings,
+        file_secret_settings,
+    ):
+        toml_file = os.getenv("CONFIG") or settings_cls.model_config.get("toml_file")
+        return (
+            init_settings,
+            TomlConfigSettingsSource(settings_cls, toml_file),
+            env_settings,
+            dotenv_settings,
+            file_secret_settings,
+        )
 
     SECRET_KEY: str | None = None
     """The Flask :external:py:data:`SECRET_KEY` configuration setting.
@@ -169,18 +189,6 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
             "SESSION_COOKIE_NAME": "canaille",
         }
     )
-    if app.features.has_toml_conf and not config:
-        import tomlkit
-
-        if "CONFIG" in os.environ:
-            with open(os.environ.get("CONFIG")) as fd:
-                config = tomlkit.load(fd)
-            app.logger.info(f"Loading configuration from {os.environ['CONFIG']}")
-
-        elif os.path.exists(DEFAULT_CONFIG_FILE):
-            with open(DEFAULT_CONFIG_FILE) as fd:
-                config = tomlkit.load(fd)
-            app.logger.info(f"Loading configuration from {DEFAULT_CONFIG_FILE}")
 
     env_file = env_file or os.getenv("ENV_FILE")
     try:
