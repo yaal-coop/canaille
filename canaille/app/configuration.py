@@ -104,6 +104,10 @@ class RootSettings(BaseSettings):
     This sets trusted values for hosts and validates hosts during requests.
     """
 
+    DRAMATIQ_BROKER: str | None = None
+
+    DRAMATIQ_BROKER_URL: str | None = None
+
     PREFERRED_URL_SCHEME: str = "https"
     """The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration
     setting.

@@ -11,6 +11,7 @@ from flask import redirect
 from flask import request
 from flask import url_for
 from flask_caching import Cache
+from flask_dramatiq import Dramatiq
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
@@ -22,6 +23,7 @@ from canaille.app.templating import render_template
 
 csrf = CSRFProtect()
 cache = Cache()
+dramatiq = Dramatiq()
 
 
 def user_needed(*args):
@@ -186,6 +188,7 @@ def setup_flask(app):
 
     csrf.init_app(app)
     cache.init_app(app)
+    dramatiq.init_app(app)
 
     if app.debug or app.config.get("TESTING", False):  # pragma: no branch
         try:
