@@ -190,7 +190,7 @@ source = { editable = "." }
 dependencies = [
     { name = "blinker" },
     { name = "click" },
-    { name = "dramatiq" },
+    { name = "dramatiq", extra = ["rabbitmq", "watch"] },
     { name = "flask" },
     { name = "flask-caching" },
     { name = "flask-dramatiq" },
@@ -198,7 +198,6 @@ dependencies = [
     { name = "httpx" },
     { name = "pika" },
     { name = "pydantic-settings" },
-    { name = "rabbitmq" },
     { name = "wtforms" },
 ]
 
@@ -324,7 +323,7 @@ requires-dist = [
     { name = "authlib", marker = "extra == 'scim'", specifier = ">=1.5.1" },
     { name = "blinker", specifier = ">=1.9.0" },
     { name = "click", specifier = ">=8.2.0" },
-    { name = "dramatiq", specifier = ">=1.18.0" },
+    { name = "dramatiq", extras = ["rabbitmq", "watch"], specifier = ">=1.18.0" },
     { name = "email-validator", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask", specifier = ">=3.0.0" },
     { name = "flask-alembic", marker = "extra == 'mysql'", specifier = ">=3.1.1" },
@@ -352,7 +351,6 @@ requires-dist = [
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.0" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
-    { name = "rabbitmq", specifier = ">=0.2.0" },
     { name = "scim2-client", marker = "extra == 'scim'", specifier = ">=0.5.1" },
     { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.4.0" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
@@ -822,6 +820,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d9/9f/c8be928a88c387ed27344de089278e76d893dc71ad9e4b2a39a61deab0d8/dramatiq-1.18.0.tar.gz", hash = "sha256:5ea436b6e50dae64d4de04f1eb519ad239a6b1ba6315ba1dce1c0c4c1ebedfaf", size = 100868, upload-time = "2025-05-30T12:00:31.913Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ac/00/d9ea755cdeda3d498504775b62122b72ba282b91446fd58980171fb1084c/dramatiq-1.18.0-py3-none-any.whl", hash = "sha256:d360f608aa3cd06f5db714bfcd23825dc7098bacfee52aca536b0bb0faae3c69", size = 121231, upload-time = "2025-05-30T12:00:30.199Z" },
+]
+
+[package.optional-dependencies]
+rabbitmq = [
+    { name = "pika" },
+]
+watch = [
+    { name = "watchdog" },
+    { name = "watchdog-gevent" },
 ]
 
 [[package]]
@@ -2517,17 +2524,6 @@ wheels = [
 ]
 
 [[package]]
-name = "rabbitmq"
-version = "0.2.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "cffi" },
-]
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/1d/6b4397309786eaba2dee82285773c383d41ab4b3ffdb933d9af48de52025/rabbitmq-0.2.0-py2.py3-none-any.whl", hash = "sha256:74cfbc0f365019a8f318cd1ad9b1f85682768568fa3816740df37509a6dfbc2d", size = 7865, upload-time = "2017-06-07T08:46:41.716Z" },
-]
-
-[[package]]
 name = "rapidfuzz"
 version = "3.14.1"
 source = { registry = "https://pypi.org/simple" }
@@ -3424,6 +3420,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/07/f6/d0e5b343768e8bcb4cda79f0f2f55051bf26177ecd5651f84c07567461cf/watchdog-6.0.0-py3-none-win32.whl", hash = "sha256:07df1fdd701c5d4c8e55ef6cf55b8f0120fe1aef7ef39a1c6fc6bc2e606d517a", size = 79065, upload-time = "2024-11-01T14:07:09.525Z" },
     { url = "https://files.pythonhosted.org/packages/db/d9/c495884c6e548fce18a8f40568ff120bc3a4b7b99813081c8ac0c936fa64/watchdog-6.0.0-py3-none-win_amd64.whl", hash = "sha256:cbafb470cf848d93b5d013e2ecb245d4aa1c8fd0504e863ccefa32445359d680", size = 79070, upload-time = "2024-11-01T14:07:10.686Z" },
     { url = "https://files.pythonhosted.org/packages/33/e8/e40370e6d74ddba47f002a32919d91310d6074130fe4e17dabcafc15cbf1/watchdog-6.0.0-py3-none-win_ia64.whl", hash = "sha256:a1914259fa9e1454315171103c6a30961236f508b9b623eae470268bbcc6a22f", size = 79067, upload-time = "2024-11-01T14:07:11.845Z" },
+]
+
+[[package]]
+name = "watchdog-gevent"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "gevent" },
+    { name = "watchdog" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/97/69/91cfca7c21c382e3a8aca4251dcd7d4315228d9346381feb2dde36d14061/watchdog_gevent-0.2.1.tar.gz", hash = "sha256:ae6b94d0f8c8ce1c5956cd865f612b61f456cf19801744bba25a349fe8e8c337", size = 4296, upload-time = "2024-10-19T05:29:12.987Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/00/a9/54b88e150b77791958957e2188312477d09fc84820fc03f8b3a7569d10b0/watchdog_gevent-0.2.1-py3-none-any.whl", hash = "sha256:e8114658104a018f626ee54052335407c1438369febc776c4b4c4308ed002350", size = 3462, upload-time = "2024-10-19T05:29:11.421Z" },
 ]
 
 [[package]]
