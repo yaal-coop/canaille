@@ -101,8 +101,9 @@ def initiate_scim_client(client):
 def execute_scim_user_action(client_id, user_id, method):
     """Create/update/delete a distant user with SCIM requests."""
     with current_app.app_context():
-        user = Backend.instance.get(models.User, user_id)
-        client = Backend.instance.get(models.Client, client_id)
+        with current_app.backend.session():
+            user = Backend.instance.get(models.User, user_id)
+            client = Backend.instance.get(models.Client, client_id)
     scim = initiate_scim_client(client)
     if not scim:
         return
@@ -143,7 +144,7 @@ def execute_scim_user_action(client_id, user_id, method):
 def propagate_user_scim_modification(user, method):
     """After a user edition/deletion, broadcast the event to all the clients."""
     for client in get_clients_to_notify(user):
-        execute_scim_user_action(client.id, user.id, method)
+        execute_scim_user_action.send(client.id, user.id, method)
 
 
 def execute_scim_group_action(scim, group, client_name, method):
