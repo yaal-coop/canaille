@@ -91,7 +91,7 @@ if HAS_HYPERCORN:  # pragma: no cover
         lowercase_config = {
             key.lower(): value
             for key, value in merged_config.items()
-            if value is not None
+            if value is not None and value != []
         }
         config_obj = Config.from_mapping(lowercase_config)
 
