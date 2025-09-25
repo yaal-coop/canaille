@@ -519,6 +519,13 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # Path to write the process id.
 # PID_PATH =
 
+# Proxy headers handling mode: None (no proxy), 'legacy' (X-Forwarded-*), or
+# 'modern' (RFC 7239 Forwarded).
+# PROXY_MODE =
+
+# Number of trusted proxy hops when PROXY_MODE is set.
+# PROXY_TRUSTED_HOPS = 1
+
 # The timeout for reading from connections.
 # READ_TIMEOUT =
 

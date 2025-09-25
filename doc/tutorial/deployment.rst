@@ -35,6 +35,14 @@ You can tweak Hypercorn in the main Canaille configuration file, at the :class:`
 
    $ canaille run --bind 0.0.0.0:1234 --workers 4
 
+Proxy configuration
+~~~~~~~~~~~~~~~~~~~
+
+When running Canaille behind a reverse proxy like Nginx or Caddy, you should configure the  setting to properly handle forwarded headers.
+With the ``CANAILLE_HYPERCORN__PROXY_MODE`` env var, or with the :attr:`[CANAILLE_HYPERCORN][PROXY_MODE] <canaille.hypercorn.configuration.HypercornSettings.PROXY_MODE>` configuration setting,
+set the value to ``legacy`` for traditional ``X-Forwarded-*`` headers (the most common), or ``modern`` for RFC 7239 ``Forwarded`` headers.
+You can also adjust :attr:`~canaille.hypercorn.configuration.HypercornSettings.PROXY_MODE` to match the number of trusted proxies between the client and your application (defaults to 1).
+
 Webserver
 =========
 

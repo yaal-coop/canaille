@@ -102,6 +102,12 @@ class HypercornSettings(BaseModel):
     PID_PATH: str | None = None
     """Path to write the process id."""
 
+    PROXY_MODE: str | None = None
+    """Proxy headers handling mode: None (no proxy), 'legacy' (X-Forwarded-*), or 'modern' (RFC 7239 Forwarded)."""
+
+    PROXY_TRUSTED_HOPS: int = 1
+    """Number of trusted proxy hops when PROXY_MODE is set."""
+
     QUIC_BIND: CommaSeparatedList = []
     """The UDP socket to bind for QUIC."""
 

@@ -90,6 +90,8 @@ Parameters
 .. autopydantic_settings:: canaille.backends.sql.configuration.SQLSettings
 .. autopydantic_settings:: canaille.backends.ldap.configuration.LDAPSettings
 
+.. autopydantic_settings:: canaille.hypercorn.configuration.HypercornSettings
+
 Example file
 ============
 

@@ -1,3 +1,11 @@
+[0.0.85] - 2025-09-25
+---------------------
+
+Added
+^^^^^
+- Hypercorn can be configured by env vars, config file or CLI args. :issue:`280` :pr:`297`
+- Hypercorn ``PROXY_MODE`` and ``PROXY_TRUSTED_HOPS`` settings to handle deployment behind proxies.
+
 [0.0.84] - 2025-09-19
 ---------------------
 
