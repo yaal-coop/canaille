@@ -23,28 +23,17 @@ However if you use the Canaille Python package, you will need the ``[server]`` e
    :caption: Running the Canaille run command
 
    $ canaille run
-   [2025-01-02 16:39:18 +0100] [304043] [INFO] Running on http://127.0.0.1:8000 (CTRL + C to quit)
-   [2025-01-02 16:39:18,412] INFO in logging: Running on http://127.0.0.1:8000 (CTRL + C to quit)
+   [2025-01-02 16:39:18 +0100] [304043] [INFO] Running on http://0.0.0.0:8000 (CTRL + C to quit)
+   [2025-01-02 16:39:18,412] INFO in logging: Running on http://0.0.0.0:8000 (CTRL + C to quit)
 
 By default it runs on the port `8000` of localhost, this could be enough but you might want to customize it a little bit more.
 Fortunately Hypercorn provides a :doc:`configuration documentation <hypercorn:how_to_guides/configuring>` to adjust it to your needs.
-You can write a TOML Hypercorn configuration file and pass it in parameter.
+You can tweak Hypercorn in the main Canaille configuration file, at the :class:`CANAILLE_HYPERCORN <canaille.hypercorn.configuration.HypercornSettings>` namespace, or by passing :ref:`CLI parameters <cli_run>`.
 
 .. code-block:: console
-   :caption: Running the Canaille run command with a configuration file
+   :caption: Running the Canaille run command with parameters
 
-   $ canaille run --config hypercorn.toml
-
-Here is a basic Hypercorn configuration file that you can tune:
-
-.. code-block:: toml
-    :caption: Hypercorn toml configuration example
-
-    workers = 4
-    bind = "unix:/run/canaille.sock"
-    umask = "007"
-    logfile = "/var/log/hypercorn/canaille.log"
-    loglevel = "info"
+   $ canaille run --bind 0.0.0.0:1234 --workers 4
 
 Webserver
 =========

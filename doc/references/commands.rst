@@ -19,7 +19,7 @@ For the sake of readability, it is omitted in the following examples.
 
 .. _cli_run:
 
-.. click:: canaille.app.commands:run
+.. click:: canaille.hypercorn.commands:run
    :prog: canaille run
    :nested: full
 

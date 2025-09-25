@@ -7,7 +7,6 @@ from importlib import metadata
 from unittest import mock
 
 sys.path.insert(0, os.path.abspath(".."))
-sys.path.insert(0, os.path.abspath("../canaille"))
 
 from canaille.app.configuration import settings_factory
 from canaille.app.toml import export_config

@@ -11,9 +11,8 @@ RUN \
 
 COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md /opt/canaille/
 COPY canaille /opt/canaille/canaille
-RUN echo 'bind = ["0.0.0.0:5000"]' > /opt/canaille/hypercorn.toml
 WORKDIR /opt/canaille
 RUN uv sync --all-extras
 ENV PATH="/opt/canaille/.venv/bin:$PATH"
-EXPOSE 5000
-ENTRYPOINT ["canaille", "run", "--config", "/opt/canaille/hypercorn.toml"]
+EXPOSE 8000
+ENTRYPOINT ["canaille", "run", "--bind", "0.0.0.0:8000"]
