@@ -519,8 +519,8 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # Path to write the process id.
 # PID_PATH =
 
-# Proxy headers handling mode: None (no proxy), 'legacy' (X-Forwarded-*), or
-# 'modern' (RFC 7239 Forwarded).
+# Proxy headers handling mode: None (no proxy), legacy (X-Forwarded-*), or modern
+# (RFC 7239 Forwarded).
 # PROXY_MODE =
 
 # Number of trusted proxy hops when PROXY_MODE is set.

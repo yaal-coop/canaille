@@ -140,6 +140,9 @@ def export_config(model: BaseSettings):
     # Remove end-of-file new-line
     content = re.sub(r"\n+\Z", "\n", content)
 
+    # De-double slashes
+    content = re.sub(r"\\", "", content)
+
     return content
 
 

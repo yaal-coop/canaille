@@ -103,7 +103,7 @@ class HypercornSettings(BaseModel):
     """Path to write the process id."""
 
     PROXY_MODE: str | None = None
-    """Proxy headers handling mode: None (no proxy), 'legacy' (X-Forwarded-*), or 'modern' (RFC 7239 Forwarded)."""
+    """Proxy headers handling mode: None (no proxy), ``legacy`` (X-Forwarded-\\*), or ``modern`` (RFC 7239 Forwarded)."""
 
     PROXY_TRUSTED_HOPS: int = 1
     """Number of trusted proxy hops when PROXY_MODE is set."""

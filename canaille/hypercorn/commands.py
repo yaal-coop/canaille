@@ -65,7 +65,7 @@ if HAS_HYPERCORN:  # pragma: no cover
     ):
         """Run Canaille in a hypercorn application server.
 
-        Configuration is loaded from environment variables with CANAILLE_HYPERCORN_ prefix,
+        Configuration is loaded from environment variables with ``CANAILLE_HYPERCORN_`` prefix,
         and can be overridden with command-line options.
 
         Have a look at the :doc:`Hypercorn configuration documentation <hypercorn:how_to_guides/configuring>` to find how to configure it.
