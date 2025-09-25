@@ -1,4 +1,5 @@
 from canaille.app.configuration import BaseModel
+from canaille.app.configuration import CommaSeparatedList
 
 
 class UserInfoMappingSettings(BaseModel):
@@ -57,7 +58,7 @@ class OIDCSettings(BaseModel):
     :attr:`DYNAMIC_CLIENT_REGISTRATION_TOKENS`.
     """
 
-    DYNAMIC_CLIENT_REGISTRATION_TOKENS: list[str] | None = None
+    DYNAMIC_CLIENT_REGISTRATION_TOKENS: CommaSeparatedList | None = None
     """A list of tokens that can be used for dynamic client registration."""
 
     REQUIRE_NONCE: bool = True
@@ -81,7 +82,7 @@ class OIDCSettings(BaseModel):
 
     UserInfo is used to fill the id_token and the userinfo endpoint."""
 
-    TRUSTED_DOMAINS: list[str] = [".localhost", "127.0.0.1"]
+    TRUSTED_DOMAINS: CommaSeparatedList = [".localhost", "127.0.0.1"]
     """Trusted domains for automatic client trust.
 
     Clients with a :attr:`~canaille.oidc.basemodels.Client.client_uri` matching

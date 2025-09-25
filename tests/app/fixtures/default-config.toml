@@ -430,3 +430,142 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # When enabled, any creation, edition or deletion of a client or a group will be
 # replicated on clients that implement the SCIM protocol.
 # ENABLE_CLIENT = false
+
+[CANAILLE_HYPERCORN]
+# The access log format.
+# ACCESS_LOG_FORMAT =
+
+# The target for access log outputs.
+# ACCESSLOG =
+
+# The maximum number of pending connections.
+# BACKLOG =
+
+# Path to the SSL CA certificate file.
+# CA_CERTS =
+
+# Path to the SSL certificate file.
+# CERTFILE =
+
+# The available ciphers for SSL connections.
+# CIPHERS =
+
+# Enable debug mode.
+# DEBUG =
+
+# Comma separated list of tags to be applied to all StatsD metrics.
+# DOGSTATSD_TAGS =
+
+# The target for error log outputs.
+# ERRORLOG =
+
+# Time to wait for workers to finish current requests during graceful shutdown.
+# GRACEFUL_TIMEOUT =
+
+# The group id to switch to.
+# GROUP =
+
+# The maximum size of the incomplete request/response body.
+# H11_MAX_INCOMPLETE_SIZE =
+
+# Pass raw headers to the application.
+# H11_PASS_RAW_HEADERS =
+
+# The maximum number of concurrent streams per HTTP/2 connection.
+# H2_MAX_CONCURRENT_STREAMS =
+
+# The maximum size of the header list.
+# H2_MAX_HEADER_LIST_SIZE =
+
+# The maximum size of an inbound HTTP/2 frame.
+# H2_MAX_INBOUND_FRAME_SIZE =
+
+# Include a date header in the response.
+# INCLUDE_DATE_HEADER =
+
+# Include a server header in the response.
+# INCLUDE_SERVER_HEADER =
+
+# The maximum number of requests per keep-alive connection.
+# KEEP_ALIVE_MAX_REQUESTS =
+
+# Seconds to wait before closing keep-alive connections.
+# KEEP_ALIVE_TIMEOUT =
+
+# Path to the SSL key file.
+# KEYFILE =
+
+# The password for the SSL key file.
+# KEYFILE_PASSWORD =
+
+# The log config file path.
+# LOGCONFIG =
+
+# The log config dictionary.
+# LOGCONFIG_DICT =
+
+# The (error) log level.
+# LOGLEVEL =
+
+# The maximum size of the application task queue.
+# MAX_APP_QUEUE_SIZE =
+
+# The maximum number of requests a worker can handle before restarting.
+# MAX_REQUESTS =
+
+# The maximum jitter to add to the max_requests setting.
+# MAX_REQUESTS_JITTER =
+
+# Path to write the process id.
+# PID_PATH =
+
+# The timeout for reading from connections.
+# READ_TIMEOUT =
+
+# The ASGI root_path variable.
+# ROOT_PATH =
+
+# Time to wait for workers to shutdown during graceful shutdown.
+# SHUTDOWN_TIMEOUT =
+
+# The SSL handshake timeout.
+# SSL_HANDSHAKE_TIMEOUT =
+
+# Time to wait for workers to start during startup.
+# STARTUP_TIMEOUT =
+
+# The host:port of the statsd server.
+# STATSD_HOST =
+
+# Prefix for statsd messages.
+# STATSD_PREFIX =
+
+# The umask to set for the process.
+# UMASK =
+
+# Enable automatic reloading on code changes.
+# USE_RELOADER =
+
+# The user id to switch to.
+# USER =
+
+# The SSL verify flags.
+# VERIFY_FLAGS =
+
+# The SSL verify mode.
+# VERIFY_MODE =
+
+# The maximum size of a WebSocket message.
+# WEBSOCKET_MAX_MESSAGE_SIZE =
+
+# If set the time in seconds between pings.
+# WEBSOCKET_PING_INTERVAL =
+
+# The type of worker to use.
+# WORKER_CLASS =
+
+# The number of worker processes.
+# WORKERS =
+
+# The maximum size of WSGI request body.
+# WSGI_MAX_BODY_SIZE =

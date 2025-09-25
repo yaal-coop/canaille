@@ -135,15 +135,6 @@ class Features:
         except ImportError:  # pragma: no cover
             return False
 
-    @property
-    def has_toml_conf(self):
-        try:
-            import tomlkit  # noqa: F401
-
-            return True
-        except ImportError:  # pragma: no cover
-            return False
-
 
 def setup_features(app):
     app.features = Features(app)

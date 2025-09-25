@@ -1,4 +1,3 @@
-import logging
 import os
 import pathlib
 from unittest import mock
@@ -351,26 +350,6 @@ def test_smpp_connection_remote_smpp_no_credentials(testclient, backend, configu
     assert check_smpp_connection(config_dict) == CheckResult(
         success=True, message="Successful SMPP connection"
     )
-
-
-def test_no_secret_key(configuration, caplog):
-    del configuration["SECRET_KEY"]
-
-    os.environ["DEBUG"] = "1"
-    from canaille.app.server import app
-
-    assert (
-        "canaille",
-        logging.WARNING,
-        "Missing 'SECRET_KEY' configuration parameter.",
-    ) in caplog.record_tuples
-
-    testclient = TestApp(app)
-    res = testclient.get("/login")
-    res.mustcontain(
-        "Your Canaille instance is not fully configured and not ready for production."
-    )
-    del os.environ["DEBUG"]
 
 
 def test_sanitize_rst():

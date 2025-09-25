@@ -6,6 +6,7 @@ import click
 from flask import current_app
 from flask.cli import with_appcontext
 
+from canaille.app.toml import HAS_TOMLKIT
 from canaille.backends import Backend
 
 try:
@@ -44,30 +45,6 @@ def install(ctx):
 
     app = ctx.obj.load_app()
     install(app)
-
-
-if HAS_HYPERCORN:  # pragma: no cover
-
-    @click.command()
-    @with_appcontext
-    @click.option(
-        "--config",
-        default=None,
-        help="Path to a TOML hypercorn configuration file.",
-        type=click.Path(),
-    )
-    def run(config: str | None):
-        """Run Canaille in a hypercorn application server.
-
-        Have a look at the :doc:`Hypercorn configuration documentation <hypercorn:how_to_guides/configuring>` to find how to configure it.
-        """
-        from hypercorn.config import Config
-        from hypercorn.run import run as hypercorn_run
-
-        config_obj = Config.from_toml(config) if config else Config()
-        config_obj.application_path = "canaille.app.server:app"
-        exitcode = hypercorn_run(config_obj)
-        sys.exit(exitcode)
 
 
 @click.group()
@@ -130,6 +107,11 @@ def check():
 
 def register(cli):
     cli.add_command(install)
+
+    if HAS_TOMLKIT:  # pragma: no branch
+        cli.add_command(config)
+
     if HAS_HYPERCORN:  # pragma: no branch
+        from canaille.hypercorn.commands import run
+
         cli.add_command(run)
-    cli.add_command(config)

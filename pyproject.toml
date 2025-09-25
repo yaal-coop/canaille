@@ -108,6 +108,8 @@ sms = [
 
 server = [
     "hypercorn>=0.17.3",
+    "pydanclick>=0.5.0",
+    "tomlkit>=0.13.2",
 ]
 
 [project.urls]
