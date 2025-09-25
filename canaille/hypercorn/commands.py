@@ -88,7 +88,11 @@ if HAS_HYPERCORN:  # pragma: no cover
             cli_config["SERVER_NAMES"] = list(server_names)
 
         merged_config = {**config_dict, **cli_config}
-        lowercase_config = {key.lower(): value for key, value in merged_config.items()}
+        lowercase_config = {
+            key.lower(): value
+            for key, value in merged_config.items()
+            if value is not None
+        }
         config_obj = Config.from_mapping(lowercase_config)
 
         config_obj.application_path = "canaille.hypercorn.app:app"
