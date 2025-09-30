@@ -4,7 +4,7 @@ from urllib.parse import urlsplit
 from joserfc import jwt
 
 from canaille.app import models
-from canaille.oidc.oauth import setup_oauth
+from canaille.oidc.provider import setup_oauth
 
 from . import client_credentials
 

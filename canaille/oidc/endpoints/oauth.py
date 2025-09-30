@@ -30,15 +30,15 @@ from canaille.backends import Backend
 from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import redirect_to_next_auth_step
 
-from ..oauth import ClientConfigurationEndpoint
-from ..oauth import ClientRegistrationEndpoint
-from ..oauth import IntrospectionEndpoint
-from ..oauth import RevocationEndpoint
-from ..oauth import UserInfoEndpoint
-from ..oauth import authorization
-from ..oauth import get_issuer
-from ..oauth import registry
-from ..oauth import server_jwks
+from ..jose import registry
+from ..jose import server_jwks
+from ..provider import ClientConfigurationEndpoint
+from ..provider import ClientRegistrationEndpoint
+from ..provider import IntrospectionEndpoint
+from ..provider import RevocationEndpoint
+from ..provider import UserInfoEndpoint
+from ..provider import authorization
+from ..provider import get_issuer
 from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
 from .forms import LogoutForm

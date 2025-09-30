@@ -2,8 +2,8 @@ from flask import Blueprint
 from flask import jsonify
 from flask import request
 
-from ..oauth import oauth_authorization_server
-from ..oauth import openid_configuration
+from ..metadata import oauth_authorization_server
+from ..metadata import openid_configuration
 
 bp = Blueprint("home", __name__, url_prefix="/.well-known")
 

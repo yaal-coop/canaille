@@ -10,8 +10,8 @@ from joserfc import jwk
 from werkzeug.security import gen_salt
 
 from canaille.app import models
-from canaille.oidc.oauth import generate_user_claims
-from canaille.oidc.oauth import get_jwt_config
+from canaille.oidc.provider import get_jwt_config
+from canaille.oidc.userinfo import generate_user_claims
 
 
 @pytest.fixture

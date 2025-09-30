@@ -12,176 +12,32 @@ from authlib.oauth2 import rfc7591
 from authlib.oauth2 import rfc7592
 from authlib.oauth2 import rfc7636
 from authlib.oauth2 import rfc7662
-from authlib.oauth2 import rfc8414
 from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oidc import core as oidc_core
-from authlib.oidc import discovery as oidc_discovery
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
-from joserfc import jwk
-from joserfc import jws
 from werkzeug.security import gen_salt
 
-from canaille.app import DOCUMENTATION_URL
 from canaille.app import models
 from canaille.app.flask import cache
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 
-from .jwk import make_default_jwk
+from .jose import get_alg_for_key
+from .jose import get_client_jwks
+from .jose import make_default_jwk
+from .jose import server_jwks
+from .userinfo import UserInfo
+from .userinfo import generate_user_claims
 
 AUTHORIZATION_CODE_LIFETIME = 84400
 JWT_JTI_CACHE_LIFETIME = 3600
-
-registry = jws.JWSRegistry(algorithms=list(jws.JWSRegistry.algorithms.keys()))
-
-
-class AuthorizationServerMetadata(
-    rfc8414.AuthorizationServerMetadata, rfc9101.AuthorizationServerMetadata
-):
-    pass
-
-
-def oauth_authorization_server():
-    payload = {
-        "issuer": get_issuer(),
-        "authorization_endpoint": url_for("oidc.endpoints.authorize", _external=True),
-        "token_endpoint": url_for("oidc.endpoints.issue_token", _external=True),
-        "token_endpoint_auth_methods_supported": [
-            "client_secret_basic",
-            "private_key_jwt",
-            "client_secret_post",
-            "none",
-        ],
-        "token_endpoint_auth_signing_alg_values_supported": [
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
-        "userinfo_endpoint": url_for("oidc.endpoints.userinfo", _external=True),
-        "revocation_endpoint": url_for("oidc.endpoints.revoke_token", _external=True),
-        "revocation_endpoint_auth_methods_supported": ["client_secret_basic"],
-        "revocation_endpoint_auth_signing_alg_values_supported": None,
-        "introspection_endpoint": url_for(
-            "oidc.endpoints.introspect_token", _external=True
-        ),
-        "introspection_endpoint_auth_methods_supported": ["client_secret_basic"],
-        "introspection_endpoint_auth_signing_alg_values_supported": None,
-        "jwks_uri": url_for("oidc.endpoints.jwks", _external=True),
-        "registration_endpoint": url_for(
-            "oidc.endpoints.client_registration", _external=True
-        ),
-        "scopes_supported": [
-            "openid",
-            "profile",
-            "email",
-            "address",
-            "phone",
-            "groups",
-        ],
-        "response_types_supported": [
-            "code",
-            "token",
-            "id_token",
-            "code token",
-            "code id_token",
-            "token id_token",
-            "code id_token token",
-        ],
-        "grant_types_supported": [
-            "authorization_code",
-            "implicit",
-            "password",
-            "client_credentials",
-            "refresh_token",
-        ],
-        "ui_locales_supported": g.available_language_codes,
-        "code_challenge_methods_supported": CodeChallenge.SUPPORTED_CODE_CHALLENGE_METHOD,
-        "service_documentation": DOCUMENTATION_URL,
-        "authorization_response_iss_parameter_supported": True,
-        "op_policy_uri": None,
-        "op_tos_uri": None,
-    }
-    obj = AuthorizationServerMetadata(payload)
-    obj.validate()
-    return obj
-
-
-def openid_configuration():
-    prompt_values_supported = ["none", "login", "consent"] + (
-        ["create"] if current_app.config["CANAILLE"]["ENABLE_REGISTRATION"] else []
-    )
-    payload = {
-        **oauth_authorization_server(),
-        "end_session_endpoint": url_for("oidc.endpoints.end_session", _external=True),
-        "claim_types_supported": ["normal"],
-        "claims_supported": [
-            "sub",
-            "iss",
-            "auth_time",
-            "acr",
-            "name",
-            "given_name",
-            "family_name",
-            "nickname",
-            "profile",
-            "picture",
-            "website",
-            "email",
-            "email_verified",
-            "locale",
-            "zoneinfo",
-            "groups",
-            "nonce",
-        ],
-        "claims_locales_supported": None,
-        "claims_parameter_supported": False,
-        "subject_types_supported": ["public"],
-        "id_token_signing_alg_values_supported": [
-            "none",
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
-        "id_token_encryption_alg_values_supported": None,
-        "id_token_encryption_enc_values_supported": None,
-        "userinfo_signing_alg_values_supported": [
-            "none",
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
-        "userinfo_encryption_alg_values_supported": None,
-        "userinfo_encryption_enc_values_supported": None,
-        "prompt_values_supported": prompt_values_supported,
-        "request_parameter_supported": True,
-        "request_uri_parameter_supported": True,
-        "require_request_uri_registration": False,
-        "request_object_signing_alg_values_supported": [
-            "none",
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
-        "request_object_encryption_alg_values_supported": None,
-        "request_object_encryption_enc_values_supported": None,
-        "response_modes_supported": ["query", "fragment"],
-        "acr_values_supported": None,
-        "display_values_supported": None,
-    }
-    obj = oidc_discovery.OpenIDProviderMetadata(payload)
-    obj.validate()
-    return obj
 
 
 def exists_nonce(nonce, request):
@@ -192,32 +48,12 @@ def exists_nonce(nonce, request):
     return bool(exists)
 
 
-def get_alg_for_key(key):
-    """Find the algorithm for the given key."""
-    # TODO: Improve this when a better solution is implemented upstream
-    # https://github.com/authlib/joserfc/issues/49
-    for alg_name, alg in registry.algorithms.items():  # pragma: no cover
-        if alg.key_type == key.key_type:
-            return alg_name
-
-
 def get_issuer():
     if server_name := current_app.config.get("SERVER_NAME"):
         scheme = current_app.config.get("PREFERRED_URL_SCHEME", "http")
         return f"{scheme}://{server_name}"
 
     return request.url_root
-
-
-def server_jwks(include_inactive=True):
-    keys = list(current_app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"])
-    if include_inactive and current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]:
-        keys += list(current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"])
-
-    key_objs = [jwk.import_key(key) for key in keys if key]
-    for obj in key_objs:
-        obj.ensure_kid()
-    return jwk.KeySet(key_objs)
 
 
 def get_jwt_config(grant=None):
@@ -230,82 +66,6 @@ def get_jwt_config(grant=None):
         "alg": get_alg_for_key(jwk),
     }
     return payload
-
-
-def get_client_jwks(client, kid=None):
-    """Get the client JWK set, either stored locally or by downloading them from the URI the client indicated."""
-
-    @cache.cached(timeout=50, key_prefix=f"jwks_{client.client_id}")
-    def get_public_jwks():
-        return httpx.get(client.jwks_uri).json()
-
-    if client.jwks_uri:
-        raw_jwks = get_public_jwks()
-        key_set = jwk.KeySet.import_key_set(raw_jwks)
-        key = key_set.get_by_kid(kid)
-        return key
-
-    if client.jwks:
-        raw_jwks = json.loads(client.jwks)
-        key_set = jwk.KeySet.import_key_set(raw_jwks)
-        key = key_set.get_by_kid(kid)
-        return key
-
-    return None
-
-
-class UserInfo(oidc_core.UserInfo):
-    REGISTERED_CLAIMS = oidc_core.UserInfo.REGISTERED_CLAIMS + ["groups"]
-    SCOPES_CLAIMS_MAPPING = {
-        "groups": ["groups"],
-        **oidc_core.UserInfo.SCOPES_CLAIMS_MAPPING,
-    }
-
-
-def make_address_claim(user):
-    payload = {}
-    mapping = {
-        "formatted_address": "formatted",
-        "street": "street_address",
-        "locality": "locality",
-        "region": "region",
-        "postal_code": "postal_code",
-    }
-    for user_attr, claim in mapping.items():
-        if val := getattr(user, user_attr):
-            payload[claim] = val
-
-    return payload
-
-
-def generate_user_claims(user, jwt_mapping_config=None):
-    jwt_mapping_config = {
-        **(current_app.config["CANAILLE_OIDC"]["USERINFO_MAPPING"]),
-        **(jwt_mapping_config or {}),
-    }
-
-    data = {}
-    for claim in UserInfo.REGISTERED_CLAIMS:
-        raw_claim = jwt_mapping_config.get(claim.upper())
-        if raw_claim:
-            formatted_claim = current_app.jinja_env.from_string(raw_claim).render(
-                user=user
-            )
-            if formatted_claim:
-                # According to https://openid.net/specs/openid-connect-core-1_0.html#UserInfoResponse
-                # it's better to not insert a null or empty string value
-                data[claim] = formatted_claim
-
-        if claim == "address" and (address := make_address_claim(user)):
-            data[claim] = address
-
-        if claim == "groups" and user.groups:
-            data[claim] = [group.display_name for group in user.groups]
-
-        if claim == "updated_at":
-            data[claim] = int(float(data[claim]))
-
-    return data
 
 
 def save_authorization_code(code, request):
@@ -594,6 +354,8 @@ class ClientManagementMixin:
         return True
 
     def get_server_metadata(self):
+        from .metadata import openid_configuration
+
         result = openid_configuration()
         return result
 
@@ -733,6 +495,8 @@ class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
         return httpx.get(request_uri).text
 
     def get_server_metadata(self):
+        from .metadata import openid_configuration
+
         return openid_configuration()
 
     def get_client_require_signed_request_object(self, client):
@@ -764,7 +528,7 @@ def generate_access_token(client, grant_type, user, scope):
 def setup_oauth(app):
     app.config["OAUTH2_REFRESH_TOKEN_GENERATOR"] = True
     app.config["OAUTH2_ACCESS_TOKEN_GENERATOR"] = (
-        "canaille.oidc.oauth.generate_access_token"
+        "canaille.oidc.provider.generate_access_token"
     )
 
     oidc_config = app.config.get("CANAILLE_OIDC")

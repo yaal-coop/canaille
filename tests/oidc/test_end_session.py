@@ -1,8 +1,8 @@
 from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants.util import generate_id_token
 
-from canaille.oidc.oauth import generate_user_claims
-from canaille.oidc.oauth import get_jwt_config
+from canaille.oidc.provider import get_jwt_config
+from canaille.oidc.userinfo import generate_user_claims
 
 
 def test_end_session(testclient, backend, logged_user, client, id_token):

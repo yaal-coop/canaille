@@ -3,7 +3,7 @@ from unittest import mock
 from joserfc import jwt
 
 from canaille.oidc.configuration import UserInfoMappingSettings
-from canaille.oidc.oauth import generate_user_claims
+from canaille.oidc.userinfo import generate_user_claims
 
 
 def test_generate_user_claims(user, foo_group):

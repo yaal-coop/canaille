@@ -1,4 +1,4 @@
-from canaille.oidc.jwk import make_default_jwk
+from canaille.oidc.jose import make_default_jwk
 
 
 def test_deterministic_jwk_generation_with_seed():

@@ -1,6 +1,6 @@
 import warnings
 
-from canaille.oidc.oauth import get_issuer
+from canaille.oidc.provider import get_issuer
 
 
 def test_issuer(testclient):
