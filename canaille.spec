@@ -68,7 +68,7 @@ a = Analysis(
         (wtforms_locale, 'wtforms/locale'),
     ],
     hiddenimports=[
-        "canaille.app.server",
+        "canaille.hypercorn.app",
         "canaille.backends.memory.backend",
         "canaille.backends.memory.models",
         "canaille.backends.sql.backend",
