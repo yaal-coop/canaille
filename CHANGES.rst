@@ -1,3 +1,10 @@
+[0.0.87] - Unreleased
+---------------------
+
+Removed
+^^^^^^^
+- Remove the web interface to see authorization codes.
+
 [0.0.86] - 2025-09-30
 ---------------------
 

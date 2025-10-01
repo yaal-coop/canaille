@@ -1,6 +1,5 @@
 from flask import Blueprint
 
-from . import authorizations
 from . import clients
 from . import consents
 from . import oauth
@@ -9,7 +8,6 @@ from . import well_known
 
 bp = Blueprint("oidc", __name__)
 
-bp.register_blueprint(authorizations.bp)
 bp.register_blueprint(clients.bp)
 bp.register_blueprint(consents.bp)
 bp.register_blueprint(oauth.bp)

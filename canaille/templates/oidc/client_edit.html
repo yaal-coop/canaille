@@ -35,10 +35,6 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
         <i class="key icon"></i>
         {% trans %}Tokens{% endtrans %}
     </a>
-    <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
-        <i class="user secret icon"></i>
-        {% trans %}Codes{% endtrans %}
-    </a>
 {% endblock %}
 
 {% block content %}

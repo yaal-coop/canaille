@@ -33,10 +33,6 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Token`.
         <i class="key icon"></i>
         {% trans %}Tokens{% endtrans %}
     </a>
-    <a class="item" href="{{ url_for('oidc.authorizations.index') }}">
-        <i class="user secret icon"></i>
-        {% trans %}Codes{% endtrans %}
-    </a>
 {% endblock %}
 
 {% block content %}
