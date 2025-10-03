@@ -42,10 +42,6 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
         )
     else:
         flash(
-            _(
-                "An error occurred while communicating the incident to the administrators. "
-                "Please update your password as soon as possible. "
-                "If this still happens, please contact the administrators."
-            ),
-            "error",
+            _("Sending a mail to communicate this incident to the administrators."),
+            "info",
         )
