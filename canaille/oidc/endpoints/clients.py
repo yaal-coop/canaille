@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta
 
 from flask import Blueprint
 from flask import abort
@@ -16,6 +17,7 @@ from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 
+from ..jose import build_client_management_token
 from .forms import ClientAddForm
 
 bp = Blueprint("clients", __name__, url_prefix="/admin/client")
@@ -40,15 +42,38 @@ def index(user):
 def add(user):
     form = ClientAddForm(request.form or None)
 
+    registration_token = build_client_management_token(
+        "client:register", timedelta(seconds=TOKEN_LIFETIME)
+    )
+
+    if request.form.get("action") == "new-registration-token":
+        flash(_("A new registration token has been generated."), "info")
+        return render_template(
+            "oidc/client_add.html",
+            form=form,
+            registration_token=registration_token,
+            menuitem="admin",
+        )
+
     if not request.form or form.form_control():
-        return render_template("oidc/client_add.html", form=form, menuitem="admin")
+        return render_template(
+            "oidc/client_add.html",
+            form=form,
+            registration_token=registration_token,
+            menuitem="admin",
+        )
 
     if not form.validate():
         flash(
             _("The client has not been added. Please check your information."),
             "error",
         )
-        return render_template("oidc/client_add.html", form=form, menuitem="admin")
+        return render_template(
+            "oidc/client_add.html",
+            form=form,
+            registration_token=registration_token,
+            menuitem="admin",
+        )
 
     client_id = gen_salt(24)
     client_id_issued_at = datetime.datetime.now(datetime.timezone.utc)
@@ -95,7 +120,7 @@ def edit(user, client):
     if request.form and request.form.get("action") == "delete":
         return client_delete(client)
 
-    if request.form and request.form.get("action") == "new-token":
+    if request.form and request.form.get("action") == "new-access-token":
         return client_new_token(client)
 
     return client_edit(client)
@@ -107,9 +132,27 @@ def client_edit(client):
         data["scope"] = " ".join(data["scope"])
     form = ClientAddForm(request.form or None, data=data, client=client)
 
+    management_token = build_client_management_token(
+        "client:manage", timedelta(seconds=TOKEN_LIFETIME), client.client_id
+    )
+
+    if request.form.get("action") == "new-management-token":
+        flash(_("A new management token has been generated."), "info")
+        return render_template(
+            "oidc/client_edit.html",
+            form=form,
+            client=client,
+            management_token=management_token,
+            menuitem="admin",
+        )
+
     if not request.form or form.form_control():
         return render_template(
-            "oidc/client_edit.html", form=form, client=client, menuitem="admin"
+            "oidc/client_edit.html",
+            form=form,
+            client=client,
+            management_token=management_token,
+            menuitem="admin",
         )
 
     if not form.validate():
@@ -118,7 +161,11 @@ def client_edit(client):
             "error",
         )
         return render_template(
-            "oidc/client_edit.html", form=form, client=client, menuitem="admin"
+            "oidc/client_edit.html",
+            form=form,
+            client=client,
+            management_token=management_token,
+            menuitem="admin",
         )
 
     Backend.instance.update(

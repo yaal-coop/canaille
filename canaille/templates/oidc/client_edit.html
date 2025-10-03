@@ -22,6 +22,10 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
     {%- trans %}Edit an application{% endtrans -%}
 {%- endblock -%}
 
+{% block script %}
+    <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
+{% endblock %}
+
 {% block submenu %}
     <a class="item" href="{{ url_for('core.admin.mail_index') }}">
         <i class="user mail icon"></i>
@@ -38,11 +42,35 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
 {% endblock %}
 
 {% block content %}
-    <div class="ui top attached segment">
+
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            {% trans %}Management token{% endtrans %}
+        </h2>
+        <p>
+            {% trans %}This token can be used to edit the application details through the OAuth 2.0 Dynamic Client Registration Management Protocol.{% endtrans %}
+            <a href="https://datatracker.ietf.org/doc/html/rfc7592">{% trans %}Read more…{% endtrans %}</a>
+        </p>
+        {% call fui.render_form(form) %}
+            <div class="ui fluid action input">
+                <input type="text" value="{{ management_token }}" readonly class="copy-text" id="management-token" data-copy="management-token">
+                <button type="submit" class="ui teal right labeled icon button copy-button" name="action" value="new-management-token" id="new-management-token">
+                    <i class="redo icon"></i>
+                    {% trans %}Renew{% endtrans %}
+                </button>
+                <button type="button" class="ui primary right labeled icon button copy-button" data-copy="management-token">
+                    <i class="copy icon"></i>
+                    {% trans %}Copy{% endtrans %}
+                </button>
+            </div>
+        {% endcall %}
+    </div>
+
+    <div class="ui segment">
         <h2 class="ui center aligned header">
             {% trans %}Edit an application{% endtrans %}
             {% if client.trusted %}
-                <span class="ui teal label" title="{% trans %}This application is trusted and bypasses user consent{% endtrans %}">
+                <span class="ui teal label" title="{% trans %}The domain of this application is trusted and thus it bypasses user consent{% endtrans %}">
                     <i class="shield alternate icon"></i>
                     {% trans %}Trusted{% endtrans %}
                 </span>
@@ -86,8 +114,8 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    <button type="submit" class="ui right floated button" name="action" value="new-token" id="new-token">
-                        {{ _("New token") }}
+                    <button type="submit" class="ui right floated button" name="action" value="new-access-token" id="new-access-token">
+                        {{ _("New access token") }}
                     </button>
                     <button type="submit" class="ui right floated negative basic button confirm" name="action" value="confirm-delete" id="confirm-delete" formnovalidate>
                         {{ _("Delete the client") }}

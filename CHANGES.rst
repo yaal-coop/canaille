@@ -1,6 +1,14 @@
 [0.0.87] - Unreleased
 ---------------------
 
+.. warning::
+
+    ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` removed in favor of JWT tokens.
+
+Changed
+^^^^^^^
+- Remove ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` in favor of JWT tokens. :issue:`272`
+
 Removed
 ^^^^^^^
 - Remove the web interface to see authorization codes.

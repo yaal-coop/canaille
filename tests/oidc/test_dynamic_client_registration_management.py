@@ -1,10 +1,18 @@
 import json
+import uuid
 import warnings
 from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 
+from joserfc import jws
+from joserfc import jwt
 from joserfc.jwk import KeySet
 
 from canaille.app import models
+from canaille.oidc.jose import get_alg_for_key
+from canaille.oidc.jose import server_jwks
+from canaille.oidc.provider import get_issuer
 
 
 def test_get(testclient, backend, client, user, client_jwk):
@@ -12,11 +20,29 @@ def test_get(testclient, backend, client, user, client_jwk):
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
-        "static-token"
-    ]
 
-    headers = {"Authorization": "Bearer static-token"}
+    # Generate a valid JWT token for management
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "aud": get_issuer(),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "sub": client.client_id,
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    headers = {"Authorization": f"Bearer {token}"}
     res = testclient.get(
         f"/oauth/register/{client.client_id}", headers=headers, status=200
     )
@@ -32,7 +58,7 @@ def test_get(testclient, backend, client, user, client_jwk):
             "https://client.test/redirect1",
             "https://client.test/redirect2",
         ],
-        "registration_access_token": "static-token",
+        "registration_access_token": token,
         "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": [
@@ -80,9 +106,27 @@ def test_update(testclient, backend, client, user, client_jwk):
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
-        "static-token"
-    ]
+
+    # Generate a valid JWT token for management
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "aud": get_issuer(),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "sub": client.client_id,
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     assert client.redirect_uris != ["https://newname.example.test/callback"]
     assert client.token_endpoint_auth_method != "none"
@@ -118,7 +162,7 @@ def test_update(testclient, backend, client, user, client_jwk):
         "software_version": "3.14",
     }
 
-    headers = {"Authorization": "Bearer static-token"}
+    headers = {"Authorization": f"Bearer {token}"}
     res = testclient.put_json(
         f"/oauth/register/{client.client_id}", payload, headers=headers, status=200
     )
@@ -137,7 +181,7 @@ def test_update(testclient, backend, client, user, client_jwk):
         "id_token_signed_response_alg": "RS256",
         "initiate_login_uri": None,
         "redirect_uris": ["https://newname.example.test/callback"],
-        "registration_access_token": "static-token",
+        "registration_access_token": token,
         "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
         "request_object_encryption_alg": None,
         "request_object_encryption_enc": None,
@@ -187,14 +231,32 @@ def test_delete(testclient, backend, user):
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
-        "static-token"
-    ]
 
     client = models.Client(client_id="foobar", client_name="Some client")
     backend.save(client)
 
-    headers = {"Authorization": "Bearer static-token"}
+    # Generate a valid JWT token for management
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "aud": get_issuer(),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "sub": client.client_id,
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    headers = {"Authorization": f"Bearer {token}"}
     with warnings.catch_warnings(record=True):
         testclient.delete(
             f"/oauth/register/{client.client_id}", headers=headers, status=204
@@ -206,20 +268,154 @@ def test_invalid_client(testclient, backend, user):
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
-        "static-token"
-    ]
+
+    # Generate a valid JWT token for management of a non-existent client
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "aud": get_issuer(),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "sub": "invalid-client-id",
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
         "client_id": "invalid-client-id",
         "redirect_uris": ["https://newname.example.test/callback"],
     }
 
-    headers = {"Authorization": "Bearer static-token"}
+    headers = {"Authorization": f"Bearer {token}"}
     res = testclient.put_json(
-        "/oauth/register/invalid-client-id", payload, headers=headers, status=401
+        "/oauth/register/invalid-client-id", payload, headers=headers, status=400
     )
     assert res.json == {
-        "error": "invalid_client",
-        "error_description": "The client does not exist on this server.",
+        "error": "access_denied",
+        "error_description": "The resource owner or authorization server denied the request",
     }
+
+
+def test_management_with_expired_token(testclient, backend, client):
+    """Test that management with expired token is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now - timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}", headers=headers, status=400
+    )
+    assert res.json["error"] == "access_denied"
+
+
+def test_management_with_wrong_issuer(testclient, backend, client):
+    """Test that management with wrong issuer is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": "https://wrong.issuer",
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}", headers=headers, status=400
+    )
+    assert res.json["error"] == "access_denied"
+
+
+def test_management_with_wrong_audience(testclient, backend, client):
+    """Test that management with wrong audience is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": "https://wrong.audience",
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}", headers=headers, status=400
+    )
+    assert res.json["error"] == "access_denied"
+
+
+def test_management_with_wrong_scope(testclient, backend, client):
+    """Test that management with wrong scope is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    headers = {"Authorization": f"Bearer {token}"}
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}", headers=headers, status=400
+    )
+    assert res.json["error"] == "access_denied"

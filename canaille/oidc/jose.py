@@ -1,4 +1,8 @@
 import json
+import uuid
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 
 import httpx
 from cryptography.hazmat.backends import default_backend
@@ -9,6 +13,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from flask import current_app
 from joserfc import jwk
 from joserfc import jws
+from joserfc import jwt
 from joserfc.jwk import OKPKey
 
 from canaille.app.flask import cache
@@ -90,3 +95,34 @@ def get_client_jwks(client, kid=None):
         return key
 
     return None
+
+
+def build_client_management_token(
+    scope: str, lifetime: timedelta, client_id: str | None = None
+):
+    """Build a JWT token for client registration."""
+    from .provider import get_issuer
+
+    jti = str(uuid.uuid4())
+    client_id = client_id or str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + lifetime
+    issuer = get_issuer()
+
+    payload = {
+        "iss": issuer,
+        "sub": client_id,
+        "aud": issuer,
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": jti,
+        "scope": scope,
+    }
+
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    token = jwt.encode({"alg": alg}, payload, jwk_key, registry=registry)
+
+    return token

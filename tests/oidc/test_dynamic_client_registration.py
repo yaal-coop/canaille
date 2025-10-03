@@ -1,21 +1,47 @@
 import json
+import uuid
 from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 from unittest import mock
 
+from joserfc import jws
 from joserfc import jwt
 
 from canaille.app import models
+from canaille.oidc.jose import get_alg_for_key
+from canaille.oidc.jose import server_jwks
+from canaille.oidc.provider import get_issuer
 
 
-def test_client_registration_with_authentication_static_token(
+def test_client_registration_with_authentication_jwt_token(
     testclient, backend, client, user
 ):
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
-        "static-token"
-    ]
+
+    # Generate a valid JWT token
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
         "redirect_uris": [
@@ -31,14 +57,14 @@ def test_client_registration_with_authentication_static_token(
         "jwks_uri": "https://client.test/my_public_keys.jwks",
         "grant_types": ["authorization_code"],
     }
-    headers = {"Authorization": "Bearer static-token"}
+    headers = {"Authorization": f"Bearer {token}"}
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=201)
-    client = backend.get(models.Client, client_id=res.json["client_id"])
+    created_client = backend.get(models.Client, client_id=res.json["client_id"])
 
     assert res.json == {
-        "client_id": client.client_id,
-        "client_secret": client.client_secret,
+        "client_id": client_id,
+        "client_secret": created_client.client_secret,
         "client_id_issued_at": mock.ANY,
         "client_name": "My Example Client",
         "client_secret_expires_at": 0,
@@ -48,8 +74,8 @@ def test_client_registration_with_authentication_static_token(
             "https://client.test/callback",
             "https://client.test/callback2",
         ],
-        "registration_access_token": "static-token",
-        "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
+        "registration_access_token": token,
+        "registration_client_uri": f"http://canaille.test/oauth/register/{client_id}",
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code"],
         "scope": "",
@@ -59,25 +85,43 @@ def test_client_registration_with_authentication_static_token(
         "require_signed_request_object": False,
     }
 
-    assert client.client_name == "My Example Client"
-    assert client.redirect_uris == [
+    assert created_client.client_name == "My Example Client"
+    assert created_client.redirect_uris == [
         "https://client.test/callback",
         "https://client.test/callback2",
     ]
-    assert client.post_logout_redirect_uris == [
+    assert created_client.post_logout_redirect_uris == [
         "https://client.test/logout_callback",
     ]
-    assert client.token_endpoint_auth_method == "client_secret_basic"
-    assert client.logo_uri == "https://client.test/logo.webp"
-    assert client.jwks_uri == "https://client.test/my_public_keys.jwks"
-    assert client in client.audience
-    backend.delete(client)
+    assert created_client.token_endpoint_auth_method == "client_secret_basic"
+    assert created_client.logo_uri == "https://client.test/logo.webp"
+    assert created_client.jwks_uri == "https://client.test/my_public_keys.jwks"
+    assert created_client in created_client.audience
+    backend.delete(created_client)
 
 
 def test_client_registration_with_uri_fragments(testclient, backend, client, user):
-    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
-        "static-token"
-    ]
+    # Generate a valid JWT token
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
         "redirect_uris": [
@@ -94,7 +138,7 @@ def test_client_registration_with_uri_fragments(testclient, backend, client, use
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
     }
-    headers = {"Authorization": "Bearer static-token"}
+    headers = {"Authorization": f"Bearer {token}"}
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
 
@@ -371,9 +415,28 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
-    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_TOKENS"] = [
-        "static-token"
-    ]
+
+    # Generate a valid JWT token
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
         "redirect_uris": [
@@ -416,17 +479,17 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
         "scope": "openid",
         "require_signed_request_object": True,
     }
-    headers = {"Authorization": "Bearer static-token"}
+    headers = {"Authorization": f"Bearer {token}"}
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=201)
 
-    client = backend.get(models.Client, client_id=res.json["client_id"])
+    created_client = backend.get(models.Client, client_id=res.json["client_id"])
     assert res.json == {
-        "client_id": client.client_id,
-        "client_secret": client.client_secret,
+        "client_id": client_id,
+        "client_secret": created_client.client_secret,
         "client_id_issued_at": mock.ANY,
-        "registration_access_token": "static-token",
-        "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
+        "registration_access_token": token,
+        "registration_client_uri": f"http://canaille.test/oauth/register/{client_id}",
         **payload,
     }
 
@@ -442,3 +505,167 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
 
         assert client_value == payload_value
     backend.delete(client)
+
+
+def test_client_registration_with_expired_token(testclient, backend):
+    """Test that registration with expired token is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now - timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Test Client",
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
+
+
+def test_client_registration_with_wrong_issuer(testclient, backend):
+    """Test that registration with wrong issuer is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": "https://wrong.issuer",
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Test Client",
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
+
+
+def test_client_registration_with_wrong_audience(testclient, backend):
+    """Test that registration with wrong audience is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": "https://wrong.audience",
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Test Client",
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
+
+
+def test_client_registration_with_wrong_scope(testclient, backend):
+    """Test that registration with wrong scope is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Test Client",
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
+
+
+def test_client_registration_with_existing_client_id(testclient, backend, client):
+    """Test that registration with existing client_id is rejected."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    registry = jws.JWSRegistry()
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Test Client",
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
