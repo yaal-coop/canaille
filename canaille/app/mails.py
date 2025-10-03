@@ -104,4 +104,5 @@ def send_email_worker(subject, recipient, text, html, attachments=None):
         current_app.logger.warning(f"Could not send email: {exc}")
         return False
 
+    current_app.logger.info("The mail has been sent correctly.")
     return True
