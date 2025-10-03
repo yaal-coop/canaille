@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-10-01 17:26+0200\n"
-"PO-Revision-Date: 2025-09-19 12:56+0000\n"
+"PO-Revision-Date: 2025-10-04 08:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -773,10 +773,8 @@ msgid "Groups you belong to."
 msgstr "Les groupes auxquels vous appartenez."
 
 #: canaille/oidc/endpoints/clients.py:50
-#, fuzzy
-#| msgid "The new verification code have been sent."
 msgid "A new registration token has been generated."
-msgstr "Le nouveau code de vérification a été envoyé."
+msgstr "Un nouveau jeton d’enregistrement a été généré."
 
 #: canaille/oidc/endpoints/clients.py:68
 msgid "The client has not been added. Please check your information."
@@ -787,10 +785,8 @@ msgid "The client has been created."
 msgstr "Le client a été créé."
 
 #: canaille/oidc/endpoints/clients.py:140
-#, fuzzy
-#| msgid "The client has been created."
 msgid "A new management token has been generated."
-msgstr "Le client a été créé."
+msgstr "A nouveau jeton de gestion a été généré."
 
 #: canaille/oidc/endpoints/clients.py:160
 msgid "The client has not been edited. Please check your information."
@@ -2462,26 +2458,26 @@ msgid "Add an application"
 msgstr "Ajouter une application"
 
 #: canaille/templates/oidc/client_add.html:46
-#, fuzzy
-#| msgid "Registration"
 msgid "Registration token"
-msgstr "Inscription"
+msgstr "Jeton d’enregistrement"
 
 #: canaille/templates/oidc/client_add.html:49
 msgid ""
 "This token can be used to register a new application through the OAuth 2.0 "
 "Dynamic Client Registration Protocol."
 msgstr ""
+"Ce jeton peut être utilisé pour enregistrer une application via le protocole "
+"OAuth 2.0 Dynamic Client Registration."
 
 #: canaille/templates/oidc/client_add.html:50
 #: canaille/templates/oidc/client_edit.html:52
 msgid "Read more…"
-msgstr ""
+msgstr "En savoir plus…"
 
 #: canaille/templates/oidc/client_add.html:57
 #: canaille/templates/oidc/client_edit.html:59
 msgid "Renew"
-msgstr ""
+msgstr "Renouveler"
 
 #: canaille/templates/oidc/client_add.html:77
 msgid "Create"
@@ -2493,25 +2489,23 @@ msgid "Edit an application"
 msgstr "Éditer une application"
 
 #: canaille/templates/oidc/client_edit.html:48
-#, fuzzy
-#| msgid "Secret token"
 msgid "Management token"
-msgstr "Jeton secret"
+msgstr "Jeton de gestion"
 
 #: canaille/templates/oidc/client_edit.html:51
 msgid ""
 "This token can be used to edit the application details through the OAuth 2.0 "
 "Dynamic Client Registration Management Protocol."
 msgstr ""
+"Ce jeton peut être utiliser pour éditer l’application via le protocole OAuth "
+"2.0 Dynamic Client Registration Management."
 
 #: canaille/templates/oidc/client_edit.html:73
-#, fuzzy
-#| msgid "This application is trusted and bypasses user consent"
 msgid ""
 "The domain of this application is trusted and thus it bypasses user consent"
 msgstr ""
-"Cette application est fiable et ne nécessite pas de consentement explicite "
-"des utilisateurs"
+"Le domaine de cette application est fiable et ne nécessite pas de "
+"consentement explicite des utilisateurs"
 
 #: canaille/templates/oidc/client_edit.html:75
 msgid "Trusted"
@@ -2530,10 +2524,8 @@ msgid "Issued at"
 msgstr "Créé le"
 
 #: canaille/templates/oidc/client_edit.html:118
-#, fuzzy
-#| msgid "Access token"
 msgid "New access token"
-msgstr "Jeton d'accès"
+msgstr "Nouveau jeton d’accès"
 
 #: canaille/templates/oidc/client_edit.html:121
 msgid "Delete the client"
