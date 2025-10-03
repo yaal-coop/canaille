@@ -106,6 +106,19 @@ footer a {
 
 /* end of contrast ratio fixes */
 
+/* On the password page,
+ * autofill needs a 'username' input to be displayed on the page.
+ * However, we want to make it hidden.
+ */
+.dummy-username {
+    position:absolute;
+    left:-9999px;
+    top:auto;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+}
+
 /* hotfixes for https://github.com/fomantic/Fomantic-UI/issues/3358 */
 i.icon.login-avatar{
     line-height: 150px;

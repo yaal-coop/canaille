@@ -5,6 +5,10 @@
 
     ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` removed in favor of JWT tokens.
 
+Fixed
+^^^^^
+- Password autofill.
+
 Changed
 ^^^^^^^
 - Remove ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` in favor of JWT tokens. :issue:`272`
