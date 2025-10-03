@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-19 12:05+0200\n"
+"POT-Creation-Date: 2025-10-01 17:26+0200\n"
 "PO-Revision-Date: 2024-12-12 04:24+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -109,29 +109,29 @@ msgstr "உங்கள் கடவுச்சொல்லை மாற்ற 
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr "நீங்கள் உள்நுழைய முயற்சித்த உள்நுழைவை நினைவில் கொள்ள முடியாது"
 
-#: canaille/core/auth.py:208 canaille/core/endpoints/account.py:876
+#: canaille/core/auth.py:217 canaille/core/endpoints/account.py:876
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "இணைப்பு வெற்றிகரமாக. வரவேற்பு %(user)s"
 
-#: canaille/core/auth.py:223
+#: canaille/core/auth.py:232
 msgid "An error happened during your authentication process. Please try again."
 msgstr ""
 
-#: canaille/core/auth.py:257
+#: canaille/core/auth.py:266
 msgid "John Doe"
 msgstr "சான் டோ"
 
-#: canaille/core/auth.py:258 canaille/core/endpoints/forms.py:137
+#: canaille/core/auth.py:267 canaille/core/endpoints/forms.py:137
 #: canaille/core/endpoints/forms.py:419
 msgid "jdoe"
 msgstr "jdoe"
 
-#: canaille/core/auth.py:259
+#: canaille/core/auth.py:268
 msgid "john.doe@example.com"
 msgstr "john.doe@example.com"
 
-#: canaille/core/auth.py:266
+#: canaille/core/auth.py:275
 msgid " or "
 msgstr " அல்லது "
 
@@ -443,7 +443,6 @@ msgid "Password"
 msgstr "கடவுச்சொல்"
 
 #: canaille/core/endpoints/forms.py:81
-#: canaille/templates/oidc/partial/authorization_list.html:5
 msgid "Code"
 msgstr "குறியீடு"
 
@@ -671,13 +670,13 @@ msgstr "%(user_name)s குழுவிலிருந்து %(group_name)s 
 msgid "The group %(group)s has been successfully deleted"
 msgstr "குழு %(group)s வெற்றிகரமாக நீக்கப்பட்டன"
 
-#: canaille/core/endpoints/auth/__init__.py:95
+#: canaille/core/endpoints/auth/__init__.py:94
 #: canaille/core/endpoints/auth/password.py:54
 #: canaille/core/endpoints/auth/password.py:65
 msgid "Login failed, please check your information"
 msgstr "உள்நுழைவு தோல்வியுற்றது, தயவுசெய்து உங்கள் தகவல்களைச் சரிபார்க்கவும்"
 
-#: canaille/core/endpoints/auth/__init__.py:113
+#: canaille/core/endpoints/auth/__init__.py:112
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "நீங்கள் துண்டிக்கப்பட்டுள்ளீர்கள். அடுத்த முறை %(user)s சந்திப்போம்"
@@ -764,23 +763,33 @@ msgstr "உங்கள் தொலைபேசி எண்."
 msgid "Groups you belong to."
 msgstr "நீங்கள் சேர்ந்த குழுக்கள்."
 
-#: canaille/oidc/endpoints/clients.py:48
+#: canaille/oidc/endpoints/clients.py:50
+msgid "A new registration token has been generated."
+msgstr ""
+
+#: canaille/oidc/endpoints/clients.py:68
 msgid "The client has not been added. Please check your information."
 msgstr "கிளையன்ட் சேர்க்கப்படவில்லை. உங்கள் தகவலை சரிபார்க்கவும்."
 
-#: canaille/oidc/endpoints/clients.py:82
+#: canaille/oidc/endpoints/clients.py:107
 msgid "The client has been created."
 msgstr "கிளையன்ட் உருவாக்கப்பட்டது."
 
-#: canaille/oidc/endpoints/clients.py:117
+#: canaille/oidc/endpoints/clients.py:140
+#, fuzzy
+#| msgid "The client has been created."
+msgid "A new management token has been generated."
+msgstr "கிளையன்ட் உருவாக்கப்பட்டது."
+
+#: canaille/oidc/endpoints/clients.py:160
 msgid "The client has not been edited. Please check your information."
 msgstr "கிளையன்ட் திருத்தப்படவில்லை. உங்கள் தகவலை சரிபார்க்கவும்."
 
-#: canaille/oidc/endpoints/clients.py:146
+#: canaille/oidc/endpoints/clients.py:193
 msgid "The client has been edited."
 msgstr "வாடிக்கையாளர் திருத்தப்பட்டார்."
 
-#: canaille/oidc/endpoints/clients.py:154
+#: canaille/oidc/endpoints/clients.py:201
 msgid "The client has been deleted."
 msgstr "வாடிக்கையாளர் நீக்கப்பட்டார்."
 
@@ -871,7 +880,7 @@ msgid "Grant types that the client can use at the token endpoint."
 msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:127
-#: canaille/templates/oidc/token_view.html:78
+#: canaille/templates/oidc/token_view.html:74
 msgid "Scope"
 msgstr "நோக்கம்"
 
@@ -1136,7 +1145,7 @@ msgstr "குழுவை உருவாக்கவும்"
 #: canaille/templates/core/profile_edit.html:183
 #: canaille/templates/core/profile_settings.html:105
 #: canaille/templates/core/profile_settings.html:194
-#: canaille/templates/oidc/client_edit.html:100
+#: canaille/templates/oidc/client_edit.html:124
 msgid "Edit"
 msgstr "தொகு"
 
@@ -1199,8 +1208,10 @@ msgstr ""
 "எவ்வாறாயினும், மின்னஞ்சலைத் தவிர வேறு வழிகளில் வழங்க நீங்கள் அங்கு இணைப்பை நகலெடுக்கலாம்:"
 
 #: canaille/templates/core/invite.html:89
-#: canaille/templates/oidc/token_view.html:141
-#: canaille/templates/oidc/token_view.html:152
+#: canaille/templates/oidc/client_add.html:61
+#: canaille/templates/oidc/client_edit.html:63
+#: canaille/templates/oidc/token_view.html:137
+#: canaille/templates/oidc/token_view.html:148
 msgid "Copy"
 msgstr "நகலெடு"
 
@@ -1456,7 +1467,7 @@ msgstr "கடவுச்சொல் அமைக்கப்படாவி�
 
 #: canaille/templates/core/auth/reset-password.html:30
 #: canaille/templates/core/auth/reset-password.html:36
-#: canaille/templates/core/mails/admin.html:105
+#: canaille/templates/core/mails/admin.html:101
 #: canaille/templates/core/mails/reset.html:19
 #: canaille/templates/core/profile_settings.html:166
 msgid "Password reset"
@@ -1603,7 +1614,7 @@ msgid "Send again"
 msgstr "மீண்டும் அனுப்பவும்"
 
 #: canaille/templates/core/auth/forgotten-password.html:60
-#: canaille/templates/core/mails/admin.html:50
+#: canaille/templates/core/mails/admin.html:46
 msgid "Send"
 msgstr "அனுப்பு"
 
@@ -1735,10 +1746,8 @@ msgstr ""
 
 #: canaille/templates/core/mails/admin.html:5
 #: canaille/templates/core/mails/admin.html:11
-#: canaille/templates/oidc/authorization_list.html:26
-#: canaille/templates/oidc/authorization_view.html:17
-#: canaille/templates/oidc/client_add.html:26
-#: canaille/templates/oidc/client_edit.html:28
+#: canaille/templates/oidc/client_add.html:30
+#: canaille/templates/oidc/client_edit.html:32
 #: canaille/templates/oidc/client_list.html:24
 #: canaille/templates/oidc/token_list.html:26
 #: canaille/templates/oidc/token_view.html:30
@@ -1746,13 +1755,11 @@ msgid "Emails"
 msgstr "மின்னஞ்சல்கள்"
 
 #: canaille/templates/core/mails/admin.html:16
-#: canaille/templates/oidc/authorization_list.html:30
-#: canaille/templates/oidc/authorization_view.html:21
-#: canaille/templates/oidc/client_add.html:30
-#: canaille/templates/oidc/client_edit.html:32
+#: canaille/templates/oidc/client_add.html:34
+#: canaille/templates/oidc/client_edit.html:36
 #: canaille/templates/oidc/client_list.html:18
 #: canaille/templates/oidc/client_list.html:28
-#: canaille/templates/oidc/client_list.html:44
+#: canaille/templates/oidc/client_list.html:40
 #: canaille/templates/oidc/token_list.html:30
 #: canaille/templates/oidc/token_view.html:34
 #, fuzzy
@@ -1761,36 +1768,21 @@ msgid "Applications"
 msgstr "செயல்கள்"
 
 #: canaille/templates/core/mails/admin.html:20
-#: canaille/templates/oidc/authorization_list.html:34
-#: canaille/templates/oidc/authorization_view.html:25
-#: canaille/templates/oidc/client_add.html:34
-#: canaille/templates/oidc/client_edit.html:36
+#: canaille/templates/oidc/client_add.html:38
+#: canaille/templates/oidc/client_edit.html:40
 #: canaille/templates/oidc/client_list.html:32
 #: canaille/templates/oidc/token_list.html:20
 #: canaille/templates/oidc/token_list.html:34
-#: canaille/templates/oidc/token_list.html:46
+#: canaille/templates/oidc/token_list.html:42
 #: canaille/templates/oidc/token_view.html:38
 msgid "Tokens"
 msgstr "டோக்கன்கள்"
 
-#: canaille/templates/core/mails/admin.html:24
-#: canaille/templates/oidc/authorization_list.html:20
-#: canaille/templates/oidc/authorization_list.html:38
-#: canaille/templates/oidc/authorization_list.html:46
-#: canaille/templates/oidc/authorization_view.html:29
-#: canaille/templates/oidc/client_add.html:38
-#: canaille/templates/oidc/client_edit.html:40
-#: canaille/templates/oidc/client_list.html:36
-#: canaille/templates/oidc/token_list.html:38
-#: canaille/templates/oidc/token_view.html:42
-msgid "Codes"
-msgstr "குறியீடுகள்"
-
-#: canaille/templates/core/mails/admin.html:33
+#: canaille/templates/core/mails/admin.html:29
 msgid "Mail sending test"
 msgstr "அஞ்சல் அனுப்பும் சோதனை"
 
-#: canaille/templates/core/mails/admin.html:40
+#: canaille/templates/core/mails/admin.html:36
 msgid ""
 "This form will send a dummy email to the address you want. This should be "
 "used for testing mail configuration."
@@ -1798,48 +1790,48 @@ msgstr ""
 "இந்த படிவம் நீங்கள் விரும்பும் முகவரிக்கு போலி மின்னஞ்சலை அனுப்பும். அஞ்சல் உள்ளமைவை சோதிக்க "
 "இது பயன்படுத்தப்பட வேண்டும்."
 
-#: canaille/templates/core/mails/admin.html:58
+#: canaille/templates/core/mails/admin.html:54
 msgid "No mail server has been configured. The mail sending test is disabled."
 msgstr "எந்த அஞ்சல் சேவையகமும் கட்டமைக்கப்படவில்லை. அஞ்சல் அனுப்பும் சோதனை முடக்கப்பட்டுள்ளது."
 
-#: canaille/templates/core/mails/admin.html:69
+#: canaille/templates/core/mails/admin.html:65
 msgid "Email preview"
 msgstr "மின்னஞ்சல் முன்னோட்டம்"
 
-#: canaille/templates/core/mails/admin.html:81
+#: canaille/templates/core/mails/admin.html:77
 #: canaille/templates/core/mails/test.html:19
 #: canaille/templates/core/mails/test.txt:1
 msgid "Connectivity test"
 msgstr "இணைப்பு சோதனை"
 
-#: canaille/templates/core/mails/admin.html:93
+#: canaille/templates/core/mails/admin.html:89
 #: canaille/templates/core/mails/firstlogin.html:19
 #: canaille/templates/core/mails/reset.txt:1
 msgid "Password initialization"
 msgstr "கடவுச்சொல் துவக்கம்"
 
-#: canaille/templates/core/mails/admin.html:117
+#: canaille/templates/core/mails/admin.html:113
 #: canaille/templates/core/mails/email-confirmation.txt:1
 msgid "Email verification"
 msgstr "மின்னஞ்சல் சரிபார்ப்பு"
 
-#: canaille/templates/core/mails/admin.html:129
+#: canaille/templates/core/mails/admin.html:125
 msgid "Invitation"
 msgstr "அழைப்பு"
 
-#: canaille/templates/core/mails/admin.html:141
+#: canaille/templates/core/mails/admin.html:137
 #: canaille/templates/core/mails/registration.html:19
 #: canaille/templates/core/mails/registration.txt:1
 msgid "Registration"
 msgstr "பதிவு"
 
-#: canaille/templates/core/mails/admin.html:154
+#: canaille/templates/core/mails/admin.html:150
 #: canaille/templates/core/mails/compromised_password_check_failure.html:19
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:1
 msgid "Compromised password check failure"
 msgstr "வேறுபாடின்மை செய்யப்பட்ட கடவுச்சொல் சோதனை தோல்வி"
 
-#: canaille/templates/core/mails/admin.html:167
+#: canaille/templates/core/mails/admin.html:163
 #, fuzzy
 #| msgid "Initialize password"
 msgid "Email one-time passcode"
@@ -2281,7 +2273,6 @@ msgstr "குழுக்களுக்கு குறைந்தது ஒ�
 #: canaille/templates/core/partial/group-members.html:87
 #: canaille/templates/core/partial/groups.html:31
 #: canaille/templates/core/partial/users.html:81
-#: canaille/templates/oidc/partial/authorization_list.html:31
 #: canaille/templates/oidc/partial/client_list.html:48
 #: canaille/templates/oidc/partial/token_list.html:45
 msgid "No item matches your request"
@@ -2290,7 +2281,6 @@ msgstr "உங்கள் கோரிக்கையுடன் எந்த 
 #: canaille/templates/core/partial/group-members.html:89
 #: canaille/templates/core/partial/groups.html:33
 #: canaille/templates/core/partial/users.html:83
-#: canaille/templates/oidc/partial/authorization_list.html:33
 #: canaille/templates/oidc/partial/client_list.html:50
 #: canaille/templates/oidc/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
@@ -2299,7 +2289,6 @@ msgstr "வெவ்வேறு அளவுகோல்களுடன் ம�
 #: canaille/templates/core/partial/group-members.html:92
 #: canaille/templates/core/partial/groups.html:36
 #: canaille/templates/core/partial/users.html:86
-#: canaille/templates/oidc/partial/authorization_list.html:36
 #: canaille/templates/oidc/partial/client_list.html:53
 #: canaille/templates/oidc/partial/token_list.html:50
 #: canaille/templates/oidc/trusted_list.html:120
@@ -2317,9 +2306,9 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/macro/form.html:87
-#: canaille/templates/oidc/client_edit.html:62
-#: canaille/templates/oidc/client_edit.html:71
-#: canaille/templates/oidc/client_edit.html:80
+#: canaille/templates/oidc/client_edit.html:86
+#: canaille/templates/oidc/client_edit.html:95
+#: canaille/templates/oidc/client_edit.html:104
 msgid "This field is not editable"
 msgstr "இந்த புலம் திருத்தக்கூடியது அல்ல"
 
@@ -2399,11 +2388,6 @@ msgstr "கொள்கை"
 msgid "Terms of service"
 msgstr "பணி விதிமுறைகள்"
 
-#: canaille/templates/oidc/authorization_view.html:11
-#: canaille/templates/oidc/authorization_view.html:36
-msgid "View an authorization"
-msgstr "அங்கீகாரத்தைக் காண்க"
-
 #: canaille/templates/oidc/authorize.html:29
 #, python-format
 msgid "The application %(name)s is requesting access to:"
@@ -2453,49 +2437,86 @@ msgid "Accept"
 msgstr "ஏற்றுக்கொள்"
 
 #: canaille/templates/oidc/client_add.html:20
-#: canaille/templates/oidc/client_add.html:45
-#: canaille/templates/oidc/client_list.html:51
+#: canaille/templates/oidc/client_add.html:70
+#: canaille/templates/oidc/client_list.html:47
 #, fuzzy
 #| msgid "Add a client"
 msgid "Add an application"
 msgstr "ஒரு கிளையன்ட் சேர்க்கவும்"
 
-#: canaille/templates/oidc/client_add.html:48
+#: canaille/templates/oidc/client_add.html:46
+#, fuzzy
+#| msgid "Registration"
+msgid "Registration token"
+msgstr "பதிவு"
+
+#: canaille/templates/oidc/client_add.html:49
+msgid ""
+"This token can be used to register a new application through the OAuth 2.0 "
+"Dynamic Client Registration Protocol."
+msgstr ""
+
+#: canaille/templates/oidc/client_add.html:50
+#: canaille/templates/oidc/client_edit.html:52
+msgid "Read more…"
+msgstr ""
+
+#: canaille/templates/oidc/client_add.html:57
+#: canaille/templates/oidc/client_edit.html:59
+msgid "Renew"
+msgstr ""
+
+#: canaille/templates/oidc/client_add.html:77
 msgid "Create"
 msgstr "உருவாக்கு"
 
 #: canaille/templates/oidc/client_edit.html:22
-#: canaille/templates/oidc/client_edit.html:47
+#: canaille/templates/oidc/client_edit.html:71
 #, fuzzy
 #| msgid "Edit a client"
 msgid "Edit an application"
 msgstr "கிளையண்டைத் திருத்தவும்"
 
-#: canaille/templates/oidc/client_edit.html:49
-msgid "This application is trusted and bypasses user consent"
-msgstr ""
+#: canaille/templates/oidc/client_edit.html:48
+#, fuzzy
+#| msgid "Refresh token"
+msgid "Management token"
+msgstr "கிள்ளாக்கைப் புதுப்பி"
 
 #: canaille/templates/oidc/client_edit.html:51
+msgid ""
+"This token can be used to edit the application details through the OAuth 2.0 "
+"Dynamic Client Registration Management Protocol."
+msgstr ""
+
+#: canaille/templates/oidc/client_edit.html:73
+msgid ""
+"The domain of this application is trusted and thus it bypasses user consent"
+msgstr ""
+
+#: canaille/templates/oidc/client_edit.html:75
 msgid "Trusted"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:59
+#: canaille/templates/oidc/client_edit.html:83
 msgid "ID"
 msgstr "ஐடி"
 
-#: canaille/templates/oidc/client_edit.html:68
+#: canaille/templates/oidc/client_edit.html:92
 msgid "Secret"
 msgstr "மறைபொருள்"
 
-#: canaille/templates/oidc/client_edit.html:77
+#: canaille/templates/oidc/client_edit.html:101
 msgid "Issued at"
 msgstr "வழங்கப்பட்டது"
 
-#: canaille/templates/oidc/client_edit.html:94
-msgid "New token"
-msgstr "புதிய கிள்ளாக்கு"
+#: canaille/templates/oidc/client_edit.html:118
+#, fuzzy
+#| msgid "Access token"
+msgid "New access token"
+msgstr "அணுகல் கிள்ளாக்கு"
 
-#: canaille/templates/oidc/client_edit.html:97
+#: canaille/templates/oidc/client_edit.html:121
 msgid "Delete the client"
 msgstr "கிளையண்டை நீக்கு"
 
@@ -2570,65 +2591,63 @@ msgid "Logout"
 msgstr "வெளியேற்றம்"
 
 #: canaille/templates/oidc/token_view.html:20
-#: canaille/templates/oidc/token_view.html:49
+#: canaille/templates/oidc/token_view.html:45
 msgid "Token details"
 msgstr "கிள்ளாக்கு விவரங்கள்"
 
-#: canaille/templates/oidc/partial/authorization_list.html:6
 #: canaille/templates/oidc/partial/token_list.html:6
-#: canaille/templates/oidc/token_view.html:56
+#: canaille/templates/oidc/token_view.html:52
 #, fuzzy
 #| msgid "Actions"
 msgid "Application"
 msgstr "செயல்கள்"
 
-#: canaille/templates/oidc/partial/authorization_list.html:7
 #: canaille/templates/oidc/partial/token_list.html:7
-#: canaille/templates/oidc/token_view.html:64
+#: canaille/templates/oidc/token_view.html:60
 msgid "Subject"
 msgstr "பொருள்"
 
-#: canaille/templates/oidc/token_view.html:88
+#: canaille/templates/oidc/token_view.html:84
 msgid "Audience"
 msgstr "பார்வையாளர்கள்"
 
-#: canaille/templates/oidc/token_view.html:102
+#: canaille/templates/oidc/token_view.html:98
 msgid "Issue date"
 msgstr "வெளியீட்டு தேதி"
 
-#: canaille/templates/oidc/token_view.html:106
+#: canaille/templates/oidc/token_view.html:102
 msgid "Expiration date"
 msgstr "காலாவதி தேதி"
 
-#: canaille/templates/oidc/token_view.html:111
+#: canaille/templates/oidc/token_view.html:107
 msgid "This token has expired."
 msgstr "இந்த கிள்ளாக்கு காலாவதியானது."
 
-#: canaille/templates/oidc/token_view.html:117
+#: canaille/templates/oidc/token_view.html:113
 msgid "Revokation date"
 msgstr "திரும்பப்பெறும் தேதி"
 
-#: canaille/templates/oidc/token_view.html:123
+#: canaille/templates/oidc/token_view.html:119
 msgid "Revoke token"
 msgstr "ரத்து கிள்ளாக்கு"
 
-#: canaille/templates/oidc/token_view.html:126
+#: canaille/templates/oidc/token_view.html:122
 msgid "This token has not been revoked"
 msgstr "இந்த கிள்ளாக்கு ரத்து செய்யப்படவில்லை"
 
-#: canaille/templates/oidc/token_view.html:132
+#: canaille/templates/oidc/token_view.html:128
 msgid "Token type"
 msgstr "கிள்ளாக்கு வகை"
 
-#: canaille/templates/oidc/token_view.html:136
+#: canaille/templates/oidc/token_view.html:132
 msgid "Access token"
 msgstr "அணுகல் கிள்ளாக்கு"
 
-#: canaille/templates/oidc/token_view.html:147
+#: canaille/templates/oidc/token_view.html:143
 msgid "Refresh token"
 msgstr "கிள்ளாக்கைப் புதுப்பி"
 
-#: canaille/templates/oidc/token_view.html:149
+#: canaille/templates/oidc/token_view.html:145
 msgid "No refresh token"
 msgstr "புதுப்பிப்பு கிள்ளாக்கு இல்லை"
 
@@ -2669,15 +2688,14 @@ msgstr "இந்த கிள்ளாக்கை ரத்து செய்
 msgid "Revoke"
 msgstr "ரத்து செய்யுங்கள்"
 
-#: canaille/templates/oidc/partial/authorization_list.html:8
+#: canaille/templates/oidc/partial/client_list.html:7
+msgid "URL"
+msgstr "முகவரி"
+
 #: canaille/templates/oidc/partial/client_list.html:8
 #: canaille/templates/oidc/partial/token_list.html:8
 msgid "Created"
 msgstr "உருவாக்கப்பட்டது"
-
-#: canaille/templates/oidc/partial/client_list.html:7
-msgid "URL"
-msgstr "முகவரி"
 
 #: canaille/templates/oidc/partial/client_list.html:17
 msgid "Application logo"
@@ -2692,6 +2710,15 @@ msgstr "இந்த கணக்கு பூட்டப்பட்டுள�
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "கிள்ளாக்கு"
+
+#~ msgid "Codes"
+#~ msgstr "குறியீடுகள்"
+
+#~ msgid "View an authorization"
+#~ msgstr "அங்கீகாரத்தைக் காண்க"
+
+#~ msgid "New token"
+#~ msgstr "புதிய கிள்ளாக்கு"
 
 #, python-format
 #~ msgid "Sign in as %(username)s"

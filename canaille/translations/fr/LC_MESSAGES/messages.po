@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-09-19 12:05+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-10-01 17:26+0200\n"
 "PO-Revision-Date: 2025-09-19 12:56+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -119,31 +119,31 @@ msgstr ""
 "Impossible de retrouver l’identifiant avec lequel vous avez tenté de vous "
 "connecter."
 
-#: canaille/core/auth.py:208 canaille/core/endpoints/account.py:876
+#: canaille/core/auth.py:217 canaille/core/endpoints/account.py:876
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
 
-#: canaille/core/auth.py:223
+#: canaille/core/auth.py:232
 msgid "An error happened during your authentication process. Please try again."
 msgstr ""
 "Une erreur est survenue durant le processus d’authentification. Veuillez "
 "essayer à nouveau."
 
-#: canaille/core/auth.py:257
+#: canaille/core/auth.py:266
 msgid "John Doe"
 msgstr "Camille Dupont"
 
-#: canaille/core/auth.py:258 canaille/core/endpoints/forms.py:137
+#: canaille/core/auth.py:267 canaille/core/endpoints/forms.py:137
 #: canaille/core/endpoints/forms.py:419
 msgid "jdoe"
 msgstr "cdupont"
 
-#: canaille/core/auth.py:259
+#: canaille/core/auth.py:268
 msgid "john.doe@example.com"
 msgstr "camille.dupont@exemple.fr"
 
-#: canaille/core/auth.py:266
+#: canaille/core/auth.py:275
 msgid " or "
 msgstr " ou "
 
@@ -458,7 +458,6 @@ msgid "Password"
 msgstr "Mot de passe"
 
 #: canaille/core/endpoints/forms.py:81
-#: canaille/templates/oidc/partial/authorization_list.html:5
 msgid "Code"
 msgstr "Code"
 
@@ -682,13 +681,13 @@ msgstr "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
 msgid "The group %(group)s has been successfully deleted"
 msgstr "Le groupe %(group)s a bien été supprimé"
 
-#: canaille/core/endpoints/auth/__init__.py:95
+#: canaille/core/endpoints/auth/__init__.py:94
 #: canaille/core/endpoints/auth/password.py:54
 #: canaille/core/endpoints/auth/password.py:65
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations"
 
-#: canaille/core/endpoints/auth/__init__.py:113
+#: canaille/core/endpoints/auth/__init__.py:112
 #, python-format
 msgid "You have been disconnected. See you next time %(user)s"
 msgstr "Vous avez été déconnecté·e. À bientôt %(user)s"
@@ -773,23 +772,35 @@ msgstr "Votre numéro de téléphone."
 msgid "Groups you belong to."
 msgstr "Les groupes auxquels vous appartenez."
 
-#: canaille/oidc/endpoints/clients.py:48
+#: canaille/oidc/endpoints/clients.py:50
+#, fuzzy
+#| msgid "The new verification code have been sent."
+msgid "A new registration token has been generated."
+msgstr "Le nouveau code de vérification a été envoyé."
+
+#: canaille/oidc/endpoints/clients.py:68
 msgid "The client has not been added. Please check your information."
 msgstr "Le client n'a pas été ajouté. Veuillez vérifier vos informations."
 
-#: canaille/oidc/endpoints/clients.py:82
+#: canaille/oidc/endpoints/clients.py:107
 msgid "The client has been created."
 msgstr "Le client a été créé."
 
-#: canaille/oidc/endpoints/clients.py:117
+#: canaille/oidc/endpoints/clients.py:140
+#, fuzzy
+#| msgid "The client has been created."
+msgid "A new management token has been generated."
+msgstr "Le client a été créé."
+
+#: canaille/oidc/endpoints/clients.py:160
 msgid "The client has not been edited. Please check your information."
 msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
 
-#: canaille/oidc/endpoints/clients.py:146
+#: canaille/oidc/endpoints/clients.py:193
 msgid "The client has been edited."
 msgstr "Le client a été édité."
 
-#: canaille/oidc/endpoints/clients.py:154
+#: canaille/oidc/endpoints/clients.py:201
 msgid "The client has been deleted."
 msgstr "Le client a été supprimé."
 
@@ -882,7 +893,7 @@ msgid "Grant types that the client can use at the token endpoint."
 msgstr "Types d'octroi que le client peut utiliser sur le terminal de jetons."
 
 #: canaille/oidc/endpoints/forms.py:127
-#: canaille/templates/oidc/token_view.html:78
+#: canaille/templates/oidc/token_view.html:74
 msgid "Scope"
 msgstr "Portée"
 
@@ -1155,7 +1166,7 @@ msgstr "Créer le groupe"
 #: canaille/templates/core/profile_edit.html:183
 #: canaille/templates/core/profile_settings.html:105
 #: canaille/templates/core/profile_settings.html:194
-#: canaille/templates/oidc/client_edit.html:100
+#: canaille/templates/oidc/client_edit.html:124
 msgid "Edit"
 msgstr "Modifier"
 
@@ -1222,8 +1233,10 @@ msgstr ""
 "moyens que le courriel :"
 
 #: canaille/templates/core/invite.html:89
-#: canaille/templates/oidc/token_view.html:141
-#: canaille/templates/oidc/token_view.html:152
+#: canaille/templates/oidc/client_add.html:61
+#: canaille/templates/oidc/client_edit.html:63
+#: canaille/templates/oidc/token_view.html:137
+#: canaille/templates/oidc/token_view.html:148
 msgid "Copy"
 msgstr "Copier"
 
@@ -1477,7 +1490,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/reset-password.html:30
 #: canaille/templates/core/auth/reset-password.html:36
-#: canaille/templates/core/mails/admin.html:105
+#: canaille/templates/core/mails/admin.html:101
 #: canaille/templates/core/mails/reset.html:19
 #: canaille/templates/core/profile_settings.html:166
 msgid "Password reset"
@@ -1626,7 +1639,7 @@ msgid "Send again"
 msgstr "Envoyer à nouveau"
 
 #: canaille/templates/core/auth/forgotten-password.html:60
-#: canaille/templates/core/mails/admin.html:50
+#: canaille/templates/core/mails/admin.html:46
 msgid "Send"
 msgstr "Envoyer"
 
@@ -1761,10 +1774,8 @@ msgstr ""
 
 #: canaille/templates/core/mails/admin.html:5
 #: canaille/templates/core/mails/admin.html:11
-#: canaille/templates/oidc/authorization_list.html:26
-#: canaille/templates/oidc/authorization_view.html:17
-#: canaille/templates/oidc/client_add.html:26
-#: canaille/templates/oidc/client_edit.html:28
+#: canaille/templates/oidc/client_add.html:30
+#: canaille/templates/oidc/client_edit.html:32
 #: canaille/templates/oidc/client_list.html:24
 #: canaille/templates/oidc/token_list.html:26
 #: canaille/templates/oidc/token_view.html:30
@@ -1772,49 +1783,32 @@ msgid "Emails"
 msgstr "Courriels"
 
 #: canaille/templates/core/mails/admin.html:16
-#: canaille/templates/oidc/authorization_list.html:30
-#: canaille/templates/oidc/authorization_view.html:21
-#: canaille/templates/oidc/client_add.html:30
-#: canaille/templates/oidc/client_edit.html:32
+#: canaille/templates/oidc/client_add.html:34
+#: canaille/templates/oidc/client_edit.html:36
 #: canaille/templates/oidc/client_list.html:18
 #: canaille/templates/oidc/client_list.html:28
-#: canaille/templates/oidc/client_list.html:44
+#: canaille/templates/oidc/client_list.html:40
 #: canaille/templates/oidc/token_list.html:30
 #: canaille/templates/oidc/token_view.html:34
 msgid "Applications"
 msgstr "Applications"
 
 #: canaille/templates/core/mails/admin.html:20
-#: canaille/templates/oidc/authorization_list.html:34
-#: canaille/templates/oidc/authorization_view.html:25
-#: canaille/templates/oidc/client_add.html:34
-#: canaille/templates/oidc/client_edit.html:36
+#: canaille/templates/oidc/client_add.html:38
+#: canaille/templates/oidc/client_edit.html:40
 #: canaille/templates/oidc/client_list.html:32
 #: canaille/templates/oidc/token_list.html:20
 #: canaille/templates/oidc/token_list.html:34
-#: canaille/templates/oidc/token_list.html:46
+#: canaille/templates/oidc/token_list.html:42
 #: canaille/templates/oidc/token_view.html:38
 msgid "Tokens"
 msgstr "Jetons"
 
-#: canaille/templates/core/mails/admin.html:24
-#: canaille/templates/oidc/authorization_list.html:20
-#: canaille/templates/oidc/authorization_list.html:38
-#: canaille/templates/oidc/authorization_list.html:46
-#: canaille/templates/oidc/authorization_view.html:29
-#: canaille/templates/oidc/client_add.html:38
-#: canaille/templates/oidc/client_edit.html:40
-#: canaille/templates/oidc/client_list.html:36
-#: canaille/templates/oidc/token_list.html:38
-#: canaille/templates/oidc/token_view.html:42
-msgid "Codes"
-msgstr "Codes"
-
-#: canaille/templates/core/mails/admin.html:33
+#: canaille/templates/core/mails/admin.html:29
 msgid "Mail sending test"
 msgstr "Test d'envoi de courriel"
 
-#: canaille/templates/core/mails/admin.html:40
+#: canaille/templates/core/mails/admin.html:36
 msgid ""
 "This form will send a dummy email to the address you want. This should be "
 "used for testing mail configuration."
@@ -1822,50 +1816,50 @@ msgstr ""
 "Ce formulaire enverra un courriel factice à l'adresse que vous indiquerez. À "
 "utiliser pour tester les configurations de courriel."
 
-#: canaille/templates/core/mails/admin.html:58
+#: canaille/templates/core/mails/admin.html:54
 msgid "No mail server has been configured. The mail sending test is disabled."
 msgstr ""
 "Aucun serveur de messagerie n'a été configuré. L'envoi du courriel test est "
 "désactivé."
 
-#: canaille/templates/core/mails/admin.html:69
+#: canaille/templates/core/mails/admin.html:65
 msgid "Email preview"
 msgstr "Prévisualisation des courriels"
 
-#: canaille/templates/core/mails/admin.html:81
+#: canaille/templates/core/mails/admin.html:77
 #: canaille/templates/core/mails/test.html:19
 #: canaille/templates/core/mails/test.txt:1
 msgid "Connectivity test"
 msgstr "Test de connectivité"
 
-#: canaille/templates/core/mails/admin.html:93
+#: canaille/templates/core/mails/admin.html:89
 #: canaille/templates/core/mails/firstlogin.html:19
 #: canaille/templates/core/mails/reset.txt:1
 msgid "Password initialization"
 msgstr "Initialisation du mot de passe"
 
-#: canaille/templates/core/mails/admin.html:117
+#: canaille/templates/core/mails/admin.html:113
 #: canaille/templates/core/mails/email-confirmation.txt:1
 msgid "Email verification"
 msgstr "Vérification de nouvelle adresse email"
 
-#: canaille/templates/core/mails/admin.html:129
+#: canaille/templates/core/mails/admin.html:125
 msgid "Invitation"
 msgstr "Invitation"
 
-#: canaille/templates/core/mails/admin.html:141
+#: canaille/templates/core/mails/admin.html:137
 #: canaille/templates/core/mails/registration.html:19
 #: canaille/templates/core/mails/registration.txt:1
 msgid "Registration"
 msgstr "Inscription"
 
-#: canaille/templates/core/mails/admin.html:154
+#: canaille/templates/core/mails/admin.html:150
 #: canaille/templates/core/mails/compromised_password_check_failure.html:19
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:1
 msgid "Compromised password check failure"
 msgstr "Échec de la vérification de la compromission du mot de passe"
 
-#: canaille/templates/core/mails/admin.html:167
+#: canaille/templates/core/mails/admin.html:163
 msgid "Email one-time passcode"
 msgstr "Code de connexion à usage unique envoyé par email"
 
@@ -2299,7 +2293,6 @@ msgstr "Les groupes doivent avoir au moins un membre"
 #: canaille/templates/core/partial/group-members.html:87
 #: canaille/templates/core/partial/groups.html:31
 #: canaille/templates/core/partial/users.html:81
-#: canaille/templates/oidc/partial/authorization_list.html:31
 #: canaille/templates/oidc/partial/client_list.html:48
 #: canaille/templates/oidc/partial/token_list.html:45
 msgid "No item matches your request"
@@ -2308,7 +2301,6 @@ msgstr "Aucun élément ne correspond à votre requête"
 #: canaille/templates/core/partial/group-members.html:89
 #: canaille/templates/core/partial/groups.html:33
 #: canaille/templates/core/partial/users.html:83
-#: canaille/templates/oidc/partial/authorization_list.html:33
 #: canaille/templates/oidc/partial/client_list.html:50
 #: canaille/templates/oidc/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
@@ -2317,7 +2309,6 @@ msgstr "Essayez peut-être avec des critères différents ?"
 #: canaille/templates/core/partial/group-members.html:92
 #: canaille/templates/core/partial/groups.html:36
 #: canaille/templates/core/partial/users.html:86
-#: canaille/templates/oidc/partial/authorization_list.html:36
 #: canaille/templates/oidc/partial/client_list.html:53
 #: canaille/templates/oidc/partial/token_list.html:50
 #: canaille/templates/oidc/trusted_list.html:120
@@ -2337,9 +2328,9 @@ msgstr ""
 "%(otp)s"
 
 #: canaille/templates/macro/form.html:87
-#: canaille/templates/oidc/client_edit.html:62
-#: canaille/templates/oidc/client_edit.html:71
-#: canaille/templates/oidc/client_edit.html:80
+#: canaille/templates/oidc/client_edit.html:86
+#: canaille/templates/oidc/client_edit.html:95
+#: canaille/templates/oidc/client_edit.html:104
 msgid "This field is not editable"
 msgstr "Ce champ n'est pas modifiable"
 
@@ -2417,11 +2408,6 @@ msgstr "Politique de confidentialité"
 msgid "Terms of service"
 msgstr "Conditions d'utilisation"
 
-#: canaille/templates/oidc/authorization_view.html:11
-#: canaille/templates/oidc/authorization_view.html:36
-msgid "View an authorization"
-msgstr "Voir une autorisation"
-
 #: canaille/templates/oidc/authorize.html:29
 #, python-format
 msgid "The application %(name)s is requesting access to:"
@@ -2470,47 +2456,86 @@ msgid "Accept"
 msgstr "Accepter"
 
 #: canaille/templates/oidc/client_add.html:20
-#: canaille/templates/oidc/client_add.html:45
-#: canaille/templates/oidc/client_list.html:51
+#: canaille/templates/oidc/client_add.html:70
+#: canaille/templates/oidc/client_list.html:47
 msgid "Add an application"
 msgstr "Ajouter une application"
 
-#: canaille/templates/oidc/client_add.html:48
+#: canaille/templates/oidc/client_add.html:46
+#, fuzzy
+#| msgid "Registration"
+msgid "Registration token"
+msgstr "Inscription"
+
+#: canaille/templates/oidc/client_add.html:49
+msgid ""
+"This token can be used to register a new application through the OAuth 2.0 "
+"Dynamic Client Registration Protocol."
+msgstr ""
+
+#: canaille/templates/oidc/client_add.html:50
+#: canaille/templates/oidc/client_edit.html:52
+msgid "Read more…"
+msgstr ""
+
+#: canaille/templates/oidc/client_add.html:57
+#: canaille/templates/oidc/client_edit.html:59
+msgid "Renew"
+msgstr ""
+
+#: canaille/templates/oidc/client_add.html:77
 msgid "Create"
 msgstr "Créer"
 
 #: canaille/templates/oidc/client_edit.html:22
-#: canaille/templates/oidc/client_edit.html:47
+#: canaille/templates/oidc/client_edit.html:71
 msgid "Edit an application"
 msgstr "Éditer une application"
 
-#: canaille/templates/oidc/client_edit.html:49
-msgid "This application is trusted and bypasses user consent"
+#: canaille/templates/oidc/client_edit.html:48
+#, fuzzy
+#| msgid "Secret token"
+msgid "Management token"
+msgstr "Jeton secret"
+
+#: canaille/templates/oidc/client_edit.html:51
+msgid ""
+"This token can be used to edit the application details through the OAuth 2.0 "
+"Dynamic Client Registration Management Protocol."
+msgstr ""
+
+#: canaille/templates/oidc/client_edit.html:73
+#, fuzzy
+#| msgid "This application is trusted and bypasses user consent"
+msgid ""
+"The domain of this application is trusted and thus it bypasses user consent"
 msgstr ""
 "Cette application est fiable et ne nécessite pas de consentement explicite "
 "des utilisateurs"
 
-#: canaille/templates/oidc/client_edit.html:51
+#: canaille/templates/oidc/client_edit.html:75
 msgid "Trusted"
 msgstr "Application de confiance"
 
-#: canaille/templates/oidc/client_edit.html:59
+#: canaille/templates/oidc/client_edit.html:83
 msgid "ID"
 msgstr "ID"
 
-#: canaille/templates/oidc/client_edit.html:68
+#: canaille/templates/oidc/client_edit.html:92
 msgid "Secret"
 msgstr "Secret"
 
-#: canaille/templates/oidc/client_edit.html:77
+#: canaille/templates/oidc/client_edit.html:101
 msgid "Issued at"
 msgstr "Créé le"
 
-#: canaille/templates/oidc/client_edit.html:94
-msgid "New token"
-msgstr "Nouveau jeton"
+#: canaille/templates/oidc/client_edit.html:118
+#, fuzzy
+#| msgid "Access token"
+msgid "New access token"
+msgstr "Jeton d'accès"
 
-#: canaille/templates/oidc/client_edit.html:97
+#: canaille/templates/oidc/client_edit.html:121
 msgid "Delete the client"
 msgstr "Supprimer le client"
 
@@ -2586,63 +2611,61 @@ msgid "Logout"
 msgstr "Déconnexion"
 
 #: canaille/templates/oidc/token_view.html:20
-#: canaille/templates/oidc/token_view.html:49
+#: canaille/templates/oidc/token_view.html:45
 msgid "Token details"
 msgstr "Détails du jeton"
 
-#: canaille/templates/oidc/partial/authorization_list.html:6
 #: canaille/templates/oidc/partial/token_list.html:6
-#: canaille/templates/oidc/token_view.html:56
+#: canaille/templates/oidc/token_view.html:52
 msgid "Application"
 msgstr "Application"
 
-#: canaille/templates/oidc/partial/authorization_list.html:7
 #: canaille/templates/oidc/partial/token_list.html:7
-#: canaille/templates/oidc/token_view.html:64
+#: canaille/templates/oidc/token_view.html:60
 msgid "Subject"
 msgstr "Utilisateur"
 
-#: canaille/templates/oidc/token_view.html:88
+#: canaille/templates/oidc/token_view.html:84
 msgid "Audience"
 msgstr "Audience"
 
-#: canaille/templates/oidc/token_view.html:102
+#: canaille/templates/oidc/token_view.html:98
 msgid "Issue date"
 msgstr "Date d’émission"
 
-#: canaille/templates/oidc/token_view.html:106
+#: canaille/templates/oidc/token_view.html:102
 msgid "Expiration date"
 msgstr "Date d'expiration"
 
-#: canaille/templates/oidc/token_view.html:111
+#: canaille/templates/oidc/token_view.html:107
 msgid "This token has expired."
 msgstr "Le jeton a expiré."
 
-#: canaille/templates/oidc/token_view.html:117
+#: canaille/templates/oidc/token_view.html:113
 msgid "Revokation date"
 msgstr "Date de révocation"
 
-#: canaille/templates/oidc/token_view.html:123
+#: canaille/templates/oidc/token_view.html:119
 msgid "Revoke token"
 msgstr "Révoquer le jeton"
 
-#: canaille/templates/oidc/token_view.html:126
+#: canaille/templates/oidc/token_view.html:122
 msgid "This token has not been revoked"
 msgstr "Le jeton n'a pas été révoqué"
 
-#: canaille/templates/oidc/token_view.html:132
+#: canaille/templates/oidc/token_view.html:128
 msgid "Token type"
 msgstr "Type de jeton"
 
-#: canaille/templates/oidc/token_view.html:136
+#: canaille/templates/oidc/token_view.html:132
 msgid "Access token"
 msgstr "Jeton d'accès"
 
-#: canaille/templates/oidc/token_view.html:147
+#: canaille/templates/oidc/token_view.html:143
 msgid "Refresh token"
 msgstr "Jeton de rafraîchissement"
 
-#: canaille/templates/oidc/token_view.html:149
+#: canaille/templates/oidc/token_view.html:145
 msgid "No refresh token"
 msgstr "Pas de jeton de rafraîchissement"
 
@@ -2683,15 +2706,14 @@ msgstr ""
 msgid "Revoke"
 msgstr "Révoquer"
 
-#: canaille/templates/oidc/partial/authorization_list.html:8
+#: canaille/templates/oidc/partial/client_list.html:7
+msgid "URL"
+msgstr "URL"
+
 #: canaille/templates/oidc/partial/client_list.html:8
 #: canaille/templates/oidc/partial/token_list.html:8
 msgid "Created"
 msgstr "Créé"
-
-#: canaille/templates/oidc/partial/client_list.html:7
-msgid "URL"
-msgstr "URL"
 
 #: canaille/templates/oidc/partial/client_list.html:17
 msgid "Application logo"
@@ -2704,6 +2726,15 @@ msgstr "Cette application est fiable"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Jeton"
+
+#~ msgid "Codes"
+#~ msgstr "Codes"
+
+#~ msgid "View an authorization"
+#~ msgstr "Voir une autorisation"
+
+#~ msgid "New token"
+#~ msgstr "Nouveau jeton"
 
 #, python-format
 #~ msgid "Sign in as %(username)s"
