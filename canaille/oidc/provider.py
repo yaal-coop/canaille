@@ -498,6 +498,10 @@ class ClientRegistrationEndpoint(
         Backend.instance.save(client)
         client.audience = [client]
         Backend.instance.save(client)
+
+        current_app.logger.security(
+            f"OIDC Dynamic Client Creation of {client.client_id}"
+        )
         return client
 
 
@@ -538,6 +542,8 @@ class ClientConfigurationEndpoint(
     def update_client(self, client, client_metadata, request):
         Backend.instance.update(client, **self.client_convert_data(**client_metadata))
         Backend.instance.save(client)
+
+        current_app.logger.security(f"OIDC Dynamic Client update of {client.client_id}")
         return client
 
     def generate_client_registration_info(self, client, request):
