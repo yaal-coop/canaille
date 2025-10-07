@@ -144,7 +144,10 @@ def execute_scim_user_action(client_id, user_id, method):
 def propagate_user_scim_modification(user, method):
     """After a user edition/deletion, broadcast the event to all the clients."""
     for client in get_clients_to_notify(user):
-        execute_scim_user_action.send(client.id, user.id, method)
+        if current_app.features.has_task_worker:
+            execute_scim_user_action.send(client.id, user.id, method)
+        else:
+            execute_scim_user_action(client.id, user.id, method)
 
 
 def execute_scim_group_action(scim, group, client_name, method):

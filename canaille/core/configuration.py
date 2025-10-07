@@ -538,5 +538,5 @@ class CoreSettings(BaseModel):
     of a group called `admin`.
     """
 
-    ENABLE_TASK_WORKER: bool = True
+    ENABLE_TASK_WORKER: bool = False
     """If :py:data:`True`, then Canaille will run a rabbitmq server and dramatiq to run SCIM propagation and e-mail sending asynchronously."""

@@ -48,7 +48,10 @@ def type_from_filename(filename):
 
 
 def send_email(subject, recipient, text, html, attachments=None):
-    return send_email_worker.send(subject, recipient, text, html, attachments)
+    if current_app.features.has_task_worker:
+        return send_email_worker.send(subject, recipient, text, html, attachments)
+    else:
+        return send_email_worker(subject, recipient, text, html, attachments)
 
 
 @dramatiq.actor
