@@ -105,8 +105,12 @@ class RootSettings(BaseSettings):
     """
 
     DRAMATIQ_BROKER: str | None = None
+    """Points to the broker class, like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or `dramatiq.brokers.redis:RedisBroker`.
+    """
 
     DRAMATIQ_BROKER_URL: str | None = None
+    """The URL of the running task worker, passed as `url` keyword argument to broker class
+    """
 
     PREFERRED_URL_SCHEME: str = "https"
     """The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration
