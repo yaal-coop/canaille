@@ -96,7 +96,7 @@ def firstlogin(user):
             "success",
         )
     else:
-        flash(_("Sending password initialization mail."), "info")
+        flash(_("Could not send the password initialization email"), "error")
 
     return render_template("core/auth/firstlogin.html", form=form)
 
@@ -151,8 +151,8 @@ def forgotten():
         flash(success_message, "success")
     else:
         flash(
-            _("Sending a reset password mail."),
-            "info",
+            _("We encountered an issue while we sent the password recovery email."),
+            "error",
         )
 
     if current_app.features.has_trusted_hosts:
