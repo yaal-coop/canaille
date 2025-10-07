@@ -113,22 +113,11 @@ def join():
             _external=True,
         )
 
-        if send_registration_mail(form.email.data, registration_url):
-            flash(
-                _(
-                    "You will receive soon an email to continue the registration process."
-                ),
-                "success",
-            )
-        else:
-            flash(
-                _(
-                    "An error happened while sending your registration mail. "
-                    "Please try again in a few minutes. "
-                    "If this still happens, please contact the administrators."
-                ),
-                "error",
-            )
+        send_registration_mail(form.email.data, registration_url)
+        flash(
+            _("You will receive soon an email to continue the registration process."),
+            "info",
+        )
 
     return render_template("core/join.html", form=form, menu=False)
 
@@ -688,40 +677,28 @@ def profile_settings(user, edited_user):
         return profile_delete(user, edited_user)
 
     if request.form.get("action") == "password-initialization-mail":
-        statuses = [
+        for email in edited_user.emails or []:
             send_password_initialization_mail(edited_user, email)
-            for email in (edited_user.emails or [])
-        ]
-        success = all(statuses)
-        if success:
-            flash(
-                _(
-                    "A password initialization link has been sent at the user email address. "
-                    "It should be received within a few minutes."
-                ),
-                "success",
-            )
-        else:
-            flash(_("Could not send the password initialization email"), "error")
+        flash(
+            _(
+                "Sending password initialization link at the user email address. "
+                "It should be received within a few minutes."
+            ),
+            "info",
+        )
 
         return profile_settings_edit(user, edited_user)
 
     if request.form.get("action") == "password-reset-mail":
-        statuses = [
+        for email in edited_user.emails or []:
             send_password_reset_mail(edited_user, email)
-            for email in (edited_user.emails or [])
-        ]
-        success = all(statuses)
-        if success:
-            flash(
-                _(
-                    "A password reset link has been sent at the user email address. "
-                    "It should be received within a few minutes."
-                ),
-                "success",
-            )
-        else:
-            flash(_("Could not send the password reset email"), "error")
+        flash(
+            _(
+                "Sending password reset link at the user email address. "
+                "It should be received within a few minutes."
+            ),
+            "info",
+        )
 
         return profile_settings_edit(user, edited_user)
 

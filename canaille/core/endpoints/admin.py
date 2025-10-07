@@ -38,10 +38,8 @@ class MailTestForm(Form):
 def mail_index(user):
     form = MailTestForm(request.form or None)
     if request.form and form.validate():
-        if send_test_mail(form.email.data):
-            flash(_("The test mail has been sent correctly"), "success")
-        else:
-            flash(_("The test mail has not been sent correctly"), "error")
+        send_test_mail(form.email.data)
+        flash(_("Sending test mail. Please check the recipient mail box."), "info")
 
     return render_template("core/mails/admin.html", form=form, menuitem="admin")
 

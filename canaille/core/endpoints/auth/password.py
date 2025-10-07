@@ -83,20 +83,16 @@ def firstlogin(user):
 
     form.validate()
 
-    statuses = [
-        send_password_initialization_mail(user, email) for email in (user.emails or [])
-    ]
-    success = all(statuses)
-    if success:
-        flash(
-            _(
-                "A password initialization link has been sent at your email address. "
-                "You should receive it within a few minutes."
-            ),
-            "success",
-        )
-    else:
-        flash(_("Could not send the password initialization email"), "error")
+    for email in user.emails or []:
+        send_password_initialization_mail(user, email)
+
+    flash(
+        _(
+            "Sending password initialization link at your email address. "
+            "It should be received within a few minutes."
+        ),
+        "info",
+    )
 
     return render_template("core/auth/firstlogin.html", form=form)
 
@@ -118,14 +114,14 @@ def forgotten():
         return render_template("core/auth/forgotten-password.html", form=form)
 
     user = get_user_from_login(form.login.data)
-    success_message = _(
-        f"A password reset {item_name} has been sent at your email address. "
+    sending_message = _(
+        f"Sending password reset {item_name} at your email address. "
         "You should receive it within a few minutes."
     )
     if current_app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] and (
         not user or not user.can_edit_self or user.locked
     ):
-        flash(success_message, "success")
+        flash(sending_message, "info")
         return render_template("core/auth/forgotten-password.html", form=form)
 
     if not user.can_edit_self:
@@ -141,19 +137,13 @@ def forgotten():
 
     success = True
     for email in user.emails or []:
-        if not send_password_reset_mail(user, email):
-            success = False
+        send_password_reset_mail(user, email)
         current_app.logger.security(
             f"Sending a reset password mail to {email} for {user.user_name}"
         )
 
     if success:
-        flash(success_message, "success")
-    else:
-        flash(
-            _("We encountered an issue while we sent the password recovery email."),
-            "error",
-        )
+        flash(sending_message, "info")
 
     if current_app.features.has_trusted_hosts:
         return render_template("core/auth/forgotten-password.html", form=form)
