@@ -643,13 +643,7 @@ def profile_edition(user, edited_user):
                 "success",
             )
         else:
-            flash(
-                _(
-                    "Sending a verification email"
-                    "Please check your inbox and click on the verification link it contains"
-                ),
-                "info",
-            )
+            flash(_("Could not send the verification email"), "error")
 
         return redirect(
             url_for("core.account.profile_edition", edited_user=edited_user)
@@ -708,7 +702,7 @@ def profile_settings(user, edited_user):
                 "success",
             )
         else:
-            flash(_("Sending a password initialisation link"), "info")
+            flash(_("Could not send the password initialization email"), "error")
 
         return profile_settings_edit(user, edited_user)
 
@@ -727,7 +721,7 @@ def profile_settings(user, edited_user):
                 "success",
             )
         else:
-            flash(_("Sending a password reset email"), "info")
+            flash(_("Could not send the password reset email"), "error")
 
         return profile_settings_edit(user, edited_user)
 
