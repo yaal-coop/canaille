@@ -1,9 +1,10 @@
+import logging
 from unittest import mock
 
 from canaille.app import models
 
 
-def test_user_without_password_first_login(testclient, backend, smtpd):
+def test_user_without_password_first_login(testclient, backend, smtpd, caplog):
     assert len(smtpd.messages) == 0
     u = models.User(
         formatted_name="Temp User",
@@ -23,10 +24,10 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
 
     res = res.form.submit(name="action", value="sendmail")
     assert (
-        "success",
-        "A password initialization link has been sent at your email address. "
-        "You should receive it within a few minutes.",
-    ) in res.flashes
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
     assert len(smtpd.messages) == 2
     assert [message["X-RcptTo"] for message in smtpd.messages] == u.emails
     assert "Password initialization" in smtpd.messages[0].get("Subject")
@@ -35,7 +36,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
 
 @mock.patch("smtplib.SMTP")
 def test_first_login_account_initialization_mail_sending_failed(
-    SMTP, testclient, backend, smtpd
+    SMTP, testclient, backend, smtpd, caplog
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     assert len(smtpd.messages) == 0
@@ -51,11 +52,10 @@ def test_first_login_account_initialization_mail_sending_failed(
     res = testclient.get("/firstlogin/temp")
     res = res.form.submit(name="action", value="sendmail", expect_errors=True)
     assert (
-        "success",
-        "A password initialization link has been sent at your email address. "
-        "You should receive it within a few minutes.",
-    ) not in res.flashes
-    assert ("error", "Could not send the password initialization email") in res.flashes
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
     assert len(smtpd.messages) == 0
     backend.delete(u)
 

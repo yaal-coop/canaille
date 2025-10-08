@@ -265,9 +265,10 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
     assert (
-        "info",
-        "We have informed your administrator about the failure of the password compromise investigation.",
-    ) in res.flashes
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
     assert ("success", "Profile updated successfully.") in res.flashes
     assert len(smtpd.messages) == 1
 
@@ -297,11 +298,10 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
     assert (
-        "error",
-        "An error occurred while communicating the incident to the administrators. "
-        "Please update your password as soon as possible. "
-        "If this still happens, please contact the administrators.",
-    ) in res.flashes
+        "canaille",
+        logging.WARNING,
+        "Could not send email: SMTP AUTH extension not supported by server.",
+    ) in caplog.record_tuples
     assert ("success", "Profile updated successfully.") in res.flashes
     assert len(smtpd.messages) == 0
 
@@ -392,7 +392,7 @@ def test_password_change(testclient, logged_user, backend, caplog):
     assert backend.check_user_password(logged_user, "i'm a little chickpea")[0]
 
 
-def test_password_change_fail(testclient, logged_user, backend):
+def test_password_change_fail(testclient, logged_user, backend, caplog):
     res = testclient.get("/profile/user/settings", status=200)
 
     res.form["password1"] = "i'm a little pea"
@@ -414,7 +414,7 @@ def test_password_change_fail(testclient, logged_user, backend):
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
 
-def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
+def test_password_initialization_mail(smtpd, testclient, backend, logged_admin, caplog):
     u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
@@ -429,10 +429,10 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
 
     res = res.form.submit(name="action", value="password-initialization-mail")
     assert (
-        "success",
-        "A password initialization link has been sent at the user email address. "
-        "It should be received within a few minutes.",
-    ) in res.flashes
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
     assert len(smtpd.messages) == 1
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.test"
 
@@ -448,7 +448,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin):
 
 @mock.patch("smtplib.SMTP")
 def test_password_initialization_mail_send_fail(
-    SMTP, smtpd, testclient, backend, logged_admin
+    SMTP, smtpd, testclient, backend, logged_admin, caplog
 ):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     u = models.User(
@@ -467,11 +467,10 @@ def test_password_initialization_mail_send_fail(
         name="action", value="password-initialization-mail", expect_errors=True
     )
     assert (
-        "success",
-        "A password initialization link has been sent at the user email address. "
-        "It should be received within a few minutes.",
-    ) not in res.flashes
-    assert ("error", "Could not send the password initialization email") in res.flashes
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
     assert len(smtpd.messages) == 0
 
     backend.delete(u)
@@ -537,7 +536,7 @@ def test_invalid_form_request(testclient, logged_admin):
     res = res.form.submit(name="action", value="invalid-action", status=400)
 
 
-def test_password_reset_email(smtpd, testclient, backend, logged_admin):
+def test_password_reset_email(smtpd, testclient, backend, logged_admin, caplog):
     u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
@@ -553,10 +552,10 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
 
     res = res.form.submit(name="action", value="password-reset-mail")
     assert (
-        "success",
-        "A password reset link has been sent at the user email address. "
-        "It should be received within a few minutes.",
-    ) in res.flashes
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
     assert len(smtpd.messages) == 1
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.test"
 
@@ -564,7 +563,9 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin):
 
 
 @mock.patch("smtplib.SMTP")
-def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_admin):
+def test_password_reset_email_failed(
+    SMTP, smtpd, testclient, backend, logged_admin, caplog
+):
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     u = models.User(
         formatted_name="Temp User",
@@ -583,11 +584,10 @@ def test_password_reset_email_failed(SMTP, smtpd, testclient, backend, logged_ad
         name="action", value="password-reset-mail", expect_errors=True
     )
     assert (
-        "success",
-        "A password reset link has been sent at the user email address. "
-        "It should be received within a few minutes.",
-    ) not in res.flashes
-    assert ("error", "Could not send the password reset email") in res.flashes
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
     assert len(smtpd.messages) == 0
 
     backend.delete(u)
