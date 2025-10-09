@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-05-06 17:48+0200\n"
-"PO-Revision-Date: 2025-09-13 20:01+0000\n"
-"Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2025-10-10 20:07+0000\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -9787,65 +9787,58 @@ msgstr ""
 
 #: ../tutorial/sso.rst:39 723ede5f84124ad4948ff5aa9e55f9ef
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: ../tutorial/sso.rst:41 08f51924ed794cdea9c24cbc4ad1656c
 msgid ""
 "This is the name that will be displayed on the web interface, and notably on "
 "the consent page."
 msgstr ""
+"Le nom qui sera affiché sur l'interface web, notamment sur la page de "
+"consentement."
 
 #: ../tutorial/sso.rst:44 c84caddb43d247bb85fe7d23613424bc
 msgid "Contacts"
-msgstr ""
+msgstr "Contacts"
 
 #: ../tutorial/sso.rst:46 b6a7960bac2443e18fb8bc939ae62273
 msgid "Those are the email addresses of people responsible for the client."
-msgstr ""
+msgstr "Ce sont les adresses e-mail des personnes responsables du client."
 
 #: ../tutorial/sso.rst:49 45709baec984457291988396917a87e3
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: ../tutorial/sso.rst:54 f393ae1e397d4b7fbd6b941f02ecfa14
 msgid "Redirect URIs"
-msgstr ""
+msgstr "URI de redirection"
 
 #: ../tutorial/sso.rst:56 ee56188b4258460da29586fddd5f0b2c
-#, fuzzy
-#| msgid ""
-#| "Array of redirection URI strings for use in redirect-based flows such as "
-#| "the authorization code and implicit flows."
 msgid ""
 "URIs for use in redirect-based flows such as the authorization code and "
 "implicit flows."
 msgstr ""
-"Tableau de chaîne de caractères de redirection URI à utiliser pour les flux "
-"basés sur les redirections tel que le code d'autorisation et les flux "
-"implicites."
+"URIs qui peuvent servir au flux d'authentification comprenant des "
+"redirections, tels le code d'autorisation ou le flux implicite."
 
 #: ../tutorial/sso.rst:59 80eeb69075a14d00bcb003b902ce07c2
 msgid "Post logout redirect URIs"
-msgstr ""
+msgstr "URI de redirection post-déconnexion"
 
 #: ../tutorial/sso.rst:61 575ede0e3a3b4e11ab0e602434bc8bd8
 msgid "URIs that the client may redirect users to after logging them out."
 msgstr ""
+"Les URI vers lesquelles le client peut rediriger les utilisateurs après "
+"déconnexion."
 
 #: ../tutorial/sso.rst:66 1452ba8993494608ac49f20f1e3a2a82
 msgid "Grant types"
-msgstr ""
+msgstr "Types de consentement"
 
 #: ../tutorial/sso.rst:68 8dc52c6c2d3c4f08a8a0e010ce31d218
-#, fuzzy
-#| msgid ""
-#| "Array of OAuth 2.0 grant type strings that the client can use at the "
-#| "token endpoint.  These grant types are defined as follows:"
 msgid "Grant types that the client can use at the token endpoint."
 msgstr ""
-"Tableau de chaînes de caractères de type autorisation (« grant ») OAuth 2.0 "
-"que le client peut utiliser au terminal jeton. Ces types d'autorisation sont "
-"définies comme suit :"
+"Types de consentement que le client peut utiliser sur le terminal de jetons."
 
 #: ../tutorial/sso.rst:70 279b1b0559ba4dc391ea242b397821ad
 msgid ""
@@ -9900,11 +9893,12 @@ msgstr ""
 
 #: ../tutorial/sso.rst:84 2c214208e758408c85cb7cd6ee44621d
 msgid "Scope"
-msgstr ""
+msgstr "Portée"
 
 #: ../tutorial/sso.rst:86 1d76ee7cb72240b9a3bc18545bbe0d90
 msgid "Kind of information that the client can request about users."
 msgstr ""
+"Type d'informations que le client peut demander à propos des utilisateurs."
 
 #: ../tutorial/sso.rst:88 8c8b936b18ef4912b2ee42e4d8139b80
 msgid ""
@@ -9957,18 +9951,12 @@ msgstr ""
 
 #: ../tutorial/sso.rst:103 2ed259b05a854e44958c586d1bb5fa81
 msgid "Response types"
-msgstr ""
+msgstr "Types de réponse"
 
 #: ../tutorial/sso.rst:105 503582a91de34837b8bc25813bcaaa1e
-#, fuzzy
-#| msgid ""
-#| "Array of the OAuth 2.0 response type strings that the client can use at "
-#| "the authorization endpoint.  These response types are defined as follows:"
 msgid "Response types that the client can use at the authorization endpoint."
 msgstr ""
-"Tableau de chaînes de caractères de type réponse OAuth 2.0 que le client "
-"peut utiliser dans un terminal d'autorisation. Ces types de réponse sont "
-"définies comme suit :"
+"Types de réponse que le client peut utiliser sur le terminal d'autorisation."
 
 #: ../tutorial/sso.rst:107 c9a8a949afc445ca84de9d9054809949
 msgid ""
@@ -9989,6 +9977,7 @@ msgstr "Méthode d'authentification du point terminal des jetons"
 #: ../tutorial/sso.rst:113 ee12706741134633a4ff5a97c2c3eb22
 msgid "Authentication method that the client will use at the token endpoint."
 msgstr ""
+"Méthode d'authentification que le client utilise sur le terminal de jeton."
 
 #: ../tutorial/sso.rst:115 aad5fdb7c94a4ba09f4f8937f68a8be5
 msgid ""
