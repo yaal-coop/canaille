@@ -42,6 +42,9 @@
                                 {{ watched_user.identifier }}
                             {% endif %}
                         </a>
+                        {% if edited_group and edited_group.owner == watched_user %}
+                            <i class="star yellow icon" title="{% trans %}Group owner{% endtrans %}"></i>
+                        {% endif %}
                     </td>
                 {% endif %}
                 {% if user.can_read("family_name") or user.can_read("given_name") %}

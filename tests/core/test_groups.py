@@ -165,6 +165,7 @@ def test_moderator_can_create_edit_and_delete_group(
     assert bar_group.members == [
         logged_moderator
     ]  # Group cannot be empty so creator is added in it
+    assert bar_group.owner == logged_moderator  # Group creator should be added as owner
     res.mustcontain("bar")
 
     # Group name can not be edited

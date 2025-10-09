@@ -269,6 +269,21 @@ PASSWORD = "user"
 # members of a group called `admin`.
 
 [CANAILLE.ACL.DEFAULT]
+# A list of Permission users in the access control will be able to manage.
+#
+# By default, users can edit their own profile, use OpenID Connect, and create
+# their own groups.
+#
+# For example:
+#
+#     PERMISSIONS = [
+#         "manage_users",
+#         "manage_groups",
+#         "manage_oidc",
+#         "delete_account",
+#         "impersonate_users",
+#     ]
+PERMISSIONS = ["edit_self", "use_oidc"]
 
 # A list of User attributes that users in the ACL will be able to read.
 READ = ["user_name", "groups"]
@@ -316,6 +331,9 @@ WRITE = [
 [CANAILLE.ACL.ADMIN]
 # A list of Permission users in the access control will be able to manage.
 #
+# By default, users can edit their own profile, use OpenID Connect, and create
+# their own groups.
+#
 # For example:
 #
 #     PERMISSIONS = [
@@ -359,6 +377,9 @@ FILTER = [
 
 [CANAILLE.ACL.MODERATOR]
 # A list of Permission users in the access control will be able to manage.
+#
+# By default, users can edit their own profile, use OpenID Connect, and create
+# their own groups.
 #
 # For example:
 #

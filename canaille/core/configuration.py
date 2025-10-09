@@ -105,6 +105,9 @@ class Permission(str, Enum):
     MANAGE_GROUPS = "manage_groups"
     """Allows group edition and creation."""
 
+    CREATE_GROUPS = "create_groups"
+    """Allows users to create their own groups and manage groups they own."""
+
     DELETE_ACCOUNT = "delete_account"
     """Allows users to delete their account.
 
@@ -124,9 +127,11 @@ class ACLSettings(BaseModel):
     to :attr:`READ` and :attr:`WRITE`. Users matching several filters will cumulate permissions.
     """
 
-    PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC]
+    PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC, Permission.CREATE_GROUPS]
     """A list of :class:`Permission` users in the access control will be able
     to manage.
+
+    By default, users can edit their own profile, use OpenID Connect, and create their own groups.
 
     For example:
 

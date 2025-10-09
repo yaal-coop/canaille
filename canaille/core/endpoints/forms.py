@@ -392,6 +392,23 @@ class DeleteGroupMemberForm(Form):
     )
 
 
+class GroupInvitationForm(Form):
+    """The group invitation form."""
+
+    email = wtforms.EmailField(
+        _("Email address"),
+        validators=[
+            wtforms.validators.DataRequired(),
+            email_validator,
+        ],
+        render_kw={
+            "placeholder": _("jane.doe@example.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+
+
 class JoinForm(Form):
     email = wtforms.EmailField(
         _("Email address"),

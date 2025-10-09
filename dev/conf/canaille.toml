@@ -11,7 +11,7 @@ HOST = "maildump.localhost"
 PORT = 1025
 
 [CANAILLE.ACL.DEFAULT]
-PERMISSIONS = ["edit_self", "use_oidc"]
+PERMISSIONS = ["edit_self", "use_oidc", "create_groups"]
 READ = [
     "user_name",
     "groups",

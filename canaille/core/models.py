@@ -9,7 +9,6 @@ from pydantic import TypeAdapter
 
 from canaille.app import build_hash
 from canaille.backends.models import Model
-from canaille.core.configuration import Permission
 
 OTP_DIGITS = 6
 OTP_VALIDITY = 600
@@ -266,6 +265,14 @@ class User(Model):
     "readOnly".
     """
 
+    @property
+    def owned_groups(self) -> list["Group"]:
+        """A list of groups that the user owns and can manage."""
+        from canaille.backends import Backend
+
+        return Backend.instance.query(Group, owner=self)
+
+
     lock_date: datetime.datetime | None = None
     """A DateTime indicating when the resource was locked."""
 
@@ -321,7 +328,7 @@ class User(Model):
                 return self.can(name[len(prefix) :])
             raise
 
-    def can(self, *permissions: Permission):
+    def can(self, *permissions):
         """Whether or not the user has the :class:`~canaille.core.configuration.Permission` according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._permissions is None:
             self._permissions = set()
@@ -490,7 +497,39 @@ class Group(Model):
     "Group" resource schema.
     """
 
+    owner: Annotated["User", {}] | None = None
+    """The user who can manage this group.
+
+    The group owner has the ability to edit the group description,
+    invite new members, and remove members from the group.
+    """
+
+
     description: str | None = None
+
+    def user_can_edit(self, user: "User") -> bool:
+        """Check if a user can edit this group.
+
+        Returns True if the user has manage_groups permission or is the owner of the group
+        and has create_groups permission.
+        """
+        from canaille.core.configuration import Permission
+
+        return (
+            user.can(Permission.MANAGE_GROUPS)
+            or (user == self.owner and user.can(Permission.CREATE_GROUPS))
+        )
+
+
+    def user_can_delete(self, user: "User") -> bool:
+        """Check if a user can delete this group.
+
+        Only users with manage_groups permission can delete groups.
+        """
+        from canaille.core.configuration import Permission
+
+        return user.can(Permission.MANAGE_GROUPS)
+
 
 
 def string_code(code: int, digit: int) -> str:

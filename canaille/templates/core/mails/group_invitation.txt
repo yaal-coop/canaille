@@ -1,0 +1,9 @@
+# {% trans %}Group Invitation{% endtrans %}
+
+{% trans inviter_name=inviter_name, group_name=group_name %}{{ inviter_name }} has invited you to join the group "{{ group_name }}" on {{ site_name }}.{% endtrans %}
+
+{% trans %}To accept this invitation, click on the link below:{% endtrans %}
+
+{% trans %}Join Group{% endtrans %}: {{ invitation_url }}
+
+{{ site_name }}: {{ site_url }}

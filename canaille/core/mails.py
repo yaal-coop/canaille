@@ -293,3 +293,41 @@ def send_one_time_password_mail(mail, otp):
         html=html_body,
         attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
+
+
+def send_group_invitation_mail(email, invitation_url, group_name, inviter_name):
+    base_url = url_for("core.account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("Invitation to join {group_name} on {website_name}").format(
+        group_name=group_name,
+        website_name=current_app.config["CANAILLE"]["NAME"],
+    )
+    text_body = render_template(
+        "core/mails/group_invitation.txt",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        invitation_url=invitation_url,
+        group_name=group_name,
+        inviter_name=inviter_name,
+    )
+    html_body = render_template(
+        "core/mails/group_invitation.html",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        invitation_url=invitation_url,
+        group_name=group_name,
+        inviter_name=inviter_name,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+        title=subject,
+    )
+
+    return send_email(
+        subject=subject,
+        recipient=email,
+        text=text_body,
+        html=html_body,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )
+
+

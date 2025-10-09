@@ -258,6 +258,9 @@ DATABASE = "memory"
 [CANAILLE.ACL.ADMIN]
 # A list of Permission users in the access control will be able to manage.
 #
+# By default, users can edit their own profile, use OpenID Connect, and create
+# their own groups.
+#
 # For example:
 #
 #     PERMISSIONS = [

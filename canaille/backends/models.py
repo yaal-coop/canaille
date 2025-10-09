@@ -69,11 +69,13 @@ class Model:
                     if issubclass(klass, Model) and not issubclass(klass, BackendModel)
                 )
             )
-            # only keep types that are not ClassVar
+            # only keep types that are not ClassVar and not properties
             cls._attributes = {
                 key: value
                 for key, value in annotations.items()
-                if get_origin(value) is not ClassVar and not key.startswith("_")
+                if get_origin(value) is not ClassVar
+                and not key.startswith("_")
+                and not isinstance(getattr(cls, key, None), property)
             }
         return cls._attributes
 
