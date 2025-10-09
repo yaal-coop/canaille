@@ -5,11 +5,11 @@ Create Date: 2025-10-09
 
 """
 
-revision = "1760000353"
-down_revision = "1758051913"
-
 import sqlalchemy as sa
 from alembic import op
+
+revision = "1760000353"
+down_revision = "1758051913"
 
 
 def upgrade():

@@ -272,7 +272,6 @@ class User(Model):
 
         return Backend.instance.query(Group, owner=self)
 
-
     lock_date: datetime.datetime | None = None
     """A DateTime indicating when the resource was locked."""
 
@@ -504,7 +503,6 @@ class Group(Model):
     invite new members, and remove members from the group.
     """
 
-
     description: str | None = None
 
     def user_can_edit(self, user: "User") -> bool:
@@ -515,11 +513,9 @@ class Group(Model):
         """
         from canaille.core.configuration import Permission
 
-        return (
-            user.can(Permission.MANAGE_GROUPS)
-            or (user == self.owner and user.can(Permission.CREATE_GROUPS))
+        return user.can(Permission.MANAGE_GROUPS) or (
+            user == self.owner and user.can(Permission.CREATE_GROUPS)
         )
-
 
     def user_can_delete(self, user: "User") -> bool:
         """Check if a user can delete this group.
@@ -529,7 +525,6 @@ class Group(Model):
         from canaille.core.configuration import Permission
 
         return user.can(Permission.MANAGE_GROUPS)
-
 
 
 def string_code(code: int, digit: int) -> str:

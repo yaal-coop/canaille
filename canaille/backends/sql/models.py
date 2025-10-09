@@ -177,8 +177,6 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
             self._password_failure_timestamps = dates_list
 
 
-
-
 class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     __tablename__ = "group"
 

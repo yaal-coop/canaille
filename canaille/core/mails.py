@@ -329,5 +329,3 @@ def send_group_invitation_mail(email, invitation_url, group_name, inviter_name):
         html=html_body,
         attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
     )
-
-

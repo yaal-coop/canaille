@@ -127,7 +127,11 @@ class ACLSettings(BaseModel):
     to :attr:`READ` and :attr:`WRITE`. Users matching several filters will cumulate permissions.
     """
 
-    PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC, Permission.CREATE_GROUPS]
+    PERMISSIONS: list[Permission] = [
+        Permission.EDIT_SELF,
+        Permission.USE_OIDC,
+        Permission.CREATE_GROUPS,
+    ]
     """A list of :class:`Permission` users in the access control will be able
     to manage.
 

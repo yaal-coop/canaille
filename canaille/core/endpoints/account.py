@@ -204,9 +204,7 @@ class GroupInvitationPayload:
         return datetime.datetime.fromisoformat(self.expiration_date_isoformat)
 
     def has_expired(self):
-        return datetime.datetime.now(
-            datetime.timezone.utc
-        ) > self.expiration_date
+        return datetime.datetime.now(datetime.timezone.utc) > self.expiration_date
 
     def b64(self):
         return obj_to_b64(astuple(self))

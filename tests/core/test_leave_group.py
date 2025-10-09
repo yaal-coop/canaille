@@ -1,7 +1,6 @@
-
-
-
-def test_groups_page_includes_actions_column(testclient, logged_moderator, foo_group, bar_group):
+def test_groups_page_includes_actions_column(
+    testclient, logged_moderator, foo_group, bar_group
+):
     """Test that the groups page includes an Actions column in the table."""
     # Access groups page as logged moderator
     res = testclient.get("/groups/", status=200)
