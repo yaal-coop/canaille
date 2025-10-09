@@ -251,10 +251,10 @@ def test_client_delete(testclient, logged_admin, backend):
     res = res.form.submit(name="action", value="delete")
     res = res.follow()
 
-    assert not backend.get(models.Client)
-    assert not backend.get(models.Token)
-    assert not backend.get(models.AuthorizationCode)
-    assert not backend.get(models.Consent)
+    assert not backend.get(models.Client, client_id="client_id")
+    assert not backend.get(models.Token, token_id="id")
+    assert not backend.get(models.AuthorizationCode, authorization_code_id="id")
+    assert not backend.get(models.Consent, consent_id="consent_id")
 
 
 def test_client_delete_invalid_client(testclient, logged_admin, client):

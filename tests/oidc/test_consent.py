@@ -163,15 +163,13 @@ def test_trusted_client_appears_in_consent_list(
 def test_revoke_trusted_client(testclient, client, logged_user, token, backend):
     client.client_uri = "https://client.trusted.test"
     backend.save(client)
-    assert not backend.get(models.Consent)
+    assert not backend.get(models.Consent, client=client, subject=logged_user)
     assert not token.revoked
 
     res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     assert ("success", "The access has been revoked") in res.flashes
 
-    consent = backend.get(models.Consent)
-    assert consent.client == client
-    assert consent.subject == logged_user
+    consent = backend.get(models.Consent, client=client, subject=logged_user)
     assert consent.scope == ["openid", "email", "profile", "groups", "address", "phone"]
     assert not consent.issue_date
     backend.reload(token)
