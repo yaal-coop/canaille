@@ -9,6 +9,7 @@ from pydantic import TypeAdapter
 
 from canaille.app import build_hash
 from canaille.backends.models import Model
+from canaille.core.configuration import Permission
 
 OTP_DIGITS = 6
 OTP_VALIDITY = 600
@@ -265,13 +266,6 @@ class User(Model):
     "readOnly".
     """
 
-    @property
-    def owned_groups(self) -> list["Group"]:
-        """A list of groups that the user owns and can manage."""
-        from canaille.backends import Backend
-
-        return Backend.instance.query(Group, owner=self)
-
     lock_date: datetime.datetime | None = None
     """A DateTime indicating when the resource was locked."""
 
@@ -327,7 +321,7 @@ class User(Model):
                 return self.can(name[len(prefix) :])
             raise
 
-    def can(self, *permissions):
+    def can(self, *permissions: Permission):
         """Whether or not the user has the :class:`~canaille.core.configuration.Permission` according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._permissions is None:
             self._permissions = set()

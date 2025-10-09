@@ -14,7 +14,6 @@ down_revision = "1758051913"
 
 def upgrade():
     """Add group owner field and group_invitation table."""
-    # Add owner_id column to group table
     op.add_column("group", sa.Column("owner_id", sa.String(), nullable=True))
 
 

@@ -410,3 +410,160 @@ def test_confirm_remove_member_already_deleted(
         "error",
         "The user you are trying to remove does not exist.",
     ) in res.flashes
+
+
+def test_moderator_sees_groups_they_belong_to(
+    testclient, logged_moderator, foo_group, bar_group, backend
+):
+    """Test that moderators can see groups they belong to.
+
+    Note: Moderators have manage_groups permission so they see all groups,
+    not just the ones they belong to.
+    """
+    # Access groups page as logged moderator
+    res = testclient.get("/groups/", status=200)
+
+    # Should see all groups (because moderator has manage_groups permission)
+    assert foo_group.display_name in res.text
+    assert bar_group.display_name in res.text
+
+
+def test_moderator_can_click_all_groups_because_of_manage_groups_permission(
+    testclient, logged_moderator, foo_group, bar_group
+):
+    """Test that moderators can click on all groups because they have manage_groups permission."""
+    # Access groups page as logged moderator
+    res = testclient.get("/groups/", status=200)
+
+    # Should see both groups
+    assert foo_group.display_name in res.text
+    assert bar_group.display_name in res.text
+
+    # Both groups should be clickable (moderator has manage_groups permission)
+    assert f'<a href="/groups/{foo_group.display_name}">' in res.text
+    assert f'<a href="/groups/{bar_group.display_name}">' in res.text
+
+
+def test_admin_user_can_see_and_click_all_groups(
+    testclient, logged_admin, foo_group, bar_group
+):
+    """Test that admin users can see and click on all groups."""
+    # Access groups page as admin
+    res = testclient.get("/groups/", status=200)
+
+    # Should see all groups
+    assert foo_group.display_name in res.text
+    assert bar_group.display_name in res.text
+
+    # Both should be clickable
+    assert f'<a href="/groups/{foo_group.display_name}">' in res.text
+    assert f'<a href="/groups/{bar_group.display_name}">' in res.text
+
+
+def test_group_linking_behavior_works(
+    testclient, logged_moderator, foo_group, bar_group
+):
+    """Test that clicking on groups works correctly."""
+    # Access groups page as logged moderator
+    res = testclient.get("/groups/", status=200)
+
+    # Should see the group
+    assert foo_group.display_name in res.text
+
+    # Should be clickable (moderator has manage_groups)
+    assert f'<a href="/groups/{foo_group.display_name}">' in res.text
+
+    # Actually click on the group to verify it works
+    group_link = res.click(foo_group.display_name)
+    assert group_link.status_code == 200
+    assert "Invite Members" in group_link.text
+
+
+def test_icons_are_clickable_for_admin_users(
+    testclient, logged_admin, foo_group, bar_group
+):
+    """Test that icons are clickable for admin users."""
+    # Access groups page as admin
+    res = testclient.get("/groups/", status=200)
+
+    # Both groups should have clickable icons with black inverted style
+    # Count how many clickable icons appear
+    assert "users circular black inverted icon" in res.text
+
+    # Should not have any grey non-clickable icons
+    assert "users circular grey icon" not in res.text
+
+
+def test_group_owner_star_icon_displayed(
+    testclient, logged_moderator, foo_group, bar_group, backend
+):
+    """Test that the group owner is displayed with a star icon on the group page."""
+    # Set logged_moderator as the owner of foo_group
+    foo_group.owner = logged_moderator
+    foo_group.members = [logged_moderator]  # Make sure moderator is a member
+    backend.save(foo_group)
+
+    # Access the foo_group page where logged_moderator should be the owner
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Should see the group owner star icon and tooltip
+    assert "star yellow icon" in res.text
+    assert "Group owner" in res.text
+
+    # The star should appear in the members table
+    assert "moderator" in res.text  # moderator user should be displayed
+
+
+def test_group_owner_star_only_for_owner(
+    testclient, logged_admin, foo_group, user, backend
+):
+    """Test that the star icon only appears for the actual group owner."""
+    # Set admin as owner and add regular user to the group
+    foo_group.owner = logged_admin
+    foo_group.members = [logged_admin, user]
+    backend.save(foo_group)
+
+    # Access the group page
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Should see the star icon (for the owner)
+    assert "star yellow icon" in res.text
+    assert "Group owner" in res.text
+
+    # Both users should be listed but only one should have a star
+    # Count the number of star icons - should be exactly 1 (only in username column)
+    star_count = res.text.count("star yellow icon")
+    assert star_count == 1  # One star for the owner (only in username column)
+
+
+def test_no_star_when_no_owner(testclient, logged_admin, foo_group, backend):
+    """Test that no star is displayed when group has no owner."""
+    # Remove the owner
+    foo_group.owner = None
+    backend.save(foo_group)
+
+    # Access the group page
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Should not see any star icons
+    assert "star yellow icon" not in res.text
+    assert "Group owner" not in res.text
+
+
+def test_groups_page_includes_actions_column(
+    testclient, logged_moderator, foo_group, bar_group
+):
+    """Test that the groups page includes an Actions column in the table."""
+    # Access groups page as logged moderator
+    res = testclient.get("/groups/", status=200)
+
+    # Should see Actions column header
+    assert "Actions" in res.text
+
+    # Should see both groups
+    assert foo_group.display_name in res.text
+    assert bar_group.display_name in res.text
+
+    # Should NOT see Leave button for any group (moderator has manage_groups permission)
+    # Because moderators can edit all groups, they don't see Leave buttons
+    assert "Leave" not in res.text

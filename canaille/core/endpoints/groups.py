@@ -37,30 +37,23 @@ def groups(user):
     if not (user.can("manage_groups") or user.can("create_groups")):
         abort(403)
 
-    # Handle leave group confirmation modal
     if request.form.get("action") == "confirm-leave":
         group_id = request.form.get("group_id")
         if not group_id:
             abort(400)
+
         group = Backend.instance.get(models.Group, id=group_id)
         if not group:
             abort(404)
+
         if user not in group.members:
             flash(_("You are not a member of this group."), "error")
             return redirect(url_for("core.groups.groups"))
+
         return render_template("core/modals/leave-group.html", group=group)
 
-    # Users with manage_groups can see all groups
-    # Users with create_groups can see all groups they belong to
-    filter_params = {}
-    if user.can("manage_groups"):
-        # Admin can see all groups
-        pass
-    elif user.can("create_groups"):
-        # Regular users can see all groups they belong to
-        filter_params["members"] = user
-
-    table_form = TableForm(models.Group, formdata=request.form, filter=filter_params)
+    filter = {"members": user} if not user.can("manage_groups") else {}
+    table_form = TableForm(models.Group, formdata=request.form, filter=filter)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
@@ -227,10 +220,8 @@ def leave_group(user, group):
         flash(_("You are not a member of this group."), "error")
         return redirect(url_for("core.account.index"))
 
-    # Remove user from group
     group.members = [member for member in group.members if member != user]
 
-    # Also remove from owner if they are the owner
     if user == group.owner:
         group.owner = None
 
@@ -248,14 +239,12 @@ def invite_to_group(user, group):
         abort(403)
 
     form = GroupInvitationForm(request.form or None)
-    email_sent = None
-    invitation_url = None
+    email_sent = False
     form_validated = False
+    invitation_url = None
 
     if request.form and form.validate():
         form_validated = True
-
-        # Check if user with this email exists
         existing_users = Backend.instance.query(models.User, emails=form.email.data)
         if not existing_users:
             flash(_("No user found with this email address."), "error")
@@ -269,10 +258,7 @@ def invite_to_group(user, group):
                 invitation_url=None,
             )
 
-        # Get the first user with this email
         invited_user = existing_users[0]
-
-        # Check if user is already a member
         if invited_user in group.members:
             flash(
                 _("A user with this email address is already a member of this group."),
@@ -288,7 +274,6 @@ def invite_to_group(user, group):
                 invitation_url=None,
             )
 
-        # Create invitation payload with expiration
         expiration_date = datetime.datetime.now(
             datetime.timezone.utc
         ) + datetime.timedelta(
@@ -307,7 +292,6 @@ def invite_to_group(user, group):
             _external=True,
         )
 
-        # Send invitation email
         email_sent = send_group_invitation_mail(
             form.email.data,
             invitation_url,
@@ -334,38 +318,30 @@ def join_group(data, hash):
         flash(_("The invitation link that brought you here was invalid."), "error")
         return redirect(url_for("core.account.index"))
 
-    # Check if user is logged in
+    if not (group := Backend.instance.get(models.Group, id=payload.group_id)):
+        flash(_("The group you were invited to no longer exists."), "error")
+        return redirect(url_for("core.account.index"))
+
+    if not (
+        invited_user := Backend.instance.get(models.User, id=payload.invited_user_id)
+    ):
+        flash(_("The invitation link that brought you here was invalid."), "error")
+        return redirect(url_for("core.account.index"))
+
     if not g.session or not g.session.user:
-        # Look up the invited user to get their username for the login redirect
-        invited_user = Backend.instance.get(models.User, id=payload.invited_user_id)
-        if invited_user:
-            # Look up the group name for the flash message
-            group = Backend.instance.get(models.Group, id=payload.group_id)
-            if group:
-                flash(
-                    _(
-                        "You have been invited to join the group '%(group)s'. Please log in to accept the invitation.",
-                        group=group.display_name,
-                    ),
-                    "info",
-                )
-            else:
-                flash(
-                    _(
-                        "You have been invited to join a group. Please log in to accept the invitation."
-                    ),
-                    "info",
-                )
+        flash(
+            _(
+                "You have been invited to join the group '%(group)s'. Please log in to accept the invitation.",
+                group=group.display_name,
+            ),
+            "info",
+        )
+        session["redirect-after-login"] = request.url
+        return redirect(url_for("core.auth.login", username=invited_user.user_name))
 
-            # Set session variable to redirect back to invitation after login
-            session["redirect-after-login"] = request.url
-            # Redirect to login page with username pre-filled
-            return redirect(url_for("core.auth.login", username=invited_user.user_name))
-        else:
-            flash(_("The invitation link that brought you here was invalid."), "error")
-            return redirect(url_for("core.account.index"))
-
-    user = g.session.user
+    if g.session.user.id != payload.invited_user_id:
+        flash(_("This invitation was not sent to you."), "error")
+        return redirect(url_for("core.account.index"))
 
     if payload.has_expired():
         flash(_("The invitation link that brought you here has expired."), "error")
@@ -375,31 +351,22 @@ def join_group(data, hash):
         flash(_("The invitation link that brought you here was invalid."), "error")
         return redirect(url_for("core.account.index"))
 
-    # Get the group
-    group = Backend.instance.get(models.Group, id=payload.group_id)
-    if not group:
-        flash(_("The group you were invited to no longer exists."), "error")
-        return redirect(url_for("core.account.index"))
-
-    # Check if the current user's ID matches the invited user ID
-    if user.id != payload.invited_user_id:
-        flash(_("This invitation was not sent to you."), "error")
-        return redirect(url_for("core.account.index"))
-
-    # Check if user is already a member
-    if user in group.members:
+    if g.session.user in group.members:
         flash(
             _("You are already a member of %(group)s.", group=group.display_name),
             "info",
         )
-        return redirect(url_for("core.account.profile_settings", edited_user=user))
+        return redirect(
+            url_for("core.account.profile_settings", edited_user=g.session.user)
+        )
 
-    # Add user to group
-    group.members = list(group.members) + [user]
+    group.members = list(group.members) + [g.session.user]
     Backend.instance.save(group)
 
     flash(
         _("You have successfully joined %(group)s!", group=group.display_name),
         "success",
     )
-    return redirect(url_for("core.account.profile_settings", edited_user=user))
+    return redirect(
+        url_for("core.account.profile_settings", edited_user=g.session.user)
+    )
