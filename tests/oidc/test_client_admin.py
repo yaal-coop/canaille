@@ -309,7 +309,7 @@ def test_client_new_token(testclient, logged_admin, backend, client):
         "A token have been created for the client Some client",
     ) in res.flashes
 
-    token = backend.get(models.Token)
+    token = backend.get(models.Token, client=client)
     assert token.client == client
     assert not token.subject
     assert token.type == "access_token"

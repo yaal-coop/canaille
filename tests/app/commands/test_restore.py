@@ -46,11 +46,11 @@ def test_restore_stdin(cli_runner, backend):
     res = cli_runner.invoke(cli, ["restore"], input=json.dumps(payload))
     assert res.exit_code == 0, res.stdout
 
-    user = backend.get(models.User)
+    user = backend.get(models.User, user_name="user")
     assert user.user_name == "user"
     assert user.family_name == "Doe"
 
-    group = backend.get(models.Group)
+    group = backend.get(models.Group, display_name="foo")
     assert group.display_name == "foo"
 
     assert user.groups == [group]

@@ -133,9 +133,13 @@ def test_restore_stdin(cli_runner, backend):
 
     client1 = backend.get(models.Client, client_id="M2yzGYiZgilOvQdc8vCLyzrb")
     client2 = backend.get(models.Client, client_id="dx8HWLJOM2GRQtkR92fjwHZ7")
-    token = backend.get(models.Token)
-    consent = backend.get(models.Consent)
-    user = backend.get(models.User)
+    token = backend.get(
+        models.Token, access_token="zOG6d15hkCRSzLfYlDlBvAmZ2HUeOC4FwGZLUCjVsLXE811v"
+    )
+    consent = backend.get(
+        models.Consent, consent_id="9b97bf4c-7689-4ea2-b155-92006d192aa5"
+    )
+    user = backend.get(models.User, user_name="user")
     assert token.client == client1
     assert consent.subject == user
 
