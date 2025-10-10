@@ -53,7 +53,7 @@ front = [
 ]
 
 oidc = [
-    "authlib >= 1.6.3",
+    "authlib >= 1.6.4",
     "joserfc>=1.2.0",
 ]
 
@@ -164,10 +164,10 @@ doc = [
     "sphinx-copybutton>=0.5.2",
 ]
 devserver = [
-    "faker",
-    "honcho",
-    "slapd",
-    "httpx",
+    "faker >= 30.0.0",
+    "honcho >= 2.0.0",
+    "slapd >= 0.1.6",
+    "httpx >= 0.26.0",
     "watchdog >= 4.0.0",
     "requests>=2.32.3",
 ]
