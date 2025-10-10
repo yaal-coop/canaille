@@ -511,15 +511,6 @@ class Group(Model):
             user == self.owner and user.can(Permission.CREATE_GROUPS)
         )
 
-    def user_can_delete(self, user: "User") -> bool:
-        """Check if a user can delete this group.
-
-        Only users with manage_groups permission can delete groups.
-        """
-        from canaille.core.configuration import Permission
-
-        return user.can(Permission.MANAGE_GROUPS)
-
 
 def string_code(code: int, digit: int) -> str:
     """Add leading 0 if the code length does not match the defined length.

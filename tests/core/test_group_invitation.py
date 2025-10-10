@@ -293,3 +293,8 @@ def test_group_invitation_workflow_with_email_extraction(
     assert path_parts[2] == "join"
     assert len(path_parts[3]) > 0
     assert len(path_parts[4]) > 0
+
+
+def test_invite_to_group_unauthorized_user(testclient, logged_user, bar_group):
+    """Test that a user without access to a group cannot invite others to it."""
+    testclient.get(f"/groups/{bar_group.display_name}/invite", status=403)

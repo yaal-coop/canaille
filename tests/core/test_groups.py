@@ -219,10 +219,12 @@ def test_invalid_group(testclient, logged_moderator):
     testclient.get("/groups/invalid", status=404)
 
 
-def test_simple_user_cannot_view_or_edit_groups(testclient, logged_user, foo_group):
-    testclient.get("/groups", status=403)
-    testclient.get("/groups/add", status=403)
-    testclient.get("/groups/foo", status=403)
+def test_simple_user_can_view_own_groups_and_create_groups(
+    testclient, logged_user, foo_group
+):
+    """Test that a user with create_groups permission can view their groups and create groups."""
+    testclient.get("/groups", status=200)
+    testclient.get("/groups/add", status=200)
 
 
 def test_invalid_form_request(testclient, logged_moderator, foo_group):
@@ -567,3 +569,195 @@ def test_groups_page_includes_actions_column(
     # Should NOT see Leave button for any group (moderator has manage_groups permission)
     # Because moderators can edit all groups, they don't see Leave buttons
     assert "Leave" not in res.text
+
+
+def test_user_can_delete_own_group(testclient, logged_user, backend):
+    """Test that a user with create_groups permission can delete their own group."""
+    group = models.Group(
+        members=[logged_user],
+        display_name="user_group",
+        owner=logged_user,
+    )
+    backend.save(group)
+
+    res = testclient.get("/groups/user_group", status=200)
+    form = res.forms["editgroupform"]
+    res = form.submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete", status=302)
+
+    assert backend.get(models.Group, display_name="user_group") is None
+    assert (
+        "success",
+        "The group user_group has been successfully deleted",
+    ) in res.flashes
+
+
+def test_user_cannot_delete_others_group(testclient, logged_user, admin, backend):
+    """Test that a user with create_groups permission cannot delete another user's group."""
+    group = models.Group(
+        members=[admin],
+        display_name="admin_group",
+        owner=admin,
+    )
+    backend.save(group)
+
+    testclient.get("/groups/admin_group", status=403)
+
+    backend.delete(group)
+
+
+def test_user_without_permissions_cannot_access_groups(testclient, backend, app):
+    """Test that a user without create_groups or manage_groups permissions cannot access groups page."""
+    user = models.User(
+        formatted_name="No Permission",
+        family_name="User",
+        user_name="noperm",
+        emails=["noperm@test.example"],
+        password="password",
+    )
+    backend.save(user)
+
+    with testclient.session_transaction() as sess:
+        import datetime
+
+        from canaille.app.session import UserSession
+
+        sess["sessions"] = [
+            UserSession(
+                user=user,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).serialize()
+        ]
+
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = [
+        "edit_self",
+        "use_oidc",
+    ]
+    testclient.get("/groups", status=403)
+    testclient.get("/groups/add", status=403)
+
+    backend.delete(user)
+
+
+def test_confirm_leave_group_modal(testclient, logged_user, foo_group):
+    """Test that the confirm-leave modal displays correctly."""
+    res = testclient.get("/groups")
+    form = res.forms["tableform"]
+    res = testclient.post(
+        "/groups",
+        {
+            "csrf_token": form["csrf_token"].value,
+            "action": "confirm-leave",
+            "group_id": foo_group.id,
+        },
+        status=200,
+    )
+    res.mustcontain("Leave group")
+    res.mustcontain(foo_group.display_name)
+    res.mustcontain("Are you sure you want to leave")
+
+
+def test_confirm_leave_group_missing_group_id(testclient, logged_user):
+    """Test that confirm-leave without group_id returns 400."""
+    res = testclient.get("/groups")
+    form = res.forms["tableform"]
+    testclient.post(
+        "/groups",
+        {
+            "csrf_token": form["csrf_token"].value,
+            "action": "confirm-leave",
+        },
+        status=400,
+    )
+
+
+def test_confirm_leave_group_nonexistent(testclient, logged_user):
+    """Test that confirm-leave with nonexistent group_id returns 404."""
+    res = testclient.get("/groups")
+    form = res.forms["tableform"]
+    testclient.post(
+        "/groups",
+        {
+            "csrf_token": form["csrf_token"].value,
+            "action": "confirm-leave",
+            "group_id": "nonexistent-id",
+        },
+        status=404,
+    )
+
+
+def test_confirm_leave_group_not_member(testclient, logged_user, bar_group):
+    """Test that confirm-leave for a group user is not member of shows error."""
+    res = testclient.get("/groups")
+    form = res.forms["tableform"]
+    res = testclient.post(
+        "/groups",
+        {
+            "csrf_token": form["csrf_token"].value,
+            "action": "confirm-leave",
+            "group_id": bar_group.id,
+        },
+        status=302,
+    )
+    assert ("error", "You are not a member of this group.") in res.flashes
+
+
+def test_leave_group_success(testclient, logged_user, foo_group, admin, backend):
+    """Test that a user can successfully leave a group."""
+    foo_group.members = [logged_user, admin]
+    backend.save(foo_group)
+
+    assert logged_user in foo_group.members
+
+    res = testclient.get("/groups")
+    csrf_token = res.forms["tableform"]["csrf_token"].value
+    testclient.post(
+        f"/groups/{foo_group.display_name}/leave",
+        {"csrf_token": csrf_token},
+        status=302,
+    )
+
+    backend.reload(foo_group)
+    backend.reload(admin)
+    assert logged_user not in foo_group.members
+    assert len(foo_group.members) == 1
+    assert foo_group.members[0].id == admin.id
+
+
+def test_leave_group_not_member(testclient, logged_user, bar_group):
+    """Test that leaving a group user is not member of shows error."""
+    res = testclient.get("/groups")
+    csrf_token = res.forms["tableform"]["csrf_token"].value
+    res = testclient.post(
+        f"/groups/{bar_group.display_name}/leave",
+        {"csrf_token": csrf_token},
+        status=302,
+    )
+    assert ("error", "You are not a member of this group.") in res.flashes
+
+
+def test_leave_group_owner_clears_ownership(testclient, logged_user, admin, backend):
+    """Test that leaving a group as owner clears the owner field."""
+    group = models.Group(
+        members=[logged_user, admin],
+        display_name="owned_group",
+        owner=logged_user,
+    )
+    backend.save(group)
+
+    res = testclient.get("/groups")
+    csrf_token = res.forms["tableform"]["csrf_token"].value
+    testclient.post(
+        f"/groups/{group.display_name}/leave",
+        {"csrf_token": csrf_token},
+        status=302,
+    )
+
+    backend.reload(group)
+    backend.reload(admin)
+    assert logged_user not in group.members
+    assert len(group.members) == 1
+    assert group.members[0].id == admin.id
+    assert group.owner is None
+
+    backend.delete(group)

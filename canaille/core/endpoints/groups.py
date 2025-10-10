@@ -114,8 +114,6 @@ def group(user, group):
         return render_template("core/modals/delete-group.html", group=group)
 
     if request.form.get("action") == "delete":
-        if not user.can("manage_groups"):
-            abort(403)
         return delete_group(group)
 
     if request.form.get("action") == "confirm-remove-member":
