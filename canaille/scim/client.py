@@ -110,7 +110,7 @@ def execute_scim_user_action(client_id, user_id, method):
 
     User = scim.get_resource_model("User")
 
-    req = SearchRequest(filter=f'externalId eq "{user.id}"')
+    req = SearchRequest(filter=f'externalId eq "{user_id}"')
     response = scim.query(User, search_request=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
