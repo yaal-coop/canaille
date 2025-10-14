@@ -15,6 +15,14 @@ SERVER_NAME = "canaille.test"
 # This sets trusted values for hosts and validates hosts during requests.
 TRUSTED_HOSTS = [".canaille.test", "localhost", ".foobar.test"]
 
+# Points to the broker class, like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or
+# `dramatiq.brokers.redis:RedisBroker`.
+# DRAMATIQ_BROKER =
+
+# The URL of the running task worker, passed as `url` keyword argument to broker
+# class
+# DRAMATIQ_BROKER_URL =
+
 # The Flask PREFERRED_URL_SCHEME configuration setting.
 #
 # This sets the url scheme by which canaille will be served.
@@ -394,6 +402,11 @@ FILTER = [
     {user_name = "moderator"},
     {family_name = "moderator"},
 ]
+
+# If True, then Canaille will run a rabbitmq or redis server and dramatiq to run
+# SCIM propagation and e-mail sending asynchronously. In this case, environment
+# variables DRAMATIQ_BROKER_URL and DRAMATIQ_BROKER must be defined.
+# ENABLE_TASK_WORKER = true
 
 [CANAILLE_SQL]
 # The SQL server URI. For example:

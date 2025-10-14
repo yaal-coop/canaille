@@ -77,7 +77,6 @@ def configuration(smtpd):
         "CANAILLE": {
             "JAVASCRIPT": False,
             "TIMEZONE": "UTC",
-            "ENABLE_TASK_WORKER": False,
             "ACL": {
                 "DEFAULT": {
                     "READ": ["user_name", "groups"],

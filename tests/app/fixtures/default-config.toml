@@ -16,12 +16,10 @@
 # Points to the broker class, like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or
 # `dramatiq.brokers.redis:RedisBroker`.
 # DRAMATIQ_BROKER =
-DRAMATIQ_BROKER = "dramatiq.brokers.rabbitmq:RabbitmqBroker"
 
 # The URL of the running task worker, passed as `url` keyword argument to broker
 # class
 # DRAMATIQ_BROKER_URL =
-DRAMATIQ_BROKER_URL = "amqp://localhost"
 
 # The Flask PREFERRED_URL_SCHEME configuration setting.
 #
@@ -309,8 +307,9 @@ FILTER = [
     {groups = "admin"},
 ]
 
-# If True, then Canaille will run a rabbitmq server and dramatiq to run SCIM
-# propagation and e-mail sending asynchronously.
+# If True, then Canaille will run a rabbitmq or redis server and dramatiq to run
+# SCIM propagation and e-mail sending asynchronously. In this case, environment
+# variables DRAMATIQ_BROKER_URL and DRAMATIQ_BROKER must be defined.
 # ENABLE_TASK_WORKER = true
 
 [CANAILLE_SQL]

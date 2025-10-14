@@ -103,7 +103,7 @@ def test_configuration_from_environment_vars(tmp_path):
     assert conf.CANAILLE.SMTP.FROM_ADDR == "user@mydomain.test"
     assert conf.CANAILLE_SQL.DATABASE_URI == f"sqlite:///{tmp_path}/anything.db"
 
-    app = create_app({"TIMEZONE": "UTC"})
+    app = create_app({"TIMEZONE": "UTC", "TESTING": True})
     assert app.config["SECRET_KEY"] == "very-very-secret"
     assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "user@mydomain.test"
     assert (
