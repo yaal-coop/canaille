@@ -87,11 +87,11 @@ def send_email_otp(flashes=True):
             return
 
         otp = g.auth.user.generate_sms_or_mail_otp()
-        if send_one_time_password_mail(g.auth.user.preferred_email, otp):
-            Backend.instance.save(g.auth.user)
-            current_app.logger.security(
-                f"Sent one-time passcode for {g.auth.user_name} to {g.auth.user.preferred_email}"
-            )
+        send_one_time_password_mail(g.auth.user.preferred_email, otp)
+        Backend.instance.save(g.auth.user)
+        current_app.logger.security(
+            f"Sending one-time passcode for {g.auth.user_name} to {g.auth.user.preferred_email}"
+        )
 
     if flashes:
         flash(_("The new verification code have been sent."), "success")

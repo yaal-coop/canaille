@@ -57,7 +57,7 @@ def test_signin_with_email_otp(smtpd, testclient, backend, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time passcode for user to john@doe.test",
+        "Sending one-time passcode for user to john@doe.test",
     ) in caplog.record_tuples
 
     backend.reload(user)
@@ -100,7 +100,7 @@ def test_signin_wrong_email_otp(testclient, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time passcode for user to john@doe.test",
+        "Sending one-time passcode for user to john@doe.test",
     ) in caplog.record_tuples
 
     res.form["otp"] = "123456"
@@ -190,7 +190,7 @@ def test_send_new_mail_otp_on_time(smtpd, testclient, backend, user, caplog):
         assert (
             "canaille",
             logging.SECURITY,
-            "Sent one-time passcode for user to john@doe.test",
+            "Sending one-time passcode for user to john@doe.test",
         ) in caplog.record_tuples
 
         assert res.location == "/auth/email"
