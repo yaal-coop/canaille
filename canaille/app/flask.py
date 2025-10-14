@@ -188,7 +188,9 @@ def setup_flask(app):
 
     csrf.init_app(app)
     cache.init_app(app)
-    dramatiq.init_app(app)
+
+    if app.features.has_task_worker:
+        dramatiq.init_app(app)
 
     if app.debug or app.config.get("TESTING", False):  # pragma: no branch
         try:

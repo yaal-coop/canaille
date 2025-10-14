@@ -4,7 +4,6 @@ from unittest import mock
 
 import pytest
 from babel.messages.frontend import compile_catalog
-from dramatiq import Worker
 from flask_webtest import TestApp
 from jinja2 import FileSystemBytecodeCache
 from jinja2 import StrictUndefined
@@ -75,10 +74,10 @@ def configuration(smtpd):
         "PREFERRED_URL_SCHEME": "http",
         "TRUSTED_HOSTS": [".canaille.test", "localhost", ".foobar.test"],
         "TESTING": True,
-        "DRAMATIQ_BROKER": "tests.broker:EagerBroker",
         "CANAILLE": {
             "JAVASCRIPT": False,
             "TIMEZONE": "UTC",
+            "ENABLE_TASK_WORKER": False,
             "ACL": {
                 "DEFAULT": {
                     "READ": ["user_name", "groups"],
