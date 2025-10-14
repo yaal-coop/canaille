@@ -539,4 +539,4 @@ class CoreSettings(BaseModel):
     """
 
     ENABLE_TASK_WORKER: bool = True
-    """If :py:data:`True`, then Canaille will run a rabbitmq or redis server and dramatiq to run SCIM propagation and e-mail sending asynchronously. If True, environment variables DRAMATIQ_BROKER_URL and DRAMATIQ_BROKER must be defined."""
+    """If :py:data:`True`, then Canaille will run a rabbitmq or redis server and dramatiq to run SCIM propagation and e-mail sending asynchronously. In this case, environment variables DRAMATIQ_BROKER_URL and DRAMATIQ_BROKER must be defined."""
