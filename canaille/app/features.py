@@ -150,7 +150,10 @@ class Features:
 
         It is controlled by the :attr:`CANAILLE.ENABLE_TASK_WORKER <canaille.core.configuration.CoreSettings.ENABLE_TASK_WORKER>` configuration parameter.
         """
-        return self.app.config["CANAILLE"]["ENABLE_TASK_WORKER"]
+        if self.app.debug:
+            return False
+        else:
+            return self.app.config["CANAILLE"]["ENABLE_TASK_WORKER"]
 
 
 def setup_features(app):
