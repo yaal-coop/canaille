@@ -66,7 +66,7 @@ In a similar fashion than :ref:`profile management <feature_profile_management>`
 The group management is quite simple at the moment and consists in a group name and description, and the list of its members.
 Group membership can be use as :attr:`ACL Filter <canaille.core.configuration.ACLSettings.FILTER>` to define user permissions.
 
-Group management can be enable with a :attr:`dedicated user permission <canaille.core.configuration.Permission.MANAGE_GROUPS>`.
+Group management can be enable with a :attr:`dedicated user permission <canaille.core.configuration.Permission.MANAGE_ALL_GROUPS>`.
 
 .. important::
    Due to limitations in the :ref:`LDAP backend <tutorial/databases:LDAP>`, groups must have at least one member.

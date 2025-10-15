@@ -219,10 +219,10 @@ def test_invalid_group(testclient, logged_moderator):
     testclient.get("/groups/invalid", status=404)
 
 
-def test_simple_user_can_view_own_groups_and_create_groups(
+def test_simple_user_can_view_own_groups_and_manage_own_groups(
     testclient, logged_user, foo_group
 ):
-    """Test that a user with create_groups permission can view their groups and create groups."""
+    """Test that a user with manage_own_groups permission can view their groups and create groups."""
     testclient.get("/groups", status=200)
     testclient.get("/groups/add", status=200)
 
@@ -419,21 +419,21 @@ def test_moderator_sees_groups_they_belong_to(
 ):
     """Test that moderators can see groups they belong to.
 
-    Note: Moderators have manage_groups permission so they see all groups,
+    Note: Moderators have manage_all_groups permission so they see all groups,
     not just the ones they belong to.
     """
     # Access groups page as logged moderator
     res = testclient.get("/groups/", status=200)
 
-    # Should see all groups (because moderator has manage_groups permission)
+    # Should see all groups (because moderator has manage_all_groups permission)
     assert foo_group.display_name in res.text
     assert bar_group.display_name in res.text
 
 
-def test_moderator_can_click_all_groups_because_of_manage_groups_permission(
+def test_moderator_can_click_all_groups_because_of_manage_all_groups_permission(
     testclient, logged_moderator, foo_group, bar_group
 ):
-    """Test that moderators can click on all groups because they have manage_groups permission."""
+    """Test that moderators can click on all groups because they have manage_all_groups permission."""
     # Access groups page as logged moderator
     res = testclient.get("/groups/", status=200)
 
@@ -441,7 +441,7 @@ def test_moderator_can_click_all_groups_because_of_manage_groups_permission(
     assert foo_group.display_name in res.text
     assert bar_group.display_name in res.text
 
-    # Both groups should be clickable (moderator has manage_groups permission)
+    # Both groups should be clickable (moderator has manage_all_groups permission)
     assert f'<a href="/groups/{foo_group.display_name}">' in res.text
     assert f'<a href="/groups/{bar_group.display_name}">' in res.text
 
@@ -472,7 +472,7 @@ def test_group_linking_behavior_works(
     # Should see the group
     assert foo_group.display_name in res.text
 
-    # Should be clickable (moderator has manage_groups)
+    # Should be clickable (moderator has manage_all_groups)
     assert f'<a href="/groups/{foo_group.display_name}">' in res.text
 
     # Actually click on the group to verify it works
@@ -566,13 +566,13 @@ def test_groups_page_includes_actions_column(
     assert foo_group.display_name in res.text
     assert bar_group.display_name in res.text
 
-    # Should NOT see Leave button for any group (moderator has manage_groups permission)
+    # Should NOT see Leave button for any group (moderator has manage_all_groups permission)
     # Because moderators can edit all groups, they don't see Leave buttons
     assert "Leave" not in res.text
 
 
 def test_user_can_delete_own_group(testclient, logged_user, backend):
-    """Test that a user with create_groups permission can delete their own group."""
+    """Test that a user with manage_own_groups permission can delete their own group."""
     group = models.Group(
         members=[logged_user],
         display_name="user_group",
@@ -593,7 +593,7 @@ def test_user_can_delete_own_group(testclient, logged_user, backend):
 
 
 def test_user_cannot_delete_others_group(testclient, logged_user, admin, backend):
-    """Test that a user with create_groups permission cannot delete another user's group."""
+    """Test that a user with manage_own_groups permission cannot delete another user's group."""
     group = models.Group(
         members=[admin],
         display_name="admin_group",
@@ -607,7 +607,7 @@ def test_user_cannot_delete_others_group(testclient, logged_user, admin, backend
 
 
 def test_user_without_permissions_cannot_access_groups(testclient, backend, app):
-    """Test that a user without create_groups or manage_groups permissions cannot access groups page."""
+    """Test that a user without manage_own_groups or manage_all_groups permissions cannot access groups page."""
     user = models.User(
         formatted_name="No Permission",
         family_name="User",

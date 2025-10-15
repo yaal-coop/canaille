@@ -104,7 +104,7 @@ The main template inherited by almost every other templates.
                                     {% trans %}Users{% endtrans %}
                                 </a>
                             {% endif %}
-                            {% if user.can_manage_groups or user.can_create_groups %}
+                            {% if user.can_manage_all_groups or user.can_manage_own_groups %}
                                 <a class="item {% if menuitem is defined and menuitem == "groups" %}active{% endif %}"
                                    href="{{ url_for('core.groups.groups') }}">
                                     <i class="users icon"></i>

@@ -34,7 +34,7 @@ bp = Blueprint("groups", __name__, url_prefix="/groups")
 @bp.route("/", methods=["GET", "POST"])
 @user_needed()
 def groups(user):
-    if not (user.can("manage_groups") or user.can("create_groups")):
+    if not (user.can("manage_all_groups") or user.can("manage_own_groups")):
         abort(403)
 
     if request.form.get("action") == "confirm-leave":
@@ -52,7 +52,7 @@ def groups(user):
 
         return render_template("core/modals/leave-group.html", group=group)
 
-    filter = {"members": user} if not user.can("manage_groups") else {}
+    filter = {"members": user} if not user.can("manage_all_groups") else {}
     table_form = TableForm(models.Group, formdata=request.form, filter=filter)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
@@ -65,7 +65,7 @@ def groups(user):
 @bp.route("/add", methods=("GET", "POST"))
 @user_needed()
 def create_group(user):
-    if not (user.can("manage_groups") or user.can("create_groups")):
+    if not (user.can("manage_all_groups") or user.can("manage_own_groups")):
         abort(403)
     form = CreateGroupForm(request.form or None)
 
@@ -95,7 +95,7 @@ def create_group(user):
 
 def user_can_access_group(user, group):
     """Check if user can access group management."""
-    return user.can("manage_groups") or group.user_can_edit(user)
+    return user.can("manage_all_groups") or group.user_can_edit(user)
 
 
 @bp.route("/<group:group>", methods=("GET", "POST"))

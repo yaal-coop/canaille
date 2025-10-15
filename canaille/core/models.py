@@ -502,13 +502,13 @@ class Group(Model):
     def user_can_edit(self, user: "User") -> bool:
         """Check if a user can edit this group.
 
-        Returns True if the user has manage_groups permission or is the owner of the group
-        and has create_groups permission.
+        Returns True if the user has manage_all_groups permission or is the owner of the group
+        and has manage_own_groups permission.
         """
         from canaille.core.configuration import Permission
 
-        return user.can(Permission.MANAGE_GROUPS) or (
-            user == self.owner and user.can(Permission.CREATE_GROUPS)
+        return user.can(Permission.MANAGE_ALL_GROUPS) or (
+            user == self.owner and user.can(Permission.MANAGE_OWN_GROUPS)
         )
 
 
