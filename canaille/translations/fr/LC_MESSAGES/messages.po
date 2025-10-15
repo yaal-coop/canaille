@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-10-15 17:08+0200\n"
-"PO-Revision-Date: 2025-10-10 20:07+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2025-10-15 15:57+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -193,10 +193,9 @@ msgstr ""
 "Authentification par code de connexion à usage unique sur {website_name}"
 
 #: canaille/core/mails.py:303
-#, fuzzy, python-brace-format
-#| msgid "Invitation on {website_name}"
+#, python-brace-format
 msgid "Invitation to join {group_name} on {website_name}"
-msgstr "Invitation sur {website_name}"
+msgstr "Invitation à joindre {group_name} sur {website_name}"
 
 #: canaille/core/validators.py:17
 #, python-brace-format
@@ -237,14 +236,12 @@ msgstr ""
 "retiré."
 
 #: canaille/core/validators.py:81
-#, fuzzy
-#| msgid "Remove this email address"
 msgid "No user found with this email address."
-msgstr "Supprimer cette adresse email"
+msgstr "Aucun utilisateur avec cette adresse email."
 
 #: canaille/core/validators.py:93
 msgid "A user with this email address is already a member of this group."
-msgstr ""
+msgstr "Un utilisateur avec cette adresse email fait déjà parti de ce groupe."
 
 #: canaille/core/endpoints/account.py:93 canaille/core/endpoints/account.py:119
 msgid "You will receive soon an email to continue the registration process."
@@ -675,7 +672,7 @@ msgstr "Code de connexion"
 
 #: canaille/core/endpoints/groups.py:50 canaille/core/endpoints/groups.py:219
 msgid "You are not a member of this group."
-msgstr ""
+msgstr "Vous n'êtes pas membre de ce groupe."
 
 #: canaille/core/endpoints/groups.py:74
 msgid "Group creation failed."
@@ -708,19 +705,16 @@ msgstr "Le groupe %(group)s a bien été supprimé"
 #: canaille/core/endpoints/groups.py:229
 #, python-format
 msgid "You have left %(group)s."
-msgstr ""
+msgstr "Vous avez quitté %(group)s."
 
 #: canaille/core/endpoints/groups.py:276
-#, fuzzy, python-format
-#| msgid "This invitation link has been sent to %(email)s"
+#, python-format
 msgid "An invitation email has been sent to %(email)s."
-msgstr "Ce lien d'invitation a été envoyé à %(email)s"
+msgstr "Une invitation par email a été envoyé à l'adresse %(email)s."
 
 #: canaille/core/endpoints/groups.py:300
-#, fuzzy
-#| msgid "The user you are trying to remove does not exist."
 msgid "The group you were invited to no longer exists."
-msgstr "L’utilisateur que vous essayez de retirer n’existe pas."
+msgstr "Le groupe auquel vous avez été invité n’existe plus."
 
 #: canaille/core/endpoints/groups.py:312
 #, python-format
@@ -728,29 +722,26 @@ msgid ""
 "You have been invited to join the group '%(group)s'. Please log in to accept "
 "the invitation."
 msgstr ""
+"Vous avez été invité à joindre le groupe '%(group)s'. Veuillez vous "
+"identifier pour accepter l’invitation."
 
 #: canaille/core/endpoints/groups.py:321
-#, fuzzy
-#| msgid "This invitation link has been sent to %(email)s"
 msgid "This invitation was not sent to you."
-msgstr "Ce lien d'invitation a été envoyé à %(email)s"
+msgstr "Ce lien d’invitation ne vous était pas destiné."
 
 #: canaille/core/endpoints/groups.py:325
-#, fuzzy
-#| msgid "The registration link that brought you here has expired."
 msgid "The invitation link that brought you here has expired."
-msgstr "Le lien qui vous a amené ici a expiré."
+msgstr "Le lien d’invitation qui vous a amené ici a expiré."
 
 #: canaille/core/endpoints/groups.py:334
 #, python-format
 msgid "You are already a member of %(group)s."
-msgstr ""
+msgstr "Vous faites déjà partie du groupe %(group)s."
 
 #: canaille/core/endpoints/groups.py:345
-#, fuzzy, python-format
-#| msgid "You have been successfully logged out."
+#, python-format
 msgid "You have successfully joined %(group)s!"
-msgstr "Vous avez été déconnecté·e."
+msgstr "Vous avez rejoint le groupe %(group)s!"
 
 #: canaille/core/endpoints/auth/__init__.py:94
 #: canaille/core/endpoints/auth/password.py:54
@@ -1228,10 +1219,8 @@ msgstr "Supprimer le groupe"
 
 #: canaille/templates/core/group.html:79
 #: canaille/templates/core/invite_group_member.html:33
-#, fuzzy
-#| msgid "Invite a user"
 msgid "Invite Members"
-msgstr "Inviter un utilisateur"
+msgstr "Inviter des membres"
 
 #: canaille/templates/core/group.html:84
 msgid "Create group"
@@ -1281,10 +1270,9 @@ msgstr ""
 "inviter :"
 
 #: canaille/templates/core/invite.html:69
-#, fuzzy, python-format
-#| msgid "This invitation link has been sent to %(email)s"
+#, python-format
 msgid "This invitation link has been sent to %(email)s."
-msgstr "Ce lien d'invitation a été envoyé à %(email)s"
+msgstr "Ce lien d'invitation a été envoyé à %(email)s."
 
 #: canaille/templates/core/invite.html:70
 msgid ""
@@ -1349,21 +1337,15 @@ msgstr "Envoyer l'invitation"
 #: canaille/templates/core/invite_group_member.html:79
 #, python-format
 msgid "Invite members to %(group_name)s"
-msgstr ""
+msgstr "Inviter des membres au groupe %(group_name)s"
 
 #: canaille/templates/core/invite_group_member.html:29
 #: canaille/templates/core/invite_group_member.html:65
 #: canaille/templates/core/invite_group_member.html:98
-#, fuzzy
-#| msgid "Groups"
 msgid "View Group"
-msgstr "Groupes"
+msgstr "Consulter le groupe"
 
 #: canaille/templates/core/invite_group_member.html:49
-#, fuzzy
-#| msgid ""
-#| "If you need to provide this link by other ways than email, you can copy "
-#| "it there:"
 msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "here:"
@@ -1372,23 +1354,16 @@ msgstr ""
 "courriel, vous pouvez le copier ici :"
 
 #: canaille/templates/core/invite_group_member.html:68
-#, fuzzy
-#| msgid "Invite another user"
 msgid "Invite another member"
-msgstr "Inviter quelqu'un d'autre"
+msgstr "Inviter un autre membre"
 
 #: canaille/templates/core/invite_group_member.html:84
-#, fuzzy
-#| msgid ""
-#| "After this form is sent, the recipient your indicated will receive an "
-#| "email containing an account creation link."
 msgid ""
 "After this form is sent, the recipient will receive an email containing a "
 "link to join this group."
 msgstr ""
 "Après que ce formulaire sera envoyé, le destinataire que vous avez indiqué "
-"recevra un courriel contenant un lien lui permettant de créer un compte "
-"utilisateur."
+"recevra un courriel contenant un lien lui permettant de rejoindre ce groupe."
 
 #: canaille/templates/core/join.html:14 canaille/templates/core/join.html:25
 #: canaille/templates/core/profile_add.html:20
@@ -2181,10 +2156,8 @@ msgstr ""
 
 #: canaille/templates/core/mails/group_invitation.html:19
 #: canaille/templates/core/mails/group_invitation.txt:1
-#, fuzzy
-#| msgid "Invitation"
 msgid "Group Invitation"
-msgstr "Invitation"
+msgstr "Invitation à un groupe"
 
 #: canaille/templates/core/mails/group_invitation.html:27
 #, python-format
@@ -2193,25 +2166,28 @@ msgid ""
 "%(site_name)s. To accept this invitation, click on the \"Join Group\" button "
 "below."
 msgstr ""
+"%(inviter_name)s vous a invité à joindre le groupe \"%(group_name)s\" sur %"
+"(site_name)s. Pour accepter, veuillez cliquer sur le bouton « Rejoindre le "
+"groupe » ci-dessous."
 
 #: canaille/templates/core/mails/group_invitation.html:38
 #: canaille/templates/core/mails/group_invitation.txt:7
-#, fuzzy
-#| msgid "Groups"
 msgid "Join Group"
-msgstr "Groupes"
+msgstr "Rejoindre le groupe"
 
 #: canaille/templates/core/mails/group_invitation.txt:3
-#, fuzzy, python-format
-#| msgid "%(user_name)s has been removed from the group %(group_name)s"
+#, python-format
 msgid ""
 "%(inviter_name)s has invited you to join the group \"%(group_name)s\" on "
 "%(site_name)s."
-msgstr "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
+msgstr ""
+"%(inviter_name)s vous a invité à rejoindre le groupe « %(group_name)s » sur %"
+"(site_name)s."
 
 #: canaille/templates/core/mails/group_invitation.txt:5
 msgid "To accept this invitation, click on the link below:"
 msgstr ""
+"Pour accepter cette invitation, veuillez cliquer sur le lien ci-dessous :"
 
 #: canaille/templates/core/mails/invitation.html:19
 #: canaille/templates/core/mails/invitation.txt:1
@@ -2365,28 +2341,22 @@ msgstr ""
 "supprimées."
 
 #: canaille/templates/core/modals/leave-group.html:9
-#, fuzzy
-#| msgid "Create group"
 msgid "Leave group"
-msgstr "Créer le groupe"
+msgstr "Quitter le groupe"
 
 #: canaille/templates/core/modals/leave-group.html:13
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to delete the group \"%(group_name)s\"? This action "
-#| "is unrevokable and all the data about this group will be removed."
+#, python-format
 msgid ""
 "Are you sure you want to leave the group \"%(group_name)s\"? You will no "
 "longer have access to this group unless you are invited again."
 msgstr ""
-"Êtes-vous sûrs de vouloir supprimer le groupe « %(group_name)s » ? Cette "
-"action est irrévocable, et toutes les données de cet utilisateur seront "
-"supprimées."
+"Êtes-vous sûrs de vouloir quitter le groupe « %(group_name)s » ? Vous n’"
+"aurez plus accès au groupe à moins d’être invité à nouveau."
 
 #: canaille/templates/core/modals/leave-group.html:25
 #: canaille/templates/core/partial/groups.html:41
 msgid "Leave"
-msgstr ""
+msgstr "Quitter"
 
 #: canaille/templates/core/modals/lock-account.html:9
 msgid "Account locking"
@@ -2471,10 +2441,8 @@ msgid "This account is locked"
 msgstr "Ce compte est verrouillé"
 
 #: canaille/templates/core/partial/group-members.html:46
-#, fuzzy
-#| msgid "Group edition"
 msgid "Group owner"
-msgstr "Édition d'un groupe"
+msgstr "Propriétaire du groupe"
 
 #: canaille/templates/core/partial/group-members.html:75
 msgid "Groups must have at least one member"
