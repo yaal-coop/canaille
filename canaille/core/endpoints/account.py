@@ -193,6 +193,26 @@ class RegistrationPayload(VerificationPayload):
     groups: list[str]
 
 
+@dataclass
+class GroupInvitationPayload:
+    expiration_date_isoformat: str
+    group_id: str
+    invited_user_id: str
+
+    @property
+    def expiration_date(self):
+        return datetime.datetime.fromisoformat(self.expiration_date_isoformat)
+
+    def has_expired(self):
+        return datetime.datetime.now(datetime.timezone.utc) > self.expiration_date
+
+    def b64(self):
+        return obj_to_b64(astuple(self))
+
+    def build_hash(self):
+        return build_hash(*astuple(self))
+
+
 @bp.route("/invite", methods=["GET", "POST"])
 @smtp_needed()
 @user_needed("manage_users")

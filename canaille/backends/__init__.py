@@ -30,7 +30,7 @@ class ModelEncoder(json.JSONEncoder):
 
             model, _ = instance.get_model_annotations(attribute_name)
             if model:
-                return value.id
+                return value.id if value is not None else None
 
             return value
 

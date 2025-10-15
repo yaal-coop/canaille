@@ -6,23 +6,47 @@
             <th>{% trans %}Name{% endtrans %}</th>
             <th>{% trans %}Description{% endtrans %}</th>
             <th>{% trans %}Number of members{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
         {% for group in table_form.items_slice %}
             <tr>
                 <td class="collapsing">
-                    <a href="{{ url_for('core.groups.group', group=group) }}">
-                        <i class="users circular black inverted icon"></i>
-                    </a>
+                    {% if group.user_can_edit(user) %}
+                        <a href="{{ url_for('core.groups.group', group=group) }}">
+                            <i class="users circular black inverted icon"></i>
+                        </a>
+                    {% else %}
+                        <i class="users circular grey icon"></i>
+                    {% endif %}
                 </td>
-                <td><a href="{{ url_for('core.groups.group', group=group) }}">{{ group.display_name }}</a></td>
+                <td>
+                    {% if group.user_can_edit(user) %}
+                        <a href="{{ url_for('core.groups.group', group=group) }}">{{ group.display_name }}</a>
+                    {% else %}
+                        {{ group.display_name }}
+                    {% endif %}
+                </td>
                 <td>{% if group.description %}{{ group.description }}{% endif %}</td>
                 <td>{{ group.members|len|numberformat }}</td>
+                <td class="collapsing">
+                    {% if user in group.members and not group.user_can_edit(user) %}
+                        <form method="post" action="{{ url_for('core.groups.groups') }}" style="display: inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <input type="hidden" name="action" value="confirm-leave" />
+                            <input type="hidden" name="group_id" value="{{ group.id }}" />
+                            <button type="submit" class="ui red button">
+                                <i class="sign out icon"></i>
+                                {% trans %}Leave{% endtrans %}
+                            </button>
+                        </form>
+                    {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">
+                <td colspan="5">
                     <div class="ui icon message">
                         <i class="exclamation icon"></i>
                         <div class="content">
@@ -44,7 +68,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="4">
+            <th colspan="5">
                 {{ table.pagination(table_form) }}
             </th>
         </tr>

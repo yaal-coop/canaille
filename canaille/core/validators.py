@@ -72,3 +72,23 @@ def non_empty_groups(form, field):
                     "The group '{group}' cannot be removed, because it must have at least one user left."
                 ).format(group=group.display_name)
             )
+
+
+def email_has_user(form, field):
+    """Validate that the email address corresponds to an existing user."""
+    existing_users = Backend.instance.query(models.User, emails=field.data)
+    if not existing_users:
+        raise wtforms.ValidationError(_("No user found with this email address."))
+
+
+def user_not_in_group(form, field):
+    """Validate that the user with this email is not already a group member."""
+    existing_users = Backend.instance.query(models.User, emails=field.data)
+    if not existing_users:
+        return
+
+    invited_user = existing_users[0]
+    if invited_user in form.group.members:
+        raise wtforms.ValidationError(
+            _("A user with this email address is already a member of this group.")
+        )

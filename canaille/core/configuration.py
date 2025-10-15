@@ -102,8 +102,11 @@ class Permission(str, Enum):
     MANAGE_USERS = "manage_users"
     """Allows other users management."""
 
-    MANAGE_GROUPS = "manage_groups"
-    """Allows group edition and creation."""
+    MANAGE_ALL_GROUPS = "manage_all_groups"
+    """Allows edition and creation of all groups (administrator permission)."""
+
+    MANAGE_OWN_GROUPS = "manage_own_groups"
+    """Allows users to create their own groups and manage groups they own."""
 
     DELETE_ACCOUNT = "delete_account"
     """Allows users to delete their account.
@@ -124,9 +127,15 @@ class ACLSettings(BaseModel):
     to :attr:`READ` and :attr:`WRITE`. Users matching several filters will cumulate permissions.
     """
 
-    PERMISSIONS: list[Permission] = [Permission.EDIT_SELF, Permission.USE_OIDC]
+    PERMISSIONS: list[Permission] = [
+        Permission.EDIT_SELF,
+        Permission.USE_OIDC,
+        Permission.MANAGE_OWN_GROUPS,
+    ]
     """A list of :class:`Permission` users in the access control will be able
     to manage.
+
+    By default, users can edit their own profile, use OpenID Connect, and manage their own groups.
 
     For example:
 
@@ -134,7 +143,7 @@ class ACLSettings(BaseModel):
 
         PERMISSIONS = [
             "manage_users",
-            "manage_groups",
+            "manage_all_groups",
             "manage_oidc",
             "delete_account",
             "impersonate_users",
@@ -223,7 +232,7 @@ class ACLSettings(BaseModel):
                 PERMISSIONS=[
                     Permission.MANAGE_OIDC,
                     Permission.MANAGE_USERS,
-                    Permission.MANAGE_GROUPS,
+                    Permission.MANAGE_ALL_GROUPS,
                     Permission.DELETE_ACCOUNT,
                     Permission.IMPERSONATE_USERS,
                 ],

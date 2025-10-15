@@ -14,7 +14,7 @@
             {% if user.can_read("emails") %}
                 <th>{% trans %}Email{% endtrans %}</th>
             {% endif %}
-            {% if user.can_manage_groups %}
+            {% if user.can_manage_all_groups %}
                 <th>{% trans %}Groups{% endtrans %}</th>
             {% endif %}
         </tr>
@@ -60,7 +60,7 @@
                         {% endif %}
                     </td>
                 {% endif %}
-                {% if user.can_manage_groups %}
+                {% if user.can_manage_all_groups %}
                     <td>
                         {% for group in watched_user.groups %}
                             <a class="ui label" href="{{ url_for('core.groups.group', group=group) }}"{% if group.description %} title="{{ group.description }}"{% endif %}>

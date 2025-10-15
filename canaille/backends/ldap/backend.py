@@ -72,7 +72,7 @@ class LDAPModelEncoder(ModelEncoder):
         if isinstance(value, list):
             return [item.id for item in value]
 
-        return value.id
+        return value.id if value is not None else None
 
     def default(self, obj):
         if isinstance(obj, Model):
@@ -427,7 +427,9 @@ class LDAPBackend(Backend):
 
         # PostReadControl allows to read the updated object attributes on creation/edition
         attributes = ["objectClass"] + [
-            instance.python_attribute_to_ldap(name) for name in instance.attributes
+            instance.python_attribute_to_ldap(name)
+            for name in instance.attributes
+            if instance.attribute_map and name in instance.attribute_map
         ]
         read_post_control = PostReadControl(criticality=True, attrList=attributes)
 

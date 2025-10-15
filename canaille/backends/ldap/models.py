@@ -107,6 +107,7 @@ class Group(canaille.core.models.Group, LDAPObject):
         "last_modified": "modifyTimestamp",
         "display_name": "cn",
         "members": "member",
+        "owner": "owner",
         "description": "description",
     }
 

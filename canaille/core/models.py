@@ -490,7 +490,26 @@ class Group(Model):
     "Group" resource schema.
     """
 
+    owner: Annotated["User", {}] | None = None
+    """The user who can manage this group.
+
+    The group owner has the ability to edit the group description,
+    invite new members, and remove members from the group.
+    """
+
     description: str | None = None
+
+    def user_can_edit(self, user: "User") -> bool:
+        """Check if a user can edit this group.
+
+        Returns True if the user has manage_all_groups permission or is the owner of the group
+        and has manage_own_groups permission.
+        """
+        from canaille.core.configuration import Permission
+
+        return user.can(Permission.MANAGE_ALL_GROUPS) or (
+            user == self.owner and user.can(Permission.MANAGE_OWN_GROUPS)
+        )
 
 
 def string_code(code: int, digit: int) -> str:

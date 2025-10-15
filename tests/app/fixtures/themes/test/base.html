@@ -46,7 +46,7 @@
                             {% trans %}Users{% endtrans %}
                         </a>
                     {% endif %}
-                    {% if user.can_manage_groups %}
+                    {% if user.can_manage_all_groups %}
                         <a class="item {% if menuitem == "groups" %}active{% endif %}"
                            href="{{ url_for('core.groups.groups') }}">
                             <i class="users cog icon"></i>

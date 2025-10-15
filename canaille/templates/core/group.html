@@ -74,6 +74,10 @@ Displays the group edition or creation form.
                         <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-delete" id="confirm-delete">
                             {% trans %}Delete group{% endtrans %}
                         </button>
+                        <a href="{{ url_for('core.groups.invite_to_group', group=edited_group) }}" class="ui right floated secondary button">
+                            <i class="paper plane icon"></i>
+                            {% trans %}Invite Members{% endtrans %}
+                        </a>
                     {% endif %}
                     <button type="submit" class="ui right floated primary button" name="action" value="edit">
                         {% if not edited_group %}
