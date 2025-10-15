@@ -240,7 +240,6 @@ def invite_to_group(user, group):
 
     form = GroupInvitationForm(request.form or None)
     form.group = group
-    email_sent = False
     form_validated = False
     invitation_url = None
 
@@ -266,11 +265,16 @@ def invite_to_group(user, group):
             _external=True,
         )
 
-        email_sent = send_group_invitation_mail(
+        send_group_invitation_mail(
             form.email.data,
             invitation_url,
             group.display_name,
             user.formatted_name,
+        )
+
+        flash(
+            _("An invitation email has been sent to %(email)s.", email=form.email.data),
+            "info",
         )
 
     return render_template(
@@ -279,7 +283,6 @@ def invite_to_group(user, group):
         group=group,
         menuitem="groups",
         form_validated=form_validated,
-        email_sent=email_sent,
         invitation_url=invitation_url,
     )
 

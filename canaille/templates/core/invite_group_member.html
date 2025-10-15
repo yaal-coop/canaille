@@ -41,48 +41,30 @@ Displays the group invitation form to users with the appropriate permissions.
             <div class="ui segment">
                 <h2 class="ui center aligned header">
                     <div class="content">
-                        {% if email_sent %}
-                            {{ _("Invitation sent") }}
-                        {% else %}
-                            {{ _("Invitation not sent") }}
-                        {% endif %}
+                        {{ _("Invitation sent") }}
                     </div>
                 </h2>
 
-                {% if email_sent %}
+                <div class="ui message">
+                    {% trans %}If you need to provide this link by other ways than email, you can copy it here:{% endtrans %}
+                </div>
 
-                    <div class="ui attached success message">
-                        {% set email = form.email.data %}
-                        {% trans group_name=group.display_name %}This invitation to join {{ group_name }} has been sent to {{ email }}.{% endtrans %}
-                        {% trans %}If you need to provide this link by other ways than email, you can copy it here:{% endtrans %}
-                    </div>
+                <div class="ui fluid action input">
+                    <input type="text" value="{{ invitation_url }}" readonly class="copy-text" id="invitation-url" data-copy="invitation-url">
+                    <button class="ui primary right labeled icon button copy-button" data-copy="invitation-url">
+                        <i class="copy icon"></i>
+                        {% trans %}Copy{% endtrans %}
+                    </button>
+                </div>
 
-                {% else %}
-
-                    <div class="ui attached error message">
-                        {% set email = form.email.data %}
-                        {% trans group_name=group.display_name %}This invitation to join {{ group_name }} could not be sent to {{ email }} due to technical issues.{% endtrans %}
-                        {% trans %}However you can copy the link here to provide it by other ways than email:{% endtrans %}
-                    </div>
-
-                {% endif %}
+                <br>
 
                 <div class="ui center aligned container">
-                    <div class="ui fields">
-                        <div class="ui action input">
-                            <input type="text" value="{{ invitation_url }}" readonly class="copy-text" id="invitation-url" data-copy="invitation-url">
-                            <button class="ui primary right labeled icon button copy-button" data-copy="invitation-url">
-                                <i class="copy icon"></i>
-                                {% trans %}Copy{% endtrans %}
-                            </button>
-                        </div>
-                    </div>
-                    <br>
                     <div class="ui stackable buttons">
-                        <a class="ui right floated button" href="{{ url_for("core.groups.group", group=group) }}">
+                        <a class="ui button" href="{{ url_for("core.groups.group", group=group) }}">
                             {{ _("View Group") }}
                         </a>
-                        <a href="{{ url_for('core.groups.invite_to_group', group=group) }}" class="ui right floated button">
+                        <a href="{{ url_for('core.groups.invite_to_group', group=group) }}" class="ui button">
                             {{ _("Invite another member") }}
                         </a>
                     </div>
