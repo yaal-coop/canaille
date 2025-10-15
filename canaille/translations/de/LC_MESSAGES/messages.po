@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-01 17:26+0200\n"
+"POT-Creation-Date: 2025-10-15 17:08+0200\n"
 "PO-Revision-Date: 2024-06-26 11:09+0000\n"
 "Last-Translator: Sascha <swi@thechameleonway.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -115,7 +115,7 @@ msgstr ""
 "Sie können sich nicht an das Login erinnern, mit dem Sie versucht haben, "
 "sich anzumelden"
 
-#: canaille/core/auth.py:217 canaille/core/endpoints/account.py:876
+#: canaille/core/auth.py:217 canaille/core/endpoints/account.py:896
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Verbindung erfolgreich. Willkommen %(user)s"
@@ -128,8 +128,8 @@ msgstr ""
 msgid "John Doe"
 msgstr "Max Mustermann"
 
-#: canaille/core/auth.py:267 canaille/core/endpoints/forms.py:137
-#: canaille/core/endpoints/forms.py:419
+#: canaille/core/auth.py:267 canaille/core/endpoints/forms.py:139
+#: canaille/core/endpoints/forms.py:440
 msgid "jdoe"
 msgstr "mmustermann"
 
@@ -187,6 +187,12 @@ msgstr "Passwort zurücksetzen auf {website_name}"
 msgid "One-time passcode authentication on {website_name}"
 msgstr "Passwortinitialisierung auf {website_name}"
 
+#: canaille/core/mails.py:303
+#, fuzzy, python-brace-format
+#| msgid "Invitation on {website_name}"
+msgid "Invitation to join {group_name} on {website_name}"
+msgstr "Einladung für {website_name}"
+
 #: canaille/core/validators.py:17
 #, python-brace-format
 msgid "The user name '{user_name}' already exists"
@@ -225,6 +231,16 @@ msgstr ""
 "Die Gruppe '{group}' kann nicht entfernt werden, weil noch mindestens ein "
 "Benutzer enthalten ist."
 
+#: canaille/core/validators.py:81
+#, fuzzy
+#| msgid "Remove this email address"
+msgid "No user found with this email address."
+msgstr "Diese E-Mail-Adresse entfernen"
+
+#: canaille/core/validators.py:93
+msgid "A user with this email address is already a member of this group."
+msgstr ""
+
 #: canaille/core/endpoints/account.py:93 canaille/core/endpoints/account.py:119
 msgid "You will receive soon an email to continue the registration process."
 msgstr "In Kürze erhalten Sie eine E-Mail um die Registrierung fortzusetzen."
@@ -238,93 +254,95 @@ msgstr ""
 "versuchen Sie es in einigen Minuten erneut. Falls der Fehler weiterhin "
 "besteht, kontaktieren Sie bitte den Administrator."
 
-#: canaille/core/endpoints/account.py:249
-#: canaille/core/endpoints/account.py:272
+#: canaille/core/endpoints/account.py:269
+#: canaille/core/endpoints/account.py:292
 msgid "The registration link that brought you here was invalid."
 msgstr "Der Registrierungslink, der Sie hier hergeführt hat, war ungültig."
 
-#: canaille/core/endpoints/account.py:256
+#: canaille/core/endpoints/account.py:276
 msgid "The registration link that brought you here has expired."
 msgstr "Der Registrierungslink, der Sie hier hergeführt hat, ist abgelaufen."
 
-#: canaille/core/endpoints/account.py:265
+#: canaille/core/endpoints/account.py:285
 msgid "Your account has already been created."
 msgstr "Ihr Konto wurde bereits erstellt."
 
-#: canaille/core/endpoints/account.py:279
+#: canaille/core/endpoints/account.py:299
 msgid "You are already logged in, you cannot create an account."
 msgstr "Sie sind bereits angemeldet, Sie können kein Konto erstellen."
 
-#: canaille/core/endpoints/account.py:300 canaille/core/endpoints/forms.py:300
-#: canaille/core/endpoints/forms.py:437 canaille/templates/base.html:111
+#: canaille/core/endpoints/account.py:320 canaille/core/endpoints/forms.py:302
+#: canaille/core/endpoints/forms.py:458 canaille/templates/base.html:111
 #: canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
+#: canaille/templates/core/invite_group_member.html:25
 #: canaille/templates/core/partial/group-members.html:15
 #: canaille/templates/core/partial/users.html:18
 msgid "Groups"
 msgstr "Gruppen"
 
-#: canaille/core/endpoints/account.py:325 canaille/core/endpoints/forms.py:112
-#: canaille/core/endpoints/forms.py:261
+#: canaille/core/endpoints/account.py:345 canaille/core/endpoints/forms.py:114
+#: canaille/core/endpoints/forms.py:263
 msgid "Password and confirmation do not match."
 msgstr "Passwort und Bestätigung stimmen nicht überein."
 
-#: canaille/core/endpoints/account.py:339
-#: canaille/core/endpoints/account.py:428
+#: canaille/core/endpoints/account.py:359
+#: canaille/core/endpoints/account.py:448
 msgid "User account creation failed."
 msgstr "Erstellung des Benutzerkontos fehlgeschlagen."
 
-#: canaille/core/endpoints/account.py:348
+#: canaille/core/endpoints/account.py:368
 msgid "Your account has been created successfully."
 msgstr "Ihr Konto wurde erfolgreich erstellt."
 
-#: canaille/core/endpoints/account.py:363
-#: canaille/core/endpoints/account.py:385
+#: canaille/core/endpoints/account.py:383
+#: canaille/core/endpoints/account.py:405
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "Der E-Mail-Bestätigungslink, der Sie hierhergeführt hat, ist ungültig."
 
-#: canaille/core/endpoints/account.py:370
+#: canaille/core/endpoints/account.py:390
 msgid "The email confirmation link that brought you here has expired."
 msgstr ""
 "Der E-Mail-Bestätigungslink, der Sie hier hergeführt hat, ist abgelaufen."
 
-#: canaille/core/endpoints/account.py:377
+#: canaille/core/endpoints/account.py:397 canaille/core/endpoints/groups.py:296
+#: canaille/core/endpoints/groups.py:306 canaille/core/endpoints/groups.py:329
 msgid "The invitation link that brought you here was invalid."
 msgstr "Der Einladungslink, der Sie hierhergeführt hat, war ungültig."
 
-#: canaille/core/endpoints/account.py:392
+#: canaille/core/endpoints/account.py:412
 msgid "This address email have already been confirmed."
 msgstr "Diese E-Mail-Adresse wurde bereits bestätigt."
 
-#: canaille/core/endpoints/account.py:399
+#: canaille/core/endpoints/account.py:419
 msgid "This address email is already associated with another account."
 msgstr "Diese E-Mail-Adresse ist bereits mit einem anderen Account verknüpft."
 
-#: canaille/core/endpoints/account.py:406
+#: canaille/core/endpoints/account.py:426
 msgid "Your email address have been confirmed."
 msgstr "Ihre E-Mail-Adresse wurde bestätigt."
 
-#: canaille/core/endpoints/account.py:436
+#: canaille/core/endpoints/account.py:456
 #, fuzzy
 #| msgid "User account creation succeed."
 msgid "User account creation succeeded."
 msgstr "Benutzerkonto erfolgreich erstellt."
 
-#: canaille/core/endpoints/account.py:614
-#: canaille/core/endpoints/account.py:817
+#: canaille/core/endpoints/account.py:634
+#: canaille/core/endpoints/account.py:837
 msgid "Profile edition failed."
 msgstr "Profiländerung fehlgeschlagen."
 
-#: canaille/core/endpoints/account.py:622
-#: canaille/core/endpoints/account.py:835
+#: canaille/core/endpoints/account.py:642
+#: canaille/core/endpoints/account.py:855
 msgid "Profile updated successfully."
 msgstr "Profil erfolgreich aktualisiert."
 
-#: canaille/core/endpoints/account.py:634
+#: canaille/core/endpoints/account.py:654
 msgid "Email addition failed."
 msgstr "E-Mail hinzufügen fehlgeschlagen."
 
-#: canaille/core/endpoints/account.py:640
+#: canaille/core/endpoints/account.py:660
 msgid ""
 "An email has been sent to the email address. Please check your inbox and "
 "click on the verification link it contains"
@@ -332,19 +350,19 @@ msgstr ""
 "Eine E-Mail wurde an die Adresse gesendet. Bitte prüfen Sie Ihren "
 "Posteingang und klicken Sie auf den Verifizierungslink in der E-Mail"
 
-#: canaille/core/endpoints/account.py:646
+#: canaille/core/endpoints/account.py:666
 msgid "Could not send the verification email"
 msgstr "Die E-Mail zur Verifikation konnte nicht gesendet werden"
 
-#: canaille/core/endpoints/account.py:656
+#: canaille/core/endpoints/account.py:676
 msgid "Email deletion failed."
 msgstr "E-Mail löschen fehlgeschlagen."
 
-#: canaille/core/endpoints/account.py:659
+#: canaille/core/endpoints/account.py:679
 msgid "The email have been successfully deleted."
 msgstr "Die E-Mail wurde erfolgreich entfernt."
 
-#: canaille/core/endpoints/account.py:699
+#: canaille/core/endpoints/account.py:719
 msgid ""
 "A password initialization link has been sent at the user email address. It "
 "should be received within a few minutes."
@@ -352,12 +370,12 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/account.py:705
+#: canaille/core/endpoints/account.py:725
 #: canaille/core/endpoints/auth/password.py:99
 msgid "Could not send the password initialization email"
 msgstr "Die E-Mail zur Kennwortinitialisierung konnte nicht gesendet werden"
 
-#: canaille/core/endpoints/account.py:718
+#: canaille/core/endpoints/account.py:738
 msgid ""
 "A password reset link has been sent at the user email address. It should be "
 "received within a few minutes."
@@ -365,35 +383,35 @@ msgstr ""
 "Ein Link zum Zurücksetzen des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/account.py:724
+#: canaille/core/endpoints/account.py:744
 msgid "Could not send the password reset email"
 msgstr "Die E-Mail zum Zurücksetzen des Passworts konnte nicht gesendet werden"
 
-#: canaille/core/endpoints/account.py:740
+#: canaille/core/endpoints/account.py:760
 msgid "The account has been locked"
 msgstr "Das Konto wurde gesperrt"
 
-#: canaille/core/endpoints/account.py:751
+#: canaille/core/endpoints/account.py:771
 msgid "The account has been unlocked"
 msgstr "Das Konto wurde entsperrt"
 
-#: canaille/core/endpoints/account.py:765
+#: canaille/core/endpoints/account.py:785
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
 msgid "Authenticator application passcode authentication has been reset"
 msgstr "Passwortinitialisierung auf {website_name}"
 
-#: canaille/core/endpoints/account.py:856
+#: canaille/core/endpoints/account.py:876
 #, fuzzy, python-format
 #| msgid "The user %(user)s has been sucessfuly deleted"
 msgid "The user %(user)s has been successfully deleted"
 msgstr "Der Benutzer %(user)s wurde erfolgreich gelöscht"
 
-#: canaille/core/endpoints/account.py:872
+#: canaille/core/endpoints/account.py:892
 msgid "Locked users cannot be impersonated."
 msgstr "Gesperrte Benutzer können nicht imitiert werden."
 
-#: canaille/core/endpoints/account.py:914
+#: canaille/core/endpoints/account.py:934
 #: canaille/core/endpoints/auth/password.py:221
 msgid "Your password has been updated successfully"
 msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
@@ -403,10 +421,11 @@ msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
 msgid "Email"
 msgstr "E-Mail"
 
-#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:39
-#: canaille/core/endpoints/forms.py:72 canaille/core/endpoints/forms.py:186
-#: canaille/core/endpoints/forms.py:403 canaille/core/endpoints/forms.py:431
-#: canaille/core/endpoints/forms.py:455 canaille/core/endpoints/forms.py:471
+#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:41
+#: canaille/core/endpoints/forms.py:74 canaille/core/endpoints/forms.py:188
+#: canaille/core/endpoints/forms.py:409 canaille/core/endpoints/forms.py:424
+#: canaille/core/endpoints/forms.py:452 canaille/core/endpoints/forms.py:476
+#: canaille/core/endpoints/forms.py:492
 #, fuzzy
 #| msgid "jane@doe.com"
 msgid "jane.doe@example.com"
@@ -436,50 +455,50 @@ msgstr "E-Mail-Bestätigung auf {website_name}"
 msgid "Passcode authentication on {website_name}"
 msgstr "Passwortinitialisierung auf {website_name}"
 
-#: canaille/core/endpoints/forms.py:36 canaille/core/endpoints/forms.py:69
+#: canaille/core/endpoints/forms.py:38 canaille/core/endpoints/forms.py:71
 #: canaille/templates/core/partial/group-members.html:9
 #: canaille/templates/core/partial/users.html:9
 msgid "Login"
 msgstr "Anmeldung"
 
-#: canaille/core/endpoints/forms.py:47
+#: canaille/core/endpoints/forms.py:49
 msgid "Remember me"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:51
+#: canaille/core/endpoints/forms.py:53
 msgid "If unchecked, the session will close when the browser is closed"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:59 canaille/core/endpoints/forms.py:96
-#: canaille/core/endpoints/forms.py:245
+#: canaille/core/endpoints/forms.py:61 canaille/core/endpoints/forms.py:98
+#: canaille/core/endpoints/forms.py:247
 #: canaille/templates/core/profile_settings.html:113
 msgid "Password"
 msgstr "Passwort"
 
-#: canaille/core/endpoints/forms.py:81
+#: canaille/core/endpoints/forms.py:83
 msgid "Code"
 msgstr "Code"
 
-#: canaille/core/endpoints/forms.py:87 canaille/core/endpoints/forms.py:486
+#: canaille/core/endpoints/forms.py:89 canaille/core/endpoints/forms.py:507
 #, fuzzy
 #| msgid "1234"
 msgid "123456"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:109 canaille/core/endpoints/forms.py:258
+#: canaille/core/endpoints/forms.py:111 canaille/core/endpoints/forms.py:260
 msgid "Password confirmation"
 msgstr "Passwortbestätigung"
 
-#: canaille/core/endpoints/forms.py:131
+#: canaille/core/endpoints/forms.py:133
 msgid "Automatic"
 msgstr "Automatisch"
 
-#: canaille/core/endpoints/forms.py:136
+#: canaille/core/endpoints/forms.py:138
 msgid "Username"
 msgstr "Anmeldename"
 
-#: canaille/core/endpoints/forms.py:140 canaille/core/endpoints/forms.py:357
-#: canaille/core/endpoints/forms.py:373 canaille/oidc/endpoints/forms.py:46
+#: canaille/core/endpoints/forms.py:142 canaille/core/endpoints/forms.py:359
+#: canaille/core/endpoints/forms.py:375 canaille/oidc/endpoints/forms.py:46
 #: canaille/templates/core/partial/group-members.html:12
 #: canaille/templates/core/partial/groups.html:6
 #: canaille/templates/core/partial/users.html:12
@@ -487,207 +506,258 @@ msgstr "Anmeldename"
 msgid "Name"
 msgstr "Name"
 
-#: canaille/core/endpoints/forms.py:142
+#: canaille/core/endpoints/forms.py:144
 msgid "Title"
 msgstr "Titel"
 
-#: canaille/core/endpoints/forms.py:144
+#: canaille/core/endpoints/forms.py:146
 msgid "Vice president"
 msgstr "Vizepräsident"
 
-#: canaille/core/endpoints/forms.py:149
+#: canaille/core/endpoints/forms.py:151
 msgid "Given name"
 msgstr "Vorname"
 
-#: canaille/core/endpoints/forms.py:151
+#: canaille/core/endpoints/forms.py:153
 msgid "John"
 msgstr "Maria"
 
-#: canaille/core/endpoints/forms.py:157
+#: canaille/core/endpoints/forms.py:159
 msgid "Family Name"
 msgstr "Familienname"
 
-#: canaille/core/endpoints/forms.py:160
+#: canaille/core/endpoints/forms.py:162
 msgid "Doe"
 msgstr "Mustermann"
 
-#: canaille/core/endpoints/forms.py:166
+#: canaille/core/endpoints/forms.py:168
 msgid "Display Name"
 msgstr "Anzeigename"
 
-#: canaille/core/endpoints/forms.py:169
+#: canaille/core/endpoints/forms.py:171
 msgid "Johnny"
 msgstr "Maria"
 
-#: canaille/core/endpoints/forms.py:176 canaille/core/endpoints/forms.py:461
+#: canaille/core/endpoints/forms.py:178 canaille/core/endpoints/forms.py:482
 #: canaille/templates/core/profile_edit.html:195
 msgid "Email addresses"
 msgstr "E-Mail-Adressen"
 
-#: canaille/core/endpoints/forms.py:183 canaille/core/endpoints/forms.py:452
+#: canaille/core/endpoints/forms.py:185 canaille/core/endpoints/forms.py:473
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 "Diese E-Mail wird als Wiederherstellungsadresse verwendet, um das Passwort "
 "bei Bedarf zurückzusetzen"
 
-#: canaille/core/endpoints/forms.py:197
+#: canaille/core/endpoints/forms.py:199
 msgid "Phone numbers"
 msgstr "Telefonnummern"
 
-#: canaille/core/endpoints/forms.py:198
+#: canaille/core/endpoints/forms.py:200
 msgid "555-000-555"
 msgstr "00 00 00 00 00"
 
-#: canaille/core/endpoints/forms.py:205
+#: canaille/core/endpoints/forms.py:207
 msgid "Address"
 msgstr "Adresse"
 
-#: canaille/core/endpoints/forms.py:207
+#: canaille/core/endpoints/forms.py:209
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "Musterstrasse 1, 12345 Musterstadt"
 
-#: canaille/core/endpoints/forms.py:211
+#: canaille/core/endpoints/forms.py:213
 msgid "Street"
 msgstr "Straße"
 
-#: canaille/core/endpoints/forms.py:213
+#: canaille/core/endpoints/forms.py:215
 msgid "132, Foobar Street"
 msgstr "Beispielstraße 132"
 
-#: canaille/core/endpoints/forms.py:218
+#: canaille/core/endpoints/forms.py:220
 msgid "Postal Code"
 msgstr "Postleitzahl"
 
-#: canaille/core/endpoints/forms.py:225
+#: canaille/core/endpoints/forms.py:227
 msgid "Locality"
 msgstr "Lokalität"
 
-#: canaille/core/endpoints/forms.py:227
+#: canaille/core/endpoints/forms.py:229
 msgid "Gotham City"
 msgstr "Musterstadt"
 
-#: canaille/core/endpoints/forms.py:232
+#: canaille/core/endpoints/forms.py:234
 msgid "Region"
 msgstr "Region"
 
-#: canaille/core/endpoints/forms.py:234
+#: canaille/core/endpoints/forms.py:236
 msgid "North Pole"
 msgstr "Nordpol"
 
-#: canaille/core/endpoints/forms.py:239
+#: canaille/core/endpoints/forms.py:241
 msgid "Photo"
 msgstr "Foto"
 
-#: canaille/core/endpoints/forms.py:243
+#: canaille/core/endpoints/forms.py:245
 #: canaille/templates/core/profile_add.html:71
 #: canaille/templates/core/profile_edit.html:84
 msgid "Delete the photo"
 msgstr "Foto löschen"
 
-#: canaille/core/endpoints/forms.py:269
+#: canaille/core/endpoints/forms.py:271
 msgid "User number"
 msgstr "Benutzernummer"
 
-#: canaille/core/endpoints/forms.py:271 canaille/core/endpoints/forms.py:277
+#: canaille/core/endpoints/forms.py:273 canaille/core/endpoints/forms.py:279
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:275
+#: canaille/core/endpoints/forms.py:277
 msgid "Department"
 msgstr "Abteilung"
 
-#: canaille/core/endpoints/forms.py:281
+#: canaille/core/endpoints/forms.py:283
 msgid "Organization"
 msgstr "Organisation"
 
-#: canaille/core/endpoints/forms.py:283
+#: canaille/core/endpoints/forms.py:285
 msgid "Cogip LTD."
 msgstr "Musterfirma"
 
-#: canaille/core/endpoints/forms.py:288
+#: canaille/core/endpoints/forms.py:290
 msgid "Website"
 msgstr "Website"
 
-#: canaille/core/endpoints/forms.py:290
+#: canaille/core/endpoints/forms.py:292
 #, fuzzy
 #| msgid "https://mywebsite.tld"
 msgid "https://mywebsite.example"
 msgstr "https://meinewebsite.de"
 
-#: canaille/core/endpoints/forms.py:295
+#: canaille/core/endpoints/forms.py:297
 msgid "Preferred language"
 msgstr "Bevorzugte Sprache"
 
-#: canaille/core/endpoints/forms.py:309
+#: canaille/core/endpoints/forms.py:311
 msgid "users, admins …"
 msgstr "Benutzer*innen, Administrator*innen …"
 
-#: canaille/core/endpoints/forms.py:334
+#: canaille/core/endpoints/forms.py:336
 msgid "Account expiration"
 msgstr "Ablauf des Benutzerkontos"
 
-#: canaille/core/endpoints/forms.py:360
+#: canaille/core/endpoints/forms.py:362
 msgid "group"
 msgstr "Gruppe"
 
-#: canaille/core/endpoints/forms.py:364 canaille/core/endpoints/forms.py:383
+#: canaille/core/endpoints/forms.py:366 canaille/core/endpoints/forms.py:385
 #: canaille/templates/core/partial/groups.html:7
 msgid "Description"
 msgstr "Beschreibung"
 
-#: canaille/core/endpoints/forms.py:397 canaille/core/endpoints/forms.py:424
+#: canaille/core/endpoints/forms.py:401 canaille/core/endpoints/forms.py:418
+#: canaille/core/endpoints/forms.py:445
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: canaille/core/endpoints/forms.py:418
+#: canaille/core/endpoints/forms.py:439
 msgid "User name"
 msgstr "Name des Benutzers"
 
-#: canaille/core/endpoints/forms.py:422
+#: canaille/core/endpoints/forms.py:443
 msgid "Username editable by the invitee"
 msgstr "Vom Eingeladenen bearbeitbarer Benutzername"
 
-#: canaille/core/endpoints/forms.py:464
+#: canaille/core/endpoints/forms.py:485
 msgid "New email address"
 msgstr "Neue E-Mail-Adresse"
 
-#: canaille/core/endpoints/forms.py:480
+#: canaille/core/endpoints/forms.py:501
 #, fuzzy
 #| msgid "Password"
 msgid "Passcode"
 msgstr "Passwort"
 
-#: canaille/core/endpoints/groups.py:42
+#: canaille/core/endpoints/groups.py:50 canaille/core/endpoints/groups.py:219
+msgid "You are not a member of this group."
+msgstr ""
+
+#: canaille/core/endpoints/groups.py:74
 msgid "Group creation failed."
 msgstr "Gruppenerstellung fehlgeschlagen."
 
-#: canaille/core/endpoints/groups.py:51
+#: canaille/core/endpoints/groups.py:84
 #, fuzzy, python-format
 #| msgid "The group %(group)s has been sucessfully created"
 msgid "The group %(group)s has been successfully created"
 msgstr "Die Gruppe %(group)s wurde erfolgreich erstellt"
 
-#: canaille/core/endpoints/groups.py:111
+#: canaille/core/endpoints/groups.py:151
 #, fuzzy, python-format
 #| msgid "The group %(group)s has been sucessfully edited."
 msgid "The group %(group)s has been successfully edited."
 msgstr "Die Gruppe %(group)s wurde erfolgreich bearbeitet."
 
-#: canaille/core/endpoints/groups.py:118
+#: canaille/core/endpoints/groups.py:158
 msgid "Group edition failed."
 msgstr "Gruppenbearbeitung fehlgeschlagen."
 
-#: canaille/core/endpoints/groups.py:148
+#: canaille/core/endpoints/groups.py:188
 #, python-format
 msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "%(user_name)s wurde aus Gruppe %(group_name)s entfernt"
 
-#: canaille/core/endpoints/groups.py:165
+#: canaille/core/endpoints/groups.py:205
 #, fuzzy, python-format
 #| msgid "The group %(group)s has been sucessfully deleted"
 msgid "The group %(group)s has been successfully deleted"
 msgstr "Die Gruppe %(group)s wurde erfolgreich gelöscht"
+
+#: canaille/core/endpoints/groups.py:229
+#, python-format
+msgid "You have left %(group)s."
+msgstr ""
+
+#: canaille/core/endpoints/groups.py:276
+#, fuzzy, python-format
+#| msgid "This invitation link has been sent to %(email)s"
+msgid "An invitation email has been sent to %(email)s."
+msgstr "Dieser Einladungslink wurde an %(email)s gesendet"
+
+#: canaille/core/endpoints/groups.py:300
+#, fuzzy
+#| msgid "The user you are trying to remove does not exist."
+msgid "The group you were invited to no longer exists."
+msgstr "Der Benutzer, den Sie versuchen zu entfernen, existiert nicht."
+
+#: canaille/core/endpoints/groups.py:312
+#, python-format
+msgid ""
+"You have been invited to join the group '%(group)s'. Please log in to accept "
+"the invitation."
+msgstr ""
+
+#: canaille/core/endpoints/groups.py:321
+#, fuzzy
+#| msgid "This invitation link has been sent to %(email)s"
+msgid "This invitation was not sent to you."
+msgstr "Dieser Einladungslink wurde an %(email)s gesendet"
+
+#: canaille/core/endpoints/groups.py:325
+#, fuzzy
+#| msgid "The registration link that brought you here has expired."
+msgid "The invitation link that brought you here has expired."
+msgstr "Der Registrierungslink, der Sie hier hergeführt hat, ist abgelaufen."
+
+#: canaille/core/endpoints/groups.py:334
+#, python-format
+msgid "You are already a member of %(group)s."
+msgstr ""
+
+#: canaille/core/endpoints/groups.py:345
+#, python-format
+msgid "You have successfully joined %(group)s!"
+msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:94
 #: canaille/core/endpoints/auth/password.py:54
@@ -1057,7 +1127,7 @@ msgid "Log out"
 msgstr "Abmelden"
 
 #: canaille/templates/base.html:127
-#: canaille/templates/core/auth/password.html:18
+#: canaille/templates/core/auth/password.html:24
 msgid "Sign in"
 msgstr "Anmelden"
 
@@ -1159,11 +1229,18 @@ msgstr ""
 msgid "Delete group"
 msgstr "Gruppe löschen"
 
-#: canaille/templates/core/group.html:80
+#: canaille/templates/core/group.html:79
+#: canaille/templates/core/invite_group_member.html:33
+#, fuzzy
+#| msgid "Invite a user"
+msgid "Invite Members"
+msgstr "Benutzer einladen"
+
+#: canaille/templates/core/group.html:84
 msgid "Create group"
 msgstr "Gruppe anlegen"
 
-#: canaille/templates/core/group.html:82
+#: canaille/templates/core/group.html:86
 #: canaille/templates/core/profile_edit.html:183
 #: canaille/templates/core/profile_settings.html:105
 #: canaille/templates/core/profile_settings.html:194
@@ -1171,7 +1248,7 @@ msgstr "Gruppe anlegen"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: canaille/templates/core/group.html:94
+#: canaille/templates/core/group.html:98
 msgid "Group members"
 msgstr "Gruppenmitglieder"
 
@@ -1191,6 +1268,7 @@ msgid "Invitation link"
 msgstr "Einladungslink"
 
 #: canaille/templates/core/invite.html:52
+#: canaille/templates/core/invite_group_member.html:44
 msgid "Invitation sent"
 msgstr "Einladung gesendet"
 
@@ -1206,8 +1284,9 @@ msgstr ""
 "Verfügung stellen können:"
 
 #: canaille/templates/core/invite.html:69
-#, python-format
-msgid "This invitation link has been sent to %(email)s"
+#, fuzzy, python-format
+#| msgid "This invitation link has been sent to %(email)s"
+msgid "This invitation link has been sent to %(email)s."
 msgstr "Dieser Einladungslink wurde an %(email)s gesendet"
 
 #: canaille/templates/core/invite.html:70
@@ -1234,6 +1313,7 @@ msgstr ""
 "zu übermitteln:"
 
 #: canaille/templates/core/invite.html:89
+#: canaille/templates/core/invite_group_member.html:56
 #: canaille/templates/oidc/client_add.html:61
 #: canaille/templates/oidc/client_edit.html:63
 #: canaille/templates/oidc/token_view.html:137
@@ -1263,8 +1343,53 @@ msgid "Generate a link"
 msgstr "Link erzeugen"
 
 #: canaille/templates/core/invite.html:149
+#: canaille/templates/core/invite_group_member.html:101
 msgid "Send the invitation"
 msgstr "Einladung senden"
+
+#: canaille/templates/core/invite_group_member.html:15
+#: canaille/templates/core/invite_group_member.html:79
+#, python-format
+msgid "Invite members to %(group_name)s"
+msgstr ""
+
+#: canaille/templates/core/invite_group_member.html:29
+#: canaille/templates/core/invite_group_member.html:65
+#: canaille/templates/core/invite_group_member.html:98
+#, fuzzy
+#| msgid "Groups"
+msgid "View Group"
+msgstr "Gruppen"
+
+#: canaille/templates/core/invite_group_member.html:49
+#, fuzzy
+#| msgid ""
+#| "If you need to provide this link by other ways than email, you can copy "
+#| "it there:"
+msgid ""
+"If you need to provide this link by other ways than email, you can copy it "
+"here:"
+msgstr ""
+"Wenn Sie den Link auf andere Weise als per E-Mail übermitteln wollen, können "
+"Sie ihn hier kopieren:"
+
+#: canaille/templates/core/invite_group_member.html:68
+#, fuzzy
+#| msgid "Invite another user"
+msgid "Invite another member"
+msgstr "Weiteren Benutzer einladen"
+
+#: canaille/templates/core/invite_group_member.html:84
+#, fuzzy
+#| msgid ""
+#| "After this form is sent, the recipient your indicated will receive an "
+#| "email containing an account creation link."
+msgid ""
+"After this form is sent, the recipient will receive an email containing a "
+"link to join this group."
+msgstr ""
+"Nach dem Absenden des Formulars erhält der von Ihnen angegebene Empfänger "
+"eine E-Mail mit einem Link zur Einrichtung eines Kontos."
 
 #: canaille/templates/core/join.html:14 canaille/templates/core/join.html:25
 #: canaille/templates/core/profile_add.html:20
@@ -1300,7 +1425,7 @@ msgstr "Login-Seite"
 #: canaille/templates/core/auth/forgotten-password-code.html:29
 #: canaille/templates/core/auth/forgotten-password.html:17
 #: canaille/templates/core/auth/forgotten-password.html:28
-#: canaille/templates/core/auth/password.html:15
+#: canaille/templates/core/auth/password.html:21
 #: canaille/templates/core/join.html:49
 msgid "Forgotten password"
 msgstr "Passwort vergessen"
@@ -2065,6 +2190,40 @@ msgstr ""
 "wir Ihr Passwort einrichten. Bitte klicken Sie auf den unten stehenden Link "
 "und folgen Sie den Anweisungen."
 
+#: canaille/templates/core/mails/group_invitation.html:19
+#: canaille/templates/core/mails/group_invitation.txt:1
+#, fuzzy
+#| msgid "Invitation"
+msgid "Group Invitation"
+msgstr "Einladung"
+
+#: canaille/templates/core/mails/group_invitation.html:27
+#, python-format
+msgid ""
+"%(inviter_name)s has invited you to join the group \"%(group_name)s\" on "
+"%(site_name)s. To accept this invitation, click on the \"Join Group\" button "
+"below."
+msgstr ""
+
+#: canaille/templates/core/mails/group_invitation.html:38
+#: canaille/templates/core/mails/group_invitation.txt:7
+#, fuzzy
+#| msgid "Groups"
+msgid "Join Group"
+msgstr "Gruppen"
+
+#: canaille/templates/core/mails/group_invitation.txt:3
+#, fuzzy, python-format
+#| msgid "%(user_name)s has been removed from the group %(group_name)s"
+msgid ""
+"%(inviter_name)s has invited you to join the group \"%(group_name)s\" on "
+"%(site_name)s."
+msgstr "%(user_name)s wurde aus Gruppe %(group_name)s entfernt"
+
+#: canaille/templates/core/mails/group_invitation.txt:5
+msgid "To accept this invitation, click on the link below:"
+msgstr ""
+
 #: canaille/templates/core/mails/invitation.html:19
 #: canaille/templates/core/mails/invitation.txt:1
 msgid "Account creation"
@@ -2196,6 +2355,7 @@ msgstr ""
 
 #: canaille/templates/core/modals/delete-account.html:26
 #: canaille/templates/core/modals/delete-group.html:22
+#: canaille/templates/core/modals/leave-group.html:22
 #: canaille/templates/core/modals/lock-account.html:26
 #: canaille/templates/core/modals/remove-group-member.html:22
 #: canaille/templates/core/modals/reset-otp.html:26
@@ -2223,6 +2383,30 @@ msgstr ""
 "Sind Sie sicher, dass Sie die Gruppe \"%(group_name)s\" löschen wollen? "
 "Diese Aktion kann nicht rückgängig gemacht werden, und alle Daten zu dieser "
 "Gruppe werden gelöscht."
+
+#: canaille/templates/core/modals/leave-group.html:9
+#, fuzzy
+#| msgid "Create group"
+msgid "Leave group"
+msgstr "Gruppe anlegen"
+
+#: canaille/templates/core/modals/leave-group.html:13
+#, fuzzy, python-format
+#| msgid ""
+#| "Are you sure you want to delete the group \"%(group_name)s\"? This action "
+#| "is unrevokable and all the data about this group will be removed."
+msgid ""
+"Are you sure you want to leave the group \"%(group_name)s\"? You will no "
+"longer have access to this group unless you are invited again."
+msgstr ""
+"Sind Sie sicher, dass Sie die Gruppe \"%(group_name)s\" löschen wollen? "
+"Diese Aktion kann nicht rückgängig gemacht werden, und alle Daten zu dieser "
+"Gruppe werden gelöscht."
+
+#: canaille/templates/core/modals/leave-group.html:25
+#: canaille/templates/core/partial/groups.html:41
+msgid "Leave"
+msgstr ""
 
 #: canaille/templates/core/modals/lock-account.html:9
 msgid "Account locking"
@@ -2263,8 +2447,8 @@ msgstr ""
 "entfernen wollen?"
 
 #: canaille/templates/core/modals/remove-group-member.html:25
-#: canaille/templates/core/partial/group-members.html:68
-#: canaille/templates/core/partial/group-members.html:73
+#: canaille/templates/core/partial/group-members.html:71
+#: canaille/templates/core/partial/group-members.html:76
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -2298,6 +2482,7 @@ msgid "Send a verification email to validate this address."
 msgstr "Bestätigungs-E-Mail senden, um diese Adresse zu bestätigen."
 
 #: canaille/templates/core/partial/group-members.html:16
+#: canaille/templates/core/partial/groups.html:9
 msgid "Actions"
 msgstr "Aktionen"
 
@@ -2306,20 +2491,26 @@ msgstr "Aktionen"
 msgid "This account is locked"
 msgstr "Dieses Konto ist gesperrt"
 
-#: canaille/templates/core/partial/group-members.html:72
+#: canaille/templates/core/partial/group-members.html:46
+#, fuzzy
+#| msgid "Group edition"
+msgid "Group owner"
+msgstr "Gruppe bearbeiten"
+
+#: canaille/templates/core/partial/group-members.html:75
 msgid "Groups must have at least one member"
 msgstr "Gruppen müssen mindestens ein Mitglied haben"
 
-#: canaille/templates/core/partial/group-members.html:87
-#: canaille/templates/core/partial/groups.html:31
+#: canaille/templates/core/partial/group-members.html:90
+#: canaille/templates/core/partial/groups.html:55
 #: canaille/templates/core/partial/users.html:81
 #: canaille/templates/oidc/partial/client_list.html:48
 #: canaille/templates/oidc/partial/token_list.html:45
 msgid "No item matches your request"
 msgstr "Kein Eintrag entspricht Ihrer Anfrage"
 
-#: canaille/templates/core/partial/group-members.html:89
-#: canaille/templates/core/partial/groups.html:33
+#: canaille/templates/core/partial/group-members.html:92
+#: canaille/templates/core/partial/groups.html:57
 #: canaille/templates/core/partial/users.html:83
 #: canaille/templates/oidc/partial/client_list.html:50
 #: canaille/templates/oidc/partial/token_list.html:47
@@ -2328,8 +2519,8 @@ msgstr "Kein Eintrag entspricht Ihrer Anfrage"
 msgid "Maybe try with different criteria?"
 msgstr "Vielleicht versuchen Sie es mit anderen Kriterien?"
 
-#: canaille/templates/core/partial/group-members.html:92
-#: canaille/templates/core/partial/groups.html:36
+#: canaille/templates/core/partial/group-members.html:95
+#: canaille/templates/core/partial/groups.html:60
 #: canaille/templates/core/partial/users.html:86
 #: canaille/templates/oidc/partial/client_list.html:53
 #: canaille/templates/oidc/partial/token_list.html:50
