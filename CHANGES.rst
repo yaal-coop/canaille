@@ -3,7 +3,12 @@
 
 .. warning::
 
-    ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` removed in favor of JWT tokens.
+    - ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` removed in favor of JWT tokens.
+    - ``MANAGE_GROUPS`` permission is renamed ``MANAGE_ALL_GROUPS``.
+
+Added
+^^^^^
+- Per-user group management. :issue:`95` :pr:`299`
 
 Fixed
 ^^^^^

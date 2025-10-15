@@ -80,7 +80,7 @@ def configuration(smtpd):
             "ACL": {
                 "DEFAULT": {
                     "READ": ["user_name", "groups"],
-                    "PERMISSIONS": ["edit_self", "use_oidc"],
+                    "PERMISSIONS": ["edit_self", "use_oidc", "manage_own_groups"],
                     "WRITE": [
                         "emails",
                         "given_name",
@@ -106,7 +106,7 @@ def configuration(smtpd):
                     "FILTER": [{"user_name": "admin"}, {"family_name": "admin"}],
                     "PERMISSIONS": [
                         "manage_users",
-                        "manage_groups",
+                        "manage_all_groups",
                         "manage_oidc",
                         "delete_account",
                         "impersonate_users",
@@ -121,7 +121,11 @@ def configuration(smtpd):
                         {"user_name": "moderator"},
                         {"family_name": "moderator"},
                     ],
-                    "PERMISSIONS": ["manage_users", "manage_groups", "delete_account"],
+                    "PERMISSIONS": [
+                        "manage_users",
+                        "manage_all_groups",
+                        "delete_account",
+                    ],
                     "WRITE": [
                         "groups",
                     ],

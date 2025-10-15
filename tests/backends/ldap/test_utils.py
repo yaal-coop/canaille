@@ -229,7 +229,7 @@ def test_ldap_cannot_create_users(testclient, configuration, backend):
         )
 
 
-def test_ldap_cannot_create_groups(testclient, configuration, backend):
+def test_ldap_cannot_manage_own_groups(testclient, configuration, backend):
     from canaille.core.models import Group
 
     config_obj = settings_factory(configuration)

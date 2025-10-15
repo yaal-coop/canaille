@@ -197,6 +197,8 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
         back_populates="groups",
         order_by=membership_association_table.c.index,
     )
+    owner_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
+    owner: Mapped["User"] = relationship()
 
 
 client_audience_association_table = Table(

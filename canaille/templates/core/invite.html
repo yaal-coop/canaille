@@ -66,7 +66,7 @@ Displays the invitation form to users with the invitation permission.
 
                     <div class="ui attached success message">
                         {% set email = form.email.data %}
-                        {% trans %}This invitation link has been sent to {{ email }}{% endtrans %}
+                        {% trans %}This invitation link has been sent to {{ email }}.{% endtrans %}
                         {% trans %}If you need to provide this link by other ways than email, you can copy it there:{% endtrans %}
                     </div>
 

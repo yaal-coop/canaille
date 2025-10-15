@@ -1,0 +1,31 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div class="ui warning message" id="modal-leave-group">
+        <form method="post" action="{{ url_for('core.groups.leave_group', group=group) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="ui icon header">
+                <i class="sign out icon"></i>
+                {% trans %}Leave group{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans group_name=group.display_name %}
+                        Are you sure you want to leave the group "{{ group_name }}"?
+                        You will no longer have access to this group unless you are invited again.
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a href="{{ url_for('core.groups.groups') }}" class="ui cancel button">
+                        {% trans %}Cancel{% endtrans %}
+                    </a>
+                    <button type="submit" class="ui red approve button">
+                        {% trans %}Leave{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
