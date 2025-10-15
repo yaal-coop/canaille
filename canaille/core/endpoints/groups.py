@@ -239,40 +239,14 @@ def invite_to_group(user, group):
         abort(403)
 
     form = GroupInvitationForm(request.form or None)
+    form.group = group
     email_sent = False
     form_validated = False
     invitation_url = None
 
     if request.form and form.validate():
         form_validated = True
-        existing_users = Backend.instance.query(models.User, emails=form.email.data)
-        if not existing_users:
-            flash(_("No user found with this email address."), "error")
-            return render_template(
-                "core/invite_group_member.html",
-                form=form,
-                group=group,
-                menuitem="groups",
-                form_validated=False,
-                email_sent=False,
-                invitation_url=None,
-            )
-
-        invited_user = existing_users[0]
-        if invited_user in group.members:
-            flash(
-                _("A user with this email address is already a member of this group."),
-                "error",
-            )
-            return render_template(
-                "core/invite_group_member.html",
-                form=form,
-                group=group,
-                menuitem="groups",
-                form_validated=False,
-                email_sent=False,
-                invitation_url=None,
-            )
+        invited_user = Backend.instance.query(models.User, emails=form.email.data)[0]
 
         expiration_date = datetime.datetime.now(
             datetime.timezone.utc

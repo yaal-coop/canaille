@@ -5,6 +5,10 @@
 
     ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` removed in favor of JWT tokens.
 
+Added
+^^^^^
+- Per-user group management. :issue:`95` :pr:`299`
+
 Fixed
 ^^^^^
 - Password autofill.

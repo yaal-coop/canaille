@@ -23,12 +23,14 @@ from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
 from canaille.core.mails import RESET_CODE_LENGTH
 from canaille.core.models import OTP_DIGITS
+from canaille.core.validators import email_has_user
 from canaille.core.validators import existing_group_member
 from canaille.core.validators import existing_login
 from canaille.core.validators import non_empty_groups
 from canaille.core.validators import unique_email
 from canaille.core.validators import unique_group
 from canaille.core.validators import unique_user_name
+from canaille.core.validators import user_not_in_group
 
 
 class LoginForm(Form):
@@ -400,6 +402,8 @@ class GroupInvitationForm(Form):
         validators=[
             wtforms.validators.DataRequired(),
             email_validator,
+            email_has_user,
+            user_not_in_group,
         ],
         render_kw={
             "placeholder": _("jane.doe@example.com"),
