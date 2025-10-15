@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-10-01 17:26+0200\n"
-"PO-Revision-Date: 2025-10-04 08:01+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2025-10-10 20:07+0000\n"
+"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -610,7 +610,7 @@ msgstr "Site web"
 
 #: canaille/core/endpoints/forms.py:290
 msgid "https://mywebsite.example"
-msgstr "https://mon-site-internet.fr"
+msgstr "https://mon-site-internet.example"
 
 #: canaille/core/endpoints/forms.py:295
 msgid "Preferred language"
@@ -643,11 +643,11 @@ msgstr "Nom d'utilisateur"
 
 #: canaille/core/endpoints/forms.py:422
 msgid "Username editable by the invitee"
-msgstr "L'identifiant sera éditable par la personne invitée"
+msgstr "Le nom d'utilisateur sera modifiable par la personne invitée"
 
 #: canaille/core/endpoints/forms.py:464
 msgid "New email address"
-msgstr "Nouvelle adresse email"
+msgstr "Nouvelle adresse e-mail"
 
 #: canaille/core/endpoints/forms.py:480
 msgid "Passcode"
@@ -665,11 +665,11 @@ msgstr "Le groupe %(group)s a bien été créé"
 #: canaille/core/endpoints/groups.py:111
 #, python-format
 msgid "The group %(group)s has been successfully edited."
-msgstr "Le groupe %(group)s a bien été édité."
+msgstr "Le groupe %(group)s a bien été modifié."
 
 #: canaille/core/endpoints/groups.py:118
 msgid "Group edition failed."
-msgstr "L'édition du groupe a échoué."
+msgstr "La modification du groupe a échoué."
 
 #: canaille/core/endpoints/groups.py:148
 #, python-format
@@ -720,7 +720,7 @@ msgid ""
 "should receive it within a few minutes."
 msgstr ""
 "Un lien d'initialisation de votre mot de passe vous a été envoyé par "
-"courriel. Vous devriez le recevoir d'ici une quelques minutes."
+"courriel. Vous devriez le recevoir d'ici quelques minutes."
 
 #: canaille/core/endpoints/auth/password.py:122
 msgid "You should receive it within a few minutes."
@@ -732,7 +732,7 @@ msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
 "cannot send a password reset email."
 msgstr ""
-"L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
+"L'utilisateur '%(user)s' n'a pas la permission de modifier son mot de passe. "
 "Nous ne pouvons pas lui envoyer un courriel de réinitialisation."
 
 #: canaille/core/endpoints/auth/password.py:154
@@ -746,7 +746,7 @@ msgstr ""
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 msgstr ""
-"L'utilisateur '%(user)s' n'a pas la permission d'éditer son mot de passe. "
+"L'utilisateur '%(user)s' n'a pas la permission de modifier son mot de passe. "
 
 #: canaille/core/endpoints/auth/password.py:188
 msgid "Invalid code."
@@ -758,7 +758,7 @@ msgstr "Des informations personnelles vous concernant, comme votre nom."
 
 #: canaille/oidc/utils.py:8
 msgid "Your e-mail address."
-msgstr "Votre adresse courriel."
+msgstr "Votre adresse de courriel."
 
 #: canaille/oidc/utils.py:9
 msgid "Your postal address."
@@ -786,11 +786,11 @@ msgstr "Le client a été créé."
 
 #: canaille/oidc/endpoints/clients.py:140
 msgid "A new management token has been generated."
-msgstr "A nouveau jeton de gestion a été généré."
+msgstr "Un nouveau jeton de gestion a été généré."
 
 #: canaille/oidc/endpoints/clients.py:160
 msgid "The client has not been edited. Please check your information."
-msgstr "Le client n'a pas été édité. Veuillez vérifier vos informations."
+msgstr "Le client n'a pas été modifié. Veuillez vérifier vos informations."
 
 #: canaille/oidc/endpoints/clients.py:193
 msgid "The client has been edited."
@@ -848,7 +848,7 @@ msgstr "Contacts"
 
 #: canaille/oidc/endpoints/forms.py:63
 msgid "Those are the email addresses of people responsible for the client."
-msgstr "Ce sont les adresses email des personnes responsables du client."
+msgstr "Ce sont les adresses e-mail des personnes responsables du client."
 
 #: canaille/oidc/endpoints/forms.py:68
 msgid "URI"
@@ -860,7 +860,7 @@ msgstr "URL d'une page web fournissant des informations à propos du client."
 
 #: canaille/oidc/endpoints/forms.py:81
 msgid "Redirect URIs"
-msgstr "URIs de redirection"
+msgstr "URI de redirection"
 
 #: canaille/oidc/endpoints/forms.py:91
 msgid ""
@@ -872,21 +872,22 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:96
 msgid "Post logout redirect URIs"
-msgstr "URIs de redirection post-déconnexion"
+msgstr "URI de redirection post-déconnexion"
 
 #: canaille/oidc/endpoints/forms.py:106
 msgid "URIs that the client may redirect users to after logging them out."
 msgstr ""
-"Les URIs vers lesquelles le client peut rediriger les utilisateurs après "
+"Les URI vers lesquelles le client peut rediriger les utilisateurs après "
 "déconnexion."
 
 #: canaille/oidc/endpoints/forms.py:111
 msgid "Grant types"
-msgstr "Types de consentements"
+msgstr "Types de consentement"
 
 #: canaille/oidc/endpoints/forms.py:123
 msgid "Grant types that the client can use at the token endpoint."
-msgstr "Types d'octroi que le client peut utiliser sur le terminal de jetons."
+msgstr ""
+"Types de consentement que le client peut utiliser sur le terminal de jetons."
 
 #: canaille/oidc/endpoints/forms.py:127
 #: canaille/templates/oidc/token_view.html:74
@@ -905,7 +906,7 @@ msgstr "Types de réponse"
 #: canaille/oidc/endpoints/forms.py:140
 msgid "Response types that the client can use at the authorization endpoint."
 msgstr ""
-"Types de réponses que le client peut utiliser sur le terminal d'autorisation."
+"Types de réponse que le client peut utiliser sur le terminal d'autorisation."
 
 #: canaille/oidc/endpoints/forms.py:145
 msgid "Token endpoint authentication method"
@@ -1590,7 +1591,7 @@ msgstr "Envoyer un autre code"
 #: canaille/templates/core/auth/sms.html:45
 #: canaille/templates/core/partial/emails_field.html:14
 msgid "Verify"
-msgstr "Confirmer"
+msgstr "Vérifier"
 
 #: canaille/templates/core/auth/firstlogin.html:24
 msgid "First login"
@@ -2432,7 +2433,7 @@ msgstr "Lire la politique de confidentialité de %(application_name)s :"
 #: canaille/templates/oidc/consent_list.html:99
 #: canaille/templates/oidc/trusted_list.html:97
 msgid "Policy"
-msgstr "Politique de confidentialité"
+msgstr "Politique"
 
 #: canaille/templates/oidc/authorize.html:70
 #, python-format

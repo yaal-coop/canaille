@@ -6,7 +6,7 @@ from canaille.app import models
 
 
 def test_fieldlist_add(testclient, logged_admin, backend):
-    assert not backend.query(models.Client)
+    assert not backend.query(models.Client, client_name="foobar")
 
     res = testclient.get("/admin/client/add")
     assert "redirect_uris-1" not in res.forms["clientaddform"].fields
@@ -25,7 +25,7 @@ def test_fieldlist_add(testclient, logged_admin, backend):
     res = res.forms["clientaddform"].submit(
         status=200, name="fieldlist_add", value="redirect_uris-0"
     )
-    assert not backend.query(models.Client)
+    assert not backend.query(models.Client, client_name="foobar")
 
     data["redirect_uris-1"] = "https://foobar.test/callback2"
     for k, v in data.items():
@@ -46,7 +46,7 @@ def test_fieldlist_add(testclient, logged_admin, backend):
 
 
 def test_fieldlist_delete(testclient, logged_admin, backend):
-    assert not backend.query(models.Client)
+    assert not backend.query(models.Client, client_name="foobar")
     res = testclient.get("/admin/client/add")
 
     data = {
@@ -67,7 +67,7 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
     res = res.forms["clientaddform"].submit(
         status=200, name="fieldlist_remove", value="redirect_uris-1"
     )
-    assert not backend.query(models.Client)
+    assert not backend.query(models.Client, client_name="foobar")
     assert "redirect_uris-1" not in res.forms["clientaddform"].fields
 
     res = res.forms["clientaddform"].submit(status=302, name="action", value="add")
@@ -100,7 +100,7 @@ def test_fieldlist_add_invalid_field(testclient, logged_admin):
 
 
 def test_fieldlist_delete_invalid_field(testclient, logged_admin, backend):
-    assert not backend.query(models.Client)
+    assert not backend.query(models.Client, client_name="foobar")
     res = testclient.get("/admin/client/add")
     csrf_token = res.pyquery("#csrf_token").val()
 
@@ -155,7 +155,7 @@ def test_fieldlist_empty_value(testclient, logged_admin, backend):
         status=200, name="fieldlist_add", value="post_logout_redirect_uris-0"
     )
     res.forms["clientaddform"].submit(status=302, name="action", value="add")
-    client = backend.get(models.Client)
+    client = backend.get(models.Client, client_name="foobar")
     backend.delete(client)
 
 

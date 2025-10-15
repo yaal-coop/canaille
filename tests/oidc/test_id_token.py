@@ -13,7 +13,7 @@ from . import client_credentials
 def test_nominal_case(
     testclient, logged_user, client, server_jwk, trusted_client, backend, caplog
 ):
-    assert not backend.query(models.Consent)
+    assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.get(
         "/oauth/authorize",
