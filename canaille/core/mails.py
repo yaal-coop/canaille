@@ -296,6 +296,7 @@ def send_one_time_password_mail(mail, otp):
 
 
 def send_group_invitation_mail(email, invitation_url, group_name, inviter_name):
+    """Send an email invitation to join a group."""
     base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 

@@ -214,6 +214,7 @@ def delete_group(group):
 @bp.route("/<group:group>/leave", methods=["POST"])
 @user_needed()
 def leave_group(user, group):
+    """Allow a user to leave a group and remove ownership if they are the owner."""
     if user not in group.members:
         flash(_("You are not a member of this group."), "error")
         return redirect(url_for("core.account.index"))
@@ -226,13 +227,14 @@ def leave_group(user, group):
     Backend.instance.save(group)
 
     flash(_("You have left %(group)s.", group=group.display_name), "success")
-    return redirect(url_for("core.account.index"))
+    return redirect(url_for("core.groups.groups"))
 
 
 @bp.route("/<group:group>/invite", methods=["GET", "POST"])
 @smtp_needed()
 @user_needed()
 def invite_to_group(user, group):
+    """Send an invitation email to a user to join a group."""
     if not user_can_access_group(user, group):
         abort(403)
 
@@ -310,6 +312,7 @@ def invite_to_group(user, group):
 
 @bp.route("/join/<data>/<hash>", methods=["GET", "POST"])
 def join_group(data, hash):
+    """Handle group invitation link validation and add user to group."""
     try:
         payload = GroupInvitationPayload(*b64_to_obj(data))
     except (binascii.Error, TypeError):
