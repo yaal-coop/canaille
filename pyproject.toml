@@ -341,6 +341,7 @@ trimmed = "true"
 
 [tool.codespell]
 exclude-file = "canaille.spec"
+ignore-words-list = "thirdparty"
 
 [tool.mypy]
 plugins = [
