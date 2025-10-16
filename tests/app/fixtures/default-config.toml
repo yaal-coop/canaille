@@ -160,6 +160,19 @@ DATABASE = "memory"
 # Have i been pwned api url for compromission checks.
 # PASSWORD_COMPROMISSION_CHECK_API_URL = "https://api.pwnedpasswords.com/range/"
 
+# One-time password validity duration.
+#
+# Duration for which email and SMS one-time passwords remain valid. The value is
+# expressed in ISO8601 duration format
+# (https://en.wikipedia.org/wiki/ISO_8601#Durations).
+#
+# Examples:
+#
+# - PT10M for 10 minutes
+# - PT5M for 5 minutes
+# - PT30S for 30 seconds
+# OTP_LIFETIME = "PT10M"
+
 # Password validity duration.
 #
 # If set, user passwords expire after this delay. Users are forced to change their

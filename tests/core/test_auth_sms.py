@@ -1,4 +1,3 @@
-import datetime
 import logging
 from unittest import mock
 
@@ -8,7 +7,8 @@ import time_machine
 
 from canaille.app import mask_phone
 from canaille.core.auth import AuthenticationSession
-from canaille.core.models import OTP_VALIDITY
+
+# OTP_VALIDITY now configured via OTP_LIFETIME
 from canaille.core.models import SEND_NEW_OTP_DELAY
 from canaille.core.sms import send_one_time_password_sms
 
@@ -139,7 +139,7 @@ def test_expired_sms_otp(testclient, user, caplog):
         send_one_time_password_sms(user.preferred_email, otp)
         res.form["otp"] = user.one_time_password
 
-        traveller.shift(datetime.timedelta(seconds=OTP_VALIDITY))
+        traveller.shift(testclient.app.config["CANAILLE"]["OTP_LIFETIME"])
         res = res.form.submit(status=200, name="action", value="confirm")
 
         assert (

@@ -1,8 +1,4 @@
-import datetime
-
 import time_machine
-
-from canaille.core.models import OTP_VALIDITY
 
 
 def test_password_reset(testclient, user, backend):
@@ -50,7 +46,7 @@ def test_password_reset_expired_token(testclient, user, backend):
 
         res = testclient.get("/reset/user/" + token, status=200)
 
-        traveller.shift(datetime.timedelta(seconds=OTP_VALIDITY))
+        traveller.shift(testclient.app.config["CANAILLE"]["OTP_LIFETIME"])
 
         res = testclient.get("/reset/user/" + token)
         assert (

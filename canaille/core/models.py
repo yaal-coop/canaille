@@ -12,7 +12,6 @@ from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 
 OTP_DIGITS = 6
-OTP_VALIDITY = 600
 SEND_NEW_OTP_DELAY = 10
 
 PASSWORD_MIN_DELAY = 2
@@ -392,10 +391,10 @@ class User(Model):
         return user_otp == self.one_time_password and self.is_otp_still_valid()
 
     def is_otp_still_valid(self):
-        return datetime.datetime.now(
-            datetime.timezone.utc
-        ) - self.one_time_password_emission_date < datetime.timedelta(
-            seconds=OTP_VALIDITY
+        return (
+            datetime.datetime.now(datetime.timezone.utc)
+            - self.one_time_password_emission_date
+            < current_app.config["CANAILLE"]["OTP_LIFETIME"]
         )
 
     def can_send_new_otp(self):

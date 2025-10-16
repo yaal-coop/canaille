@@ -9,6 +9,7 @@
 Added
 ^^^^^
 - Per-user group management. :issue:`95` :pr:`299`
+- ``OTP_LIFETIME`` configuration parameter.
 
 Fixed
 ^^^^^
