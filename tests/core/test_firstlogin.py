@@ -28,6 +28,11 @@ def test_user_without_password_first_login(testclient, backend, smtpd, caplog):
         logging.INFO,
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
+    assert (
+        "info",
+        "Sending password initialization link at your email address. "
+        "It should be received within a few minutes.",
+    ) in res.flashes
     assert len(smtpd.messages) == 2
     assert [message["X-RcptTo"] for message in smtpd.messages] == u.emails
     assert "Password initialization" in smtpd.messages[0].get("Subject")

@@ -29,6 +29,11 @@ def test_send_test_email(testclient, logged_admin, smtpd, caplog):
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
 
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
+
     assert len(smtpd.messages) == 1
 
 
@@ -52,6 +57,11 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd, caplog):
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
 
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
+
     assert len(smtpd.messages) == 1
 
 
@@ -69,6 +79,11 @@ def test_send_test_email_without_credentials(testclient, logged_admin, smtpd, ca
         logging.INFO,
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
+
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
 
     assert len(smtpd.messages) == 1
 
@@ -91,6 +106,11 @@ def test_send_test_email_recipient_refused(
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
 
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
+
     assert len(smtpd.messages) == 0
 
 
@@ -106,6 +126,12 @@ def test_send_test_email_failed(testclient, logged_admin, caplog, smtpd):
         logging.WARNING,
         "Could not send email: SMTP AUTH extension not supported by server.",
     ) in caplog.record_tuples
+
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
+
     assert len(smtpd.messages) == 0
 
 
@@ -121,6 +147,11 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd, caplog):
         logging.INFO,
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
+
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]
@@ -144,6 +175,11 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver, cap
         logging.INFO,
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
+
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]
@@ -173,6 +209,11 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver, cap
         logging.INFO,
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
+
+    assert (
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
+    ) in res.flashes
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]

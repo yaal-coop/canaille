@@ -144,6 +144,12 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
 
+    assert (
+        "info",
+        "Sending an email to this email address. "
+        "Please check your inbox and click on the verification link it contains",
+    ) in res.flashes
+
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T02:00:00+00:00",
         "user",
@@ -236,7 +242,7 @@ def test_confirmation_mail_form_failed(testclient, backend, user):
 
 
 @mock.patch("smtplib.SMTP")
-def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
+def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user, caplog):
     """Tests when an error happens during the mail sending."""
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
@@ -257,7 +263,17 @@ def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
             name="action", value="add_email", expect_errors=True
         )
 
-    assert res.flashes == [("error", "Could not send the verification email")]
+    assert (
+        "info",
+        "Sending an email to this email address. "
+        "Please check your inbox and click on the verification link it contains",
+    ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
     backend.reload(user)
     assert user.emails == ["john@doe.test"]
 
