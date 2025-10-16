@@ -4,6 +4,7 @@ from canaille.app import models
 
 
 def test_user_without_password_first_login(testclient, backend, smtpd):
+    """Test that users without passwords are redirected to first login flow and receive initialization email."""
     assert len(smtpd.messages) == 0
     u = models.User(
         formatted_name="Temp User",
@@ -37,6 +38,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
 def test_first_login_account_initialization_mail_sending_failed(
     SMTP, testclient, backend, smtpd
 ):
+    """Test that first login initialization handles email sending failures gracefully."""
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     assert len(smtpd.messages) == 0
 
@@ -61,6 +63,7 @@ def test_first_login_account_initialization_mail_sending_failed(
 
 
 def test_first_login_form_error(testclient, backend, smtpd):
+    """Test that first login form validates CSRF tokens properly."""
     assert len(smtpd.messages) == 0
     u = models.User(
         formatted_name="Temp User",
@@ -82,10 +85,12 @@ def test_first_login_form_error(testclient, backend, smtpd):
 def test_first_login_page_unavailable_for_users_with_password(
     testclient, backend, user
 ):
+    """Test that first login page is not accessible for users who already have passwords."""
     testclient.get("/firstlogin/user", status=404)
 
 
 def test_user_password_deleted_during_login(testclient, backend):
+    """Test that users are redirected to first login if their password is deleted during authentication."""
     u = models.User(
         formatted_name="Temp User",
         family_name="Temp",
@@ -110,6 +115,7 @@ def test_user_password_deleted_during_login(testclient, backend):
 
 
 def test_smtp_disabled(testclient, backend, smtpd):
+    """Test that users without passwords can still attempt authentication when SMTP is disabled."""
     testclient.app.config["CANAILLE"]["SMTP"] = None
 
     assert len(smtpd.messages) == 0

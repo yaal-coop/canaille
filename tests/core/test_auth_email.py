@@ -45,6 +45,7 @@ def test_not_email_step(testclient, user):
 
 
 def test_signin_with_email_otp(smtpd, testclient, backend, user, caplog):
+    """Test that users can successfully sign in using email-based one-time passwords."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -88,6 +89,7 @@ def test_signin_with_email_otp(smtpd, testclient, backend, user, caplog):
 
 
 def test_signin_wrong_email_otp(testclient, user, caplog):
+    """Test that incorrect email OTP codes are rejected with appropriate error message."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -275,6 +277,7 @@ def test_no_flash_when_cannot_send_new_otp_on_first_access(
 
 
 def test_mask_email():
+    """Test that email addresses are properly masked for security."""
     email = "foo@bar.com"
     assert mask_email(email) == "f#####o@bar.com"
 

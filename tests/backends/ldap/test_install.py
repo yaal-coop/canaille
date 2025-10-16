@@ -34,6 +34,7 @@ def slapd_server():
 
 
 def test_setup_ldap_tree(slapd_server, configuration):
+    """Test that the install command creates the necessary LDAP directory structure."""
     output = slapd_server.slapcat().stdout.decode("utf-8")
     assert "dn: ou=tokens,ou=oauth,dc=example,dc=org" not in output
     testclient = TestApp(create_app(configuration))
@@ -47,6 +48,7 @@ def test_setup_ldap_tree(slapd_server, configuration):
 
 
 def test_install_schemas(configuration, slapd_server):
+    """Test that custom LDAP schemas are installed successfully."""
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
     configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
@@ -64,6 +66,7 @@ def test_install_schemas(configuration, slapd_server):
 
 
 def test_install_schemas_twice(configuration, slapd_server):
+    """Test that installing schemas twice does not cause errors."""
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
     configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
@@ -97,6 +100,7 @@ displayName: Jane.D
 
 
 def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
+    """Test that schema installation fails when the user lacks sufficient permissions."""
     slapd_server.slapadd(admin_ldif)
 
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
@@ -116,6 +120,7 @@ def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
 
 
 def test_install_schemas_command(configuration, slapd_server):
+    """Test that the install CLI command successfully installs LDAP schemas."""
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
     configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn

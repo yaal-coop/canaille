@@ -12,6 +12,7 @@ from canaille.scim.models import User as SCIMUser
 
 
 def test_scim_client_user_save_and_delete(scim_client_for_trusted_client, backend):
+    """Test that SCIM client can create and delete users via SCIM protocol."""
     User = scim_client_for_trusted_client.get_resource_model("User")
 
     response = scim_client_for_trusted_client.query(User)
@@ -37,6 +38,7 @@ def test_scim_client_user_save_and_delete(scim_client_for_trusted_client, backen
 def test_scim_client_group_save_and_delete(
     scim_client_for_trusted_client, backend, user
 ):
+    """Test that SCIM client can create and delete groups with members via SCIM protocol."""
     Group = scim_client_for_trusted_client.get_resource_model("Group")
     User = scim_client_for_trusted_client.get_resource_model("User")
 
@@ -67,6 +69,7 @@ def test_scim_client_group_save_and_delete(
 def test_scim_client_group_save_unable_to_retrieve_member_via_scim(
     scim_client_for_trusted_client, backend, user, caplog
 ):
+    """Test that a warning is logged when a group member cannot be retrieved via SCIM."""
     Group = scim_client_for_trusted_client.get_resource_model("Group")
     User = scim_client_for_trusted_client.get_resource_model("User")
 
@@ -104,6 +107,7 @@ def test_scim_client_change_user_groups_also_updates_group_members(
     logged_admin,
     bar_group,
 ):
+    """Test that changing a user's group membership automatically updates the group's member list via SCIM."""
     Group = scim_client_for_trusted_client.get_resource_model("Group")
     User = scim_client_for_trusted_client.get_resource_model("User")
 
@@ -147,6 +151,7 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     admin,
     logged_admin,
 ):
+    """Test that creating or deleting a user automatically updates their group memberships via SCIM."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
@@ -213,6 +218,7 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
 
 
 def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplog):
+    """Test that saving a user logs an info message when the client doesn't support SCIM."""
     backend.save(user)
     assert (
         "canaille",
@@ -224,6 +230,7 @@ def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplo
 def test_save_group_when_client_doesnt_support_scim(
     backend, bar_group, consent, caplog, user
 ):
+    """Test that saving a group logs an info message when the client doesn't support SCIM."""
     bar_group.members = [user]
     backend.save(bar_group)
     assert (
@@ -241,6 +248,7 @@ def test_failed_scim_user_creation(
     backend,
     caplog,
 ):
+    """Test that a warning is logged when SCIM user creation fails."""
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
     alice = models.User(
@@ -269,6 +277,7 @@ def test_failed_scim_user_update(
     caplog,
     user,
 ):
+    """Test that a warning is logged when SCIM user update fails."""
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
     backend.save(user)
@@ -289,6 +298,7 @@ def test_failed_scim_user_delete(
     caplog,
     user,
 ):
+    """Test that a warning is logged when SCIM user deletion fails."""
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
     backend.delete(user)
@@ -309,6 +319,7 @@ def test_failed_scim_group_creation(
     caplog,
     user,
 ):
+    """Test that a warning is logged when SCIM group creation fails."""
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
     group = models.Group(
@@ -335,6 +346,7 @@ def test_failed_scim_group_update(
     caplog,
     bar_group,
 ):
+    """Test that a warning is logged when SCIM group update fails."""
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
     backend.save(bar_group)
@@ -355,6 +367,7 @@ def test_failed_scim_group_delete(
     caplog,
     user,
 ):
+    """Test that a warning is logged when SCIM group deletion fails."""
     scim_mock.side_effect = mock.Mock(side_effect=Exception())
 
     group = models.Group(
@@ -375,6 +388,7 @@ def test_failed_scim_group_delete(
 def test_user_from_canaille_to_scim_client_without_enterprise_user_extension(
     scim_client_for_trusted_client, user
 ):
+    """Test that converting a Canaille user to SCIM format works without the EnterpriseUser extension."""
     User = scim_client_for_trusted_client.get_resource_model("User")
 
     scim_user = user_from_canaille_to_scim_client(user, User, None)
@@ -385,6 +399,7 @@ def test_user_from_canaille_to_scim_client_without_enterprise_user_extension(
 
 @pytest.mark.skip("Primary is not supported at the moment")
 def test_user_from_scim_to_canaille_sorts_primary_emails_first(backend):
+    """Test that primary emails are sorted first when converting from SCIM to Canaille user."""
     user = models.User()
 
     scim_user = SCIMUser[EnterpriseUser](
@@ -406,6 +421,7 @@ def test_user_from_scim_to_canaille_sorts_primary_emails_first(backend):
 
 @pytest.mark.skip("Primary is not supported at the moment")
 def test_user_from_scim_to_canaille_sorts_primary_phones_first(backend):
+    """Test that primary phone numbers are sorted first when converting from SCIM to Canaille user."""
     user = models.User()
 
     scim_user = SCIMUser[EnterpriseUser](
@@ -423,6 +439,7 @@ def test_user_from_scim_to_canaille_sorts_primary_phones_first(backend):
 
 @pytest.mark.skip("Primary is not supported at the moment")
 def test_user_from_scim_to_canaille_handles_no_primaries():
+    """Test that emails without primary flags are preserved in order when converting from SCIM to Canaille user."""
     user = models.User()
 
     scim_user = SCIMUser[EnterpriseUser](

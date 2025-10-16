@@ -4,6 +4,7 @@ from canaille.commands import cli
 
 
 def test_check_command(cli_runner):
+    """Test that --version command returns valid semantic version."""
     res = cli_runner.invoke(cli, ["--version"])
     semver_pattern = r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?"
     assert re.match(rf"Canaille, version {semver_pattern}", res.stdout)

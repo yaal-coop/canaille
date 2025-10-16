@@ -10,6 +10,7 @@ from canaille.core.models import PASSWORD_MIN_DELAY
 def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
     testclient, user, caplog
 ):
+    """Test that intruder lockout delays login attempts after failures but allows success after timeout."""
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
     with testclient.session_transaction() as session:
@@ -66,6 +67,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
 
 
 def test_intruder_lockout_two_consecutive_fails(testclient, backend, user, caplog):
+    """Test that intruder lockout increases delay exponentially after consecutive failed attempts."""
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
     # add 500 milliseconds to account for LDAP time

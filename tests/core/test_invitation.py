@@ -7,6 +7,7 @@ from canaille.core.endpoints.account import RegistrationPayload
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
+    """Test that an admin can send an invitation email and the invited user can register."""
     assert backend.get(models.User, user_name="someone") is None
 
     res = testclient.get("/invite", status=200)
@@ -61,6 +62,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
 def test_invitation_editable_user_name(
     testclient, logged_admin, foo_group, smtpd, backend
 ):
+    """Test that invited users can change their username when user_name_editable is true."""
     assert backend.get(models.User, user_name="jackyjack") is None
     assert backend.get(models.User, user_name="djorje") is None
 
@@ -112,6 +114,7 @@ def test_invitation_editable_user_name(
 
 
 def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
+    """Test that generating an invitation link without sending email works correctly."""
     assert backend.get(models.User, user_name="sometwo") is None
 
     res = testclient.get("/invite", status=200)
@@ -160,6 +163,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
 
 
 def test_invitation_login_already_taken(testclient, logged_admin):
+    """Test that invitation fails when using an already existing username or email."""
     res = testclient.get("/invite", status=200)
 
     res.form["user_name"] = logged_admin.user_name
@@ -171,6 +175,7 @@ def test_invitation_login_already_taken(testclient, logged_admin):
 
 
 def test_registration(testclient, foo_group):
+    """Test that a registration page with a valid payload can be accessed."""
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
@@ -185,6 +190,7 @@ def test_registration(testclient, foo_group):
 
 
 def test_registration_formcontrol(testclient):
+    """Test that form controls work correctly during registration."""
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
@@ -203,6 +209,7 @@ def test_registration_formcontrol(testclient):
 
 
 def test_registration_invalid_hash(testclient, foo_group):
+    """Test that registration with an invalid hash redirects with an error."""
     now = datetime.datetime.now(datetime.timezone.utc).isoformat()
     payload = RegistrationPayload(
         now, "anything", False, "someone@mydomain.test", [foo_group.id]
@@ -213,6 +220,7 @@ def test_registration_invalid_hash(testclient, foo_group):
 
 
 def test_registration_invalid_data(testclient, foo_group):
+    """Test that registration with invalid data redirects with an error."""
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
@@ -226,6 +234,7 @@ def test_registration_invalid_data(testclient, foo_group):
 
 
 def test_registration_more_than_48_hours_after_invitation(testclient, foo_group):
+    """Test that registration links expire after 48 hours."""
     two_days_ago = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
         hours=48
     )
@@ -243,6 +252,7 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
 
 
 def test_registration_no_password(testclient, foo_group, backend):
+    """Test that registration fails when password is not provided."""
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
@@ -268,6 +278,7 @@ def test_registration_no_password(testclient, foo_group, backend):
 
 
 def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
+    """Test that logged-in users cannot access registration pages."""
     payload = RegistrationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "someoneelse",
@@ -283,6 +294,7 @@ def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
 
 
 def test_unavailable_if_no_smtp(testclient, logged_admin):
+    """Test that invitation features are unavailable when SMTP is not configured."""
     res = testclient.get("/users")
     res.mustcontain("Invite")
     res = testclient.get("/profile")
@@ -301,6 +313,7 @@ def test_unavailable_if_no_smtp(testclient, logged_admin):
 def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     testclient, foo_group, backend
 ):
+    """Test that group assignments are saved even when the user lacks read permissions for groups."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"] = [
         "user_name"
     ]  # remove groups from default read permissions

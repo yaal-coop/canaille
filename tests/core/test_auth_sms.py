@@ -47,6 +47,7 @@ def test_not_sms_step(testclient, user):
 
 
 def test_signin_with_sms_otp(smpp_client, testclient, backend, user, caplog):
+    """Test that users can successfully sign in using SMS-based one-time passwords."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -92,6 +93,7 @@ def test_signin_with_sms_otp(smpp_client, testclient, backend, user, caplog):
 
 
 def test_signin_wrong_sms_otp(testclient, user, caplog):
+    """Test that incorrect SMS OTP codes are rejected with appropriate error message."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -248,5 +250,6 @@ def test_send_new_sms_error(smpp_client, testclient, backend, user, caplog):
 
 
 def test_mask_phone_number():
+    """Test that phone numbers are properly masked for security."""
     phone = "+33123456789"
     assert mask_phone(phone) == "+33#####89"

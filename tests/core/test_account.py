@@ -10,6 +10,7 @@ from canaille.app.session import UserSession
 
 
 def test_index(testclient, user, backend):
+    """Test that the index page redirects properly based on user authentication and permissions."""
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 
@@ -24,6 +25,7 @@ def test_index(testclient, user, backend):
 
 
 def test_user_deleted_in_session(testclient, backend):
+    """Test that sessions are properly cleaned up when a user is deleted from the backend."""
     user = models.User(
         formatted_name="Jake Doe",
         family_name="Jake",
@@ -52,6 +54,7 @@ def test_user_deleted_in_session(testclient, backend):
 
 
 def test_impersonate(testclient, logged_admin, user):
+    """Test that admin users can impersonate other users and return to their own session."""
     res = testclient.get("/", status=302).follow(status=200).click("Account settings")
     assert "admin" == res.form["user_name"].value
 
@@ -70,6 +73,7 @@ def test_impersonate(testclient, logged_admin, user):
 
 
 def test_admin_self_deletion(testclient, backend):
+    """Test that an admin can successfully delete their own account and session is cleared."""
     admin = models.User(
         formatted_name="Temp admin",
         family_name="admin",
@@ -101,6 +105,7 @@ def test_admin_self_deletion(testclient, backend):
 
 
 def test_user_self_deletion(testclient, backend):
+    """Test that users with delete_account permission can delete their own account."""
     user = models.User(
         formatted_name="Temp user",
         family_name="user",
@@ -146,6 +151,7 @@ def test_user_self_deletion(testclient, backend):
 
 
 def test_account_locking(user, backend):
+    """Test that accounts can be locked and unlocked, affecting password verification."""
     assert not user.locked
     assert not user.lock_date
     assert backend.check_user_password(user, "correct horse battery staple") == (
@@ -174,6 +180,7 @@ def test_account_locking(user, backend):
 
 
 def test_account_locking_past_date(user, backend):
+    """Test that accounts locked with a past date are considered locked."""
     assert not user.locked
     assert not user.lock_date
     assert backend.check_user_password(user, "correct horse battery staple") == (
@@ -194,6 +201,7 @@ def test_account_locking_past_date(user, backend):
 
 
 def test_account_locking_future_date(user, backend):
+    """Test that accounts with a future lock date are not considered locked yet."""
     assert not user.locked
     assert not user.lock_date
     assert backend.check_user_password(user, "correct horse battery staple") == (
@@ -214,6 +222,7 @@ def test_account_locking_future_date(user, backend):
 
 
 def test_account_locked_during_session(testclient, logged_user, backend):
+    """Test that a locked account cannot access pages even with an active session."""
     logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(logged_user)
     testclient.get("/profile/user/settings", status=403)
@@ -306,6 +315,7 @@ def test_expired_password_redirection_and_register_new_password_for_ldap_sql_and
 def test_not_expired_password_or_wrong_user_redirection(
     testclient, logged_user, user, backend, admin
 ):
+    """Test that users without expired passwords cannot access password reset pages."""
     assert user.password_last_update is None
     res = testclient.get("/profile/user/settings", status=200)
     res.form["password1"] = "123456789"
@@ -339,4 +349,5 @@ def test_not_expired_password_or_wrong_user_redirection(
 
 
 def test_expired_password_needed_without_current_user(testclient, user):
+    """Test that password reset pages require an authenticated user."""
     testclient.get("/reset/user", status=403)

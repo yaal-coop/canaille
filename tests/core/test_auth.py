@@ -25,6 +25,7 @@ def test_user_get_user_from_login_dict(testclient, user):
 
 
 def test_visitor_logout(testclient, user):
+    """Test that logging out without an active session works gracefully."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -41,6 +42,7 @@ def test_visitor_logout(testclient, user):
 
 
 def test_wrong_login(testclient, user):
+    """Test that invalid login attempts are handled according to HIDE_INVALID_LOGINS configuration."""
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
 
     res = testclient.get("/login", status=200)
@@ -58,6 +60,7 @@ def test_wrong_login(testclient, user):
 
 
 def test_signin_locked_account(testclient, user, backend):
+    """Test that locked accounts cannot sign in even with correct password."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -138,6 +141,7 @@ def test_get_user_from_login_partial_email_no_multiple_results(
 
 
 def test_session_permanence_with_remember_true(testclient, user, backend):
+    """Test that successful login creates a permanent session and updates login history."""
     # This test verifies the session is configured as permanent
     # Actual expiration testing would require browser simulation
     from canaille.app.session import LOGIN_HISTORY

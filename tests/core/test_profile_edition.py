@@ -14,6 +14,7 @@ def configuration(configuration):
 
 
 def test_invalid_form_request(testclient, logged_user):
+    """Test that submitting an invalid form action returns 400."""
     res = testclient.get("/profile/user")
     res = res.forms["baseform"].submit(
         name="action", value="invalid-action", status=400
@@ -21,6 +22,7 @@ def test_invalid_form_request(testclient, logged_user):
 
 
 def test_user_list_pagination(testclient, logged_admin, backend):
+    """Test that user list pagination correctly navigates between pages."""
     users = fake_users(25)
     res = testclient.get("/users")
     form = res.forms["tableform"]
@@ -32,6 +34,7 @@ def test_user_list_pagination(testclient, logged_admin, backend):
 
 
 def test_user_list_bad_pages(testclient, logged_admin):
+    """Test that accessing invalid page numbers in user list returns 404."""
     res = testclient.get("/users")
     form = res.forms["tableform"]
     testclient.post(
@@ -46,6 +49,7 @@ def test_user_list_bad_pages(testclient, logged_admin):
 
 
 def test_user_list_search(testclient, logged_admin, user, moderator):
+    """Test that user list search filters users by name."""
     res = testclient.get("/users")
     res.mustcontain(moderator.formatted_name)
     res.mustcontain(user.formatted_name)
@@ -61,6 +65,7 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
 def test_user_list_search_only_allowed_fields(
     testclient, logged_admin, user, moderator, backend
 ):
+    """Test that user list search only searches in fields the user has permission to read."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].remove("user_name")
     testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["READ"].remove("user_name")
 
@@ -79,6 +84,7 @@ def test_edition_permission(
     admin,
     backend,
 ):
+    """Test that profile edition requires proper permissions."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     backend.reload(logged_user)
     testclient.get("/profile/user", status=404)
@@ -89,6 +95,7 @@ def test_edition_permission(
 
 
 def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
+    """Test that profile fields can be successfully edited."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     form["given_name"] = "given_name"
@@ -152,6 +159,7 @@ def test_edition_remove_fields(
     admin,
     backend,
 ):
+    """Test that profile fields can be cleared by submitting empty values."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     form["display_name"] = ""
@@ -175,6 +183,7 @@ def test_edition_remove_fields(
 
 
 def test_field_permissions_none(testclient, logged_user, backend):
+    """Test that fields without permissions cannot be viewed or edited."""
     logged_user.phone_numbers = ["555-666-777"]
     backend.save(logged_user)
 
@@ -204,6 +213,7 @@ def test_field_permissions_none(testclient, logged_user, backend):
 
 
 def test_field_permissions_read(testclient, logged_user, backend):
+    """Test that fields with read-only permissions can be viewed but not edited."""
     logged_user.phone_numbers = ["555-666-777"]
     backend.save(logged_user)
 
@@ -233,6 +243,7 @@ def test_field_permissions_read(testclient, logged_user, backend):
 
 
 def test_field_permissions_write(testclient, logged_user, backend):
+    """Test that fields with write permissions can be edited."""
     logged_user.phone_numbers = ["555-666-777"]
     backend.save(logged_user)
 
@@ -262,6 +273,7 @@ def test_field_permissions_write(testclient, logged_user, backend):
 
 
 def test_simple_user_cannot_edit_other(testclient, admin, logged_user):
+    """Test that regular users cannot edit other users' profiles."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     testclient.get("/profile/admin", status=404)
@@ -279,10 +291,12 @@ def test_simple_user_cannot_edit_other(testclient, admin, logged_user):
 
 
 def test_admin_bad_request(testclient, logged_moderator):
+    """Test that accessing a non-existent user profile returns 404."""
     testclient.get("/profile/foobar", status=404)
 
 
 def test_bad_email(testclient, logged_user, backend):
+    """Test that invalid email addresses are rejected during profile editing."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
 
@@ -305,6 +319,7 @@ def test_bad_email(testclient, logged_user, backend):
 
 
 def test_surname_is_mandatory(testclient, logged_user, backend):
+    """Test that surname is a mandatory field and cannot be removed."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
     logged_user.family_name = "Doe"
@@ -319,6 +334,7 @@ def test_surname_is_mandatory(testclient, logged_user, backend):
 
 
 def test_formcontrol(testclient, logged_user):
+    """Test that form controls allow adding additional email fields."""
     res = testclient.get("/profile/user")
     form = res.forms["baseform"]
     assert "emails-1" not in form.fields
@@ -329,6 +345,7 @@ def test_formcontrol(testclient, logged_user):
 
 
 def test_formcontrol_htmx(testclient, logged_user):
+    """Test that HTMX form controls work for adding additional email fields."""
     res = testclient.get("/profile/user")
     form = res.forms["baseform"]
     data = {
@@ -350,6 +367,7 @@ def test_formcontrol_htmx(testclient, logged_user):
 
 
 def test_inline_validation(testclient, logged_admin, user):
+    """Test that inline validation detects duplicate emails during editing."""
     res = testclient.get("/profile/admin")
     form = res.forms["baseform"]
     res = testclient.post(
@@ -368,6 +386,7 @@ def test_inline_validation(testclient, logged_admin, user):
 
 
 def test_inline_validation_keep_indicators(testclient, logged_admin, user, backend):
+    """Test that inline validation preserves permission indicators for fields."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("display_name")
     testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["WRITE"].append("display_name")

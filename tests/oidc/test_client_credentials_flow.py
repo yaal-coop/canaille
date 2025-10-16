@@ -4,6 +4,7 @@ from . import client_credentials
 
 
 def test_nominal_case(testclient, client, trusted_client, backend, caplog):
+    """Test that client credentials flow works correctly for machine-to-machine authentication."""
     res = testclient.post(
         "/oauth/token",
         params=dict(

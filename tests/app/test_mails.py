@@ -17,6 +17,7 @@ def configuration(configuration, httpserver):
 
 
 def test_send_test_email(testclient, logged_admin, smtpd):
+    """Test that admin can send a test email successfully."""
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
@@ -31,6 +32,7 @@ def test_send_test_email(testclient, logged_admin, smtpd):
 
 
 def test_send_test_email_ssl(testclient, logged_admin, smtpd):
+    """Test that emails can be sent using SSL connection."""
     smtpd.config.use_ssl = True
     smtpd.config.use_starttls = False
 
@@ -53,6 +55,7 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd):
 
 
 def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
+    """Test that emails can be sent without SMTP authentication credentials."""
     testclient.app.config["CANAILLE"]["SMTP"]["LOGIN"] = None
     testclient.app.config["CANAILLE"]["SMTP"]["PASSWORD"] = None
 
@@ -71,6 +74,7 @@ def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
 
 @mock.patch("smtplib.SMTP")
 def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd):
+    """Test that SMTPRecipientsRefused error is handled gracefully when sending email."""
     SMTP.side_effect = mock.Mock(
         side_effect=smtplib.SMTPRecipientsRefused("test@test.test")
     )
@@ -88,6 +92,7 @@ def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd
 
 
 def test_send_test_email_failed(testclient, logged_admin):
+    """Test that email sending failures are reported with an error flash message."""
     testclient.app.config["CANAILLE"]["SMTP"]["TLS"] = False
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
@@ -100,6 +105,7 @@ def test_send_test_email_failed(testclient, logged_admin):
 
 
 def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
+    """Test that emails can be sent without a logo when LOGO is None."""
     testclient.app.config["CANAILLE"]["LOGO"] = None
     assert len(smtpd.messages) == 0
 
@@ -118,6 +124,7 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
 
 
 def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
+    """Test that emails include the default logo as an embedded image."""
     logo_path = "/static/img/canaille-head.webp"
     with open(f"canaille/{logo_path}", "rb") as fd:
         raw_logo = fd.read()
@@ -143,6 +150,7 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
 
 
 def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
+    """Test that emails include custom HTTP logo as an embedded image."""
     logo_path = "/static/img/canaille-head.webp"
     with open(f"canaille/{logo_path}", "rb") as fd:
         raw_logo = fd.read()
@@ -171,6 +179,7 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
 
 
 def test_mail_debug_pages(testclient, logged_admin):
+    """Test that all email template debug pages are accessible."""
     for base in [
         "test",
         "password-init",
@@ -186,6 +195,7 @@ def test_mail_debug_pages(testclient, logged_admin):
 
 
 def test_custom_from_addr(testclient, user, smtpd):
+    """Test that emails use custom FROM_ADDR when configured."""
     testclient.app.config["CANAILLE"]["NAME"] = "My Canaille"
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
@@ -195,6 +205,7 @@ def test_custom_from_addr(testclient, user, smtpd):
 
 
 def test_default_from_addr(testclient, user, smtpd):
+    """Test that emails use default FROM_ADDR when not configured."""
     testclient.app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
     res = testclient.get("/reset", status=200)
     res.form["login"] = "user"
@@ -204,6 +215,7 @@ def test_default_from_addr(testclient, user, smtpd):
 
 
 def test_default_with_no_flask_server_name(configuration, user, smtpd, backend):
+    """Test that FROM_ADDR defaults to localhost when SERVER_NAME is not configured."""
     del configuration["SERVER_NAME"]
     configuration["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
     app = create_app(configuration, backend=backend)
@@ -217,6 +229,7 @@ def test_default_with_no_flask_server_name(configuration, user, smtpd, backend):
 
 
 def test_default_from_flask_server_name(configuration, user, smtpd, backend):
+    """Test that FROM_ADDR is derived from SERVER_NAME when FROM_ADDR is not configured."""
     app = create_app(configuration, backend=backend)
     app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] = None
     app.config["SERVER_NAME"] = "foobar.test"
@@ -230,5 +243,6 @@ def test_default_from_flask_server_name(configuration, user, smtpd, backend):
 
 
 def test_type_from_filename():
+    """Test that type_from_filename correctly determines MIME types from file extensions."""
     assert type_from_filename("index.html") == ("text", "html")
     assert type_from_filename("unknown") == ("application", "octet-stream")

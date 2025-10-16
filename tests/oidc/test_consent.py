@@ -8,10 +8,12 @@ from . import client_credentials
 
 
 def test_no_logged_no_access(testclient):
+    """Test that unauthenticated users cannot access the consent page."""
     testclient.get("/consent", status=403)
 
 
 def test_revokation(testclient, client, consent, logged_user, token, backend, caplog):
+    """Test that users can revoke consent for a client."""
     res = testclient.get("/consent", status=200)
     res.mustcontain(client.client_name)
     res.mustcontain("Revoke access")
@@ -37,6 +39,7 @@ def test_revokation(testclient, client, consent, logged_user, token, backend, ca
 
 
 def test_revokation_already_revoked(testclient, client, consent, logged_user, backend):
+    """Test that revoking already revoked consent displays an error."""
     consent.revoke()
 
     assert consent.revoked
@@ -50,6 +53,7 @@ def test_revokation_already_revoked(testclient, client, consent, logged_user, ba
 
 
 def test_restoration(testclient, client, consent, logged_user, token, backend):
+    """Test that users can restore previously revoked consent."""
     consent.revoke()
 
     assert consent.revoked
@@ -67,6 +71,7 @@ def test_restoration(testclient, client, consent, logged_user, token, backend):
 
 
 def test_restoration_already_restored(testclient, client, consent, logged_user, token):
+    """Test that restoring non-revoked consent displays an error."""
     assert not consent.revoked
 
     res = testclient.get(f"/consent/restore/{consent.consent_id}", status=302)
@@ -75,18 +80,21 @@ def test_restoration_already_restored(testclient, client, consent, logged_user, 
 
 
 def test_invalid_consent_revokation(testclient, client, logged_user):
+    """Test that revoking invalid consent IDs fails with an error."""
     res = testclient.get("/consent/revoke/invalid", status=302)
     assert ("success", "The access has been revoked") not in res.flashes
     assert ("error", "Could not revoke this access") in res.flashes
 
 
 def test_someone_else_consent_revokation(testclient, client, consent, logged_moderator):
+    """Test that users cannot revoke other users' consents."""
     res = testclient.get(f"/consent/revoke/{consent.consent_id}", status=302)
     assert ("success", "The access has been revoked") not in res.flashes
     assert ("error", "Could not revoke this access") in res.flashes
 
 
 def test_invalid_consent_restoration(testclient, client, logged_user):
+    """Test that restoring invalid consent IDs fails with an error."""
     res = testclient.get("/consent/restore/invalid", status=302)
     assert ("success", "The access has been restored") not in res.flashes
     assert ("error", "Could not restore this access") in res.flashes
@@ -95,6 +103,7 @@ def test_invalid_consent_restoration(testclient, client, logged_user):
 def test_someone_else_consent_restoration(
     testclient, client, consent, logged_moderator
 ):
+    """Test that users cannot restore other users' consents."""
     res = testclient.get(f"/consent/restore/{consent.consent_id}", status=302)
     assert ("success", "The access has been restore") not in res.flashes
     assert ("error", "Could not restore this access") in res.flashes
@@ -103,6 +112,7 @@ def test_someone_else_consent_restoration(
 def test_oidc_authorization_after_revokation(
     testclient, logged_user, client, consent, backend
 ):
+    """Test that granting consent after revokation restores the consent."""
     consent.revoke()
 
     assert consent.revoked
@@ -149,6 +159,7 @@ def test_oidc_authorization_after_revokation(
 def test_trusted_client_appears_in_consent_list(
     testclient, client, logged_user, backend
 ):
+    """Test that trusted clients appear in the trusted applications list."""
     assert not client.trusted
     res = testclient.get("/consent/trusted-applications")
     res.mustcontain(no=client.client_name)
@@ -161,6 +172,7 @@ def test_trusted_client_appears_in_consent_list(
 
 
 def test_revoke_trusted_client(testclient, client, logged_user, token, backend):
+    """Test that revoking a trusted client creates a revoked consent entry."""
     client.client_uri = "https://client.trusted.test"
     backend.save(client)
     assert not backend.get(models.Consent, client=client, subject=logged_user)
@@ -192,6 +204,7 @@ def test_revoke_trusted_client(testclient, client, logged_user, token, backend):
 
 
 def test_revoke_invalid_trusted_client(testclient, logged_user):
+    """Test that revoking an invalid trusted client ID fails with an error."""
     res = testclient.get("/consent/revoke-trusted/invalid", status=302)
     assert ("error", "Could not revoke this access") in res.flashes
 
@@ -199,6 +212,7 @@ def test_revoke_invalid_trusted_client(testclient, logged_user):
 def test_revoke_trusted_client_with_manual_consent(
     testclient, logged_user, client, consent, backend
 ):
+    """Test that revoking a trusted client with existing manual consent works correctly."""
     client.client_uri = "https://client.trusted.test"
     backend.save(client)
     res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
@@ -209,6 +223,7 @@ def test_revoke_trusted_client_with_manual_consent(
 def test_revoke_trusted_client_with_manual_revokation(
     testclient, logged_user, client, consent, backend
 ):
+    """Test that revoking an already revoked trusted client displays an error."""
     client.client_uri = "https://client.trusted.test"
     backend.save(client)
     consent.revoke()

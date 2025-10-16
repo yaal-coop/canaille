@@ -33,6 +33,7 @@ format=[%(asctime)s] %(levelname)s in %(module)s: %(message)s
 
 
 def test_file_log_config(configuration, backend, tmp_path, user):
+    """Test that logging configuration can be loaded from a file and writes logs correctly."""
     log_path = os.path.join(tmp_path, "canaille-by-file.log")
 
     file_content = LOGGING_CONF_FILE_CONTENT.format(
@@ -66,6 +67,7 @@ def test_file_log_config(configuration, backend, tmp_path, user):
 
 
 def test_dict_log_config(configuration, backend, tmp_path, admin):
+    """Test that logging configuration can be provided as a dictionary and writes logs correctly."""
     log_path = os.path.join(tmp_path, "canaille-by-dict.log")
     configuration["CANAILLE"]["LOGGING"] = {
         "version": 1,

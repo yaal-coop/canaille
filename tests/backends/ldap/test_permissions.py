@@ -1,4 +1,5 @@
 def test_group_permissions_by_dn(testclient, user, foo_group, backend):
+    """Test that permissions can be granted using group DN in ACL configuration."""
     assert not user.can_manage_users
 
     testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {
@@ -10,6 +11,7 @@ def test_group_permissions_by_dn(testclient, user, foo_group, backend):
 
 
 def test_group_permissions_str(testclient, user, foo_group, backend):
+    """Test that permissions can be granted using string-based LDAP filter in ACL configuration."""
     assert not user.can_manage_users
 
     testclient.app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = (

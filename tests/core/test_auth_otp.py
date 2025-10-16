@@ -57,7 +57,7 @@ def test_not_otp_step(testclient, user):
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_signin_with_otp(testclient, user, caplog, otp_method):
-    """Nominal case for OTP authentication."""
+    """Test successful OTP authentication for both TOTP and HOTP methods."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
     res = testclient.get("/login", status=200)
@@ -84,6 +84,7 @@ def test_signin_with_otp(testclient, user, caplog, otp_method):
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_signin_wrong_otp(testclient, user, caplog, otp_method):
+    """Test that incorrect OTP codes are rejected for both TOTP and HOTP methods."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
     with testclient.session_transaction() as session:
@@ -111,6 +112,7 @@ def test_signin_wrong_otp(testclient, user, caplog, otp_method):
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_signin_wrong_user(testclient, user, caplog, otp_method):
+    """Test that OTP authentication fails gracefully for non-existent users."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
     with testclient.session_transaction() as session:
@@ -137,6 +139,7 @@ def test_signin_wrong_user(testclient, user, caplog, otp_method):
 
 
 def test_signin_expired_totp(testclient, user, caplog):
+    """Test that expired TOTP codes are rejected."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = "TOTP"
 
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
@@ -294,6 +297,7 @@ def test_setup_otp_bad_otp(testclient, backend, caplog, otp_method):
 
 
 def test_signin_multiple_attempts_doesnt_desynchronize_hotp(testclient, user, caplog):
+    """Test that multiple failed HOTP attempts don't desynchronize the counter."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = "HOTP"
 
     res = testclient.get("/login", status=200)
@@ -322,6 +326,7 @@ def test_signin_multiple_attempts_doesnt_desynchronize_hotp(testclient, user, ca
 
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_setup_otp_page_already_logged_in(testclient, logged_user, otp_method):
+    """Test that logged-in users are redirected from OTP setup page to settings."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
 
     res = testclient.get("/auth/otp-setup", status=302)
@@ -329,6 +334,7 @@ def test_setup_otp_page_already_logged_in(testclient, logged_user, otp_method):
 
 
 def test_signin_inside_hotp_look_ahead_window(testclient, backend, user, caplog):
+    """Test that HOTP codes within the look-ahead window are accepted and counter updates."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = "HOTP"
 
     assert user.hotp_counter == 1
@@ -360,6 +366,7 @@ def test_signin_inside_hotp_look_ahead_window(testclient, backend, user, caplog)
 
 
 def test_signin_outside_hotp_look_ahead_window(testclient, backend, user, caplog):
+    """Test that HOTP codes outside the look-ahead window are rejected."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = "HOTP"
 
     assert user.hotp_counter == 1

@@ -10,6 +10,7 @@ from . import client_credentials
 
 
 def test_nominal_case(testclient, user, client, trusted_client, backend):
+    """Test that authentication succeeds when the max_age requirement is met."""
     max_age = int(datetime.timedelta(hours=3).total_seconds())
 
     with time_machine.travel("2025-01-01 02:30:00+00:00", tick=False):
@@ -55,6 +56,7 @@ def test_nominal_case(testclient, user, client, trusted_client, backend):
 
 
 def test_max_age_expired(testclient, user, client, trusted_client, backend):
+    """Test that re-authentication is required when the max_age requirement has expired."""
     max_age = int(datetime.timedelta(minutes=15).total_seconds())
 
     with time_machine.travel("2025-01-01 02:30:00+00:00", tick=False):
