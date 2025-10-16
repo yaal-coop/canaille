@@ -135,6 +135,12 @@ JAVASCRIPT = false
 # application will use HMAC-based one-time passcodes.
 # OTP_METHOD = "TOTP"
 
+# The validity period for TOTP codes.
+#
+# Should be provided in ISO8601 duration format (e.g., "PT30S" for 30 seconds,
+# "PT1M" for 1 minute).
+# TOTP_LIFETIME = "PT30S"
+
 # The validity duration of registration invitations, in seconds.
 #
 # Defaults to 2 days.

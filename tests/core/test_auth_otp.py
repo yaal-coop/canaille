@@ -17,10 +17,11 @@ def configuration(configuration):
     return configuration
 
 
-def generate_otp(method, secret, hotp_counter=None):
+def generate_otp(method, secret, hotp_counter=None, totp_period=30):
+    """Generate an OTP code for testing purposes."""
     hotp_counter = HOTP_START_COUNTER if hotp_counter is None else hotp_counter
     if method == "TOTP":
-        totp = otpauth.TOTP(secret.encode("utf-8"))
+        totp = otpauth.TOTP(secret.encode("utf-8"), period=totp_period)
         return totp.string_code(totp.generate())
 
     else:
@@ -152,7 +153,12 @@ def test_signin_expired_totp(testclient, user, caplog):
         res = res.form.submit(status=302)
         res = res.follow(status=200)
 
-        res.form["otp"] = generate_otp("TOTP", user.secret_token, user.hotp_counter)
+        totp_period = int(
+            testclient.app.config["CANAILLE"]["TOTP_LIFETIME"].total_seconds()
+        )
+        res.form["otp"] = generate_otp(
+            "TOTP", user.secret_token, user.hotp_counter, totp_period
+        )
         traveller.shift(datetime.timedelta(seconds=30))
         res = res.form.submit()
 

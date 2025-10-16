@@ -399,6 +399,11 @@ class CoreSettings(BaseModel):
     If set to ``TOTP``, the application will use time-based one-time passcodes,
     If set to ``HOTP``, the application will use HMAC-based one-time passcodes."""
 
+    TOTP_LIFETIME: datetime.timedelta = datetime.timedelta(seconds=30)
+    """The validity period for TOTP codes.
+
+    Should be provided in ISO8601 duration format (e.g., "PT30S" for 30 seconds, "PT1M" for 1 minute)."""
+
     @model_validator(mode="after")
     def validate_otp_configuration(self) -> Self:
         if "email" in self.AUTHENTICATION_FACTORS and not self.SMTP:
