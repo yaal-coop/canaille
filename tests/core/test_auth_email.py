@@ -184,8 +184,8 @@ def test_send_new_mail_otp_on_time(smtpd, testclient, backend, user, caplog):
         backend.reload(user)
         assert user.one_time_password in email_content
         assert (
-            "success",
-            "The new verification code have been sent.",
+            "info",
+            "Sending new verification code.",
         ) in res.flashes
         assert (
             "canaille",
@@ -210,8 +210,8 @@ def test_send_new_mail_invalid_user(smtpd, testclient, backend, user, caplog):
 
         assert len(smtpd.messages) == 0
         assert (
-            "success",
-            "The new verification code have been sent.",
+            "info",
+            "Sending new verification code.",
         ) in res.flashes
         assert (
             "canaille",
@@ -232,6 +232,12 @@ def test_send_new_email_error(smtpd, testclient, backend, user, caplog):
 
     with time_machine.travel("2020-01-01 01:01:00+00:00", tick=False):
         res = res.form.submit(status=302, name="action", value="resend")
+
+        assert (
+            "info",
+            "Sending new verification code.",
+        ) in res.flashes
+
         assert (
             "canaille",
             logging.WARNING,
