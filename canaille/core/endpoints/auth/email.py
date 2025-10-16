@@ -94,4 +94,4 @@ def send_email_otp(flashes=True):
         )
 
     if flashes:
-        flash(_("The new verification code have been sent."), "success")
+        flash(_("Sending new verification code."), "info")
