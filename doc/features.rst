@@ -189,6 +189,8 @@ If :attr:`password compromission check feature <canaille.core.configuration.Core
 
 .. _feature_multi_factor_authentication:
 
+.. _feature_mfa:
+
 Multi-factor authentication
 ===========================
 
