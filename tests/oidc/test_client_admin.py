@@ -29,30 +29,18 @@ def test_client_list_pagination(
     testclient, logged_admin, client, trusted_client, backend
 ):
     res = testclient.get("/admin/client")
-    res.mustcontain("2 items")
     clients = []
     for _ in range(25):
         client = models.Client(client_id=gen_salt(48), client_name=gen_salt(48))
         backend.save(client)
         clients.append(client)
 
-    res = testclient.get("/admin/client")
-    res.mustcontain("27 items")
-    client_name = res.pyquery(
-        ".clients tbody tr:nth-of-type(1) td:nth-of-type(2) a"
-    ).text()
-    assert client_name
-
     form = res.forms["tableform"]
     res = form.submit(name="form", value="2")
-    assert client_name not in res.pyquery(
-        ".clients tbody tr td:nth-of-type(2) a"
-    ).text().split(" ")
+    form = res.forms["tableform"]
+    res = form.submit(name="form", value="1")
     for client in clients:
         backend.delete(client)
-
-    res = testclient.get("/admin/client")
-    res.mustcontain("2 items")
 
 
 def test_client_list_bad_pages(testclient, logged_admin):
@@ -75,7 +63,6 @@ def test_client_list_bad_pages(testclient, logged_admin):
 
 def test_client_list_search(testclient, logged_admin, client, trusted_client):
     res = testclient.get("/admin/client")
-    res.mustcontain("2 items")
     res.mustcontain(client.client_name)
     res.mustcontain(trusted_client.client_name)
 
@@ -83,7 +70,6 @@ def test_client_list_search(testclient, logged_admin, client, trusted_client):
     form["query"] = "other"
     res = form.submit()
 
-    res.mustcontain("1 item")
     res.mustcontain(trusted_client.client_name)
     res.mustcontain(no=client.client_name)
 

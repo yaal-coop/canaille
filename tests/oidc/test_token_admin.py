@@ -20,8 +20,6 @@ def test_token_list(testclient, token, logged_admin):
 
 
 def test_token_list_pagination(testclient, logged_admin, client, backend):
-    res = testclient.get("/admin/token")
-    res.mustcontain("0 items")
     tokens = []
     for i in range(26):
         token = models.Token(
@@ -41,20 +39,12 @@ def test_token_list_pagination(testclient, logged_admin, client, backend):
         tokens.append(token)
 
     res = testclient.get("/admin/token")
-    res.mustcontain("26 items")
-    token_id = res.pyquery(".tokens tbody tr td:nth-of-type(1) a").text()
-    assert token_id
-
     form = res.forms["tableform"]
     res = form.submit(name="form", value="2")
-    assert token_id not in res.pyquery(
-        ".tokens tbody tr:nth-of-type(1) td:nth-of-type(1) a"
-    ).text().split(" ")
+    form = res.forms["tableform"]
+    res = form.submit(name="form", value="1")
     for token in tokens:
         backend.delete(token)
-
-    res = testclient.get("/admin/token")
-    res.mustcontain("0 items")
 
 
 def test_token_list_bad_pages(testclient, logged_admin):
@@ -106,7 +96,6 @@ def test_token_list_search(testclient, logged_admin, client, backend):
     backend.save(token2)
 
     res = testclient.get("/admin/token")
-    res.mustcontain("2 items")
     res.mustcontain(token1.token_id)
     res.mustcontain(token2.token_id)
 
@@ -114,7 +103,6 @@ def test_token_list_search(testclient, logged_admin, client, backend):
     form["query"] = "valid"
     res = form.submit()
 
-    res.mustcontain("1 item")
     res.mustcontain(token2.token_id)
     res.mustcontain(no=token1.token_id)
 

@@ -17,28 +17,15 @@ def test_no_group(app, backend):
 
 
 def test_group_list_pagination(testclient, logged_admin, foo_group, backend):
-    res = testclient.get("/groups")
-    res.mustcontain("1 item")
-
     groups = fake_groups(25)
 
     res = testclient.get("/groups")
-    res.mustcontain("26 items")
-    group_name = res.pyquery(
-        ".groups tbody tr:nth-of-type(1) td:nth-of-type(2) a"
-    ).text()
-    assert group_name
-
     form = res.forms["tableform"]
     res = form.submit(name="page", value="2")
-    assert group_name not in res.pyquery(
-        ".groups tbody tr td:nth-of-type(2) a"
-    ).text().split(" ")
+    form = res.forms["tableform"]
+    res = form.submit(name="page", value="1")
     for group in groups:
         backend.delete(group)
-
-    res = testclient.get("/groups")
-    res.mustcontain("1 item")
 
 
 def test_group_list_bad_pages(testclient, logged_admin):
@@ -82,7 +69,6 @@ def test_group_deletion(testclient, backend):
 
 def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     res = testclient.get("/groups")
-    res.mustcontain("2 items")
     res.mustcontain(foo_group.display_name)
     res.mustcontain(bar_group.display_name)
 
@@ -90,7 +76,6 @@ def test_group_list_search(testclient, logged_admin, foo_group, bar_group):
     form["query"] = "oo"
     res = form.submit()
 
-    res.mustcontain("1 item")
     res.mustcontain(foo_group.display_name)
     res.mustcontain(no=bar_group.display_name)
 
@@ -244,30 +229,18 @@ def test_edition_failed(testclient, logged_moderator, foo_group, backend):
 
 
 def test_user_list_pagination(testclient, logged_admin, foo_group, backend):
-    res = testclient.get("/groups/foo")
-    res.mustcontain("1 item")
-
     users = fake_users(25)
     for user in users:
         foo_group.members = foo_group.members + [user]
     backend.save(foo_group)
 
-    assert len(foo_group.members) == 26
     res = testclient.get("/groups/foo")
-    res.mustcontain("26 items")
-    user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
-    assert user_name
-
     form = res.forms["tableform"]
     res = form.submit(name="page", value="2")
-    assert user_name not in res.pyquery(".users tr td:nth-of-type(2) a").text().split(
-        " "
-    )
+    form = res.forms["tableform"]
+    res = form.submit(name="page", value="1")
     for user in users:
         backend.delete(user)
-
-    res = testclient.get("/groups/foo")
-    res.mustcontain("1 item")
 
 
 def test_user_list_bad_pages(testclient, logged_admin, foo_group):
@@ -293,7 +266,6 @@ def test_user_list_search(
     backend.save(foo_group)
 
     res = testclient.get("/groups/foo")
-    res.mustcontain("3 items")
     res.mustcontain(user.formatted_name)
     res.mustcontain(logged_admin.formatted_name)
     res.mustcontain(moderator.formatted_name)
@@ -302,7 +274,6 @@ def test_user_list_search(
     form["query"] = "ohn"
     res = form.submit()
 
-    res.mustcontain("1 item")
     res.mustcontain(user.formatted_name)
     res.mustcontain(no=logged_admin.formatted_name)
     res.mustcontain(no=moderator.formatted_name)

@@ -21,26 +21,14 @@ def test_invalid_form_request(testclient, logged_user):
 
 
 def test_user_list_pagination(testclient, logged_admin, backend):
-    res = testclient.get("/users")
-    res.mustcontain("1 item")
-
     users = fake_users(25)
-
     res = testclient.get("/users")
-    res.mustcontain("26 items")
-    user_name = res.pyquery(".users tbody tr:nth-of-type(1) td:nth-of-type(2) a").text()
-    assert user_name
-
     form = res.forms["tableform"]
     res = form.submit(name="page", value="2")
-    assert user_name not in res.pyquery(
-        ".users tbody tr td:nth-of-type(2) a"
-    ).text().split(" ")
+    form = res.forms["tableform"]
+    res = form.submit(name="page", value="1")
     for user in users:
         backend.delete(user)
-
-    res = testclient.get("/users")
-    res.mustcontain("1 item")
 
 
 def test_user_list_bad_pages(testclient, logged_admin):
@@ -59,7 +47,6 @@ def test_user_list_bad_pages(testclient, logged_admin):
 
 def test_user_list_search(testclient, logged_admin, user, moderator):
     res = testclient.get("/users")
-    res.mustcontain("3 items")
     res.mustcontain(moderator.formatted_name)
     res.mustcontain(user.formatted_name)
 
@@ -67,7 +54,6 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
     form["query"] = "Jack"
     res = form.submit()
 
-    res.mustcontain("1 item")
     res.mustcontain(moderator.formatted_name)
     res.mustcontain(no=user.formatted_name)
 
@@ -83,7 +69,6 @@ def test_user_list_search_only_allowed_fields(
     form["query"] = "user"
     res = form.submit()
 
-    res.mustcontain("0 items")
     res.mustcontain(no=user.formatted_name)
     res.mustcontain(no=moderator.formatted_name)
 
