@@ -643,16 +643,14 @@ def profile_edition(user, edited_user):
             flash(_("Email addition failed."), "error")
             return render_template("core/profile_edit.html", **render_context)
 
-        if profile_edition_add_email(user, edited_user, emails_form):
-            flash(
-                _(
-                    "An email has been sent to the email address. "
-                    "Please check your inbox and click on the verification link it contains"
-                ),
-                "success",
-            )
-        else:
-            flash(_("Could not send the verification email"), "error")
+        profile_edition_add_email(user, edited_user, emails_form)
+        flash(
+            _(
+                "Sending an email to this email address. "
+                "Please check your inbox and click on the verification link it contains"
+            ),
+            "info",
+        )
 
         return redirect(
             url_for("core.account.profile_edition", edited_user=edited_user)
