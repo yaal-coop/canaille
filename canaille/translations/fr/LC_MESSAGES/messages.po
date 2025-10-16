@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-10-15 17:08+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-10-16 12:03+0200\n"
 "PO-Revision-Date: 2025-10-15 15:57+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -2166,8 +2166,8 @@ msgid ""
 "%(site_name)s. To accept this invitation, click on the \"Join Group\" button "
 "below."
 msgstr ""
-"%(inviter_name)s vous a invité à joindre le groupe \"%(group_name)s\" sur %"
-"(site_name)s. Pour accepter, veuillez cliquer sur le bouton « Rejoindre le "
+"%(inviter_name)s vous a invité à joindre le groupe \"%(group_name)s\" sur "
+"%(site_name)s. Pour accepter, veuillez cliquer sur le bouton « Rejoindre le "
 "groupe » ci-dessous."
 
 #: canaille/templates/core/mails/group_invitation.html:38
@@ -2181,8 +2181,8 @@ msgid ""
 "%(inviter_name)s has invited you to join the group \"%(group_name)s\" on "
 "%(site_name)s."
 msgstr ""
-"%(inviter_name)s vous a invité à rejoindre le groupe « %(group_name)s » sur %"
-"(site_name)s."
+"%(inviter_name)s vous a invité à rejoindre le groupe « %(group_name)s » sur "
+"%(site_name)s."
 
 #: canaille/templates/core/mails/group_invitation.txt:5
 msgid "To accept this invitation, click on the link below:"
@@ -2350,8 +2350,8 @@ msgid ""
 "Are you sure you want to leave the group \"%(group_name)s\"? You will no "
 "longer have access to this group unless you are invited again."
 msgstr ""
-"Êtes-vous sûrs de vouloir quitter le groupe « %(group_name)s » ? Vous n’"
-"aurez plus accès au groupe à moins d’être invité à nouveau."
+"Êtes-vous sûrs de vouloir quitter le groupe « %(group_name)s » ? Vous "
+"n’aurez plus accès au groupe à moins d’être invité à nouveau."
 
 #: canaille/templates/core/modals/leave-group.html:25
 #: canaille/templates/core/partial/groups.html:41
