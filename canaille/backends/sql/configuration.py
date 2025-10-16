@@ -28,7 +28,9 @@ class SQLSettings(BaseModel):
     """Password hashing scheme.
 
     Defines password hashing scheme in SQL database.
-    examples : "mssql2000", "ldap_salted_sha1", "pbkdf2_sha512"
+    See the :mod:`passlib.hash` documentation for a complete list of available schemes.
+
+    Examples: ``"mssql2000"``, ``"ldap_salted_sha1"``, ``"pbkdf2_sha512"``, ``"argon2"``, ``"scrypt"``
     """
 
     AUTO_MIGRATE: bool = True
