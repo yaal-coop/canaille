@@ -193,11 +193,6 @@ def test_password_forgotten_without_trusted_hosts(
 
     res.form["login"] = "user"
     res = res.form.submit(status=302)
-    # assert (
-    #     "success",
-    #     "A password reset code has been sent at your email address. You should receive "
-    #     "it within a few minutes.",
-    # ) in res.flashes
     assert (
         "canaille",
         logging.SECURITY,
