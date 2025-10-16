@@ -9,6 +9,5 @@ Tutorial
    databases
    sso
    provisioning
-   security
    theming
    troubleshooting
