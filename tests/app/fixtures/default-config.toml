@@ -32,6 +32,21 @@
 # documentation for further details.
 # CACHE_TYPE = "SimpleCache"
 
+# The Flask PERMANENT_SESSION_LIFETIME configuration setting.
+#
+# This sets the lifetime of a permanent session. Users sessions are permanent when
+# they check the "Remember me" checkbox during login.
+#
+# The value is expressed in ISO8601 duration format
+# (https://en.wikipedia.org/wiki/ISO_8601#Durations). For example:
+#
+# - P365D for 365 days
+# - P30D for 30 days
+# - P1W for 1 week
+# - PT12H for 12 hours
+# - P1DT12H for 1 day and 12 hours
+# PERMANENT_SESSION_LIFETIME = "P365D"
+
 [CANAILLE]
 # Your organization name.
 #

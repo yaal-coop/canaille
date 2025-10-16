@@ -15,7 +15,6 @@ USER_SESSION = "sessions"
 LOGIN_HISTORY = "login_history"
 LOGIN_HISTORY_COOKIE = "canaille_login_history"
 MAX_LOGIN_HISTORY = 6
-SESSION_LIFETIME = datetime.timedelta(days=365)
 
 
 @dataclass
@@ -86,7 +85,6 @@ def login_user(user, remember: bool = True):
 
     session.permanent = remember
     if remember:
-        current_app.permanent_session_lifetime = SESSION_LIFETIME
         add_to_login_history(user.user_name)
 
 
@@ -120,11 +118,12 @@ def _set_login_history_cookie(login_history, response):
     """Set login history in secure cookie."""
     serializer = URLSafeSerializer(current_app.secret_key)
     cookie_value = serializer.dumps(login_history)
+    session_lifetime = current_app.config["PERMANENT_SESSION_LIFETIME"]
 
     response.set_cookie(
         LOGIN_HISTORY_COOKIE,
         cookie_value,
-        max_age=int(SESSION_LIFETIME.total_seconds()),
+        max_age=int(session_lifetime.total_seconds()),
         secure=current_app.config.get("SESSION_COOKIE_SECURE", False),
         httponly=True,
         samesite="Lax",
