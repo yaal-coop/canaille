@@ -23,16 +23,19 @@ def test_user_without_password_first_login(testclient, backend, smtpd, caplog):
     res.mustcontain("First login")
 
     res = res.form.submit(name="action", value="sendmail")
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
+
     assert (
         "info",
         "Sending password initialization link at your email address. "
         "It should be received within a few minutes.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
+
     assert len(smtpd.messages) == 2
     assert [message["X-RcptTo"] for message in smtpd.messages] == u.emails
     assert "Password initialization" in smtpd.messages[0].get("Subject")
@@ -56,11 +59,19 @@ def test_first_login_account_initialization_mail_sending_failed(
 
     res = testclient.get("/firstlogin/temp")
     res = res.form.submit(name="action", value="sendmail", expect_errors=True)
+
+    assert (
+        "info",
+        "Sending password initialization link at your email address. "
+        "It should be received within a few minutes.",
+    ) in res.flashes
+
     assert (
         "canaille",
         logging.WARNING,
         "Could not send email: unit test mail error",
     ) in caplog.record_tuples
+
     assert len(smtpd.messages) == 0
     backend.delete(u)
 

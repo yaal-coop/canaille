@@ -23,16 +23,17 @@ def test_send_test_email(testclient, logged_admin, smtpd, caplog):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
 
@@ -51,16 +52,17 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd, caplog):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
 
@@ -74,16 +76,17 @@ def test_send_test_email_without_credentials(testclient, logged_admin, smtpd, ca
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
 
@@ -100,16 +103,17 @@ def test_send_test_email_recipient_refused(
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 0
 
@@ -121,16 +125,17 @@ def test_send_test_email_failed(testclient, logged_admin, caplog, smtpd):
     res.form["email"] = "test@test.test"
     with warnings.catch_warnings(record=True):
         res = res.form.submit(expect_errors=True)
-    assert (
-        "canaille",
-        logging.WARNING,
-        "Could not send email: SMTP AUTH extension not supported by server.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: SMTP AUTH extension not supported by server.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 0
 
@@ -142,16 +147,17 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd, caplog):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]
@@ -170,16 +176,17 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver, cap
     res = testclient.get(f"http://{httpserver.host}:{httpserver.port}/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]
@@ -204,16 +211,17 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver, cap
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]

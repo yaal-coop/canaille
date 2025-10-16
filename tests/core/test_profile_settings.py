@@ -264,17 +264,20 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
         "error",
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
+
     assert (
         "info",
         "We are sending an email to your administrator about the failure of the password compromise investigation."
         "Please update your password as soon as possible. "
         "If this still happens, please contact the administrators.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
+
     assert ("success", "Profile updated successfully.") in res.flashes
     assert len(smtpd.messages) == 1
 
@@ -303,11 +306,6 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
         "error",
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
-    assert (
-        "canaille",
-        logging.WARNING,
-        "Could not send email: SMTP AUTH extension not supported by server.",
-    ) in caplog.record_tuples
 
     assert (
         "info",
@@ -315,6 +313,12 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
         "Please update your password as soon as possible. "
         "If this still happens, please contact the administrators.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: SMTP AUTH extension not supported by server.",
+    ) in caplog.record_tuples
 
     assert ("success", "Profile updated successfully.") in res.flashes
     assert len(smtpd.messages) == 0
@@ -442,16 +446,19 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin, 
     res.mustcontain("Send")
 
     res = res.form.submit(name="action", value="password-initialization-mail")
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
+
     assert (
         "info",
         "Sending password initialization link at the user email address. "
         "It should be received within a few minutes.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
+
     assert len(smtpd.messages) == 1
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.test"
 
@@ -485,17 +492,18 @@ def test_password_initialization_mail_send_fail(
     res = res.form.submit(
         name="action", value="password-initialization-mail", expect_errors=True
     )
-    assert (
-        "canaille",
-        logging.WARNING,
-        "Could not send email: unit test mail error",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending password initialization link at the user email address. "
         "It should be received within a few minutes.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 0
 
@@ -577,16 +585,19 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin, caplog):
     res.mustcontain("Send")
 
     res = res.form.submit(name="action", value="password-reset-mail")
-    assert (
-        "canaille",
-        logging.INFO,
-        "The mail has been sent correctly.",
-    ) in caplog.record_tuples
+
     assert (
         "info",
         "Sending password reset link at the user email address. "
         "It should be received within a few minutes.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
+
     assert len(smtpd.messages) == 1
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.test"
 
@@ -614,17 +625,18 @@ def test_password_reset_email_failed(
     res = res.form.submit(
         name="action", value="password-reset-mail", expect_errors=True
     )
-    assert (
-        "canaille",
-        logging.WARNING,
-        "Could not send email: unit test mail error",
-    ) in caplog.record_tuples
 
     assert (
         "info",
         "Sending password reset link at the user email address. "
         "It should be received within a few minutes.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 0
 
