@@ -10,12 +10,13 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
 
 .. list-table::
     :header-rows: 1
-    :widths: 25 10 15 10 8 8 8 8 8 8
+    :widths: 25 10 15 8 10 8 8 8 8 8 8
 
     * - Software
       - FLOSS
       - Language
       - LOC
+      - Binary Size
       - OIDC
       - SAML
       - CAS
@@ -26,6 +27,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Python <https://www.python.org/>`_
       - 16k
+      - ~15MB
       - ✅
       - ❎
       - ❎
@@ -36,6 +38,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❌
       - ❔
       - ❔
+      - N/A (Cloud)
       - `✅ <https://auth0.com/docs/authenticate/protocols/openid-connect-protocol>`__
       - ☑️
       - ❎
@@ -46,6 +49,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Go <https://golang.org/>`_
       - `185k <https://openhub.net/p/authelia/analyses/latest/languages_summary>`_
+      - ~25MB
       - `✅ <https://www.authelia.com/configuration/identity-providers/openid-connect/provider/>`__
       - ❎
       - ❎
@@ -56,6 +60,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Python <https://www.python.org/>`_
       - `121k <https://openhub.net/p/authentic2/analyses/latest/languages_summary>`_
+      - ~20MB
       - `✅ <https://authentic2.readthedocs.io/en/latest/overview.html#oauth2-openid-connect>`__
       - ☑️
       - ☑️
@@ -66,6 +71,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Python <https://www.python.org/>`_
       - `440k <https://openhub.net/p/authentik/analyses/latest/languages_summary>`_
+      - ~800MB (Docker)
       - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2>`__
       - ☑️
       - ❎
@@ -76,6 +82,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Go <https://golang.org/>`_
       - 856k
+      - ~50MB
       - ✅
       - `☑️ <https://docs.authgear.com/get-started/single-sign-on-with-saml/saml-attribute-mapping>`__
       - ❎
@@ -86,6 +93,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Java <https://www.java.com/>`_
       - `900k <https://openhub.net/p/apereo-cas/analyses/latest/languages_summary>`_
+      - ~150MB (WAR)
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
       - ☑️
       - ☑️
@@ -96,6 +104,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❌
       - ❔
       - ❔
+      - ~80MB (JAR)
       - `✅ <https://connect2id.com/products/server/docs/api/authorization>`__
       - ☑️
       - ❎
@@ -106,6 +115,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❌
       - `Java <https://www.java.com/>`_
       - ❔
+      - ~200MB (ZIP)
       - `✅ <https://fusionauth.io/docs/v1/tech/oauth/>`__
       - `☑️ <https://fusionauth.io/docs/v1/tech/samlv2/>`__
       - ❎
@@ -116,6 +126,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Java <https://www.java.com/>`_
       - `636k <https://openhub.net/p/gluu/analyses/latest/languages_summary>`_
+      - ~2GB (Container)
       - `✅ <https://gluu.org/docs/gluu-server/4.0/admin-guide/openid-connect/>`__
       - ☑️
       - ☑️
@@ -126,6 +137,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Go <https://golang.org/>`_
       - `119k <https://openhub.net/p/ory-hydra/analyses/latest/languages_summary>`_
+      - ~40MB (2 binaries)
       - `✅ <https://www.ory.sh/docs/hydra/concepts/openid-connect-oidc>`__
       - ☑️
       - ❎
@@ -136,6 +148,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Rust <https://www.rust-lang.org/>`_
       - 387k
+      - ~30MB
       - `✅ <https://kanidm.github.io/kanidm/master/integrations/oauth2.html>`__
       - ❎
       - ❎
@@ -146,6 +159,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Java <https://www.java.com/>`_
       - `1.1M <https://openhub.net/p/keycloak/analyses/latest/languages_summary>`_
+      - ~250MB (JAR)
       - `✅ <https://www.keycloak.org/securing-apps/oidc-layers>`__
       - ☑️
       - ☑️
@@ -156,6 +170,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Perl <https://www.perl.org/>`_
       - `410k <https://openhub.net/p/lemonldap-ng/analyses/latest/languages_summary>`_
+      - ~50MB (Package)
       - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
       - ☑️
       - ☑️
@@ -166,6 +181,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `TypeScript <https://www.typescriptlang.org/>`_
       - 387k
+      - ~100MB (Docker)
       - ✅
       - `☑️ <https://docs.logto.io/integrations/saml-sso>`__
       - ❎
@@ -176,6 +192,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❌
       - ❔
       - ❔
+      - N/A (Cloud)
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/>`__
       - ☑️
       - ❎
@@ -186,6 +203,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `C# <https://docs.microsoft.com/en-us/dotnet/csharp/>`_
       - 829k
+      - ~120MB (.NET)
       - `✅ <https://simpleidserver.com/docs/iam/openid/>`__
       - ❎
       - ❎
@@ -196,6 +214,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Java <https://www.java.com/>`_
       - 451k
+      - ~100MB (JAR)
       - `✅ <https://supertokens.com/docs/authentication/social/custom-providers>`__
       - `☑️ <https://supertokens.com/docs/thirdparty/common-customizations/saml/saml-login>`__
       - ❎
@@ -206,6 +225,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Java <https://www.java.com/>`_
       - `1.4M <https://openhub.net/p/wso2-identity-server/analyses/latest/languages_summary>`_
+      - ~500MB (ZIP)
       - `✅ <https://is.docs.wso2.com/en/6.0.0/references/concepts/authentication/intro-oidc/>`__
       - ☑️
       - ❎
@@ -216,6 +236,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ✅
       - `Go <https://golang.org/>`_
       - `760k <https://openhub.net/p/zitadel/analyses/latest/languages_summary>`_
+      - ~60MB
       - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc>`__
       - ☑️
       - ❎
