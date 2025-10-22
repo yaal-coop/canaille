@@ -9,6 +9,7 @@ from canaille.commands import cli
 
 
 def test_no_secret_key(configuration, caplog):
+    """Test that a warning is displayed when SECRET_KEY is missing from configuration."""
     del configuration["SECRET_KEY"]
 
     os.environ["DEBUG"] = "1"

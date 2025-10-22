@@ -7,6 +7,7 @@ from canaille.core.populate import fake_users
 
 
 def test_populate_users(cli_runner, backend):
+    """Test that the populate users command creates the specified number of users."""
     assert len(backend.query(models.User)) == 0
     res = cli_runner.invoke(cli, ["populate", "--nb", "10", "users"])
     assert res.exit_code == 0, res.stdout
@@ -16,6 +17,7 @@ def test_populate_users(cli_runner, backend):
 
 
 def test_populate_groups(cli_runner, backend):
+    """Test that the populate groups command creates the specified number of groups."""
     fake_users(10)
 
     assert len(backend.query(models.Group)) == 0
@@ -31,6 +33,7 @@ def test_populate_groups(cli_runner, backend):
 
 
 def test_populate_groups_without_users(cli_runner, backend):
+    """Test that groups can be populated without adding users to them."""
     if "ldap" in backend.__class__.__module__:
         pytest.skip()
     assert fake_groups(nb_users_max=0)

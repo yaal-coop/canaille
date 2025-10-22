@@ -1,3 +1,4 @@
+import datetime
 import os
 import smtplib
 import socket
@@ -135,6 +136,22 @@ class RootSettings(BaseSettings):
 
     The default ``SimpleCache`` is a lightweight in-memory cache.
     See the :doc:`Flask-Caching documentation <flask-caching:index>` for further details.
+    """
+
+    PERMANENT_SESSION_LIFETIME: datetime.timedelta = datetime.timedelta(days=365)
+    """The Flask :external:py:data:`PERMANENT_SESSION_LIFETIME` configuration setting.
+
+    This sets the lifetime of a permanent session. Users sessions are permanent when
+    they check the "Remember me" checkbox during login.
+
+    The value is expressed in `ISO8601 duration format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
+    For example:
+
+    - ``P365D`` for 365 days
+    - ``P30D`` for 30 days
+    - ``P1W`` for 1 week
+    - ``PT12H`` for 12 hours
+    - ``P1DT12H`` for 1 day and 12 hours
     """
 
 

@@ -6,6 +6,7 @@ from canaille.app import models
 
 
 def test_photo(testclient, user, jpeg_photo, backend):
+    """Test that user photos can be retrieved with proper caching headers."""
     user.photo = jpeg_photo
     backend.save(user)
     backend.reload(user)
@@ -36,15 +37,18 @@ def test_photo(testclient, user, jpeg_photo, backend):
 
 
 def test_photo_invalid_user(testclient, user):
+    """Test that accessing photo for invalid user returns 404."""
     testclient.get("/profile/invalid/photo", status=404)
 
 
 def test_photo_absent(testclient, user):
+    """Test that accessing photo for user without photo returns 404."""
     assert not user.photo
     testclient.get("/profile/user/photo", status=404)
 
 
 def test_photo_invalid_path(testclient, user):
+    """Test that accessing invalid profile path returns 404."""
     testclient.get("/profile/user/invalid", status=404)
 
 
@@ -54,6 +58,7 @@ def test_photo_on_profile_edition(
     jpeg_photo,
     backend,
 ):
+    """Test that photos can be added, kept unchanged, and deleted during profile editing."""
     # Add a photo
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]
@@ -106,6 +111,7 @@ def test_photo_on_profile_edition(
 
 
 def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin, backend):
+    """Test that photos can be added during profile creation."""
     res = testclient.get("/users", status=200)
     assert backend.get(models.User, user_name="foobar") is None
     res.mustcontain(no="foobar")
@@ -128,6 +134,7 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin, backend
 def test_photo_deleted_on_profile_creation(
     testclient, jpeg_photo, logged_admin, backend
 ):
+    """Test that photo deletion flag is respected during profile creation."""
     res = testclient.get("/users", status=200)
     assert backend.get(models.User, user_name="foobar") is None
     res.mustcontain(no="foobar")

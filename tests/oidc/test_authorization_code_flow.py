@@ -18,6 +18,7 @@ from . import client_credentials
 def test_nominal_case_get(
     testclient, logged_user, client, server_jwk, trusted_client, backend, caplog
 ):
+    """Test that the authorization code flow completes successfully with GET method."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.get(
@@ -203,6 +204,7 @@ def test_nominal_case_post(
 
 
 def test_redirect_uri(testclient, logged_user, client, trusted_client, backend):
+    """Test that authorization flow works with alternate redirect URIs."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.get(
@@ -301,6 +303,7 @@ def test_trusted_client(testclient, logged_user, client, trusted_client, backend
 
 
 def test_logout_login(testclient, logged_user, client, backend):
+    """Test that users can logout and login again during the authorization flow."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.get(
@@ -373,6 +376,7 @@ def test_logout_login(testclient, logged_user, client, backend):
 
 
 def test_deny(testclient, logged_user, client, backend):
+    """Test that denying consent returns an access_denied error."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.get(
@@ -397,6 +401,7 @@ def test_deny(testclient, logged_user, client, backend):
 
 
 def test_code_challenge(testclient, logged_user, client, backend):
+    """Test that PKCE code challenge flow works correctly."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     client.token_endpoint_auth_method = "none"
@@ -463,6 +468,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
 
 
 def test_consent_already_given(testclient, logged_user, client, backend):
+    """Test that consent page is skipped when consent has already been given."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.get(
@@ -521,6 +527,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
 
 
 def test_consent_with_openid_scope_only(testclient, logged_user, client, backend):
+    """Test that authorization works with only the openid scope."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     res = testclient.get(
@@ -633,6 +640,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
 
 
 def test_user_cannot_use_oidc(testclient, user, client, trusted_client, backend):
+    """Test that users without OIDC permissions are denied access."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
     backend.reload(user)
 
@@ -658,6 +666,7 @@ def test_user_cannot_use_oidc(testclient, user, client, trusted_client, backend)
 
 
 def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
+    """Test that nonce parameter is required for OIDC requests."""
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -674,6 +683,7 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
 
 
 def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, backend):
+    """Test that nonce is not required for pure OAuth requests without openid scope."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
     testclient.app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"] = False
 
@@ -829,6 +839,7 @@ def test_client_has_no_maximum_scope(testclient, logged_user, client, backend):
 
 
 def test_code_expired(testclient, user, client):
+    """Test that expired authorization codes are rejected."""
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get(
             "/oauth/authorize",
@@ -870,6 +881,7 @@ def test_code_expired(testclient, user, client):
 
 
 def test_code_with_invalid_user(testclient, admin, client, backend):
+    """Test that authorization codes fail when the associated user no longer exists."""
     user = models.User(
         formatted_name="John Doe",
         family_name="Doe",
@@ -961,6 +973,7 @@ def test_locked_account(testclient, logged_user, client, trusted_client, backend
 
 
 def test_logout_login_with_intruder_lockout(testclient, logged_user, client, backend):
+    """Test that intruder lockout prevents login after failed password attempts during authorization flow."""
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
     # add 500 milliseconds to account for LDAP time

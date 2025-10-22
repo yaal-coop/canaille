@@ -40,6 +40,21 @@
 # documentation for further details.
 # CACHE_TYPE = "SimpleCache"
 
+# The Flask PERMANENT_SESSION_LIFETIME configuration setting.
+#
+# This sets the lifetime of a permanent session. Users sessions are permanent when
+# they check the "Remember me" checkbox during login.
+#
+# The value is expressed in ISO8601 duration format
+# (https://en.wikipedia.org/wiki/ISO_8601#Durations). For example:
+#
+# - P365D for 365 days
+# - P30D for 30 days
+# - P1W for 1 week
+# - PT12H for 12 hours
+# - P1DT12H for 1 day and 12 hours
+# PERMANENT_SESSION_LIFETIME = "P365D"
+
 [CANAILLE]
 # Your organization name.
 #
@@ -123,6 +138,12 @@ DATABASE = "memory"
 # application will use HMAC-based one-time passcodes.
 # OTP_METHOD = "TOTP"
 
+# The validity period for TOTP codes.
+#
+# Should be provided in ISO8601 duration format (e.g., "PT30S" for 30 seconds,
+# "PT1M" for 1 minute).
+# TOTP_LIFETIME = "PT30S"
+
 # The validity duration of registration invitations, in seconds.
 #
 # Defaults to 2 days.
@@ -152,6 +173,19 @@ DATABASE = "memory"
 
 # Have i been pwned api url for compromission checks.
 # PASSWORD_COMPROMISSION_CHECK_API_URL = "https://api.pwnedpasswords.com/range/"
+
+# One-time password validity duration.
+#
+# Duration for which email and SMS one-time passwords remain valid. The value is
+# expressed in ISO8601 duration format
+# (https://en.wikipedia.org/wiki/ISO_8601#Durations).
+#
+# Examples:
+#
+# - PT10M for 10 minutes
+# - PT5M for 5 minutes
+# - PT30S for 30 seconds
+# OTP_LIFETIME = "PT10M"
 
 # Password validity duration.
 #

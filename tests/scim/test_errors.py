@@ -67,6 +67,7 @@ def test_authentication_with_an_user_token(app, backend, oidc_client, user):
 
 
 def test_missing_field(app, backend, scim_client, scim_token):
+    """Test that SCIM API returns a 400 error when extra fields are provided in the request."""
     scim_client.discover()
     error = scim_client.client.post(
         "/scim/v2/Users",
@@ -81,6 +82,7 @@ def test_missing_field(app, backend, scim_client, scim_token):
 
 
 def test_invalid_payload(app, backend, scim_client):
+    """Test that SCIM API returns an invalidValue error when creating a user with an empty payload."""
     # TODO: push this test in scim2-tester
     scim_client.discover()
     User = scim_client.get_resource_model("User")

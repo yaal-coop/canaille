@@ -8,6 +8,7 @@ from scim2_tester.discovery import get_standard_resource_types
 @pytest.mark.parametrize("tag", get_all_available_tags())
 @pytest.mark.parametrize("resource_type", [None] + get_standard_resource_types())
 def test_individual_filters(scim_client, tag, resource_type):
+    """Test that all SCIM server tests pass or are skipped for each tag and resource type combination."""
     results = check_server(
         scim_client,
         raise_exceptions=True,

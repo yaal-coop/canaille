@@ -4,6 +4,7 @@ from canaille.app.session import UserSession
 
 
 def test_index(testclient, user, backend):
+    """Test that the index page redirects to the appropriate page based on user authentication and permissions."""
     res = testclient.get("/", status=302)
     assert res.location == "/login"
 

@@ -49,6 +49,7 @@ front = [
     "flask-babel >= 4.0.0",
     "flask-talisman>=1.1.0",
     "flask-themer >= 2.0.0",
+    "isodate>=0.7.2",
     "pycountry >= 23.12.7",
     "pytz >= 2022.7",
     "tomlkit>=0.13.2",
@@ -112,6 +113,7 @@ sms = [
 server = [
     "asgiref>=3.9.2",
     "hypercorn>=0.17.3",
+    "isodate>=0.7.2",
     "pydanclick>=0.5.0",
     "tomlkit>=0.13.2",
 ]
@@ -342,6 +344,7 @@ trimmed = "true"
 
 [tool.codespell]
 exclude-file = "canaille.spec"
+ignore-words-list = "thirdparty"
 
 [tool.mypy]
 plugins = [

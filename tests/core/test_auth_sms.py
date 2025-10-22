@@ -1,4 +1,3 @@
-import datetime
 import logging
 from unittest import mock
 
@@ -8,7 +7,8 @@ import time_machine
 
 from canaille.app import mask_phone
 from canaille.core.auth import AuthenticationSession
-from canaille.core.models import OTP_VALIDITY
+
+# OTP_VALIDITY now configured via OTP_LIFETIME
 from canaille.core.models import SEND_NEW_OTP_DELAY
 from canaille.core.sms import send_one_time_password_sms
 
@@ -47,6 +47,7 @@ def test_not_sms_step(testclient, user):
 
 
 def test_signin_with_sms_otp(smpp_client, testclient, backend, user, caplog):
+    """Test that users can successfully sign in using SMS-based one-time passwords."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -92,6 +93,7 @@ def test_signin_with_sms_otp(smpp_client, testclient, backend, user, caplog):
 
 
 def test_signin_wrong_sms_otp(testclient, user, caplog):
+    """Test that incorrect SMS OTP codes are rejected with appropriate error message."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -137,7 +139,7 @@ def test_expired_sms_otp(testclient, user, caplog):
         send_one_time_password_sms(user.preferred_email, otp)
         res.form["otp"] = user.one_time_password
 
-        traveller.shift(datetime.timedelta(seconds=OTP_VALIDITY))
+        traveller.shift(testclient.app.config["CANAILLE"]["OTP_LIFETIME"])
         res = res.form.submit(status=200, name="action", value="confirm")
 
         assert (
@@ -248,5 +250,6 @@ def test_send_new_sms_error(smpp_client, testclient, backend, user, caplog):
 
 
 def test_mask_phone_number():
+    """Test that phone numbers are properly masked for security."""
     phone = "+33123456789"
     assert mask_phone(phone) == "+33#####89"

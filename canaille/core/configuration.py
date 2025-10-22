@@ -1,3 +1,4 @@
+import datetime
 import importlib.util
 import smtplib
 from enum import Enum
@@ -398,6 +399,11 @@ class CoreSettings(BaseModel):
     If set to ``TOTP``, the application will use time-based one-time passcodes,
     If set to ``HOTP``, the application will use HMAC-based one-time passcodes."""
 
+    TOTP_LIFETIME: datetime.timedelta = datetime.timedelta(seconds=30)
+    """The validity period for TOTP codes.
+
+    Should be provided in ISO8601 duration format (e.g., "PT30S" for 30 seconds, "PT1M" for 1 minute)."""
+
     @model_validator(mode="after")
     def validate_otp_configuration(self) -> Self:
         if "email" in self.AUTHENTICATION_FACTORS and not self.SMTP:
@@ -464,6 +470,19 @@ class CoreSettings(BaseModel):
 
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
+
+    OTP_LIFETIME: datetime.timedelta = datetime.timedelta(minutes=10)
+    """One-time password validity duration.
+
+    Duration for which email and SMS one-time passwords remain valid.
+    The value is expressed in `ISO8601 duration format <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
+
+    Examples:
+
+    - ``PT10M`` for 10 minutes
+    - ``PT5M`` for 5 minutes
+    - ``PT30S`` for 30 seconds
+    """
 
     PASSWORD_LIFETIME: str | None = None
     """Password validity duration.

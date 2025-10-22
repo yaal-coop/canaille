@@ -2,6 +2,7 @@
 
 import secrets
 
+import otpauth
 from flask import current_app
 
 SECRET_TOKEN_LENGTH = 8
@@ -14,11 +15,10 @@ def make_otp_secret():
 
 
 def get_otp_authentication_setup_uri(user, secret):
-    import otpauth
-
-    method = current_app.features.otp_method
+    method = current_app.config["CANAILLE"]["OTP_METHOD"]
     if method == "TOTP":
-        otp = otpauth.TOTP(secret.encode("utf-8"))
+        period = int(current_app.config["CANAILLE"]["TOTP_LIFETIME"].total_seconds())
+        otp = otpauth.TOTP(secret.encode("utf-8"), period=period)
         return otp.to_uri(
             label=user.user_name, issuer=current_app.config["CANAILLE"]["NAME"]
         ), otp.b32_secret
@@ -39,10 +39,9 @@ def is_otp_valid(
     otp, method, secret_token, hotp_counter=HOTP_START_COUNTER
 ) -> tuple[bool, int]:
     """Return whether the OTP code is valid, and the new hotp_counter for the user."""
-    import otpauth
-
     if method == "TOTP":
-        result = otpauth.TOTP(secret_token.encode("utf-8")).verify(otp)
+        period = int(current_app.config["CANAILLE"]["TOTP_LIFETIME"].total_seconds())
+        result = otpauth.TOTP(secret_token.encode("utf-8"), period=period).verify(otp)
         return result, hotp_counter
 
     else:

@@ -7,7 +7,8 @@ import time_machine
 from canaille.app import mask_email
 from canaille.core.auth import AuthenticationSession
 from canaille.core.mails import send_one_time_password_mail
-from canaille.core.models import OTP_VALIDITY
+
+# OTP_VALIDITY now configured via OTP_LIFETIME
 from canaille.core.models import SEND_NEW_OTP_DELAY
 
 
@@ -45,6 +46,7 @@ def test_not_email_step(testclient, user):
 
 
 def test_signin_with_email_otp(smtpd, testclient, backend, user, caplog):
+    """Test that users can successfully sign in using email-based one-time passwords."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -88,6 +90,7 @@ def test_signin_with_email_otp(smtpd, testclient, backend, user, caplog):
 
 
 def test_signin_wrong_email_otp(testclient, user, caplog):
+    """Test that incorrect email OTP codes are rejected with appropriate error message."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -133,7 +136,7 @@ def test_expired_email_otp(testclient, user, caplog):
         send_one_time_password_mail(user.preferred_email, otp)
         res.form["otp"] = user.one_time_password
 
-        traveller.shift(datetime.timedelta(seconds=OTP_VALIDITY))
+        traveller.shift(testclient.app.config["CANAILLE"]["OTP_LIFETIME"])
         res = res.form.submit(status=200, name="action", value="confirm")
 
         assert (
@@ -281,6 +284,7 @@ def test_no_flash_when_cannot_send_new_otp_on_first_access(
 
 
 def test_mask_email():
+    """Test that email addresses are properly masked for security."""
     email = "foo@bar.com"
     assert mask_email(email) == "f#####o@bar.com"
 

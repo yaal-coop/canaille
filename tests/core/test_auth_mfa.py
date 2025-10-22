@@ -2,6 +2,7 @@ from .test_auth_otp import generate_otp
 
 
 def test_signin_with_multiple_otp_methods(smtpd, testclient, backend, user):
+    """Test that users can complete multi-factor authentication with multiple OTP methods."""
     testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = [
         "password",
         "otp",
@@ -20,7 +21,10 @@ def test_signin_with_multiple_otp_methods(smtpd, testclient, backend, user):
     res = res.follow(status=200)
 
     # TOTP/HOTP
-    res.form["otp"] = generate_otp("TOTP", user.secret_token)
+    totp_period = int(
+        testclient.app.config["CANAILLE"]["TOTP_LIFETIME"].total_seconds()
+    )
+    res.form["otp"] = generate_otp("TOTP", user.secret_token, totp_period=totp_period)
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 

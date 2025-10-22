@@ -16,6 +16,7 @@ from canaille.oidc.provider import get_issuer
 
 
 def test_get(testclient, backend, client, user, client_jwk):
+    """Test that retrieving client configuration works with valid management token."""
     key_set = KeySet([client_jwk]).as_dict(private=False)
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -102,6 +103,7 @@ def test_get(testclient, backend, client, user, client_jwk):
 
 
 def test_update(testclient, backend, client, user, client_jwk):
+    """Test that updating client configuration works with valid management token."""
     key_set = KeySet([client_jwk]).as_dict(private=False)
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
@@ -228,6 +230,7 @@ def test_update(testclient, backend, client, user, client_jwk):
 
 
 def test_delete(testclient, backend, user):
+    """Test that deleting a client works with valid management token."""
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -265,6 +268,7 @@ def test_delete(testclient, backend, user):
 
 
 def test_invalid_client(testclient, backend, user):
+    """Test that managing a non-existent client returns an error."""
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )

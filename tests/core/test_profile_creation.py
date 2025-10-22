@@ -67,6 +67,7 @@ def test_user_creation_edition_and_deletion(
 
 
 def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
+    """Test that dynamic validation detects duplicate emails during profile creation."""
     res = testclient.get("/profile")
     res = testclient.post(
         "/profile",
@@ -83,6 +84,7 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
 
 
 def test_user_creation_without_password(testclient, logged_moderator, backend):
+    """Test that users can be created without a password."""
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"
     res.form["family_name"] = "Abitbol"
@@ -101,6 +103,7 @@ def test_user_creation_without_password(testclient, logged_moderator, backend):
 def test_user_creation_form_validation_failed(
     testclient, logged_moderator, foo_group, bar_group, backend
 ):
+    """Test that user creation fails when required fields are missing."""
     res = testclient.get("/users", status=200)
     assert backend.get(models.User, user_name="george") is None
     res.mustcontain(no="george")
@@ -114,6 +117,7 @@ def test_user_creation_form_validation_failed(
 def test_username_already_taken(
     testclient, logged_moderator, user, foo_group, bar_group
 ):
+    """Test that user creation fails when username is already taken."""
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "user"
     res.form["family_name"] = "foo"
@@ -124,6 +128,7 @@ def test_username_already_taken(
 
 
 def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_group):
+    """Test that user creation fails when email is already taken."""
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "user2"
     res.form["family_name"] = "foo"
@@ -134,6 +139,7 @@ def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_
 
 
 def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator, backend):
+    """Test that formatted name is automatically set from given name and surname."""
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"
     res.form["given_name"] = "George"
@@ -150,6 +156,7 @@ def test_cn_setting_with_given_name_and_surname(testclient, logged_moderator, ba
 
 
 def test_cn_setting_with_surname_only(testclient, logged_moderator, backend):
+    """Test that formatted name is set to surname when given name is not provided."""
     res = testclient.get("/profile", status=200)
     res.form["user_name"] = "george"
     res.form["family_name"] = "Abitbol"
@@ -165,6 +172,7 @@ def test_cn_setting_with_surname_only(testclient, logged_moderator, backend):
 
 
 def test_formcontrol(testclient, logged_admin):
+    """Test that form controls allow adding additional email fields."""
     res = testclient.get("/profile")
     assert "emails-1" not in res.form.fields
 
@@ -173,6 +181,7 @@ def test_formcontrol(testclient, logged_admin):
 
 
 def test_formcontrol_htmx(testclient, logged_admin):
+    """Test that HTMX form controls work for adding additional email fields."""
     res = testclient.get("/profile")
     data = {
         field: res.form[field].value

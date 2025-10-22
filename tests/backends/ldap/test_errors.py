@@ -10,6 +10,7 @@ def configuration(slapd_server, ldap_configuration):
 
 
 def test_ldap_connection_remote_ldap_unreachable(configuration):
+    """Test that the application handles unreachable LDAP server errors gracefully."""
     app = create_app(configuration)
     testclient = TestApp(app)
 
@@ -21,6 +22,7 @@ def test_ldap_connection_remote_ldap_unreachable(configuration):
 
 
 def test_ldap_connection_remote_ldap_wrong_credentials(configuration):
+    """Test that the application handles LDAP authentication failures gracefully."""
     app = create_app(configuration)
     testclient = TestApp(app)
 

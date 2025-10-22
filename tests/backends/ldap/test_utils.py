@@ -18,6 +18,7 @@ from canaille.backends.ldap.utils import python_to_ldap
 
 # TODO: tester le changement de cardinalité des attributes
 def test_object_creation(app, backend):
+    """Test that LDAP objects can be created and exist in the backend."""
     user = models.User(
         formatted_name="Doe",  # leading space
         family_name="Doe",
@@ -35,11 +36,13 @@ def test_object_creation(app, backend):
 
 
 def test_repr(backend, foo_group, user):
+    """Test that LDAP objects have correct string representations."""
     assert repr(foo_group) == "<Group display_name=foo>"
     assert repr(user) == "<User user_name=user>"
 
 
 def test_dn_when_leading_space_in_id_attribute(testclient, backend):
+    """Test that DNs are correctly formed when attributes have leading spaces."""
     user = models.User(
         formatted_name=" Doe",  # leading space
         family_name=" Doe",
@@ -62,6 +65,7 @@ def test_dn_when_leading_space_in_id_attribute(testclient, backend):
 
 
 def test_special_chars_in_rdn(testclient, backend):
+    """Test that special characters in RDN are properly escaped in DN strings."""
     user = models.User(
         formatted_name="#Doe",
         family_name="#Doe",
@@ -84,6 +88,7 @@ def test_special_chars_in_rdn(testclient, backend):
 
 
 def test_filter(backend, foo_group, bar_group):
+    """Test that LDAP queries with filters return correct results."""
     assert backend.query(models.Group, display_name="foo") == [foo_group]
     assert backend.query(models.Group, display_name="bar") == [bar_group]
 
@@ -99,6 +104,7 @@ def test_filter(backend, foo_group, bar_group):
 
 
 def test_ldap_to_python():
+    """Test that Python values are correctly converted to LDAP format."""
     assert (
         python_to_ldap(
             datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.timezone.utc),
@@ -137,6 +143,7 @@ def test_ldap_to_python():
 
 
 def test_python_to_ldap():
+    """Test that LDAP values are correctly converted to Python format."""
     assert ldap_to_python(
         b"20000102030405Z", Syntax.GENERALIZED_TIME
     ) == datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.timezone.utc)
@@ -167,6 +174,7 @@ def test_python_to_ldap():
 
 
 def test_operational_attribute_conversion(backend):
+    """Test that LDAP attributes are correctly converted including operational attributes."""
     assert "oauthClientName" in LDAPObject.ldap_object_attributes(backend.connection)
     assert "invalidAttribute" not in LDAPObject.ldap_object_attributes(
         backend.connection
@@ -184,12 +192,14 @@ def test_operational_attribute_conversion(backend):
 
 
 def test_ldap_connection_remote(testclient, configuration, backend):
+    """Test that LDAP network configuration validation succeeds with valid settings."""
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
     LDAPBackend.check_network_config(config_dict)
 
 
 def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
+    """Test that configuration validation raises an exception when LDAP server is unreachable."""
     configuration["CANAILLE_LDAP"]["URI"] = "ldap://invalid-ldap.com"
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
@@ -202,6 +212,7 @@ def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
 
 
 def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration):
+    """Test that configuration validation raises an exception with invalid LDAP credentials."""
     configuration["CANAILLE_LDAP"]["BIND_PW"] = "invalid-password"
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
@@ -214,6 +225,7 @@ def test_ldap_connection_remote_ldap_wrong_credentials(testclient, configuration
 
 
 def test_ldap_cannot_create_users(testclient, configuration, backend):
+    """Test that configuration validation detects when LDAP user lacks permission to create users."""
     from canaille.core.models import User
 
     config_obj = settings_factory(configuration)
@@ -230,6 +242,7 @@ def test_ldap_cannot_create_users(testclient, configuration, backend):
 
 
 def test_ldap_cannot_manage_own_groups(testclient, configuration, backend):
+    """Test that configuration validation detects when LDAP user lacks permission to create groups."""
     from canaille.core.models import Group
 
     config_obj = settings_factory(configuration)

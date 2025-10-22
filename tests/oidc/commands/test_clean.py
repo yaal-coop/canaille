@@ -7,6 +7,7 @@ from canaille.commands import cli
 
 
 def test_clean_command(cli_runner, backend, client, user):
+    """Test that the clean command removes expired authorization codes and tokens."""
     valid_code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",

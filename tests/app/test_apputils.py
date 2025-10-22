@@ -2,6 +2,7 @@ from canaille.app import validate_uri
 
 
 def test_validate_uri():
+    """Test URI validation for safe and unsafe schemes."""
     assert validate_uri("https://canaille.test")
     assert validate_uri("http://canaille.test")
     assert validate_uri("scheme.with.dots://canaille.tld")

@@ -7,6 +7,7 @@ from canaille.app import models
 
 
 def test_model_comparison(testclient, backend):
+    """Test that model instances can be compared for equality."""
     foo1 = models.User(
         user_name="foo",
         family_name="foo",
@@ -31,6 +32,7 @@ def test_model_comparison(testclient, backend):
 
 
 def test_model_lifecycle(testclient, backend):
+    """Test that models can be created, saved, reloaded, and deleted."""
     user = models.User(
         user_name="user_name",
         family_name="family_name",
@@ -68,6 +70,7 @@ def test_model_lifecycle(testclient, backend):
 
 
 def test_model_attribute_edition(testclient, backend):
+    """Test that model attributes can be modified and persisted."""
     user = models.User(
         user_name="user_name",
         family_name="family_name",
@@ -107,6 +110,7 @@ def test_model_attribute_edition(testclient, backend):
 
 
 def test_model_indexation(testclient, backend):
+    """Test that models can be queried by different attributes and indexes are updated."""
     user = models.User(
         user_name="user_name",
         family_name="family_name",
@@ -148,6 +152,7 @@ def test_model_indexation(testclient, backend):
 
 
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):
+    """Test that fuzzy search works with single-valued attributes."""
     backend.reload(user)
     backend.reload(moderator)
     backend.reload(admin)
@@ -166,6 +171,7 @@ def test_fuzzy_unique_attribute(user, moderator, admin, backend):
 
 
 def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
+    """Test that fuzzy search works with multi-valued attributes."""
     backend.reload(user)
     backend.reload(moderator)
     backend.reload(admin)
@@ -182,6 +188,7 @@ def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
 
 
 def test_model_references(testclient, user, foo_group, admin, bar_group, backend):
+    """Test that relationships between models are correctly maintained."""
     assert foo_group.members == [user]
     assert user.groups == [foo_group]
     assert foo_group in backend.query(models.Group, members=user)
@@ -205,6 +212,7 @@ def test_model_references(testclient, user, foo_group, admin, bar_group, backend
 
 
 def test_model_creation_edition_datetime(testclient, backend):
+    """Test that creation and modification timestamps are correctly tracked."""
     if "ldap" in backend.__class__.__module__:
         pytest.skip()
 

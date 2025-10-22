@@ -1,6 +1,8 @@
+import datetime
 import re
 import textwrap
 
+import isodate
 from pydantic import BaseModel
 from pydantic import ValidationError
 from pydantic_core import PydanticUndefined
@@ -89,12 +91,15 @@ def export_object_to_toml(
                     doc.add(tomlkit.comment(line))
 
             if display_default_value:
-                parsed = (
-                    tomlkit.item(field_info.default).as_string()
-                    if field_info.default is not None
-                    and field_info.default is not PydanticUndefined
-                    else ""
-                )
+                if isinstance(field_info.default, datetime.timedelta):
+                    parsed = f'"{isodate.duration_isoformat(field_info.default)}"'
+                else:
+                    parsed = (
+                        tomlkit.item(field_info.default).as_string()
+                        if field_info.default is not None
+                        and field_info.default is not PydanticUndefined
+                        else ""
+                    )
                 doc.add(tomlkit.comment(f"{field_name} = {parsed}".strip()))
 
             sub_value = export_object_to_toml(field_value)
@@ -122,6 +127,9 @@ def export_object_to_toml(
             sub_value = export_object_to_toml(value)
             doc.add(key, sub_value)
         return doc
+
+    elif isinstance(obj, datetime.timedelta):
+        return isodate.duration_isoformat(obj)
 
     else:
         return obj

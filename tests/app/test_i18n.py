@@ -6,6 +6,7 @@ from canaille.app.i18n import smart_language_match
 
 
 def test_preferred_language(testclient, logged_user, backend):
+    """Test that users can set and change their preferred language preference."""
     logged_user.preferred_language = None
     backend.save(logged_user)
 
@@ -54,6 +55,7 @@ def test_preferred_language(testclient, logged_user, backend):
 
 
 def test_form_translations(testclient, logged_user, backend):
+    """Test that form validation errors are translated according to user's preferred language."""
     logged_user.preferred_language = "fr"
     backend.save(logged_user)
 
@@ -67,6 +69,7 @@ def test_form_translations(testclient, logged_user, backend):
 
 
 def test_language_config(testclient, logged_user, backend):
+    """Test that LANGUAGE configuration overrides default language when user has no preference."""
     logged_user.preferred_language = None
     backend.save(logged_user)
 
@@ -125,6 +128,7 @@ def test_language_config(testclient, logged_user, backend):
     ],
 )
 def test_smart_language_match(accept_list, available, expected):
+    """Test that smart_language_match correctly matches browser Accept-Language headers to available languages."""
     accept = LanguageAccept(accept_list)
     result = smart_language_match(accept, available)
     assert result == expected

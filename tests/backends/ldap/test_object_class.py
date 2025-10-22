@@ -4,6 +4,7 @@ from canaille.backends.ldap.ldapobject import LDAPObject
 
 
 def test_guess_object_from_dn(backend, testclient, foo_group):
+    """Test that objects can be retrieved by DN and are correctly typed."""
     foo_group.members = [foo_group]
     backend.save(foo_group)
     dn = foo_group.dn
@@ -14,6 +15,7 @@ def test_guess_object_from_dn(backend, testclient, foo_group):
 
 
 def test_object_class_update(backend, testclient):
+    """Test that object classes are automatically updated when configuration changes."""
     testclient.app.config["CANAILLE_LDAP"]["USER_CLASS"] = [
         "inetOrgPerson",
         "oathHOTPToken",

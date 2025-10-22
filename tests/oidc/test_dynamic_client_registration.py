@@ -17,6 +17,7 @@ from canaille.oidc.provider import get_issuer
 def test_client_registration_with_authentication_jwt_token(
     testclient, backend, client, user
 ):
+    """Test that client registration works with valid JWT token authentication."""
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -101,6 +102,7 @@ def test_client_registration_with_authentication_jwt_token(
 
 
 def test_client_registration_with_uri_fragments(testclient, backend, client, user):
+    """Test that client registration rejects redirect URIs containing fragments."""
     # Generate a valid JWT token
     jwks = server_jwks(include_inactive=False)
     jwk_key = jwks.keys[0]
@@ -151,6 +153,7 @@ def test_client_registration_with_uri_fragments(testclient, backend, client, use
 def test_client_registration_with_authentication_no_token(
     testclient, backend, client, user
 ):
+    """Test that client registration requires authentication when open registration is disabled."""
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -185,6 +188,7 @@ def test_client_registration_with_authentication_no_token(
 def test_client_registration_with_authentication_invalid_token(
     testclient, backend, client, user
 ):
+    """Test that client registration rejects invalid JWT tokens."""
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -210,6 +214,7 @@ def test_client_registration_with_authentication_invalid_token(
 
 
 def test_client_registration_with_software_statement(testclient, backend, server_jwk):
+    """Test that client registration works with software statements."""
     testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     software_statement_payload = {
@@ -281,6 +286,7 @@ def test_client_registration_with_software_statement(testclient, backend, server
 
 
 def test_client_registration_without_authentication_ok(testclient, backend):
+    """Test that client registration works without authentication when open registration is enabled."""
     testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
 
     payload = {
@@ -412,6 +418,7 @@ def test_client_registration_with_jwks(testclient, backend):
 
 
 def test_client_registration_with_all_attributes(testclient, backend, user):
+    """Test that client registration works with all supported attributes."""
     assert not testclient.app.config["CANAILLE_OIDC"].get(
         "DYNAMIC_CLIENT_REGISTRATION_OPEN"
     )
@@ -640,7 +647,7 @@ def test_client_registration_with_wrong_scope(testclient, backend):
 
 
 def test_client_registration_with_existing_client_id(testclient, backend, client):
-    """Test that registration with existing client_id is rejected."""
+    """Test that registration with an existing client_id is rejected."""
     jwks = server_jwks(include_inactive=False)
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)

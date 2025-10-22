@@ -16,6 +16,7 @@ from canaille.app.forms import phone_number
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
+    """Test that DateTimeUTCField uses local timezone when no timezone is configured."""
     current_app.config["CANAILLE"]["TIMEZONE"] = None
 
     class TestForm(wtforms.Form):
@@ -61,6 +62,7 @@ def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
 
 
 def test_datetime_utc_field_utc(testclient):
+    """Test that DateTimeUTCField correctly handles UTC timezone configuration."""
     current_app.config["CANAILLE"]["TIMEZONE"] = "UTC"
 
     class TestForm(wtforms.Form):
@@ -104,6 +106,7 @@ def test_datetime_utc_field_utc(testclient):
 
 
 def test_datetime_utc_field_japan_timezone(testclient):
+    """Test that DateTimeUTCField correctly handles Japan timezone with UTC conversion."""
     current_app.config["CANAILLE"]["TIMEZONE"] = "Japan"
 
     class TestForm(wtforms.Form):
@@ -148,6 +151,7 @@ def test_datetime_utc_field_japan_timezone(testclient):
 
 
 def test_datetime_utc_field_invalid_timezone(testclient):
+    """Test that DateTimeUTCField falls back to local timezone when configured with invalid timezone."""
     current_app.config["CANAILLE"]["TIMEZONE"] = "invalid"
 
     class TestForm(wtforms.Form):
@@ -193,6 +197,7 @@ def test_datetime_utc_field_invalid_timezone(testclient):
 
 
 def test_fieldlist_add_readonly(testclient, logged_user, backend):
+    """Test that adding entries to a readonly fieldlist is forbidden."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
     backend.reload(logged_user)
@@ -212,6 +217,7 @@ def test_fieldlist_add_readonly(testclient, logged_user, backend):
 
 
 def test_fieldlist_remove_readonly(testclient, logged_user, backend):
+    """Test that removing entries from a readonly fieldlist is forbidden."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
     backend.reload(logged_user)
@@ -234,6 +240,7 @@ def test_fieldlist_remove_readonly(testclient, logged_user, backend):
 
 
 def test_inline_validation_invalid_field(testclient, logged_admin, user):
+    """Test that inline validation returns 400 for invalid field names."""
     res = testclient.get("/profile")
     testclient.post(
         "/profile",
@@ -250,6 +257,8 @@ def test_inline_validation_invalid_field(testclient, logged_admin, user):
 
 
 def test_phone_number_validator():
+    """Test that phone number validator accepts various valid formats and rejects invalid ones."""
+
     class Field:
         def __init__(self, data):
             self.data = data
@@ -267,6 +276,8 @@ def test_phone_number_validator():
 
 
 def test_minimum_password_length_config(testclient):
+    """Test that password length validator respects MIN_PASSWORD_LENGTH configuration."""
+
     class Field:
         def __init__(self, data):
             self.data = data
@@ -293,6 +304,7 @@ def test_minimum_password_length_config(testclient):
 
 
 def test_password_strength_progress_bar(testclient, logged_user):
+    """Test that password strength progress bar displays correctly in HTMX response."""
     res = testclient.get("/profile/user/settings")
     res = testclient.post(
         "/profile/user/settings",
@@ -309,6 +321,8 @@ def test_password_strength_progress_bar(testclient, logged_user):
 
 
 def test_maximum_password_length_config(testclient):
+    """Test that password length validator respects MAX_PASSWORD_LENGTH configuration with defaults."""
+
     class Field:
         def __init__(self, data):
             self.data = data
@@ -340,6 +354,7 @@ def test_maximum_password_length_config(testclient):
 
 @mock.patch("httpx.get")
 def test_compromised_password_validator(api_get, testclient):
+    """Test that compromised password validator checks against HIBP API and rejects compromised passwords."""
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
 
     # This content simulates a result from the hibp api containing the suffixes of the following password hashes: 'password', '987654321', 'correct horse battery staple', 'zxcvbn123', 'azertyuiop123'
@@ -374,6 +389,7 @@ def test_compromised_password_validator(api_get, testclient):
 def test_compromised_password_validator_with_failure_of_api_request_without_form_validation(
     api_get, testclient, logged_user, caplog
 ):
+    """Test that compromised password validation fails gracefully when HIBP API request fails during inline validation."""
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
 

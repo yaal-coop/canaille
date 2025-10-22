@@ -32,6 +32,7 @@ def test_not_password_step(testclient, user):
 
 
 def test_signin_and_out(testclient, user, caplog):
+    """Test complete sign-in and sign-out flow with password authentication."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -82,6 +83,7 @@ def test_signin_and_out(testclient, user, caplog):
 
 
 def test_signin_wrong_password(testclient, user, caplog):
+    """Test that authentication fails with incorrect password."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -102,6 +104,7 @@ def test_signin_wrong_password(testclient, user, caplog):
 
 
 def test_signin_password_substring(testclient, user):
+    """Test that partial passwords are rejected even if they match a substring."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -117,6 +120,7 @@ def test_signin_password_substring(testclient, user):
 
 
 def test_signin_bad_csrf(testclient, user):
+    """Test that empty password fields result in authentication failure."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
@@ -132,6 +136,7 @@ def test_signin_bad_csrf(testclient, user):
 
 
 def test_signin_with_alternate_attribute(testclient, user):
+    """Test that users can authenticate using alternate login attributes like email."""
     res = testclient.get("/login", status=200)
 
     res.form["login"] = "john@doe.test"
@@ -150,6 +155,7 @@ def test_signin_with_alternate_attribute(testclient, user):
 
 
 def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):
+    """Test that accessing password auth page without authentication session redirects to login."""
     res = testclient.get("/auth/password", status=302)
     assert res.location == "/login"
     assert res.flashes == [
