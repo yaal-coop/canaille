@@ -4,6 +4,7 @@ from unittest import mock
 
 import pytest
 from babel.messages.frontend import compile_catalog
+from dramatiq_eager_broker import EagerBroker
 from flask_webtest import TestApp
 from jinja2 import FileSystemBytecodeCache
 from jinja2 import StrictUndefined
@@ -14,7 +15,6 @@ from canaille import create_app
 from canaille.app import models
 from canaille.app.session import UserSession
 from canaille.backends import available_backends
-from tests.broker import EagerBroker
 
 
 @pytest.fixture(autouse=True, scope="session")
