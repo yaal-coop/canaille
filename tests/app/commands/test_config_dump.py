@@ -6,6 +6,32 @@ import pytest
 from canaille.commands import cli
 
 
+def test_export_default_config(testclient, cli_runner, backend, tmp_path):
+    """Export the default application config in a file."""
+    if "memory" not in backend.__class__.__module__:
+        pytest.skip()
+
+    toml_export = tmp_path / "config.toml"
+    toml_expected = (
+        pathlib.Path(__file__).parent.parent / "fixtures" / "default-config.toml"
+    )
+
+    testclient.app.config = {}
+
+    res = cli_runner.invoke(
+        cli, ["config", "dump", "--path", str(toml_export)], catch_exceptions=False
+    )
+    assert res.exit_code == 0, res.stdout
+
+    with open(toml_export) as fd:
+        actual_content = fd.read()
+
+    with open(toml_expected) as fd:
+        expected_content = fd.read()
+
+    assert actual_content == expected_content
+
+
 def test_export_current_config(testclient, cli_runner, backend, tmp_path):
     """Export the current application config in a file."""
     if "memory" not in backend.__class__.__module__:
