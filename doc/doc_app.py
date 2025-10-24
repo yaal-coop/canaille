@@ -20,6 +20,13 @@ def create_doc_app(sphinx_app):
     conf["CANAILLE"]["SECRET_KEY"] = "doc"
     conf["CANAILLE"]["SMTP"] = {"HOST": "localhost"}
     conf["CANAILLE"]["LANGUAGE"] = sphinx_app.config["language"]
+    conf["CANAILLE"]["LOGGING"] = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "loggers": {
+            "canaille": {"level": "ERROR"},
+        },
+    }
     os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "true"
     app = create_app(conf)
     return app
