@@ -38,6 +38,7 @@ extensions = [
     "sphinx_click",
     "sphinx_copybutton",
     "sphinx_design",
+    "sphinx_iconify",
     "sphinx_issues",
     "sphinxcontrib.autodoc_pydantic",
     "jinja_autodoc",
