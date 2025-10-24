@@ -77,6 +77,6 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
    features
    usecases
-   tutorial/index
+   howtos/index
    references/index
    development/index
