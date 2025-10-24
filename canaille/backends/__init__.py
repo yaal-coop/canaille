@@ -72,13 +72,14 @@ class Backend:
     def __init__(self, config):
         self.config = config
         Backend._instance = self
-        self.register_models()
 
     @classproperty
     def instance(cls):
         return cls._instance
 
     def init_app(self, app, init_backend=None):
+        self.register_models(app)
+
         @app.before_request
         def before_request():
             return self.setup()
@@ -249,21 +250,32 @@ class Backend:
         """Indicate whether the backend supports locking user accounts."""
         raise NotImplementedError()
 
-    def register_models(self):
-        from canaille.app import models
+    def register_models(self, app):
+        import inspect
 
-        module = ".".join(self.__class__.__module__.split(".")[:-1] + ["models"])
-        backend_models = importlib.import_module(module)
-        model_names = [
-            "User",
-            "Group",
-            "Client",
-            "AuthorizationCode",
-            "Consent",
-            "Token",
-        ]
-        for model_name in model_names:
-            models.register(getattr(backend_models, model_name))
+        from canaille.app import models
+        from canaille.backends.models import Model
+
+        module_base = ".".join(self.__class__.__module__.split(".")[:-1] + ["models"])
+
+        core_module = importlib.import_module(f"{module_base}.core")
+        for _class_name, obj in inspect.getmembers(core_module, inspect.isclass):
+            if (
+                issubclass(obj, Model)
+                and obj is not Model
+                and obj.__module__ == core_module.__name__
+            ):
+                models.register(obj)
+
+        if app.features.has_oidc:  # pragma: no cover
+            oidc_module = importlib.import_module(f"{module_base}.oidc")
+            for _class_name, obj in inspect.getmembers(oidc_module, inspect.isclass):
+                if (
+                    issubclass(obj, Model)
+                    and obj is not Model
+                    and obj.__module__ == oidc_module.__name__
+                ):
+                    models.register(obj)
 
 
 def setup_backend(app, backend=None, init_backend=None):
@@ -274,7 +286,8 @@ def setup_backend(app, backend=None, init_backend=None):
             module, f"{backend_name.title()}Backend", None
         ) or getattr(module, f"{backend_name.upper()}Backend", None)
         backend = backend_class(app.config)
-        backend.init_app(app, init_backend)
+
+    backend.init_app(app, init_backend)
 
     with app.app_context():
         g.backend = backend

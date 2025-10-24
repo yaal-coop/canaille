@@ -233,6 +233,7 @@ exclude_lines = [
     "except ImportError",
     "if app.debug",
     "pass",
+    "if TYPE_CHECKING",
 ]
 
 [tool.ruff.lint]

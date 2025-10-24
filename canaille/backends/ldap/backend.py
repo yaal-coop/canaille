@@ -93,7 +93,10 @@ class LDAPBackend(Backend):
     def __init__(self, config):
         super().__init__(config)
         self._connection = None
-        setup_ldap_models(config)
+
+    def init_app(self, app, init_backend=None):
+        super().init_app(app, init_backend)
+        setup_ldap_models(self.config)
 
     @classmethod
     def install(cls, app):

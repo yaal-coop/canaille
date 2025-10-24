@@ -2,13 +2,13 @@ import datetime
 import re
 import textwrap
 
-import isodate
 from pydantic import BaseModel
 from pydantic import ValidationError
 from pydantic_core import PydanticUndefined
 from pydantic_settings import BaseSettings
 
 try:
+    import isodate
     import tomlkit
 
     HAS_TOMLKIT = True
