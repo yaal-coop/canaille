@@ -15,6 +15,7 @@ Added
 Fixed
 ^^^^^
 - Password autofill.
+- Conditionally load CLI to avoid crash when optional dependencies are missing.
 
 Changed
 ^^^^^^^
