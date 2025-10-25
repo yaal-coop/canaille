@@ -259,9 +259,10 @@ class Backend:
         module_base = ".".join(self.__class__.__module__.split(".")[:-1] + ["models"])
 
         core_module = importlib.import_module(f"{module_base}.core")
-        for _class_name, obj in inspect.getmembers(core_module, inspect.isclass):
+        for _class_name, obj in core_module.__dict__.items():
             if (
-                issubclass(obj, Model)
+                inspect.isclass(obj)
+                and issubclass(obj, Model)
                 and obj is not Model
                 and obj.__module__ == core_module.__name__
             ):
@@ -269,9 +270,10 @@ class Backend:
 
         if app.features.has_oidc:  # pragma: no cover
             oidc_module = importlib.import_module(f"{module_base}.oidc")
-            for _class_name, obj in inspect.getmembers(oidc_module, inspect.isclass):
+            for _class_name, obj in oidc_module.__dict__.items():
                 if (
-                    issubclass(obj, Model)
+                    inspect.isclass(obj)
+                    and issubclass(obj, Model)
                     and obj is not Model
                     and obj.__module__ == oidc_module.__name__
                 ):
