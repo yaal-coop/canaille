@@ -70,8 +70,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 .. container:: buttons
 
-    :doc:`Full feature list <features>`
     :doc:`Common use cases <usecases>`
+    :doc:`Full feature list <features>`
 
 .. rst-class:: lead
 
@@ -82,8 +82,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 .. toctree::
    :maxdepth: 2
 
-   features
    usecases
+   features
    howtos/index
    references/index
    development/index
