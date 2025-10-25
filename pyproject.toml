@@ -35,7 +35,7 @@ dependencies = [
     "flask >= 3.0.0",
     "flask-caching>=2.3.0",
     "flask-wtf >= 1.2.1",
-    "pydantic-settings >= 2.0.3",
+    "pydantic-settings >= 2.8.0",
     "httpx>=0.28.1",
     "wtforms >= 3.1.1",
 ]
@@ -54,8 +54,8 @@ front = [
 ]
 
 oidc = [
-    "authlib >= 1.6.4",
-    "joserfc>=1.2.0",
+    "authlib >= 1.6.5",
+    "joserfc >= 1.4.0",
 ]
 
 scim = [
@@ -66,7 +66,7 @@ scim = [
 ]
 
 ldap = [
-    "python-ldap >= 3.4.0",
+    "python-ldap >= 3.4.4",
 ]
 
 sentry = [
@@ -124,7 +124,7 @@ repository = "https://gitlab.com/yaal/canaille"
 dev = [
     "babel >= 2.14.0",
     "coverage[toml] >= 6.0.0",
-    "faker >= 30.0.0",
+    "faker >= 37.11.0",
     "flask-webtest >= 0.1.6",
     "maildump>=1.0; python_version<'3.12'",
     "maildump>=1.1; python_version>='3.12'",
@@ -168,7 +168,7 @@ doc = [
     "sphinx-substitution-extensions>=2024.2.25",
 ]
 devserver = [
-    "faker >= 30.0.0",
+    "faker >= 37.11.0",
     "honcho >= 2.0.0",
     "slapd >= 0.1.6",
     "httpx >= 0.26.0",
@@ -297,7 +297,9 @@ commands = [
 ]
 
 [tool.tox.env.minversions]
+runner = "uv-venv-runner"
 uv_resolution = "lowest-direct"
+extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server"]
 basepython = ["python3.10"]
 
 [tool.tox.env.doc]
