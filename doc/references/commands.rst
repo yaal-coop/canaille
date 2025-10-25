@@ -4,12 +4,12 @@ Command Line Interface
 Canaille provide several commands to help administrator manage their data.
 
 Generally, some configuration has to be loaded by `Canaille`.
-This can be achieved by :ref:`configuration loading method<references/configuration:Load the configuration>` available, but most of the time a ``CONFIG`` environment variable is used.
+This can be achieved by :ref:`configuration loading method<references/configuration:Load the configuration>` available, but most of the time a ``CANAILLE_CONFIG`` environment variable is used.
 For the sake of readability, it is omitted in the following examples.
 
 .. code-block:: shell
 
-    env CONFIG=path/to/config.toml canaille ...
+    env CANAILLE_CONFIG=path/to/config.toml canaille ...
 
 .. _cli_config:
 

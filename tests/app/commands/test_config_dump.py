@@ -61,7 +61,7 @@ def test_export_current_config(testclient, cli_runner, backend, tmp_path):
 
 
 def test_export_env_config(testclient, cli_runner, tmp_path, backend):
-    """Export the current application config in a file which pass is passed in the CONFIG env var."""
+    """Export the current application config in a file which pass is passed in the CANAILLE_CONFIG env var."""
     if "memory" not in backend.__class__.__module__:
         pytest.skip()
 
@@ -74,7 +74,7 @@ def test_export_env_config(testclient, cli_runner, tmp_path, backend):
     testclient.app.config["CANAILLE"]["SMTP"]["PORT"] = 25
     testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = None
 
-    os.environ["CONFIG"] = str(toml_export)
+    os.environ["CANAILLE_CONFIG"] = str(toml_export)
 
     res = cli_runner.invoke(cli, ["config", "dump"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
@@ -84,4 +84,4 @@ def test_export_env_config(testclient, cli_runner, tmp_path, backend):
 
     assert res.stdout == expected_content
 
-    del os.environ["CONFIG"]
+    del os.environ["CANAILLE_CONFIG"]

@@ -1,4 +1,4 @@
-canaille: env CANAILLE__DATABASE=sql FLASK_DEBUG=1 AUTHLIB_INSECURE_TRANSPORT=1 ENV_FILE=.env CONFIG=dev/conf/canaille.toml FLASK_APP=dev.devapp flask run --extra-files dev/conf/canaille.toml --extra-files "$CANAILLE__THEME"
-client1: env FLASK_DEBUG=1 CONFIG=../conf/client1.cfg FLASK_APP=dev.client flask run --port=5001
-client2: env FLASK_DEBUG=1 CONFIG=../conf/client2.cfg FLASK_APP=dev.client flask run --port=5002
+canaille: env CANAILLE__DATABASE=sql FLASK_DEBUG=1 AUTHLIB_INSECURE_TRANSPORT=1 CANAILLE_ENV=.env CANAILLE_CONFIG=dev/conf/canaille.toml FLASK_APP=dev.devapp flask run --extra-files dev/conf/canaille.toml --extra-files "$CANAILLE__THEME"
+client1: env FLASK_DEBUG=1 CLIENT_CONFIG=../conf/client1.cfg FLASK_APP=dev.client flask run --port=5001
+client2: env FLASK_DEBUG=1 CLIENT_CONFIG=../conf/client2.cfg FLASK_APP=dev.client flask run --port=5002
 maildump: maildump

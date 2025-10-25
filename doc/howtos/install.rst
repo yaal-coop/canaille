@@ -10,9 +10,9 @@ This page describes how to get and set-up Canaille.
 
    $ wget https://github.com/yaal-coop/canaille/releases/download/|version|/canaille -o canaille
    $ chmod +x canaille
-   $ export CONFIG=/path/to/my/config.toml
-   $ canaille config dump --path $CONFIG
-   $ $EDITOR $CONFIG
+   $ export CANAILLE_CONFIG=/path/to/my/config.toml
+   $ canaille config dump --path $CANAILLE_CONFIG
+   $ $EDITOR $CANAILLE_CONFIG
    $ canaille install
    $ canaille config check
    $ canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol --formatted-name "George Abitbol"
@@ -158,21 +158,21 @@ Configure
 =========
 
 The :doc:`configuration documentation<../references/configuration>` describe several ways to configure Canaille,
-however the most common is to use a TOML configuration file and pass its path with the :envvar:`CONFIG` environment variable.
+however the most common is to use a TOML configuration file and pass its path with the :envvar:`CANAILLE_CONFIG` environment variable.
 A configuration file with default values can be initialized with the :ref:`config dump <cli_config>` command.
 
 .. code-block:: console
     :caption: Initialize a configuration file.
 
-    $ export CONFIG=/path/to/my/config.toml
-    $ canaille config dump --path $CONFIG
+    $ export CANAILLE_CONFIG=/path/to/my/config.toml
+    $ canaille config dump --path $CANAILLE_CONFIG
 
 You can then edit your configuration file and tune its values.
 Have a look at the :ref:`reference <references/configuration:Parameters>` to know the exhaustive list of available parameters.
 
 .. note::
 
-   In the rest of the documentation, we consider that your Canaille instance is configured by one of the available methods (either with a :envvar:`CONFIG` environment var, either with ``.env`` files etc.).
+   In the rest of the documentation, we consider that your Canaille instance is configured by one of the available methods (either with a :envvar:`CANAILLE_CONFIG` environment var, either with ``.env`` files etc.).
 
 Install
 =======

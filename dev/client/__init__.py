@@ -115,7 +115,7 @@ def setup_oauth(app):
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_envvar("CONFIG")
+    app.config.from_envvar("CLIENT_CONFIG")
     app.static_folder = "../../canaille/static"
 
     setup_routes(app)
