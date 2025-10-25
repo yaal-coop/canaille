@@ -11,9 +11,6 @@ from flask import url_for
 
 from canaille.app import get_b64encoded_qr_image
 from canaille.app.i18n import gettext as _
-from canaille.app.otp import get_otp_authentication_setup_uri
-from canaille.app.otp import is_otp_valid
-from canaille.app.otp import make_otp_secret
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import auth_step
@@ -33,6 +30,8 @@ def global_processor():
 @bp.route("/auth/otp", methods=["GET", "POST"])
 @auth_step("otp")
 def otp():
+    from canaille.app.otp import is_otp_valid
+
     if g.auth.user and not g.auth.user.last_otp_login:
         return redirect(url_for(".setup"))
 
@@ -77,6 +76,10 @@ def otp():
 def setup():
     if not current_app.features.has_otp:  # pragma: no cover
         abort(404)
+
+    from canaille.app.otp import get_otp_authentication_setup_uri
+    from canaille.app.otp import is_otp_valid
+    from canaille.app.otp import make_otp_secret
 
     if not g.auth:
         flash(
