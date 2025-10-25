@@ -18,6 +18,7 @@ canaille.toml
 htmlcov
 *.egg-info
 build
+_build
 dist
 python-ldap-test*
 canaille/conf/oauth-authorization-server.json
