@@ -489,7 +489,7 @@ class Group(Model):
     "Group" resource schema.
     """
 
-    owner: Annotated["User", {}] | None = None
+    owner: "User | None" = None
     """The user who can manage this group.
 
     The group owner has the ability to edit the group description,
