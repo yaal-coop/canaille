@@ -225,6 +225,8 @@ Documentation translation
 Production Docker image
 -----------------------
 
+Docker images are automatically built and published by the CI when a new tag is pushed.
+
 Build
 ~~~~~
 
@@ -290,4 +292,3 @@ Publish a new release
 13. Publish the Python package on production PyPI ``uv publish``;
 14. Tag the commit with ``git tag XX.YY.ZZ``;
 15. Push the release commit and the new tag on the repository with ``git push --tags``.
-16. Build and publish the Docker image.
