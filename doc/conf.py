@@ -40,6 +40,7 @@ extensions = [
     "sphinx_design",
     "sphinx_iconify",
     "sphinx_issues",
+    "sphinx_substitution_extensions",
     "sphinxcontrib.autodoc_pydantic",
     "jinja_autodoc",
     "sphinxcontrib.screenshot",
@@ -58,6 +59,12 @@ author = "Yaal Coop"
 version = metadata.version("canaille")
 language = "en"
 exclude_patterns = []
+
+# Define substitutions for sphinx-substitution-extensions
+rst_prolog = f"""
+.. |version| replace:: {version}
+"""
+
 pygments_style = "sphinx"
 todo_include_todos = True
 toctree_collapse = False
