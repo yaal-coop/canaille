@@ -20,7 +20,7 @@
 as in *Can I access your data?* Canaille is a lightweight identity and authorization management software.
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 
-.. grid:: 3
+.. grid:: 1 1 2 3
     :gutter: 2
     :padding: 0
     :class-row: surface
