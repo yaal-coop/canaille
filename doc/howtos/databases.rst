@@ -98,11 +98,11 @@ Here is a configuration example compatible with canaille:
 
 You can adapt and load those configuration files with:
 
-.. code-block:: bash
+.. code-block:: console
 
     # Adapt those commands according to your setup
-    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f memberof-config.ldif
-    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f refint-config.ldif
+    $ sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f memberof-config.ldif
+    $ sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f refint-config.ldif
 
 ppolicy
 ~~~~~~~
@@ -121,11 +121,11 @@ Here is a configuration example compatible with canaille:
 
 You can adapt and load those configuration files with:
 
-.. code-block:: bash
+.. code-block:: console
 
     # Adapt those commands according to your setup
-    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f ppolicy-config.ldif
-    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f ppolicy.ldif
+    $ sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f ppolicy-config.ldif
+    $ sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f ppolicy.ldif
 
 otp
 ~~~
@@ -140,10 +140,10 @@ Here is a configuration example compatible with canaille:
 
 You can adapt and load this configuration file with:
 
-.. code-block:: bash
+.. code-block:: console
 
     # Adapt this command according to your setup
-    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f otp-config.ldif
+    $ sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f otp-config.ldif
 
 You will also need to add the ``oathHOTPToken`` class to the user:
 
@@ -166,20 +166,20 @@ First of all, you need to locate the ``oauth2-openldap.ldif`` on your system, or
 Using ``ldapadd``
 ~~~~~~~~~~~~~~~~~
 
-.. code-block:: bash
+.. code-block:: console
 
-    sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f /path/to/oauth2-openldap.ldif
+    $ sudo ldapadd -Q -H ldapi:/// -Y EXTERNAL -f /path/to/oauth2-openldap.ldif
 
 Using ``slapadd``
 ~~~~~~~~~~~~~~~~~
 
 Be careful to stop your ldap server before running ``slapadd``
 
-.. code-block:: bash
+.. code-block:: console
 
-    sudo service slapd stop
-    sudo -u openldap slapadd -n0 -l /path/to/oauth2-openldap.ldif
-    sudo service slapd start
+    $ sudo service slapd stop
+    $ sudo -u openldap slapadd -n0 -l /path/to/oauth2-openldap.ldif
+    $ sudo service slapd start
 
 .. _ldap_schema_update:
 
@@ -199,11 +199,11 @@ Please perform your own backups too, in case something unexpected happens.
 .. code-block:: console
     :caption: Backup and purge OIDC related objects
 
-    canaille dump client authorizationcode consent token > dump.json
-    canaille delete client --noconfirm
-    canaille delete authorizationcode --noconfirm
-    canaille delete consent --noconfirm
-    canaille delete token --noconfirm
+    $ canaille dump client authorizationcode consent token > dump.json
+    $ canaille delete client --noconfirm
+    $ canaille delete authorizationcode --noconfirm
+    $ canaille delete consent --noconfirm
+    $ canaille delete token --noconfirm
 
 Delete the old schema
 ~~~~~~~~~~~~~~~~~~~~~
@@ -214,7 +214,7 @@ It is supposed to be executed while your LDAP server is turned off.
 .. code-block:: console
     :caption: Removing the old schema with slapmodify
 
-    sudo slapmodify -n0 <<EOL
+    $ sudo slapmodify -n0 <<EOL
     dn: cn=oauth,cn=schema,cn=config
     changetype: delete
     EOL
@@ -232,7 +232,7 @@ Now that the schemas are updated, you can restore the saved data:
 .. code-block:: console
     :caption: Restore OIDC related objects
 
-    canaille restore < dump.json
+    $ canaille restore < dump.json
 
 Dump and restore
 ================
@@ -255,5 +255,5 @@ For instance, if you want to migrate from a LDAP database to a SQL database, you
 .. code-block:: console
     :caption: Migrating data from a LDAP directory to a SQL database
 
-    env CONFIG=sql-config.toml canaille install
-    env CONFIG=ldap -config.toml canaille dump | env CONFIG=sql-config.toml canaille restore
+    $ env CONFIG=sql-config.toml canaille install
+    $ env CONFIG=ldap -config.toml canaille dump | env CONFIG=sql-config.toml canaille restore

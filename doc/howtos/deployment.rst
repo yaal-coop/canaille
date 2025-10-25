@@ -164,9 +164,9 @@ Recurrent jobs
 You might want to clean up your database to avoid it growing too much. You can regularly delete
 expired tokens and authorization codes with:
 
-.. code-block:: bash
+.. code-block:: console
 
-    env CONFIG="$CANAILLE_CONF_DIR/config.toml" FLASK_APP=canaille "$CANAILLE_INSTALL_DIR/env/bin/canaille" clean
+    $ env CONFIG="$CANAILLE_CONF_DIR/config.toml" FLASK_APP=canaille "$CANAILLE_INSTALL_DIR/env/bin/canaille" clean
 
 
 Webfinger

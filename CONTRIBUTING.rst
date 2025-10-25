@@ -66,7 +66,7 @@ With the SQL backend, the development server will load and save data in a local 
 .. code-block:: console
     :caption: Run the development server with the SQL backend
 
-    uv run devserver
+    $ uv run devserver
 
 Memory
 ^^^^^^
@@ -75,7 +75,7 @@ With the memory backend, all data is lost when Canaille stops.
 .. code-block:: console
     :caption: Run the development server with the memory backend
 
-    uv run devserver --backend memory
+    $ uv run devserver --backend memory
 
 LDAP
 ^^^^
@@ -84,7 +84,7 @@ With the LDAP backend, all data is lost when Canaille stops.
 .. code-block:: console
     :caption: Run the development server with the LDAP backend
 
-    uv run devserver --backend ldap
+    $ uv run devserver --backend ldap
 
 .. note ::
     If you want to run the development server locally with the LDAP backend, you need to have
@@ -98,8 +98,8 @@ With the LDAP backend, all data is lost when Canaille stops.
 
     .. code-block:: console
 
-        sudo apt install --yes apparmor-utils
-        sudo aa-complain /usr/sbin/slapd
+        $ sudo apt install --yes apparmor-utils
+        $ sudo aa-complain /usr/sbin/slapd
 
 Docker environment
 ~~~~~~~~~~~~~~~~~~
@@ -111,8 +111,8 @@ With the SQL backend, the development server will load and save data in a local 
 .. code-block:: console
     :caption: Run the development server with the SQL backend
 
-    cd dev
-    docker compose up
+    $ cd dev
+    $ docker compose up
 
 Memory
 ^^^^^^
@@ -121,8 +121,8 @@ With the memory backend, all data is lost when Canaille stops.
 .. code-block:: console
     :caption: Run the development server with the memory backend
 
-    cd dev
-    docker compose --file docker-compose-memory.yml up
+    $ cd dev
+    $ docker compose --file docker-compose-memory.yml up
 
 LDAP
 ^^^^
@@ -131,8 +131,8 @@ With the LDAP backend, all data is lost when Canaille stops.
 .. code-block:: console
     :caption: Run the development server with the LDAP backend
 
-    cd dev
-    docker compose --file docker-compose-ldap.yml up
+    $ cd dev
+    $ docker compose --file docker-compose-ldap.yml up
 
 Populate the database
 ~~~~~~~~~~~~~~~~~~~~~
@@ -143,10 +143,10 @@ users and groups with the ``populate`` command:
 .. code-block:: console
 
     # If using docker:
-    docker compose exec canaille env CANAILLE__DATABASE=<backend> CONFIG=conf/canaille.toml uv run canaille populate --nb 100 users  # or docker-compose
+    $ docker compose exec canaille env CANAILLE__DATABASE=<backend> CONFIG=conf/canaille.toml uv run canaille populate --nb 100 users  # or docker-compose
 
     # If running in local environment
-    env CANAILLE__DATABASE=<backend> CONFIG=conf/canaille.toml uv run canaille populate  --nb 100 users
+    $ env CANAILLE__DATABASE=<backend> CONFIG=conf/canaille.toml uv run canaille populate  --nb 100 users
 
 Adapt to use either the `ldap` or the `sql` configuration file. Note that this will not work with the memory backend.
 
@@ -187,15 +187,15 @@ Documentation
 
 The documentation is generated when the tests run:
 
-.. code-block:: bash
+.. code-block:: console
 
-    tox -e doc
+    $ tox -e doc
 
 You can also run sphinx by hand, that should be faster since it avoids the tox environment initialization:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sphinx-build doc build/sphinx/html/en
+   $ sphinx-build doc build/sphinx/html/en
 
 The generated documentation is located at ``build/sphinx/html/en``.
 
@@ -204,9 +204,9 @@ The generated documentation is located at ``build/sphinx/html/en``.
    The documentation generates dynamic screenshots of Canaille using `sphinxcontrib-screenshot`_, that internally uses `Playwright`_.
    Playwright needs to be initialized with the following command:
 
-   .. code-block:: bash
+   .. code-block:: console
 
-      uv run playwright install firefox
+      $ uv run playwright install firefox
 
 .. _sphinxcontrib-screenshot: https://sphinxcontrib-screenshot.readthedocs.io
 .. _Playwright: https://playwright.dev/python
@@ -228,29 +228,27 @@ Production Docker image
 Build
 ~~~~~
 
-.. code-block:: bash
+.. code-block:: console
 
-    docker build -t canaille .
+    $ docker build -t canaille .
 
 Authenticate
 ~~~~~~~~~~~~
 
-.. code-block:: bash
+.. code-block:: console
 
-    docker login --username <hub docker login>
+    $ docker login --username <hub docker login>
 
 Publish
 ~~~~~~~
 
-.. code-block:: bash
+.. code-block:: console
 
-    export CANAILLE_VERSION=$(uv run python -c "from importlib.metadata import version; print(version('canaille'))")
-
-    docker tag canaille:latest "yaalcoop/canaille:latest"
-    docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
-
-    docker push yaalcoop/canaille:latest
-    docker push yaalcoop/canaille:${CANAILLE_VERSION}
+    $ export CANAILLE_VERSION=$(uv run python -c "from importlib.metadata import version; print(version('canaille'))")
+    $ docker tag canaille:latest "yaalcoop/canaille:latest"
+    $ docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
+    $ docker push yaalcoop/canaille:latest
+    $ docker push yaalcoop/canaille:${CANAILLE_VERSION}
 
 Build a release
 ---------------
@@ -260,19 +258,19 @@ Python package
 
 The Python packaging step is took care of by uv:
 
-.. code-block:: bash
+.. code-block:: console
 
-    uv build
+    $ uv build
 
 Binary file
 ~~~~~~~~~~~
 
 To build a single binary of Canaille, you can use pyinstaller by installing the `release` dependency group:
 
-.. code-block:: bash
+.. code-block:: console
 
-    uv sync --group release --all-extras --no-dev
-    uv run pyinstaller canaille.spec
+    $ uv sync --group release --all-extras --no-dev
+    $ uv run pyinstaller canaille.spec
 
 Publish a new release
 ---------------------

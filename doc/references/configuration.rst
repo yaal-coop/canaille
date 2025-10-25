@@ -44,7 +44,7 @@ Environment file
 Any environment variable can also be written in an environment file, which path should be passed in the ``ENV_FILE`` environment variable.
 For instance, set ``ENV_FILE=.env`` to load a ``.env`` file.
 
-.. code-block:: bash
+.. code-block:: console
     :caption: .env
 
     SECRET_KEY="very-secret"
