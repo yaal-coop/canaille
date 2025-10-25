@@ -19,6 +19,7 @@ from canaille.backends import Backend
 
 from ..jose import build_client_management_token
 from .forms import ClientAddForm
+from .forms import ClientEditForm
 
 bp = Blueprint("clients", __name__, url_prefix="/admin/client")
 
@@ -83,22 +84,14 @@ def add(user):
         client_name=form["client_name"].data,
         contacts=form["contacts"].data,
         client_uri=form["client_uri"].data,
-        grant_types=form["grant_types"].data,
         redirect_uris=form["redirect_uris"].data,
-        post_logout_redirect_uris=form["post_logout_redirect_uris"].data,
-        response_types=form["response_types"].data,
-        scope=form["scope"].data.split(" "),
-        token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
-        logo_uri=form["logo_uri"].data,
-        tos_uri=form["tos_uri"].data,
-        policy_uri=form["policy_uri"].data,
-        software_id=form["software_id"].data,
-        software_version=form["software_version"].data,
-        jwks=form["jwks"].data,
-        jwks_uri=form["jwks_uri"].data,
-        client_secret=""
-        if form["token_endpoint_auth_method"].data == "none"
-        else gen_salt(48),
+        grant_types=["authorization_code", "refresh_token"],
+        response_types=["code"],
+        scope=["openid", "profile", "email"],
+        token_endpoint_auth_method="client_secret_basic",
+        client_secret=gen_salt(48),
+        application_type="web",
+        id_token_signed_response_alg="RS256",
     )
     Backend.instance.save(client)
     client.audience = [client]
@@ -130,7 +123,7 @@ def client_edit(client):
     data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     if data["scope"]:
         data["scope"] = " ".join(data["scope"])
-    form = ClientAddForm(request.form or None, data=data, client=client)
+    form = ClientEditForm(request.form or None, data=data, client=client)
 
     management_token = build_client_management_token(
         "client:manage", timedelta(seconds=TOKEN_LIFETIME), client.client_id
@@ -173,12 +166,13 @@ def client_edit(client):
         client_name=form["client_name"].data,
         contacts=form["contacts"].data,
         client_uri=form["client_uri"].data,
-        grant_types=form["grant_types"].data,
         redirect_uris=form["redirect_uris"].data,
         post_logout_redirect_uris=form["post_logout_redirect_uris"].data,
-        response_types=form["response_types"].data,
+        grant_types=form["grant_types"].data,
         scope=form["scope"].data.split(" "),
+        response_types=form["response_types"].data,
         token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
+        audience=form["audience"].data,
         logo_uri=form["logo_uri"].data,
         tos_uri=form["tos_uri"].data,
         policy_uri=form["policy_uri"].data,
@@ -186,7 +180,20 @@ def client_edit(client):
         software_version=form["software_version"].data,
         jwks=form["jwks"].data,
         jwks_uri=form["jwks_uri"].data,
-        audience=form["audience"].data,
+        token_endpoint_auth_signing_alg=form["token_endpoint_auth_signing_alg"].data
+        or None,
+        sector_identifier_uri=form["sector_identifier_uri"].data or None,
+        subject_type=form["subject_type"].data or None,
+        application_type=form["application_type"].data or None,
+        id_token_signed_response_alg=form["id_token_signed_response_alg"].data,
+        userinfo_signed_response_alg=form["userinfo_signed_response_alg"].data or None,
+        default_max_age=form["default_max_age"].data,
+        require_auth_time=form["require_auth_time"].data,
+        default_acr_values=[v for v in form["default_acr_values"].data if v] or None,
+        initiate_login_uri=form["initiate_login_uri"].data or None,
+        request_object_signing_alg=form["request_object_signing_alg"].data or None,
+        request_uris=[v for v in form["request_uris"].data if v] or None,
+        require_signed_request_object=form["require_signed_request_object"].data,
     )
     Backend.instance.save(client)
     flash(
