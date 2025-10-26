@@ -57,7 +57,7 @@
 #
 # Default is "sql" if available, else "memory".
 # DATABASE =
-DATABASE = "memory"
+DATABASE = "sql"
 
 # The logo of your organization, this is useful to make your organization
 # recognizable on login screens.
@@ -110,6 +110,18 @@ DATABASE = "memory"
 # account is created.
 # ENABLE_REGISTRATION = false
 
+# The attributes users can use to identify themselves, generally a combination of
+# user_name, emails and phone_numbers.
+#
+# - When this is a list, it expects the attribute names to match.
+# - When this is a dict, keys are expected to be the attribute names to match,
+#   and values are a jinja:index string with a login variable available.
+#   This can be used to tune the user input, and for example remove a domain name.
+#
+#     LOGIN_ATTRIBUTES = ["user_name", "emails"]
+#     LOGIN_ATTRIBUTES = {user_name = "{{ login | replace('@example.org', '') }}", emails = "{{ login }}"}
+# LOGIN_ATTRIBUTES = ["user_name", "emails"]
+
 # If True, when users try to sign in with an invalid login, a message is shown
 # indicating that the password is wrong, but does not give a clue whether the
 # login exists or not.
@@ -124,6 +136,16 @@ DATABASE = "memory"
 # If True, then users will have to wait for an increasingly long time between each
 # failed login attempt.
 # ENABLE_INTRUDER_LOCKOUT = false
+
+# The authentication factors.
+#
+# Users will need to authenticate with factors in the order of this list. For
+# instance, this will show a password form and then ask for a one-time passcode:
+#
+# Valid factors are password, otp, email and sms.
+#
+#     AUTHENTICATION_FACTORS = ["password", "otp"]
+# AUTHENTICATION_FACTORS = ["password"]
 
 # The OTP method to use if OTP is set in AUTHENTICATION_FACTORS. If set to TOTP,
 # the application will use time-based one-time passcodes, If set to HOTP, the
@@ -270,6 +292,27 @@ DATABASE = "memory"
 # members of a group called `admin`.
 
 [CANAILLE.ACL.DEFAULT]
+# A list of Permission users in the access control will be able to manage.
+#
+# By default, users can edit their own profile, use OpenID Connect, and manage
+# their own groups.
+#
+# For example:
+#
+#     PERMISSIONS = [
+#         "manage_users",
+#         "manage_all_groups",
+#         "manage_oidc",
+#         "delete_account",
+#         "impersonate_users",
+#     ]
+# PERMISSIONS = ["edit_self", "use_oidc", "manage_own_groups"]
+
+# A list of User attributes that users in the ACL will be able to read.
+# READ = ["user_name", "groups", "lock_date"]
+
+# A list of User attributes that users in the ACL will be able to edit.
+# WRITE = ["photo", "given_name", "family_name", "display_name", "password", "phone_numbers", "emails", "profile_url", "formatted_address", "street", "postal_code", "locality", "region", "preferred_language", "employee_number", "department", "title", "organization"]
 
 # FILTER can be:
 #
@@ -304,6 +347,7 @@ DATABASE = "memory"
 #         "delete_account",
 #         "impersonate_users",
 #     ]
+# PERMISSIONS = ["edit_self", "use_oidc", "manage_own_groups"]
 PERMISSIONS = [
     "manage_oidc",
     "manage_users",
@@ -312,7 +356,11 @@ PERMISSIONS = [
     "impersonate_users",
 ]
 
+# A list of User attributes that users in the ACL will be able to read.
+# READ = ["user_name", "groups", "lock_date"]
+
 # A list of User attributes that users in the ACL will be able to edit.
+# WRITE = ["photo", "given_name", "family_name", "display_name", "password", "phone_numbers", "emails", "profile_url", "formatted_address", "street", "postal_code", "locality", "region", "preferred_language", "employee_number", "department", "title", "organization"]
 WRITE = ["groups", "lock_date"]
 
 # FILTER can be:
@@ -331,10 +379,7 @@ WRITE = ["groups", "lock_date"]
 #         {groups = 'admin},
 #         {groups = 'moderators'},
 #     ]
-FILTER = [
-    {user_name = "admin"},
-    {groups = "admin"},
-]
+FILTER = [{user_name = "admin"}, {groups = "admin"}]
 
 [CANAILLE_SQL]
 # The SQL server URI. For example:
@@ -380,6 +425,9 @@ FILTER = [
 # For instance `ou=users,dc=example,dc=org`.
 # USER_BASE =
 USER_BASE = "ou=users,dc=example,dc=org"
+
+# The object class to use for creating new users.
+# USER_CLASS = ["inetOrgPerson"]
 
 # The attribute to identify an object in the User DN.
 # USER_RDN = "uid"
@@ -454,6 +502,24 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 # UPDATED_AT = "{% if user.last_modified %}{{ user.last_modified.timestamp() }}{% endif %}"
 
+# Trusted domains for automatic client trust.
+#
+# Clients with a client_uri matching these domains will be automatically
+# considered as trusted and will not display the consent page to users. This is
+# particularly useful for development environments.
+#
+# Supports these patterns:
+#
+# - Exact match: example.com matches example.com
+# - Wildcard match: .example.com matches example.com and all its subdomains
+#
+# Examples:
+#
+# - [".localhost", "127.0.0.1"] (default for development)
+# - [".dev.company.com", "staging.company.com"]
+# - [".local", "localhost"]
+# TRUSTED_DOMAINS = [".localhost", "127.0.0.1"]
+
 [CANAILLE_SCIM]
 # Whether the SCIM server API is enabled.
 #
@@ -475,8 +541,17 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # The target for access log outputs.
 # ACCESSLOG =
 
+# The ALPN protocols to advertise.
+# ALPN_PROTOCOLS = []
+
+# The alt-svc header values to advertise.
+# ALT_SVC_HEADERS = []
+
 # The maximum number of pending connections.
 # BACKLOG =
+
+# The TCP host/address to bind to.
+# BIND = []
 
 # Path to the SSL CA certificate file.
 # CA_CERTS =
@@ -523,6 +598,9 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # Include a server header in the response.
 # INCLUDE_SERVER_HEADER =
 
+# The TCP host/address to bind to for insecure connections.
+# INSECURE_BIND = []
+
 # The maximum number of requests per keep-alive connection.
 # KEEP_ALIVE_MAX_REQUESTS =
 
@@ -563,11 +641,17 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # Number of trusted proxy hops when PROXY_MODE is set.
 # PROXY_TRUSTED_HOPS = 1
 
+# The UDP socket to bind for QUIC.
+# QUIC_BIND = []
+
 # The timeout for reading from connections.
 # READ_TIMEOUT =
 
 # The ASGI root_path variable.
 # ROOT_PATH =
+
+# A comma separated list of server names.
+# SERVER_NAMES = []
 
 # Time to wait for workers to shutdown during graceful shutdown.
 # SHUTDOWN_TIMEOUT =

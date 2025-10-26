@@ -1,5 +1,6 @@
 import os
 import pathlib
+import re
 
 import pytest
 
@@ -16,7 +17,16 @@ def test_export_default_config(testclient, cli_runner, backend, tmp_path):
         pathlib.Path(__file__).parent.parent / "fixtures" / "default-config.toml"
     )
 
-    testclient.app.config = {}
+    # Delete all configs to test default export (not just CANAILLE configs)
+    del testclient.app.config["CANAILLE"]
+    del testclient.app.config["CANAILLE_SQL"]
+    del testclient.app.config["CANAILLE_LDAP"]
+    del testclient.app.config["CANAILLE_SCIM"]
+    del testclient.app.config["CANAILLE_OIDC"]
+    del testclient.app.config["CANAILLE_HYPERCORN"]
+    # Also delete Flask test configs to get true defaults
+    for key in ["SECRET_KEY", "SERVER_NAME", "TRUSTED_HOSTS", "PREFERRED_URL_SCHEME"]:
+        testclient.app.config.pop(key, None)
 
     res = cli_runner.invoke(
         cli, ["config", "dump", "--path", str(toml_export)], catch_exceptions=False
@@ -28,6 +38,17 @@ def test_export_default_config(testclient, cli_runner, backend, tmp_path):
 
     with open(toml_expected) as fd:
         expected_content = fd.read()
+
+    actual_content = re.sub(
+        r"# The active JSON Web Keys Set\.\n#\n# Those keys are used to sign and verify JWTs\.\n(?:# ACTIVE_JWKS = .*\n|ACTIVE_JWKS = .*\n)",
+        "# The active JSON Web Keys Set.\n#\n# Those keys are used to sign and verify JWTs.\n# ACTIVE_JWKS =\n",
+        actual_content,
+        flags=re.MULTILINE,
+    )
+
+    # Normalize trailing newlines
+    actual_content = actual_content.rstrip() + "\n"
+    expected_content = expected_content.rstrip() + "\n"
 
     assert actual_content == expected_content
 

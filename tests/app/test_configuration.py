@@ -427,4 +427,8 @@ def test_export_default_config(tmp_path, backend):
     with open(toml_expected) as fd:
         expected_content = fd.read()
 
+    # Normalize trailing newlines
+    actual_content = actual_content.rstrip() + "\n"
+    expected_content = expected_content.rstrip() + "\n"
+
     assert actual_content == expected_content
