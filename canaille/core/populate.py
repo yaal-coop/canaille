@@ -2,6 +2,7 @@ import random
 
 import faker
 from faker.config import AVAILABLE_LOCALES
+from flask import current_app
 
 from canaille.app import models
 from canaille.app.i18n import available_language_codes
@@ -41,6 +42,7 @@ def fake_users(nb=1):
             Backend.instance.save(user)
             users.append(user)
         except Exception:  # pragma: no cover
+            current_app.logger.debug("Failed to create fake user", exc_info=True)
             pass
     return users
 
@@ -61,5 +63,6 @@ def fake_groups(nb=1, nb_users_max=1):
             Backend.instance.save(group)
             groups.append(group)
         except Exception:  # pragma: no cover
+            current_app.logger.debug("Failed to create fake groups", exc_info=True)
             pass
     return groups
