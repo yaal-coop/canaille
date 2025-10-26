@@ -44,6 +44,7 @@ from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import AuthenticationSession
+from canaille.core.utils import guess_image_mimetype
 
 from ..mails import send_confirmation_email
 from ..mails import send_invitation_mail
@@ -916,9 +917,10 @@ def photo(user, field):
     if not photo:
         abort(404)
 
+    mimetype = guess_image_mimetype(photo)
     stream = io.BytesIO(photo)
     return send_file(
-        stream, mimetype="image/jpeg", last_modified=user.last_modified, etag=etag
+        stream, mimetype=mimetype, last_modified=user.last_modified, etag=etag
     )
 
 

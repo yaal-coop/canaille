@@ -8,6 +8,36 @@ from canaille.app import models
 from canaille.app.i18n import available_language_codes
 from canaille.backends import Backend
 
+try:
+    import python_avatars as pa
+
+    HAS_PYTHON_AVATARS = True
+except ImportError:  # pragma: no cover
+    HAS_PYTHON_AVATARS = False
+
+
+def generate_avatar():
+    """Generate a random avatar as SVG bytes.
+
+    Returns None for LDAP backend as it expects JPEG (jpegPhoto attribute).
+    """
+    if not HAS_PYTHON_AVATARS:  # pragma: no cover
+        return None
+
+    # LDAP backend expects JPEG in jpegPhoto attribute, not SVG
+    try:
+        if (
+            Backend.instance and Backend.instance.__class__.__name__ == "LDAPBackend"
+        ):  # pragma: no cover
+            return None
+    except (AttributeError, RuntimeError):  # pragma: no cover
+        # Backend.instance not yet initialized, skip LDAP check
+        pass
+
+    avatar = pa.Avatar.random()
+    svg_bytes = avatar.render().encode("utf-8")
+    return svg_bytes
+
 
 def fake_users(nb=1):
     locales = list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
@@ -38,6 +68,7 @@ def fake_users(nb=1):
                 title=profile["job"],
                 password=fake.password(),
                 preferred_language=fake._locales[0],
+                photo=generate_avatar(),
             )
             Backend.instance.save(user)
             users.append(user)

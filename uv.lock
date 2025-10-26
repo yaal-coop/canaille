@@ -290,6 +290,7 @@ dev = [
     { name = "pytest-scim2-server" },
     { name = "pytest-smtpd" },
     { name = "pytest-xdist" },
+    { name = "python-avatars" },
     { name = "scim2-server" },
     { name = "scim2-tester" },
     { name = "setuptools", marker = "python_full_version >= '3.12'" },
@@ -398,6 +399,7 @@ dev = [
     { name = "pytest-scim2-server", specifier = ">=0.1.2" },
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
+    { name = "python-avatars", specifier = ">=1.4.0" },
     { name = "scim2-server", specifier = ">=0.1.3" },
     { name = "scim2-tester", specifier = ">=0.2.4" },
     { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=50.0.0" },
@@ -2491,6 +2493,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/78/b4/439b179d1ff526791eb921115fca8e44e596a13efeda518b9d845a619450/pytest_xdist-3.8.0.tar.gz", hash = "sha256:7e578125ec9bc6050861aa93f2d59f1d8d085595d6551c2c90b6f4fad8d3a9f1", size = 88069, upload-time = "2025-07-01T13:30:59.346Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ca/31/d4e37e9e550c2b92a9cbc2e4d0b7420a27224968580b5a447f420847c975/pytest_xdist-3.8.0-py3-none-any.whl", hash = "sha256:202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88", size = 46396, upload-time = "2025-07-01T13:30:56.632Z" },
+]
+
+[[package]]
+name = "python-avatars"
+version = "1.4.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c2/b6/cca0fe90db8dd804a81dc1e428f40e168ac194d9a14d2b5268cdc45ef5d4/python_avatars-1.4.1.tar.gz", hash = "sha256:133dc0e1dfd778f0287aa6b6697da2677aeb3ce985ebf908205068e963165b0e", size = 215434, upload-time = "2024-07-14T09:54:36.542Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b0/50/a6c79dd2e1b9de1aa64f3b38e10be972308dd004f94ac76f6ea6060c9fd5/python_avatars-1.4.1-py3-none-any.whl", hash = "sha256:ef97b1f8ac23583367705f876fbbac1cc118435982532d882ccc788e95663722", size = 301092, upload-time = "2024-07-14T09:54:34.629Z" },
 ]
 
 [[package]]
