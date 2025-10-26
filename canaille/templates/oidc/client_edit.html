@@ -81,20 +81,22 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
             <form id="readonly">
                 <div class="field">
                     <label>{% trans %}ID{% endtrans %}</label>
-                    <div class="ui cornor labeled input">
-                        <input type="text" value="{{ client.client_id }}" readonly name="client_id">
-                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
-                            <i class="lock icon"></i>
-                        </div>
+                    <div class="ui fluid action input">
+                        <input type="text" value="{{ client.client_id }}" readonly class="copy-text" id="client-id" data-copy="client-id" name="client_id">
+                        <button type="button" class="ui primary right labeled icon button copy-button" data-copy="client-id">
+                            <i class="copy icon"></i>
+                            {% trans %}Copy{% endtrans %}
+                        </button>
                     </div>
                 </div>
                 <div class="field">
                     <label>{% trans %}Secret{% endtrans %}</label>
-                    <div class="ui cornor labeled input">
-                        <input type="text" value="{{ client.client_secret }}" readonly name="client_secret">
-                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
-                            <i class="lock icon"></i>
-                        </div>
+                    <div class="ui fluid action input">
+                        <input type="text" value="{{ client.client_secret }}" readonly class="copy-text" id="client-secret" data-copy="client-secret" name="client_secret">
+                        <button type="button" class="ui primary right labeled icon button copy-button" data-copy="client-secret">
+                            <i class="copy icon"></i>
+                            {% trans %}Copy{% endtrans %}
+                        </button>
                     </div>
                 </div>
                 <div class="field">
