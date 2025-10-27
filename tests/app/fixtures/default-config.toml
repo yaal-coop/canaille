@@ -13,13 +13,15 @@
 # This sets trusted values for hosts and validates hosts during requests.
 # TRUSTED_HOSTS =
 
-# Points to the broker class, like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or
+# Points to the broker class. The default is `dramatiq_eager_broker:EagerBroker`,
+# meaning no task worker is running. You can use a task worker by pointing to a
+# broker class like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or
 # `dramatiq.brokers.redis:RedisBroker`.
-# DRAMATIQ_BROKER =
+# DRAMATIQ_BROKER = "dramatiq_eager_broker:EagerBroker"
 
 # The URL of the running task worker, passed as `url` keyword argument to broker
-# class
-# DRAMATIQ_BROKER_URL =
+# class.
+# DRAMATIQ_BROKER_URL = "amqp://localhost"
 
 # The Flask PREFERRED_URL_SCHEME configuration setting.
 #
