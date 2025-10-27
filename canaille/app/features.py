@@ -135,17 +135,6 @@ class Features:
         except ImportError:  # pragma: no cover
             return False
 
-    @property
-    def has_task_worker(self):
-        """Indicate whether the task worker feature is enabled.
-
-        It is controlled by the :attr:`CANAILLE.ENABLE_TASK_WORKER <canaille.core.configuration.CoreSettings.ENABLE_TASK_WORKER>` configuration parameter.
-        """
-        if self.app.debug or self.app.config.get("TESTING", False):
-            return False
-        else:
-            return self.app.config["CANAILLE"]["ENABLE_TASK_WORKER"]
-
 
 def setup_features(app):
     app.features = Features(app)

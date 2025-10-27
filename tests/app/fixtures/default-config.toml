@@ -344,11 +344,6 @@ FILTER = [
     {groups = "admin"},
 ]
 
-# If True, then Canaille will run a rabbitmq or redis server and dramatiq to run
-# SCIM propagation and e-mail sending asynchronously. In this case, environment
-# variables DRAMATIQ_BROKER_URL and DRAMATIQ_BROKER must be defined.
-# ENABLE_TASK_WORKER = true
-
 [CANAILLE_SQL]
 # The SQL server URI. For example:
 #

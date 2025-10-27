@@ -565,6 +565,3 @@ class CoreSettings(BaseModel):
     The default ACL gives all permissions to users with the `admin` user name, and members
     of a group called `admin`.
     """
-
-    ENABLE_TASK_WORKER: bool = True
-    """If :py:data:`True`, then Canaille will run a rabbitmq or redis server and dramatiq to run SCIM propagation and e-mail sending asynchronously. In this case, environment variables DRAMATIQ_BROKER_URL and DRAMATIQ_BROKER must be defined."""

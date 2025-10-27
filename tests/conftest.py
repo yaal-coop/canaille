@@ -74,6 +74,8 @@ def configuration(smtpd):
         "PREFERRED_URL_SCHEME": "http",
         "TRUSTED_HOSTS": [".canaille.test", "localhost", ".foobar.test"],
         "TESTING": True,
+        "DRAMATIQ_BROKER": "dramatiq_eager_broker:EagerBroker",
+        "DRAMATIQ_BROKER_URL": "amqp://localhost",
         "CANAILLE": {
             "JAVASCRIPT": False,
             "TIMEZONE": "UTC",
