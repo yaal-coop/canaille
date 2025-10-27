@@ -105,12 +105,12 @@ class RootSettings(BaseSettings):
     This sets trusted values for hosts and validates hosts during requests.
     """
 
-    DRAMATIQ_BROKER: str | None = None
-    """Points to the broker class, like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or `dramatiq.brokers.redis:RedisBroker`.
+    DRAMATIQ_BROKER: str = "dramatiq_eager_broker:EagerBroker"
+    """Points to the broker class. The default is `dramatiq_eager_broker:EagerBroker`, meaning no task worker is running. You can use a task worker by pointing to a broker class like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or `dramatiq.brokers.redis:RedisBroker`.
     """
 
-    DRAMATIQ_BROKER_URL: str | None = None
-    """The URL of the running task worker, passed as `url` keyword argument to broker class
+    DRAMATIQ_BROKER_URL: str = "amqp://localhost"
+    """The URL of the running task worker, passed as `url` keyword argument to broker class.
     """
 
     PREFERRED_URL_SCHEME: str = "https"
