@@ -1,5 +1,4 @@
 {% extends theme('base.html') %}
-{% import 'macro/form.html' as fui %}
 
 {%- block title -%}
     {%- trans %}Emails{% endtrans -%}
@@ -26,58 +25,10 @@
     <div class="ui segment">
         <h2 class="ui center aligned header">
             <div class="content">
-                {{ _("Mail sending test") }}
-            </div>
-        </h2>
-
-        {% if features.has_smtp %}
-
-            <div class="ui info message">
-                {% trans %}
-                    This form will send a dummy email to the address you want.
-                    This should be used for testing mail configuration.
-                {% endtrans %}
-            </div>
-
-            {% call fui.render_form(form) %}
-                {{ fui.render_field(form.email) }}
-                <div class="ui right aligned container">
-                    <div class="ui stackable buttons">
-                        <input type="submit" class="ui primary button" value="{{ _("Send") }}">
-                    </div>
-                </div>
-            {% endcall %}
-
-        {% else %}
-
-            <div class="ui warning message">
-                {% trans %}
-                    No mail server has been configured. The mail sending test is disabled.
-                {% endtrans %}
-            </div>
-
-        {% endif %}
-    </div>
-
-    <div class="ui segment">
-        <h2 class="ui center aligned header">
-            <div class="content">
                 {{ _("Email preview") }}
             </div>
         </h2>
         <div class="ui middle aligned divided list">
-            <div class="item">
-                <div class="right floated content">
-                    <div class="ui buttons">
-                        <a class="ui button primary" href="{{ url_for("core.admin.test_txt") }}">TXT</a>
-                        <a class="ui button primary" href="{{ url_for("core.admin.test_html") }}">HTML</a>
-                    </div>
-                </div>
-                <div class="middle aligned content">
-                    {{ _("Connectivity test") }}
-                </div>
-            </div>
-
             <div class="item">
                 <div class="right floated content">
                     <div class="ui buttons">
