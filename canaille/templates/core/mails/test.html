@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width"/>
+        <style type="text/css" style="font-weight: 300">@import url({{ url_for('static', filename='fonts/lato.css', _external=True) }});</style>
+        <title>{{ title }}</title>
+    </head>
+    <body style="color: rgba(0,0,0,.87); padding: 1em; margin: auto; width: 700px; font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; font-weight: 400; font-size: 14px;">
+
+        <table cellspacing="0" cellpadding="0" border="0" style="font-weight: 400; background: #fff; font-size: 1rem; margin-top: 0; margin-bottom: 0; width: 700px;">
+            <tr>
+                <td colspan="2">
+                    <h3 style="font-weight: 700; line-height: 1.3em; font-size: 1.3rem; padding: .8rem 1rem; margin: 0; box-shadow: none; border: 1px solid #d4d4d5; border-radius: .3rem .3rem 0 0;">
+                        {% if logo %}
+                            <img src="{{ logo }}" alt="{{ site_name }}" style="font-size: 1.3rem; border-style: none; width: 50px; display: inline-block; margin-top: .14em; vertical-align: middle;">
+                        {% endif %}
+                        <div style="font-size: 1.3rem; display: inline-block; padding-left: .75rem; vertical-align: middle;">
+                            {% trans %}Connectivity test{% endtrans %}
+                        </div>
+                    </h3>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="background: #f8f8f9; padding: 1em 1.5em; line-height: 1.4em; font-size: 1em; margin: 0; border-radius: 0; text-align: justify; border-left: 1px solid #d4d4d5; border-right: 1px solid #d4d4d5;">
+                    {% trans %}
+                        This email is a test to check that you receive communications from {{ site_name }}.
+                    {% endtrans %}
+                </td>
+            </tr>
+
+            <tr style="margin: 0; border-radius: 0; text-align:center; border-left: 1px solid #d4d4d5; border-right: 1px solid #d4d4d5; border-bottom: 1px solid #d4d4d5;">
+                <td style="background: #e0e1e2; width:50%; border-radius: 0 0 0 .3rem;">
+                    <a href="{{ site_url }}" style="width: 100%; display: inline-block; vertical-align: middle; color: rgba(0,0,0,.6); padding: .8em 0; font-weight: 700; line-height: 1em; text-align: center; text-decoration: none; font-size: 1rem;margin: 0; border-left: none; border-radius: 0; box-shadow: 0 0 0 1px transparent inset,0 0 0 0 rgba(34,36,38,.15) inset;">{{ site_name }}</a>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

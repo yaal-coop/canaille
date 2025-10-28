@@ -1,20 +1,75 @@
 from flask import Blueprint
 from flask import current_app
+from flask import flash
+from flask import request
 from flask import url_for
+from wtforms import StringField
+from wtforms.validators import DataRequired
 
 from canaille.app import build_hash
 from canaille.app import obj_to_b64
 from canaille.app.flask import user_needed
+from canaille.app.forms import Form
+from canaille.app.forms import email_validator
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
+from canaille.core.mails import send_test_mail
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
-@bp.route("/mail", methods=["GET"])
+class MailTestForm(Form):
+    email = StringField(
+        _("Email"),
+        validators=[
+            DataRequired(),
+            email_validator,
+        ],
+        render_kw={
+            "placeholder": _("jane.doe@example.com"),
+            "spellcheck": "false",
+            "autocorrect": "off",
+        },
+    )
+
+
+@bp.route("/mail", methods=["GET", "POST"])
 @user_needed("manage_oidc")
 def mail_index(user):
-    return render_template("core/mails/admin.html", menuitem="admin")
+    form = MailTestForm(request.form or None)
+    if request.form and form.validate():
+        if send_test_mail(form.email.data):
+            flash(_("The test mail has been sent correctly"), "success")
+        else:
+            flash(_("The test mail has not been sent correctly"), "error")
+
+    return render_template("core/mails/admin.html", form=form, menuitem="admin")
+
+
+@bp.route("/mail/test.html")
+@user_needed("manage_oidc")
+def test_html(user):
+    base_url = url_for("core.account.index", _external=True)
+    return render_template(
+        "core/mails/test.html",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        logo=current_app.config["CANAILLE"]["LOGO"],
+        title=_("Test email from {website_name}").format(
+            website_name=current_app.config["CANAILLE"]["NAME"],
+        ),
+    )
+
+
+@bp.route("/mail/test.txt")
+@user_needed("manage_oidc")
+def test_txt(user):
+    base_url = url_for("core.account.index", _external=True)
+    return render_template(
+        "core/mails/test.txt",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=current_app.config.get("SERVER_NAME", base_url),
+    )
 
 
 @bp.route("/mail/password-init.html")

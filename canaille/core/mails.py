@@ -10,6 +10,35 @@ from canaille.backends import Backend
 RESET_CODE_LENGTH = 6
 
 
+def send_test_mail(email):
+    base_url = url_for("core.account.index", _external=True)
+    logo_cid, logo_filename, logo_raw = logo()
+
+    subject = _("Test email from {website_name}").format(
+        website_name=current_app.config["CANAILLE"]["NAME"]
+    )
+    text_body = render_template(
+        "core/mails/test.txt",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+    )
+    html_body = render_template(
+        "core/mails/test.html",
+        site_name=current_app.config["CANAILLE"]["NAME"],
+        site_url=base_url,
+        logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
+        title=subject,
+    )
+
+    return send_email(
+        subject=subject,
+        recipient=email,
+        text=text_body,
+        html=html_body,
+        attachments=[(logo_cid, logo_filename, logo_raw)] if logo_filename else None,
+    )
+
+
 def send_password_reset_mail(user, mail):
     base_url = url_for("core.account.index", _external=True)
     server_name = current_app.config.get("SERVER_NAME")
