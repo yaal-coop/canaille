@@ -195,6 +195,7 @@ class RefreshTokenGrant(rfc6749.RefreshTokenGrant):
         JWTClientAuth.CLIENT_AUTH_METHOD,
         "none",
     ]
+    INCLUDE_NEW_REFRESH_TOKEN = True
 
     def authenticate_refresh_token(self, refresh_token):
         token = Backend.instance.query(models.Token, refresh_token=refresh_token)
