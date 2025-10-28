@@ -98,7 +98,7 @@ def get_client_jwks(client, kid=None):
 
 
 def build_client_management_token(
-    scope: str, lifetime: timedelta, client_id: str | None = None
+    scope: str, lifetime: timedelta | None = None, client_id: str | None = None
 ):
     """Build a JWT token for client registration."""
     from .provider import get_issuer
@@ -106,18 +106,18 @@ def build_client_management_token(
     jti = str(uuid.uuid4())
     client_id = client_id or str(uuid.uuid4())
     now = datetime.now(timezone.utc)
-    exp = now + lifetime
     issuer = get_issuer()
 
     payload = {
         "iss": issuer,
         "sub": client_id,
         "aud": issuer,
-        "exp": int(exp.timestamp()),
         "iat": int(now.timestamp()),
         "jti": jti,
         "scope": scope,
     }
+    if lifetime:
+        payload["exp"] = int((now + lifetime).timestamp())
 
     jwks = server_jwks(include_inactive=False)
     jwk_key = jwks.keys[0]

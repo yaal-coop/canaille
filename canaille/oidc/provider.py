@@ -32,6 +32,7 @@ from canaille.app.flask import cache
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 
+from .jose import build_client_management_token
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
 from .jose import make_default_jwk
@@ -358,7 +359,7 @@ class ClientManagementMixin:
         """
         now = datetime.datetime.now(datetime.timezone.utc)
 
-        if claims.get("exp", 0) < now.timestamp():
+        if claims.get("exp") and claims["exp"] < now.timestamp():
             return None
 
         issuer = get_issuer()
@@ -378,7 +379,7 @@ class ClientManagementMixin:
                 return True
             return None
 
-        jwks = server_jwks(include_inactive=False)
+        jwks = server_jwks(include_inactive=True)
         try:
             decoded = jwt.decode(bearer_token, jwks.keys[0], registry=registry)
         except (JoseError, ValueError, KeyError):
@@ -466,11 +467,10 @@ class ClientRegistrationEndpoint(
                 client_id=client.client_id,
                 _external=True,
             ),
+            "registration_access_token": build_client_management_token(
+                "client:manage", client_id=client.client_id
+            ),
         }
-
-        if access_token := get_bearer_token(request):
-            payload["registration_access_token"] = access_token
-
         return payload
 
     def generate_client_id(self, request):
@@ -537,6 +537,9 @@ class ClientConfigurationEndpoint(
         return True
 
     def delete_client(self, client, request):
+        current_app.logger.security(
+            f"OIDC Dynamic Client deletion of {client.client_id}"
+        )
         Backend.instance.delete(client)
 
     def update_client(self, client, client_metadata, request):

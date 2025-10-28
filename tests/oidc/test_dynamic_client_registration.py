@@ -75,7 +75,7 @@ def test_client_registration_with_authentication_jwt_token(
             "https://client.test/callback",
             "https://client.test/callback2",
         ],
-        "registration_access_token": token,
+        "registration_access_token": mock.ANY,
         "registration_client_uri": f"http://canaille.test/oauth/register/{client_id}",
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code"],
@@ -86,6 +86,7 @@ def test_client_registration_with_authentication_jwt_token(
         "require_signed_request_object": False,
     }
 
+    assert res.json["registration_access_token"] != token
     assert created_client.client_name == "My Example Client"
     assert created_client.redirect_uris == [
         "https://client.test/callback",
@@ -247,6 +248,7 @@ def test_client_registration_with_software_statement(testclient, backend, server
                 "https://client.test/callback2",
             ],
             "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
+            "registration_access_token": mock.ANY,
             "grant_types": ["authorization_code"],
             "response_types": ["code"],
             "scope": scope_value,
@@ -326,6 +328,7 @@ def test_client_registration_without_authentication_ok(testclient, backend):
             "https://client.test/callback2",
         ],
         "registration_client_uri": f"http://canaille.test/oauth/register/{client.client_id}",
+        "registration_access_token": mock.ANY,
         "token_endpoint_auth_method": "client_secret_basic",
         "grant_types": ["authorization_code", "implicit"],
         "response_types": ["code", "token"],
@@ -495,7 +498,7 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
         "client_id": client_id,
         "client_secret": created_client.client_secret,
         "client_id_issued_at": mock.ANY,
-        "registration_access_token": token,
+        "registration_access_token": mock.ANY,
         "registration_client_uri": f"http://canaille.test/oauth/register/{client_id}",
         **payload,
     }
