@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-10-25 23:42+0200\n"
-"PO-Revision-Date: 2025-10-15 15:57+0000\n"
+"PO-Revision-Date: 2025-10-29 10:07+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.14.1-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:38
@@ -898,7 +898,7 @@ msgstr "Cette valeur n'est pas un JWK valide."
 
 #: canaille/oidc/endpoints/forms.py:52 canaille/oidc/endpoints/forms.py:278
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: canaille/oidc/endpoints/forms.py:67
 msgid ""
