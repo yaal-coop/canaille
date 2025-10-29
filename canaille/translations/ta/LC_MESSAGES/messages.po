@@ -2337,12 +2337,11 @@ msgid "Join Group"
 msgstr "குழுக்கள்"
 
 #: canaille/templates/core/mails/group_invitation.txt:3
-#, fuzzy, python-format
-#| msgid "%(user_name)s has been removed from the group %(group_name)s"
+#, python-format
 msgid ""
 "%(inviter_name)s has invited you to join the group \"%(group_name)s\" on "
 "%(site_name)s."
-msgstr "%(user_name)s குழுவிலிருந்து %(group_name)s அகற்றப்பட்டுள்ளன"
+msgstr ""
 
 #: canaille/templates/core/mails/group_invitation.txt:5
 msgid "To accept this invitation, click on the link below:"
