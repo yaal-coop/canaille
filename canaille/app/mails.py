@@ -47,12 +47,8 @@ def type_from_filename(filename):
     return maintype, subtype
 
 
-def send_email(subject, recipient, text, html, attachments=None):
-    send_email_worker.send(subject, recipient, text, html, attachments)
-
-
 @dramatiq.actor
-def send_email_worker(subject, recipient, text, html, attachments=None):
+def send_email(subject, recipient, text, html, attachments=None):
     current_app.logger.debug(f"Sending a mail to {recipient}: {subject}")
     msg = email.message.EmailMessage()
     msg.set_content(text)
