@@ -65,16 +65,16 @@ def test_no_configuration(configuration, tmp_path):
 
 
 def test_environment_configuration(configuration, tmp_path):
-    """Test loading the configuration from a toml file passed by the CONFIG environment var."""
+    """Test loading the configuration from a toml file passed by the CANAILLE_CONFIG environment var."""
     config_path = os.path.join(tmp_path, "config.toml")
     with open(config_path, "w") as fd:
         tomlkit.dump(configuration, fd)
 
-    os.environ["CONFIG"] = config_path
+    os.environ["CANAILLE_CONFIG"] = config_path
     app = create_app()
     assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "admin@mydomain.test"
 
-    del os.environ["CONFIG"]
+    del os.environ["CANAILLE_CONFIG"]
     os.remove(config_path)
 
 
@@ -135,7 +135,7 @@ def test_disable_env_var_loading(tmp_path, configuration):
 
 def test_dotenv_file(tmp_path, configuration):
     """Canaille should read configuration from .env files."""
-    os.environ["ENV_FILE"] = ".env"
+    os.environ["CANAILLE_ENV"] = ".env"
     oldcwd = os.getcwd()
     os.chdir(tmp_path)
     dotenv = tmp_path / ".env"
@@ -146,7 +146,7 @@ def test_dotenv_file(tmp_path, configuration):
     app = create_app(configuration)
     assert app.config["FOOBAR"] == "custom-value"
     os.chdir(oldcwd)
-    del os.environ["ENV_FILE"]
+    del os.environ["CANAILLE_ENV"]
 
 
 def test_custom_dotenv_file(tmp_path, configuration):
@@ -426,5 +426,9 @@ def test_export_default_config(tmp_path, backend):
 
     with open(toml_expected) as fd:
         expected_content = fd.read()
+
+    # Normalize trailing newlines
+    actual_content = actual_content.rstrip() + "\n"
+    expected_content = expected_content.rstrip() + "\n"
 
     assert actual_content == expected_content

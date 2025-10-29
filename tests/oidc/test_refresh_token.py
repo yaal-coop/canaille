@@ -48,6 +48,7 @@ def test_refresh_token(testclient, logged_user, client, backend, caplog):
         status=200,
     )
     access_token = res.json["access_token"]
+    old_refresh_token = res.json["refresh_token"]
     old_token = backend.get(models.Token, access_token=access_token)
     assert old_token is not None
     assert not old_token.revokation_date
@@ -56,15 +57,18 @@ def test_refresh_token(testclient, logged_user, client, backend, caplog):
         "/oauth/token",
         params=dict(
             grant_type="refresh_token",
-            refresh_token=res.json["refresh_token"],
+            refresh_token=old_refresh_token,
         ),
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )
     access_token = res.json["access_token"]
+    new_refresh_token = res.json["refresh_token"]
     new_token = backend.get(models.Token, access_token=access_token)
     assert new_token is not None
     assert old_token.access_token != new_token.access_token
+    assert "refresh_token" in res.json
+    assert new_refresh_token != old_refresh_token
     assert (
         "canaille",
         logging.SECURITY,

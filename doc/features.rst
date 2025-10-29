@@ -20,7 +20,7 @@ Canaille can handle data stored in different :ref:`database backends <feature_da
 User and group management
 *************************
 
-Canaille web interface can be used either in :doc:`production environments <tutorial/deployment>` or locally for development purposes.
+Canaille web interface can be used either in :doc:`production environments <howtos/deployment>` or locally for development purposes.
 
 .. _feature_profile_management:
 
@@ -69,7 +69,7 @@ Group membership can be use as :attr:`ACL Filter <canaille.core.configuration.AC
 Group management can be enable with a :attr:`dedicated user permission <canaille.core.configuration.Permission.MANAGE_ALL_GROUPS>`.
 
 .. important::
-   Due to limitations in the :ref:`LDAP backend <tutorial/databases:LDAP>`, groups must have at least one member.
+   Due to limitations in the :ref:`LDAP backend <howtos/databases:LDAP>`, groups must have at least one member.
    Thus it is not possible to remove the last user of a group without removing the group.
 
 .. _feature_user_authentication:
@@ -294,7 +294,7 @@ Canaille implements the :doc:`Dynamic Client Registration specifications <develo
 Application provisioning
 ************************
 
-Canaille implements the :doc:`SCIM specifications <development/specifications>` and can :doc:`automatically broadcast <tutorial/provisioning>` modifications on users and groups to applications plugged to Canaille.
+Canaille implements the :doc:`SCIM specifications <development/specifications>` and can :doc:`automatically broadcast <howtos/provisioning>` modifications on users and groups to applications plugged to Canaille.
 
 System administration
 *********************
@@ -316,8 +316,8 @@ There are also tools to :ref:`fill your database <cli_populate>` with random obj
 Databases
 =========
 
-Canaille can handle data from the most :ref:`common SQL databases <tutorial/databases:SQL>` such as PostgreSQL, MariaDB or SQLite, as well as :ref:`OpenLDAP <tutorial/databases:LDAP>`.
-It also comes with a no-dependency :ref:`in-memory database <tutorial/databases:Memory>` that can be used in unit tests suites.
+Canaille can handle data from the most :ref:`common SQL databases <howtos/databases:SQL>` such as PostgreSQL, MariaDB or SQLite, as well as :ref:`OpenLDAP <howtos/databases:LDAP>`.
+It also comes with a no-dependency :ref:`in-memory database <howtos/databases:Memory>` that can be used in unit tests suites.
 
 .. _feature_logging:
 
@@ -350,7 +350,7 @@ Development and testing tool
 Unit-testing tool
 =================
 
-Thanks to its lightweight :ref:`in-memory database <tutorial/databases:Memory>` and its curated :ref:`dependency list <tutorial/install:Get the code>`, Canaille can be used in the unit test suite of your application, so you can check how it behaves against a real world OpenID Connect server. If you work with python you might want to check :doc:`pytest-iam:index`.
+Thanks to its lightweight :ref:`in-memory database <howtos/databases:Memory>` and its curated :ref:`dependency list <howtos/install:Get the code>`, Canaille can be used in the unit test suite of your application, so you can check how it behaves against a real world OpenID Connect server. If you work with python you might want to check :doc:`pytest-iam:index`.
 
 Development server
 ==================

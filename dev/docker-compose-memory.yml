@@ -11,7 +11,7 @@ services:
       - CANAILLE__DATABASE=memory
       - AUTHLIB_INSECURE_TRANSPORT=1
       - FLASK_DEBUG=1
-      - CONFIG=/opt/canaille/conf/canaille.toml
+      - CANAILLE_CONFIG=/opt/canaille/conf/canaille.toml
       - FLASK_APP=devapp
     volumes:
       - ../canaille:/opt/canaille/canaille
@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile-client
     environment:
       - FLASK_DEBUG=1
-      - CONFIG=/opt/client/conf/client1.cfg
+      - CLIENT_CONFIG=/opt/client/conf/client1.cfg
       - FLASK_APP=client
     volumes:
       - ./client:/opt/client/client
@@ -47,7 +47,7 @@ services:
       dockerfile: Dockerfile-client
     environment:
       - FLASK_DEBUG=1
-      - CONFIG=/opt/client/conf/client2.cfg
+      - CLIENT_CONFIG=/opt/client/conf/client2.cfg
       - FLASK_APP=client
     volumes:
       - ./client:/opt/client/client

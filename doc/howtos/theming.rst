@@ -42,7 +42,7 @@ Development
 
 To write your custom theme and check how it is rendered, you can put the path to your theme in a ``.env`` file and run the Canaille development server, as described in the :ref:`contributing guide <local_environment>`
 
-.. code-block:: bash
+.. code-block:: console
    :caption: .env
 
     CANAILLE__THEME=/path/to/your/theme

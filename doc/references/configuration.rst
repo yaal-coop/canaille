@@ -9,9 +9,9 @@ Canaille can be configured either by a environment variables, environment file, 
 Configuration file
 ~~~~~~~~~~~~~~~~~~
 
-.. envvar:: CONFIG
+.. envvar:: CANAILLE_CONFIG
 
-    The configuration can be written in `toml` configuration file which path is passed in the :envvar:`CONFIG` environment variable.
+    The configuration can be written in `toml` configuration file which path is passed in the :envvar:`CANAILLE_CONFIG` environment variable.
 
 .. code-block:: toml
     :caption: config.toml
@@ -41,10 +41,10 @@ The way environment variables are parsed can be read from the `pydantic-settings
 Environment file
 ~~~~~~~~~~~~~~~~
 
-Any environment variable can also be written in an environment file, which path should be passed in the ``ENV_FILE`` environment variable.
-For instance, set ``ENV_FILE=.env`` to load a ``.env`` file.
+Any environment variable can also be written in an environment file, which path should be passed in the ``CANAILLE_ENV`` environment variable.
+For instance, set ``CANAILLE_ENV=.env`` to load a ``.env`` file.
 
-.. code-block:: bash
+.. code-block:: console
     :caption: .env
 
     SECRET_KEY="very-secret"

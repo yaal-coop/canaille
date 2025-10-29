@@ -20,42 +20,49 @@
 as in *Can I access your data?* Canaille is a lightweight identity and authorization management software.
 It aims to be very light, simple to install and simple to maintain. Its main features are :
 
-.. grid:: 3
+.. grid:: 1 1 2 3
     :gutter: 2
     :padding: 0
+    :class-row: surface
 
-    .. grid-item-card:: Profile management
+    .. grid-item-card:: :iconify:`mdi:account-multiple` Profile management
         :link-type: ref
         :link: feature_profile_management
 
         User profile and groups management,
-        Basic permissions
+        basic permission system,
+        group management
 
-    .. grid-item-card:: User authentication
+    .. grid-item-card:: :iconify:`mdi:shield-account` User authentication
         :link-type: ref
         :link: feature_user_authentication
 
-        Authentication, registration, email confirmation, password reset emails, multi-factor authentication
+        Authentication,
+        registration,
+        email confirmation,
+        password reset emails,
+        multi-factor authentication
 
-    .. grid-item-card:: :abbr:`SSO (Single Sign-On)`
+    .. grid-item-card:: :iconify:`mdi:key-chain` :abbr:`SSO (Single Sign-On)`
         :link-type: ref
         :link: feature_oidc
 
-        OpenID Connect identity provider
+        OpenID Connect identity provider.
+        Sign-in once for all your services.
 
-    .. grid-item-card:: Multi-database support
+    .. grid-item-card:: :iconify:`mdi:database` Multi-database support
         :link-type: ref
         :link: feature_databases
 
         PostgreSQL, Mariadb and OpenLDAP first-class citizenship
 
-    .. grid-item-card:: Customization
+    .. grid-item-card:: :iconify:`mdi:palette` Customization
         :link-type: ref
         :link: feature_ui
 
         Put Canaille at yours colors by choosing a logo or use a custom theme!
 
-    .. grid-item-card:: Developers friendliness
+    .. grid-item-card:: :iconify:`mdi:code-braces` Developers friendliness
         :link-type: ref
         :link: feature_development
 
@@ -63,8 +70,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
 .. container:: buttons
 
-    :doc:`Full feature list <features>`
     :doc:`Common use cases <usecases>`
+    :doc:`Full feature list <features>`
 
 .. rst-class:: lead
 
@@ -75,8 +82,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 .. toctree::
    :maxdepth: 2
 
-   features
    usecases
-   tutorial/index
+   features
+   howtos/index
    references/index
    development/index

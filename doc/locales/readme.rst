@@ -7,22 +7,22 @@ Message extraction
 
 After you have edited translatable strings, you should extract the messages with:
 
-.. code-block:: bash
+.. code-block:: console
 
-    sphinx-build --builder gettext doc doc/locales
+    $ sphinx-build --builder gettext doc doc/locales
 
 Language addition
 ~~~~~~~~~~~~~~~~~
 
 You can add a new language manually with the following command, however this should not be needed as Weblate takes car of this:
 
-.. code-block:: bash
+.. code-block:: console
 
-    sphinx-intl update --pot-dir doc/locales --locale-dir doc/locales -l fr
+    $ sphinx-intl update --pot-dir doc/locales --locale-dir doc/locales -l fr
 
 Build the documentation in another language
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: bash
+.. code-block:: console
 
-    sphinx-build --builder html --define language=fr doc build/sphinx/html/fr
+    $ sphinx-build --builder html --define language=fr doc build/sphinx/html/fr

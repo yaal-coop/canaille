@@ -13,6 +13,7 @@ def populate(app):
     from canaille.app import models
     from canaille.core.populate import fake_groups
     from canaille.core.populate import fake_users
+    from canaille.core.populate import generate_avatar
 
     with app.app_context():
         app.backend.install(app)
@@ -37,6 +38,7 @@ def populate(app):
                 region="North Pole",
                 employee_number="1000",
                 department="east",
+                photo=generate_avatar(),
             )
             app.backend.save(jane)
 
@@ -52,6 +54,7 @@ def populate(app):
                 profile_url="https://moderator.example",
                 employee_number="1002",
                 department="west",
+                photo=generate_avatar(),
             )
             app.backend.save(jack)
 
@@ -67,6 +70,7 @@ def populate(app):
                 profile_url="https://user.example",
                 employee_number="1001",
                 department="west",
+                photo=generate_avatar(),
             )
             app.backend.save(john)
 
@@ -76,6 +80,7 @@ def populate(app):
                 family_name="Doe",
                 user_name="james",
                 emails=["james@example.org"],
+                photo=generate_avatar(),
             )
             app.backend.save(james)
 

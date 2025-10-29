@@ -5,6 +5,8 @@
 
     - ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` removed in favor of JWT tokens.
     - ``MANAGE_GROUPS`` permission is renamed ``MANAGE_ALL_GROUPS``.
+    - ``CONFIG`` environment variable renamed to ``CANAILLE_CONFIG``.
+    - ``ENV_FILE`` environment variable renamed to ``CANAILLE_ENV``.
 
 Added
 ^^^^^
@@ -15,10 +17,12 @@ Added
 Fixed
 ^^^^^
 - Password autofill.
+- Conditionally load CLI to avoid crash when optional dependencies are missing.
 
 Changed
 ^^^^^^^
 - Remove ``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` in favor of JWT tokens. :issue:`272`
+- Rename ``CONFIG`` to ``CANAILLE_CONFIG`` and ``ENV_FILE`` to ``CANAILLE_ENV`` for consistency.
 
 Removed
 ^^^^^^^

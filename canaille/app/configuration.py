@@ -78,7 +78,9 @@ class RootSettings(BaseSettings):
         dotenv_settings,
         file_secret_settings,
     ):
-        toml_file = os.getenv("CONFIG") or settings_cls.model_config.get("toml_file")
+        toml_file = os.getenv("CANAILLE_CONFIG") or settings_cls.model_config.get(
+            "toml_file"
+        )
         return (
             init_settings,
             TomlConfigSettingsSource(settings_cls, toml_file),
@@ -233,7 +235,7 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
         }
     )
 
-    env_file = env_file or os.getenv("ENV_FILE")
+    env_file = env_file or os.getenv("CANAILLE_ENV")
     try:
         config_obj = settings_factory(
             config or {}, env_file=env_file, env_prefix=env_prefix

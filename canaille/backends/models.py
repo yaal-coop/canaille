@@ -92,6 +92,31 @@ class Model:
         return getattr(self, self.identifier_attribute)
 
 
+def get_root_type(annotations):
+    # Extract the list type from list annotations
+    attribute_type = (
+        typing.get_args(annotations)[0]
+        if typing.get_origin(annotations) is list
+        else annotations
+    )
+
+    # Extract the Optional and Union type
+    attribute_type = (
+        typing.get_args(attribute_type)[0]
+        if typing.get_origin(attribute_type) in UNION_TYPES
+        else attribute_type
+    )
+
+    # Extract the Annotated annotation
+    attribute_type, metadata = (
+        typing.get_args(attribute_type)
+        if typing.get_origin(attribute_type) == Annotated
+        else (attribute_type, None)
+    )
+
+    return attribute_type, metadata
+
+
 class BackendModel:
     """The backend model abstract class.
 
@@ -102,27 +127,7 @@ class BackendModel:
     @classmethod
     def get_model_annotations(cls, attribute):
         annotations = cls.attributes[attribute]
-
-        # Extract the list type from list annotations
-        attribute_type = (
-            typing.get_args(annotations)[0]
-            if typing.get_origin(annotations) is list
-            else annotations
-        )
-
-        # Extract the Optional and Union type
-        attribute_type = (
-            typing.get_args(attribute_type)[0]
-            if typing.get_origin(attribute_type) in UNION_TYPES
-            else attribute_type
-        )
-
-        # Extract the Annotated annotation
-        attribute_type, metadata = (
-            typing.get_args(attribute_type)
-            if typing.get_origin(attribute_type) == Annotated
-            else (attribute_type, None)
-        )
+        attribute_type, metadata = get_root_type(annotations)
 
         if not inspect.isclass(attribute_type) or not issubclass(attribute_type, Model):
             return None, None

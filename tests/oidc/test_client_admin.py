@@ -81,18 +81,6 @@ def test_client_add(testclient, logged_admin, backend):
         "contacts-0": "foo@bar.test",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "https://foobar.test/callback",
-        "grant_types": ["password", "authorization_code"],
-        "scope": "openid profile",
-        "response_types": ["code", "token"],
-        "token_endpoint_auth_method": "none",
-        "logo_uri": "https://foobar.test/logo.webp",
-        "tos_uri": "https://foobar.test/tos",
-        "policy_uri": "https://foobar.test/policy",
-        "software_id": "software",
-        "software_version": "1",
-        "jwks_uri": "https://foobar.test/jwks.json",
-        "audience": [],
-        "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
         res.forms["clientaddform"][k].force_value(v)
@@ -107,19 +95,14 @@ def test_client_add(testclient, logged_admin, backend):
     assert client.contacts == ["foo@bar.test"]
     assert client.client_uri == "https://foobar.test"
     assert client.redirect_uris == ["https://foobar.test/callback"]
-    assert client.grant_types == ["password", "authorization_code"]
-    assert client.scope == ["openid", "profile"]
-    assert client.response_types == ["code", "token"]
-    assert client.token_endpoint_auth_method == "none"
-    assert client.logo_uri == "https://foobar.test/logo.webp"
-    assert client.tos_uri == "https://foobar.test/tos"
-    assert client.policy_uri == "https://foobar.test/policy"
-    assert client.software_id == "software"
-    assert client.software_version == "1"
-    assert client.jwks_uri == "https://foobar.test/jwks.json"
+    assert client.grant_types == ["authorization_code", "refresh_token"]
+    assert client.scope == ["openid", "profile", "email"]
+    assert client.response_types == ["code"]
+    assert client.token_endpoint_auth_method == "client_secret_basic"
+    assert client.application_type == "web"
+    assert client.id_token_signed_response_alg == "RS256"
     assert client.audience == [client]
     assert not client.trusted
-    assert client.post_logout_redirect_uris == ["https://foobar.test/disconnected"]
 
     backend.delete(client)
 
@@ -166,8 +149,8 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
         "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():
-        res.forms["clientaddform"][k].force_value(v)
-    res = res.forms["clientaddform"].submit(status=302, name="action", value="edit")
+        res.forms["clienteditform"][k].force_value(v)
+    res = res.forms["clienteditform"].submit(status=302, name="action", value="edit")
 
     assert (
         "error",
@@ -203,8 +186,8 @@ def test_client_edit_missing_fields(
     testclient, client, logged_admin, trusted_client, backend
 ):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["client_name"] = ""
-    res = res.forms["clientaddform"].submit(name="action", value="edit")
+    res.forms["clienteditform"]["client_name"] = ""
+    res = res.forms["clienteditform"].submit(name="action", value="edit")
     assert (
         "error",
         "The client has not been edited. Please check your information.",
@@ -233,7 +216,7 @@ def test_client_delete(testclient, logged_admin, backend):
     backend.save(authorization_code)
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientaddform"].submit(name="action", value="confirm-delete")
+    res = res.forms["clienteditform"].submit(name="action", value="confirm-delete")
     res = res.form.submit(name="action", value="delete")
     res = res.follow()
 
@@ -260,16 +243,16 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, b
     assert not client.trusted
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["client_uri"] = "https://client.trusted.test"
-    res = res.forms["clientaddform"].submit(name="action", value="edit")
+    res.forms["clienteditform"]["client_uri"] = "https://client.trusted.test"
+    res = res.forms["clienteditform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
     backend.reload(client)
     assert client.trusted
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["client_uri"] = "https://untrusted.example.com"
-    res = res.forms["clientaddform"].submit(name="action", value="edit")
+    res.forms["clienteditform"]["client_uri"] = "https://untrusted.example.com"
+    res = res.forms["clienteditform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
     backend.reload(client)
@@ -278,8 +261,8 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, b
 
 def test_client_edit_invalid_uri(testclient, client, logged_admin, trusted_client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["client_uri"] = "invalid"
-    res = res.forms["clientaddform"].submit(status=200, name="action", value="edit")
+    res.forms["clienteditform"]["client_uri"] = "invalid"
+    res = res.forms["clienteditform"].submit(status=200, name="action", value="edit")
     assert (
         "error",
         "The client has not been edited. Please check your information.",
@@ -289,7 +272,7 @@ def test_client_edit_invalid_uri(testclient, client, logged_admin, trusted_clien
 
 def test_client_new_token(testclient, logged_admin, backend, client):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res = res.forms["clientaddform"].submit(name="action", value="new-access-token")
+    res = res.forms["clienteditform"].submit(name="action", value="new-access-token")
     assert (
         "success",
         "A token have been created for the client Some client",
@@ -310,7 +293,9 @@ def test_new_management_token(testclient, logged_admin, client):
     """Test that clicking renew generates a new management token."""
     res = testclient.get("/admin/client/edit/" + client.client_id)
     old_token = res.pyquery("#management-token").val()
-    res = res.forms["clientaddform"].submit(name="action", value="new-management-token")
+    res = res.forms["clienteditform"].submit(
+        name="action", value="new-management-token"
+    )
     assert ("info", "A new management token has been generated.") in res.flashes
     new_token = res.pyquery("#management-token").val()
     assert new_token != old_token
@@ -318,8 +303,8 @@ def test_new_management_token(testclient, logged_admin, client):
 
 def test_jwks_is_not_json(testclient, client, logged_admin, trusted_client, backend):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["jwks"] = "invalid"
-    res = res.forms["clientaddform"].submit(status=200, name="action", value="edit")
+    res.forms["clienteditform"]["jwks"] = "invalid"
+    res = res.forms["clienteditform"].submit(status=200, name="action", value="edit")
 
     assert (
         "error",
@@ -330,8 +315,8 @@ def test_jwks_is_not_json(testclient, client, logged_admin, trusted_client, back
 
 def test_jwks_is_not_jwks(testclient, client, logged_admin, trusted_client, backend):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clientaddform"]["jwks"] = "{}"
-    res = res.forms["clientaddform"].submit(status=200, name="action", value="edit")
+    res.forms["clienteditform"]["jwks"] = "{}"
+    res = res.forms["clienteditform"].submit(status=200, name="action", value="edit")
 
     assert (
         "error",
@@ -343,8 +328,8 @@ def test_jwks_is_not_jwks(testclient, client, logged_admin, trusted_client, back
 def test_valid_jwk(testclient, client, logged_admin, trusted_client, backend):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     keyset = KeySet([RSAKey.generate_key(1024)]).as_dict()
-    res.forms["clientaddform"]["jwks"] = json.dumps(keyset)
-    res = res.forms["clientaddform"].submit(status=302, name="action", value="edit")
+    res.forms["clienteditform"]["jwks"] = json.dumps(keyset)
+    res = res.forms["clienteditform"].submit(status=302, name="action", value="edit")
 
     assert (
         "error",

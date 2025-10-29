@@ -31,7 +31,7 @@ or run the Docker image
 docker run -it -p 5000:5000 yaalcoop/canaille:latest
 ```
 
-[Read more about installation methods](https://canaille.readthedocs.io/en/latest/tutorial/install.html).
+[Read more about installation methods](https://canaille.readthedocs.io/en/latest/howtos/install.html).
 
 ## Online!
 
@@ -45,7 +45,7 @@ Authentication details are available on the demo pages. Data is reset every nigh
 # Documentation
 
 - Please have a look on our [documentation](https://canaille.readthedocs.io);
-- To **install** canaille, follow the [installation guide](https://canaille.readthedocs.io/en/latest/tutorial/install.html);
+- To **install** canaille, follow the [installation guide](https://canaille.readthedocs.io/en/latest/howtos/install.html);
 - To **contribute** to canaille, please read the [contribution guide](https://canaille.readthedocs.io/en/latest/development/contributing.html).
 
 ## Translation status

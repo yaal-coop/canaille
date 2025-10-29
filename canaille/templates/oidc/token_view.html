@@ -25,10 +25,6 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
 {% endblock %}
 
 {% block submenu %}
-    <a class="item" href="{{ url_for('core.admin.mail_index') }}">
-        <i class="user mail icon"></i>
-        {% trans %}Emails{% endtrans %}
-    </a>
     <a class="item" href="{{ url_for('oidc.clients.index') }}">
         <i class="th list icon"></i>
         {% trans %}Applications{% endtrans %}

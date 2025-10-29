@@ -16,6 +16,24 @@ def test_populate_users(cli_runner, backend):
         backend.delete(user)
 
 
+def test_populate_users_with_avatars(testclient, backend):
+    """Test that users are created with avatars."""
+    if "ldap" in backend.__class__.__module__:
+        pytest.skip()
+
+    users = fake_users(5)
+    assert len(users) == 5
+
+    for user in users:
+        assert user.photo is not None
+        assert isinstance(user.photo, bytes)
+        assert user.photo.startswith(b"<svg")
+        assert len(user.photo) > 1000
+
+    for user in users:
+        backend.delete(user)
+
+
 def test_populate_groups(cli_runner, backend):
     """Test that the populate groups command creates the specified number of groups."""
     fake_users(10)

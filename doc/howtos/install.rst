@@ -5,16 +5,17 @@ This page describes how to get and set-up Canaille.
 
 *I have no time, spare me the details !*
 
-.. parsed-literal::
+.. code-block:: console
+   :substitutions:
 
-   wget https://github.com/yaal-coop/canaille/releases/download/\ |version|\ /canaille -o canaille
-   chmod +x canaille
-   export CONFIG=/path/to/my/config.toml
-   canaille config dump --path $CONFIG
-   $EDITOR $CONFIG
-   canaille install
-   canaille config check
-   canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol --formatted-name "George Abitbol"
+   $ wget https://github.com/yaal-coop/canaille/releases/download/|version|/canaille -o canaille
+   $ chmod +x canaille
+   $ export CANAILLE_CONFIG=/path/to/my/config.toml
+   $ canaille config dump --path $CANAILLE_CONFIG
+   $ $EDITOR $CANAILLE_CONFIG
+   $ canaille install
+   $ canaille config check
+   $ canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol --formatted-name "George Abitbol"
 
 Get the code
 ============
@@ -25,9 +26,10 @@ Docker
 A Docker image is available on `dockerhub`_.
 You can run Canaille simply by running the following command:
 
-.. parsed-literal::
+.. code-block:: console
+   :substitutions:
 
-    docker run --name canaille-web -p 8000:8000 yaalcoop/canaille:\ |version|\
+   $ docker run --name canaille-web -p 8000:8000 yaalcoop/canaille:|version|
 
 The service is then available on the port 8000.
 It might not be very usable as is though, as it is currently unconfigured, and thus running with a file-based database, without a front web-server.
@@ -43,7 +45,7 @@ Please note that you should adapt each of these steps to your situation.
    .. code-block:: console
        :caption: Initialize a default configuration file
 
-       docker run --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
+       $ docker run --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
 
 #. Create a `docker-compose.yml` which mounts your configuration file.
 
@@ -64,7 +66,7 @@ Please note that you should adapt each of these steps to your situation.
    .. code-block:: console
        :caption: Start canaille
 
-       docker compose up
+       $ docker compose up
 
 #. Create your first user.
    Replace ``<NAME>`` with the name of your container, as appearing in ``docker ps``.
@@ -72,7 +74,7 @@ Please note that you should adapt each of these steps to your situation.
    .. code-block:: console
        :caption: Create your first admin user
 
-       docker exec canaille-web sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
+       $ docker exec canaille-web sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
 
 .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 
@@ -83,10 +85,11 @@ Canaille provides a ready-to-use single file executable for Linux.
 The binary installation is the easiest way to get a production-ready Canaille release, though this is not the most customizable.
 This is generally the recommended method to use Canaille in production.
 
-.. parsed-literal::
+.. code-block:: console
+   :substitutions:
 
-    wget https://github.com/yaal-coop/canaille/releases/download/\ |version|\ /canaille -o canaille
-    chmod +x canaille
+   $ wget https://github.com/yaal-coop/canaille/releases/download/|version|/canaille -o canaille
+   $ chmod +x canaille
 
 .. note::
 
@@ -111,14 +114,14 @@ This is the recommended method if you want fast CLI performances, if you need to
 In the following example, we use a custom virtualenv to install Canaille.
 Note that you should customize the ``EXTRAS`` packages, depending on your needs.
 
-.. code-block:: bash
+.. code-block:: console
    :caption: Canaille installation using a Python virtualenv
 
-   sudo mkdir --parents /opt/canaille
-   virtualenv /opt/canaille/env
-   . /opt/canaille/env/bin/activate
-   pip install "canaille[EXTRAS]"
-   canaille --version
+   $ sudo mkdir --parents /opt/canaille
+   $ virtualenv /opt/canaille/env
+   $ . /opt/canaille/env/bin/activate
+   $ pip install "canaille[EXTRAS]"
+   $ canaille --version
 
 .. _Canaille_PyPI: https://pypi.org/project/Canaille
 
@@ -147,29 +150,29 @@ Canaille provides different package options:
 
 They can be installed with:
 
-.. code-block:: bash
+.. code-block:: console
 
-   pip install "canaille[front,oidc,postgresql,server]"
+   $ pip install "canaille[front,oidc,postgresql,server]"
 
 Configure
 =========
 
 The :doc:`configuration documentation<../references/configuration>` describe several ways to configure Canaille,
-however the most common is to use a TOML configuration file and pass its path with the :envvar:`CONFIG` environment variable.
+however the most common is to use a TOML configuration file and pass its path with the :envvar:`CANAILLE_CONFIG` environment variable.
 A configuration file with default values can be initialized with the :ref:`config dump <cli_config>` command.
 
-.. code-block:: bash
+.. code-block:: console
     :caption: Initialize a configuration file.
 
-    export CONFIG=/path/to/my/config.toml
-    canaille config dump --path $CONFIG
+    $ export CANAILLE_CONFIG=/path/to/my/config.toml
+    $ canaille config dump --path $CANAILLE_CONFIG
 
 You can then edit your configuration file and tune its values.
 Have a look at the :ref:`reference <references/configuration:Parameters>` to know the exhaustive list of available parameters.
 
 .. note::
 
-   In the rest of the documentation, we consider that your Canaille instance is configured by one of the available methods (either with a :envvar:`CONFIG` environment var, either with ``.env`` files etc.).
+   In the rest of the documentation, we consider that your Canaille instance is configured by one of the available methods (either with a :envvar:`CANAILLE_CONFIG` environment var, either with ``.env`` files etc.).
 
 Install
 =======
@@ -177,9 +180,9 @@ Install
 The :ref:`install command <cli_install>` will apply most of the things needed to get Canaille working.
 Depending on the configured :doc:`database <databases>` it will create the SQL tables, or install the LDAP schemas for instance.
 
-.. code-block:: bash
+.. code-block:: console
 
-    canaille install
+    $ canaille install
 
 Check
 =====
@@ -187,9 +190,9 @@ Check
 After a manual installation, you can test the network parameters in your configuration file using the :ref:`config check command <cli_config>`.
 It will attempt to connect your :class:`SMTP server <canaille.core.configuration.SMTPSettings>`, or your :class:`SMPP server <canaille.core.configuration.SMPPSettings>` if defined.
 
-.. code-block:: bash
+.. code-block:: console
 
-    canaille config check
+    $ canaille config check
 
 Create the first user
 =====================
@@ -197,9 +200,9 @@ Create the first user
 Once canaille is installed, soon enough you will need to add users.
 To create your first user you can use the :ref:`canaille create <cli_create>` CLI.
 
-.. code-block:: bash
+.. code-block:: console
 
-   canaille create user \
+   $ canaille create user \
        --user-name admin \
        --password admin \
        --emails admin@mydomain.example \

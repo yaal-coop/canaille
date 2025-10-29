@@ -1,7 +1,6 @@
 import typing
 
 import canaille.core.models
-import canaille.oidc.models
 from canaille.app import models
 from canaille.backends import Backend
 from canaille.backends.models import BackendModel
@@ -76,20 +75,4 @@ class User(canaille.core.models.User, MemoryModel):
 
 
 class Group(canaille.core.models.Group, MemoryModel):
-    pass
-
-
-class Client(canaille.oidc.models.Client, MemoryModel):
-    pass
-
-
-class AuthorizationCode(canaille.oidc.models.AuthorizationCode, MemoryModel):
-    pass
-
-
-class Token(canaille.oidc.models.Token, MemoryModel):
-    pass
-
-
-class Consent(canaille.oidc.models.Consent, MemoryModel):
     pass

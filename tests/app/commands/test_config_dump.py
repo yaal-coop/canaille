@@ -1,9 +1,56 @@
 import os
 import pathlib
+import re
 
 import pytest
 
 from canaille.commands import cli
+
+
+def test_export_default_config(testclient, cli_runner, backend, tmp_path):
+    """Export the default application config in a file."""
+    if "memory" not in backend.__class__.__module__:
+        pytest.skip()
+
+    toml_export = tmp_path / "config.toml"
+    toml_expected = (
+        pathlib.Path(__file__).parent.parent / "fixtures" / "default-config.toml"
+    )
+
+    # Delete all configs to test default export (not just CANAILLE configs)
+    del testclient.app.config["CANAILLE"]
+    del testclient.app.config["CANAILLE_SQL"]
+    del testclient.app.config["CANAILLE_LDAP"]
+    del testclient.app.config["CANAILLE_SCIM"]
+    del testclient.app.config["CANAILLE_OIDC"]
+    del testclient.app.config["CANAILLE_HYPERCORN"]
+    # Also delete Flask test configs to get true defaults
+    for key in ["SECRET_KEY", "SERVER_NAME", "TRUSTED_HOSTS", "PREFERRED_URL_SCHEME"]:
+        testclient.app.config.pop(key, None)
+
+    res = cli_runner.invoke(
+        cli, ["config", "dump", "--path", str(toml_export)], catch_exceptions=False
+    )
+    assert res.exit_code == 0, res.stdout
+
+    with open(toml_export) as fd:
+        actual_content = fd.read()
+
+    with open(toml_expected) as fd:
+        expected_content = fd.read()
+
+    actual_content = re.sub(
+        r"# The active JSON Web Keys Set\.\n#\n# Those keys are used to sign and verify JWTs\.\n(?:# ACTIVE_JWKS = .*\n|ACTIVE_JWKS = .*\n)",
+        "# The active JSON Web Keys Set.\n#\n# Those keys are used to sign and verify JWTs.\n# ACTIVE_JWKS =\n",
+        actual_content,
+        flags=re.MULTILINE,
+    )
+
+    # Normalize trailing newlines
+    actual_content = actual_content.rstrip() + "\n"
+    expected_content = expected_content.rstrip() + "\n"
+
+    assert actual_content == expected_content
 
 
 def test_export_current_config(testclient, cli_runner, backend, tmp_path):
@@ -35,7 +82,7 @@ def test_export_current_config(testclient, cli_runner, backend, tmp_path):
 
 
 def test_export_env_config(testclient, cli_runner, tmp_path, backend):
-    """Export the current application config in a file which pass is passed in the CONFIG env var."""
+    """Export the current application config in a file which pass is passed in the CANAILLE_CONFIG env var."""
     if "memory" not in backend.__class__.__module__:
         pytest.skip()
 
@@ -48,7 +95,7 @@ def test_export_env_config(testclient, cli_runner, tmp_path, backend):
     testclient.app.config["CANAILLE"]["SMTP"]["PORT"] = 25
     testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = None
 
-    os.environ["CONFIG"] = str(toml_export)
+    os.environ["CANAILLE_CONFIG"] = str(toml_export)
 
     res = cli_runner.invoke(cli, ["config", "dump"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
@@ -58,4 +105,4 @@ def test_export_env_config(testclient, cli_runner, tmp_path, backend):
 
     assert res.stdout == expected_content
 
-    del os.environ["CONFIG"]
+    del os.environ["CANAILLE_CONFIG"]
