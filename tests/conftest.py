@@ -4,7 +4,6 @@ from unittest import mock
 
 import pytest
 from babel.messages.frontend import compile_catalog
-from dramatiq_eager_broker import EagerBroker
 from flask_webtest import TestApp
 from jinja2 import FileSystemBytecodeCache
 from jinja2 import StrictUndefined
@@ -74,8 +73,6 @@ def configuration(smtpd):
         "PREFERRED_URL_SCHEME": "http",
         "TRUSTED_HOSTS": [".canaille.test", "localhost", ".foobar.test"],
         "TESTING": True,
-        "DRAMATIQ_BROKER": "dramatiq_eager_broker:EagerBroker",
-        "DRAMATIQ_BROKER_URL": "amqp://localhost",
         "CANAILLE": {
             "JAVASCRIPT": False,
             "TIMEZONE": "UTC",
@@ -350,11 +347,3 @@ def smpp_client():
     client.__enter__.return_value = client
     with mock.patch("smpplib.client.Client", return_value=client):
         yield client
-
-
-@pytest.fixture()
-def stub_broker():
-    broker = EagerBroker()
-    broker.emit_after("process_boot")
-    broker.flush_all()
-    return broker

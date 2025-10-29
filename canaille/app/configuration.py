@@ -6,10 +6,14 @@ from dataclasses import dataclass
 from typing import Annotated
 from typing import Any
 
+from pydantic import AmqpDsn
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import BeforeValidator
+from pydantic import RedisDsn
+from pydantic import TypeAdapter
 from pydantic import ValidationError
 from pydantic import create_model
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 from pydantic_settings import NoDecode
 from pydantic_settings import SettingsConfigDict
@@ -107,13 +111,64 @@ class RootSettings(BaseSettings):
     This sets trusted values for hosts and validates hosts during requests.
     """
 
-    DRAMATIQ_BROKER: str = "dramatiq_eager_broker:EagerBroker"
-    """Points to the broker class. The default is `dramatiq_eager_broker:EagerBroker`, meaning no task worker is running. You can use a task worker by pointing to a broker class like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or `dramatiq.brokers.redis:RedisBroker`.
+    BROKER_URL: str | None = None
+    """The URL of the running task worker.
+
+    It is passed as ``url`` keyword argument to broker class. For example:
+    - ``redis://localhost:6379``
+    - ``amqp://localhost``
+    - ``redis://username:password@redis.example:6379/0``
+    - ``amqp://guest:guest@localhost:5672/?heartbeat=30&connection_timeout=10``
+
+    If none, all the tasks are executed synchronously without requiring to run a task worker.
+    This has poor performance but can be useful in tests environments.
     """
 
-    DRAMATIQ_BROKER_URL: str = "amqp://localhost"
-    """The URL of the running task worker, passed as `url` keyword argument to broker class.
+    BROKER: str | None = None
+    """Points to the broker class.
+
+    If none, this will be guessed from the value of :attr:`~canaille.app.configuration.RootSettings.BROKER_URL`:
+
+    - ``dramatiq_eager_broker:EagerBroker`` is used if the broker URL is unset.
+       This broker executes that's synchronously, meaning there is no need to run a task worker.
+    - ``dramatiq.brokers.rabbitmq:RabbitmqBroker`` is used if the URL is an AMQP URL.
+    - ``dramatiq.brokers.redis:RedisBroker`` is used if the URL is a redis URL.
     """
+
+    # TODO: Use the upstream feature when it is implemented
+    # https://gitlab.com/bersace/flask-dramatiq/-/issues/13
+    @field_validator("BROKER", mode="after")
+    @classmethod
+    def guess_broker(cls, v, info):
+        """Guess BROKER from BROKER_URL if not set."""
+        if v is not None:
+            return v
+
+        broker_url = info.data.get("BROKER_URL")
+
+        if not broker_url:
+            return "dramatiq_eager_broker:EagerBroker"
+
+        try:
+            TypeAdapter(AmqpDsn).validate_python(broker_url)
+            return "dramatiq.brokers.rabbitmq:RabbitmqBroker"
+        except ValidationError:
+            pass
+
+        try:
+            TypeAdapter(RedisDsn).validate_python(broker_url)
+            return "dramatiq.brokers.redis:RedisBroker"
+        except ValidationError:
+            pass
+
+        # Fallback for unix:// scheme (supported by RedisBroker but not by RedisDsn)
+        if broker_url.startswith("unix://"):
+            return "dramatiq.brokers.redis:RedisBroker"
+
+        raise ValueError(
+            f"Unable to guess BROKER from BROKER_URL='{broker_url}'. "
+            f"Supported schemes: amqp://, amqps://, redis://, rediss://, unix://"
+        )
 
     PREFERRED_URL_SCHEME: str = "https"
     """The Flask :external:py:data:`PREFERRED_URL_SCHEME` configuration

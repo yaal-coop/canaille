@@ -367,6 +367,39 @@ def test_smpp_connection_remote_smpp_no_credentials(testclient, backend, configu
     )
 
 
+def test_guess_broker():
+    """Test automatic broker detection from BROKER_URL."""
+    config_obj = settings_factory({"BROKER": "custom.Broker"})
+    assert config_obj.BROKER == "custom.Broker"
+
+    config_obj = settings_factory({})
+    assert config_obj.BROKER == "dramatiq_eager_broker:EagerBroker"
+
+    config_obj = settings_factory({"BROKER_URL": None})
+    assert config_obj.BROKER == "dramatiq_eager_broker:EagerBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "amqp://localhost"})
+    assert config_obj.BROKER == "dramatiq.brokers.rabbitmq:RabbitmqBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "amqps://localhost"})
+    assert config_obj.BROKER == "dramatiq.brokers.rabbitmq:RabbitmqBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "redis://localhost:6379"})
+    assert config_obj.BROKER == "dramatiq.brokers.redis:RedisBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "rediss://localhost:6379"})
+    assert config_obj.BROKER == "dramatiq.brokers.redis:RedisBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "unix:///tmp/redis.sock"})
+    assert config_obj.BROKER == "dramatiq.brokers.redis:RedisBroker"
+
+    with pytest.raises(
+        ValidationError,
+        match=r"Unable to guess BROKER from BROKER_URL='http://localhost'\. Supported schemes: amqp://, amqps://, redis://, rediss://, unix://",
+    ):
+        settings_factory({"BROKER_URL": "http://localhost"})
+
+
 def test_sanitize_rst():
     """Test RST markup sanitization for configuration export."""
     assert sanitize_rst_text("``somevar``") == "somevar"

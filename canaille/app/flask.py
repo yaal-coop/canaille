@@ -23,7 +23,7 @@ from canaille.app.templating import render_template
 
 csrf = CSRFProtect()
 cache = Cache()
-dramatiq = Dramatiq()
+dramatiq = Dramatiq(config_prefix="BROKER")
 
 
 def user_needed(*args):

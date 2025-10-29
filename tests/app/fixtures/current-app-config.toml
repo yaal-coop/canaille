@@ -16,15 +16,27 @@ SERVER_NAME = "canaille.test"
 # TRUSTED_HOSTS =
 TRUSTED_HOSTS = [".canaille.test", "localhost", ".foobar.test"]
 
-# Points to the broker class. The default is `dramatiq_eager_broker:EagerBroker`,
-# meaning no task worker is running. You can use a task worker by pointing to a
-# broker class like `dramatiq.brokers.rabbitmq:RabbitmqBroker` or
-# `dramatiq.brokers.redis:RedisBroker`.
-# DRAMATIQ_BROKER = "dramatiq_eager_broker:EagerBroker"
+# The URL of the running task worker.
+#
+# It is passed as url keyword argument to broker class. For example: -
+# redis://localhost:6379 - amqp://localhost -
+# redis://username:password@redis.example:6379/0 -
+# amqp://guest:guest@localhost:5672/?heartbeat=30&connection_timeout=10
+#
+# If none, all the tasks are executed synchronously without requiring to run a
+# task worker. This has poor performance but can be useful in tests environments.
+# BROKER_URL =
 
-# The URL of the running task worker, passed as `url` keyword argument to broker
-# class.
-# DRAMATIQ_BROKER_URL = "amqp://localhost"
+# Points to the broker class.
+#
+# If none, this will be guessed from the value of BROKER_URL:
+#
+# - dramatiq_eager_broker:EagerBroker is used if the broker URL is unset.
+#    This broker executes that's synchronously, meaning there is no need to run a task worker.
+# - dramatiq.brokers.rabbitmq:RabbitmqBroker is used if the URL is an AMQP URL.
+# - dramatiq.brokers.redis:RedisBroker is used if the URL is a redis URL.
+# BROKER =
+BROKER = "dramatiq_eager_broker:EagerBroker"
 
 # The Flask PREFERRED_URL_SCHEME configuration setting.
 #
