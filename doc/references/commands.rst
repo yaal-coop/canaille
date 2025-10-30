@@ -88,3 +88,9 @@ For the sake of readability, it is omitted in the following examples.
 .. click:: canaille.backends.commands:reset_otp
    :prog: canaille reset-otp
    :nested: full
+
+.. _cli_worker:
+
+.. click:: flask_dramatiq:worker
+   :prog: canaille worker
+   :nested: full

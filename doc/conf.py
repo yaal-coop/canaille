@@ -73,6 +73,7 @@ intersphinx_mapping = {
     "authlib": ("https://docs.authlib.org/en/latest", None),
     "flask": ("https://flask.palletsprojects.com", None),
     "flask-alembic": ("https://flask-alembic.readthedocs.io/en/latest", None),
+    "flask-dramatiq": ("https://flask-dramatiq.readthedocs.io/en/latest", None),
     "flask-babel": ("https://python-babel.github.io/flask-babel", None),
     "flask-caching": ("https://flask-caching.readthedocs.io/en/latest/", None),
     "flask-wtf": ("https://flask-wtf.readthedocs.io", None),

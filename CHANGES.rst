@@ -13,6 +13,7 @@ Added
 - Per-user group management. :issue:`95` :pr:`299`
 - ``OTP_LIFETIME`` configuration parameter.
 - ``TOTP_LIFETIME`` configuration parameter.
+- Task worker for long-running operations. :issue:`251` :pr:`300`
 
 Fixed
 ^^^^^

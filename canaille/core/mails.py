@@ -30,7 +30,7 @@ def send_test_mail(email):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=email,
         text=text_body,
@@ -84,7 +84,7 @@ def send_password_reset_mail(user, mail):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=mail,
         text=text_body,
@@ -123,7 +123,7 @@ def send_password_initialization_mail(user, email):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=email,
         text=text_body,
@@ -154,7 +154,7 @@ def send_invitation_mail(email, registration_url):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=email,
         text=text_body,
@@ -185,7 +185,7 @@ def send_confirmation_email(email, confirmation_url):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=email,
         text=text_body,
@@ -216,7 +216,7 @@ def send_registration_mail(email, registration_url):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=email,
         text=text_body,
@@ -255,7 +255,7 @@ def send_compromised_password_check_failure_mail(
         hashed_password=hashed_password,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=admin_email,
         text=text_body,
@@ -286,7 +286,7 @@ def send_one_time_password_mail(mail, otp):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=mail,
         text=text_body,
@@ -323,7 +323,7 @@ def send_group_invitation_mail(email, invitation_url, group_name, inviter_name):
         title=subject,
     )
 
-    return send_email(
+    return send_email.send(
         subject=subject,
         recipient=email,
         text=text_body,

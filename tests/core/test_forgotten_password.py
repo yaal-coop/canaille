@@ -24,9 +24,8 @@ def test_password_forgotten(smtpd, testclient, user, caplog):
     res.form["login"] = "user"
     res = res.form.submit(status=200)
     assert (
-        "success",
-        "A password reset link has been sent at your email address. You should receive "
-        "it within a few minutes.",
+        "info",
+        "Sending password reset link at your email address. You should receive it within a few minutes.",
     ) in res.flashes
     assert (
         "canaille",
@@ -48,8 +47,8 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, cap
     res.form["login"] = "user"
     res = res.form.submit(status=200)
     assert (
-        "success",
-        "A password reset link has been sent at your email address. You should receive "
+        "info",
+        "Sending password reset link at your email address. You should receive "
         "it within a few minutes.",
     ) in res.flashes
     for email in user.emails:
@@ -83,8 +82,8 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
     res.form["login"] = "i-dont-really-exist"
     res = res.form.submit(status=200)
     assert (
-        "success",
-        "A password reset link has been sent at your email address. "
+        "info",
+        "Sending password reset link at your email address. "
         "You should receive it within a few minutes.",
     ) in res.flashes
     res.mustcontain(no="The login 'i-dont-really-exist' does not exist")
@@ -95,8 +94,8 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
     res.form["login"] = "i-dont-really-exist"
     res = res.form.submit(status=200)
     assert (
-        "success",
-        "A password reset link has been sent at your email address. "
+        "info",
+        "Sending password reset link at your email address. "
         "You should receive it within a few minutes.",
     ) not in res.flashes
     res.mustcontain("The login 'i-dont-really-exist' does not exist")
@@ -117,8 +116,8 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(
     res.form["login"] = "user"
     res = res.form.submit(status=200)
     assert (
-        "success",
-        "A password reset link has been sent at your email address. "
+        "info",
+        "Sending password reset link at your email address. "
         "You should receive it within a few minutes.",
     ) not in res.flashes
     assert (
@@ -139,8 +138,8 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(
         "password. We cannot send a password reset email.",
     ) not in res.flashes
     assert (
-        "success",
-        "A password reset link has been sent at your email address. "
+        "info",
+        "Sending password reset link at your email address. "
         "You should receive it within a few minutes.",
     ) in res.flashes
 
@@ -156,13 +155,8 @@ def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
     res.form["login"] = "user"
     res = res.form.submit(status=200, expect_errors=True)
     assert (
-        "success",
-        "A password reset link has been sent at your email address. "
-        "You should receive it within a few minutes.",
-    ) not in res.flashes
-    assert (
-        "error",
-        "We encountered an issue while we sent the password recovery email.",
+        "info",
+        "Sending password reset link at your email address. You should receive it within a few minutes.",
     ) in res.flashes
     res.mustcontain("Send again")
 
@@ -179,8 +173,8 @@ def test_password_forgotten_user_disabled(smtpd, testclient, user, caplog, backe
     res.form["login"] = "user"
     res = res.form.submit(status=200)
     assert (
-        "success",
-        "A password reset link has been sent at your email address. You should receive "
+        "info",
+        "Sending password reset link at your email address. You should receive "
         "it within a few minutes.",
     ) in res.flashes
     assert (
@@ -201,11 +195,6 @@ def test_password_forgotten_without_trusted_hosts(
 
     res.form["login"] = "user"
     res = res.form.submit(status=302)
-    assert (
-        "success",
-        "A password reset code has been sent at your email address. You should receive "
-        "it within a few minutes.",
-    ) in res.flashes
     assert (
         "canaille",
         logging.SECURITY,

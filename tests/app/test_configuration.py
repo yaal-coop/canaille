@@ -105,7 +105,7 @@ def test_configuration_from_environment_vars(tmp_path):
     assert conf.CANAILLE.SMTP.FROM_ADDR == "user@mydomain.test"
     assert conf.CANAILLE_SQL.DATABASE_URI == f"sqlite:///{tmp_path}/anything.db"
 
-    app = create_app({"TIMEZONE": "UTC"})
+    app = create_app({"TIMEZONE": "UTC", "TESTING": True})
     assert app.config["SECRET_KEY"] == "very-very-secret"
     assert app.config["CANAILLE"]["SMTP"]["FROM_ADDR"] == "user@mydomain.test"
     assert (
@@ -365,6 +365,39 @@ def test_smpp_connection_remote_smpp_no_credentials(testclient, backend, configu
     assert check_smpp_connection(config_dict) == CheckResult(
         success=True, message="Successful SMPP connection"
     )
+
+
+def test_guess_broker():
+    """Test automatic broker detection from BROKER_URL."""
+    config_obj = settings_factory({"BROKER": "custom.Broker"})
+    assert config_obj.BROKER == "custom.Broker"
+
+    config_obj = settings_factory({})
+    assert config_obj.BROKER == "dramatiq_eager_broker:EagerBroker"
+
+    config_obj = settings_factory({"BROKER_URL": None})
+    assert config_obj.BROKER == "dramatiq_eager_broker:EagerBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "amqp://localhost"})
+    assert config_obj.BROKER == "dramatiq.brokers.rabbitmq:RabbitmqBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "amqps://localhost"})
+    assert config_obj.BROKER == "dramatiq.brokers.rabbitmq:RabbitmqBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "redis://localhost:6379"})
+    assert config_obj.BROKER == "dramatiq.brokers.redis:RedisBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "rediss://localhost:6379"})
+    assert config_obj.BROKER == "dramatiq.brokers.redis:RedisBroker"
+
+    config_obj = settings_factory({"BROKER_URL": "unix:///tmp/redis.sock"})
+    assert config_obj.BROKER == "dramatiq.brokers.redis:RedisBroker"
+
+    with pytest.raises(
+        ValidationError,
+        match=r"Unable to guess BROKER from BROKER_URL='http://localhost'\. Supported schemes: amqp://, amqps://, redis://, rediss://, unix://",
+    ):
+        settings_factory({"BROKER_URL": "http://localhost"})
 
 
 def test_sanitize_rst():

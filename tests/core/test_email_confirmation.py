@@ -1,4 +1,5 @@
 import datetime
+import logging
 from unittest import mock
 
 import time_machine
@@ -114,7 +115,7 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
 
 
 def test_confirmation_unset_smtp_enabled_email_user_validation(
-    smtpd, testclient, backend, user
+    smtpd, testclient, backend, user, caplog
 ):
     """If email confirmation is unset and there is a SMTP server configured, then users emails should be validated by sending a confirmation email."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
@@ -137,13 +138,17 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
             name="action", value="add_email"
         )
 
-    assert res.flashes == [
-        (
-            "success",
-            "An email has been sent to the email address. "
-            "Please check your inbox and click on the verification link it contains",
-        )
-    ]
+    assert (
+        "info",
+        "Sending an email to this email address. "
+        "Please check your inbox and click on the verification link it contains",
+    ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     email_confirmation = EmailConfirmationPayload(
         "2020-01-01T02:00:00+00:00",
@@ -237,7 +242,7 @@ def test_confirmation_mail_form_failed(testclient, backend, user):
 
 
 @mock.patch("smtplib.SMTP")
-def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
+def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user, caplog):
     """Tests when an error happens during the mail sending."""
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
@@ -258,8 +263,20 @@ def test_confirmation_mail_send_failed(SMTP, smtpd, testclient, backend, user):
             name="action", value="add_email", expect_errors=True
         )
 
-    assert res.flashes == [("error", "Could not send the verification email")]
+    assert (
+        "info",
+        "Sending an email to this email address. "
+        "Please check your inbox and click on the verification link it contains",
+    ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
+
     backend.reload(user)
+
     assert user.emails == ["john@doe.test"]
 
 

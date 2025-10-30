@@ -27,25 +27,18 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
         user_name = form["user_name"].data
         user_email = form["emails"].data[0]
 
-    if send_compromised_password_check_failure_mail(
+    send_compromised_password_check_failure_mail(
         api_url,
         user_name,
         user_email,
         hashed_password_suffix,
         current_app.config["CANAILLE"]["ADMIN_EMAIL"],
-    ):
-        flash(
-            _(
-                "We have informed your administrator about the failure of the password compromise investigation."
-            ),
-            "info",
-        )
-    else:
-        flash(
-            _(
-                "An error occurred while communicating the incident to the administrators. "
-                "Please update your password as soon as possible. "
-                "If this still happens, please contact the administrators."
-            ),
-            "error",
-        )
+    )
+    flash(
+        _(
+            "We are sending an email to your administrator about the failure of the password compromise investigation."
+            "Please update your password as soon as possible. "
+            "If this still happens, please contact the administrators."
+        ),
+        "info",
+    )
