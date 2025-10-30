@@ -15,10 +15,12 @@
 
 # The URL of the running task worker.
 #
-# It is passed as url keyword argument to broker class. For example: -
-# redis://localhost:6379 - amqp://localhost -
-# redis://username:password@redis.example:6379/0 -
-# amqp://guest:guest@localhost:5672/?heartbeat=30&connection_timeout=10
+# It is passed as url keyword argument to broker class. For example:
+#
+# - redis://localhost:6379
+# - amqp://localhost
+# - redis://username:password@redis.example:6379/0
+# - amqp://guest:guest@localhost:5672/?heartbeat=30&connection_timeout=10
 #
 # If none, all the tasks are executed synchronously without requiring to run a
 # task worker. This has poor performance but can be useful in tests environments.

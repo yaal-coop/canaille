@@ -119,6 +119,14 @@ server = [
     "tomlkit>=0.13.2",
 ]
 
+redis = [
+    "dramatiq[redis]>=1.18.0",
+]
+
+rabbitmq = [
+    "dramatiq[redis]>=1.18.0",
+]
+
 [project.urls]
 homepage = "https://canaille.yaal.coop"
 documentation = "https://canaille.readthedocs.io/en/latest/"
@@ -128,7 +136,6 @@ repository = "https://gitlab.com/yaal/canaille"
 dev = [
     "babel >= 2.14.0",
     "coverage[toml] >= 6.0.0",
-    "dramatiq[rabbitmq, redis]>=1.18.0",
     "faker >= 37.11.0",
     "flask-webtest >= 0.1.6",
     "maildump>=1.0; python_version<'3.12'",

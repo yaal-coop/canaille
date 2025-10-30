@@ -115,6 +115,7 @@ class RootSettings(BaseSettings):
     """The URL of the running task worker.
 
     It is passed as ``url`` keyword argument to broker class. For example:
+
     - ``redis://localhost:6379``
     - ``amqp://localhost``
     - ``redis://username:password@redis.example:6379/0``

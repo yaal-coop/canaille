@@ -258,6 +258,12 @@ postgresql = [
     { name = "sqlalchemy-json" },
     { name = "sqlalchemy-utils" },
 ]
+rabbitmq = [
+    { name = "dramatiq", extra = ["redis"] },
+]
+redis = [
+    { name = "dramatiq", extra = ["redis"] },
+]
 scim = [
     { name = "authlib" },
     { name = "httpx" },
@@ -290,7 +296,6 @@ dev = [
     { name = "babel" },
     { name = "beautifulsoup4" },
     { name = "coverage", extra = ["toml"] },
-    { name = "dramatiq", extra = ["rabbitmq", "redis"] },
     { name = "faker" },
     { name = "flask-webtest" },
     { name = "maildump", version = "1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
@@ -349,6 +354,8 @@ requires-dist = [
     { name = "blinker", specifier = ">=1.9.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "dramatiq", specifier = ">=1.18.0" },
+    { name = "dramatiq", extras = ["redis"], marker = "extra == 'rabbitmq'", specifier = ">=1.18.0" },
+    { name = "dramatiq", extras = ["redis"], marker = "extra == 'redis'", specifier = ">=1.18.0" },
     { name = "dramatiq-eager-broker", specifier = ">=0.1.0" },
     { name = "email-validator", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask", specifier = ">=3.0.0" },
@@ -397,14 +404,13 @@ requires-dist = [
     { name = "wtforms", specifier = ">=3.1.1" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.2.0" },
 ]
-provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server"]
+provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server", "redis", "rabbitmq"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "babel", specifier = ">=2.14.0" },
     { name = "beautifulsoup4", specifier = ">=4.13.4" },
     { name = "coverage", extras = ["toml"], specifier = ">=6.0.0" },
-    { name = "dramatiq", extras = ["rabbitmq", "redis"], specifier = ">=1.18.0" },
     { name = "faker", specifier = ">=37.11.0" },
     { name = "flask-webtest", specifier = ">=0.1.6" },
     { name = "maildump", marker = "python_full_version < '3.12'", specifier = ">=1.0" },
@@ -880,9 +886,6 @@ wheels = [
 ]
 
 [package.optional-dependencies]
-rabbitmq = [
-    { name = "pika" },
-]
 redis = [
     { name = "redis" },
 ]
