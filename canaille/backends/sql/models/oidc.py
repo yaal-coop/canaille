@@ -3,14 +3,12 @@ import uuid
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean
-from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
-from sqlalchemy import Table
 from sqlalchemy import Text
-from sqlalchemy import func
-from sqlalchemy import select
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -26,29 +24,22 @@ if TYPE_CHECKING:
     from .core import User
 
 
-def _client_audience_index_default(context):
-    """Calculate next index for client_audience_association_table per client."""
-    params = context.get_current_parameters()
-    client_id = params.get("client_id")
-    if client_id is None:
-        return None
+class ClientAudience(Base):
+    """Association object for Client.audience with ordering support."""
 
-    conn = context.connection
-    result = conn.execute(
-        select(func.coalesce(func.max(Column("index", Integer)), 0))
-        .select_from(Table("client_audience_association_table", Base.metadata))
-        .where(Column("client_id") == client_id)
+    __tablename__ = "client_audience_association_table"
+
+    client_id: Mapped[str] = mapped_column(
+        ForeignKey("client.id"), primary_key=True, nullable=True
     )
-    return result.scalar() + 1
+    audience_id: Mapped[str] = mapped_column(
+        ForeignKey("client.id"), primary_key=True, nullable=True
+    )
+    index: Mapped[int] = mapped_column(Integer)
 
-
-client_audience_association_table = Table(
-    "client_audience_association_table",
-    Base.metadata,
-    Column("index", Integer, default=_client_audience_index_default),
-    Column("audience_id", ForeignKey("client.id"), primary_key=True, nullable=True),
-    Column("client_id", ForeignKey("client.id"), primary_key=True, nullable=True),
-)
+    audience: Mapped["Client"] = relationship(
+        "Client", foreign_keys=[audience_id], lazy="joined"
+    )
 
 
 class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
@@ -68,12 +59,17 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
     post_logout_redirect_uris: Mapped[list[str]] = mapped_column(
         MutableJson, nullable=True
     )
-    audience: Mapped[list["Client"]] = relationship(
-        "Client",
-        secondary=client_audience_association_table,
-        primaryjoin=id == client_audience_association_table.c.client_id,
-        secondaryjoin=id == client_audience_association_table.c.audience_id,
-        order_by=client_audience_association_table.c.index,
+    _audience_association: Mapped[list["ClientAudience"]] = relationship(
+        "ClientAudience",
+        foreign_keys="ClientAudience.client_id",
+        order_by="ClientAudience.index",
+        collection_class=ordering_list("index"),
+        cascade="all, delete-orphan",
+    )
+    audience = association_proxy(
+        "_audience_association",
+        "audience",
+        creator=lambda aud: ClientAudience(audience=aud),
     )
     client_id: Mapped[str] = mapped_column(String(255), nullable=True)
     client_secret: Mapped[str] = mapped_column(String(255), nullable=True)
@@ -176,29 +172,22 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
     amr: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
 
 
-def _token_audience_index_default(context):
-    """Calculate next index for token_audience_association_table per token."""
-    params = context.get_current_parameters()
-    token_id = params.get("token_id")
-    if token_id is None:
-        return None
+class TokenAudience(Base):
+    """Association object for Token.audience with ordering support."""
 
-    conn = context.connection
-    result = conn.execute(
-        select(func.coalesce(func.max(Column("index", Integer)), 0))
-        .select_from(Table("token_audience_association_table", Base.metadata))
-        .where(Column("token_id") == token_id)
+    __tablename__ = "token_audience_association_table"
+
+    token_id: Mapped[str] = mapped_column(
+        ForeignKey("token.id"), primary_key=True, nullable=True
     )
-    return result.scalar() + 1
+    client_id: Mapped[str] = mapped_column(
+        ForeignKey("client.id"), primary_key=True, nullable=True
+    )
+    index: Mapped[int] = mapped_column(Integer)
 
-
-token_audience_association_table = Table(
-    "token_audience_association_table",
-    Base.metadata,
-    Column("index", Integer, default=_token_audience_index_default),
-    Column("token_id", ForeignKey("token.id"), primary_key=True, nullable=True),
-    Column("client_id", ForeignKey("client.id"), primary_key=True, nullable=True),
-)
+    audience: Mapped["Client"] = relationship(
+        "Client", foreign_keys=[client_id], lazy="joined"
+    )
 
 
 class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
@@ -230,12 +219,17 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     revokation_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-    audience: Mapped[list["Client"]] = relationship(
-        "Client",
-        secondary=token_audience_association_table,
-        primaryjoin=id == token_audience_association_table.c.token_id,
-        secondaryjoin=Client.id == token_audience_association_table.c.client_id,
-        order_by=token_audience_association_table.c.index,
+    _audience_association: Mapped[list["TokenAudience"]] = relationship(
+        "TokenAudience",
+        foreign_keys="TokenAudience.token_id",
+        order_by="TokenAudience.index",
+        collection_class=ordering_list("index"),
+        cascade="all, delete-orphan",
+    )
+    audience = association_proxy(
+        "_audience_association",
+        "audience",
+        creator=lambda aud: TokenAudience(audience=aud),
     )
 
 

@@ -3,16 +3,14 @@ import json
 import typing
 import uuid
 
-from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import LargeBinary
 from sqlalchemy import String
-from sqlalchemy import Table
 from sqlalchemy import Text
-from sqlalchemy import func
 from sqlalchemy import or_
-from sqlalchemy import select
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import mapped_column
@@ -52,6 +50,18 @@ class SqlAlchemyModel(BackendModel):
 
         if multiple:
             column = getattr(cls, name)
+
+            # Handle association_proxy attributes
+            if hasattr(column, "local_attr") and hasattr(column, "remote_attr"):
+                # Get the underlying relationship (e.g., _groups_association for groups)
+                underlying_attr = column.local_attr
+                target_attr = column.remote_attr
+
+                # Build a query like: User._groups_association.any(Membership.group == value)
+                association_model = underlying_attr.entity.class_
+                target_column = getattr(association_model, target_attr.key)
+                return underlying_attr.any(target_column == value)
+
             column_property = getattr(cls, name).property
             if not isinstance(column_property, ColumnProperty):
                 return column.contains(value)
@@ -78,29 +88,19 @@ class SqlAlchemyModel(BackendModel):
         return False
 
 
-def _membership_index_default(context):
-    """Calculate next index for membership_association_table per group."""
-    params = context.get_current_parameters()
-    group_id = params.get("group_id")
-    if group_id is None:
-        return None
+class Membership(Base):
+    """Association object for Group.members with ordering support."""
 
-    conn = context.connection
-    result = conn.execute(
-        select(func.coalesce(func.max(Column("index", Integer)), 0))
-        .select_from(Table("membership_association_table", Base.metadata))
-        .where(Column("group_id") == group_id)
+    __tablename__ = "membership_association_table"
+
+    user_id: Mapped[str] = mapped_column(ForeignKey("user.id"), primary_key=True)
+    group_id: Mapped[str] = mapped_column(ForeignKey("group.id"), primary_key=True)
+    index: Mapped[int] = mapped_column(Integer)
+
+    user: Mapped["User"] = relationship("User", foreign_keys=[user_id], lazy="joined")
+    group: Mapped["Group"] = relationship(
+        "Group", foreign_keys=[group_id], lazy="joined"
     )
-    return result.scalar() + 1
-
-
-membership_association_table = Table(
-    "membership_association_table",
-    Base.metadata,
-    Column("index", Integer, default=_membership_index_default),
-    Column("user_id", ForeignKey("user.id"), primary_key=True),
-    Column("group_id", ForeignKey("group.id"), primary_key=True),
-)
 
 
 class User(canaille.core.models.User, Base, SqlAlchemyModel):
@@ -160,10 +160,18 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     department: Mapped[str] = mapped_column(String(100), nullable=True)
     title: Mapped[str] = mapped_column(String(100), nullable=True)
     organization: Mapped[str] = mapped_column(String(200), nullable=True)
-    groups: Mapped[list["Group"]] = relationship(
-        secondary=membership_association_table,
-        back_populates="members",
-        order_by=membership_association_table.c.index,
+    _groups_association: Mapped[list["Membership"]] = relationship(
+        "Membership",
+        foreign_keys="Membership.user_id",
+        order_by="Membership.index",
+        collection_class=ordering_list("index"),
+        cascade="all, delete-orphan",
+        overlaps="user",
+    )
+    groups = association_proxy(
+        "_groups_association",
+        "group",
+        creator=lambda grp: Membership(group=grp),
     )
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
@@ -210,10 +218,18 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
 
     display_name: Mapped[str] = mapped_column(String(200))
     description: Mapped[str] = mapped_column(Text, nullable=True)
-    members: Mapped[list["User"]] = relationship(
-        secondary=membership_association_table,
-        back_populates="groups",
-        order_by=membership_association_table.c.index,
+    _members_association: Mapped[list["Membership"]] = relationship(
+        "Membership",
+        foreign_keys="Membership.group_id",
+        order_by="Membership.index",
+        collection_class=ordering_list("index"),
+        cascade="all, delete-orphan",
+        overlaps="group",
+    )
+    members = association_proxy(
+        "_members_association",
+        "user",
+        creator=lambda usr: Membership(user=usr),
     )
     owner_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
     owner: Mapped["User"] = relationship()
