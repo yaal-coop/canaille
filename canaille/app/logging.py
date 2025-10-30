@@ -84,4 +84,6 @@ def setup_logging(app):
     else:
         fileConfig(conf, disable_existing_loggers=False)
 
-    app.logger.addFilter(IPFilter())
+    ip_filter = IPFilter()
+    app.logger.addFilter(ip_filter)
+    logging.getLogger().addFilter(ip_filter)
