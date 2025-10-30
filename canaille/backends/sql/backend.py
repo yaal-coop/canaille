@@ -55,6 +55,9 @@ class SQLBackend(Backend):
             "script_location": str(Path(__file__).resolve().parent / "migrations"),
             "path_separator": "os",
         }
+        app.config["ALEMBIC_CONTEXT"] = {
+            "render_as_batch": True,
+        }
         SQLBackend.alembic.init_app(app)
 
     def init_app(self, app, init_backend=None):
