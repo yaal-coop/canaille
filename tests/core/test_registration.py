@@ -74,7 +74,7 @@ def test_registration_with_email_validation(testclient, backend, smtpd, foo_grou
 
     assert res.flashes == [
         (
-            "success",
+            "info",
             "You will receive soon an email to continue the registration process.",
         )
     ]
@@ -168,7 +168,7 @@ def test_join_page_already_logged_in(testclient, backend, logged_user, foo_group
 
 
 @mock.patch("smtplib.SMTP")
-def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
+def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group, caplog):
     """Display an error message if the registration mail could not be sent."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
@@ -176,14 +176,17 @@ def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group):
     res.form["email"] = "foo@bar.test"
     res = res.form.submit(expect_errors=True)
 
-    assert res.flashes == [
-        (
-            "error",
-            "An error happened while sending your registration mail. "
-            "Please try again in a few minutes. "
-            "If this still happens, please contact the administrators.",
-        )
-    ]
+    assert (
+        "info",
+        "You will receive soon an email to continue the registration process.",
+    ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
+
     assert len(smtpd.messages) == 0
 
 
@@ -281,10 +284,20 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
         "error",
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
+
     assert (
         "info",
-        "We have informed your administrator about the failure of the password compromise investigation.",
+        "We are sending an email to your administrator about the failure of the password compromise investigation."
+        "Please update your password as soon as possible. "
+        "If this still happens, please contact the administrators.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
+
     assert ("success", "Your account has been created successfully.") in res.flashes
     assert len(smtpd.messages) == 1
 
@@ -323,12 +336,20 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
         "error",
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
+
     assert (
-        "error",
-        "An error occurred while communicating the incident to the administrators. "
+        "info",
+        "We are sending an email to your administrator about the failure of the password compromise investigation."
         "Please update your password as soon as possible. "
         "If this still happens, please contact the administrators.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: SMTP AUTH extension not supported by server.",
+    ) in caplog.record_tuples
+
     assert ("success", "Your account has been created successfully.") in res.flashes
 
     user = backend.get(models.User, user_name="newuser")

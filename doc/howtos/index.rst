@@ -9,5 +9,6 @@ How-tos
    databases
    sso
    provisioning
+   worker
    theming
    troubleshooting

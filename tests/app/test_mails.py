@@ -1,3 +1,4 @@
+import logging
 import smtplib
 import warnings
 from unittest import mock
@@ -16,22 +17,29 @@ def configuration(configuration, httpserver):
     return configuration
 
 
-def test_send_test_email(testclient, logged_admin, smtpd):
+def test_send_test_email(testclient, logged_admin, smtpd, caplog):
     """Test that admin can send a test email successfully."""
     assert len(smtpd.messages) == 0
 
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
+
     assert (
-        "success",
-        "The test mail has been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
 
 
-def test_send_test_email_ssl(testclient, logged_admin, smtpd):
+def test_send_test_email_ssl(testclient, logged_admin, smtpd, caplog):
     """Test that emails can be sent using SSL connection."""
     smtpd.config.use_ssl = True
     smtpd.config.use_starttls = False
@@ -46,15 +54,22 @@ def test_send_test_email_ssl(testclient, logged_admin, smtpd):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
+
     assert (
-        "success",
-        "The test mail has been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
 
 
-def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
+def test_send_test_email_without_credentials(testclient, logged_admin, smtpd, caplog):
     """Test that emails can be sent without SMTP authentication credentials."""
     testclient.app.config["CANAILLE"]["SMTP"]["LOGIN"] = None
     testclient.app.config["CANAILLE"]["SMTP"]["PASSWORD"] = None
@@ -64,16 +79,25 @@ def test_send_test_email_without_credentials(testclient, logged_admin, smtpd):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
+
     assert (
-        "success",
-        "The test mail has been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
 
 
 @mock.patch("smtplib.SMTP")
-def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd):
+def test_send_test_email_recipient_refused(
+    SMTP, testclient, logged_admin, smtpd, caplog
+):
     """Test that SMTPRecipientsRefused error is handled gracefully when sending email."""
     SMTP.side_effect = mock.Mock(
         side_effect=smtplib.SMTPRecipientsRefused("test@test.test")
@@ -83,28 +107,45 @@ def test_send_test_email_recipient_refused(SMTP, testclient, logged_admin, smtpd
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
+
     assert (
-        "success",
-        "The test mail has been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 0
 
 
-def test_send_test_email_failed(testclient, logged_admin):
+def test_send_test_email_failed(testclient, logged_admin, caplog, smtpd):
     """Test that email sending failures are reported with an error flash message."""
+    assert len(smtpd.messages) == 0
     testclient.app.config["CANAILLE"]["SMTP"]["TLS"] = False
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     with warnings.catch_warnings(record=True):
         res = res.form.submit(expect_errors=True)
+
     assert (
-        "error",
-        "The test mail has not been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
 
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: SMTP AUTH extension not supported by server.",
+    ) in caplog.record_tuples
 
-def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
+    assert len(smtpd.messages) == 0
+
+
+def test_mail_with_default_no_logo(testclient, logged_admin, smtpd, caplog):
     """Test that emails can be sent without a logo when LOGO is None."""
     testclient.app.config["CANAILLE"]["LOGO"] = None
     assert len(smtpd.messages) == 0
@@ -112,10 +153,17 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
+
     assert (
-        "success",
-        "The test mail has been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]
@@ -123,7 +171,7 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd):
     assert "cid" not in html_content
 
 
-def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
+def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver, caplog):
     """Test that emails include the default logo as an embedded image."""
     logo_path = "/static/img/canaille-head.webp"
     with open(f"canaille/{logo_path}", "rb") as fd:
@@ -135,10 +183,17 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
     res = testclient.get(f"http://{httpserver.host}:{httpserver.port}/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
+
     assert (
-        "success",
-        "The test mail has been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]
@@ -149,7 +204,7 @@ def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver):
     assert raw_payload == raw_logo
 
 
-def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
+def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver, caplog):
     """Test that emails include custom HTTP logo as an embedded image."""
     logo_path = "/static/img/canaille-head.webp"
     with open(f"canaille/{logo_path}", "rb") as fd:
@@ -164,10 +219,17 @@ def test_mail_with_logo_in_http(testclient, logged_admin, smtpd, httpserver):
     res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
+
     assert (
-        "success",
-        "The test mail has been sent correctly",
+        "info",
+        "Sending test mail. Please check the recipient mail box.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
 
     assert len(smtpd.messages) == 1
     html_message = smtpd.messages[0].get_payload()[1]

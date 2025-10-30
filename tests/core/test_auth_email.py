@@ -59,7 +59,7 @@ def test_signin_with_email_otp(smtpd, testclient, backend, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time passcode for user to john@doe.test",
+        "Sending one-time passcode for user to john@doe.test",
     ) in caplog.record_tuples
 
     backend.reload(user)
@@ -103,7 +103,7 @@ def test_signin_wrong_email_otp(testclient, user, caplog):
     assert (
         "canaille",
         logging.SECURITY,
-        "Sent one-time passcode for user to john@doe.test",
+        "Sending one-time passcode for user to john@doe.test",
     ) in caplog.record_tuples
 
     res.form["otp"] = "123456"
@@ -187,13 +187,13 @@ def test_send_new_mail_otp_on_time(smtpd, testclient, backend, user, caplog):
         backend.reload(user)
         assert user.one_time_password in email_content
         assert (
-            "success",
-            "The new verification code have been sent.",
+            "info",
+            "Sending new verification code.",
         ) in res.flashes
         assert (
             "canaille",
             logging.SECURITY,
-            "Sent one-time passcode for user to john@doe.test",
+            "Sending one-time passcode for user to john@doe.test",
         ) in caplog.record_tuples
 
         assert res.location == "/auth/email"
@@ -213,8 +213,8 @@ def test_send_new_mail_invalid_user(smtpd, testclient, backend, user, caplog):
 
         assert len(smtpd.messages) == 0
         assert (
-            "success",
-            "The new verification code have been sent.",
+            "info",
+            "Sending new verification code.",
         ) in res.flashes
         assert (
             "canaille",
@@ -235,6 +235,12 @@ def test_send_new_email_error(smtpd, testclient, backend, user, caplog):
 
     with time_machine.travel("2020-01-01 01:01:00+00:00", tick=False):
         res = res.form.submit(status=302, name="action", value="resend")
+
+        assert (
+            "info",
+            "Sending new verification code.",
+        ) in res.flashes
+
         assert (
             "canaille",
             logging.WARNING,

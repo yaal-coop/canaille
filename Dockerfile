@@ -15,4 +15,5 @@ WORKDIR /opt/canaille
 RUN uv sync --all-extras
 ENV PATH="/opt/canaille/.venv/bin:$PATH"
 EXPOSE 8000
-ENTRYPOINT ["canaille", "run", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["canaille"]
+CMD ["run", "--bind", "0.0.0.0:8000"]

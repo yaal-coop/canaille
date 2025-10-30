@@ -8,6 +8,7 @@ from flask import current_app
 
 from canaille.app import get_current_domain
 from canaille.app import get_current_mail_domain
+from canaille.app.flask import dramatiq
 
 
 def logo():
@@ -46,6 +47,7 @@ def type_from_filename(filename):
     return maintype, subtype
 
 
+@dramatiq.actor
 def send_email(subject, recipient, text, html, attachments=None):
     current_app.logger.debug(f"Sending a mail to {recipient}: {subject}")
     msg = email.message.EmailMessage()
@@ -98,4 +100,5 @@ def send_email(subject, recipient, text, html, attachments=None):
         current_app.logger.warning(f"Could not send email: {exc}")
         return False
 
+    current_app.logger.info("The mail has been sent correctly.")
     return True

@@ -1,9 +1,10 @@
+import logging
 from unittest import mock
 
 from canaille.app import models
 
 
-def test_user_without_password_first_login(testclient, backend, smtpd):
+def test_user_without_password_first_login(testclient, backend, smtpd, caplog):
     """Test that users without passwords are redirected to first login flow and receive initialization email."""
     assert len(smtpd.messages) == 0
     u = models.User(
@@ -23,11 +24,19 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
     res.mustcontain("First login")
 
     res = res.form.submit(name="action", value="sendmail")
+
     assert (
-        "success",
-        "A password initialization link has been sent at your email address. "
-        "You should receive it within a few minutes.",
+        "info",
+        "Sending password initialization link at your email address. "
+        "It should be received within a few minutes.",
     ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "The mail has been sent correctly.",
+    ) in caplog.record_tuples
+
     assert len(smtpd.messages) == 2
     assert [message["X-RcptTo"] for message in smtpd.messages] == u.emails
     assert "Password initialization" in smtpd.messages[0].get("Subject")
@@ -36,7 +45,7 @@ def test_user_without_password_first_login(testclient, backend, smtpd):
 
 @mock.patch("smtplib.SMTP")
 def test_first_login_account_initialization_mail_sending_failed(
-    SMTP, testclient, backend, smtpd
+    SMTP, testclient, backend, smtpd, caplog
 ):
     """Test that first login initialization handles email sending failures gracefully."""
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
@@ -52,12 +61,19 @@ def test_first_login_account_initialization_mail_sending_failed(
 
     res = testclient.get("/firstlogin/temp")
     res = res.form.submit(name="action", value="sendmail", expect_errors=True)
+
     assert (
-        "success",
-        "A password initialization link has been sent at your email address. "
-        "You should receive it within a few minutes.",
-    ) not in res.flashes
-    assert ("error", "Could not send the password initialization email") in res.flashes
+        "info",
+        "Sending password initialization link at your email address. "
+        "It should be received within a few minutes.",
+    ) in res.flashes
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "Could not send email: unit test mail error",
+    ) in caplog.record_tuples
+
     assert len(smtpd.messages) == 0
     backend.delete(u)
 

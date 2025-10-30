@@ -9,6 +9,7 @@ from scim2_models import SearchRequest
 from werkzeug.security import gen_salt
 
 from canaille.app import models
+from canaille.app.flask import dramatiq
 from canaille.backends import Backend
 from canaille.scim.casting import group_from_canaille_to_scim
 from canaille.scim.casting import user_from_canaille_to_scim
@@ -96,11 +97,20 @@ def initiate_scim_client(client):
     return scim
 
 
-def execute_scim_user_action(scim, user, client_name, method):
+@dramatiq.actor
+def execute_scim_user_action(client_id, user_id, method):
     """Create/update/delete a distant user with SCIM requests."""
+    with current_app.app_context():
+        with current_app.backend.session():
+            user = Backend.instance.get(models.User, user_id)
+            client = Backend.instance.get(models.Client, client_id)
+    scim = initiate_scim_client(client)
+    if not scim:
+        return
+
     User = scim.get_resource_model("User")
 
-    req = SearchRequest(filter=f'externalId eq "{user.id}"')
+    req = SearchRequest(filter=f'externalId eq "{user_id}"')
     response = scim.query(User, search_request=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
@@ -109,7 +119,7 @@ def execute_scim_user_action(scim, user, client_name, method):
             scim.delete(User, distant_scim_user.id)
         except:
             current_app.logger.warning(
-                f"SCIM User {user.user_name} delete for client {client_name} failed"
+                f"SCIM User {user.user_name} delete for client {client.client_name} failed"
             )
     elif method == "save":
         EnterpriseUser = User.get_extension_model("EnterpriseUser")
@@ -119,7 +129,7 @@ def execute_scim_user_action(scim, user, client_name, method):
                 scim.create(scim_user)
             except Exception:
                 current_app.logger.warning(
-                    f"SCIM User {user.user_name} creation for client {client_name} failed"
+                    f"SCIM User {user.user_name} creation for client {client.client_name} failed"
                 )
         else:
             scim_user.id = distant_scim_user.id
@@ -127,16 +137,14 @@ def execute_scim_user_action(scim, user, client_name, method):
                 scim.replace(scim_user)
             except Exception:
                 current_app.logger.warning(
-                    f"SCIM User {user.user_name} update for client {client_name} failed"
+                    f"SCIM User {user.user_name} update for client {client.client_name} failed"
                 )
 
 
 def propagate_user_scim_modification(user, method):
     """After a user edition/deletion, broadcast the event to all the clients."""
     for client in get_clients_to_notify(user):
-        scim = initiate_scim_client(client)
-        if scim:
-            execute_scim_user_action(scim, user, client.client_name, method)
+        execute_scim_user_action.send(client.id, user.id, method)
 
 
 def execute_scim_group_action(scim, group, client_name, method):
