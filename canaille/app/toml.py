@@ -97,7 +97,7 @@ def _export_model(obj, model, with_comments, with_defaults, line_length):
         field_value = getattr(obj, field_name) if obj is not None else None
         field_type = get_root_type(field_info.annotation)[0]
         is_model_type = isclass(field_type) and issubclass(
-            field_type, BaseModel | BaseSettings
+            field_type, (BaseModel, BaseSettings)
         )
         display_value = is_model_type or (
             field_value is not None and field_value != field_info.default
