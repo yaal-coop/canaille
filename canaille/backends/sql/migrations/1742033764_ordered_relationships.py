@@ -6,6 +6,7 @@ Create Date: 2025-03-15 11:16:04.256771
 
 """
 
+import warnings
 from collections.abc import Sequence
 
 import sqlalchemy as sa
@@ -33,8 +34,15 @@ def upgrade() -> None:
         ) s
         WHERE client_audience_association_table.audience_id = s.audience_id AND client_audience_association_table.client_id = s.client_id;
     """)
-    with op.batch_alter_table("client_audience_association_table") as batch_op:
-        batch_op.alter_column("index", existing_type=sa.Integer(), autoincrement=True)
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message="autoincrement and existing_autoincrement only make sense for MySQL",
+        )
+        with op.batch_alter_table("client_audience_association_table") as batch_op:
+            batch_op.alter_column(
+                "index", existing_type=sa.Integer(), autoincrement=True
+            )
 
     op.add_column(
         "membership_association_table",
@@ -49,8 +57,15 @@ def upgrade() -> None:
         ) s
         WHERE membership_association_table.user_id = s.user_id AND membership_association_table.group_id = s.group_id;
     """)
-    with op.batch_alter_table("membership_association_table") as batch_op:
-        batch_op.alter_column("index", existing_type=sa.Integer(), autoincrement=True)
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message="autoincrement and existing_autoincrement only make sense for MySQL",
+        )
+        with op.batch_alter_table("membership_association_table") as batch_op:
+            batch_op.alter_column(
+                "index", existing_type=sa.Integer(), autoincrement=True
+            )
 
     op.add_column(
         "token_audience_association_table",
@@ -65,8 +80,15 @@ def upgrade() -> None:
         ) s
         WHERE token_audience_association_table.token_id = s.token_id AND token_audience_association_table.client_id = s.client_id;
     """)
-    with op.batch_alter_table("token_audience_association_table") as batch_op:
-        batch_op.alter_column("index", existing_type=sa.Integer(), autoincrement=True)
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message="autoincrement and existing_autoincrement only make sense for MySQL",
+        )
+        with op.batch_alter_table("token_audience_association_table") as batch_op:
+            batch_op.alter_column(
+                "index", existing_type=sa.Integer(), autoincrement=True
+            )
 
     # ### end Alembic commands ###
 

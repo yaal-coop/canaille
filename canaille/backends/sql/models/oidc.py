@@ -9,6 +9,8 @@ from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Table
 from sqlalchemy import Text
+from sqlalchemy import func
+from sqlalchemy import select
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -23,10 +25,27 @@ from .core import SqlAlchemyModel
 if TYPE_CHECKING:
     from .core import User
 
+
+def _client_audience_index_default(context):
+    """Calculate next index for client_audience_association_table per client."""
+    params = context.get_current_parameters()
+    client_id = params.get("client_id")
+    if client_id is None:
+        return None
+
+    conn = context.connection
+    result = conn.execute(
+        select(func.coalesce(func.max(Column("index", Integer)), 0))
+        .select_from(Table("client_audience_association_table", Base.metadata))
+        .where(Column("client_id") == client_id)
+    )
+    return result.scalar() + 1
+
+
 client_audience_association_table = Table(
     "client_audience_association_table",
     Base.metadata,
-    Column("index", Integer, autoincrement=True),
+    Column("index", Integer, default=_client_audience_index_default),
     Column("audience_id", ForeignKey("client.id"), primary_key=True, nullable=True),
     Column("client_id", ForeignKey("client.id"), primary_key=True, nullable=True),
 )
@@ -157,10 +176,26 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
     amr: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
 
 
+def _token_audience_index_default(context):
+    """Calculate next index for token_audience_association_table per token."""
+    params = context.get_current_parameters()
+    token_id = params.get("token_id")
+    if token_id is None:
+        return None
+
+    conn = context.connection
+    result = conn.execute(
+        select(func.coalesce(func.max(Column("index", Integer)), 0))
+        .select_from(Table("token_audience_association_table", Base.metadata))
+        .where(Column("token_id") == token_id)
+    )
+    return result.scalar() + 1
+
+
 token_audience_association_table = Table(
     "token_audience_association_table",
     Base.metadata,
-    Column("index", Integer, autoincrement=True),
+    Column("index", Integer, default=_token_audience_index_default),
     Column("token_id", ForeignKey("token.id"), primary_key=True, nullable=True),
     Column("client_id", ForeignKey("client.id"), primary_key=True, nullable=True),
 )

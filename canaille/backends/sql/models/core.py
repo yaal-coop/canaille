@@ -10,7 +10,9 @@ from sqlalchemy import LargeBinary
 from sqlalchemy import String
 from sqlalchemy import Table
 from sqlalchemy import Text
+from sqlalchemy import func
 from sqlalchemy import or_
+from sqlalchemy import select
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import mapped_column
@@ -76,10 +78,26 @@ class SqlAlchemyModel(BackendModel):
         return False
 
 
+def _membership_index_default(context):
+    """Calculate next index for membership_association_table per group."""
+    params = context.get_current_parameters()
+    group_id = params.get("group_id")
+    if group_id is None:
+        return None
+
+    conn = context.connection
+    result = conn.execute(
+        select(func.coalesce(func.max(Column("index", Integer)), 0))
+        .select_from(Table("membership_association_table", Base.metadata))
+        .where(Column("group_id") == group_id)
+    )
+    return result.scalar() + 1
+
+
 membership_association_table = Table(
     "membership_association_table",
     Base.metadata,
-    Column("index", Integer, autoincrement=True),
+    Column("index", Integer, default=_membership_index_default),
     Column("user_id", ForeignKey("user.id"), primary_key=True),
     Column("group_id", ForeignKey("group.id"), primary_key=True),
 )
