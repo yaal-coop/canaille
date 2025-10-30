@@ -5,12 +5,14 @@ from pathlib import Path
 from flask import current_app
 from flask_alembic import Alembic
 from sqlalchemy import MetaData
+from sqlalchemy import String
 from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.types import JSON as JSONType
 from sqlalchemy_utils import Password
 
 from canaille.app.configuration import CheckResult
@@ -133,12 +135,19 @@ class SQLBackend(Backend):
 
     def fuzzy(self, model, query, attributes=None, **kwargs):
         attributes = attributes or model.attributes
+
+        def build_filter(attribute_name):
+            column = getattr(model, attribute_name)
+            # JSON columns need to be cast to String for ILIKE to work
+            if isinstance(column.type, JSONType):
+                return column.cast(String).ilike(f"%{query}%")
+            return column.ilike(f"%{query}%")
+
         filter = or_(
-            getattr(model, attribute_name).ilike(f"%{query}%")
+            build_filter(attribute_name)
             for attribute_name in attributes
-            if "str" in str(model.attributes[attribute_name])
-            # erk, photo is an URL string according to SCIM, but bytes here
-            and attribute_name != "photo"
+            if hasattr(getattr(model, attribute_name), "type")
+            and isinstance(getattr(model, attribute_name).type, (String, JSONType))
         )
 
         return self.db_session.execute(select(model).filter(filter)).scalars().all()
