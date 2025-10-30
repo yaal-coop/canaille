@@ -198,6 +198,9 @@ def setup_flask(app):
 
     csrf.init_app(app)
     cache.init_app(app)
+
+    # dirty warning silencing for the testsuite
+    dramatiq.app = None
     dramatiq.init_app(app)
 
     if app.debug or app.config.get("TESTING", False):  # pragma: no branch
