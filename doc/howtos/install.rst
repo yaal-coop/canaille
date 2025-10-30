@@ -45,7 +45,7 @@ Please note that you should adapt each of these steps to your situation.
    .. code-block:: console
        :caption: Initialize a default configuration file
 
-       $ docker run --entrypoint canaille yaalcoop/canaille:latest config dump > canaille.toml
+       $ docker run yaalcoop/canaille:latest config dump > canaille.toml
 
 #. Create a `docker-compose.yml` which mounts your configuration file.
 
@@ -74,7 +74,7 @@ Please note that you should adapt each of these steps to your situation.
    .. code-block:: console
        :caption: Create your first admin user
 
-       $ docker exec canaille-web sh -c "canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol"
+       $ docker exec canaille-web canaille create user --user-name admin --password admin --formatted-name 'George Abitbol' --emails admin@mydomain.example --given-name George --family-name Abitbol
 
 .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 

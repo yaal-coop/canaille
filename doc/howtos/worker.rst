@@ -45,3 +45,17 @@ Now you need to run the worker service. This can be done with the :ref:`cli_work
    :caption: Running the Canaille worker
 
    $ env CANAILLE_CONFIG=canaille.toml canaille worker
+
+With Docker
+-----------
+
+To run the worker with the Docker image, simply override the default command:
+
+.. code-block:: console
+   :caption: Running the Canaille worker with Docker
+
+   $ docker run \
+       -e CANAILLE_CONFIG=/etc/canaille/canaille.toml \
+       -v /path/to/canaille.toml:/etc/canaille/canaille.toml:ro \
+       yaal/canaille:latest \
+       worker
