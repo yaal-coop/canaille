@@ -30,10 +30,10 @@ class ClientAudience(Base):
     __tablename__ = "client_audience_association_table"
 
     client_id: Mapped[str] = mapped_column(
-        ForeignKey("client.id"), primary_key=True, nullable=True
+        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True, nullable=True
     )
     audience_id: Mapped[str] = mapped_column(
-        ForeignKey("client.id"), primary_key=True, nullable=True
+        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True, nullable=True
     )
     index: Mapped[int] = mapped_column(Integer)
 
@@ -148,9 +148,9 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
 
     authorization_code_id: Mapped[str] = mapped_column(String(255), nullable=True)
     code: Mapped[str] = mapped_column(String(255), nullable=True)
-    client_id: Mapped[str] = mapped_column(ForeignKey("client.id"))
+    client_id: Mapped[str] = mapped_column(ForeignKey("client.id", ondelete="CASCADE"))
     client: Mapped["Client"] = relationship()
-    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"))
+    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     subject: Mapped["User"] = relationship()
     redirect_uri: Mapped[str] = mapped_column(String(2048), nullable=True)
     response_type: Mapped[str] = mapped_column(String(100), nullable=True)
@@ -178,10 +178,10 @@ class TokenAudience(Base):
     __tablename__ = "token_audience_association_table"
 
     token_id: Mapped[str] = mapped_column(
-        ForeignKey("token.id"), primary_key=True, nullable=True
+        ForeignKey("token.id", ondelete="CASCADE"), primary_key=True, nullable=True
     )
     client_id: Mapped[str] = mapped_column(
-        ForeignKey("client.id"), primary_key=True, nullable=True
+        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True, nullable=True
     )
     index: Mapped[int] = mapped_column(Integer)
 
@@ -205,9 +205,11 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
 
     token_id: Mapped[str] = mapped_column(String(255), nullable=True)
     access_token: Mapped[str] = mapped_column(Text, nullable=True, unique=True)
-    client_id: Mapped[str] = mapped_column(ForeignKey("client.id"))
+    client_id: Mapped[str] = mapped_column(ForeignKey("client.id", ondelete="CASCADE"))
     client: Mapped["Client"] = relationship()
-    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
+    subject_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+    )
     subject: Mapped["User"] = relationship()
     type: Mapped[str] = mapped_column(String(50), nullable=True)
     refresh_token: Mapped[str] = mapped_column(Text, nullable=True, unique=True)
@@ -247,9 +249,9 @@ class Consent(canaille.oidc.models.Consent, Base, SqlAlchemyModel):
     )
 
     consent_id: Mapped[str] = mapped_column(String(255), nullable=True)
-    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id"))
+    subject_id: Mapped[str] = mapped_column(ForeignKey("user.id", ondelete="CASCADE"))
     subject: Mapped["User"] = relationship()
-    client_id: Mapped[str] = mapped_column(ForeignKey("client.id"))
+    client_id: Mapped[str] = mapped_column(ForeignKey("client.id", ondelete="CASCADE"))
     client: Mapped["Client"] = relationship()
     scope: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     issue_date: Mapped[datetime.datetime] = mapped_column(

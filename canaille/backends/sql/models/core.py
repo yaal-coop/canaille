@@ -93,8 +93,12 @@ class Membership(Base):
 
     __tablename__ = "membership_association_table"
 
-    user_id: Mapped[str] = mapped_column(ForeignKey("user.id"), primary_key=True)
-    group_id: Mapped[str] = mapped_column(ForeignKey("group.id"), primary_key=True)
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+    )
+    group_id: Mapped[str] = mapped_column(
+        ForeignKey("group.id", ondelete="CASCADE"), primary_key=True
+    )
     index: Mapped[int] = mapped_column(Integer)
 
     user: Mapped["User"] = relationship("User", foreign_keys=[user_id], lazy="joined")
@@ -231,5 +235,7 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
         "user",
         creator=lambda usr: Membership(user=usr),
     )
-    owner_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
+    owner_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="SET NULL"), nullable=True
+    )
     owner: Mapped["User"] = relationship()
