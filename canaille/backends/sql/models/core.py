@@ -10,7 +10,6 @@ from sqlalchemy import String
 from sqlalchemy import Text
 from sqlalchemy import or_
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import mapped_column
@@ -99,7 +98,9 @@ class Membership(Base):
     group_id: Mapped[str] = mapped_column(
         ForeignKey("group.id", ondelete="CASCADE"), primary_key=True
     )
-    index: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), server_default="CURRENT_TIMESTAMP"
+    )
 
     user: Mapped["User"] = relationship("User", foreign_keys=[user_id], lazy="joined")
     group: Mapped["Group"] = relationship(
@@ -167,8 +168,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     _groups_association: Mapped[list["Membership"]] = relationship(
         "Membership",
         foreign_keys="Membership.user_id",
-        order_by="Membership.index",
-        collection_class=ordering_list("index"),
+        order_by="Membership.created_at",
         cascade="all, delete-orphan",
         overlaps="user",
     )
@@ -225,8 +225,7 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     _members_association: Mapped[list["Membership"]] = relationship(
         "Membership",
         foreign_keys="Membership.group_id",
-        order_by="Membership.index",
-        collection_class=ordering_list("index"),
+        order_by="Membership.created_at",
         cascade="all, delete-orphan",
         overlaps="group",
     )
