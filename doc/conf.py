@@ -90,6 +90,9 @@ issues_uri = "https://gitlab.com/yaal/canaille/-/issues/{issue}"
 issues_pr_uri = "https://gitlab.com/yaal/canaille/-/merge_requests/{pr}"
 issues_commit_uri = "https://gitlab.com/yaal/canaille/-/commit/{commit}"
 
+# Shibuya theme includes Iconify support, so disable external script
+iconify_script_url = ""
+
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = "shibuya"

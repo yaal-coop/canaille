@@ -20,6 +20,8 @@ This page describes how to get and set-up Canaille.
 Get the code
 ============
 
+.. _install_docker:
+
 Docker
 ------
 
@@ -78,6 +80,8 @@ Please note that you should adapt each of these steps to your situation.
 
 .. _dockerhub: https://hub.docker.com/r/yaalcoop/canaille
 
+.. _install_binaries:
+
 Binaries
 --------
 
@@ -97,6 +101,8 @@ This is generally the recommended method to use Canaille in production.
     This is generally not an issue, since Canaille is used as a long-running service,
     but if this is important for you, you might want to choose another installation method.
 
+.. _install_nix:
+
 Linux packages
 --------------
 
@@ -104,6 +110,8 @@ At the moment, only `NixOS`_ provides a Canaille package.
 For other distros, you must use a different way to install Canaille.
 
 .. _NixOS: https://mynixos.com/nixpkgs/package/canaille
+
+.. _install_python:
 
 Python package
 --------------
