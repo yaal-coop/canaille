@@ -88,7 +88,9 @@ class SQLBackend(Backend):
             self.db_session = Session(SQLBackend.engine)
 
     def teardown(self):
-        pass
+        if self.db_session:
+            self.db_session.rollback()
+            self.db_session.expire_all()
 
     @classmethod
     def check_network_config(cls, config):
