@@ -13,12 +13,12 @@
         {% block style %}{% endblock %}
     </head>
 
-    <body>
+    <body style="background-color: #1b1c1d;">
         <div class="ui container">
-            <div class="ui masthead center aligned segment">
+            <div class="ui inverted masthead center aligned segment">
                 <div class="ui text container">
-                    <h2 class="ui header">
-                        <img class="ui image" src="{{ url_for("static", filename="img/canaille-head.webp") }}" alt="Canaille client" />
+                    <h2 class="ui inverted header">
+                        <img class="ui image" src="{{ url_for("static", filename="img/canaille-head-white.svg") }}" alt="Canaille client" />
                         <div class="content">
                             {{ name }}
                         </div>
@@ -131,32 +131,32 @@
                     </div>
 
                     <div class="ui buttons">
-                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui big button">
+                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui big inverted button">
                             Identity server
                         </a>
-                        <a class="ui big primary button" href="{{ url_for('login') }}">
+                        <a class="ui big inverted primary button" href="{{ url_for('login') }}">
                             Sign in again
                             <i class="sign in icon"></i>
                         </a>
-                        <a class="ui big primary button" href="{{ url_for('consent') }}">
+                        <a class="ui big inverted primary button" href="{{ url_for('consent') }}">
                             Consent again
                             <i class="sign in icon"></i>
                         </a>
-                        <a class="ui big negative button" href="{{ url_for('logout') }}">
+                        <a class="ui big inverted negative button" href="{{ url_for('logout') }}">
                             Log out
                             <i class="sign out icon"></i>
                         </a>
                     </div>
                 {% else %}
                     <div class="ui buttons">
-                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui big button">
+                        <a href="{{ config.OAUTH_AUTH_SERVER }}" target="_blank" class="ui big inverted button">
                             Identity server
                         </a>
-                        <a class="ui big primary button" href="{{ url_for('register') }}">
+                        <a class="ui big inverted primary button" href="{{ url_for('register') }}">
                             Sign up
                             <i class="handshake icon"></i>
                         </a>
-                        <a class="ui big primary button" href="{{ url_for('login') }}">
+                        <a class="ui big inverted primary button" href="{{ url_for('login') }}">
                             Sign in
                             <i class="sign in icon"></i>
                         </a>
