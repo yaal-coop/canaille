@@ -16,7 +16,7 @@ SQL
 ===
 
 Canaille can use any database supported by `SQLAlchemy <https://www.sqlalchemy.org/>`_, such as
-sqlite, postgresql or mariadb.
+sqlite or postgresql.
 
 Configuration
 -------------

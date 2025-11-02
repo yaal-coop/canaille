@@ -316,7 +316,7 @@ There are also tools to :ref:`fill your database <cli_populate>` with random obj
 Databases
 =========
 
-Canaille can handle data from the most :ref:`common SQL databases <howtos/databases:SQL>` such as PostgreSQL, MariaDB or SQLite, as well as :ref:`OpenLDAP <howtos/databases:LDAP>`.
+Canaille can handle data from the most :ref:`common SQL databases <howtos/databases:SQL>` such as PostgreSQL or SQLite, as well as :ref:`OpenLDAP <howtos/databases:LDAP>`.
 It also comes with a no-dependency :ref:`in-memory database <howtos/databases:Memory>` that can be used in unit tests suites.
 
 .. _feature_logging:

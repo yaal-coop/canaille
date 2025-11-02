@@ -10,7 +10,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 - Authentication, registration, email confirmation, "I forgot my password" emails;
 - Authorization management with [OpenID Connect](https://openid.net/developers/how-connect-works) identity;
 - Provisioning with [SCIM](https://scim.libre.sh);
-- postgresql, mariadb and OpenLDAP first-class citizenship;
+- postgresql and OpenLDAP support;
 - Customizable, themable;
 - The code is easy to read and easy to edit!
 

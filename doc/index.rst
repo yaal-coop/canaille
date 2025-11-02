@@ -54,7 +54,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
         :link-type: ref
         :link: feature_databases
 
-        PostgreSQL, Mariadb and OpenLDAP first-class citizenship
+        PostgreSQL, SQLite and OpenLDAP support
 
     .. grid-item-card:: :iconify:`mdi:palette` Customization
         :link-type: ref
