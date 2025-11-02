@@ -22,25 +22,6 @@ def setup_routes(app):
             "index.html", user=session.get("user"), name=app.config["NAME"]
         )
 
-    @app.route("/register")
-    def register():
-        """Redirect users to the Identity Provider registration page."""
-        return oauth.canaille.authorize_redirect(
-            url_for("register_callback", _external=True), prompt="create"
-        )
-
-    @app.route("/register_callback")
-    def register_callback():
-        try:
-            token = oauth.canaille.authorize_access_token()
-            session["user"] = token.get("userinfo")
-            session["id_token"] = token["id_token"]
-            flash("You account has been successfully created.", "success")
-        except AuthlibBaseError as exc:
-            flash(f"An error happened during registration: {exc.description}", "error")
-
-        return redirect(url_for("index"))
-
     @app.route("/login")
     def login():
         """Redirect users to the Identity Provider login page."""
@@ -52,13 +33,6 @@ def setup_routes(app):
             return oauth.canaille.authorize_redirect(
                 url_for("login_callback", _external=True)
             )
-
-    @app.route("/consent")
-    def consent():
-        """Redirect users to the Identity Provider consent page."""
-        return oauth.canaille.authorize_redirect(
-            url_for("login_callback", _external=True), prompt="consent"
-        )
 
     @app.route("/login_callback")
     def login_callback():
@@ -98,6 +72,32 @@ def setup_routes(app):
 
         flash("You have been successfully logged out", "success")
         return redirect(url_for("index"))
+
+    @app.route("/register")
+    def register():
+        """Redirect users to the Identity Provider registration page."""
+        return oauth.canaille.authorize_redirect(
+            url_for("register_callback", _external=True), prompt="create"
+        )
+
+    @app.route("/register_callback")
+    def register_callback():
+        try:
+            token = oauth.canaille.authorize_access_token()
+            session["user"] = token.get("userinfo")
+            session["id_token"] = token["id_token"]
+            flash("You account has been successfully created.", "success")
+        except AuthlibBaseError as exc:
+            flash(f"An error happened during registration: {exc.description}", "error")
+
+        return redirect(url_for("index"))
+
+    @app.route("/consent")
+    def consent():
+        """Redirect users to the Identity Provider consent page."""
+        return oauth.canaille.authorize_redirect(
+            url_for("login_callback", _external=True), prompt="consent"
+        )
 
 
 def setup_oauth(app):
