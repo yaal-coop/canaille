@@ -7,3 +7,4 @@ Tutorials are learning-oriented lessons that help you understand Canaille throug
    :maxdepth: 1
 
    getting-started
+   oidc-client

@@ -12,6 +12,12 @@ from dev.devapp import create_app
 WSGIRequestHandler.log_request = lambda *args, **kwargs: None
 
 
+def create_auth_playground_app(sphinx_app):
+    import auth_playground
+
+    return auth_playground.create_app()
+
+
 def create_doc_app(sphinx_app):
     conf_path = pathlib.Path(__file__).parent.parent / "dev" / "conf" / "canaille.toml"
     with open(conf_path) as fd:

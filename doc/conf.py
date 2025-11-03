@@ -57,12 +57,15 @@ copyright = f"{year}, Yaal Coop"
 author = "Yaal Coop"
 
 version = metadata.version("canaille")
+auth_playground_version = metadata.version("auth-playground")
+
 language = "en"
 exclude_patterns = []
 
 # Define substitutions for sphinx-substitution-extensions
 rst_prolog = f"""
 .. |version| replace:: {version}
+.. |auth_playground_version| replace:: {auth_playground_version}
 """
 
 pygments_style = "sphinx"
@@ -204,6 +207,7 @@ jinja_template_path = str(
 # -- Screenshots options ------------------------------------------------------
 screenshot_apps = {
     "canaille": "doc.doc_app:create_doc_app",
+    "auth-playground": "doc.doc_app:create_auth_playground_app",
 }
 
 screenshot_contexts = {

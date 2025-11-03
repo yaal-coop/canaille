@@ -179,6 +179,7 @@ doc = [
     "sphinx-copybutton>=0.5.2",
     "sphinx-iconify>=0.1.0",
     "sphinx-substitution-extensions>=2024.2.25",
+    "auth-playground>=0.1.2",
 ]
 devserver = [
     "faker >= 37.11.0",
