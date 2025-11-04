@@ -11,6 +11,8 @@ Discuss
 If you want to implement a feature or a bugfix, please start by discussing it with us on
 the `bugtracker <https://gitlab.com/yaal/canaille/-/issues>`_ or the `matrix room
 <https://matrix.to/#/#canaille-discuss:yaal.coop>`_.
+If the bug is confirmed or the features fits in the roadmap, you can then open a merge request on GitLab.
+The test suite must pass with full coverage for your contribution to be accepted.
 
 Development environment
 -----------------------
