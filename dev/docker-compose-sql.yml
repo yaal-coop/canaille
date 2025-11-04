@@ -19,43 +19,17 @@ services:
     ports:
       - 5000:5000
 
-  client1:
-    hostname: client1.localhost
+  client:
+    hostname: client.localhost
     depends_on:
       - canaille
-    build:
-      context: .
-      dockerfile: Dockerfile-client
+    image: ghcr.io/authlib/auth-playground:latest
     environment:
-      - FLASK_DEBUG=1
-      - CLIENT_CONFIG=/opt/client/conf/client1.cfg
-      - FLASK_APP=client
-    volumes:
-      - ./client:/opt/client/client
-      - ./conf:/opt/client/conf
-      - ../canaille/static:/opt/canaille/static
-    command: --port=5001
+      - OAUTH_CLIENT_ID=client
+      - OAUTH_CLIENT_SECRET=2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x
+      - OAUTH_AUTH_SERVER=http://canaille.localhost:5000
     ports:
-      - 5001:5001
-
-  client2:
-    hostname: client2.localhost
-    depends_on:
-      - canaille
-    build:
-      context: .
-      dockerfile: Dockerfile-client
-    environment:
-      - FLASK_DEBUG=1
-      - CLIENT_CONFIG=/opt/client/conf/client2.cfg
-      - FLASK_APP=client
-    volumes:
-      - ./client:/opt/client/client
-      - ./conf:/opt/client/conf
-      - ../canaille/static:/opt/canaille/static
-    command: --port=5002
-    ports:
-      - 5002:5002
+      - 4000:4000
 
   maildump:
     hostname: maildump.localhost

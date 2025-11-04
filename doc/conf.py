@@ -118,12 +118,8 @@ html_theme_options = {
                     "url": "https://demo.canaille.yaal.coop",
                 },
                 {
-                    "title": "OIDC Client 1",
-                    "url": "https://demo.client1.yaal.coop",
-                },
-                {
-                    "title": "OIDC Client 2",
-                    "url": "https://demo.client2.yaal.coop",
+                    "title": "OIDC Client",
+                    "url": "https://demo.client.yaal.coop",
                 },
             ],
         },

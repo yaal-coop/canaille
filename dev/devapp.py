@@ -105,25 +105,25 @@ def populate(app):
             )
             app.backend.save(users)
 
-            client1 = models.Client(
+            client = models.Client(
                 client_id_issued_at=datetime.datetime.utcnow(),
-                client_id="client1",
+                client_id="client",
                 client_secret="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x",
-                client_name="Client1",
+                client_name="Client",
                 contacts=["admin@example.org"],
-                client_uri="http://client1.localhost:5001",
+                client_uri="http://client.localhost:4000",
                 redirect_uris=[
-                    "http://localhost:5001/login_callback",
-                    "http://localhost:5001/register_callback",
-                    "http://client1.localhost:5001/login_callback",
-                    "http://client1.localhost:5001/register_callback",
+                    "http://localhost:4000/login_callback",
+                    "http://localhost:4000/register_callback",
+                    "http://client.localhost:4000/login_callback",
+                    "http://client.localhost:4000/register_callback",
                 ],
                 post_logout_redirect_uris=[
-                    "http://localhost:5001/logout_callback",
-                    "http://client1.localhost:5001/logout_callback",
+                    "http://localhost:4000/logout_callback",
+                    "http://client.localhost:4000/logout_callback",
                 ],
-                tos_uri="http://client1.localhost:5001/tos",
-                policy_uri="http://client1.localhost:5001/policy",
+                tos_uri="http://client.localhost:4000/tos",
+                policy_uri="http://client.localhost:4000/policy",
                 grant_types=[
                     "authorization_code",
                     "refresh_token",
@@ -134,47 +134,14 @@ def populate(app):
                 response_types=["code", "id_token"],
                 token_endpoint_auth_method="client_secret_basic",
             )
-            app.backend.save(client1)
-            client1.audience = [client1]
-            app.backend.save(client1)
-
-            client2 = models.Client(
-                client_id_issued_at=datetime.datetime.utcnow(),
-                client_id="client2",
-                client_secret="ouFJE5WpICt6hxTyf8icXPeeklMektMY4gV0Rmf3aY60VElA",
-                client_name="Client2",
-                contacts=["admin@example.org"],
-                client_uri="http://client2.localhost:5002",
-                redirect_uris=[
-                    "http://localhost:5002/login_callback",
-                    "http://client2.localhost:5002/login_callback",
-                ],
-                post_logout_redirect_uris=[
-                    "http://localhost:5002/logout_callback",
-                    "http://localhost:5002/register_callback",
-                    "http://client2.localhost:5002/logout_callback",
-                    "http://client2.localhost:5002/register_callback",
-                ],
-                tos_uri="http://client2.localhost:5002/tos",
-                policy_uri="http://client2.localhost:5002/policy",
-                grant_types=[
-                    "authorization_code",
-                    "refresh_token",
-                    "client_credentials",
-                    "urn:ietf:params:oauth:grant-type:jwt-bearer",
-                ],
-                scope=["openid", "profile", "email", "groups", "address", "phone"],
-                response_types=["code", "id_token"],
-                token_endpoint_auth_method="client_secret_basic",
-            )
-            app.backend.save(client2)
-            client2.audience = [client2]
-            app.backend.save(client2)
+            app.backend.save(client)
+            client.audience = [client]
+            app.backend.save(client)
 
             token = models.Token(
                 token_id="EZWsi6omQRbJjWeq7rk8vcBVYz4PNbBXov97Z1D4mqxZgyQv",
                 access_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvIiwiYXVkIjpbIjFKR2trekNiZUhwR3RscWdJNUVFTkJ5ZiJdLCJpYXQiOjE3MzYxNjQwODIsImV4cCI6MTczNzAyODA4MiwiYXV0aF90aW1lIjoxNzM2MTY0MDgyLCJuYW1lIjoiSmFuZSBEb2UiLCJncm91cHMiOlsiaW1wb3J0YW50IiwiYWRtaW5zIiwidXNlcnMiXSwic3ViIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiSmFuZSIsImVtYWlsIjoiYWRtaW5AbXlkb21haW4udGxkIiwicGhvbmVfbnVtYmVyIjoiNTU1LTAwMC0wMDAiLCJmYW1pbHlfbmFtZSI6IkRvZSIsIndlYnNpdGUiOiJodHRwczovL2FkbWluLmV4YW1wbGUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJKYW5lLkQiLCJhZGRyZXNzIjoiMTIzLCBBZG1pbiBMYW5lIC0gR290aGFtIENpdHkgMTIzNDUifQ.gUy9wahjIy4PGGaI_8nIIeXyFdL2ngRLA43uuvlSLXq25bLfi9gsXNGuuuvwya0Qd6zjXJ4S9_q_Kr9oSgWAUQ1J-_F7-59_LSr2YYWYh05gWaRvKG7TqHHX7PIbx3Iv_ire_73xkLVQOG8KhLcP3DHfpBecwJbdFzk30CWDbCVFtWK8DdsffAaFGb2pnK-FdodmEQOBM0i58phbQcGdhJdCSMjJUy0y3KzSt9WqbkGA0avqzAXhiHCOn5A1rveqV0oBgFIODwcqA59XLcXTAD40DKFWQMm4AhH33R4Y4IHr3rupv2h06UTg_UvHw12xdwJgzKrPfZmAxUB8ZQKRBw",
-                client=client1,
+                client=client,
                 subject=john,
                 type="Bearer",
                 refresh_token="aCm97aw3gFlPBpV6EpUq8WnN0LVm4mFwAxkOMkVhAEjqu2tZ",
@@ -188,7 +155,7 @@ def populate(app):
                 ],
                 issue_date=datetime.datetime.now(tz=datetime.timezone.utc),
                 lifetime=60 * 60 * 24,
-                audience=[client1],
+                audience=[client],
             )
             app.backend.save(token)
 

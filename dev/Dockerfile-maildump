@@ -2,7 +2,8 @@ FROM python:slim
 
 RUN \
     apt update && \
-    apt --yes upgrade
+    apt --yes upgrade && \
+    apt install --yes gcc
 
 RUN pip install maildump
 

@@ -1,4 +1,3 @@
 canaille: env CANAILLE__DATABASE=memory FLASK_DEBUG=1 AUTHLIB_INSECURE_TRANSPORT=1 CANAILLE_ENV=.env CANAILLE_CONFIG=dev/conf/canaille.toml FLASK_APP=dev.devapp flask run --extra-files dev/conf/canaille.toml --extra-files "$CANAILLE__THEME"
-client1: env FLASK_DEBUG=1 CLIENT_CONFIG=../conf/client1.cfg FLASK_APP=dev.client flask run --port=5001
-client2: env FLASK_DEBUG=1 CLIENT_CONFIG=../conf/client2.cfg FLASK_APP=dev.client flask run --port=5002
+client: env OAUTH_CLIENT_ID="client" OAUTH_CLIENT_SECRET="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x" OAUTH_AUTH_SERVER="http://canaille.localhost:5000" auth-playground
 maildump: maildump

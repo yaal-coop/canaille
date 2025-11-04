@@ -37,8 +37,7 @@ docker run -it -p 5000:5000 yaalcoop/canaille:latest
 
 You have access to:
 - a canaille server at [https://demo.canaille.yaal.coop](https://demo.canaille.yaal.coop)
-- a dummy client at [https://demo.client1.yaal.coop](https://demo.client1.yaal.coop)
-- another dummy client at [https://demo.client2.yaal.coop](https://demo.client2.yaal.coop)
+- a dummy client at [https://demo.client.yaal.coop](https://demo.client.yaal.coop)
 
 Authentication details are available on the demo pages. Data is reset every night at 02:00 CEST.
 

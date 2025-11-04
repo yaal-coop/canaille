@@ -22,8 +22,7 @@ You can either run the development server locally or with Docker.
 After having launched the development server, you have access to several services:
 
 - A canaille server at `canaille.localhost:5000 <http://canaille.localhost:5000>`__
-- A dummy client at `client1.localhost:5001 <http://client1.localhost:5001>`__
-- Another dummy client at `client2.localhost:5002 <http://client2.localhost:5002>`__
+- A dummy client at `client.localhost:4000 <http://client.localhost:4000>`__
 - A mail catcher at `maildump.localhost:1080 <http://maildump.localhost:1080>`__
 
 The canaille server has some default users:
