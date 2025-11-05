@@ -113,10 +113,8 @@ def populate(app):
                 contacts=["admin@example.org"],
                 client_uri="http://client.localhost:4000",
                 redirect_uris=[
-                    "http://localhost:4000/login_callback",
-                    "http://localhost:4000/register_callback",
-                    "http://client.localhost:4000/login_callback",
-                    "http://client.localhost:4000/register_callback",
+                    "http://localhost:4000/authorize_callback",
+                    "http://client.localhost:4000/authorize_callback",
                 ],
                 post_logout_redirect_uris=[
                     "http://localhost:4000/logout_callback",
