@@ -69,26 +69,19 @@ def setup_i18n(app):
     )
 
 
-def smart_language_match(accept_languages, available_languages):
-    """Match accepted languages to available ones, handling regional variants.
+def match_language(requested_codes, available_languages, default_locale=None):
+    """Match requested language codes to available ones with fallback support.
 
-    Improves upon Werkzeug's best_match by falling back to base language codes
-    when exact regional variants aren't available. For example, if 'fr-FR' is
-    requested but only 'fr' is available, returns 'fr' instead of falling back
-    to a lower priority language like 'en'.
+    Tries to find the best match for requested language codes among available languages.
+    Supports fallback from regional variants to base languages (e.g., 'fr-CA' -> 'fr').
 
-    :param accept_languages: LanguageAccept object with client's language preferences
-    :param available_languages: List of available language codes
-    :returns: Best matching language code from available_languages
+    Returns None if no match is found and no default_locale is provided.
     """
-    exact_match = accept_languages.best_match(available_languages)
+    for lang_code in requested_codes:
+        if lang_code in available_languages:
+            return lang_code
 
-    if exact_match and exact_match != "en":
-        return exact_match
-
-    for lang_code, _priority in accept_languages:
         base_lang = lang_code.split("-")[0].split("_")[0]
-
         if base_lang in available_languages:
             return base_lang
 
@@ -99,11 +92,44 @@ def smart_language_match(accept_languages, available_languages):
             ):
                 return available
 
-    return exact_match or DEFAULT_LANGUAGE_CODE
+    return default_locale
+
+
+def smart_language_match(accept_languages, available_languages, default_locale=None):
+    """Match accepted languages to available ones, handling regional variants.
+
+    Improves upon Werkzeug's best_match by falling back to base language codes
+    when exact regional variants aren't available. For example, if 'fr-FR' is
+    requested but only 'fr' is available, returns 'fr' instead of falling back
+    to a lower priority language like 'en'.
+    """
+    default = default_locale if default_locale is not None else DEFAULT_LANGUAGE_CODE
+    exact_match = accept_languages.best_match(available_languages)
+
+    if exact_match and exact_match != default:
+        return exact_match
+
+    requested_codes = [lang_code for lang_code, _priority in accept_languages]
+    result = match_language(requested_codes, available_languages)
+    return result if result is not None else default
 
 
 def locale_selector():
+    """Select the best locale for the current request.
+
+    Locale selection follows this priority order:
+    1. ui_locales parameter (space-separated list set by OIDC)
+    2. User's preferred language (if authenticated)
+    3. Application configured language
+    4. Accept-Language HTTP header
+    """
     available_language_codes = getattr(g, "available_language_codes", [])
+
+    if ui_locales := getattr(g, "ui_locales", None):
+        result = match_language(ui_locales.split(), available_language_codes)
+        if result is not None:
+            return result
+
     if (
         g.get("session")
         and g.session.user.preferred_language in available_language_codes
