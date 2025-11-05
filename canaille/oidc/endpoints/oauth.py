@@ -85,7 +85,9 @@ def authorize():
     )
 
     try:
-        # Check that the request is well-formed
+        if ui_locales := request.values.get("ui_locales"):
+            g.ui_locales = ui_locales
+
         check_prompt_value()
 
         # Check that login is needed

@@ -1,3 +1,10 @@
+[0.0.88] - Unreleased
+---------------------
+
+Fixed
+^^^^^
+- Support OIDC ``ui_locales`` parameter. :issue:`108`
+
 [0.0.87] - 2025-11-02
 ---------------------
 
