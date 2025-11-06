@@ -1,6 +1,10 @@
 [0.0.88] - Unreleased
 ---------------------
 
+Added
+^^^^^
+- Restored the support for string ``JWKS`` in configuration.
+
 Fixed
 ^^^^^
 - Support OIDC ``ui_locales`` parameter. :issue:`108`

@@ -489,12 +489,14 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 # The active JSON Web Keys Set.
 #
-# Those keys are used to sign and verify JWTs.
+# Those keys are used to sign and verify JWTs. The keys can be in the form of JWK
+# dict or raw keys.
 # ACTIVE_JWKS =
 
 # The inactive JSON Web Keys Set.
 #
-# Those keys are only used to verify JWTs.
+# Those keys are only used to verify JWTs. The keys can be in the form of JWK dict
+# or raw keys.
 # INACTIVE_JWKS =
 
 # "Attribute mapping used to build an OIDC UserInfo object.

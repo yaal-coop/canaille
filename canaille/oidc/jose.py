@@ -8,13 +8,21 @@ import httpx
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import dsa
+from cryptography.hazmat.primitives.asymmetric import ec
+from cryptography.hazmat.primitives.asymmetric import ed448
 from cryptography.hazmat.primitives.asymmetric import ed25519
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.asymmetric import x448
+from cryptography.hazmat.primitives.asymmetric import x25519
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from flask import current_app
 from joserfc import jwk
 from joserfc import jws
 from joserfc import jwt
+from joserfc.jwk import ECKey
 from joserfc.jwk import OKPKey
+from joserfc.jwk import RSAKey
 
 from canaille.app.flask import cache
 
@@ -55,11 +63,38 @@ def make_default_jwk(seed=None):
     return key
 
 
+def detect_key_type(key_material):
+    """Detect the type of a cryptographic key from PEM/DER bytes or string."""
+    if isinstance(key_material, str):
+        key_material = key_material.encode()
+
+    try:
+        private_key = serialization.load_pem_private_key(key_material, password=None)
+    except Exception:
+        try:
+            private_key = serialization.load_der_private_key(
+                key_material, password=None
+            )
+        except Exception:
+            return None
+
+    if isinstance(private_key, rsa.RSAPrivateKey):
+        return RSAKey
+    if isinstance(private_key, ec.EllipticCurvePrivateKey):
+        return ECKey
+    if isinstance(private_key, (ed25519.Ed25519PrivateKey, ed448.Ed448PrivateKey)):
+        return OKPKey
+    if isinstance(private_key, (x25519.X25519PrivateKey, x448.X448PrivateKey)):
+        return OKPKey
+    if isinstance(private_key, dsa.DSAPrivateKey):
+        return None
+
+    return None
+
+
 def get_alg_for_key(key):
     """Find the algorithm for the given key."""
-    # TODO: Improve this when a better solution is implemented upstream
-    # https://github.com/authlib/joserfc/issues/49
-    for alg_name, alg in registry.algorithms.items():  # pragma: no cover
+    for alg_name, alg in registry.algorithms.items():
         if alg.key_type == key.key_type:
             return alg_name
 
@@ -69,7 +104,19 @@ def server_jwks(include_inactive=True):
     if include_inactive and current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]:
         keys += list(current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"])
 
-    key_objs = [jwk.import_key(key) for key in keys if key]
+    key_objs = []
+    for key in keys:
+        if not key:
+            continue
+        if isinstance(key, str):
+            key_class = detect_key_type(key)
+            if key_class:
+                key_objs.append(key_class.import_key(key))
+            else:
+                key_objs.append(jwk.import_key(key))
+        else:
+            key_objs.append(jwk.import_key(key))
+
     for obj in key_objs:
         obj.ensure_kid()
     return jwk.KeySet(key_objs)

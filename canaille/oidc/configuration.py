@@ -64,15 +64,17 @@ class OIDCSettings(BaseModel):
     This adds security but may not be supported by all clients.
     """
 
-    ACTIVE_JWKS: list[dict[str, str]] | None = None
+    ACTIVE_JWKS: list[dict[str, str] | str] | None = None
     """The active JSON Web Keys Set.
 
-    Those keys are used to sign and verify JWTs."""
+    Those keys are used to sign and verify JWTs.
+    The keys can be in the form of JWK dict or raw keys."""
 
-    INACTIVE_JWKS: list[dict[str, str]] | None = None
+    INACTIVE_JWKS: list[dict[str, str] | str] | None = None
     """The inactive JSON Web Keys Set.
 
-    Those keys are only used to verify JWTs."""
+    Those keys are only used to verify JWTs.
+    The keys can be in the form of JWK dict or raw keys."""
 
     USERINFO_MAPPING: UserInfoMappingSettings | None = UserInfoMappingSettings()
     """"Attribute mapping used to build an OIDC UserInfo object.
