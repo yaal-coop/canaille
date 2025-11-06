@@ -57,6 +57,13 @@ def http_error_handler(error):
     }, error.code
 
 
+@bp.before_request
+def extract_ui_locales():
+    """Extract OIDC ui_locales parameter for locale selection."""
+    if ui_locales := request.values.get("ui_locales"):
+        g.ui_locales = ui_locales
+
+
 def save_authorization_request_datetime(request_url: str, now: datetime.datetime):
     key = f"auth-request:{request_url}"
     if not cache.get(key):
@@ -85,16 +92,13 @@ def authorize():
     )
 
     try:
-        if ui_locales := request.values.get("ui_locales"):
-            g.ui_locales = ui_locales
-
         check_prompt_value()
 
-        # Check that login is needed
-        if response := authorize_login(redirect_url, now):
+        ui_locales = request.values.get("ui_locales")
+
+        if response := authorize_login(redirect_url, now, ui_locales):
             return response
 
-        # Get the user consent if needed
         return authorize_consent(redirect_url, now)
 
     except OAuth2Error as error:
@@ -130,13 +134,8 @@ def check_prompt_value():
         )
 
 
-def start_oidc_auth_session(client_id, username=None, prompt=None):
-    """Create and save an AuthenticationSession for OIDC authentication.
-
-    :param client_id: The OIDC client identifier
-    :param username: The username to authenticate
-    :param prompt: The OIDC prompt parameter value
-    """
+def start_oidc_auth_session(client_id, username=None, prompt=None, ui_locales=None):
+    """Create and save an AuthenticationSession for OIDC authentication."""
     g.auth = AuthenticationSession(
         user_name=username,
         data={
@@ -144,11 +143,12 @@ def start_oidc_auth_session(client_id, username=None, prompt=None):
             "client_id": client_id,
         },
         template="oidc/auth.html",
+        ui_locales=ui_locales,
     )
     g.auth.save()
 
 
-def authorize_login(redirect_url, now):
+def authorize_login(redirect_url, now, ui_locales):
     """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
 
@@ -163,6 +163,7 @@ def authorize_login(redirect_url, now):
                 client_id=request.values.get("client_id"),
                 username=g.session.user.user_name,
                 prompt=request.values.get("prompt"),
+                ui_locales=ui_locales,
             )
             return redirect_to_next_auth_step()
 
@@ -178,6 +179,7 @@ def authorize_login(redirect_url, now):
                 client_id=request.values.get("client_id"),
                 username=g.session.user.user_name,
                 prompt=request.values.get("prompt"),
+                ui_locales=ui_locales,
             )
             return redirect_to_next_auth_step()
 
@@ -198,6 +200,7 @@ def authorize_login(redirect_url, now):
             start_oidc_auth_session(
                 client_id=request.values.get("client_id"),
                 prompt=request.values.get("prompt"),
+                ui_locales=ui_locales,
             )
             return redirect(url_for("core.auth.login"))
 
@@ -300,6 +303,11 @@ def authorize_consent(redirect_url, now):
 
     if request.form["answer"] == "logout":
         session["redirect-after-login"] = redirect_url
+        start_oidc_auth_session(
+            client_id=request.values.get("client_id"),
+            prompt=request.values.get("prompt"),
+            ui_locales=request.values.get("ui_locales"),
+        )
         return redirect(url_for("core.auth.logout"))
 
     if request.form["answer"] == "deny":

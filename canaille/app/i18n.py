@@ -125,7 +125,13 @@ def locale_selector():
     """
     available_language_codes = getattr(g, "available_language_codes", [])
 
-    if ui_locales := getattr(g, "ui_locales", None):
+    ui_locales = None
+    if hasattr(g, "auth") and g.auth:
+        ui_locales = g.auth.ui_locales
+    elif hasattr(g, "ui_locales"):
+        ui_locales = g.ui_locales
+
+    if ui_locales:
         result = match_language(ui_locales.split(), available_language_codes)
         if result is not None:
             return result

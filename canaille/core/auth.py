@@ -85,6 +85,9 @@ class AuthenticationSession:
     remember: bool = True
     """Whether to create permanent session and add to login history."""
 
+    ui_locales: str | None = None
+    """Space-separated list of preferred UI languages."""
+
     _user: User | None = None
 
     def __init__(
@@ -99,6 +102,7 @@ class AuthenticationSession:
         template=None,
         known_user=None,
         remember=None,
+        ui_locales=None,
     ):
         self.user_name = user_name
         self.data = data or {}
@@ -106,6 +110,7 @@ class AuthenticationSession:
         self.welcome_flash = welcome_flash if welcome_flash is not None else True
         self.known_user = known_user or is_user_in_login_history(user_name)
         self.remember = remember if remember is not None else True
+        self.ui_locales = ui_locales
         self.reset_auth_steps(
             remaining, achieved, current_step_start_dt, current_step_try_dt
         )
@@ -145,6 +150,9 @@ class AuthenticationSession:
 
         if self.data:
             payload["data"] = self.data
+
+        if self.ui_locales:
+            payload["ui_locales"] = self.ui_locales
 
         return payload
 
