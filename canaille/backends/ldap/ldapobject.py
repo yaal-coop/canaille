@@ -165,8 +165,8 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     @classmethod
     def install(cls):
         conn = LDAPBackend.instance.connection
-        cls.ldap_object_classes(conn)
-        cls.ldap_object_attributes(conn)
+        cls.ldap_object_classes()
+        cls.ldap_object_attributes()
 
         acc = ""
         for organizationalUnit in cls.base.split(",")[::-1]:
