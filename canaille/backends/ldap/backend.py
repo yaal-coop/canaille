@@ -112,13 +112,11 @@ class LDAPBackend(Backend):
         from .ldapobject import LDAPObject
 
         with cls(config).session():
-            object_classes = LDAPObject.ldap_object_classes()
-            if "oauthClient" not in object_classes:
+            if "oauthClient" not in LDAPObject.ldap_object_classes(force=True):
                 install_schema(
                     config,
                     os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
                 )
-                LDAPObject.ldap_object_classes(force=True)
 
     @property
     def connection(self):
