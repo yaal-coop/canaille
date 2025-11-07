@@ -3213,7 +3213,6 @@ msgstr "Token"
 #~ msgstr "Ver unha autorización"
 
 #, fuzzy
-#~| msgid "Revoke token"
 #~ msgid "New token"
 #~ msgstr "Revogar token"
 

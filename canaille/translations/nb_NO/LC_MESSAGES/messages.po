@@ -3030,7 +3030,6 @@ msgstr "Symbol"
 #~ msgstr "Koder"
 
 #, fuzzy
-#~| msgid "View a token"
 #~ msgid "New token"
 #~ msgstr "Vis et symbol"
 

@@ -3122,7 +3122,6 @@ msgstr "Token"
 #~ msgstr "Ansicht einer Genehmigung"
 
 #, fuzzy
-#~| msgid "Revoke token"
 #~ msgid "New token"
 #~ msgstr "Token widerrufen"
 
