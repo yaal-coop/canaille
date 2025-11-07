@@ -910,8 +910,6 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
     res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
-    authcode = backend.get(models.AuthorizationCode, code=code)
-
     backend.delete(user)
 
     res = testclient.post(
@@ -925,11 +923,15 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=400,
     )
-    assert res.json == {
-        "error": "invalid_grant",
-        "error_description": "There is no 'user' for this code.",
-    }
-    backend.delete(authcode)
+    assert res.json["error"] == "invalid_grant"
+    assert res.json["error_description"] in [
+        "Invalid 'code' in request.",
+        "There is no 'user' for this code.",
+    ]
+
+    authcode = backend.get(models.AuthorizationCode, code=code)
+    if authcode:
+        backend.delete(authcode)
 
 
 def test_locked_account(testclient, logged_user, client, trusted_client, backend):

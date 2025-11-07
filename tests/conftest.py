@@ -16,6 +16,34 @@ from canaille.app.session import UserSession
 from canaille.backends import available_backends
 
 
+def test_backends():
+    """Expand backends with variants (e.g., sql → sql:sqlite, sql:postgresql)."""
+    backends = available_backends()
+    expanded = set()
+
+    for backend in backends:
+        backend_dir = os.path.join("tests", "backends", backend)
+        if not os.path.isdir(backend_dir):
+            expanded.add(backend)
+            continue
+
+        variants = [
+            f[:-3]
+            for f in os.listdir(backend_dir)
+            if f.endswith(".py")
+            and f not in ["__init__.py", "fixtures.py", "conftest.py"]
+            and not f.startswith("test_")
+        ]
+
+        if variants:
+            for variant in variants:
+                expanded.add(f"{backend}:{variant}")
+        else:
+            expanded.add(backend)
+
+    return expanded
+
+
 @pytest.fixture(autouse=True, scope="session")
 def babel_catalogs():
     cmd = compile_catalog()
@@ -26,11 +54,14 @@ def babel_catalogs():
     cmd.run()
 
 
-pytest_plugins = [
-    f"tests.backends.{backend}.fixtures"
-    for backend in available_backends()
-    if os.path.exists(os.path.join("tests", "backends", backend, "fixtures.py"))
-]
+def _get_plugin_module(backend_spec):
+    if ":" in backend_spec:
+        backend, variant = backend_spec.split(":", 1)
+        return f"tests.backends.{backend}.{variant}"
+    return f"tests.backends.{backend_spec}.fixtures"
+
+
+pytest_plugins = [_get_plugin_module(backend) for backend in test_backends()]
 
 
 def pytest_addoption(parser):
@@ -40,27 +71,55 @@ def pytest_addoption(parser):
 
 
 def pytest_generate_tests(metafunc):
-    backends = available_backends()
-    if metafunc.config.getoption("backend"):  # pragma: no cover
-        backends &= set(metafunc.config.getoption("backend"))
+    backends = test_backends()
+    requested = metafunc.config.getoption("backend")
 
-    # sort so the backend list is deterministic. This makes pytest-xdist discovery possible
+    if requested:
+        filtered = set()
+        for req in requested:
+            if ":" in req:
+                if req in backends:
+                    filtered.add(req)
+            else:
+                for backend in backends:
+                    if backend == req or backend.startswith(f"{req}:"):
+                        filtered.add(backend)
+        backends = filtered
+
     backends = sorted(backends)
 
-    # tests in tests.backends.BACKENDNAME should only run one backend
     module_name_parts = metafunc.module.__name__.split(".")
     if module_name_parts[0:2] == ["tests", "backends"] and len(module_name_parts) > 3:
-        backend = module_name_parts[2]
-        if backend not in backends:  # pragma: no cover
+        backend_path = module_name_parts[2]
+        matching = [
+            b for b in backends if b == backend_path or b.startswith(f"{backend_path}:")
+        ]
+
+        if not matching:
             pytest.skip()
         elif "backend" in metafunc.fixturenames:
-            metafunc.parametrize("backend", [lf(f"{backend}_backend")])
+            fixture_names = []
+            for spec in matching:
+                fixture_name = (
+                    spec.split(":")[-1] + "_backend"
+                    if ":" in spec
+                    else spec + "_backend"
+                )
+                fixture_names.append(fixture_name)
+            metafunc.parametrize(
+                "backend", [lf(name) for name in fixture_names], ids=matching
+            )
             return
 
-    elif "backend" in metafunc.fixturenames:
+    if "backend" in metafunc.fixturenames:
+        fixture_names = []
+        for spec in backends:
+            fixture_name = (
+                spec.split(":")[-1] + "_backend" if ":" in spec else spec + "_backend"
+            )
+            fixture_names.append(fixture_name)
         metafunc.parametrize(
-            "backend",
-            [lf(f"{backend}_backend") for backend in backends],
+            "backend", [lf(name) for name in fixture_names], ids=backends
         )
 
 

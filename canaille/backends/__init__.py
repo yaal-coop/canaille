@@ -1,3 +1,4 @@
+import collections.abc
 import datetime
 import importlib
 import json
@@ -25,7 +26,11 @@ class ModelEncoder(json.JSONEncoder):
         def serialize_attribute(attribute_name, value):
             """Replace model instances by their id."""
             multiple = typing.get_origin(instance.attributes[attribute_name]) is list
-            if multiple and isinstance(value, list):
+            # Check for any iterable collection (list, _AssociationList, etc.)
+            is_collection = isinstance(
+                value, collections.abc.Iterable
+            ) and not isinstance(value, (str, bytes))
+            if multiple and is_collection:
                 return [serialize_attribute(attribute_name, v) for v in value]
 
             model, _ = instance.get_model_annotations(attribute_name)

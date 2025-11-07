@@ -3,13 +3,13 @@ import json
 import typing
 import uuid
 
-from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import LargeBinary
 from sqlalchemy import String
-from sqlalchemy import Table
+from sqlalchemy import Text
 from sqlalchemy import or_
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import mapped_column
@@ -49,6 +49,18 @@ class SqlAlchemyModel(BackendModel):
 
         if multiple:
             column = getattr(cls, name)
+
+            # Handle association_proxy attributes
+            if hasattr(column, "local_attr") and hasattr(column, "remote_attr"):
+                # Get the underlying relationship (e.g., _groups_association for groups)
+                underlying_attr = column.local_attr
+                target_attr = column.remote_attr
+
+                # Build a query like: User._groups_association.any(Membership.group == value)
+                association_model = underlying_attr.entity.class_
+                target_column = getattr(association_model, target_attr.key)
+                return underlying_attr.any(target_column == value)
+
             column_property = getattr(cls, name).property
             if not isinstance(column_property, ColumnProperty):
                 return column.contains(value)
@@ -75,13 +87,25 @@ class SqlAlchemyModel(BackendModel):
         return False
 
 
-membership_association_table = Table(
-    "membership_association_table",
-    Base.metadata,
-    Column("index", Integer, autoincrement=True),
-    Column("user_id", ForeignKey("user.id"), primary_key=True),
-    Column("group_id", ForeignKey("group.id"), primary_key=True),
-)
+class Membership(Base):
+    """Association object for Group.members with ordering support."""
+
+    __tablename__ = "membership_association_table"
+
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+    )
+    group_id: Mapped[str] = mapped_column(
+        ForeignKey("group.id", ondelete="CASCADE"), primary_key=True
+    )
+    created_at: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), server_default="CURRENT_TIMESTAMP"
+    )
+
+    user: Mapped["User"] = relationship("User", foreign_keys=[user_id], lazy="joined")
+    group: Mapped["Group"] = relationship(
+        "Group", foreign_keys=[group_id], lazy="joined"
+    )
 
 
 class User(canaille.core.models.User, Base, SqlAlchemyModel):
@@ -96,7 +120,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         )
 
     id: Mapped[str] = mapped_column(
-        String, primary_key=True, default=lambda: str(uuid.uuid4())
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
     )
     created: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
@@ -104,7 +128,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     last_modified: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-    user_name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    user_name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(
         PasswordType(
             onload=default_password_arguments,
@@ -123,28 +147,35 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     _password_failure_timestamps: Mapped[list[str]] = mapped_column(
         MutableJson, nullable=True
     )
-    preferred_language: Mapped[str] = mapped_column(String, nullable=True)
-    family_name: Mapped[str] = mapped_column(String, nullable=True)
-    given_name: Mapped[str] = mapped_column(String, nullable=True)
-    formatted_name: Mapped[str] = mapped_column(String, nullable=True)
-    display_name: Mapped[str] = mapped_column(String, nullable=True)
+    preferred_language: Mapped[str] = mapped_column(String(10), nullable=True)
+    family_name: Mapped[str] = mapped_column(String(100), nullable=True)
+    given_name: Mapped[str] = mapped_column(String(100), nullable=True)
+    formatted_name: Mapped[str] = mapped_column(String(200), nullable=True)
+    display_name: Mapped[str] = mapped_column(String(200), nullable=True)
     emails: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
     phone_numbers: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
-    formatted_address: Mapped[str] = mapped_column(String, nullable=True)
-    street: Mapped[str] = mapped_column(String, nullable=True)
-    postal_code: Mapped[str] = mapped_column(String, nullable=True)
-    locality: Mapped[str] = mapped_column(String, nullable=True)
-    region: Mapped[str] = mapped_column(String, nullable=True)
+    formatted_address: Mapped[str] = mapped_column(Text, nullable=True)
+    street: Mapped[str] = mapped_column(String(255), nullable=True)
+    postal_code: Mapped[str] = mapped_column(String(20), nullable=True)
+    locality: Mapped[str] = mapped_column(String(100), nullable=True)
+    region: Mapped[str] = mapped_column(String(100), nullable=True)
     photo: Mapped[bytes] = mapped_column(LargeBinary, nullable=True)
-    profile_url: Mapped[str] = mapped_column(String, nullable=True)
-    employee_number: Mapped[str] = mapped_column(String, nullable=True)
-    department: Mapped[str] = mapped_column(String, nullable=True)
-    title: Mapped[str] = mapped_column(String, nullable=True)
-    organization: Mapped[str] = mapped_column(String, nullable=True)
-    groups: Mapped[list["Group"]] = relationship(
-        secondary=membership_association_table,
-        back_populates="members",
-        order_by=membership_association_table.c.index,
+    profile_url: Mapped[str] = mapped_column(String(2048), nullable=True)
+    employee_number: Mapped[str] = mapped_column(String(50), nullable=True)
+    department: Mapped[str] = mapped_column(String(100), nullable=True)
+    title: Mapped[str] = mapped_column(String(100), nullable=True)
+    organization: Mapped[str] = mapped_column(String(200), nullable=True)
+    _groups_association: Mapped[list["Membership"]] = relationship(
+        "Membership",
+        foreign_keys="Membership.user_id",
+        order_by="Membership.created_at",
+        cascade="all, delete-orphan",
+        overlaps="user",
+    )
+    groups = association_proxy(
+        "_groups_association",
+        "group",
+        creator=lambda grp: Membership(group=grp),
     )
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
@@ -152,9 +183,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     last_otp_login: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-    secret_token: Mapped[str] = mapped_column(String, nullable=True, unique=True)
+    secret_token: Mapped[str] = mapped_column(String(255), nullable=True, unique=True)
     hotp_counter: Mapped[int] = mapped_column(Integer, nullable=True)
-    one_time_password: Mapped[str] = mapped_column(String, nullable=True)
+    one_time_password: Mapped[str] = mapped_column(String(255), nullable=True)
     one_time_password_emission_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
@@ -180,7 +211,7 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
     __tablename__ = "group"
 
     id: Mapped[str] = mapped_column(
-        String, primary_key=True, default=lambda: str(uuid.uuid4())
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
     )
     created: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
@@ -189,12 +220,21 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
         TZDateTime(timezone=True), nullable=True
     )
 
-    display_name: Mapped[str] = mapped_column(String)
-    description: Mapped[str] = mapped_column(String, nullable=True)
-    members: Mapped[list["User"]] = relationship(
-        secondary=membership_association_table,
-        back_populates="groups",
-        order_by=membership_association_table.c.index,
+    display_name: Mapped[str] = mapped_column(String(200))
+    description: Mapped[str] = mapped_column(Text, nullable=True)
+    _members_association: Mapped[list["Membership"]] = relationship(
+        "Membership",
+        foreign_keys="Membership.group_id",
+        order_by="Membership.created_at",
+        cascade="all, delete-orphan",
+        overlaps="group",
     )
-    owner_id: Mapped[str] = mapped_column(ForeignKey("user.id"), nullable=True)
+    members = association_proxy(
+        "_members_association",
+        "user",
+        creator=lambda usr: Membership(user=usr),
+    )
+    owner_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="SET NULL"), nullable=True
+    )
     owner: Mapped["User"] = relationship()

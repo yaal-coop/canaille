@@ -158,6 +158,7 @@ To run the tests, you just can run `uv run pytest` and/or `uv run tox` to test a
 Everything must be green before patches get merged.
 
 To test a specific backend you can pass ``--backend memory``, ``--backend sql`` or ``--backend ldap`` to pytest and tox.
+SQL backend supports variants: ``--backend sql:postgresql`` or ``--backend sql:sqlite``. ``--backend sql`` tests both.
 
 The test coverage is 100%, patches won't be accepted if not entirely covered. You can check the
 test coverage with ``uv run pytest --cov --cov-report=html`` or ``uv run tox -e coverage -- --cov-report=html``.
