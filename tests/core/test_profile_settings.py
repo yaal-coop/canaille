@@ -209,7 +209,7 @@ def test_profile_settings_compromised_password(api_get, testclient, logged_user)
 
 @mock.patch("httpx.get")
 def test_profile_settings_compromised_password_request_api_failed_but_password_updated(
-    api_get, testclient, logged_user, backend, caplog
+    api_get, testclient, logged_user, backend, caplog, smtpd
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())

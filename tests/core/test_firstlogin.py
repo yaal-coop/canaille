@@ -105,7 +105,7 @@ def test_first_login_page_unavailable_for_users_with_password(
     testclient.get("/firstlogin/user", status=404)
 
 
-def test_user_password_deleted_during_login(testclient, backend):
+def test_user_password_deleted_during_login(testclient, backend, smtpd):
     """Test that users are redirected to first login if their password is deleted during authentication."""
     u = models.User(
         formatted_name="Temp User",

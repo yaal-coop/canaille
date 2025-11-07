@@ -7,7 +7,7 @@ def test_check_command(cli_runner):
     assert res.exit_code == 0, res.stdout
 
 
-def test_check_command_fail(testclient, cli_runner):
+def test_check_command_fail(testclient, cli_runner, smtpd):
     """Test that config check command fails when SMTP host is invalid."""
     testclient.app.config["CANAILLE"]["SMTP"]["HOST"] = "invalid-domain.com"
 

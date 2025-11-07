@@ -34,7 +34,7 @@ def test_group_invitation_payload(app):
         assert isinstance(hash_value, str)
 
 
-def test_group_invitation_form_access(testclient, logged_admin, foo_group):
+def test_group_invitation_form_access(testclient, logged_admin, foo_group, smtpd):
     """Test that group invitation form is accessible."""
     res = testclient.get(f"/groups/{foo_group.id}/invite", status=200)
     assert "Invite members to" in res.text
@@ -60,7 +60,7 @@ def test_group_invitation_send_email(testclient, logged_admin, bar_group, user, 
     assert "/groups/join/" in invitation_url
 
 
-def test_group_invitation_nonexistent_user(testclient, logged_admin, foo_group):
+def test_group_invitation_nonexistent_user(testclient, logged_admin, foo_group, smtpd):
     """Test invitation with email not belonging to any user shows error message."""
     res = testclient.get(f"/groups/{foo_group.id}/invite", status=200)
 
@@ -207,7 +207,7 @@ def test_invitation_button_visible_on_group_page(testclient, logged_admin, foo_g
 
 
 def test_group_invitation_duplicate_member_detection(
-    testclient, logged_admin, foo_group, user, backend
+    testclient, logged_admin, foo_group, user, backend, smtpd
 ):
     """Test that inviting existing members shows error message."""
     res = testclient.get(f"/groups/{foo_group.display_name}/invite", status=200)
@@ -295,6 +295,6 @@ def test_group_invitation_workflow_with_email_extraction(
     assert len(path_parts[4]) > 0
 
 
-def test_invite_to_group_unauthorized_user(testclient, logged_user, bar_group):
+def test_invite_to_group_unauthorized_user(testclient, logged_user, bar_group, smtpd):
     """Test that a user without access to a group cannot invite others to it."""
     testclient.get(f"/groups/{bar_group.display_name}/invite", status=403)

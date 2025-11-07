@@ -53,7 +53,7 @@ def test_export_default_config(testclient, cli_runner, backend, tmp_path):
     assert actual_content == expected_content
 
 
-def test_export_current_config(testclient, cli_runner, backend, tmp_path):
+def test_export_current_config(testclient, cli_runner, backend, tmp_path, smtpd):
     """Export the current application config in a file."""
     if "memory" not in backend.__class__.__module__:
         pytest.skip()
@@ -81,7 +81,7 @@ def test_export_current_config(testclient, cli_runner, backend, tmp_path):
     assert actual_content == expected_content
 
 
-def test_export_env_config(testclient, cli_runner, tmp_path, backend):
+def test_export_env_config(testclient, cli_runner, tmp_path, backend, smtpd):
     """Export the current application config in a file which pass is passed in the CANAILLE_CONFIG env var."""
     if "memory" not in backend.__class__.__module__:
         pytest.skip()

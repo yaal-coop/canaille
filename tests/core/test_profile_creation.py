@@ -2,7 +2,7 @@ from canaille.app import models
 
 
 def test_user_creation_edition_and_deletion(
-    testclient, logged_moderator, foo_group, bar_group, backend
+    testclient, logged_moderator, foo_group, bar_group, backend, smtpd
 ):
     # The user does not exist.
     res = testclient.get("/users", status=200)

@@ -64,7 +64,7 @@ def test_no_configuration(configuration, tmp_path):
     os.chdir(cwd)
 
 
-def test_environment_configuration(configuration, tmp_path):
+def test_environment_configuration(configuration, tmp_path, smtpd):
     """Test loading the configuration from a toml file passed by the CANAILLE_CONFIG environment var."""
     config_path = os.path.join(tmp_path, "config.toml")
     with open(config_path, "w") as fd:
@@ -78,7 +78,7 @@ def test_environment_configuration(configuration, tmp_path):
     os.remove(config_path)
 
 
-def test_local_configuration(configuration, tmp_path):
+def test_local_configuration(configuration, tmp_path, smtpd):
     """Test loading the configuration from a local config.toml file."""
     cwd = os.getcwd()
     os.chdir(tmp_path)
@@ -173,7 +173,9 @@ def test_disable_dotenv_file(tmp_path, configuration):
     os.chdir(oldcwd)
 
 
-def test_smtp_connection_remote_smtp_unreachable(testclient, backend, configuration):
+def test_smtp_connection_remote_smtp_unreachable(
+    testclient, backend, configuration, smtpd
+):
     """Test SMTP connection check fails when remote SMTP server is unreachable."""
     configuration["CANAILLE"]["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
     config_obj = settings_factory(configuration)
@@ -185,7 +187,7 @@ def test_smtp_connection_remote_smtp_unreachable(testclient, backend, configurat
 
 
 def test_smtp_connection_remote_smtp_wrong_credentials(
-    testclient, backend, configuration
+    testclient, backend, configuration, smtpd
 ):
     """Test SMTP connection check fails with invalid credentials."""
     configuration["CANAILLE"]["SMTP"]["PASSWORD"] = "invalid-password"
@@ -196,7 +198,9 @@ def test_smtp_connection_remote_smtp_wrong_credentials(
     )
 
 
-def test_smtp_connection_remote_smtp_no_credentials(testclient, backend, configuration):
+def test_smtp_connection_remote_smtp_no_credentials(
+    testclient, backend, configuration, smtpd
+):
     """Test SMTP connection succeeds when no credentials are required."""
     del configuration["CANAILLE"]["SMTP"]["LOGIN"]
     del configuration["CANAILLE"]["SMTP"]["PASSWORD"]
@@ -427,7 +431,7 @@ def test_sanitize_rst():
     )
 
 
-def test_export_current_config(backend, configuration, tmp_path):
+def test_export_current_config(backend, configuration, tmp_path, smtpd):
     """Check the configuration TOML export with the current app configuration."""
     if "memory" not in backend.__class__.__module__:
         pytest.skip()

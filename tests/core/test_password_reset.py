@@ -104,7 +104,7 @@ def test_password_reset_bad_password(testclient, user, backend):
     assert backend.check_user_password(user, "correct horse battery staple")[0]
 
 
-def test_unavailable_if_no_smtp(testclient, user):
+def test_unavailable_if_no_smtp(testclient, user, smtpd):
     """Test that password reset features are unavailable when SMTP is not configured."""
     res = testclient.get("/login")
 

@@ -65,8 +65,7 @@ def pytest_generate_tests(metafunc):
 
 
 @pytest.fixture
-def configuration(smtpd):
-    smtpd.config.use_starttls = True
+def configuration(request):
     conf = {
         "SECRET_KEY": gen_salt(24),
         "SERVER_NAME": "canaille.test",
@@ -130,15 +129,6 @@ def configuration(smtpd):
                     ],
                 },
             },
-            "SMTP": {
-                "HOST": smtpd.hostname,
-                "PORT": smtpd.port,
-                "TLS": smtpd.config.use_starttls,
-                "SSL": smtpd.config.use_ssl,
-                "LOGIN": smtpd.config.login_username,
-                "PASSWORD": smtpd.config.login_password,
-                "FROM_ADDR": "admin@mydomain.test",
-            },
             "SMPP": {
                 "HOST": "localhost",
                 "PORT": 2775,
@@ -179,6 +169,20 @@ def configuration(smtpd):
             "PASSWORD_COMPROMISSION_CHECK_API_URL": "https://api.pwnedpasswords.test/range/",
         },
     }
+
+    if "smtpd" in request.fixturenames:
+        smtpd = request.getfixturevalue("smtpd")
+        smtpd.config.use_starttls = True
+        conf["CANAILLE"]["SMTP"] = {
+            "HOST": smtpd.hostname,
+            "PORT": smtpd.port,
+            "TLS": smtpd.config.use_starttls,
+            "SSL": smtpd.config.use_ssl,
+            "LOGIN": smtpd.config.login_username,
+            "PASSWORD": smtpd.config.login_password,
+            "FROM_ADDR": "admin@mydomain.test",
+        }
+
     return conf
 
 

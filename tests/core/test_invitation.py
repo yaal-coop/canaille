@@ -162,7 +162,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
     backend.delete(user)
 
 
-def test_invitation_login_already_taken(testclient, logged_admin):
+def test_invitation_login_already_taken(testclient, logged_admin, smtpd):
     """Test that invitation fails when using an already existing username or email."""
     res = testclient.get("/invite", status=200)
 
@@ -293,7 +293,7 @@ def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
     testclient.get(url, status=302)
 
 
-def test_unavailable_if_no_smtp(testclient, logged_admin):
+def test_unavailable_if_no_smtp(testclient, logged_admin, smtpd):
     """Test that invitation features are unavailable when SMTP is not configured."""
     res = testclient.get("/users")
     res.mustcontain("Invite")

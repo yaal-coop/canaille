@@ -66,7 +66,7 @@ def test_file_log_config(configuration, backend, tmp_path, user):
     assert "Changed password in settings for user" in log_content
 
 
-def test_dict_log_config(configuration, backend, tmp_path, admin):
+def test_dict_log_config(configuration, backend, tmp_path, admin, smtpd):
     """Test that logging configuration can be provided as a dictionary and writes logs correctly."""
     log_path = os.path.join(tmp_path, "canaille-by-dict.log")
     configuration["CANAILLE"]["LOGGING"] = {
