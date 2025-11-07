@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Annotated
 from typing import Any
 from typing import ClassVar
@@ -294,6 +295,7 @@ def get_resource_types():
     }
 
 
+@lru_cache(maxsize=1)
 def get_schemas():
     schemas = {
         model.model_fields["schemas"].default[0]: model.to_schema()
