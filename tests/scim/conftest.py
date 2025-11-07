@@ -2,8 +2,6 @@ import datetime
 import uuid
 
 import pytest
-from httpx import Client as httpx_client
-from scim2_client.engines.httpx import SyncSCIMClient
 from scim2_client.engines.werkzeug import TestSCIMClient
 from scim2_models import Resource
 from werkzeug.security import gen_salt
@@ -127,12 +125,11 @@ def scim_token(testclient, scim_trusted_client, backend):
 
 
 @pytest.fixture
-def scim_client_for_trusted_client(scim2_server, scim_token):
-    client_httpx = httpx_client(
-        base_url=f"http://localhost:{scim2_server.port}",
-        headers={"Authorization": f"Bearer {scim_token.access_token}"},
+def scim_client_for_trusted_client(scim2_server_app, scim_token):
+    scim_client = TestSCIMClient(
+        Client(scim2_server_app),
+        environ={"headers": {"Authorization": f"Bearer {scim_token.access_token}"}},
     )
-    scim_client = SyncSCIMClient(client_httpx)
     scim_client.discover()
     return scim_client
 
