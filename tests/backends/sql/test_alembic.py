@@ -16,6 +16,11 @@ def test_migrations_with_data(app, backend, user, foo_group):
     original_group_name = foo_group.display_name
     original_group_members = len(foo_group.members)
 
+    # IMPORTANT: Close any open transaction before running migrations
+    # Reading data above may have started an implicit transaction that holds locks
+    if backend.db_session:
+        backend.db_session.commit()
+
     # Downgrade to first revision (preserves tables and data)
     steps_to_first = len(revisions) - 1
     backend.alembic.downgrade(f"-{steps_to_first}")
