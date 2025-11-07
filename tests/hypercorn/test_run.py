@@ -4,16 +4,18 @@ from unittest.mock import patch
 
 from flask_webtest import TestApp
 
-from canaille import create_app
+import canaille
 from canaille.commands import cli
+from canaille.hypercorn.app import create_app
 
 
-def test_no_secret_key(configuration, caplog):
+def test_no_secret_key(configuration, backend, caplog):
     """Test that a warning is displayed when SECRET_KEY is missing from configuration."""
     del configuration["SECRET_KEY"]
 
     os.environ["DEBUG"] = "1"
-    from canaille.hypercorn.app import app
+
+    app = create_app(config=configuration, backend=backend, wrap_asgi=False)
 
     assert (
         "canaille",
@@ -50,7 +52,7 @@ def test_hypercorn_run_env_config(monkeypatch, configuration, backend):
     monkeypatch.setenv("CANAILLE_HYPERCORN__WORKERS", "4")
     monkeypatch.setenv("CANAILLE_HYPERCORN__BIND", "0.0.0.0:8080")
 
-    app = create_app(configuration, backend=backend)
+    app = canaille.create_app(configuration, backend=backend)
 
     with app.app_context():
         runner = app.test_cli_runner(catch_exceptions=False)

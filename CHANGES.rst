@@ -9,6 +9,7 @@ Added
 Fixed
 ^^^^^
 - Support OIDC ``ui_locales`` parameter. :issue:`108`
+- Fixed proxy header handling to correctly generate HTTPS URLs when behind reverse proxies.
 
 [0.0.87] - 2025-11-02
 ---------------------
