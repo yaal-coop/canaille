@@ -50,7 +50,7 @@ def test_setup_ldap_tree(slapd_server, configuration):
 def test_install_schemas(configuration, slapd_server):
     """Test that custom LDAP schemas are installed successfully."""
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldapi_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
     configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
     config_obj = settings_factory(configuration)
@@ -68,7 +68,7 @@ def test_install_schemas(configuration, slapd_server):
 def test_install_schemas_twice(configuration, slapd_server):
     """Test that installing schemas twice does not cause errors."""
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldapi_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
     configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
     config_obj = settings_factory(configuration)
@@ -104,7 +104,7 @@ def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
     slapd_server.slapadd(admin_ldif)
 
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldapi_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = "uid=admin,ou=users,dc=example,dc=org"
     configuration["CANAILLE_LDAP"]["BIND_PW"] = "admin"
     config_obj = settings_factory(configuration)
@@ -122,7 +122,7 @@ def test_install_no_permissions_to_install_schemas(configuration, slapd_server):
 def test_install_schemas_command(configuration, slapd_server):
     """Test that the install CLI command successfully installs LDAP schemas."""
     configuration["CANAILLE_LDAP"]["ROOT_DN"] = slapd_server.suffix
-    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldap_uri
+    configuration["CANAILLE_LDAP"]["URI"] = slapd_server.ldapi_uri
     configuration["CANAILLE_LDAP"]["BIND_DN"] = slapd_server.root_dn
     configuration["CANAILLE_LDAP"]["BIND_PW"] = slapd_server.root_pw
     config_obj = settings_factory(configuration)

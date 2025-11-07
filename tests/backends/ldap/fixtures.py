@@ -32,7 +32,7 @@ def ldap_configuration(configuration, slapd_server):
     configuration["CANAILLE"]["DATABASE"] = "ldap"
     configuration["CANAILLE_LDAP"] = {
         "ROOT_DN": slapd_server.suffix,
-        "URI": slapd_server.ldap_uri,
+        "URI": slapd_server.ldapi_uri,
         "BIND_DN": slapd_server.root_dn,
         "BIND_PW": slapd_server.root_pw,
         "USER_BASE": "ou=users",
