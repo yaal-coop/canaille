@@ -122,11 +122,11 @@ def render_htmx_template(template, htmx_template=None, **kwargs):
 
 def model_converter(model):
     class ModelConverter(BaseConverter):
-        def __init__(self, *args, required=True, **kwargs):
+        def __init__(self, *args, required=True, **kwargs) -> None:
             self.required = required
             super().__init__(self, *args, **kwargs)
 
-        def to_url(self, instance):
+        def to_url(self, instance) -> str:
             return instance.identifier or instance.id
 
         def to_python(self, identifier):
@@ -156,7 +156,7 @@ def redirect_to_bp_handlers(app, error):
     return None
 
 
-def setup_flask_blueprints(app):
+def setup_flask_blueprints(app) -> None:
     import canaille.core.endpoints
 
     app.url_map.strict_slashes = False
@@ -174,7 +174,7 @@ def setup_flask_blueprints(app):
         app.register_blueprint(canaille.scim.endpoints.bp)
 
 
-def beautify_html_resonses(app):
+def beautify_html_resonses(app) -> None:
     import html
 
     from bs4 import BeautifulSoup
@@ -193,7 +193,7 @@ def beautify_html_resonses(app):
     app.after_request(_prettify_response)
 
 
-def setup_flask(app):
+def setup_flask(app) -> None:
     from canaille.app.templating import render_template
 
     csrf.init_app(app)
@@ -210,7 +210,7 @@ def setup_flask(app):
             pass
 
     @app.before_request
-    def session_setup():
+    def session_setup() -> None:
         # Let login_user() manage session.permanent based on remember choice
         if "session" not in g:
             g.session = current_user_session()
@@ -243,7 +243,7 @@ def setup_flask(app):
         return render_template("error.html", description=error, error_code=500), 500
 
 
-def setup_flask_converters(app):
+def setup_flask_converters(app) -> None:
     from canaille.app import models
     from canaille.app.flask import model_converter
 

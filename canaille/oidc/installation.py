@@ -1,4 +1,4 @@
-def install(config, debug=False):
+def install(config, debug=False) -> None:
     from joserfc import jwk
 
     if (

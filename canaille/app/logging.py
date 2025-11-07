@@ -9,12 +9,12 @@ from flask.logging import wsgi_errors_stream
 
 
 class IPFilter(logging.Filter):
-    def filter(self, record):
+    def filter(self, record) -> bool:
         record.ip = request.remote_addr if has_request_context() else ""
         return True
 
 
-def add_log_level(level_name, level_num, method_name=None):
+def add_log_level(level_name, level_num, method_name=None) -> None:
     """Adapted from https://stackoverflow.com/a/35804945/2700168.
 
     Comprehensively adds a new logging level to the `logging` module and the
@@ -54,7 +54,7 @@ def add_log_level(level_name, level_num, method_name=None):
     setattr(logging, method_name, log_to_root)
 
 
-def setup_logging(app):
+def setup_logging(app) -> None:
     conf = app.config["CANAILLE"]["LOGGING"]
 
     security_level_name = "SECURITY"

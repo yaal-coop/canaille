@@ -83,11 +83,11 @@ class SQLBackend(Backend):
             with app.app_context():
                 self.alembic.upgrade()
 
-    def setup(self):
+    def setup(self) -> None:
         if not self.db_session:
             self.db_session = Session(SQLBackend.engine)
 
-    def teardown(self):
+    def teardown(self) -> None:
         if self.db_session:
             self.db_session.rollback()
             self.db_session.expire_all()
@@ -98,7 +98,7 @@ class SQLBackend(Backend):
         sess.execute(text("SELECT 1"))
         return CheckResult(success=True, message="SQL database correctly configured")
 
-    def has_account_lockability(self):
+    def has_account_lockability(self) -> bool:
         return True
 
     def check_user_password(self, user, password):
@@ -117,7 +117,7 @@ class SQLBackend(Backend):
 
         return (True, None)
 
-    def set_user_password(self, user, password):
+    def set_user_password(self, user, password) -> None:
         user.password = password
         user.password_last_update = datetime.datetime.now(
             datetime.timezone.utc
@@ -231,7 +231,7 @@ class SQLBackend(Backend):
 
         return state
 
-    def do_save(self, instance):
+    def do_save(self, instance) -> None:
         instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
             microsecond=0
         )
@@ -241,14 +241,14 @@ class SQLBackend(Backend):
         SQLBackend.instance.db_session.add(instance)
         SQLBackend.instance.db_session.commit()
 
-    def do_delete(self, instance):
+    def do_delete(self, instance) -> None:
         SQLBackend.instance.db_session.delete(instance)
         SQLBackend.instance.db_session.commit()
 
-    def do_reload(self, instance):
+    def do_reload(self, instance) -> None:
         SQLBackend.instance.db_session.refresh(instance)
 
-    def record_failed_attempt(self, user):
+    def record_failed_attempt(self, user) -> None:
         if user.password_failure_timestamps is None:
             user.password_failure_timestamps = []
         user._password_failure_timestamps.append(

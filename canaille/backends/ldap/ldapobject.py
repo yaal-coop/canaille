@@ -50,7 +50,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         for name, value in kwargs.items():
             setattr(self, name, value)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         attribute_name = self.ldap_attribute_to_python(self.rdn_attribute)
         return (
             f"<{self.__class__.__name__} {attribute_name}={self.rdn_value}>"
@@ -88,7 +88,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         )
         return self_attributes == other_attributes
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.id)
 
     def __getattribute__(self, name):
@@ -108,7 +108,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         ldap_name = self.python_attribute_to_ldap(name)
         self.set_ldap_attribute(ldap_name, value)
 
-    def has_ldap_attribute(self, name):
+    def has_ldap_attribute(self, name) -> bool:
         return name in self.ldap_object_attributes() and (
             name in self.changes or name in self.state
         )
@@ -129,7 +129,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
         return self.state.get(name)
 
-    def set_ldap_attribute(self, name, value):
+    def set_ldap_attribute(self, name, value) -> None:
         if name not in self.ldap_object_attributes():
             return
 
@@ -163,7 +163,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         return cls._must
 
     @classmethod
-    def install(cls):
+    def install(cls) -> None:
         conn = LDAPBackend.instance.connection
         cls.ldap_object_classes()
         cls.ldap_object_attributes()
@@ -239,7 +239,7 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         return attr_name in cls.must()
 
     @classmethod
-    def update_ldap_attributes(cls):
+    def update_ldap_attributes(cls) -> None:
         all_object_classes = cls.ldap_object_classes()
         this_object_classes = {
             all_object_classes[name] for name in cls.ldap_object_class

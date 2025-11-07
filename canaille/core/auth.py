@@ -121,7 +121,7 @@ class AuthenticationSession:
         achieved=None,
         current_step_start_dt=None,
         current_step_try_dt=None,
-    ):
+    ) -> None:
         self.remaining = (
             remaining or current_app.config["CANAILLE"]["AUTHENTICATION_FACTORS"]
         )
@@ -187,7 +187,7 @@ class AuthenticationSession:
             # Create new session
             return cls(**kwargs)
 
-    def save(self):
+    def save(self) -> None:
         session["auth"] = self.serialize()
 
     @property
@@ -202,11 +202,11 @@ class AuthenticationSession:
             )
         return self._user
 
-    def set_step_started(self):
+    def set_step_started(self) -> None:
         self.current_step_start_dt = datetime.datetime.now(datetime.timezone.utc)
         self.current_step_try_dt = self.current_step_start_dt
 
-    def set_step_finished(self, step):
+    def set_step_finished(self, step) -> None:
         self.achieved.append(step)
         self.remaining.pop(0)
 

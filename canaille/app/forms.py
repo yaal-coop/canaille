@@ -314,17 +314,17 @@ class DateTimeUTCField(wtforms.DateTimeLocalField):
         raise ValueError(self.gettext("Not a valid datetime value."))
 
 
-def is_readonly(field):
+def is_readonly(field) -> bool:
     return field.render_kw and "readonly" in field.render_kw
 
 
-def set_readonly(field):
+def set_readonly(field) -> None:
     field.render_kw = field.render_kw or {}
     field.render_kw["readonly"] = True
     field.validators = list(field.validators) + [wtforms.validators.ReadOnly()]
 
 
-def set_writable(field):
+def set_writable(field) -> None:
     del field.render_kw["readonly"]
     field.validators = [
         v for v in field.validators if not isinstance(v, wtforms.validators.ReadOnly)

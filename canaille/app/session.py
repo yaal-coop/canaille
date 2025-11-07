@@ -60,11 +60,11 @@ def current_user_session():
     return None
 
 
-def save_user_session():
+def save_user_session() -> None:
     session[USER_SESSION][-1] = g.session.serialize()
 
 
-def login_user(user, remember: bool = True):
+def login_user(user, remember: bool = True) -> None:
     """Open a session for the user.
 
     :param user: The user to log in
@@ -88,7 +88,7 @@ def login_user(user, remember: bool = True):
         add_to_login_history(user.user_name)
 
 
-def logout_user():
+def logout_user() -> None:
     """Close the user session."""
     try:
         session[USER_SESSION].pop()
@@ -132,7 +132,7 @@ def _set_login_history_cookie(login_history, response):
     return response
 
 
-def add_to_login_history(identifier):
+def add_to_login_history(identifier) -> None:
     """Add a user identifier to the login history.
 
     The identifier is moved to the front if already present, ensuring
@@ -186,7 +186,7 @@ def get_login_history():
     return users
 
 
-def is_user_in_login_history(user_name):
+def is_user_in_login_history(user_name) -> bool:
     """Check if a user identifier is in the login history.
 
     :param user_name: The username/identifier to check
@@ -199,7 +199,7 @@ def is_user_in_login_history(user_name):
     return user_name in identifiers
 
 
-def remove_from_login_history(identifier):
+def remove_from_login_history(identifier) -> None:
     """Remove a user identifier from the login history.
 
     :param identifier: The username/identifier to remove

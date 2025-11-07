@@ -65,11 +65,11 @@ def click_type(attribute_type):
     return attribute_type
 
 
-def is_multiple(attribute_type):
+def is_multiple(attribute_type) -> bool:
     return typing.get_origin(attribute_type) is list
 
 
-def register(cli):
+def register(cli) -> None:
     """Generate commands using factories that each have one subcommand per available model."""
     cli.add_command(get_command)
     cli.add_command(set_command)

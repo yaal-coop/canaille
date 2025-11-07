@@ -290,7 +290,7 @@ class User(Model):
     _writable_fields: set[str] | None = None
     _permissions: set[str] | None = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         signal("before_user_reload").connect(self.on_reload, sender=self)
 
@@ -298,15 +298,15 @@ class User(Model):
         """Check whether a password has been set for the user."""
         return self.password is not None
 
-    def can_read(self, field: str):
+    def can_read(self, field: str) -> bool:
         return field in self.readable_fields | self.writable_fields
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.display_name or self.formatted_name or self.user_name
 
     @property
-    def preferred_email(self):
+    def preferred_email(self) -> str | None:
         return self.emails[0] if self.emails else None
 
     def __getattribute__(self, name):
@@ -320,7 +320,7 @@ class User(Model):
                 return self.can(name[len(prefix) :])
             raise
 
-    def can(self, *permissions: Permission):
+    def can(self, *permissions: Permission) -> bool:
         """Whether or not the user has the :class:`~canaille.core.configuration.Permission` according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._permissions is None:
             self._permissions = set()
@@ -339,13 +339,13 @@ class User(Model):
         )
 
     @classmethod
-    def on_reload(cls, self, data):
+    def on_reload(cls, self, data) -> None:
         self._readable = None
         self._writable = None
         self._permissions = None
 
     @property
-    def readable_fields(self):
+    def readable_fields(self) -> set[str]:
         """The fields the user can read according to the :class:`configuration <canaille.core.configuration.ACLSettings>` configuration.
 
         This does not include the :attr:`writable
@@ -361,7 +361,7 @@ class User(Model):
         return self._readable_fields
 
     @property
-    def writable_fields(self):
+    def writable_fields(self) -> set[str]:
         """The fields the user can write according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."""
         if self._writable_fields is None:
             self._writable_fields = set()
@@ -371,7 +371,7 @@ class User(Model):
                     self._writable_fields |= set(details["WRITE"])
         return self._writable_fields
 
-    def generate_sms_or_mail_otp(self, length=OTP_DIGITS):
+    def generate_sms_or_mail_otp(self, length=OTP_DIGITS) -> str:
         otp = string_code(secrets.randbelow(10**length), length)
         self.one_time_password = otp
         self.one_time_password_emission_date = datetime.datetime.now(
@@ -379,7 +379,7 @@ class User(Model):
         )
         return otp
 
-    def generate_url_safe_token(self):
+    def generate_url_safe_token(self) -> str:
         token = secrets.token_urlsafe(LINK_TOKEN_LENGTH)
         self.one_time_password = build_hash(token)
         self.one_time_password_emission_date = datetime.datetime.now(
@@ -387,17 +387,17 @@ class User(Model):
         )
         return token
 
-    def is_email_or_sms_otp_valid(self, user_otp):
+    def is_email_or_sms_otp_valid(self, user_otp) -> bool:
         return user_otp == self.one_time_password and self.is_otp_still_valid()
 
-    def is_otp_still_valid(self):
+    def is_otp_still_valid(self) -> bool:
         return (
             datetime.datetime.now(datetime.timezone.utc)
             - self.one_time_password_emission_date
             < current_app.config["CANAILLE"]["OTP_LIFETIME"]
         )
 
-    def can_send_new_otp(self):
+    def can_send_new_otp(self) -> bool:
         return self.one_time_password_emission_date is None or (
             datetime.datetime.now(datetime.timezone.utc)
             - self.one_time_password_emission_date
@@ -405,7 +405,7 @@ class User(Model):
         )
 
     @property
-    def next_otp_send_delay(self):
+    def next_otp_send_delay(self) -> datetime.timedelta:
         if self.can_send_new_otp():
             return datetime.timedelta(seconds=0)
 
@@ -415,11 +415,11 @@ class User(Model):
             + datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
         ) - now
 
-    def clear_otp(self):
+    def clear_otp(self) -> None:
         self.one_time_password_emission_date = None
         self.one_time_password = None
 
-    def get_intruder_lockout_delay(self):
+    def get_intruder_lockout_delay(self) -> float:
         if self.password_failure_timestamps:
             # discard old attempts
             self.password_failure_timestamps = [
@@ -442,7 +442,7 @@ class User(Model):
         ).total_seconds()
         return max(calculated_delay - time_since_last_failed_bind, 0)
 
-    def has_expired_password(self):
+    def has_expired_password(self) -> bool:
         last_update = self.password_last_update or datetime.datetime.now(
             datetime.timezone.utc
         )

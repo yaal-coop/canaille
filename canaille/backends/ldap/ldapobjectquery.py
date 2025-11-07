@@ -7,7 +7,7 @@ class LDAPObjectQuery:
         self.klass = klass
         self.items = items
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.items)
 
     def __getitem__(self, item):
@@ -29,7 +29,7 @@ class LDAPObjectQuery:
             )
         return super().__eq__(other)
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self.items)
 
     def decorate(self, args):

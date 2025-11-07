@@ -26,7 +26,7 @@ except ImportError:
     babel = None
 
 
-def mock_babel(app):  # pragma: no cover
+def mock_babel(app) -> None:  # pragma: no cover
     """Jinja stubs when flask-babel is not installed."""
     app.jinja_env.filters.update(
         datetimeformat=identity,
@@ -49,7 +49,7 @@ def mock_babel(app):  # pragma: no cover
     )
 
 
-def setup_i18n(app):
+def setup_i18n(app) -> None:
     @app.before_request
     def before_request():
         g.available_language_codes = available_language_codes()

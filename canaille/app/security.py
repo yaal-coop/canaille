@@ -1,4 +1,4 @@
-def setup_security(app):
+def setup_security(app) -> None:
     try:
         from flask_talisman import Talisman
     except ImportError:

@@ -51,7 +51,7 @@ def get_current_mail_domain():
     return get_current_domain().split(":")[0]
 
 
-def validate_uri(value):
+def validate_uri(value) -> bool:
     parsed = urlparse(value)
     return (parsed.scheme in ["http", "https"] or "." in parsed.scheme) and bool(
         parsed.netloc

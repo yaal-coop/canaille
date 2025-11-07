@@ -79,7 +79,7 @@ class Model:
             }
         return cls._attributes
 
-    def __html__(self):
+    def __html__(self) -> str | None:
         return self.id
 
     @property
@@ -137,7 +137,7 @@ class BackendModel:
 
         return attribute_type, metadata.get("backref")
 
-    def match_filter(self, filter):
+    def match_filter(self, filter) -> bool:
         if filter is None:
             return True
 

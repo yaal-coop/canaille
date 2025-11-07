@@ -11,7 +11,7 @@ from canaille.backends import Backend
 from canaille.backends import get_lockout_delay_message
 
 
-def listify(value):
+def listify(value) -> list:
     if value is None:
         return []
 
@@ -42,20 +42,20 @@ class MemoryBackend(Backend):
         )
 
     @classmethod
-    def install(cls, app):
+    def install(cls, app) -> None:
         pass
 
-    def setup(self):
+    def setup(self) -> None:
         pass
 
-    def teardown(self):
+    def teardown(self) -> None:
         pass
 
     @classmethod
     def check_network_config(cls, config):
         return CheckResult(message="Memory backend don't need configuration")
 
-    def has_account_lockability(self):
+    def has_account_lockability(self) -> bool:
         return True
 
     def check_user_password(self, user, password):
@@ -74,7 +74,7 @@ class MemoryBackend(Backend):
 
         return (True, None)
 
-    def set_user_password(self, user, password):
+    def set_user_password(self, user, password) -> None:
         user.password = password
         user.password_last_update = datetime.datetime.now(
             datetime.timezone.utc
@@ -139,7 +139,7 @@ class MemoryBackend(Backend):
             for state in states:
                 Backend.instance.save(model(**state))
 
-    def do_save(self, instance):
+    def do_save(self, instance) -> None:
         if not instance.id:
             instance.id = str(uuid.uuid4())
 
@@ -153,16 +153,16 @@ class MemoryBackend(Backend):
         self.index_save(instance)
         instance._cache = {}
 
-    def do_delete(self, instance):
+    def do_delete(self, instance) -> None:
         self.index_delete(instance)
 
-    def do_reload(self, instance):
+    def do_reload(self, instance) -> None:
         instance._state = Backend.instance.get(
             instance.__class__, id=instance.id
         )._state
         instance._cache = {}
 
-    def index_save(self, instance):
+    def index_save(self, instance) -> None:
         # update the id index
         self.index(instance.__class__)[instance.id] = copy.deepcopy(instance._state)
 
@@ -193,7 +193,7 @@ class MemoryBackend(Backend):
                 # add the current object in the subinstance index
                 mirror_attribute_index.add(subinstance_id)
 
-    def index_delete(self, instance):
+    def index_delete(self, instance) -> None:
         if instance.id not in self.index(instance.__class__):
             return
 
@@ -228,7 +228,7 @@ class MemoryBackend(Backend):
         # update the id index
         del self.index(instance.__class__)[instance.id]
 
-    def record_failed_attempt(self, user):
+    def record_failed_attempt(self, user) -> None:
         user.password_failure_timestamps += [
             datetime.datetime.now(datetime.timezone.utc)
         ]

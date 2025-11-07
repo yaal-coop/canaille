@@ -35,7 +35,7 @@ class SqlAlchemyModel(BackendModel):
         "confirm_deleted_rows": False,
     }
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"<{self.__class__.__name__} {self.identifier_attribute}={self.identifier}>"
         )

@@ -150,7 +150,7 @@ class LDAPBackend(Backend):
 
         return self._connection
 
-    def teardown(self):
+    def teardown(self) -> None:
         if self._connection:  # pragma: no branch
             self._connection.unbind_s()
             self._connection = None
@@ -212,7 +212,7 @@ class LDAPBackend(Backend):
             success=True,
         )
 
-    def has_account_lockability(self):
+    def has_account_lockability(self) -> bool:
         from .ldapobject import LDAPObject
 
         try:
@@ -264,7 +264,7 @@ class LDAPBackend(Backend):
 
         return result, message
 
-    def set_user_password(self, user, password):
+    def set_user_password(self, user, password) -> None:
         conn = self.connection
         conn.passwd_s(
             user.dn,
@@ -421,7 +421,7 @@ class LDAPBackend(Backend):
 
         return {attr: replace_attr(attr, value) for attr, value in state.items()}
 
-    def do_save(self, instance):
+    def do_save(self, instance) -> None:
         current_object_classes = instance.get_ldap_attribute("objectClass") or []
         instance.set_ldap_attribute(
             "objectClass",
@@ -482,13 +482,13 @@ class LDAPBackend(Backend):
         instance.state = {**result.entry, **instance.changes}
         instance.changes = {}
 
-    def do_delete(self, instance):
+    def do_delete(self, instance) -> None:
         try:
             self.connection.delete_s(instance.dn)
         except ldap.NO_SUCH_OBJECT:
             pass
 
-    def do_reload(self, instance):
+    def do_reload(self, instance) -> None:
         result = self.connection.search_s(
             instance.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"]
         )

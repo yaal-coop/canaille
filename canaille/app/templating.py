@@ -19,7 +19,7 @@ def render_template(*args, **kwargs):
     return flask.render_template(*args, **kwargs)
 
 
-def setup_themer(app):
+def setup_themer(app) -> None:
     theme_path = app.config["CANAILLE"]["THEME"]
 
     if not theme_path:
@@ -43,7 +43,7 @@ def setup_themer(app):
         return theme_name
 
 
-def setup_jinja(app):
+def setup_jinja(app) -> None:
     from canaille.app.forms import password_strength_calculator
     from canaille.app.models import MODELS
     from canaille.backends import Backend

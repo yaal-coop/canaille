@@ -13,7 +13,7 @@ from canaille.app import classproperty
 from canaille.app.i18n import gettext as _
 
 
-def is_meaningful_value(value):
+def is_meaningful_value(value) -> bool:
     """Check if a value is meaningful (not None, not empty list, not empty string, not empty bytes)."""
     return value is not None and value != [] and value != "" and value != b""
 
@@ -22,7 +22,7 @@ class ModelEncoder(json.JSONEncoder):
     """JSON serializer that can handle Canaille models."""
 
     @staticmethod
-    def serialize_model(instance):
+    def serialize_model(instance) -> dict:
         def serialize_attribute(attribute_name, value):
             """Replace model instances by their id."""
             multiple = typing.get_origin(instance.attributes[attribute_name]) is list
@@ -60,7 +60,7 @@ class ModelEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
-def decode_hook(self, data):
+def decode_hook(self, data) -> dict:
     for key, value in data.items():
         try:
             data[key] = datetime.datetime.fromisoformat(value)
@@ -74,7 +74,7 @@ class Backend:
     json_encoder = ModelEncoder
     json_decode_hook = decode_hook
 
-    def __init__(self, config):
+    def __init__(self, config) -> None:
         self.config = config
         Backend._instance = self
 
@@ -82,7 +82,7 @@ class Backend:
     def instance(cls):
         return cls._instance
 
-    def init_app(self, app, init_backend=None):
+    def init_app(self, app, init_backend=None) -> None:
         self.register_models(app)
 
         @app.before_request
@@ -104,14 +104,14 @@ class Backend:
         """Prepare the database to host canaille data."""
         raise NotImplementedError()
 
-    def setup(self):
+    def setup(self) -> None:
         """Is called before each http request, it should open the connection to the backend."""
 
-    def teardown(self):
+    def teardown(self) -> None:
         """Is called after each http request, it should close the connections to the backend."""
 
     @classmethod
-    def check_network_config(cls, config):
+    def check_network_config(cls, config) -> None:
         """check_network_config the config part dedicated to the backend.
 
         It should raise :class:`~canaille.configuration.ConfigurationError` when
@@ -153,7 +153,7 @@ class Backend:
         """Work like :meth:`~canaille.backends.Backend.query` but return only one element or :py:data:`None` if no item is matching."""
         raise NotImplementedError()
 
-    def save(self, instance):
+    def save(self, instance) -> None:
         """Validate the current modifications in the database."""
         data = {}
         model_name = instance.__class__.__name__.lower()
@@ -161,10 +161,10 @@ class Backend:
         self.do_save(instance)
         signal(f"after_{model_name}_save").send(instance, data=data)
 
-    def do_save(self, instance):
+    def do_save(self, instance) -> None:
         raise NotImplementedError()
 
-    def delete(self, instance):
+    def delete(self, instance) -> None:
         """Remove the current instance from the database."""
         data = {}
         model_name = instance.__class__.__name__.lower()
@@ -172,10 +172,10 @@ class Backend:
         self.do_delete(instance)
         signal(f"after_{model_name}_delete").send(instance, data=data)
 
-    def do_delete(self, instance):
+    def do_delete(self, instance) -> None:
         raise NotImplementedError()
 
-    def reload(self, instance):
+    def reload(self, instance) -> None:
         """Cancel the unsaved modifications.
 
         >>> user = User.get(user_name="george")
@@ -194,7 +194,7 @@ class Backend:
         self.do_reload(instance)
         signal(f"after_{model_name}_reload").send(instance, data=data)
 
-    def do_reload(self, instance):
+    def do_reload(self, instance) -> None:
         raise NotImplementedError()
 
     def dump(self, model: list[str] | None):
@@ -205,7 +205,7 @@ class Backend:
         signal("after_dump").send(model, data=data)
         return payload
 
-    def do_dump(self, model: list[str] | None = None):
+    def do_dump(self, model: list[str] | None = None) -> dict:
         from canaille.app.models import MODELS
 
         payload = {}
@@ -216,17 +216,17 @@ class Backend:
 
         return payload
 
-    def restore(self, objects):
+    def restore(self, objects) -> None:
         """Insert a group of objects in the database."""
         data = {}
         signal("before_restore").send(objects, data=data)
         self.do_restore(objects)
         signal("after_restore").send(objects, data=data)
 
-    def do_restore(self, objects):
+    def do_restore(self, objects) -> None:
         raise NotImplementedError()
 
-    def update(self, instance, **kwargs):
+    def update(self, instance, **kwargs) -> None:
         """Assign a whole dict to the current instance. This is useful to update models based on forms.
 
         >>> user = User.get(user_name="george")
@@ -247,15 +247,15 @@ class Backend:
         """Check if the password matches the user password in the database."""
         raise NotImplementedError()
 
-    def set_user_password(self, user, password: str):
+    def set_user_password(self, user, password: str) -> None:
         """Set a password for the user."""
         raise NotImplementedError()
 
-    def has_account_lockability(self):
+    def has_account_lockability(self) -> bool:
         """Indicate whether the backend supports locking user accounts."""
         raise NotImplementedError()
 
-    def register_models(self, app):
+    def register_models(self, app) -> None:
         import inspect
 
         from canaille.app import models
@@ -303,11 +303,11 @@ def setup_backend(app, backend=None, init_backend=None):
     return backend
 
 
-def available_backends():
+def available_backends() -> set:
     return {"sql", "memory", "ldap"}
 
 
-def get_lockout_delay_message(current_lockout_delay):
+def get_lockout_delay_message(current_lockout_delay) -> str:
     nb_seconds = ceil(current_lockout_delay)
     return _(
         f"Too much attempts. Please wait for {nb_seconds} seconds before trying to login again."

@@ -13,7 +13,7 @@ class MemoryModel(BackendModel):
         for attribute, value in kwargs.items():
             setattr(self, attribute, value)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<{self.__class__.__name__} id={self.id}>"
 
     @classmethod
@@ -52,7 +52,7 @@ class MemoryModel(BackendModel):
 
         return self._state == other._state
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.id)
 
     def __getattribute__(self, name):
