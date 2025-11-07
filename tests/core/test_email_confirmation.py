@@ -70,7 +70,7 @@ def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged
 
 
 def test_confirmation_unset_smtp_enabled_email_admin_editable(
-    testclient, backend, logged_admin, user
+    testclient, backend, logged_admin, user, smtpd
 ):
     """Administrators should be able to edit user email addresses, even when email confirmation is unset and SMTP is configured."""
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = None
@@ -216,7 +216,7 @@ def test_confirmation_invalid_link(testclient, backend, user):
     ) in res.flashes
 
 
-def test_confirmation_mail_form_failed(testclient, backend, user):
+def test_confirmation_mail_form_failed(testclient, backend, user, smtpd):
     """Tests when an error happens during the mail sending."""
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False):
         res = testclient.get("/login")
@@ -413,7 +413,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
     assert "new_email@mydomain.test" not in user.emails
 
 
-def test_delete_email(testclient, logged_user, backend):
+def test_delete_email(testclient, logged_user, backend, smtpd):
     """Tests that user can deletes its emails unless they have only one left."""
     res = testclient.get("/profile/user")
     assert "email_remove" not in res.forms["emailconfirmationform"].fields
@@ -432,7 +432,7 @@ def test_delete_email(testclient, logged_user, backend):
     assert logged_user.emails == ["john@doe.test"]
 
 
-def test_delete_wrong_email(testclient, logged_user, backend):
+def test_delete_wrong_email(testclient, logged_user, backend, smtpd):
     """Tests that removing an already removed email do not produce anything."""
     logged_user.emails = logged_user.emails + ["new@email.test"]
     backend.save(logged_user)
@@ -453,7 +453,7 @@ def test_delete_wrong_email(testclient, logged_user, backend):
     assert logged_user.emails == ["john@doe.test"]
 
 
-def test_delete_last_email(testclient, logged_user, backend):
+def test_delete_last_email(testclient, logged_user, backend, smtpd):
     """Tests that users cannot remove their last email address."""
     logged_user.emails = logged_user.emails + ["new@email.test"]
     backend.save(logged_user)
@@ -474,7 +474,7 @@ def test_delete_last_email(testclient, logged_user, backend):
     assert logged_user.emails == ["john@doe.test"]
 
 
-def test_edition_forced_mail(testclient, logged_user, backend):
+def test_edition_forced_mail(testclient, logged_user, backend, smtpd):
     """Tests that users that must perform email verification cannot force the profile form."""
     res = testclient.get("/profile/user", status=200)
     form = res.forms["baseform"]

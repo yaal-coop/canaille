@@ -18,7 +18,7 @@ def configuration(configuration):
     return configuration
 
 
-def test_no_auth_session_not_logged_in(testclient, user):
+def test_no_auth_session_not_logged_in(testclient, user, smtpd):
     """Non-logged users should not be able to access the email auth form if an authentication session has not been properly started."""
     res = testclient.get("/auth/email", status=302)
     assert res.location == "/login"
@@ -27,13 +27,13 @@ def test_no_auth_session_not_logged_in(testclient, user):
     ]
 
 
-def test_no_auth_session_logged_in(testclient, logged_user):
+def test_no_auth_session_logged_in(testclient, logged_user, smtpd):
     """Logged users should not be able to access the email auth form if an authentication session has not been properly started."""
     res = testclient.get("/auth/email", status=302)
     assert res.location == "/"
 
 
-def test_not_email_step(testclient, user):
+def test_not_email_step(testclient, user, smtpd):
     """Users reaching the email passcode form while this is not the right auth step in their flow should be redirected there."""
     with testclient.session_transaction() as session:
         session["auth"] = AuthenticationSession(
@@ -89,7 +89,7 @@ def test_signin_with_email_otp(smtpd, testclient, backend, user, caplog):
     ) in caplog.record_tuples
 
 
-def test_signin_wrong_email_otp(testclient, user, caplog):
+def test_signin_wrong_email_otp(testclient, user, caplog, smtpd):
     """Test that incorrect email OTP codes are rejected with appropriate error message."""
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
@@ -120,7 +120,7 @@ def test_signin_wrong_email_otp(testclient, user, caplog):
     ) in caplog.record_tuples
 
 
-def test_expired_email_otp(testclient, user, caplog):
+def test_expired_email_otp(testclient, user, caplog, smtpd):
     """Good expired passcode should be refused."""
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
         with testclient.session_transaction() as session:
@@ -223,7 +223,7 @@ def test_send_new_mail_invalid_user(smtpd, testclient, backend, user, caplog):
         ) not in caplog.record_tuples
 
 
-def test_send_new_email_error(smtpd, testclient, backend, user, caplog):
+def test_send_new_email_error(testclient, backend, user, caplog, smtpd):
     """Handle SMS sending errors."""
     testclient.app.config["CANAILLE"]["SMTP"]["HOST"] = "invalid.test"
 

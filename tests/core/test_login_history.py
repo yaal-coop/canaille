@@ -401,7 +401,7 @@ def test_remember_me_false_preserves_existing_history(testclient, user, backend)
 
 
 def test_user_without_password_redirects_to_firstlogin_via_direct_url(
-    testclient, backend
+    testclient, backend, smtpd
 ):
     """Test that direct login URL for user without password redirects to firstlogin."""
     temp_user = models.User(

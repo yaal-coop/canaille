@@ -5,7 +5,7 @@ from unittest import mock
 import pytest
 
 
-def test_password_forgotten_disabled(smtpd, testclient, user):
+def test_password_forgotten_disabled(testclient, user, smtpd):
     """Test that password recovery endpoints are disabled when ENABLE_PASSWORD_RECOVERY is False."""
     testclient.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"] = False
 
@@ -63,7 +63,7 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, cap
     assert [message["X-RcptTo"] for message in smtpd.messages] == user.emails
 
 
-def test_password_forgotten_invalid_form(smtpd, testclient, user):
+def test_password_forgotten_invalid_form(testclient, user, smtpd):
     """Test that password reset form requires a login field."""
     res = testclient.get("/reset", status=200)
 
@@ -74,7 +74,7 @@ def test_password_forgotten_invalid_form(smtpd, testclient, user):
     assert len(smtpd.messages) == 0
 
 
-def test_password_forgotten_invalid(smtpd, testclient, user):
+def test_password_forgotten_invalid(testclient, user, smtpd):
     """Test that invalid login attempts are handled according to HIDE_INVALID_LOGINS setting."""
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True
     res = testclient.get("/reset", status=200)
@@ -104,7 +104,7 @@ def test_password_forgotten_invalid(smtpd, testclient, user):
 
 
 def test_password_forgotten_invalid_when_user_cannot_self_edit(
-    smtpd, testclient, user, backend
+    testclient, user, backend, smtpd
 ):
     """Test that password reset is denied for users without self-edit permissions."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
@@ -147,7 +147,7 @@ def test_password_forgotten_invalid_when_user_cannot_self_edit(
 
 
 @mock.patch("smtplib.SMTP")
-def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
+def test_password_forgotten_mail_error(SMTP, testclient, user, smtpd):
     """Test that password reset handles email sending errors gracefully."""
     SMTP.side_effect = mock.Mock(side_effect=OSError("unit test mail error"))
     res = testclient.get("/reset", status=200)
@@ -163,7 +163,7 @@ def test_password_forgotten_mail_error(SMTP, smtpd, testclient, user):
     assert len(smtpd.messages) == 0
 
 
-def test_password_forgotten_user_disabled(smtpd, testclient, user, caplog, backend):
+def test_password_forgotten_user_disabled(testclient, user, caplog, backend, smtpd):
     """Test that password reset emails are not sent for locked user accounts."""
     user.lock_date = datetime.datetime.now(datetime.timezone.utc)
     backend.save(user)
@@ -187,7 +187,7 @@ def test_password_forgotten_user_disabled(smtpd, testclient, user, caplog, backe
 
 
 def test_password_forgotten_without_trusted_hosts(
-    smtpd, testclient, user, caplog, backend
+    testclient, user, caplog, backend, smtpd
 ):
     """Test that password reset uses code-based flow when TRUSTED_HOSTS is not configured."""
     testclient.app.config["TRUSTED_HOSTS"] = None
@@ -219,7 +219,7 @@ def test_password_forgotten_without_trusted_hosts(
 
 
 def test_password_forgotten_without_trusted_hosts_wrong_code(
-    smtpd, testclient, user, caplog, backend
+    testclient, user, caplog, backend, smtpd
 ):
     """Test that incorrect password reset codes are rejected."""
     testclient.app.config["TRUSTED_HOSTS"] = None
@@ -237,14 +237,14 @@ def test_password_forgotten_without_trusted_hosts_wrong_code(
 
 
 def test_password_forgotten_trying_to_access_code_page_with_trusted_hosts_enabled(
-    smtpd, testclient, user
+    testclient, user, smtpd
 ):
     """Test that code-based reset page is unavailable when TRUSTED_HOSTS is configured."""
     testclient.get("/reset-code/user", status=404)
 
 
 def test_password_forgotten_trying_to_access_code_page_when_user_cannot_self_edit(
-    smtpd, testclient, user, backend
+    testclient, user, backend, smtpd
 ):
     """Test that code-based reset page doesn't show permission errors for users without self-edit rights."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"] = []
@@ -261,7 +261,7 @@ def test_password_forgotten_trying_to_access_code_page_when_user_cannot_self_edi
 
 
 def test_password_reset_with_wrong_host(
-    configuration, smtpd, testclient, backend, user
+    configuration, testclient, backend, user, smtpd
 ):
     """Test that password reset validates trusted host configuration."""
     res = testclient.get("/reset", status=200)

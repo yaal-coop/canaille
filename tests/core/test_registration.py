@@ -147,13 +147,13 @@ def test_registration_with_email_validation_needs_a_valid_link(
     testclient.get(url_for("core.account.registration"), status=403)
 
 
-def test_join_page_registration_disabled(testclient, backend, smtpd, foo_group):
+def test_join_page_registration_disabled(testclient, backend, foo_group):
     """The join page should not be available if registration is disabled."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = False
     testclient.get(url_for("core.account.join"), status=404)
 
 
-def test_join_page_email_confirmation_disabled(testclient, backend, smtpd, foo_group):
+def test_join_page_email_confirmation_disabled(testclient, backend, foo_group):
     """The join page should directly redirect to the registration page if email confirmation is disabled."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
@@ -161,7 +161,9 @@ def test_join_page_email_confirmation_disabled(testclient, backend, smtpd, foo_g
     assert res.location == url_for("core.account.registration")
 
 
-def test_join_page_already_logged_in(testclient, backend, logged_user, foo_group):
+def test_join_page_already_logged_in(
+    testclient, backend, logged_user, foo_group, smtpd
+):
     """The join page should not be accessible for logged users."""
     testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
     testclient.get(url_for("core.account.join"), status=403)
@@ -221,7 +223,7 @@ def test_registration_with_compromised_password(api_get, testclient, backend):
 
 @mock.patch("httpx.get")
 def test_registration_with_compromised_password_request_api_failed_but_account_created(
-    api_get, testclient, backend, caplog
+    api_get, testclient, backend, caplog, smtpd
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
@@ -308,7 +310,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
 
 @mock.patch("httpx.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_register_form(
-    api_get, testclient, backend, caplog
+    api_get, testclient, backend, caplog, smtpd
 ):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
