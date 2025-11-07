@@ -419,6 +419,18 @@ FILTER = [{user_name = "admin"}, {groups = "admin"}]
 # Examples: "mssql2000", "ldap_salted_sha1", "pbkdf2_sha512", "argon2", "scrypt"
 # PASSWORD_SCHEMES = "pbkdf2_sha512"
 
+# Additional parameters for password hashing.
+#
+# These parameters are passed directly to passlib's CryptContext. Useful for
+# customizing hash parameters like rounds/iterations.
+#
+# Example to tune PBKDF2:
+#
+#     [CANAILLE_SQL]
+#     PASSWORD_HASH_PARAMS = { "pbkdf2_sha512__rounds" = 100000 }
+# PASSWORD_HASH_PARAMS =
+PASSWORD_HASH_PARAMS = {}
+
 # Whether to automatically apply database migrations.
 #
 # If True, database migrations will be automatically applied when Canaille web

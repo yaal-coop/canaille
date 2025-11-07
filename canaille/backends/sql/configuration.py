@@ -33,6 +33,20 @@ class SQLSettings(BaseModel):
     Examples: ``"mssql2000"``, ``"ldap_salted_sha1"``, ``"pbkdf2_sha512"``, ``"argon2"``, ``"scrypt"``
     """
 
+    PASSWORD_HASH_PARAMS: dict = Field(default_factory=dict)
+    """Additional parameters for password hashing.
+
+    These parameters are passed directly to passlib's :class:`~passlib.context.CryptContext`.
+    Useful for customizing hash parameters like rounds/iterations.
+
+    Example to tune PBKDF2:
+
+    .. code-block:: toml
+
+        [CANAILLE_SQL]
+        PASSWORD_HASH_PARAMS = { "pbkdf2_sha512__rounds" = 100000 }
+    """
+
     AUTO_MIGRATE: bool = True
     """Whether to automatically apply database migrations.
 

@@ -91,6 +91,7 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     def default_password_arguments(**kwargs):
         return dict(
             schemes=Backend.instance.config["CANAILLE_SQL"]["PASSWORD_SCHEMES"],
+            **Backend.instance.config["CANAILLE_SQL"].get("PASSWORD_HASH_PARAMS", {}),
             **kwargs,
         )
 

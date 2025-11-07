@@ -7,7 +7,10 @@ from canaille.backends.sql.backend import SQLBackend
 @pytest.fixture
 def sqlalchemy_configuration(configuration):
     configuration["CANAILLE"]["DATABASE"] = "sql"
-    configuration["CANAILLE_SQL"] = {"DATABASE_URI": "sqlite:///:memory:"}
+    configuration["CANAILLE_SQL"] = {
+        "DATABASE_URI": "sqlite:///:memory:",
+        "PASSWORD_HASH_PARAMS": {"pbkdf2_sha512__rounds": 1},
+    }
     yield configuration
     del configuration["CANAILLE_SQL"]
 
