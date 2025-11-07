@@ -709,7 +709,7 @@ OpenID Connect Advanced Features
 
 .. list-table::
     :header-rows: 1
-    :widths: 25 8 8 8 8 8 8 8 8 8 8
+    :widths: 25 8 8 8 8 8 8 8 8 9
 
     * - Software
       - `OIDC Discovery <https://openid.net/specs/openid-connect-discovery-1_0.html>`_
@@ -720,7 +720,6 @@ OpenID Connect Advanced Features
       - `Back-Channel Logout <https://openid.net/specs/openid-connect-backchannel-1_0.html>`_
       - `CIBA <https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html>`_
       - `Prompt=create <https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_
-      - `Self-Issued OP <https://openid.net/specs/openid-connect-self-issued-v2-1_0.html>`_
       - `Federation <https://openid.net/specs/openid-federation-1_0.html>`_
     * - Canaille
       - `✅ <../development/specifications.html>`__
@@ -732,7 +731,6 @@ OpenID Connect Advanced Features
       - ❌
       - `✅ <../development/specifications.html>`__
       - ❌
-      - ❌
     * - `Auth0 <https://auth0.com>`_
       - ✅
       - `✅ <https://auth0.com/docs/get-started/applications/application-types>`__
@@ -743,11 +741,9 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
     * - `Authelia <https://authelia.com>`_
       - ❌
       - `✅ <https://www.authelia.com/configuration/identity-providers/openid-connect/provider/>`__
-      - ❌
       - ❌
       - ❌
       - ❌
@@ -765,11 +761,9 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
     * - `Authentik <https://goauthentik.io>`_
       - ❌
       - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2/>`__
-      - ❌
       - ❌
       - ❌
       - ❌
@@ -787,7 +781,6 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
     * - `CAS <https://apereo.github.io/cas>`_
       - ❌
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
@@ -797,8 +790,7 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
-      - ❌
+      - 🟠
     * - `Connect2id <https://connect2id.com>`_
       - ✅
       - `✅ <https://connect2id.com/products/server/docs/api/client-registration>`__
@@ -808,12 +800,10 @@ OpenID Connect Advanced Features
       - `✅ <https://connect2id.com/products/server/docs/guides/logout>`__
       - `✅ <https://connect2id.com/products/server/docs/guides/ciba>`__
       - ❌
-      - ❌
-      - ❌
+      - `✅ <https://connect2id.com/products/server/docs/guides/openid-federation-setup>`__
     * - `FusionAuth <https://fusionauth.io>`_
       - ❌
       - `✅ <https://fusionauth.io/docs/v1/tech/oauth/>`__
-      - ❌
       - ❌
       - ❌
       - ❌
@@ -830,12 +820,10 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
-      - ❌
+      - 🟠
     * - `Hydra + Kratos <https://ory.sh>`_
       - `✅ <https://www.ory.sh/docs/hydra/guides/oauth2-clients#dynamic-client-registration>`__
       - `✅ <https://www.ory.sh/docs/hydra/guides/logout>`__
-      - ❌
       - ❌
       - ❌
       - ❌
@@ -853,7 +841,6 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
     * - `Keycloak <https://keycloak.org>`_
       - ✅
       - `✅ <https://www.keycloak.org/docs/latest/server_admin/index.html#_client-registration>`__
@@ -863,12 +850,10 @@ OpenID Connect Advanced Features
       - `✅ <https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-logout>`__
       - ❌
       - ❌
-      - ❌
-      - ❌
+      - `✅ <https://github.com/eosc-kc/keycloak-oidc-federation>`__
     * - `LemonLDAP <https://lemonldap-ng.org>`_
       - ❌
       - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
-      - ❌
       - ❌
       - ❌
       - ❌
@@ -886,11 +871,9 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
     * - `Okta <https://okta.com>`_
       - `✅ <https://developer.okta.com/docs/reference/api/apps/#add-oauth-2-0-client-application>`__
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/#logout>`__
-      - ❌
       - ❌
       - ❌
       - ❌
@@ -907,12 +890,10 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
-      - ❌
+      - `✅ <https://simpleidserver.com/docs/tutorial/openidfederation/>`__
     * - `SuperTokens <https://supertokens.com>`_
       - ❌
       - `✅ <https://supertokens.com/docs/authentication/social/custom-providers>`__
-      - ❌
       - ❌
       - ❌
       - ❌
@@ -930,11 +911,9 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
       - ❌
-      - ❌
     * - `Zitadel <https://zitadel.com>`_
       - ❌
       - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc>`__
-      - ❌
       - ❌
       - ❌
       - ❌
