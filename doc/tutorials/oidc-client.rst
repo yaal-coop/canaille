@@ -193,7 +193,6 @@ Step 4: Configure the Client Application
 =========================================
 
 .. screenshot:: |auth-playground|/
-   :context: admin
    :align: right
    :width: 275px
 
@@ -203,7 +202,6 @@ Now we need to configure Auth Playground to connect to your Canaille instance.
 Open http://localhost:4000, and fill the Canaille URL http://localhost:5000 in the *Provider URL* field.
 
 .. screenshot:: |auth-playground|/en/server/|canaille|
-   :context: admin
    :align: right
    :width: 275px
 
