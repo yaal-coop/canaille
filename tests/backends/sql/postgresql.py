@@ -22,7 +22,10 @@ def postgresql_configuration(configuration, request):
     uri = f"postgresql://{info.user}@{info.host}:{info.port}/{info.dbname}"
 
     configuration["CANAILLE"]["DATABASE"] = "sql"
-    configuration["CANAILLE_SQL"] = {"DATABASE_URI": uri}
+    configuration["CANAILLE_SQL"] = {
+        "DATABASE_URI": uri,
+        "PASSWORD_SCHEMES": "plaintext",
+    }
     yield configuration
     del configuration["CANAILLE_SQL"]
 

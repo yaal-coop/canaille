@@ -9,7 +9,7 @@ def sqlite_configuration(configuration):
     configuration["CANAILLE"]["DATABASE"] = "sql"
     configuration["CANAILLE_SQL"] = {
         "DATABASE_URI": "sqlite:///:memory:",
-        "PASSWORD_HASH_PARAMS": {"pbkdf2_sha512__rounds": 1},
+        "PASSWORD_SCHEMES": "plaintext",
     }
     yield configuration
     del configuration["CANAILLE_SQL"]
