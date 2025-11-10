@@ -3,6 +3,28 @@ function onDomChanges() {
         $(this).dropdown({"placeholder": $(this).attr("placeholder")});
     });
     $('*[title]').popup();
+
+    $('.toggle-password-visibility').off('click').on('click', function() {
+        togglePasswordVisibility(this);
+    }).off('keypress').on('keypress', function(e) {
+        if (e.which === 13 || e.which === 32) { // Enter or Space
+            e.preventDefault();
+            togglePasswordVisibility(this);
+        }
+    });
+}
+
+function togglePasswordVisibility(icon) {
+    const input = $(icon).siblings('input[type="password"], input[type="text"]');
+    const isPassword = input.attr('type') === 'password';
+
+    input.attr('type', isPassword ? 'text' : 'password');
+
+    if (isPassword) {
+        $(icon).removeClass('eye').addClass('eye slash');
+    } else {
+        $(icon).removeClass('eye slash').addClass('eye');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

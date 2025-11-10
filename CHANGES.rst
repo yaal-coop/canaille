@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - Restored the support for string ``JWKS`` in configuration.
+- Button to show and hide passwords. :issue:`160`
 
 Fixed
 ^^^^^

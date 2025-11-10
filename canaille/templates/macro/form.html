@@ -6,6 +6,7 @@ Connects WTForms, Fomantic-UI and HTMX.
 field,
 label_visible=true,
 icon=none,
+password_toggle=false,
 container=true,
 noindicator=false,
 indicator_icon=none,
@@ -59,6 +60,7 @@ del_button=false
     <div class="ui
                 {%- if corner_indicator %} corner labeled{% endif -%}
                 {%- if icon or field.description %} left icon{% endif -%}
+                {%- if password_toggle %} icon{% endif -%}
                 {%- if field_visible and ((add_button or del_button) and not readonly and not disabled) or caller is defined %} action{% endif -%}
                 {%- if field.type not in ("BooleanField", "RadioField") %} input{% endif -%}
                ">
@@ -76,6 +78,14 @@ del_button=false
     {{ field(class_="ui fluid dropdown read-only", **kwargs) }}
 {% elif field.type == "SelectField" %}
     {{ field(class_="ui fluid dropdown", **kwargs) }}
+{% endif %}
+
+{% if password_toggle %}
+    <i class="eye icon link toggle-password-visibility"
+       role="button"
+       tabindex="0"
+       aria-label="{{ _('Toggle password visibility') }}"
+       title="{{ _('Toggle password visibility') }}"></i>
 {% endif %}
 
 {% if not noindicator %}
