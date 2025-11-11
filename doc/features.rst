@@ -255,7 +255,7 @@ This allows to provide :abbr:`SSO (Single Sign-On)` and :abbr:`SLO (Single Log-O
 Consent management
 ==================
 
-.. screenshot:: |canaille|/oauth/authorize?response_type=code&client_id=client&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Flogin_callback&scope=openid+profile+email+phone+address+groups&state=state&nonce=nonce
+.. screenshot:: |canaille|/oauth/authorize?response_type=code&client_id=client&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fauthorize_callback&scope=openid+profile+email+phone+address+groups&state=state&nonce=nonce
    :context: admin
    :align: right
    :width: 275px
