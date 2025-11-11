@@ -56,7 +56,7 @@ Using the Web Interface
 
      .. code-block:: text
 
-        http://localhost:4000/login_callback
+        http://localhost:4000/authorize_callback
         http://localhost:4000/logout_callback
 
    - **Post logout redirect URIs**: http://localhost:4000/
@@ -87,7 +87,7 @@ Alternatively, you can register the client using Canaille's CLI:
          $ ./canaille create client \
              --client-name "Auth Playground" \
              --contacts your-email@example.com \
-             --redirect-uris http://localhost:4000/login_callback \
+             --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
@@ -104,7 +104,7 @@ Alternatively, you can register the client using Canaille's CLI:
              yaalcoop/canaille:latest canaille create client \
              --client-name "Auth Playground" \
              --contacts your-email@example.com \
-             --redirect-uris http://localhost:4000/login_callback \
+             --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
@@ -120,7 +120,7 @@ Alternatively, you can register the client using Canaille's CLI:
          $ uvx "canaille[front,oidc,server]" create client \
              --client-name "Auth Playground" \
              --contacts your-email@example.com \
-             --redirect-uris http://localhost:4000/login_callback \
+             --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
@@ -136,7 +136,7 @@ Alternatively, you can register the client using Canaille's CLI:
          $ canaille create client \
              --client-name "Auth Playground" \
              --contacts your-email@example.com \
-             --redirect-uris http://localhost:4000/login_callback \
+             --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
