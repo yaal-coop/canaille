@@ -1,5 +1,6 @@
 import datetime
 import os
+import socket
 from unittest import mock
 
 import pytest
@@ -14,6 +15,15 @@ from canaille import create_app
 from canaille.app import models
 from canaille.app.session import UserSession
 from canaille.backends import available_backends
+
+
+@pytest.fixture(autouse=True, scope="session")
+def configure_socket_timeout():
+    """Set a short socket timeout to speed up tests that attempt failing network connections."""
+    original_timeout = socket.getdefaulttimeout()
+    socket.setdefaulttimeout(0.1)
+    yield
+    socket.setdefaulttimeout(original_timeout)
 
 
 def test_backends():
