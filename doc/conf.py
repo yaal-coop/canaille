@@ -215,7 +215,7 @@ screenshot_default_browser = "firefox"
 screenshot_default_viewport_width = 770
 screenshot_default_viewport_height = 1
 screenshot_default_full_page = True
-
+screenshot_default_color_scheme = "auto"
 
 config_obj = settings_factory(init_with_examples=True)
 config = export_config(config_obj)
