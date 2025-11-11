@@ -117,10 +117,16 @@ The main template inherited by almost every other templates.
                                     {% trans %}Admin{% endtrans %}
                                 </a>
                             {% endif %}
-                            <a class="item" href="{{ url_for('core.auth.logout') }}">
-                                <i class="sign out alternate icon"></i>
-                                {% trans %}Log out{% endtrans %}
-                            </a>
+                            <div class="ui dropdown item">
+                                <i class="user circle icon"></i>
+                                {{ user.name }}
+                                <div class="menu">
+                                    <a class="item" href="{{ url_for('core.auth.logout') }}">
+                                        <i class="sign out alternate icon"></i>
+                                        {% trans %}Log out{% endtrans %}
+                                    </a>
+                                </div>
+                            </div>
                         {% else %}
                             <a class="item" href="{{ url_for('core.auth.login') }}">
                                 <i class="sign in alternate icon"></i>
