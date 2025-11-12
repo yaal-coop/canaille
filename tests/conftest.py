@@ -21,7 +21,7 @@ from canaille.backends import available_backends
 def configure_socket_timeout():
     """Set a short socket timeout to speed up tests that attempt failing network connections."""
     original_timeout = socket.getdefaulttimeout()
-    socket.setdefaulttimeout(0.1)
+    socket.setdefaulttimeout(0.2)
     yield
     socket.setdefaulttimeout(original_timeout)
 
