@@ -66,17 +66,17 @@ def test_signin_and_out(testclient, user, caplog):
         )
         assert "auth" not in session
 
-    res = testclient.get("/login", status=302)
+    res = testclient.get("/login", status=200)
 
     res = testclient.get("/logout")
     assert (
         "success",
-        "You have been disconnected. See you next time Johnny",
+        "All sessions have been closed.",
     ) in res.flashes
     assert (
         "canaille",
         logging.SECURITY,
-        "Logout user",
+        "Logout all users",
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)

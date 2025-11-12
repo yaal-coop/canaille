@@ -1,15 +1,22 @@
+import datetime
+
 from flask import Blueprint
 from flask import current_app
 from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
+from flask import session
 from flask import url_for
 
 from canaille.app.i18n import gettext as _
 from canaille.app.session import get_login_history
+from canaille.app.session import logout_all_users
 from canaille.app.session import logout_user
 from canaille.app.session import remove_from_login_history
+from canaille.app.session import save_user_session
+from canaille.app.session import switch_to_session
+from canaille.app.session import user_session_opened
 from canaille.app.templating import render_template
 from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import get_user_from_login
@@ -56,13 +63,24 @@ def login(username=None):
     When username is provided via URL, bypasses the login form and proceeds
     directly to authentication (password, OTP, etc.). Otherwise displays
     the login form with previously used accounts if available.
-
-    :param username: Optional pre-selected username from URL path
     """
-    if g.session:
-        return redirect(
-            url_for("core.account.profile_edition", edited_user=g.session.user)
-        )
+    if username:
+        user = get_user_from_login(username)
+        if user and user_session_opened(user.id):
+            switch_to_session(user.id)
+
+            if redirect_url := session.pop("redirect-after-login", None):
+                g.session.last_login_datetime = datetime.datetime.now(
+                    datetime.timezone.utc
+                )
+                save_user_session()
+                return redirect(redirect_url)
+
+            flash(
+                _("You switched to {user_name} session.").format(user_name=user.name),
+                "success",
+            )
+            return redirect(url_for("core.account.profile_edition", edited_user=user))
 
     g.auth = AuthenticationSession.update(user_name=username)
     g.auth.reset_auth_steps()
@@ -96,6 +114,17 @@ def login(username=None):
             "core/login.html", form=form, login_history=get_login_history()
         )
 
+    user = get_user_from_login(form.login.data)
+    if user and user_session_opened(user.id):
+        switch_to_session(user.id)
+
+        if redirect_url := session.pop("redirect-after-login", None):
+            g.session.last_login_datetime = datetime.datetime.now(datetime.timezone.utc)
+            save_user_session()
+            return redirect(redirect_url)
+
+        return redirect(url_for("core.account.profile_edition", edited_user=user))
+
     g.auth = AuthenticationSession.update(
         user_name=form.login.data, remember=form.remember.data
     )
@@ -103,19 +132,27 @@ def login(username=None):
 
 
 @bp.route("/logout")
-def logout():
-    if user := g.session and g.session.user:
-        current_app.logger.security(f"Logout {user.identifier}")
-
-        flash(
-            _(
-                "You have been disconnected. See you next time %(user)s",
-                user=user.name,
-            ),
-            "success",
-        )
-        logout_user()
-    return redirect("/")
+@bp.route("/logout/<username>")
+def logout(username=None):
+    if username:
+        user = get_user_from_login(username)
+        if user and logout_user(user.id):
+            current_app.logger.security(f"Logout {user.identifier}")
+            flash(
+                _("You have been disconnected from {user_name} account.").format(
+                    user_name=user.name
+                ),
+                "success",
+            )
+        else:
+            flash(_("The session could not be closed."), "error")
+        return redirect(url_for("core.auth.login"))
+    else:
+        if g.session and g.session.user:
+            current_app.logger.security("Logout all users")
+            flash(_("All sessions have been closed."), "success")
+            logout_all_users()
+        return redirect("/")
 
 
 @bp.route("/forget/<username>")

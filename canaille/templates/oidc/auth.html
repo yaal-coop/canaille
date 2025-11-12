@@ -3,6 +3,12 @@
 {% set client = (g.auth.data.client_id | Client) %}
 {% set prompt_login = g.auth.data.get('prompt_login', false) %}
 
+{% block container %}
+    <div hx-boost="false">
+        {{ super() }}
+    </div>
+{% endblock %}
+
 {% block auth_header %}
     {% if not client %}
         {{ super() }}

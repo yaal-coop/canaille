@@ -68,6 +68,7 @@ def setup_jinja(app) -> None:
     def global_processor():
         from canaille.app.flask import request_is_boosted
         from canaille.app.flask import request_is_partial
+        from canaille.app.session import get_active_sessions
 
         return {
             "debug": app.debug or app.config.get("TESTING", False),
@@ -77,6 +78,7 @@ def setup_jinja(app) -> None:
             or app.config["CANAILLE"]["LOGO"],
             "website_name": app.config["CANAILLE"]["NAME"],
             "user": g.get("session") and g.session.user,
+            "active_sessions": get_active_sessions(),
             "menu": True,
             "request_is_boosted": request_is_boosted(),
             "request_is_partial": request_is_partial(),
