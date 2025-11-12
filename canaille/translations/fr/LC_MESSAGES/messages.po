@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-11-12 11:06+0100\n"
-"PO-Revision-Date: 2025-11-12 08:49+0000\n"
+"PO-Revision-Date: 2025-11-12 11:09+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -714,7 +714,7 @@ msgstr "Vous avez rejoint le groupe %(group)s!"
 #: canaille/core/endpoints/auth/__init__.py:80
 #, python-brace-format
 msgid "You switched to {user_name} session."
-msgstr ""
+msgstr "Vous êtes passé sur la session de {user_name}."
 
 #: canaille/core/endpoints/auth/__init__.py:112
 #: canaille/core/endpoints/auth/password.py:54
@@ -723,22 +723,17 @@ msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations"
 
 #: canaille/core/endpoints/auth/__init__.py:142
-#, fuzzy, python-brace-format
-#| msgid "You have been disconnected"
+#, python-brace-format
 msgid "You have been disconnected from {user_name} account."
-msgstr "Vous avez été déconnecté·e"
+msgstr "Vous avez été déconnecté·e du compte {user_name}."
 
 #: canaille/core/endpoints/auth/__init__.py:148
-#, fuzzy
-#| msgid "The version of the client."
 msgid "The session could not be closed."
-msgstr "La version du client."
+msgstr "La session n’a pas pu être close."
 
 #: canaille/core/endpoints/auth/__init__.py:153
-#, fuzzy
-#| msgid "Your email address have been confirmed."
 msgid "All sessions have been closed."
-msgstr "Votre adresse email a été confirmée."
+msgstr "Toutes les sessions ont été closes."
 
 #: canaille/core/endpoints/auth/email.py:62
 #: canaille/core/endpoints/auth/otp.py:46
