@@ -1,15 +1,24 @@
+[0.0.89] - 2025-11-12
+---------------------
+
+Added
+^^^^^
+- Button to show and hide passwords. :issue:`160`
+
+Fixed
+^^^^^
+- Fixed proxy header handling to correctly generate HTTPS URLs when behind reverse proxies.
+
 [0.0.88] - 2025-11-06
 ---------------------
 
 Added
 ^^^^^
 - Restored the support for string ``JWKS`` in configuration.
-- Button to show and hide passwords. :issue:`160`
 
 Fixed
 ^^^^^
 - Support OIDC ``ui_locales`` parameter. :issue:`108`
-- Fixed proxy header handling to correctly generate HTTPS URLs when behind reverse proxies.
 
 [0.0.87] - 2025-11-02
 ---------------------
