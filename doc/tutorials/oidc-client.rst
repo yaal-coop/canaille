@@ -100,7 +100,7 @@ Alternatively, you can register the client using Canaille's CLI:
 
       .. code-block:: console
 
-         $ docker run --rm -v $(pwd)/canaille.toml:/etc/canaille/config.toml \
+         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml \
              yaalcoop/canaille:latest canaille create client \
              --client-name "Auth Playground" \
              --contacts your-email@example.com \

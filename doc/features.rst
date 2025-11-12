@@ -83,7 +83,7 @@ Unless their account is :ref:`locked <feature_account_locking>`, users can authe
 
    For security reasons, it won't be told to users if they try to sign in with an unexisting logging, unless explicitly :attr:`set in the configuration <canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS>`.
 
-.. _feature_multiple_sessions
+.. _feature_multiple_sessions:
 
 Multiple sessions
 =================
@@ -358,7 +358,7 @@ Development and testing tool
 Unit-testing tool
 =================
 
-Thanks to its lightweight :ref:`in-memory database <howtos/databases:Memory>` and its curated :ref:`dependency list <howtos/install:Get the code>`, Canaille can be used in the unit test suite of your application, so you can check how it behaves against a real world OpenID Connect server. If you work with python you might want to check :doc:`pytest-iam:index`.
+Thanks to its lightweight :ref:`in-memory database <howtos/databases:Memory>` and its curated :ref:`dependency list <package_extras>`, Canaille can be used in the unit test suite of your application, so you can check how it behaves against a real world OpenID Connect server. If you work with python you might want to check :doc:`pytest-iam:index`.
 
 Development server
 ==================

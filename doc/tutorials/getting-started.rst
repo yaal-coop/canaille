@@ -197,7 +197,7 @@ Then let Canaille create the tables and run the migrations:
 
       .. code-block:: console
 
-         $ docker run --rm -v $(pwd)/canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:latest canaille install
+         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:latest canaille install
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
@@ -244,7 +244,7 @@ an user called ``admin`` gets all the privileges.
 
       .. code-block:: console
 
-         $ docker run --rm -v $(pwd)/canaille.toml:/etc/canaille/config.toml \
+         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml \
              yaalcoop/canaille:latest canaille create user \
              --user-name admin \
              --password admin123 \
@@ -304,7 +304,7 @@ Now we are ready to start the Canaille server:
       .. code-block:: console
 
          $ docker run --rm -p 8000:8000 \
-             -v $(pwd)/canaille.toml:/etc/canaille/config.toml \
+             -v ./canaille.toml:/etc/canaille/config.toml \
              yaalcoop/canaille:latest
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
