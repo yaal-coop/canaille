@@ -1,6 +1,6 @@
 {% import 'macro/form.html' as fui %}
 {% macro render_field(field, user=none, edited_user=none, noindicator=false) %}
-    {% call fui.render_field(field) %}
+    {% call fui.render_field(field, noindicator=true) %}
         <button
             class="ui primary right labeled icon button"
             type="submit"

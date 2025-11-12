@@ -104,13 +104,15 @@ del_button=false
     {% endif %}
 {% endif %}
 
+{% if caller is defined %}
+    {{ caller() }}
+{% endif %}
+
 {% if field_visible %}
     {# close input container #}
     </div>
 
-    {% if caller is defined %}
-        {{ caller() }}
-    {% else %}
+    {% if not (caller is defined) %}
         {% if del_button %}
             <button
                 class="ui teal icon button"
