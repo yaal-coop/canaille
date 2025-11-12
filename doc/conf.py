@@ -51,6 +51,7 @@ source_suffix = {
     ".md": "markdown",
 }
 master_doc = "index"
+templates_path = ["_templates"]
 project = "canaille"
 year = datetime.datetime.now().strftime("%Y")
 copyright = f"{year}, Yaal Coop"

@@ -1,0 +1,13 @@
+<div class="sy-head-socials">
+  {%- include "components/nav-socials.html" -%}
+  {%- if theme_mastodon_url %}
+    <a href="{{ theme_mastodon_url }}" aria-label="Mastodon">
+      <iconify-icon icon="simple-icons:mastodon"></iconify-icon>
+    </a>
+  {%- endif %}
+  {%- if theme_discussion_url %}
+    <a href="{{ theme_discussion_url }}" aria-label="Matrix">
+      <iconify-icon icon="simple-icons:matrix"></iconify-icon>
+    </a>
+  {%- endif %}
+</div>
