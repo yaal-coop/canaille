@@ -511,6 +511,24 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # or raw keys.
 # INACTIVE_JWKS =
 
+# Trusted domains for automatic client trust.
+#
+# Clients with a client_uri matching these domains will be automatically
+# considered as trusted and will not display the consent page to users. This is
+# particularly useful for development environments.
+#
+# Supports these patterns:
+#
+# - Exact match: example.com matches example.com
+# - Wildcard match: .example.com matches example.com and all its subdomains
+#
+# Examples:
+#
+# - [".localhost", "127.0.0.1"] (default for development)
+# - [".dev.company.com", "staging.company.com"]
+# - [".local", "localhost"]
+# TRUSTED_DOMAINS = [".localhost", "127.0.0.1"]
+
 # "Attribute mapping used to build an OIDC UserInfo object.
 #
 # UserInfo is used to fill the id_token and the userinfo endpoint.
@@ -539,24 +557,6 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # WEBSITE = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
 
 # UPDATED_AT = "{% if user.last_modified %}{{ user.last_modified.timestamp() }}{% endif %}"
-
-# Trusted domains for automatic client trust.
-#
-# Clients with a client_uri matching these domains will be automatically
-# considered as trusted and will not display the consent page to users. This is
-# particularly useful for development environments.
-#
-# Supports these patterns:
-#
-# - Exact match: example.com matches example.com
-# - Wildcard match: .example.com matches example.com and all its subdomains
-#
-# Examples:
-#
-# - [".localhost", "127.0.0.1"] (default for development)
-# - [".dev.company.com", "staging.company.com"]
-# - [".local", "localhost"]
-# TRUSTED_DOMAINS = [".localhost", "127.0.0.1"]
 
 [CANAILLE_SCIM]
 # Whether the SCIM server API is enabled.

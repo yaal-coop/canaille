@@ -76,11 +76,6 @@ class OIDCSettings(BaseModel):
     Those keys are only used to verify JWTs.
     The keys can be in the form of JWK dict or raw keys."""
 
-    USERINFO_MAPPING: UserInfoMappingSettings | None = UserInfoMappingSettings()
-    """"Attribute mapping used to build an OIDC UserInfo object.
-
-    UserInfo is used to fill the id_token and the userinfo endpoint."""
-
     TRUSTED_DOMAINS: CommaSeparatedList = [".localhost", "127.0.0.1"]
     """Trusted domains for automatic client trust.
 
@@ -100,3 +95,8 @@ class OIDCSettings(BaseModel):
     - ``[".dev.company.com", "staging.company.com"]``
     - ``[".local", "localhost"]``
     """
+
+    USERINFO_MAPPING: UserInfoMappingSettings | None = UserInfoMappingSettings()
+    """"Attribute mapping used to build an OIDC UserInfo object.
+
+    UserInfo is used to fill the id_token and the userinfo endpoint."""
