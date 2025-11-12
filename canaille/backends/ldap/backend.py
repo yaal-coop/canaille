@@ -101,11 +101,12 @@ class LDAPBackend(Backend):
     @classmethod
     def install(cls, app):
         cls.setup_schemas(app.config)
-        with cls(app.config).session():
-            models.Token.install()
-            models.AuthorizationCode.install()
-            models.Client.install()
-            models.Consent.install()
+        if app.features.has_oidc:
+            with cls(app.config).session():
+                models.Token.install()
+                models.AuthorizationCode.install()
+                models.Client.install()
+                models.Consent.install()
 
     @classmethod
     def setup_schemas(cls, config):
