@@ -77,7 +77,7 @@ def test_hypercorn_run_app_path_set(cli_runner):
         assert result.exit_code == 0
         mock_run.assert_called_once()
         config = mock_run.call_args[0][0]
-        assert config.application_path == "canaille.hypercorn.app:app"
+        assert config.application_path == "canaille.hypercorn.app:create_app()"
 
 
 def test_hypercorn_cli_options(cli_runner):

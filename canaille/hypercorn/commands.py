@@ -95,6 +95,6 @@ if HAS_HYPERCORN:  # pragma: no cover
         }
         config_obj = Config.from_mapping(lowercase_config)
 
-        config_obj.application_path = "canaille.hypercorn.app:app"
+        config_obj.application_path = "canaille.hypercorn.app:create_app()"
         exitcode = hypercorn_run(config_obj)
         sys.exit(exitcode)

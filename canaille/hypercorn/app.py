@@ -48,6 +48,3 @@ def create_app(
         return WsgiToAsgi(app)
 
     return app
-
-
-app = create_app()  # pragma: no cover
