@@ -83,6 +83,14 @@ Unless their account is :ref:`locked <feature_account_locking>`, users can authe
 
    For security reasons, it won't be told to users if they try to sign in with an unexisting logging, unless explicitly :attr:`set in the configuration <canaille.core.configuration.CoreSettings.HIDE_INVALID_LOGINS>`.
 
+.. _feature_multiple_sessions
+
+Multiple sessions
+=================
+
+Several user sessions can be opened simultaneously.
+They can be switched in one click, disconnected all at once or independently.
+
 .. _feature_user_registration:
 
 User registration

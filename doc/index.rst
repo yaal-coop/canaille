@@ -31,7 +31,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
 
         User profile and groups management,
         basic permission system,
-        group management
+        group management,
+        multiple user sessions
 
     .. grid-item-card:: :iconify:`mdi:shield-account` User authentication
         :link-type: ref
