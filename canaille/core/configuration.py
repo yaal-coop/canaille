@@ -268,7 +268,7 @@ class CoreSettings(BaseModel):
     """
 
     @staticmethod
-    def default_database_config(cls):
+    def default_database_config():
         try:
             import sqlalchemy  # noqa: F401
 
