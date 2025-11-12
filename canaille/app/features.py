@@ -92,7 +92,7 @@ class Features:
             import authlib  # noqa: F401
 
             return (
-                "CANAILLE_OIDC" in self.app.config
+                self.app.config.get("CANAILLE_OIDC")
                 and self.app.config["CANAILLE_OIDC"]["ENABLE_OIDC"]
             )
         except ImportError:  # pragma: no cover
@@ -110,7 +110,7 @@ class Features:
             import scim2_models  # noqa: F401
 
             return (
-                "CANAILLE_SCIM" in self.app.config
+                self.app.config.get("CANAILLE_SCIM")
                 and self.app.config["CANAILLE_SCIM"]["ENABLE_SERVER"]
             )
         except ImportError:  # pragma: no cover
@@ -129,7 +129,7 @@ class Features:
             import scim2_client  # noqa: F401
 
             return (
-                "CANAILLE_SCIM" in self.app.config
+                self.app.config.get("CANAILLE_SCIM")
                 and self.app.config["CANAILLE_SCIM"]["ENABLE_CLIENT"]
             )
         except ImportError:  # pragma: no cover
