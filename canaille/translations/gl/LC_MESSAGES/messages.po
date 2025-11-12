@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-10 12:22+0100\n"
+"POT-Creation-Date: 2025-11-12 11:06+0100\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -97,35 +97,35 @@ msgstr "A túa conta xa existe."
 msgid "You should change your password."
 msgstr ""
 
-#: canaille/core/auth.py:35 canaille/core/endpoints/auth/otp.py:86
+#: canaille/core/auth.py:34 canaille/core/endpoints/auth/otp.py:86
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr ""
 
-#: canaille/core/auth.py:225 canaille/core/endpoints/account.py:872
+#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:872
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Acceso correcto. Benvido/a %(user)s"
 
-#: canaille/core/auth.py:240
+#: canaille/core/auth.py:233
 msgid "An error happened during your authentication process. Please try again."
 msgstr ""
 
-#: canaille/core/auth.py:274
+#: canaille/core/auth.py:267
 msgid "John Doe"
 msgstr "John Doe"
 
-#: canaille/core/auth.py:275 canaille/core/endpoints/forms.py:139
+#: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:139
 #: canaille/core/endpoints/forms.py:440
 msgid "jdoe"
 msgstr "jdoe"
 
-#: canaille/core/auth.py:276
+#: canaille/core/auth.py:269
 #, fuzzy
 #| msgid "john@doe.com"
 msgid "john.doe@example.com"
 msgstr "john@doe.com"
 
-#: canaille/core/auth.py:283
+#: canaille/core/auth.py:276
 msgid " or "
 msgstr " ou "
 
@@ -776,16 +776,34 @@ msgstr ""
 msgid "You have successfully joined %(group)s!"
 msgstr "A sesión foi pechada correctamente."
 
-#: canaille/core/endpoints/auth/__init__.py:94
+#: canaille/core/endpoints/auth/__init__.py:80
+#, python-brace-format
+msgid "You switched to {user_name} session."
+msgstr ""
+
+#: canaille/core/endpoints/auth/__init__.py:112
 #: canaille/core/endpoints/auth/password.py:54
 #: canaille/core/endpoints/auth/password.py:65
 msgid "Login failed, please check your information"
 msgstr "Fallou o inicio de sesión, comproba as túas credenciais"
 
-#: canaille/core/endpoints/auth/__init__.py:112
-#, python-format
-msgid "You have been disconnected. See you next time %(user)s"
-msgstr "A sesión foi desconectada. Deica logo, %(user)s"
+#: canaille/core/endpoints/auth/__init__.py:142
+#, fuzzy, python-brace-format
+#| msgid "You have been disconnected"
+msgid "You have been disconnected from {user_name} account."
+msgstr "Fuches desconectado"
+
+#: canaille/core/endpoints/auth/__init__.py:148
+#, fuzzy
+#| msgid "Delete the client"
+msgid "The session could not be closed."
+msgstr "Eliminar o cliente"
+
+#: canaille/core/endpoints/auth/__init__.py:153
+#, fuzzy
+#| msgid "Your e-mail address."
+msgid "All sessions have been closed."
+msgstr "Dirección de correo electrónico."
 
 #: canaille/core/endpoints/auth/email.py:62
 #: canaille/core/endpoints/auth/otp.py:46
@@ -1241,11 +1259,11 @@ msgid ""
 "object and provided through either request or request_uri parameter."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:518
+#: canaille/oidc/endpoints/oauth.py:533
 msgid "You have been disconnected"
 msgstr "Fuches desconectado"
 
-#: canaille/oidc/endpoints/oauth.py:536
+#: canaille/oidc/endpoints/oauth.py:551
 msgid "You have not been disconnected"
 msgstr "Non fuches desconectado"
 
@@ -1303,16 +1321,25 @@ msgstr "Usuarios"
 msgid "Admin"
 msgstr "Audiencia"
 
-#: canaille/templates/base.html:122 canaille/templates/oidc/logout.html:18
+#: canaille/templates/base.html:134 canaille/templates/base.html:148
+#: canaille/templates/base.html:162 canaille/templates/core/login.html:48
+#: canaille/templates/oidc/logout.html:18
 msgid "Log out"
 msgstr "Pechar sesión"
 
-#: canaille/templates/base.html:127
+#: canaille/templates/base.html:158 canaille/templates/core/auth/base.html:58
+#: canaille/templates/core/auth/setup-otp.html:53
+#, fuzzy
+#| msgid "Delete my account"
+msgid "Switch account"
+msgstr "Eliminar a miña conta"
+
+#: canaille/templates/base.html:169
 #: canaille/templates/core/auth/password.html:24
 msgid "Sign in"
 msgstr "Iniciar sesión"
 
-#: canaille/templates/base.html:152 canaille/templates/core/about.html:22
+#: canaille/templates/base.html:194 canaille/templates/core/about.html:22
 #: canaille/templates/core/about.html:33
 msgid "About Canaille"
 msgstr "Acerca de canaille"
@@ -1634,15 +1661,21 @@ msgstr "Enviar"
 msgid "Choose an account"
 msgstr "Crear a miña conta"
 
-#: canaille/templates/core/login.html:34
+#: canaille/templates/core/login.html:40
+#, fuzzy
+#| msgid "Connectivity test"
+msgid "Connected"
+msgstr "Proba de conectividade"
+
+#: canaille/templates/core/login.html:54
 msgid "Remove from account list"
 msgstr ""
 
-#: canaille/templates/core/login.html:57
+#: canaille/templates/core/login.html:79
 msgid "Or"
 msgstr ""
 
-#: canaille/templates/core/login.html:63
+#: canaille/templates/core/login.html:85
 #, fuzzy
 #| msgid "Delete my account"
 msgid "Use another account"
@@ -1650,13 +1683,13 @@ msgstr "Eliminar a miña conta"
 
 #: canaille/templates/core/auth/forgotten-password-code.html:52
 #: canaille/templates/core/auth/forgotten-password.html:53
-#: canaille/templates/core/login.html:75
+#: canaille/templates/core/login.html:97
 #, fuzzy
 #| msgid "Create my account"
 msgid "Create an account"
 msgstr "Crear a miña conta"
 
-#: canaille/templates/core/login.html:82
+#: canaille/templates/core/login.html:104
 #: canaille/templates/core/mails/registration.txt:5
 msgid "Continue"
 msgstr "Continuar"
@@ -1884,13 +1917,6 @@ msgstr "Iniciar sesión en %(website)s"
 #: canaille/templates/core/auth/base.html:39
 msgid "Manage your information and your authorizations"
 msgstr "Xestiona a túa información e as túas autorizacións"
-
-#: canaille/templates/core/auth/base.html:58
-#: canaille/templates/core/auth/setup-otp.html:53
-#, fuzzy
-#| msgid "Delete my account"
-msgid "Switch account"
-msgstr "Eliminar a miña conta"
 
 #: canaille/templates/core/auth/email.html:16
 #, fuzzy
@@ -2797,19 +2823,19 @@ msgid_plural "%(nb_items_formatted)s items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: canaille/templates/oidc/auth.html:31
+#: canaille/templates/oidc/auth.html:37
 #, fuzzy, python-format
 #| msgid "Pre-authorized applications"
 msgid "Re-authenticate for %(client)s"
 msgstr "Aplicacións preautorizadas"
 
-#: canaille/templates/oidc/auth.html:33
+#: canaille/templates/oidc/auth.html:39
 #, fuzzy, python-format
 #| msgid "Sign in at %(website)s"
 msgid "Sign in to %(client)s"
 msgstr "Iniciar sesión en %(client)s"
 
-#: canaille/templates/oidc/auth.html:48
+#: canaille/templates/oidc/auth.html:54
 #, fuzzy, python-format
 #| msgid "The application %(client_name)s wants to disconnect your account."
 msgid ""
@@ -2817,7 +2843,7 @@ msgid ""
 "%(website_name)s account."
 msgstr "A aplicación %(client_name)s quere desconectar a túa conta."
 
-#: canaille/templates/oidc/auth.html:58
+#: canaille/templates/oidc/auth.html:64
 #, fuzzy, python-format
 #| msgid "You are already logged in, you cannot create an account."
 msgid ""
@@ -2825,13 +2851,13 @@ msgid ""
 "confirmation."
 msgstr "Xa iniciaches sesión, non podes crear unha conta."
 
-#: canaille/templates/oidc/auth.html:74
+#: canaille/templates/oidc/auth.html:80
 #, fuzzy
 #| msgid "Policy"
 msgid "Privacy policy"
 msgstr "Política"
 
-#: canaille/templates/oidc/auth.html:82
+#: canaille/templates/oidc/auth.html:88
 #: canaille/templates/oidc/authorize.html:74
 #: canaille/templates/oidc/consent_list.html:107
 #: canaille/templates/oidc/trusted_list.html:105
@@ -3175,6 +3201,10 @@ msgstr "A aplicación %(name)s está solicitando acceso a:"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#, python-format
+#~ msgid "You have been disconnected. See you next time %(user)s"
+#~ msgstr "A sesión foi desconectada. Deica logo, %(user)s"
 
 #, fuzzy
 #~| msgid "Could not send the password initialization email"

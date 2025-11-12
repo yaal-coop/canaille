@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-10 12:22+0100\n"
+"POT-Creation-Date: 2025-11-12 11:06+0100\n"
 "PO-Revision-Date: 2025-07-31 10:02+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/canaille/"
@@ -105,37 +105,37 @@ msgstr "Ваш аккаунт заблокирован."
 msgid "You should change your password."
 msgstr "Вы должны изменить свой пароль."
 
-#: canaille/core/auth.py:35 canaille/core/endpoints/auth/otp.py:86
+#: canaille/core/auth.py:34 canaille/core/endpoints/auth/otp.py:86
 #, fuzzy
 #| msgid "Cannot remember the login you attempted to sign in with"
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr "Не могу вспомнить логин, который вы использовали для входа"
 
-#: canaille/core/auth.py:225 canaille/core/endpoints/account.py:872
+#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:872
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Подключение успешно. Добро пожаловать %(user)s"
 
-#: canaille/core/auth.py:240
+#: canaille/core/auth.py:233
 #, fuzzy
 #| msgid "Error while sending the passcode by SMS. Please try again."
 msgid "An error happened during your authentication process. Please try again."
 msgstr "Ошибка при отправке кода доступа по SMS. Повторите попытку."
 
-#: canaille/core/auth.py:274
+#: canaille/core/auth.py:267
 msgid "John Doe"
 msgstr "Иван Иванов"
 
-#: canaille/core/auth.py:275 canaille/core/endpoints/forms.py:139
+#: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:139
 #: canaille/core/endpoints/forms.py:440
 msgid "jdoe"
 msgstr "ivanov"
 
-#: canaille/core/auth.py:276
+#: canaille/core/auth.py:269
 msgid "john.doe@example.com"
 msgstr "ivan.ivanov@example.com"
 
-#: canaille/core/auth.py:283
+#: canaille/core/auth.py:276
 msgid " or "
 msgstr " или "
 
@@ -725,16 +725,34 @@ msgstr ""
 msgid "You have successfully joined %(group)s!"
 msgstr ""
 
-#: canaille/core/endpoints/auth/__init__.py:94
+#: canaille/core/endpoints/auth/__init__.py:80
+#, python-brace-format
+msgid "You switched to {user_name} session."
+msgstr ""
+
+#: canaille/core/endpoints/auth/__init__.py:112
 #: canaille/core/endpoints/auth/password.py:54
 #: canaille/core/endpoints/auth/password.py:65
 msgid "Login failed, please check your information"
 msgstr "Ошибка входа, проверьте данные"
 
-#: canaille/core/endpoints/auth/__init__.py:112
-#, python-format
-msgid "You have been disconnected. See you next time %(user)s"
-msgstr "Вы были отключены. Увидимся в следующий раз, %(user)s"
+#: canaille/core/endpoints/auth/__init__.py:142
+#, fuzzy, python-brace-format
+#| msgid "You have been disconnected"
+msgid "You have been disconnected from {user_name} account."
+msgstr "Вы были отключены"
+
+#: canaille/core/endpoints/auth/__init__.py:148
+#, fuzzy
+#| msgid "The version of the client."
+msgid "The session could not be closed."
+msgstr "Версия этого клиента."
+
+#: canaille/core/endpoints/auth/__init__.py:153
+#, fuzzy
+#| msgid "Your email address have been confirmed."
+msgid "All sessions have been closed."
+msgstr "Ваш адрес электронной почты был подтвержден."
 
 #: canaille/core/endpoints/auth/email.py:62
 #: canaille/core/endpoints/auth/otp.py:46
@@ -1195,11 +1213,11 @@ msgid ""
 "object and provided through either request or request_uri parameter."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:518
+#: canaille/oidc/endpoints/oauth.py:533
 msgid "You have been disconnected"
 msgstr "Вы были отключены"
 
-#: canaille/oidc/endpoints/oauth.py:536
+#: canaille/oidc/endpoints/oauth.py:551
 msgid "You have not been disconnected"
 msgstr "Вы не были отключены"
 
@@ -1254,16 +1272,25 @@ msgstr "Пользователи"
 msgid "Admin"
 msgstr "Админ"
 
-#: canaille/templates/base.html:122 canaille/templates/oidc/logout.html:18
+#: canaille/templates/base.html:134 canaille/templates/base.html:148
+#: canaille/templates/base.html:162 canaille/templates/core/login.html:48
+#: canaille/templates/oidc/logout.html:18
 msgid "Log out"
 msgstr "Выйти"
 
-#: canaille/templates/base.html:127
+#: canaille/templates/base.html:158 canaille/templates/core/auth/base.html:58
+#: canaille/templates/core/auth/setup-otp.html:53
+#, fuzzy
+#| msgid "Lock the account"
+msgid "Switch account"
+msgstr "Заблокировать учётную запись"
+
+#: canaille/templates/base.html:169
 #: canaille/templates/core/auth/password.html:24
 msgid "Sign in"
 msgstr "Войти"
 
-#: canaille/templates/base.html:152 canaille/templates/core/about.html:22
+#: canaille/templates/base.html:194 canaille/templates/core/about.html:22
 #: canaille/templates/core/about.html:33
 msgid "About Canaille"
 msgstr "Про Canaille"
@@ -1576,15 +1603,21 @@ msgstr "Отправить"
 msgid "Choose an account"
 msgstr "Создать учётную запись"
 
-#: canaille/templates/core/login.html:34
+#: canaille/templates/core/login.html:40
+#, fuzzy
+#| msgid "Connectivity test"
+msgid "Connected"
+msgstr "Тест подключения"
+
+#: canaille/templates/core/login.html:54
 msgid "Remove from account list"
 msgstr ""
 
-#: canaille/templates/core/login.html:57
+#: canaille/templates/core/login.html:79
 msgid "Or"
 msgstr ""
 
-#: canaille/templates/core/login.html:63
+#: canaille/templates/core/login.html:85
 #, fuzzy
 #| msgid "Lock the account"
 msgid "Use another account"
@@ -1592,11 +1625,11 @@ msgstr "Заблокировать учётную запись"
 
 #: canaille/templates/core/auth/forgotten-password-code.html:52
 #: canaille/templates/core/auth/forgotten-password.html:53
-#: canaille/templates/core/login.html:75
+#: canaille/templates/core/login.html:97
 msgid "Create an account"
 msgstr "Создать учётную запись"
 
-#: canaille/templates/core/login.html:82
+#: canaille/templates/core/login.html:104
 #: canaille/templates/core/mails/registration.txt:5
 msgid "Continue"
 msgstr "Продолжить"
@@ -1818,13 +1851,6 @@ msgstr "Войти как %(website)s"
 #: canaille/templates/core/auth/base.html:39
 msgid "Manage your information and your authorizations"
 msgstr "Управление вашей информацией и авторизациями"
-
-#: canaille/templates/core/auth/base.html:58
-#: canaille/templates/core/auth/setup-otp.html:53
-#, fuzzy
-#| msgid "Lock the account"
-msgid "Switch account"
-msgstr "Заблокировать учётную запись"
 
 #: canaille/templates/core/auth/email.html:16
 #, fuzzy
@@ -2679,19 +2705,19 @@ msgstr[0] "%(nb_items_formatted)s элемент"
 msgstr[1] "%(nb_items_formatted)s элемента"
 msgstr[2] "%(nb_items_formatted)s элементов"
 
-#: canaille/templates/oidc/auth.html:31
+#: canaille/templates/oidc/auth.html:37
 #, fuzzy, python-format
 #| msgid "Open authenticator application"
 msgid "Re-authenticate for %(client)s"
 msgstr "Откройте приложения аутентификатора"
 
-#: canaille/templates/oidc/auth.html:33
+#: canaille/templates/oidc/auth.html:39
 #, fuzzy, python-format
 #| msgid "Sign in at %(website)s"
 msgid "Sign in to %(client)s"
 msgstr "Войти как %(client)s"
 
-#: canaille/templates/oidc/auth.html:48
+#: canaille/templates/oidc/auth.html:54
 #, fuzzy, python-format
 #| msgid "The application %(client_name)s wants to disconnect your account."
 msgid ""
@@ -2699,7 +2725,7 @@ msgid ""
 "%(website_name)s account."
 msgstr "Приложение %(client_name)s пытается отсоеденить вашу учётную запись."
 
-#: canaille/templates/oidc/auth.html:58
+#: canaille/templates/oidc/auth.html:64
 #, fuzzy, python-format
 #| msgid "You are already logged in, you cannot create an account."
 msgid ""
@@ -2707,13 +2733,13 @@ msgid ""
 "confirmation."
 msgstr "Вы уже вошли в систему, вы не можете создать учётную запись."
 
-#: canaille/templates/oidc/auth.html:74
+#: canaille/templates/oidc/auth.html:80
 #, fuzzy
 #| msgid "Policy"
 msgid "Privacy policy"
 msgstr "Соглашение"
 
-#: canaille/templates/oidc/auth.html:82
+#: canaille/templates/oidc/auth.html:88
 #: canaille/templates/oidc/authorize.html:74
 #: canaille/templates/oidc/consent_list.html:107
 #: canaille/templates/oidc/trusted_list.html:105
@@ -3037,6 +3063,10 @@ msgstr "Эта учётная запись заблокирована"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Токен"
+
+#, python-format
+#~ msgid "You have been disconnected. See you next time %(user)s"
+#~ msgstr "Вы были отключены. Увидимся в следующий раз, %(user)s"
 
 #~ msgid ""
 #~ "We have informed your administrator about the failure of the password "
