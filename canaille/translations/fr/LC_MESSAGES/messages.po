@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-11-10 12:22+0100\n"
-"PO-Revision-Date: 2025-10-29 10:07+0000\n"
+"PO-Revision-Date: 2025-11-12 08:49+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.14.1-dev\n"
+"X-Generator: Weblate 5.15-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:50
@@ -77,19 +77,15 @@ msgstr ""
 "contacter les administrateurs."
 
 #: canaille/app/mails_sending_conditions.py:39
-#, fuzzy
-#| msgid ""
-#| "An error occurred while communicating the incident to the administrators. "
-#| "Please update your password as soon as possible. If this still happens, "
-#| "please contact the administrators."
 msgid ""
 "We are sending an email to your administrator about the failure of the "
 "password compromise investigation.Please update your password as soon as "
 "possible. If this still happens, please contact the administrators."
 msgstr ""
 "Une erreur s'est produite lors de la communication de l'incident aux "
-"administrateurs. Veuillez mettre à jour votre mot de passe dès que possible. "
-"Si cela se produit encore, veuillez contacter les administrateurs."
+"administrateurs. Nous contactons votre administrateur pour l'avertir. "
+"Veuillez mettre à jour votre mot de passe dès que possible. Si cela se "
+"produit encore, veuillez contacter les administrateurs."
 
 #: canaille/backends/ldap/backend.py:138
 #, python-brace-format
@@ -332,16 +328,12 @@ msgid "Email addition failed."
 msgstr "L’ajout de l’adresse email a échoué."
 
 #: canaille/core/endpoints/account.py:650
-#, fuzzy
-#| msgid ""
-#| "An email has been sent to the email address. Please check your inbox and "
-#| "click on the verification link it contains"
 msgid ""
 "Sending an email to this email address. Please check your inbox and click on "
 "the verification link it contains"
 msgstr ""
-"Un courriel a été envoyé à l’adresse email. Veuillez consulter votre boîte "
-"de réception et cliquer sur le lien de confirmation qu’il contient"
+"Un courriel a été envoyé à cette adresse email. Veuillez consulter votre "
+"boîte de réception et cliquer sur le lien de confirmation qu’il contient"
 
 #: canaille/core/endpoints/account.py:664
 msgid "Email deletion failed."
@@ -352,10 +344,6 @@ msgid "The email have been successfully deleted."
 msgstr "L’adresse email a correctement été supprimée."
 
 #: canaille/core/endpoints/account.py:703
-#, fuzzy
-#| msgid ""
-#| "A password initialization link has been sent at the user email address. "
-#| "It should be received within a few minutes."
 msgid ""
 "Sending password initialization link at the user email address. It should be "
 "received within a few minutes."
@@ -364,10 +352,6 @@ msgstr ""
 "courriel. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/endpoints/account.py:716
-#, fuzzy
-#| msgid ""
-#| "A password reset link has been sent at the user email address. It should "
-#| "be received within a few minutes."
 msgid ""
 "Sending password reset link at the user email address. It should be received "
 "within a few minutes."
@@ -419,7 +403,7 @@ msgstr "camille.dupont@exemple.fr"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "Sending test mail. Please check the recipient mail box."
-msgstr ""
+msgstr "Envoi d'un email de test. Veuillez vérifier votre boîte de réception."
 
 #: canaille/core/endpoints/admin.py:190
 #, python-brace-format
@@ -747,10 +731,8 @@ msgstr ""
 "Le code de connexion que vous avez entré est invalide. Veuillez ré-essayer"
 
 #: canaille/core/endpoints/auth/email.py:97
-#, fuzzy
-#| msgid "SMS verification code."
 msgid "Sending new verification code."
-msgstr "Code de vérification par SMS."
+msgstr "Envoi d’un nouveau code de vérification."
 
 #: canaille/core/endpoints/auth/otp.py:121
 msgid "The passcode you entered is invalid. Please try again."
@@ -762,10 +744,6 @@ msgid "Authenticator application correctly configured."
 msgstr "L’application d’authentification a été correctement configurée."
 
 #: canaille/core/endpoints/auth/password.py:91
-#, fuzzy
-#| msgid ""
-#| "A password initialization link has been sent at the user email address. "
-#| "It should be received within a few minutes."
 msgid ""
 "Sending password initialization link at your email address. It should be "
 "received within a few minutes."
@@ -1041,10 +1019,8 @@ msgid "The URI that points to the public JSON Web Keys of the client."
 msgstr "L'URI qui pointe vers les JSON Web Keys publiques de ce client."
 
 #: canaille/oidc/endpoints/forms.py:308
-#, fuzzy
-#| msgid "Token endpoint authentication method"
 msgid "Token endpoint authentication signing algorithm"
-msgstr "Méthode d'authentification du point terminal des jetons"
+msgstr "Algorithme de signature du point terminal des jetons"
 
 #: canaille/oidc/endpoints/forms.py:314
 msgid ""
@@ -1052,10 +1028,13 @@ msgid ""
 "client at the token endpoint for the private_key_jwt and client_secret_jwt "
 "authentication methods."
 msgstr ""
+"L'algorithme JWS qui doit être utilisé pour signer les JWT utilisés pour "
+"authentifier les clients sur le point terminal de jeton, pour les méthodes "
+"private_key_jwt et client_secret_jwt."
 
 #: canaille/oidc/endpoints/forms.py:319
 msgid "Sector identifier URI"
-msgstr ""
+msgstr "URI de l'identifiant de secteur"
 
 #: canaille/oidc/endpoints/forms.py:326
 msgid ""
@@ -1063,34 +1042,38 @@ msgid ""
 "identifiers by the OP. The URL references a file with a single JSON array of "
 "redirect_uri values."
 msgstr ""
+"Une URL utilisant le schéma https qui sera utilisée pour les pseudonymes par "
+"le serveur d'identité. L'URL retourne un tableau JSON de valeurs de "
+"redirect_uri."
 
 #: canaille/oidc/endpoints/forms.py:331
-#, fuzzy
-#| msgid "Subject"
 msgid "Subject type"
-msgstr "Utilisateur"
+msgstr "Type d'utilisateur"
 
 #: canaille/oidc/endpoints/forms.py:339
 msgid ""
 "Subject identifier type requested for responses to this client. Valid types "
 "include pairwise and public."
 msgstr ""
+"Le type d'utilisateur pour les réponses à ce client. Les valeurs valides "
+"incluent « pairwise » et « public »."
 
 #: canaille/oidc/endpoints/forms.py:344
-#, fuzzy
-#| msgid "Application"
 msgid "Application type"
-msgstr "Application"
+msgstr "Type d'application"
 
 #: canaille/oidc/endpoints/forms.py:352
 msgid ""
 "Kind of the application. Web clients must use https redirect URIs. Native "
 "clients can use custom URI schemes or http loopback URLs."
 msgstr ""
+"Le type d'application. Les clients web doivent utiliser des URIs de "
+"redirection https. Les clients natifs peuvent utiliser des URI "
+"personnalisées ou bien des URLs http loopback."
 
 #: canaille/oidc/endpoints/forms.py:357
 msgid "ID Token signed response algorithm"
-msgstr ""
+msgstr "Algorithme de signature des réponses d'ID Token"
 
 #: canaille/oidc/endpoints/forms.py:364
 msgid ""
@@ -1098,10 +1081,14 @@ msgid ""
 "value 'none' must not be used unless the client uses only response types "
 "that return no ID Token from the authorization endpoint."
 msgstr ""
+"Algorithme JWS requis pour signer les ID Token générés par ce client. La "
+"valeur « none » ne doit pas être utilisée à moins que le client n'utilise "
+"seulement des « response_type » qui ne retournent pas d'ID Token à partir du "
+"point terminal d'autorisation."
 
 #: canaille/oidc/endpoints/forms.py:369
 msgid "UserInfo signed response algorithm"
-msgstr ""
+msgstr "Algorithme de signature de la réponse UserInfo"
 
 #: canaille/oidc/endpoints/forms.py:373
 msgid ""
@@ -1113,7 +1100,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:378
 msgid "Default maximum authentication age"
-msgstr ""
+msgstr "Âge maximum par défaut de l'authentification"
 
 #: canaille/oidc/endpoints/forms.py:382
 msgid ""
@@ -1135,7 +1122,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:396
 msgid "Default ACR values"
-msgstr ""
+msgstr "Valeurs ACR par défaut"
 
 #: canaille/oidc/endpoints/forms.py:403
 msgid ""
@@ -1147,7 +1134,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:408
 msgid "Initiate login URI"
-msgstr ""
+msgstr "URI de début de connexion"
 
 #: canaille/oidc/endpoints/forms.py:415
 msgid ""
@@ -1169,10 +1156,8 @@ msgid ""
 msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:432
-#, fuzzy
-#| msgid "Redirect URIs"
 msgid "Request URIs"
-msgstr "URI de redirection"
+msgstr "URIs d'objets « request »"
 
 #: canaille/oidc/endpoints/forms.py:444
 msgid ""
@@ -2627,7 +2612,7 @@ msgstr ""
 
 #: canaille/templates/macro/form.html:87 canaille/templates/macro/form.html:88
 msgid "Toggle password visibility"
-msgstr ""
+msgstr "Changer la visibilité du mot de passe"
 
 #: canaille/templates/macro/form.html:97
 #: canaille/templates/oidc/client_edit.html:102
