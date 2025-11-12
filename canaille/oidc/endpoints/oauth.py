@@ -154,6 +154,21 @@ def authorize_login(redirect_url, now, ui_locales):
 
     if user := g.session and g.session.user:
         auth_time = g.session.last_login_datetime
+
+        if request.values.get(
+            "prompt"
+        ) == "select_account" and auth_time < get_authorization_request_datetime(
+            redirect_url
+        ):
+            session["redirect-after-login"] = redirect_url
+
+            start_oidc_auth_session(
+                client_id=request.values.get("client_id"),
+                prompt=request.values.get("prompt"),
+                ui_locales=ui_locales,
+            )
+            return redirect(url_for("core.auth.login"))
+
         if request.values.get(
             "prompt"
         ) == "login" and auth_time < get_authorization_request_datetime(redirect_url):

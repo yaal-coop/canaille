@@ -11,6 +11,7 @@ from urllib.parse import urlsplit
 from flask import url_for
 
 from canaille.app import models
+from canaille.app.session import UserSession
 from canaille.core.endpoints.account import RegistrationPayload
 
 
@@ -303,3 +304,125 @@ def test_prompt_consent(testclient, logged_user, client, backend):
     assert consent.issue_date > original_consent_date
 
     backend.delete(consent)
+
+
+def test_prompt_select_account_not_logged(testclient, user, client, backend, consent):
+    """If prompt=select_account and user is not logged in, then display the login page."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="select_account",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=302,
+    )
+    res = res.follow()
+
+    assert res.template == "core/login.html"
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow()
+
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow()
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    assert "code" in params
+
+    with testclient.session_transaction() as sess:
+        assert sess["sessions"][0]["user"] == user.id
+
+
+def test_prompt_select_account_same_user(
+    testclient, logged_user, client, backend, consent
+):
+    """If prompt=select_account and user is already logged in, selecting the same user should continue the flow."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="select_account",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=302,
+    )
+    res = res.follow()
+
+    assert res.template == "core/login.html"
+    res = testclient.get(f"/login/{logged_user.user_name}", status=302)
+    res = res.follow()
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    assert "code" in params
+
+    with testclient.session_transaction() as sess:
+        assert sess["sessions"][0]["user"] == logged_user.id
+
+
+def test_prompt_select_account_switch_user(testclient, user, admin, client, backend):
+    """If prompt=select_account with multiple users logged in, selecting a different user should switch sessions."""
+    consent_user = models.Consent(
+        consent_id=str(uuid.uuid4()),
+        client=client,
+        subject=user,
+        scope=["openid", "profile"],
+    )
+    consent_admin = models.Consent(
+        consent_id=str(uuid.uuid4()),
+        client=client,
+        subject=admin,
+        scope=["openid", "profile"],
+    )
+    backend.save(consent_user)
+    backend.save(consent_admin)
+
+    with testclient.session_transaction() as sess:
+        sess["sessions"] = [
+            UserSession(
+                user=user,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+            ).serialize(),
+            UserSession(
+                user=admin,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc)
+                - datetime.timedelta(minutes=1),
+            ).serialize(),
+        ]
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="select_account",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=302,
+    )
+    res = res.follow()
+
+    assert res.template == "core/login.html"
+    res = testclient.get(f"/login/{admin.user_name}", status=302)
+    res = res.follow()
+
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).query)
+    assert "code" in params
+
+    with testclient.session_transaction() as sess:
+        assert sess["sessions"][0]["user"] == admin.id
+        assert sess["sessions"][1]["user"] == user.id
+
+    backend.delete(consent_user)
+    backend.delete(consent_admin)

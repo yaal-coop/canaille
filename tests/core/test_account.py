@@ -66,7 +66,7 @@ def test_impersonate(testclient, logged_admin, user):
     )
     assert "user" == res.form["user_name"].value
 
-    testclient.get("/logout", status=302).follow(status=302).follow(status=200)
+    testclient.get("/logout/user", status=302).follow(status=200)
 
     res = testclient.get("/", status=302).follow(status=200).click("Account settings")
     assert "admin" == res.form["user_name"].value

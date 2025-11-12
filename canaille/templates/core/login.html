@@ -25,16 +25,38 @@ This page displays a form to get the user identifier.
                 <h3 class="ui header">{{ _("Choose an account") }}</h3>
                 <div class="ui stackable three column grid">
                     {% for user in login_history %}
+                        {% set is_connected = namespace(value=false) %}
+                        {% for session in active_sessions %}
+                            {% if session.user.id == user.id %}
+                                {% set is_connected.value = true %}
+                            {% endif %}
+                        {% endfor %}
                         <div class="column">
                             <div class="ui fluid card">
                                 <div class="content">
+                                    {% if is_connected.value %}
+                                        <div class="ui left floated green ribbon label">
+                                            <i class="check icon"></i>
+                                            {% trans %}Connected{% endtrans %}
+                                        </div>
+                                    {% endif %}
+
                                     <div class="right floated">
-                                        <a href="{{ url_for('core.auth.forget', username=user.user_name) }}"
-                                           class="ui mini circular icon button"
-                                           title="{{ _('Remove from account list') }}">
-                                            <i class="light grey times icon"></i>
-                                        </a>
+                                        {% if is_connected.value %}
+                                            <a href="{{ url_for('core.auth.logout', username=user.user_name) }}"
+                                               class="ui mini circular icon button"
+                                               title="{{ _('Log out') }}">
+                                                <i class="light grey times icon"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url_for('core.auth.forget', username=user.user_name) }}"
+                                               class="ui mini circular icon button"
+                                               title="{{ _('Remove from account list') }}">
+                                                <i class="light grey times icon"></i>
+                                            </a>
+                                        {% endif %}
                                     </div>
+
                                     <div class="ui center aligned basic segment">
                                         <a href="{{ url_for('core.auth.login', username=user.user_name) }}" class="ui link">
                                             {% if user.photo %}

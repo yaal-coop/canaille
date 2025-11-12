@@ -104,6 +104,15 @@ footer a {
     color:#054ea7;
 }
 
+.ui.dropdown .menu > .item.active:not(a) {
+    cursor: default;
+}
+
+.ui.menu .ui.dropdown .menu {
+    min-width: fit-content;
+    width: max-content;
+}
+
 /* end of contrast ratio fixes */
 
 /* On the password page,

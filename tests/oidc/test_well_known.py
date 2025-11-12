@@ -161,7 +161,7 @@ def test_openid_configuration(testclient):
         ],
         "ui_locales_supported": g.available_language_codes,
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
-        "prompt_values_supported": ["none", "login", "consent"],
+        "prompt_values_supported": ["none", "login", "consent", "select_account"],
         "authorization_response_iss_parameter_supported": True,
         "request_object_signing_alg_values_supported": [
             "none",

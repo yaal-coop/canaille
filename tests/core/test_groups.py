@@ -289,9 +289,12 @@ def test_user_list_search(
     form["query"] = "ohn"
     res = form.submit()
 
-    res.mustcontain(user.formatted_name)
-    res.mustcontain(no=logged_admin.formatted_name)
-    res.mustcontain(no=moderator.formatted_name)
+    table = res.lxml.cssselect("table.users tbody")[0]
+    table_text = table.text_content()
+
+    assert user.formatted_name in table_text
+    assert logged_admin.formatted_name not in table_text
+    assert moderator.formatted_name not in table_text
 
 
 def test_remove_member(testclient, logged_admin, foo_group, user, moderator, backend):

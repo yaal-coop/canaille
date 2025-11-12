@@ -12,7 +12,6 @@ from flask import url_for
 from canaille.app.i18n import gettext as _
 from canaille.app.session import is_user_in_login_history
 from canaille.app.session import login_user
-from canaille.app.session import save_user_session
 from canaille.backends import Backend
 from canaille.core.models import User
 
@@ -197,9 +196,7 @@ class AuthenticationSession:
     @property
     def user(self):
         if not self._user:
-            self._user = (
-                g.session.user if g.session else get_user_from_login(self.user_name)
-            )
+            self._user = get_user_from_login(self.user_name)
         return self._user
 
     def set_step_started(self) -> None:
@@ -213,11 +210,7 @@ class AuthenticationSession:
 
 def redirect_to_next_auth_step():
     if not g.auth.remaining:
-        if g.session:
-            g.session.last_login_datetime = datetime.datetime.now(datetime.timezone.utc)
-            save_user_session()
-        else:
-            login_user(g.auth.user, remember=g.auth.remember)
+        login_user(g.auth.user, remember=g.auth.remember)
 
         redirection = session.pop("redirect-after-login", None)
         if g.auth.welcome_flash and not redirection:

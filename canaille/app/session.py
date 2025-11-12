@@ -48,7 +48,7 @@ class UserSession:
 
 
 def current_user_session():
-    for payload in session.get(USER_SESSION, [])[::-1]:
+    for payload in session.get(USER_SESSION, []):
         if obj := UserSession.deserialize(payload):
             return obj
 
@@ -61,15 +61,11 @@ def current_user_session():
 
 
 def save_user_session() -> None:
-    session[USER_SESSION][-1] = g.session.serialize()
+    session[USER_SESSION][0] = g.session.serialize()
 
 
 def login_user(user, remember: bool = True) -> None:
-    """Open a session for the user.
-
-    :param user: The user to log in
-    :param remember: Whether to create a permanent session and add to login history
-    """
+    """Open a session for the user."""
     now = datetime.datetime.now(datetime.timezone.utc)
     obj = UserSession(user=user, last_login_datetime=now)
     g.session = obj
@@ -79,7 +75,7 @@ def login_user(user, remember: bool = True) -> None:
             if isinstance(session[USER_SESSION], list)
             else [session[USER_SESSION]]
         )
-        session[USER_SESSION] = previous + [obj.serialize()]
+        session[USER_SESSION] = [obj.serialize()] + previous
     except KeyError:
         session[USER_SESSION] = [obj.serialize()]
 
@@ -88,16 +84,50 @@ def login_user(user, remember: bool = True) -> None:
         add_to_login_history(user.user_name)
 
 
-def logout_user() -> None:
-    """Close the user session."""
-    try:
-        session[USER_SESSION].pop()
-        if not session[USER_SESSION]:
-            del session[USER_SESSION]
-    except (IndexError, KeyError):
-        pass
+def logout_user(user_id: str | None = None) -> bool:
+    """Close a user session.
 
-    del g.session
+    If user_id is None, closes the current user session (position 0).
+    Otherwise, closes the session for the specified user.
+    """
+    sessions = session.get(USER_SESSION, [])
+    if not sessions:
+        return False
+
+    if user_id is None:
+        try:
+            sessions.pop(0)
+            if not sessions:
+                del session[USER_SESSION]
+            else:
+                session[USER_SESSION] = sessions
+            del g.session
+            return True
+        except (IndexError, KeyError):
+            return False
+
+    for i, payload in enumerate(sessions):
+        if user_session := UserSession.deserialize(payload):
+            if user_session.user.id == user_id:
+                sessions.pop(i)
+                if not sessions:
+                    del session[USER_SESSION]
+                else:
+                    session[USER_SESSION] = sessions
+
+                if i == 0:
+                    del g.session
+
+                return True
+    return False
+
+
+def logout_all_users() -> None:
+    """Close all user sessions."""
+    if USER_SESSION in session:
+        del session[USER_SESSION]
+    if hasattr(g, "session"):
+        del g.session
 
 
 def _get_login_history_from_cookie():
@@ -138,13 +168,10 @@ def add_to_login_history(identifier) -> None:
     The identifier is moved to the front if already present, ensuring
     the most recently used accounts appear first. The list is capped
     at MAX_LOGIN_HISTORY entries.
-
-    :param identifier: The user identifier or username to remember
     """
     if not identifier:
         return
 
-    # Use existing data from g if available (for tests), otherwise get from cookie
     login_history = getattr(g, "login_history_needs_update", None)
     if login_history is None:
         login_history = _get_login_history_from_cookie()
@@ -165,8 +192,6 @@ def get_login_history():
     Fetches user objects for stored identifiers, filtering out
     deleted or locked accounts. Uses get_user_from_login for
     consistent lookup logic.
-
-    :return: List of User objects that are still valid
     """
     from canaille.core.auth import get_user_from_login
 
@@ -187,11 +212,7 @@ def get_login_history():
 
 
 def is_user_in_login_history(user_name) -> bool:
-    """Check if a user identifier is in the login history.
-
-    :param user_name: The username/identifier to check
-    :return: True if the user is in login history, False otherwise
-    """
+    """Check if a user identifier is in the login history."""
     identifiers = session.get(LOGIN_HISTORY)
     if identifiers is None:
         identifiers = _get_login_history_from_cookie()
@@ -200,14 +221,10 @@ def is_user_in_login_history(user_name) -> bool:
 
 
 def remove_from_login_history(identifier) -> None:
-    """Remove a user identifier from the login history.
-
-    :param identifier: The username/identifier to remove
-    """
+    """Remove a user identifier from the login history."""
     if not identifier:
         return
 
-    # Use existing data from g if available (for tests), otherwise get from cookie
     login_history = getattr(g, "login_history_needs_update", None)
     if login_history is None:
         login_history = _get_login_history_from_cookie()
@@ -221,3 +238,46 @@ def remove_from_login_history(identifier) -> None:
             session.pop(LOGIN_HISTORY, None)
 
         g.login_history_needs_update = login_history
+
+
+def get_active_sessions():
+    """Get all active user sessions."""
+    sessions = []
+    for payload in session.get(USER_SESSION, []):
+        if user_session := UserSession.deserialize(payload):
+            sessions.append(user_session)
+    return sessions
+
+
+def user_session_opened(user_id: str) -> bool:
+    """Check if a session exists for the given user."""
+    sessions = session.get(USER_SESSION, [])
+    for payload in sessions:
+        if user_session := UserSession.deserialize(payload):
+            if user_session.user.id == user_id:
+                return True
+    return False
+
+
+def switch_to_session(user_id: str) -> None:
+    """Switch to an existing session by moving it to the top of the stack."""
+    sessions = session.get(USER_SESSION, [])
+    if not sessions:
+        return
+
+    target_session = None
+    target_index = None
+    for i, payload in enumerate(sessions):
+        if user_session := UserSession.deserialize(payload):
+            if user_session.user.id == user_id:
+                target_session = payload
+                target_index = i
+                break
+
+    if target_session is None:
+        return
+
+    sessions.pop(target_index)
+    sessions.insert(0, target_session)
+    session[USER_SESSION] = sessions
+    g.session = UserSession.deserialize(target_session)
