@@ -35,6 +35,7 @@ def slapd_server():
 
 def test_setup_ldap_tree(slapd_server, configuration):
     """Test that the install command creates the necessary LDAP directory structure."""
+    configuration["CANAILLE_OIDC"] = {"ENABLE_OIDC": True}
     output = slapd_server.slapcat().stdout.decode("utf-8")
     assert "dn: ou=tokens,ou=oauth,dc=example,dc=org" not in output
     testclient = TestApp(create_app(configuration))

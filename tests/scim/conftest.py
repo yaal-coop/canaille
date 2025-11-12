@@ -16,6 +16,7 @@ from canaille.scim.endpoints import get_service_provider_config
 
 @pytest.fixture
 def configuration(configuration):
+    configuration["CANAILLE_OIDC"] = {"ENABLE_OIDC": True}
     configuration["CANAILLE_SCIM"] = {
         "ENABLE_SERVER": True,
         "ENABLE_CLIENT": True,

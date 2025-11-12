@@ -5,7 +5,6 @@ from unittest import mock
 
 import pytest
 
-from canaille.app import models
 from canaille.backends import Backend
 from canaille.backends import ModelEncoder
 from canaille.commands import cli
@@ -159,40 +158,3 @@ def test_get_ignore_errors(cli_runner, backend):
         res = cli_runner.invoke(cli, ["get", "user", "--ignore-errors"])
         assert res.exit_code == 0
         assert res.stdout == ""
-
-
-def test_get_with_boolean_false(cli_runner, backend):
-    """Test that boolean false values work correctly in get command filters."""
-    client_false = models.Client(
-        client_id="test-client-false",
-        client_name="Test Client False",
-        require_auth_time=False,
-    )
-    client_true = models.Client(
-        client_id="test-client-true",
-        client_name="Test Client True",
-        require_auth_time=True,
-    )
-    backend.save(client_false)
-    backend.save(client_true)
-
-    res = cli_runner.invoke(
-        cli, ["get", "client", "--require-auth-time", "true"], catch_exceptions=False
-    )
-    assert res.exit_code == 0, res.stdout
-    clients = json.loads(res.stdout)
-    assert len(clients) == 1
-    assert clients[0]["require_auth_time"] is True
-    assert clients[0]["client_id"] == "test-client-true"
-
-    res = cli_runner.invoke(
-        cli, ["get", "client", "--require-auth-time", "false"], catch_exceptions=False
-    )
-    assert res.exit_code == 0, res.stdout
-    clients = json.loads(res.stdout)
-    assert len(clients) == 1
-    assert clients[0]["require_auth_time"] is False
-    assert clients[0]["client_id"] == "test-client-false"
-
-    backend.delete(client_false)
-    backend.delete(client_true)

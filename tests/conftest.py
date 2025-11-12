@@ -142,6 +142,7 @@ def configuration(request):
         "TRUSTED_HOSTS": [".canaille.test", "localhost", ".foobar.test"],
         "TESTING": True,
         "CANAILLE": {
+            "DATABASE": "memory",
             "JAVASCRIPT": False,
             "TIMEZONE": "UTC",
             "ACL": {

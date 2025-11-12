@@ -65,7 +65,6 @@ def test_export_current_config(testclient, cli_runner, backend, tmp_path, smtpd)
 
     testclient.app.config["SECRET_KEY"] = "very-secret"
     testclient.app.config["CANAILLE"]["SMTP"]["PORT"] = 25
-    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = None
 
     res = cli_runner.invoke(
         cli, ["config", "dump", "--path", str(toml_export)], catch_exceptions=False
@@ -93,7 +92,6 @@ def test_export_env_config(testclient, cli_runner, tmp_path, backend, smtpd):
 
     testclient.app.config["SECRET_KEY"] = "very-secret"
     testclient.app.config["CANAILLE"]["SMTP"]["PORT"] = 25
-    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = None
 
     os.environ["CANAILLE_CONFIG"] = str(toml_export)
 

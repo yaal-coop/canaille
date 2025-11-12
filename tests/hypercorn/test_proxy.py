@@ -3,7 +3,8 @@
 import os
 
 import pytest
-from flask_webtest import TestApp
+from flask import request
+from flask import url_for
 
 from canaille.hypercorn.app import create_app
 
@@ -15,7 +16,7 @@ def configuration(configuration):
         "PROXY_TRUSTED_HOPS": 1,
     }
     configuration["SERVER_NAME"] = "auth.canaille.test"
-    configuration["PREFERRED_URL_SCHEME"] = "https"
+    configuration["PREFERRED_URL_SCHEME"] = "http"
     return configuration
 
 
@@ -31,28 +32,29 @@ def app(configuration, backend):
     del os.environ["AUTHLIB_INSECURE_TRANSPORT"]
 
 
-def test_proxy_headers_generate_https_urls(app):
+def test_proxy_headers_generate_https_urls(app, testclient):
     """Test that HTTPS URLs are generated when X-Forwarded-Proto header is present.
 
-    This is a regression test for the issue where authorization_endpoint and other
-    OIDC endpoints were generated with http:// instead of https:// when Canaille
-    was deployed behind a reverse proxy.
+    This is a regression test for the issue where URLs were generated with http://
+    instead of https:// when Canaille was deployed behind a reverse proxy.
     """
-    testclient = TestApp(app)
 
+    @app.route("/test-url-generation")
+    def test_endpoint():
+        return {
+            "url_root": request.url_root,
+            "about_url": url_for("core.account.about", _external=True),
+        }
+
+    # Test with X-Forwarded-Proto: https
     res = testclient.get(
-        "/.well-known/openid-configuration",
-        headers={
-            "X-Forwarded-Proto": "https",
-        },
-        status=200,
-    ).json
+        "/test-url-generation",
+        headers={"X-Forwarded-Proto": "https"},
+    )
+    assert res.json["url_root"] == "https://auth.canaille.test/"
+    assert res.json["about_url"] == "https://auth.canaille.test/about"
 
-    assert res["authorization_endpoint"] == "https://auth.canaille.test/oauth/authorize"
-
-    res = testclient.get(
-        "/.well-known/openid-configuration",
-        status=200,
-    ).json
-
-    assert res["authorization_endpoint"] == "http://auth.canaille.test/oauth/authorize"
+    # Test without X-Forwarded-Proto (should use PREFERRED_URL_SCHEME from config = http)
+    res = testclient.get("/test-url-generation")
+    assert res.json["url_root"] == "http://auth.canaille.test/"
+    assert res.json["about_url"] == "http://auth.canaille.test/about"

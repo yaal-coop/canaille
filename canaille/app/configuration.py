@@ -250,7 +250,7 @@ def settings_factory(
             if prefix in config and config[prefix] is None:
                 del config[prefix]
 
-        elif enabled_by_default:
+        elif enabled_by_default and not config.get("TESTING"):
             default_value = setting.model_construct()
         else:
             default_value = None

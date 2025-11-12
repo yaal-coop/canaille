@@ -9,9 +9,6 @@ def test_dump_stdout(cli_runner, backend, user, foo_group):
     res = cli_runner.invoke(cli, ["dump"], catch_exceptions=False)
     assert res.exit_code == 0, res.stdout
     assert json.loads(res.stdout) == {
-        "authorizationcode": [],
-        "client": [],
-        "consent": [],
         "group": [
             {
                 "created": mock.ANY,
@@ -23,7 +20,6 @@ def test_dump_stdout(cli_runner, backend, user, foo_group):
                 ],
             },
         ],
-        "token": [],
         "user": [
             {
                 "created": mock.ANY,
