@@ -2,16 +2,6 @@ import datetime
 import uuid
 
 import pytest
-from scim2_client.engines.werkzeug import TestSCIMClient
-from scim2_models import Resource
-from werkzeug.security import gen_salt
-from werkzeug.test import Client
-
-from canaille.app import models
-from canaille.scim.endpoints import bp
-from canaille.scim.endpoints import get_resource_types
-from canaille.scim.endpoints import get_schemas
-from canaille.scim.endpoints import get_service_provider_config
 
 
 @pytest.fixture
@@ -26,6 +16,10 @@ def configuration(configuration):
 
 @pytest.fixture
 def oidc_client(testclient, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Some client",
@@ -51,6 +45,10 @@ def oidc_client(testclient, backend):
 
 @pytest.fixture
 def oidc_token(testclient, oidc_client, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -68,6 +66,15 @@ def oidc_token(testclient, oidc_client, backend):
 
 @pytest.fixture
 def scim_client(app, oidc_client, oidc_token):
+    from scim2_client.engines.werkzeug import TestSCIMClient
+    from scim2_models import Resource
+    from werkzeug.test import Client
+
+    from canaille.scim.endpoints import bp
+    from canaille.scim.endpoints import get_resource_types
+    from canaille.scim.endpoints import get_schemas
+    from canaille.scim.endpoints import get_service_provider_config
+
     resource_models = [
         Resource.from_schema(schema) for schema in get_schemas().values()
     ]
@@ -85,6 +92,10 @@ def scim_client(app, oidc_client, oidc_token):
 
 @pytest.fixture
 def scim_trusted_client(testclient, scim2_server, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     client_uri = f"http://localhost:{scim2_server.port}"
     c = models.Client(
         client_id=gen_salt(24),
@@ -110,6 +121,10 @@ def scim_trusted_client(testclient, scim2_server, backend):
 
 @pytest.fixture
 def scim_token(testclient, scim_trusted_client, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -127,6 +142,9 @@ def scim_token(testclient, scim_trusted_client, backend):
 
 @pytest.fixture
 def scim_client_for_trusted_client(scim2_server_app, scim_token):
+    from scim2_client.engines.werkzeug import TestSCIMClient
+    from werkzeug.test import Client
+
     scim_client = TestSCIMClient(
         Client(scim2_server_app),
         environ={"headers": {"Authorization": f"Bearer {scim_token.access_token}"}},
@@ -137,6 +155,10 @@ def scim_client_for_trusted_client(scim2_server_app, scim_token):
 
 @pytest.fixture
 def client_without_scim(testclient, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Client",
@@ -175,6 +197,8 @@ def client_without_scim(testclient, backend):
 
 @pytest.fixture
 def consent(testclient, client_without_scim, user, backend):
+    from canaille.app import models
+
     t = models.Consent(
         consent_id=str(uuid.uuid4()),
         client=client_without_scim,

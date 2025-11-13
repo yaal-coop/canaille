@@ -4,14 +4,6 @@ import os
 import uuid
 
 import pytest
-from authlib.oidc.core import UserInfo
-from authlib.oidc.core.grants.util import generate_id_token
-from joserfc import jwk
-from werkzeug.security import gen_salt
-
-from canaille.app import models
-from canaille.oidc.provider import get_jwt_config
-from canaille.oidc.userinfo import generate_user_claims
 
 
 @pytest.fixture
@@ -24,6 +16,8 @@ def app(app, configuration, backend):
 
 @pytest.fixture(scope="session")
 def server_jwk():
+    from joserfc import jwk
+
     key = jwk.generate_key("RSA", 1024)
     key.ensure_kid()
     return key
@@ -31,6 +25,8 @@ def server_jwk():
 
 @pytest.fixture(scope="session")
 def old_server_jwk():
+    from joserfc import jwk
+
     key = jwk.generate_key("RSA", 1024)
     key.ensure_kid()
     return key
@@ -52,11 +48,18 @@ def configuration(configuration, server_jwk, old_server_jwk):
 
 @pytest.fixture
 def client_jwk():
+    from joserfc import jwk
+
     return jwk.generate_key("RSA", 1024)
 
 
 @pytest.fixture
 def client(testclient, trusted_client, backend, client_jwk):
+    from joserfc import jwk
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     key_set = jwk.KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
@@ -97,6 +100,11 @@ def client(testclient, trusted_client, backend, client_jwk):
 
 @pytest.fixture
 def trusted_client(testclient, backend, client_jwk):
+    from joserfc import jwk
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     key_set = jwk.KeySet([client_jwk]).as_dict(private=False)
     c = models.Client(
         client_id=gen_salt(24),
@@ -137,6 +145,10 @@ def trusted_client(testclient, backend, client_jwk):
 
 @pytest.fixture
 def authorization(testclient, user, client, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     a = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-code",
@@ -158,6 +170,10 @@ def authorization(testclient, user, client, backend):
 
 @pytest.fixture
 def token(testclient, client, user, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -176,6 +192,10 @@ def token(testclient, client, user, backend):
 
 @pytest.fixture
 def oidc_token(testclient, client, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
     t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -193,6 +213,12 @@ def oidc_token(testclient, client, backend):
 
 @pytest.fixture
 def id_token(testclient, client, user, backend):
+    from authlib.oidc.core import UserInfo
+    from authlib.oidc.core.grants.util import generate_id_token
+
+    from canaille.oidc.provider import get_jwt_config
+    from canaille.oidc.userinfo import generate_user_claims
+
     return generate_id_token(
         {},
         UserInfo(generate_user_claims(user)).filter(client.scope),
@@ -203,6 +229,8 @@ def id_token(testclient, client, user, backend):
 
 @pytest.fixture
 def consent(testclient, client, user, backend):
+    from canaille.app import models
+
     t = models.Consent(
         consent_id=str(uuid.uuid4()),
         client=client,

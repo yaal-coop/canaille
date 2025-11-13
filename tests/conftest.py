@@ -4,17 +4,6 @@ import socket
 from unittest import mock
 
 import pytest
-from babel.messages.frontend import compile_catalog
-from flask_webtest import TestApp
-from jinja2 import FileSystemBytecodeCache
-from jinja2 import StrictUndefined
-from pytest_lazy_fixtures import lf
-from werkzeug.security import gen_salt
-
-from canaille import create_app
-from canaille.app import models
-from canaille.app.session import UserSession
-from canaille.backends import available_backends
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -28,6 +17,8 @@ def configure_socket_timeout():
 
 def test_backends():
     """Expand backends with variants (e.g., sql → sql:sqlite, sql:postgresql)."""
+    from canaille.backends import available_backends
+
     backends = available_backends()
     expanded = set()
 
@@ -52,6 +43,8 @@ def test_backends():
 
 @pytest.fixture(autouse=True, scope="session")
 def babel_catalogs():
+    from babel.messages.frontend import compile_catalog
+
     cmd = compile_catalog()
     cmd.directory = os.path.dirname(__file__) + "/../canaille/translations"
     cmd.quiet = True
@@ -77,6 +70,8 @@ def pytest_addoption(parser):
 
 
 def pytest_generate_tests(metafunc):
+    from pytest_lazy_fixtures import lf
+
     backends = test_backends()
     backends = sorted(backends)
 
@@ -115,6 +110,8 @@ def pytest_generate_tests(metafunc):
 
 @pytest.fixture
 def configuration(request):
+    from werkzeug.security import gen_salt
+
     conf = {
         "SECRET_KEY": gen_salt(24),
         "SERVER_NAME": "canaille.test",
@@ -250,6 +247,10 @@ def jinja_cache_directory(tmp_path_factory):
 
 @pytest.fixture
 def app(configuration, backend, jinja_cache_directory):
+    from jinja2 import FileSystemBytecodeCache
+
+    from canaille import create_app
+
     app = create_app(configuration, backend=backend)
     # caches the Jinja compiled files for faster unit test execution
     app.jinja_env.bytecode_cache = FileSystemBytecodeCache(jinja_cache_directory)
@@ -263,6 +264,9 @@ def app(configuration, backend, jinja_cache_directory):
 
 @pytest.fixture
 def testclient(app):
+    from flask_webtest import TestApp
+    from jinja2 import StrictUndefined
+
     app.jinja_env.undefined = StrictUndefined
     yield TestApp(app)
 
@@ -274,6 +278,8 @@ def cli_runner(app):
 
 @pytest.fixture
 def user(app, backend):
+    from canaille.app import models
+
     u = models.User(
         formatted_name="John (johnny) Doe",
         given_name="John",
@@ -301,6 +307,8 @@ def user(app, backend):
 
 @pytest.fixture
 def admin(app, backend):
+    from canaille.app import models
+
     u = models.User(
         formatted_name="Jane Doe",
         family_name="Doe",
@@ -315,6 +323,8 @@ def admin(app, backend):
 
 @pytest.fixture
 def moderator(app, backend):
+    from canaille.app import models
+
     u = models.User(
         formatted_name="Jack Doe",
         family_name="Doe",
@@ -329,6 +339,8 @@ def moderator(app, backend):
 
 @pytest.fixture
 def logged_user(user, testclient):
+    from canaille.app.session import UserSession
+
     with testclient.session_transaction() as sess:
         existing_sessions = sess.get("sessions", [])
         sess["sessions"] = existing_sessions + [
@@ -342,6 +354,8 @@ def logged_user(user, testclient):
 
 @pytest.fixture
 def logged_admin(admin, testclient):
+    from canaille.app.session import UserSession
+
     with testclient.session_transaction() as sess:
         existing_sessions = sess.get("sessions", [])
         sess["sessions"] = existing_sessions + [
@@ -355,6 +369,8 @@ def logged_admin(admin, testclient):
 
 @pytest.fixture
 def logged_moderator(moderator, testclient):
+    from canaille.app.session import UserSession
+
     with testclient.session_transaction() as sess:
         existing_sessions = sess.get("sessions", [])
         sess["sessions"] = existing_sessions + [
@@ -368,6 +384,8 @@ def logged_moderator(moderator, testclient):
 
 @pytest.fixture
 def foo_group(app, user, backend):
+    from canaille.app import models
+
     group = models.Group(
         members=[user],
         display_name="foo",
@@ -380,6 +398,8 @@ def foo_group(app, user, backend):
 
 @pytest.fixture
 def bar_group(app, admin, backend):
+    from canaille.app import models
+
     group = models.Group(
         members=[admin],
         display_name="bar",
