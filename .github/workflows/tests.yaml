@@ -39,6 +39,8 @@ jobs:
         if: ${{ !env.ACT }}
         run: sudo aa-complain /usr/sbin/slapd
       - name: Run tests
+        env:
+          FORCE_COLOR: "1"
         run: |
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
@@ -66,6 +68,8 @@ jobs:
         run: sudo aa-complain /usr/sbin/slapd
       - name: Run tests with coverage
         continue-on-error: true
+        env:
+          FORCE_COLOR: "1"
         run: |
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
@@ -98,6 +102,8 @@ jobs:
         if: ${{ !env.ACT }}
         run: sudo aa-complain /usr/sbin/slapd
       - name: Run tests
+        env:
+          FORCE_COLOR: "1"
         run: |
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
