@@ -95,9 +95,7 @@ def detect_key_type(key_material):  # pragma: no cover
 
 def get_alg_for_key(key):
     """Find the algorithm for the given key."""
-    for alg_name, alg in registry.algorithms.items():
-        if alg.key_type == key.key_type:
-            return alg_name
+    return registry.guess_alg(key, registry.Strategy.RECOMMENDED)
 
 
 def server_jwks(include_inactive=True):
@@ -107,14 +105,8 @@ def server_jwks(include_inactive=True):
 
     key_objs = []
     for key in keys:
-        if not key:
-            continue
-        if isinstance(key, str):
-            key_class = detect_key_type(key)
-            if key_class:
-                key_objs.append(key_class.import_key(key))
-            else:
-                key_objs.append(jwk.import_key(key))
+        if isinstance(key, str) and (key_class := detect_key_type(key)):
+            key_objs.append(key_class.import_key(key))
         else:
             key_objs.append(jwk.import_key(key))
 
