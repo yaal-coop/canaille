@@ -21,18 +21,20 @@ class LazyFlaskGroup(FlaskGroup):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._commands_registered = False
+        self._registered_features = None
 
     def _register_commands(self, ctx):
         """Register commands conditionally based on app features."""
-        if self._commands_registered:
+        app = ctx.ensure_object(ScriptInfo).load_app()
+
+        # Re-register commands if app features change (needed for tests with different configs)
+        current_features = (app.features.has_oidc,)
+        if self._registered_features == current_features:
             return
 
         import canaille.app.commands
         import canaille.backends.commands
         import canaille.core.commands
-
-        app = ctx.ensure_object(ScriptInfo).load_app()
 
         canaille.app.commands.register(self)
         canaille.backends.commands.register(self)
@@ -42,7 +44,7 @@ class LazyFlaskGroup(FlaskGroup):
 
             canaille.oidc.commands.register(self)
 
-        self._commands_registered = True
+        self._registered_features = current_features
 
     def get_command(self, ctx, cmd_name):
         self._register_commands(ctx)
