@@ -135,15 +135,13 @@ def forgotten():
         )
         return render_template("core/auth/forgotten-password.html", form=form)
 
-    success = True
     for email in user.emails or []:
         send_password_reset_mail(user, email)
         current_app.logger.security(
             f"Sending a reset password mail to {email} for {user.user_name}"
         )
 
-    if success:
-        flash(sending_message, "info")
+    flash(sending_message, "info")
 
     if current_app.features.has_trusted_hosts:
         return render_template("core/auth/forgotten-password.html", form=form)
