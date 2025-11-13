@@ -52,8 +52,7 @@ def _get_algorithm_choices(metadata_key, include_empty=True):
         choices.append(("", _("None")))
 
     for alg in algorithms:
-        if alg:
-            choices.append((alg, alg))
+        choices.append((alg, alg))
 
     return choices
 
