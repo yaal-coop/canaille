@@ -10,7 +10,6 @@ Features
 
 Here are the different features that Canaille provides.
 You can enable any of those features with the :doc:`configuration <references/configuration>` to fit any :doc:`use cases <usecases>` you may meet.
-Check our  :ref:`roadmap <features:Roadmap>` to see what is coming next.
 
 Users can interact with Canaille through its :ref:`web interface <features:Web interface>` and administrators can also use its :ref:`command line interface <feature_cli>`.
 Canaille can handle data stored in different :ref:`database backends <feature_databases>`.
@@ -371,16 +370,3 @@ Continuous Integration tools
 ============================
 
 It also fits well in continuous integration scenarios. Thanks to its :ref:`CLI <feature_cli>`, you can prepare data in Canaille, let your application interact with it, and then check the side effects.
-
-Roadmap
-*******
-
-Stable version
-==============
-
-Before we push Canaille in stable version we want to achieve the following tasks:
-
-And beyond
-==========
-
-- :issue:`OpenID Connect certification <182>`
