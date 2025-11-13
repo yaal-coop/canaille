@@ -84,6 +84,15 @@ def login_user(user, remember: bool = True) -> None:
         add_to_login_history(user.user_name)
 
 
+def _find_session_index(sessions, user_id):
+    """Find index of session for given user_id, or None if not found."""
+    for i, payload in enumerate(sessions):
+        if user_session := UserSession.deserialize(payload):
+            if user_session.user.id == user_id:
+                return i
+    return None
+
+
 def logout_user(user_id: str | None = None) -> bool:
     """Close a user session.
 
@@ -94,32 +103,21 @@ def logout_user(user_id: str | None = None) -> bool:
     if not sessions:
         return False
 
-    if user_id is None:
-        try:
-            sessions.pop(0)
-            if not sessions:
-                del session[USER_SESSION]
-            else:
-                session[USER_SESSION] = sessions
-            del g.session
-            return True
-        except (IndexError, KeyError):
-            return False
+    target_index = 0 if user_id is None else _find_session_index(sessions, user_id)
 
-    for i, payload in enumerate(sessions):
-        if user_session := UserSession.deserialize(payload):
-            if user_session.user.id == user_id:
-                sessions.pop(i)
-                if not sessions:
-                    del session[USER_SESSION]
-                else:
-                    session[USER_SESSION] = sessions
+    if target_index is None:
+        return False
 
-                if i == 0:
-                    del g.session
+    sessions.pop(target_index)
+    if sessions:
+        session[USER_SESSION] = sessions
+    else:
+        del session[USER_SESSION]
 
-                return True
-    return False
+    if target_index == 0 and hasattr(g, "session"):
+        del g.session
+
+    return True
 
 
 def logout_all_users() -> None:
@@ -252,11 +250,7 @@ def get_active_sessions():
 def user_session_opened(user_id: str) -> bool:
     """Check if a session exists for the given user."""
     sessions = session.get(USER_SESSION, [])
-    for payload in sessions:
-        if user_session := UserSession.deserialize(payload):
-            if user_session.user.id == user_id:
-                return True
-    return False
+    return _find_session_index(sessions, user_id) is not None
 
 
 def switch_to_session(user_id: str) -> None:
@@ -265,19 +259,11 @@ def switch_to_session(user_id: str) -> None:
     if not sessions:
         return
 
-    target_session = None
-    target_index = None
-    for i, payload in enumerate(sessions):
-        if user_session := UserSession.deserialize(payload):
-            if user_session.user.id == user_id:
-                target_session = payload
-                target_index = i
-                break
-
-    if target_session is None:
+    target_index = _find_session_index(sessions, user_id)
+    if target_index is None:
         return
 
-    sessions.pop(target_index)
+    target_session = sessions.pop(target_index)
     sessions.insert(0, target_session)
     session[USER_SESSION] = sessions
     g.session = UserSession.deserialize(target_session)
