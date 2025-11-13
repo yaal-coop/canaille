@@ -222,7 +222,7 @@ wheels = [
 
 [[package]]
 name = "canaille"
-version = "0.0.89"
+version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "blinker" },

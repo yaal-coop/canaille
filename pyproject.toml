@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "Canaille"
-version = "0.0.89"
+version = "0.1.0"
 description = "Lightweight identity and authorization management software"
 license = {file = "LICENSE.rst"}
 readme = "README.md"
 keywords = ["oidc", "oauth", "oauth2", "openid", "identity", "authentication"]
 classifiers = [
     "Intended Audience :: Developers",
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
