@@ -28,10 +28,6 @@ class Features:
         return self.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"]
 
     @property
-    def otp_method(self):
-        return self.app.config["CANAILLE"]["OTP_METHOD"]
-
-    @property
     def has_otp(self):
         """Indicate whether the OTP authentication factor is enabled.
 
