@@ -24,6 +24,10 @@ def test_backends():
 
     for backend in backends:
         backend_dir = os.path.join("tests", "backends", backend)
+        if not os.path.isdir(backend_dir):
+            expanded.add(backend)
+            continue
+
         variants = [
             f[:-3]
             for f in os.listdir(backend_dir)
@@ -73,6 +77,20 @@ def pytest_generate_tests(metafunc):
     from pytest_lazy_fixtures import lf
 
     backends = test_backends()
+    requested = metafunc.config.getoption("backend")
+
+    if requested:
+        filtered = set()
+        for req in requested:
+            if ":" in req:
+                if req in backends:
+                    filtered.add(req)
+            else:
+                for backend in backends:
+                    if backend == req or backend.startswith(f"{req}:"):
+                        filtered.add(backend)
+        backends = filtered
+
     backends = sorted(backends)
 
     module_name_parts = metafunc.module.__name__.split(".")
@@ -82,7 +100,9 @@ def pytest_generate_tests(metafunc):
             b for b in backends if b == backend_path or b.startswith(f"{backend_path}:")
         ]
 
-        if "backend" in metafunc.fixturenames:
+        if not matching:
+            pytest.skip()
+        elif "backend" in metafunc.fixturenames:
             fixture_names = []
             for spec in matching:
                 fixture_name = (
