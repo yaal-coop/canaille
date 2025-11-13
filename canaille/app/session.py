@@ -122,8 +122,7 @@ def logout_user(user_id: str | None = None) -> bool:
 
 def logout_all_users() -> None:
     """Close all user sessions."""
-    if USER_SESSION in session:
-        del session[USER_SESSION]
+    session.pop(USER_SESSION, None)
     if hasattr(g, "session"):
         del g.session
 
@@ -240,11 +239,11 @@ def remove_from_login_history(identifier) -> None:
 
 def get_active_sessions():
     """Get all active user sessions."""
-    sessions = []
-    for payload in session.get(USER_SESSION, []):
-        if user_session := UserSession.deserialize(payload):
-            sessions.append(user_session)
-    return sessions
+    return [
+        user_session
+        for payload in session.get(USER_SESSION, [])
+        if (user_session := UserSession.deserialize(payload))
+    ]
 
 
 def user_session_opened(user_id: str) -> bool:
