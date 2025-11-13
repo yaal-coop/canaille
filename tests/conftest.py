@@ -350,7 +350,8 @@ def moderator(app, backend):
 @pytest.fixture
 def logged_user(user, testclient):
     with testclient.session_transaction() as sess:
-        sess["sessions"] = [
+        existing_sessions = sess.get("sessions", [])
+        sess["sessions"] = existing_sessions + [
             UserSession(
                 user=user,
                 last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
@@ -362,7 +363,8 @@ def logged_user(user, testclient):
 @pytest.fixture
 def logged_admin(admin, testclient):
     with testclient.session_transaction() as sess:
-        sess["sessions"] = [
+        existing_sessions = sess.get("sessions", [])
+        sess["sessions"] = existing_sessions + [
             UserSession(
                 user=admin,
                 last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
@@ -374,7 +376,8 @@ def logged_admin(admin, testclient):
 @pytest.fixture
 def logged_moderator(moderator, testclient):
     with testclient.session_transaction() as sess:
-        sess["sessions"] = [
+        existing_sessions = sess.get("sessions", [])
+        sess["sessions"] = existing_sessions + [
             UserSession(
                 user=moderator,
                 last_login_datetime=datetime.datetime.now(datetime.timezone.utc),

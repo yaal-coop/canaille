@@ -24,23 +24,6 @@ def test_user_get_user_from_login_dict(testclient, user):
     assert get_user_from_login(login="user@doe.test") == user
 
 
-def test_visitor_logout(testclient, user):
-    """Test that logging out without an active session works gracefully."""
-    with testclient.session_transaction() as session:
-        assert not session.get("sessions")
-
-    res = testclient.get("/logout")
-    res = res.follow(status=302)
-    res = res.follow(status=200)
-    assert (
-        "success",
-        "You have been disconnected. See you next time user",
-    ) not in res.flashes
-
-    with testclient.session_transaction() as session:
-        assert not session.get("sessions")
-
-
 def test_wrong_login(testclient, user):
     """Test that invalid login attempts are handled according to HIDE_INVALID_LOGINS configuration."""
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True

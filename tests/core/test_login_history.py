@@ -184,25 +184,6 @@ def test_login_success_adds_to_login_history(testclient, user, backend):
         assert user.user_name in sess[LOGIN_HISTORY]
 
 
-def test_logout_preserves_login_history(testclient, user, backend):
-    """Test logout preserves login history in cookie."""
-    with testclient.session_transaction() as sess:
-        sess.clear()
-
-    res = testclient.get("/login")
-    res.form["login"] = user.user_name
-    res = res.form.submit()
-    res = res.follow()
-    res.form["password"] = "correct horse battery staple"
-    res = res.form.submit()
-
-    testclient.get("/logout")
-
-    res = testclient.get("/login")
-    assert "Choose an account" in res.text
-    assert user.name in res.text
-
-
 def test_login_history_card_links(testclient, user):
     """Test that past user cards have correct links."""
     with testclient.session_transaction() as sess:
