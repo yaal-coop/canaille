@@ -170,7 +170,8 @@ def export_object_to_toml(
     elif isinstance(obj, dict):
         return _export_dict(obj, with_comments, with_defaults, line_length)
 
-    elif isinstance(obj, datetime.timedelta):
+    # (the whole toml export will be delegated to pydantic-settings-export)
+    elif isinstance(obj, datetime.timedelta):  # pragma: no cover
         return isodate.duration_isoformat(obj)
 
     else:
