@@ -18,8 +18,7 @@ def test_migrations_with_data(app, backend, user, foo_group):
 
     # IMPORTANT: Close any open transaction before running migrations
     # Reading data above may have started an implicit transaction that holds locks
-    if backend.db_session:
-        backend.db_session.commit()
+    backend.db_session.commit()
 
     # Downgrade to first revision (preserves tables and data)
     steps_to_first = len(revisions) - 1

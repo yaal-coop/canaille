@@ -3,19 +3,11 @@ import pytest
 from canaille.app.configuration import settings_factory
 from canaille.backends.sql.backend import SQLBackend
 
-try:
-    import pytest_postgresql  # noqa: F401
-
-    PYTEST_POSTGRESQL_AVAILABLE = True
-except ImportError:
-    PYTEST_POSTGRESQL_AVAILABLE = False
-
 
 @pytest.fixture
 def postgresql_configuration(configuration, request):
     """Configure Canaille to use PostgreSQL test database."""
-    if not PYTEST_POSTGRESQL_AVAILABLE:
-        pytest.skip("pytest-postgresql not available")
+    pytest.importorskip("pytest_postgresql")
 
     postgresql = request.getfixturevalue("postgresql")
     info = postgresql.info
