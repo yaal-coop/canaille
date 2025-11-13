@@ -14,7 +14,6 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import class_mapper
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
-from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy_json import MutableJson
 from sqlalchemy_utils import PasswordType
 from sqlalchemy_utils import force_auto_coercion
@@ -60,10 +59,6 @@ class SqlAlchemyModel(BackendModel):
                 association_model = underlying_attr.entity.class_
                 target_column = getattr(association_model, target_attr.key)
                 return underlying_attr.any(target_column == value)
-
-            column_property = getattr(cls, name).property
-            if not isinstance(column_property, ColumnProperty):
-                return column.contains(value)
 
             # This is a JSON column with primitive values - use exact matching
             # to prevent MultipleResultsFound when searching partial strings
