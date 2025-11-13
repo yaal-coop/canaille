@@ -63,7 +63,8 @@ def make_default_jwk(seed=None):
     return key
 
 
-def detect_key_type(key_material):
+# Hotfix for https://github.com/authlib/joserfc/issues/73
+def detect_key_type(key_material):  # pragma: no cover
     """Detect the type of a cryptographic key from PEM/DER bytes or string."""
     if isinstance(key_material, str):
         key_material = key_material.encode()
