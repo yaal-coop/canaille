@@ -131,10 +131,10 @@ def locale_selector():
     elif hasattr(g, "ui_locales"):
         ui_locales = g.ui_locales
 
-    if ui_locales:
-        result = match_language(ui_locales.split(), available_language_codes)
-        if result is not None:
-            return result
+    if ui_locales and (
+        result := match_language(ui_locales.split(), available_language_codes)
+    ):
+        return result
 
     if (
         g.get("session")
