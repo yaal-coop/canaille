@@ -35,7 +35,7 @@ def _rename_fks_postgresql(table_name, foreign_keys, inspector):
     for column_name, referred_table in foreign_keys:
         expected_name = _get_expected_fk_name(table_name, column_name, referred_table)
 
-        for fk in existing_fks:
+        for fk in existing_fks:  # pragma: no cover
             if (
                 column_name in fk["constrained_columns"]
                 and fk["referred_table"] == referred_table

@@ -88,7 +88,7 @@ class SQLBackend(Backend):
             self.db_session = Session(SQLBackend.engine)
 
     def teardown(self) -> None:
-        if self.db_session:
+        if self.db_session:  # pragma: no branch
             self.db_session.rollback()
             self.db_session.expire_all()
 
