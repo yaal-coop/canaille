@@ -5,11 +5,11 @@ from datetime import timedelta
 from datetime import timezone
 from unittest import mock
 
-from joserfc import jws
 from joserfc import jwt
 
 from canaille.app import models
 from canaille.oidc.jose import get_alg_for_key
+from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
 from canaille.oidc.provider import get_issuer
 
@@ -41,7 +41,6 @@ def test_client_registration_with_authentication_jwt_token(
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -123,7 +122,6 @@ def test_client_registration_with_uri_fragments(testclient, backend, client, use
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -445,7 +443,6 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -537,7 +534,6 @@ def test_client_registration_with_expired_token(testclient, backend):
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -570,7 +566,6 @@ def test_client_registration_with_wrong_issuer(testclient, backend):
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -603,7 +598,6 @@ def test_client_registration_with_wrong_audience(testclient, backend):
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -636,7 +630,6 @@ def test_client_registration_with_wrong_scope(testclient, backend):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -668,7 +661,6 @@ def test_client_registration_with_existing_client_id(testclient, backend, client
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {

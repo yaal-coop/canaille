@@ -2,6 +2,7 @@ from joserfc import jwt
 
 from canaille.app import models
 from canaille.commands import cli
+from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
 
 
@@ -12,7 +13,11 @@ def test_generate_registration_token_default(cli_runner, testclient, backend):
 
     token = res.stdout.strip()
     jwks = server_jwks(include_inactive=False)
-    decoded = jwt.decode(token, jwks.keys[0])
+    decoded = jwt.decode(
+        token,
+        jwks.keys[0],
+        registry=registry,
+    )
 
     assert decoded.claims["scope"] == "client:register"
 
@@ -39,7 +44,11 @@ def test_generate_management(cli_runner, testclient, backend, client):
 
     token = res.stdout.strip()
     jwks = server_jwks(include_inactive=False)
-    decoded = jwt.decode(token, jwks.keys[0])
+    decoded = jwt.decode(
+        token,
+        jwks.keys[0],
+        registry=registry,
+    )
 
     assert decoded.claims["scope"] == "client:manage"
     assert decoded.claims["sub"] == client.client_id
@@ -60,7 +69,11 @@ def test_generate_registration_token_custom_expiration(cli_runner, testclient, b
 
     token = res.stdout.strip()
     jwks = server_jwks(include_inactive=False)
-    decoded = jwt.decode(token, jwks.keys[0])
+    decoded = jwt.decode(
+        token,
+        jwks.keys[0],
+        registry=registry,
+    )
 
     exp_diff = decoded.claims["exp"] - decoded.claims["iat"]
     assert exp_diff == 3600

@@ -6,6 +6,7 @@ import time_machine
 from joserfc import jwt
 
 from canaille.app import models
+from canaille.oidc.jose import registry
 
 from . import client_credentials
 
@@ -46,7 +47,11 @@ def test_nominal_case(
     )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     assert claims.header["kid"]
     assert claims.claims["sub"] == logged_user.user_name
     assert claims.claims["name"] == logged_user.formatted_name
@@ -108,7 +113,11 @@ def test_auth_time(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     id_token_auth_time = datetime.datetime.fromtimestamp(
         claims.claims["auth_time"], tz=datetime.timezone.utc
     )
@@ -175,7 +184,11 @@ def test_auth_time_update(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     id_token_1_auth_time = datetime.datetime.fromtimestamp(
         claims.claims["auth_time"], tz=datetime.timezone.utc
     )
@@ -223,7 +236,11 @@ def test_auth_time_update(
         )
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     id_token_2_auth_time = datetime.datetime.fromtimestamp(
         claims.claims["auth_time"], tz=datetime.timezone.utc
     )

@@ -11,6 +11,7 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.core.models import PASSWORD_MIN_DELAY
+from canaille.oidc.jose import registry
 
 from . import client_credentials
 
@@ -88,7 +89,11 @@ def test_nominal_case_get(
         "address",
         "phone",
     }
-    claims = jwt.decode(access_token, server_jwk)
+    claims = jwt.decode(
+        access_token,
+        server_jwk,
+        registry=registry,
+    )
     assert claims.claims["sub"] == logged_user.user_name
     assert claims.claims["name"] == logged_user.formatted_name
     assert claims.claims["aud"] == [client.client_id, trusted_client.client_id]
@@ -182,7 +187,11 @@ def test_nominal_case_post(
         "address",
         "phone",
     }
-    claims = jwt.decode(access_token, server_jwk)
+    claims = jwt.decode(
+        access_token,
+        server_jwk,
+        registry=registry,
+    )
     assert claims.claims["sub"] == logged_user.user_name
     assert claims.claims["name"] == logged_user.formatted_name
     assert claims.claims["aud"] == [client.client_id, trusted_client.client_id]

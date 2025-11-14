@@ -4,6 +4,7 @@ from urllib.parse import urlsplit
 from joserfc import jwt
 
 from canaille.app import models
+from canaille.oidc.jose import registry
 
 
 def test_oauth_implicit(testclient, user, client, backend):
@@ -132,7 +133,11 @@ def test_oidc_implicit(testclient, server_jwk, user, client, trusted_client, bac
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     assert user.user_name == claims.claims["sub"]
     assert user.formatted_name == claims.claims["name"]
     assert [client.client_id, trusted_client.client_id] == claims.claims["aud"]
@@ -178,7 +183,11 @@ def test_oidc_implicit_with_group(
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     assert user.user_name == claims.claims["sub"]
     assert user.formatted_name == claims.claims["name"]
     assert [client.client_id, trusted_client.client_id] == claims.claims["aud"]

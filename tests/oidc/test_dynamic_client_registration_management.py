@@ -5,12 +5,12 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 
-from joserfc import jws
 from joserfc import jwt
 from joserfc.jwk import KeySet
 
 from canaille.app import models
 from canaille.oidc.jose import get_alg_for_key
+from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
 from canaille.oidc.provider import get_issuer
 
@@ -40,7 +40,6 @@ def test_get(testclient, backend, client, user, client_jwk):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -127,7 +126,6 @@ def test_update(testclient, backend, client, user, client_jwk):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     assert client.redirect_uris != ["https://newname.example.test/callback"]
@@ -256,7 +254,6 @@ def test_delete(testclient, backend, user):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -291,7 +288,6 @@ def test_invalid_client(testclient, backend, user):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     payload = {
@@ -328,7 +324,6 @@ def test_management_with_expired_token(testclient, backend, client):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -357,7 +352,6 @@ def test_management_with_wrong_issuer(testclient, backend, client):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -386,7 +380,6 @@ def test_management_with_wrong_audience(testclient, backend, client):
         "scope": "client:manage",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     headers = {"Authorization": f"Bearer {token}"}
@@ -415,7 +408,6 @@ def test_management_with_wrong_scope(testclient, backend, client):
         "scope": "client:register",
     }
 
-    registry = jws.JWSRegistry()
     token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
 
     headers = {"Authorization": f"Bearer {token}"}

@@ -4,6 +4,7 @@ from urllib.parse import urlsplit
 from joserfc import jwt
 
 from canaille.app import models
+from canaille.oidc.jose import registry
 
 
 def test_oauth_hybrid(testclient, backend, user, client):
@@ -77,7 +78,11 @@ def test_oidc_hybrid(
     assert token is not None
 
     id_token = params["id_token"][0]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     assert logged_user.user_name == claims.claims["sub"]
     assert logged_user.formatted_name == claims.claims["name"]
     assert [client.client_id, trusted_client.client_id] == claims.claims["aud"]

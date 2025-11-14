@@ -4,6 +4,7 @@ from urllib.parse import urlsplit
 from joserfc import jwt
 
 from canaille.app import models
+from canaille.oidc.jose import registry
 from canaille.oidc.provider import setup_oauth
 
 from . import client_credentials
@@ -48,11 +49,19 @@ def test_token_default_expiration_date(
     token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 864000
 
-    claims = jwt.decode(access_token, server_jwk)
+    claims = jwt.decode(
+        access_token,
+        server_jwk,
+        registry=registry,
+    )
     assert claims.claims["exp"] - claims.claims["iat"] == 864000
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     assert claims.claims["exp"] - claims.claims["iat"] == 3600
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
@@ -108,11 +117,19 @@ def test_token_custom_expiration_date(
     token = backend.get(models.Token, access_token=access_token)
     assert token.lifetime == 1000
 
-    claims = jwt.decode(access_token, server_jwk)
+    claims = jwt.decode(
+        access_token,
+        server_jwk,
+        registry=registry,
+    )
     assert claims.claims["exp"] - claims.claims["iat"] == 1000
 
     id_token = res.json["id_token"]
-    claims = jwt.decode(id_token, server_jwk)
+    claims = jwt.decode(
+        id_token,
+        server_jwk,
+        registry=registry,
+    )
     lifetime = claims.claims["exp"] - claims.claims["iat"]
     assert lifetime == 3600
 

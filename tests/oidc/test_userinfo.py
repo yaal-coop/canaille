@@ -3,6 +3,7 @@ from unittest import mock
 from joserfc import jwt
 
 from canaille.oidc.configuration import UserInfoMappingSettings
+from canaille.oidc.jose import registry
 from canaille.oidc.userinfo import generate_user_claims
 
 
@@ -55,7 +56,11 @@ def test_get_userinfo_jwt(testclient, token, user, client, backend, server_jwk):
         status=200,
     )
     assert res.headers["Content-Type"] == "application/jwt"
-    token = jwt.decode(res.text, server_jwk)
+    token = jwt.decode(
+        res.text,
+        server_jwk,
+        registry=registry,
+    )
     assert token.claims == {
         "sub": "user",
         "name": "John (johnny) Doe",
