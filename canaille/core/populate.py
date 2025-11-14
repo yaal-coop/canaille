@@ -44,11 +44,12 @@ def fake_users(nb=1):
     faker_obj = faker.Faker(locales)
     users = list()
 
+    cache = {}
     for _ in range(nb):
         try:
             locale = random.choice(locales)
-            fake = faker_obj[locale]
-            profile = fake.unique.profile()
+            fake = cache.setdefault(locale, faker_obj[locale].unique)
+            profile = fake.profile()
             name = profile["name"]
             user = models.User(
                 formatted_name=name,
@@ -63,11 +64,11 @@ def fake_users(nb=1):
                 postal_code=fake.postcode(),
                 locality=fake.city(),
                 region=fake.state(),
-                employee_number=str(fake.unique.random_number()),
+                employee_number=str(fake.random_number()),
                 department=fake.word(),
                 title=profile["job"],
                 password=fake.password(),
-                preferred_language=fake._locales[0],
+                preferred_language=locale,
                 photo=generate_avatar(),
             )
             Backend.instance.save(user)
