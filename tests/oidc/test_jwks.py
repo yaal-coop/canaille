@@ -92,7 +92,7 @@ def test_random_jwk_generation_without_seed():
 
 def test_detect_key_type_rsa():
     """Test RSA key type detection from PEM string and bytes."""
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    private_key = rsa.generate_private_key(public_exponent=65537, key_size=1024)
     pem_bytes = private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
@@ -134,7 +134,7 @@ def test_detect_key_type_ed25519():
 
 def test_detect_key_type_der():
     """Test key type detection from DER format."""
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    private_key = rsa.generate_private_key(public_exponent=65537, key_size=1024)
     der_bytes = private_key.private_bytes(
         encoding=serialization.Encoding.DER,
         format=serialization.PrivateFormat.PKCS8,
