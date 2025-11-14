@@ -282,8 +282,6 @@ class CheckResult:
 
 
 def setup_config(app, config=None, env_file=None, env_prefix=""):
-    from canaille.oidc.installation import install
-
     app.config.from_mapping(
         {
             # https://flask.palletsprojects.com/en/stable/config/#SESSION_COOKIE_NAME
@@ -303,9 +301,6 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
     config_dict = config_obj.model_dump()
     app.no_secret_key = config_dict["SECRET_KEY"] is None
     app.config.from_mapping(config_dict)
-
-    if app.debug:
-        install(app.config, debug=True)
 
     return True
 
