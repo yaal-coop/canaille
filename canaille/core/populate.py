@@ -44,6 +44,7 @@ def fake_users(nb=1):
     faker_obj = faker.Faker(locales)
     users = list()
 
+    # kinda hotfix for https://github.com/joke2k/faker/issues/2278
     cache = {}
     for _ in range(nb):
         try:
