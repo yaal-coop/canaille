@@ -10,7 +10,7 @@ import pytest
 def configure_socket_timeout():
     """Set a short socket timeout to speed up tests that attempt failing network connections."""
     original_timeout = socket.getdefaulttimeout()
-    socket.setdefaulttimeout(0.2)
+    socket.setdefaulttimeout(0.5)
     yield
     socket.setdefaulttimeout(original_timeout)
 
