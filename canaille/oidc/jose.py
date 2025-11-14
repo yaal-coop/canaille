@@ -95,7 +95,7 @@ def detect_key_type(key_material):  # pragma: no cover
 
 def get_alg_for_key(key):
     """Find the algorithm for the given key."""
-    return registry.guess_alg(key, registry.Strategy.RECOMMENDED)
+    return registry.guess_alg(key, registry.Strategy.SECURITY)
 
 
 def server_jwks(include_inactive=True):
