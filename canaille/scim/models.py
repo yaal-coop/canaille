@@ -1,4 +1,4 @@
-from functools import lru_cache
+from functools import cache
 from typing import Annotated
 from typing import Any
 from typing import ClassVar
@@ -227,6 +227,7 @@ class EnterpriseUser(Extension):
     """Identifies the name of a department."""
 
 
+@cache
 def get_service_provider_config():
     return ServiceProviderConfig(
         meta=Meta(
@@ -253,6 +254,7 @@ def get_service_provider_config():
     )
 
 
+@cache
 def get_resource_types():
     """Return the resource types implemented by Canaille."""
     return {
@@ -295,7 +297,7 @@ def get_resource_types():
     }
 
 
-@lru_cache(maxsize=1)
+@cache
 def get_schemas():
     schemas = {
         model.model_fields["schemas"].default[0]: model.to_schema()
