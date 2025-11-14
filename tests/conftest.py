@@ -264,6 +264,7 @@ def app(configuration, backend, jinja_cache_directory):
     from jinja2 import FileSystemBytecodeCache
 
     from canaille import create_app
+    from canaille.app import models
 
     app = create_app(configuration, backend=backend)
     # caches the Jinja compiled files for faster unit test execution
@@ -274,6 +275,8 @@ def app(configuration, backend, jinja_cache_directory):
 
     with app.test_request_context():
         yield app
+
+    models.MODELS.clear()
 
 
 @pytest.fixture
