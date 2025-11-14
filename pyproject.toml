@@ -159,7 +159,7 @@ dev = [
     # and neither python 3.12 due to PEP 632
     # https://peps.python.org/pep-0632/
     "setuptools >= 50.0.0; python_version>='3.12'",
-    "pytest-scim2-server>=0.1.2",
+    "pytest-scim2-server>=0.1.6",
     "beautifulsoup4>=4.13.4",
     "prek>=0.1.3",
 ]
