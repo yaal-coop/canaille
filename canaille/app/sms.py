@@ -1,6 +1,9 @@
 from flask import current_app
 
+from canaille.app.flask import dramatiq
 
+
+@dramatiq.actor
 def send_sms(recipient, sender, text):
     try:
         import smpplib.client

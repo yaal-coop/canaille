@@ -12,4 +12,4 @@ def send_one_time_password_sms(phone_number, otp):
         website_name=website_name,
         otp=otp,
     )
-    return send_sms(recipient=phone_number, sender=website_name, text=text_body)
+    return send_sms.send(recipient=phone_number, sender=website_name, text=text_body)
