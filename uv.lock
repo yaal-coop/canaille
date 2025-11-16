@@ -235,6 +235,7 @@ dependencies = [
     { name = "flask-session" },
     { name = "flask-wtf" },
     { name = "httpx" },
+    { name = "pydantic-settings" },
     { name = "wtforms" },
 ]
 
@@ -402,6 +403,7 @@ requires-dist = [
     { name = "pillow", marker = "extra == 'otp'", specifier = ">=11.0.0" },
     { name = "pycountry", marker = "extra == 'front'", specifier = ">=23.12.7" },
     { name = "pydanclick", marker = "extra == 'server'", specifier = ">=0.5.0" },
+    { name = "pydantic-settings", specifier = ">=2.8.0" },
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.4" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },

@@ -32,15 +32,16 @@ requires-python = ">=3.10"
 dependencies = [
     "blinker>=1.9.0",
     "click>=8.2.0",
+    "dramatiq>=1.18.0",
+    "dramatiq-eager-broker>=0.1.0",
     "flask >= 3.0.0",
     "flask-caching>=2.3.0",
+    "flask-dramatiq>=0.6.0",
     "flask-session>=0.8.0",
     "flask-wtf >= 1.2.1",
     "httpx>=0.28.1",
+    "pydantic-settings >= 2.8.0",
     "wtforms >= 3.1.1",
-    "flask-dramatiq>=0.6.0",
-    "dramatiq>=1.18.0",
-    "dramatiq-eager-broker>=0.1.0",
 ]
 
 [project.optional-dependencies]
