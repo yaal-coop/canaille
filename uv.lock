@@ -235,8 +235,6 @@ dependencies = [
     { name = "flask-session" },
     { name = "flask-wtf" },
     { name = "httpx" },
-    { name = "pika" },
-    { name = "pydantic-settings" },
     { name = "wtforms" },
 ]
 
@@ -279,7 +277,7 @@ postgresql = [
     { name = "sqlalchemy-utils" },
 ]
 rabbitmq = [
-    { name = "dramatiq", extra = ["redis"] },
+    { name = "dramatiq", extra = ["rabbitmq"] },
 ]
 redis = [
     { name = "dramatiq", extra = ["redis"] },
@@ -376,7 +374,7 @@ requires-dist = [
     { name = "blinker", specifier = ">=1.9.0" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "dramatiq", specifier = ">=1.18.0" },
-    { name = "dramatiq", extras = ["redis"], marker = "extra == 'rabbitmq'", specifier = ">=1.18.0" },
+    { name = "dramatiq", extras = ["rabbitmq"], marker = "extra == 'rabbitmq'", specifier = ">=1.18.0" },
     { name = "dramatiq", extras = ["redis"], marker = "extra == 'redis'", specifier = ">=1.18.0" },
     { name = "dramatiq-eager-broker", specifier = ">=0.1.0" },
     { name = "email-validator", marker = "extra == 'front'", specifier = ">=2.0.0" },
@@ -401,11 +399,9 @@ requires-dist = [
     { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'sqlite'", specifier = ">=1.7.4" },
-    { name = "pika", specifier = ">=1.3.2" },
     { name = "pillow", marker = "extra == 'otp'", specifier = ">=11.0.0" },
     { name = "pycountry", marker = "extra == 'front'", specifier = ">=23.12.7" },
     { name = "pydanclick", marker = "extra == 'server'", specifier = ">=0.5.0" },
-    { name = "pydantic-settings", specifier = ">=2.8.0" },
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.4" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
@@ -911,6 +907,9 @@ wheels = [
 ]
 
 [package.optional-dependencies]
+rabbitmq = [
+    { name = "pika" },
+]
 redis = [
     { name = "redis" },
 ]
