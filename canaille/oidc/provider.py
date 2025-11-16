@@ -44,6 +44,35 @@ from .userinfo import generate_user_claims
 AUTHORIZATION_CODE_LIFETIME = 84400
 JWT_JTI_CACHE_LIFETIME = 3600
 
+AMR_MAPPING = {
+    "password": ["pwd"],
+    "otp": ["otp"],
+    "sms": ["sms", "mca"],
+    "email": ["mca"],
+}
+
+
+def compute_amr_values(authentication_methods):
+    """Convert internal authentication methods to AMR values (RFC 8176).
+
+    Returns a list of AMR values, automatically adding 'mfa' if multiple
+    factors were used.
+    """
+    if not authentication_methods:
+        return None
+
+    amr_values = []
+    for method in authentication_methods:
+        if method in AMR_MAPPING:
+            amr_values.extend(AMR_MAPPING[method])
+
+    amr_values = list(dict.fromkeys(amr_values))
+
+    if len(authentication_methods) > 1:
+        amr_values.append("mfa")
+
+    return amr_values if amr_values else None
+
 
 def get_bearer_token(request):
     """Get the Bearer token from the request headers."""
@@ -86,6 +115,12 @@ def save_authorization_code(code, request):
     nonce = request.payload.data.get("nonce")
     now = datetime.datetime.now(datetime.timezone.utc)
     scope = request.client.get_allowed_scope(request.payload.scope)
+    authentication_methods = (
+        g.session.authentication_methods
+        if hasattr(g, "session") and g.session
+        else None
+    )
+    amr = compute_amr_values(authentication_methods)
     code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code=code,
@@ -99,6 +134,7 @@ def save_authorization_code(code, request):
         challenge=request.payload.data.get("code_challenge"),
         challenge_method=request.payload.data.get("code_challenge_method"),
         auth_time=g.session.last_login_datetime,
+        amr=amr,
     )
     Backend.instance.save(code)
     return code.code

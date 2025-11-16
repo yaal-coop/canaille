@@ -61,9 +61,13 @@ def test_signin_and_out(testclient, user, caplog):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
-            "sessions"
-        )
+        assert [
+            {
+                "user": user.id,
+                "last_login_datetime": mock.ANY,
+                "authentication_methods": ["password"],
+            }
+        ] == session.get("sessions")
         assert "auth" not in session
 
     res = testclient.get("/login", status=200)
@@ -149,9 +153,13 @@ def test_signin_with_alternate_attribute(testclient, user):
     res = res.follow(status=200)
 
     with testclient.session_transaction() as session:
-        assert [{"user": user.id, "last_login_datetime": mock.ANY}] == session.get(
-            "sessions"
-        )
+        assert [
+            {
+                "user": user.id,
+                "last_login_datetime": mock.ANY,
+                "authentication_methods": ["password"],
+            }
+        ] == session.get("sessions")
 
 
 def test_password_page_without_signin_in_redirects_to_login_page(testclient, user):
