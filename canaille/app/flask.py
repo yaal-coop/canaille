@@ -15,6 +15,7 @@ from flask import request
 from flask import url_for
 from flask_caching import Cache
 from flask_dramatiq import Dramatiq
+from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
@@ -26,6 +27,7 @@ from canaille.app.templating import render_template
 
 csrf = CSRFProtect()
 cache = Cache()
+session_store = Session()
 dramatiq = Dramatiq(
     config_prefix="BROKER",
     middleware=[
@@ -198,6 +200,8 @@ def setup_flask(app) -> None:
 
     csrf.init_app(app)
     cache.init_app(app)
+    if app.config.get("SESSION_TYPE"):
+        session_store.init_app(app)
 
     # dirty warning silencing for the testsuite
     dramatiq.app = None
