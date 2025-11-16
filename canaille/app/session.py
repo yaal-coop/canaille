@@ -21,6 +21,7 @@ MAX_LOGIN_HISTORY = 6
 class UserSession:
     user: User | None = None
     last_login_datetime: datetime.datetime | None = None
+    authentication_methods: list[str] | None = None
 
     @classmethod
     def deserialize(cls, payload):
@@ -38,13 +39,17 @@ class UserSession:
             )
             if payload.get("last_login_datetime")
             else None,
+            authentication_methods=payload.get("authentication_methods"),
         )
 
     def serialize(self):
-        return {
+        payload = {
             "user": self.user.id,
             "last_login_datetime": self.last_login_datetime.isoformat(),
         }
+        if self.authentication_methods is not None:
+            payload["authentication_methods"] = self.authentication_methods
+        return payload
 
 
 def current_user_session():
@@ -67,7 +72,12 @@ def save_user_session() -> None:
 def login_user(user, remember: bool = True) -> None:
     """Open a session for the user."""
     now = datetime.datetime.now(datetime.timezone.utc)
-    obj = UserSession(user=user, last_login_datetime=now)
+    authentication_methods = g.auth.achieved if hasattr(g, "auth") and g.auth else None
+    obj = UserSession(
+        user=user,
+        last_login_datetime=now,
+        authentication_methods=authentication_methods,
+    )
     g.session = obj
     try:
         previous = (
