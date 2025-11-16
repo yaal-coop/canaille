@@ -2,6 +2,7 @@ import datetime
 import importlib.util
 import smtplib
 from enum import Enum
+from typing import Literal
 
 from pydantic import DirectoryPath
 from pydantic import Field
@@ -387,7 +388,7 @@ class CoreSettings(BaseModel):
     Users will need to authenticate with factors in the order of this list.
     For instance, this will show a password form and then ask for a one-time passcode:
 
-    Valid factors are ``password``, ``otp``, ``email`` and ``sms``.
+    Valid factors are ``password``, ``otp``, ``email``, ``sms`` and ``fido2``.
 
     .. code-block:: toml
 
@@ -403,6 +404,42 @@ class CoreSettings(BaseModel):
     """The validity period for TOTP codes.
 
     Should be provided in ISO8601 duration format (e.g., "PT30S" for 30 seconds, "PT1M" for 1 minute)."""
+
+    FIDO_TIMEOUT: datetime.timedelta = datetime.timedelta(seconds=60)
+    """Timeout for FIDO2/WebAuthn operations."""
+
+    FIDO_USER_VERIFICATION: Literal["required", "preferred", "discouraged"] = (
+        "preferred"
+    )
+    """User verification requirement for FIDO2/WebAuthn.
+
+    - ``required``: User verification (PIN/biometric) is required.
+    - ``preferred``: User verification is preferred but not required.
+    - ``discouraged``: User verification should not be used."""
+
+    FIDO_ATTESTATION: Literal["none", "indirect", "direct"] = "none"
+    """Attestation conveyance preference for FIDO2/WebAuthn.
+
+    Attestation allows the server to verify the authenticator's identity
+    (manufacturer, model) during registration. This is useful in high-security
+    environments where only specific certified authenticators should be allowed.
+
+    - ``none``: No attestation requested. The server cannot identify the
+      authenticator type. Most privacy-preserving option, recommended for
+      most use cases.
+    - ``indirect``: Anonymized attestation. The authenticator may provide
+      manufacturer information without revealing the exact model.
+    - ``direct``: Full attestation. The authenticator provides a signed
+      certificate identifying its manufacturer and model. This can be validated
+      against the FIDO Alliance Metadata Service (MDS) to ensure only trusted
+      authenticators are accepted.
+
+    Note that even with "direct", authenticators may refuse to provide
+    attestation for privacy reasons. Additionally, validating attestation
+    certificates requires additional server-side implementation."""
+
+    FIDO_MAX_CREDENTIALS: int = 5
+    """Maximum number of WebAuthn credentials per user."""
 
     @model_validator(mode="after")
     def validate_otp_configuration(self) -> Self:

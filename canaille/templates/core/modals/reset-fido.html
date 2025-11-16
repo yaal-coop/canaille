@@ -1,0 +1,34 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div id="modal-reset-fido" class="ui warning message">
+        <form method="post" action="{{ request.url }}">
+            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            <div class="ui icon header">
+                <i class="key icon"></i>
+                {% trans %}WebAuthn credential reset{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% if user != edited_user %}
+                        {% trans user_name=(edited_user.formatted_name or edited_user.identifier) %}
+                            Are you sure you want to remove the WebAuthn credential for {{ user_name }}?
+                        {% endtrans %}
+                    {% else %}
+                        {% trans %}
+                            Are you sure you want to remove your WebAuthn credential?
+                        {% endtrans %}
+                    {% endif %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a class="ui cancel button" href="{{ request.url }}">{% trans %}Cancel{% endtrans %}</a>
+                    <button type="submit" name="action" value="reset-fido2" class="ui red approve button">
+                        {% trans %}Confirm{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

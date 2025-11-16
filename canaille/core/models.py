@@ -286,6 +286,9 @@ class User(Model):
     one_time_password_emission_date: datetime.datetime | None = None
     """A DateTime indicating when the user last emitted an email or sms one-time passcode."""
 
+    webauthn_credentials: list["WebAuthnCredential"] = []
+    """WebAuthn credentials registered by the user for passwordless/MFA authentication."""
+
     _readable_fields: set[str] | None = None
     _writable_fields: set[str] | None = None
     _permissions: set[str] | None = None
@@ -297,6 +300,10 @@ class User(Model):
     def has_password(self) -> bool:
         """Check whether a password has been set for the user."""
         return self.password is not None
+
+    def has_webauthn_credential(self) -> bool:
+        """Check whether a WebAuthn credential has been registered for the user."""
+        return len(self.webauthn_credentials) > 0
 
     def can_read(self, field: str) -> bool:
         return field in self.readable_fields | self.writable_fields
@@ -509,6 +516,39 @@ class Group(Model):
         return user.can(Permission.MANAGE_ALL_GROUPS) or (
             user == self.owner and user.can(Permission.MANAGE_OWN_GROUPS)
         )
+
+
+class WebAuthnCredential(Model):
+    """WebAuthn credential for passwordless/MFA authentication."""
+
+    identifier_attribute: ClassVar[str] = "credential_id"
+
+    credential_id: bytes
+    """Unique identifier for this WebAuthn credential."""
+
+    public_key: bytes
+    """Public key for verifying WebAuthn assertions."""
+
+    sign_count: int = 0
+    """Signature counter to detect cloned authenticators."""
+
+    aaguid: bytes | None = None
+    """Authenticator Attestation GUID identifying the authenticator model."""
+
+    transports: str | None = None
+    """JSON-encoded list of supported transports (usb, nfc, ble, internal, hybrid)."""
+
+    name: str | None = None
+    """Optional user-provided name for this credential."""
+
+    created_at: datetime.datetime
+    """Timestamp when this credential was registered."""
+
+    last_used_at: datetime.datetime | None = None
+    """Timestamp of the last successful authentication with this credential."""
+
+    user: Annotated["User", {"backref": "webauthn_credentials"}]
+    """The user who owns this credential."""
 
 
 def string_code(code: int, digit: int) -> str:

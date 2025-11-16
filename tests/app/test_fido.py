@@ -12,99 +12,40 @@ from canaille.app.fido import serialize_transports
 
 @pytest.fixture
 def simple_app():
-    """Create a simple Flask app for testing without request context."""
+    """Create a simple Flask app for testing."""
     app = Flask(__name__)
-    app.config["CANAILLE"] = {}
+    app.config["CANAILLE"] = {"NAME": "Test App"}
     return app
 
 
-def test_get_rp_id_with_override(simple_app):
-    """Test get_rp_id with FIDO_RP_ID configured."""
-    simple_app.config["CANAILLE"]["FIDO_RP_ID"] = "localhost"
-    simple_app.config["SERVER_NAME"] = "canaille.example.com"
-
-    # Outside request context, should use override
-    with simple_app.app_context():
-        rp_id = get_rp_id(simple_app)
-        assert rp_id == "localhost"
-
-
-def test_get_rp_id_without_request_context(simple_app):
-    """Test get_rp_id without request context."""
-    simple_app.config["SERVER_NAME"] = "example.com:5000"
-
-    with simple_app.app_context():
-        rp_id = get_rp_id(simple_app)
+def test_get_rp_id(simple_app):
+    """Test get_rp_id returns domain from request host."""
+    with simple_app.test_request_context(base_url="https://example.com:5000"):
+        rp_id = get_rp_id()
         assert rp_id == "example.com"
-
-
-def test_get_rp_id_without_server_name():
-    """Test get_rp_id raises error when SERVER_NAME is not configured."""
-    app = Flask(__name__)
-    app.config["CANAILLE"] = {}
-
-    with pytest.raises(ValueError, match="SERVER_NAME must be configured"):
-        get_rp_id(app)
 
 
 def test_get_rp_name(simple_app):
     """Test get_rp_name returns CANAILLE.NAME."""
     simple_app.config["CANAILLE"]["NAME"] = "My Organization"
 
-    with simple_app.app_context():
-        name = get_rp_name(simple_app)
+    with simple_app.test_request_context():
+        name = get_rp_name()
         assert name == "My Organization"
 
 
-def test_get_origin_without_request_context(simple_app):
-    """Test get_origin without request context."""
-    simple_app.config["SERVER_NAME"] = "example.com"
-    simple_app.config["PREFERRED_URL_SCHEME"] = "https"
-
-    with simple_app.app_context():
-        origin = get_origin(simple_app)
+def test_get_origin(simple_app):
+    """Test get_origin returns full origin URL."""
+    with simple_app.test_request_context(base_url="https://example.com"):
+        origin = get_origin()
         assert origin == "https://example.com"
 
 
-def test_get_origin_without_request_context_with_port(simple_app):
-    """Test get_origin without request context with port."""
-    simple_app.config["SERVER_NAME"] = "example.com:8080"
-    simple_app.config["PREFERRED_URL_SCHEME"] = "http"
-
-    with simple_app.app_context():
-        origin = get_origin(simple_app)
+def test_get_origin_with_port(simple_app):
+    """Test get_origin with port."""
+    with simple_app.test_request_context(base_url="http://example.com:8080"):
+        origin = get_origin()
         assert origin == "http://example.com:8080"
-
-
-def test_get_origin_with_rp_id_override(simple_app):
-    """Test get_origin with FIDO_RP_ID override."""
-    simple_app.config["CANAILLE"]["FIDO_RP_ID"] = "localhost"
-    simple_app.config["SERVER_NAME"] = "canaille.example.com:5000"
-    simple_app.config["PREFERRED_URL_SCHEME"] = "http"
-
-    with simple_app.app_context():
-        origin = get_origin(simple_app)
-        assert origin == "http://localhost:5000"
-
-
-def test_get_origin_with_rp_id_override_no_port(simple_app):
-    """Test get_origin with FIDO_RP_ID override without port."""
-    simple_app.config["CANAILLE"]["FIDO_RP_ID"] = "localhost"
-    simple_app.config["SERVER_NAME"] = "canaille.example.com"
-    simple_app.config["PREFERRED_URL_SCHEME"] = "http"
-
-    with simple_app.app_context():
-        origin = get_origin(simple_app)
-        assert origin == "http://localhost"
-
-
-def test_get_origin_without_server_name():
-    """Test get_origin raises error when SERVER_NAME is not configured."""
-    app = Flask(__name__)
-    app.config["CANAILLE"] = {}
-
-    with pytest.raises(ValueError, match="SERVER_NAME must be configured"):
-        get_origin(app)
 
 
 def test_serialize_transports_none():

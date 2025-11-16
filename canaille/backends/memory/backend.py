@@ -1,6 +1,5 @@
 import copy
 import datetime
-import typing
 import uuid
 from typing import Any
 
@@ -193,24 +192,15 @@ class MemoryBackend(Backend):
             if not model or not self.index(model) or not mirror_attribute:
                 continue
 
-            # Check if the mirror attribute is a list
-            mirror_is_list = (
-                typing.get_origin(model.attributes[mirror_attribute]) is list
-            )
-
             mirror_attribute_index = self.attribute_index(
                 model, mirror_attribute
             ).setdefault(instance.id, set())
             for subinstance_id in listify(instance._state.get(attribute, [])):
                 # add the current object in the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
-                if mirror_is_list:
-                    subinstance_state.setdefault(mirror_attribute, [])
-                    if instance.id not in subinstance_state[mirror_attribute]:
-                        subinstance_state[mirror_attribute].append(instance.id)
-                else:
-                    # For non-list (OneToOne) relationships, just set the value
-                    subinstance_state[mirror_attribute] = instance.id
+                subinstance_state.setdefault(mirror_attribute, [])
+                if instance.id not in subinstance_state[mirror_attribute]:
+                    subinstance_state[mirror_attribute].append(instance.id)
 
                 # add the current object in the subinstance index
                 mirror_attribute_index.add(subinstance_id)
@@ -234,11 +224,6 @@ class MemoryBackend(Backend):
             if not model or not self.index(model) or not mirror_attribute:
                 continue
 
-            # Check if the mirror attribute is a list
-            mirror_is_list = (
-                typing.get_origin(model.attributes[mirror_attribute]) is list
-            )
-
             mirror_attribute_index = self.attribute_index(
                 model, mirror_attribute
             ).setdefault(instance.id, set())
@@ -247,11 +232,7 @@ class MemoryBackend(Backend):
             ):
                 # remove the current object from the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]
-                if mirror_is_list:
-                    subinstance_state[mirror_attribute].remove(instance.id)
-                else:
-                    # For non-list (OneToOne) relationships, set to None
-                    subinstance_state[mirror_attribute] = None
+                subinstance_state[mirror_attribute].remove(instance.id)
 
                 # remove the current object from the subinstance index
                 mirror_attribute_index.remove(subinstance_id)

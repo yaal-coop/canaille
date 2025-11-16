@@ -9,6 +9,7 @@ Added
 - Support for Python 3.14. :pr:`313`
 - Integration test suite. :issue:`320`
 - Requests are redirected to ``SERVER_NAME`` when the HTTP Host header does not match.
+- WebAuthn authentication factor implementation. :issue:`296`
 
 Fixed
 ^^^^^

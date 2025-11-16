@@ -184,6 +184,10 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     one_time_password_emission_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+    webauthn_credentials: Mapped[list["WebAuthnCredential"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
 
     @property
     def password_failure_timestamps(self):
@@ -233,3 +237,29 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
         ForeignKey("user.id", ondelete="SET NULL"), nullable=True
     )
     owner: Mapped["User"] = relationship()
+
+
+class WebAuthnCredential(
+    canaille.core.models.WebAuthnCredential, Base, SqlAlchemyModel
+):
+    __tablename__ = "webauthn_credential"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    credential_id: Mapped[bytes] = mapped_column(
+        LargeBinary, nullable=False, unique=True, index=True
+    )
+    public_key: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
+    sign_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    aaguid: Mapped[bytes] = mapped_column(LargeBinary, nullable=True)
+    transports: Mapped[str] = mapped_column(String(255), nullable=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=False, default=datetime.datetime.now
+    )
+    last_used_at: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+    )
+    user: Mapped["User"] = relationship(back_populates="webauthn_credentials")

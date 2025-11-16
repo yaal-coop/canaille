@@ -76,3 +76,7 @@ class User(canaille.core.models.User, MemoryModel):
 
 class Group(canaille.core.models.Group, MemoryModel):
     pass
+
+
+class WebAuthnCredential(canaille.core.models.WebAuthnCredential, MemoryModel):
+    pass
