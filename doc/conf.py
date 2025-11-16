@@ -80,6 +80,7 @@ intersphinx_mapping = {
     "flask-dramatiq": ("https://flask-dramatiq.readthedocs.io/en/latest", None),
     "flask-babel": ("https://python-babel.github.io/flask-babel", None),
     "flask-caching": ("https://flask-caching.readthedocs.io/en/latest/", None),
+    "flask-session": ("https://flask-session.readthedocs.io/en/latest", None),
     "flask-wtf": ("https://flask-wtf.readthedocs.io", None),
     "hypercorn": ("https://hypercorn.readthedocs.io/en/latest", None),
     "jinja": ("https://jinja.palletsprojects.com", None),

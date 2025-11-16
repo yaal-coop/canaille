@@ -5,6 +5,7 @@ import socket
 from dataclasses import dataclass
 from typing import Annotated
 from typing import Any
+from typing import Literal
 
 from pydantic import AmqpDsn
 from pydantic import BaseModel as PydanticBaseModel
@@ -210,6 +211,36 @@ class RootSettings(BaseSettings):
     - ``P1W`` for 1 week
     - ``PT12H`` for 12 hours
     - ``P1DT12H`` for 1 day and 12 hours
+    """
+
+    SESSION_TYPE: (
+        Literal[
+            "redis",
+            "memcached",
+            "filesystem",
+            "sqlalchemy",
+            "mongodb",
+            "cachelib",
+            "dynamodb",
+        ]
+        | None
+    ) = None
+    """The Flask-Session backend type.
+
+    If ``None`` (default), Flask's default session implementation is used (client-side signed cookies).
+    When set, sessions are stored server-side using the specified backend.
+
+    Available backends:
+
+    - ``redis``: Store sessions in Redis (connects to localhost:6379 by default)
+    - ``memcached``: Store sessions in Memcached (connects to localhost:11211 by default)
+    - ``filesystem``: Store sessions in local files (uses /tmp/flask-session by default)
+    - ``sqlalchemy``: Store sessions in a SQL database
+    - ``mongodb``: Store sessions in MongoDB
+    - ``cachelib``: Store sessions using a cachelib backend
+    - ``dynamodb``: Store sessions in DynamoDB
+
+    See the :doc:`Flask-Session documentation <flask-session:index>` for backend-specific details.
     """
 
 
