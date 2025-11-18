@@ -75,6 +75,25 @@ PREFERRED_URL_SCHEME = "http"
 # - P1DT12H for 1 day and 12 hours
 # PERMANENT_SESSION_LIFETIME = "P365D"
 
+# The Flask-Session backend type.
+#
+# If None (default), Flask's default session implementation is used (client-side
+# signed cookies). When set, sessions are stored server-side using the specified
+# backend.
+#
+# Available backends:
+#
+# - redis: Store sessions in Redis (connects to localhost:6379 by default)
+# - memcached: Store sessions in Memcached (connects to localhost:11211 by default)
+# - filesystem: Store sessions in local files (uses /tmp/flask-session by default)
+# - sqlalchemy: Store sessions in a SQL database
+# - mongodb: Store sessions in MongoDB
+# - cachelib: Store sessions using a cachelib backend
+# - dynamodb: Store sessions in DynamoDB
+#
+# See the Flask-Session documentation for backend-specific details.
+# SESSION_TYPE =
+
 [CANAILLE]
 # Your organization name.
 #
