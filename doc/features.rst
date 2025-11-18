@@ -214,6 +214,21 @@ Intruder lockout
 
 If the :attr:`intruder lockout feature <canaille.core.configuration.CoreSettings.ENABLE_INTRUDER_LOCKOUT>` is enabled, then users will have to wait for an increasingly long time between each failed login attempt.
 
+.. _feature_captcha:
+
+CAPTCHA protection
+==================
+
+If the :attr:`CAPTCHA feature <canaille.core.configuration.CoreSettings.CAPTCHA_ENABLED>` is enabled, a security code challenge helps protect against automated attacks.
+
+The CAPTCHA appears:
+
+- On login forms after a configurable number of failed attempts
+- On all registration forms when enabled
+- Until a successful login occurs
+
+Both image and audio versions are provided for accessibility.
+
 Web interface
 *************
 

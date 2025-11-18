@@ -1,9 +1,15 @@
 import datetime
 
+import pytest
 from flask import g
 
 from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
+
+
+@pytest.fixture(autouse=True)
+def disable_captcha(testclient):
+    testclient.app.config["CANAILLE"]["CAPTCHA_ENABLED"] = False
 
 
 def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):

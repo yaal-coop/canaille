@@ -5,17 +5,26 @@ It displays a basic account creation form.
 
 :param form: The account creation form.
 :type form: :class:`~canaille.core.endpoints.forms.JoinForm`
+:param captcha_data: Optional CAPTCHA data when CAPTCHA is enabled
 #}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 {% import 'macro/flask.html' as flask %}
 {% import 'core/partial/profile_field.html' as profile %}
+{% import 'core/partial/captcha_field.html' as captcha_field %}
 
 {%- block title -%}
     {%- trans %}User creation{% endtrans -%}
 {%- endblock -%}
 
 {% block messages %}{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    {% if captcha_data %}
+        <script src="{{ url_for('static', filename='js/captcha.js') }}" defer></script>
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <div class="joinform">
@@ -45,6 +54,10 @@ It displays a basic account creation form.
             {% call fui.render_form(form, class_="profile-form info") %}
                 {% if "email" in form %}
                     {{ profile.render_field(form.email) }}
+                {% endif %}
+
+                {% if captcha_data %}
+                    {{ captcha_field.render_captcha_field(form, captcha_data, 'core.account.captcha_audio') }}
                 {% endif %}
 
                 <div class="ui right aligned container">

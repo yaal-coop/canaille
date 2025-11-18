@@ -1,0 +1,58 @@
+{#
+CAPTCHA field partial template.
+
+This macro renders a complete CAPTCHA field with:
+- Hidden token field
+- CAPTCHA image
+- Audio playback button
+- Refresh button
+- Input field for user response
+- Error messages
+
+:param form: The form containing captcha and captcha_token fields
+:param captcha_data: Dict with 'token' and 'image_data_uri'
+:param audio_endpoint: Flask endpoint name for audio CAPTCHA (e.g., 'core.auth.password.captcha_audio')
+#}
+{% macro render_captcha_field(form, captcha_data, audio_endpoint) %}
+    {{ form.captcha_token() }}
+    <div class="field">
+        <label for="{{ form.captcha.id }}">{{ form.captcha.label.text }}</label>
+
+        <div class="captcha-group">
+            <img src="{{ captcha_data.image_data_uri }}"
+                 alt="CAPTCHA"
+                 class="ui image captcha-image" />
+            <div class="ui icon buttons">
+                <button type="button"
+                        class="ui icon big button captcha-audio-button"
+                        data-audio-id="captcha-audio-{{ captcha_data.token }}"
+                        title="{% trans %}Listen to the audio security code{% endtrans %}">
+                    <i class="volume up icon"></i>
+                </button>
+
+                <button type="submit"
+                        name="action"
+                        value="refresh_captcha"
+                        class="ui icon big button"
+                        title="{% trans %}Refresh the security code{% endtrans %}"
+                        formnovalidate>
+                    <i class="refresh icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <audio id="captcha-audio-{{ captcha_data.token }}" preload="none">
+            <source src="{{ url_for(audio_endpoint, token=captcha_data.token) }}" type="audio/wav">
+        </audio>
+
+        <div class="ui input">
+            {{ form.captcha(class="") }}
+        </div>
+
+        {% if form.captcha.errors %}
+            <div class="ui pointing red basic label">
+                {{ form.captcha.errors[0] }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

@@ -42,7 +42,8 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
         registration,
         email confirmation,
         password reset emails,
-        multi-factor authentication
+        multi-factor authentication,
+        CAPTCHA
 
     .. grid-item-card:: :iconify:`mdi:key-chain` :abbr:`SSO (Single Sign-On)`
         :link-type: ref

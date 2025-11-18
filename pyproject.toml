@@ -111,6 +111,10 @@ sms = [
     "smpplib>=2.2.3",
 ]
 
+captcha = [
+    "captcha>=0.4",
+]
+
 server = [
     "asgiref>=3.9.2",
     "hypercorn>=0.17.3",

@@ -1,12 +1,18 @@
 import logging
 from unittest import mock
 
+import pytest
 import time_machine
 from flask import current_app
 from flask import url_for
 
 from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
+
+
+@pytest.fixture(autouse=True)
+def disable_captcha(testclient):
+    testclient.app.config["CANAILLE"]["CAPTCHA_ENABLED"] = False
 
 
 def test_registration_without_email_validation(testclient, backend, foo_group):

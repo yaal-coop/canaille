@@ -240,6 +240,9 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+captcha = [
+    { name = "captcha" },
+]
 front = [
     { name = "email-validator" },
     { name = "flask-babel" },
@@ -373,6 +376,7 @@ requires-dist = [
     { name = "authlib", marker = "extra == 'oidc'", specifier = ">=1.6.5" },
     { name = "authlib", marker = "extra == 'scim'", specifier = ">=1.5.1" },
     { name = "blinker", specifier = ">=1.9.0" },
+    { name = "captcha", marker = "extra == 'captcha'", specifier = ">=0.4" },
     { name = "click", specifier = ">=8.2.0" },
     { name = "dramatiq", specifier = ">=1.18.0" },
     { name = "dramatiq", extras = ["rabbitmq"], marker = "extra == 'rabbitmq'", specifier = ">=1.18.0" },
@@ -425,7 +429,7 @@ requires-dist = [
     { name = "wtforms", specifier = ">=3.1.1" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.2.0" },
 ]
-provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server", "redis", "rabbitmq"]
+provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "captcha", "server", "redis", "rabbitmq"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -480,6 +484,18 @@ doc = [
     { name = "tomlkit", specifier = ">=0.13.2" },
 ]
 release = [{ name = "pyinstaller", specifier = ">=6.11.1" }]
+
+[[package]]
+name = "captcha"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pillow" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b4/65/8e186bb798f33ba390eab897c995b0fcee92bc030e0f40cb8ea01f34dd07/captcha-0.7.1.tar.gz", hash = "sha256:a1b462bcc633a64d8db5efa7754548a877c698d98f87716c620a707364cabd6b", size = 226561, upload-time = "2025-03-01T05:00:13.395Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/da/ff/3f0982ecd37c2d6a7266c22e7ea2e47d0773fe449984184c5316459d2776/captcha-0.7.1-py3-none-any.whl", hash = "sha256:8b73b5aba841ad1e5bdb856205bf5f09560b728ee890eb9dae42901219c8c599", size = 147606, upload-time = "2025-03-01T05:00:10.433Z" },
+]
 
 [[package]]
 name = "certifi"

@@ -65,13 +65,22 @@ class MemoryBackend(Backend):
                 return (False, get_lockout_delay_message(current_lockout_delay))
 
         if password != user.password:
-            if current_app.features.has_intruder_lockout:
+            if (
+                current_app.features.has_intruder_lockout
+                or current_app.features.has_captcha
+            ):
                 self.record_failed_attempt(user)
             return (False, None)
 
         if user.locked:
             return (False, "Your account has been locked.")
 
+        if (
+            current_app.features.has_intruder_lockout
+            or current_app.features.has_captcha
+        ):
+            user.password_failure_timestamps = []
+            self.save(user)
         return (True, None)
 
     def set_user_password(self, user, password) -> None:
@@ -203,9 +212,9 @@ class MemoryBackend(Backend):
         for attribute in instance.attributes:
             attribute_values = listify(old_state.get(attribute, []))
             for value in attribute_values:
-                self.attribute_index(instance.__class__, attribute)[value].remove(
-                    instance.id
-                )
+                attr_index = self.attribute_index(instance.__class__, attribute)
+                if value in attr_index and instance.id in attr_index[value]:
+                    attr_index[value].remove(instance.id)
 
             # update the mirror attributes of the submodel instances
             model, mirror_attribute = instance.get_model_annotations(attribute)
@@ -229,7 +238,7 @@ class MemoryBackend(Backend):
         del self.index(instance.__class__)[instance.id]
 
     def record_failed_attempt(self, user) -> None:
-        user.password_failure_timestamps += [
-            datetime.datetime.now(datetime.timezone.utc)
-        ]
+        timestamps = user.password_failure_timestamps or []
+        timestamps.append(datetime.datetime.now(datetime.timezone.utc))
+        user.password_failure_timestamps = timestamps
         self.save(user)

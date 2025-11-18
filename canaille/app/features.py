@@ -131,6 +131,20 @@ class Features:
         except ImportError:  # pragma: no cover
             return False
 
+    @property
+    def has_captcha(self):
+        """Indicate whether the CAPTCHA feature is enabled.
+
+        It is controlled by the :attr:`CANAILLE.CAPTCHA_ENABLED <canaille.core.configuration.CoreSettings.CAPTCHA_ENABLED>` configuration parameter,
+        and needs the ``captcha`` extra package to be installed.
+        """
+        try:
+            import captcha  # noqa: F401
+        except ImportError:  # pragma: no cover
+            return False
+
+        return self.app.config["CANAILLE"]["CAPTCHA_ENABLED"]
+
 
 def setup_features(app):
     app.features = Features(app)
