@@ -136,7 +136,7 @@ repository = "https://gitlab.com/yaal/canaille"
 dev = [
     "babel >= 2.14.0",
     "coverage[toml] >= 6.0.0",
-    "faker >= 37.11.0",
+    "faker >= 38.2.0",
     "flask-webtest >= 0.1.6",
     "maildump>=1.0; python_version<'3.12'",
     "maildump>=1.1; python_version>='3.12'",
@@ -183,7 +183,7 @@ doc = [
     "auth-playground>=0.1.2",
 ]
 devserver = [
-    "faker >= 37.11.0",
+    "faker >= 38.2.0",
     "honcho >= 2.0.0",
     "slapd >= 0.1.6",
     "httpx >= 0.26.0",
