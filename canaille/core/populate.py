@@ -41,15 +41,13 @@ def generate_avatar():
 
 def fake_users(nb=1):
     locales = list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
-    faker_obj = faker.Faker(locales)
+    faker_obj = faker.Faker(locales).unique
     users = list()
 
-    # kinda hotfix for https://github.com/joke2k/faker/issues/2278
-    cache = {}
     for _ in range(nb):
         try:
             locale = random.choice(locales)
-            fake = cache.setdefault(locale, faker_obj[locale].unique)
+            fake = faker_obj[locale]
             profile = fake.profile()
             name = profile["name"]
             user = models.User(
