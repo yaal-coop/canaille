@@ -59,7 +59,7 @@ front = [
 
 oidc = [
     "authlib >= 1.6.5",
-    "joserfc >= 1.4.2",
+    "joserfc >= 1.4.3",
 ]
 
 scim = [
