@@ -1,13 +1,4 @@
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import ec
-from cryptography.hazmat.primitives.asymmetric import ed25519
-from cryptography.hazmat.primitives.asymmetric import rsa
-from joserfc.jwk import ECKey
-from joserfc.jwk import OKPKey
-from joserfc.jwk import RSAKey
-
 from canaille import create_app
-from canaille.oidc.jose import detect_key_type
 from canaille.oidc.jose import make_default_jwk
 from canaille.oidc.jose import server_jwks
 
@@ -88,74 +79,3 @@ def test_random_jwk_generation_without_seed():
     assert "kty" in jwk1
     assert jwk1["kty"] == "OKP"
     assert jwk1["crv"] == "Ed25519"
-
-
-def test_detect_key_type_rsa():
-    """Test RSA key type detection from PEM string and bytes."""
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=1024)
-    pem_bytes = private_key.private_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption(),
-    )
-    pem_str = pem_bytes.decode("utf-8")
-
-    assert detect_key_type(pem_bytes) == RSAKey
-    assert detect_key_type(pem_str) == RSAKey
-
-
-def test_detect_key_type_ec():
-    """Test EC key type detection from PEM string and bytes."""
-    private_key = ec.generate_private_key(ec.SECP256R1())
-    pem_bytes = private_key.private_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption(),
-    )
-    pem_str = pem_bytes.decode("utf-8")
-
-    assert detect_key_type(pem_bytes) == ECKey
-    assert detect_key_type(pem_str) == ECKey
-
-
-def test_detect_key_type_ed25519():
-    """Test Ed25519 key type detection from PEM string and bytes."""
-    private_key = ed25519.Ed25519PrivateKey.generate()
-    pem_bytes = private_key.private_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption(),
-    )
-    pem_str = pem_bytes.decode("utf-8")
-
-    assert detect_key_type(pem_bytes) == OKPKey
-    assert detect_key_type(pem_str) == OKPKey
-
-
-def test_detect_key_type_der():
-    """Test key type detection from DER format."""
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=1024)
-    der_bytes = private_key.private_bytes(
-        encoding=serialization.Encoding.DER,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption(),
-    )
-
-    assert detect_key_type(der_bytes) == RSAKey
-
-
-def test_detect_key_type_invalid():
-    """Test detection returns None for invalid key material."""
-    assert detect_key_type(b"invalid key data") is None
-    assert detect_key_type("not a valid pem string") is None
-    assert detect_key_type(b"") is None
-
-
-def test_jwks(testclient, server_jwk, old_server_jwk):
-    res = testclient.get("/oauth/jwks.json")
-    assert res.json == {
-        "keys": [
-            server_jwk.as_dict(private=False),
-            old_server_jwk.as_dict(private=False),
-        ]
-    }

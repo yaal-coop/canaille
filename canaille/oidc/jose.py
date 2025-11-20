@@ -8,21 +8,13 @@ import httpx
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import dsa
-from cryptography.hazmat.primitives.asymmetric import ec
-from cryptography.hazmat.primitives.asymmetric import ed448
 from cryptography.hazmat.primitives.asymmetric import ed25519
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives.asymmetric import x448
-from cryptography.hazmat.primitives.asymmetric import x25519
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from flask import current_app
 from joserfc import jwk
 from joserfc import jws
 from joserfc import jwt
-from joserfc.jwk import ECKey
 from joserfc.jwk import OKPKey
-from joserfc.jwk import RSAKey
 
 from canaille.app.flask import cache
 
@@ -63,36 +55,6 @@ def make_default_jwk(seed=None):
     return key
 
 
-# Hotfix for https://github.com/authlib/joserfc/issues/73
-def detect_key_type(key_material):  # pragma: no cover
-    """Detect the type of a cryptographic key from PEM/DER bytes or string."""
-    if isinstance(key_material, str):
-        key_material = key_material.encode()
-
-    try:
-        private_key = serialization.load_pem_private_key(key_material, password=None)
-    except Exception:
-        try:
-            private_key = serialization.load_der_private_key(
-                key_material, password=None
-            )
-        except Exception:
-            return None
-
-    if isinstance(private_key, rsa.RSAPrivateKey):
-        return RSAKey
-    if isinstance(private_key, ec.EllipticCurvePrivateKey):
-        return ECKey
-    if isinstance(private_key, (ed25519.Ed25519PrivateKey, ed448.Ed448PrivateKey)):
-        return OKPKey
-    if isinstance(private_key, (x25519.X25519PrivateKey, x448.X448PrivateKey)):
-        return OKPKey
-    if isinstance(private_key, dsa.DSAPrivateKey):
-        return None
-
-    return None
-
-
 def get_alg_for_key(key):
     """Find the algorithm for the given key."""
     return registry.guess_alg(key, registry.Strategy.SECURITY)
@@ -105,10 +67,7 @@ def server_jwks(include_inactive=True):
 
     key_objs = []
     for key in keys:
-        if isinstance(key, str) and (key_class := detect_key_type(key)):
-            key_objs.append(key_class.import_key(key))
-        else:
-            key_objs.append(jwk.import_key(key))
+        key_objs.append(jwk.import_key(key))
 
     for obj in key_objs:
         obj.ensure_kid()
