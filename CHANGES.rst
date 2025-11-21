@@ -6,6 +6,10 @@ Added
 - OIDC ``amr`` claim support. :issue:`302`
 - Server-side sessions.
 
+Fixed
+^^^^^
+- Usernames don't appear in the photos URLs.
+
 [0.1.0] - 2025-11-13
 --------------------
 

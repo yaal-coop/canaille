@@ -1,8 +1,14 @@
 import datetime
 
+from itsdangerous import URLSafeSerializer
 from webtest import Upload
 
 from canaille.app import models
+
+
+def photo_url(testclient, identifier):
+    serializer = URLSafeSerializer(testclient.app.config["SECRET_KEY"], salt="photo")
+    return f"/photo/{serializer.dumps(identifier)}"
 
 
 def test_photo(testclient, user, jpeg_photo, backend):
@@ -11,14 +17,14 @@ def test_photo(testclient, user, jpeg_photo, backend):
     backend.save(user)
     backend.reload(user)
 
-    res = testclient.get("/profile/user/photo")
+    res = testclient.get(photo_url(testclient, user.identifier))
     assert res.body == jpeg_photo
     assert res.last_modified == user.last_modified
     etag = res.etag
     assert etag
 
     res = testclient.get(
-        "/profile/user/photo",
+        photo_url(testclient, user.identifier),
         headers={
             "If-Modified-Since": (
                 res.last_modified + datetime.timedelta(days=1)
@@ -29,27 +35,27 @@ def test_photo(testclient, user, jpeg_photo, backend):
     assert not res.body
 
     res = testclient.get(
-        "/profile/user/photo",
+        photo_url(testclient, user.identifier),
         headers={"If-None-Match": etag},
         status=304,
     )
     assert not res.body
 
 
-def test_photo_invalid_user(testclient, user):
-    """Test that accessing photo for invalid user returns 404."""
-    testclient.get("/profile/invalid/photo", status=404)
+def test_photo_invalid_token(testclient, user):
+    """Test that accessing photo with invalid token returns 404."""
+    testclient.get("/photo/invalid-token", status=404)
+
+
+def test_photo_nonexistent_user(testclient, user):
+    """Test that accessing photo for nonexistent user returns 404."""
+    testclient.get(photo_url(testclient, "nonexistent"), status=404)
 
 
 def test_photo_absent(testclient, user):
     """Test that accessing photo for user without photo returns 404."""
     assert not user.photo
-    testclient.get("/profile/user/photo", status=404)
-
-
-def test_photo_invalid_path(testclient, user):
-    """Test that accessing invalid profile path returns 404."""
-    testclient.get("/profile/user/invalid", status=404)
+    testclient.get(photo_url(testclient, user.identifier), status=404)
 
 
 def test_photo_on_profile_edition(

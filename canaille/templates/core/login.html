@@ -61,7 +61,7 @@ This page displays a form to get the user identifier.
                                         <a href="{{ url_for('core.auth.login', username=user.user_name) }}" class="ui link">
                                             {% if user.photo %}
                                                 <div class="ui small circular image">
-                                                    <img class="login-avatar" src="{{ url_for('core.account.photo', user=user, field='photo') }}" alt="{{ user.name }}">
+                                                    <img class="login-avatar" src="{{ user|photo_url }}" alt="{{ user.name }}">
                                                 </div>
                                             {% else %}
                                                 <i class="login-avatar circular user icon"></i>

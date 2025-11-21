@@ -84,7 +84,7 @@ Displays a user profile edition form.
                                 <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
                                     <i class="times icon"></i>
                                 </a>
-                                <img src="{% if photo %}{{ url_for("core.account.photo", user=edited_user, field="photo") }}{% endif %}" alt="User photo">
+                                <img src="{% if photo %}{{ edited_user|photo_url }}{% endif %}" alt="User photo">
                             </label>
                             <label
                                 class="ui centered photo-placeholder {% if photo %}hidden{% endif %}"

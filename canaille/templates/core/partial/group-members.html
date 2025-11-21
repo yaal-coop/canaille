@@ -26,7 +26,7 @@
                             {% if user.can_manage_users and watched_user.locked %}
                                 <i class="lock circle big black icon" title="{% trans %}This account is locked{% endtrans %}"></i>
                             {% elif watched_user.photo and watched_user.photo %}
-                                <img class="ui avatar image" src="{{ url_for("core.account.photo", user=watched_user, field="photo") }}" alt="User photo">
+                                <img class="ui avatar image" src="{{ watched_user|photo_url }}" alt="User photo">
                             {% else %}
                                 <i class="user circle big black icon"></i>
                             {% endif %}

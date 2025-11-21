@@ -16,6 +16,8 @@ from flask import request
 from flask import send_file
 from flask import session
 from flask import url_for
+from itsdangerous import BadSignature
+from itsdangerous import URLSafeSerializer
 from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.datastructures import FileStorage
 
@@ -875,27 +877,36 @@ def impersonate(user, puppet):
     return redirect(url_for("core.account.index"))
 
 
-@bp.route("/profile/<user:user>/<field>")
-def photo(user, field):
-    if field.lower() != "photo":
+@bp.app_template_filter()
+def photo_url(user):
+    serializer = URLSafeSerializer(current_app.config["SECRET_KEY"], salt="photo")
+    return url_for("core.account.photo", token=serializer.dumps(user.identifier))
+
+
+@bp.route("/photo/<token>")
+def photo(token):
+    serializer = URLSafeSerializer(current_app.config["SECRET_KEY"], salt="photo")
+    try:
+        identifier = serializer.loads(token)
+    except BadSignature:
         abort(404)
 
-    etag = None
-    if request.if_modified_since and request.if_modified_since >= user.last_modified:
-        return "", 304
+    user = Backend.instance.get(models.User, identifier)
+    if not user or not user.photo:
+        abort(404)
 
     etag = build_hash(user.identifier, user.last_modified.isoformat())
     if request.if_none_match and etag in request.if_none_match:
         return "", 304
+    if request.if_modified_since and request.if_modified_since >= user.last_modified:
+        return "", 304
 
-    photo = getattr(user, field)
-    if not photo:
-        abort(404)
-
-    mimetype = guess_image_mimetype(photo)
-    stream = io.BytesIO(photo)
+    mimetype = guess_image_mimetype(user.photo)
     return send_file(
-        stream, mimetype=mimetype, last_modified=user.last_modified, etag=etag
+        io.BytesIO(user.photo),
+        mimetype=mimetype,
+        last_modified=user.last_modified,
+        etag=etag,
     )
 
 
