@@ -12,6 +12,9 @@ This page is displayed to users who do not have set a password yet.
 #}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
+{% import 'macro/flask.html' as flask %}
+
+{% block messages %}{% endblock %}
 
 {% block content %}
     <div class="loginform">
@@ -26,7 +29,7 @@ This page is displayed to users who do not have set a password yet.
             </h3>
         {% endblock %}
 
-        {% block message %}
+        {% call flask.messages(classes="attached") %}
             <div class="ui attached message">
                 {% trans %}
                     It seems this is the first time you are logging here. In order to finalize your
@@ -35,7 +38,7 @@ This page is displayed to users who do not have set a password yet.
                     on the "Send the initialization email" button below to send the email.
                 {% endtrans %}
             </div>
-        {% endblock %}
+        {% endcall %}
 
         <div class="ui attached clearing segment">
             {% call fui.render_form(form) %}
