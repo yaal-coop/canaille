@@ -200,7 +200,7 @@ def setup_flask(app) -> None:
 
     csrf.init_app(app)
     cache.init_app(app)
-    if app.config.get("SESSION_TYPE"):
+    if app.config.get("SESSION_TYPE"):  # pragma: no cover
         session_store.init_app(app)
 
     # dirty warning silencing for the testsuite
