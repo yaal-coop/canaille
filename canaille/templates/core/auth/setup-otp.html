@@ -78,9 +78,7 @@ Display a QR-code and the OTP secret.
                     </h2>
                 </div>
 
-                {% block messages %}
-                    {{ flask.messages() }}
-                {% endblock %}
+                {{ flask.messages(classes="attached") }}
 
                 {% include 'core/auth/partials/otp_setup_content.html' %}
 

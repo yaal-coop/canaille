@@ -188,7 +188,7 @@ The main template inherited by almost every other templates.
         {% block container %}
             <div class="ui container">
                 <div class="ui content">
-                    {{ flask.messages() }}
+                    {% block messages %}{{ flask.messages() }}{% endblock %}
                     {% block content %}{% endblock %}
                 </div>
             </div>

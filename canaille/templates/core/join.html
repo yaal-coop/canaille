@@ -8,11 +8,14 @@ It displays a basic account creation form.
 #}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
+{% import 'macro/flask.html' as flask %}
 {% import 'core/partial/profile_field.html' as profile %}
 
 {%- block title -%}
     {%- trans %}User creation{% endtrans -%}
 {%- endblock -%}
+
+{% block messages %}{% endblock %}
 
 {% block content %}
     <div class="joinform">
@@ -28,13 +31,15 @@ It displays a basic account creation form.
                 </div>
             </div>
         </h2>
-        <div class="ui attached message">
-            {% trans %}
-                Before you can create an account, please enter a valid email address.
-                Then you will receive an email containing a link that will allow you to
-                finish your registration.
-            {% endtrans %}
-        </div>
+        {% call flask.messages(classes="attached") %}
+            <div class="ui attached message">
+                {% trans %}
+                    Before you can create an account, please enter a valid email address.
+                    Then you will receive an email containing a link that will allow you to
+                    finish your registration.
+                {% endtrans %}
+            </div>
+        {% endcall %}
         <div class="ui attached clearing segment">
 
             {% call fui.render_form(form, class_="profile-form info") %}

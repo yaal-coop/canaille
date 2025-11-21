@@ -1,15 +1,20 @@
 {# Macros for Flask flash message rendering #}
-{% macro messages() %}
+{% macro messages(classes="") %}
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <div class="ui
-                        {% if messages|len > 1 %}
-                            {% if loop.first %}top {% elif loop.last %}bottom {% endif %}attached
-                        {% endif %}
-                        message
-                        {{ category }}">
-                {{ message }}
-            </div>
-        {% endfor %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="ui
+                            {% if messages|len > 1 %}
+                                {% if loop.first %}top {% elif loop.last %}bottom {% endif %}attached
+                            {% endif %}
+                            message
+                            {{ category }}
+                            {{ classes }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% elif caller is defined %}
+            {{ caller() }}
+        {% endif %}
     {% endwith %}
 {% endmacro %}
