@@ -112,7 +112,7 @@ sms = [
 ]
 
 captcha = [
-    "captcha>=0.4",
+    "captcha>=0.7.0",
 ]
 
 server = [
