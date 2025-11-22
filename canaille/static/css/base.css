@@ -254,28 +254,6 @@ select.ui.multiple.dropdown option[selected] {
     border-radius: 0
 }
 
-/* CAPTCHA */
-.captcha-group {
-    display: flex;
-    align-items: stretch;
-    gap: 0.5em;
-}
-
-.captcha-group .ui.buttons {
-    height: 100%;
-}
-
-.captcha-group .ui.buttons .button {
-    flex: 1;
-    box-sizing: border-box;
-}
-
-.captcha-image {
-    margin-bottom: 0.5em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
 /* PASSWORD STRENGTH */
 .strength0 {
     width: 0%!important;

@@ -19,10 +19,11 @@ This macro renders a complete CAPTCHA field with:
         <label for="{{ form.captcha.id }}">{{ form.captcha.label.text }}</label>
 
         <div class="captcha-group">
-            <img src="{{ captcha_data.image_data_uri }}"
-                 alt="CAPTCHA"
-                 class="ui image captcha-image" />
             <div class="ui icon buttons">
+                <img src="{{ captcha_data.image_data_uri }}"
+                     alt="CAPTCHA"
+                     class="ui small bordered basic image" />
+
                 <button type="button"
                         class="ui icon big button captcha-audio-button"
                         data-audio-id="captcha-audio-{{ captcha_data.token }}"
