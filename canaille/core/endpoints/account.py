@@ -7,6 +7,7 @@ from importlib import metadata
 
 import wtforms
 from flask import Blueprint
+from flask import Response
 from flask import abort
 from flask import current_app
 from flask import flash
@@ -46,6 +47,8 @@ from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import AuthenticationSession
+from canaille.core.captcha import generate_audio_captcha
+from canaille.core.captcha import generate_captcha
 from canaille.core.utils import guess_image_mimetype
 
 from ..mails import send_confirmation_email
@@ -56,7 +59,9 @@ from ..mails import send_registration_mail
 from .forms import EmailConfirmationForm
 from .forms import InvitationForm
 from .forms import JoinForm
+from .forms import JoinFormWithCaptcha
 from .forms import PasswordResetForm
+from .forms import add_captcha_fields
 from .forms import build_profile_form
 
 bp = Blueprint("account", __name__)
@@ -88,47 +93,92 @@ def join():
     if g.session:
         abort(403)
 
-    form = JoinForm(request.form or None)
-    if request.form and form.validate():
-        if Backend.instance.query(models.User, emails=form.email.data):
-            flash(
-                _(
-                    "You will receive soon an email to continue the registration process."
-                ),
-                "success",
-            )
-            return render_template("core/join.html", form=form, menu=False)
+    if current_app.features.has_captcha:
+        form = JoinFormWithCaptcha(request.form or None)
+    else:
+        form = JoinForm(request.form or None)
 
-        payload = RegistrationPayload(
-            creation_date_isoformat=datetime.datetime.now(
-                datetime.timezone.utc
-            ).isoformat(),
-            user_name="",
-            user_name_editable=True,
-            email=form.email.data,
-            groups=[],
+    def render_join_template():
+        captcha_data = None
+        if current_app.features.has_captcha:
+            captcha_data = generate_captcha()
+            form["captcha_token"].data = captcha_data["token"]
+        return render_template(
+            "core/join.html", form=form, menu=False, captcha_data=captcha_data
         )
 
-        registration_url = url_for(
-            "core.account.registration",
-            data=payload.b64(),
-            hash=payload.build_hash(),
-            _external=True,
-        )
+    if request.form.get("action") == "refresh_captcha":
+        old_token = request.form.get("captcha_token")
+        if old_token:
+            session.pop(f"captcha_{old_token}", None)
+        return render_join_template()
 
-        send_registration_mail(form.email.data, registration_url)
+    if not request.form:
+        return render_join_template()
+
+    if not form.validate():
+        return render_join_template()
+
+    if Backend.instance.query(models.User, emails=form.email.data):
         flash(
             _("You will receive soon an email to continue the registration process."),
-            "info",
+            "success",
+        )
+        return render_template(
+            "core/join.html", form=form, menu=False, captcha_data=None
         )
 
-    return render_template("core/join.html", form=form, menu=False)
+    payload = RegistrationPayload(
+        creation_date_isoformat=datetime.datetime.now(
+            datetime.timezone.utc
+        ).isoformat(),
+        user_name="",
+        user_name_editable=True,
+        email=form.email.data,
+        groups=[],
+    )
+
+    registration_url = url_for(
+        "core.account.registration",
+        data=payload.b64(),
+        hash=payload.build_hash(),
+        _external=True,
+    )
+
+    send_registration_mail(form.email.data, registration_url)
+    flash(
+        _("You will receive soon an email to continue the registration process."),
+        "info",
+    )
+
+    return render_template("core/join.html", form=form, menu=False, captcha_data=None)
 
 
 @bp.route("/about")
 def about():
     version = metadata.version("canaille")
     return render_template("core/about.html", version=version)
+
+
+@bp.route("/captcha-audio/<token>")
+def captcha_audio(token):
+    """Serve audio CAPTCHA."""
+    session_key = f"captcha_{token}"
+    text = session.get(session_key)
+
+    if not text:
+        abort(404)
+
+    etag = f'"{token}"'
+
+    if request.headers.get("If-None-Match") == etag:
+        return Response(status=304)
+
+    audio_data = generate_audio_captcha(text)
+    response = Response(audio_data, mimetype="audio/wav")
+    response.headers["ETag"] = etag
+    response.headers["Cache-Control"] = "private, max-age=600"
+    return response
 
 
 @bp.route("/users", methods=["GET", "POST"])
@@ -317,6 +367,13 @@ def registration(data=None, hash=None):
             coerce=IDToModel("Group"),
         )
         set_readonly(form["groups"])
+
+    if (
+        current_app.features.has_captcha
+        and not current_app.features.has_email_confirmation
+    ):
+        add_captcha_fields(form)
+
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
     if is_readonly(form["user_name"]) and (not payload or payload.user_name_editable):
@@ -340,20 +397,34 @@ def registration(data=None, hash=None):
     form["password1"].flags.required = True
     form["password2"].flags.required = True
 
-    if not request.form or form.form_control():
+    def render_registration_template():
+        captcha_data = None
+        if (
+            current_app.features.has_captcha
+            and not current_app.features.has_email_confirmation
+        ):
+            captcha_data = generate_captcha()
+            form["captcha_token"].data = captcha_data["token"]
+
         return render_template(
             "core/profile_add.html",
             form=form,
             menu=False,
+            captcha_data=captcha_data,
         )
+
+    if request.form.get("action") == "refresh_captcha":
+        old_token = request.form.get("captcha_token")
+        if old_token:
+            session.pop(f"captcha_{old_token}", None)
+        return render_registration_template()
+
+    if not request.form or form.form_control():
+        return render_registration_template()
 
     if not form.validate():
         flash(_("User account creation failed."), "error")
-        return render_template(
-            "core/profile_add.html",
-            form=form,
-            menu=False,
-        )
+        return render_registration_template()
 
     user = profile_create(current_app, form)
     login_user(user)
@@ -434,6 +505,7 @@ def profile_creation(user):
             "core/profile_add.html",
             form=form,
             menuitem="users",
+            captcha_data=None,
         )
 
     if not form.validate():
@@ -442,6 +514,7 @@ def profile_creation(user):
             "core/profile_add.html",
             form=form,
             menuitem="users",
+            captcha_data=None,
         )
 
     user = profile_create(current_app, form)

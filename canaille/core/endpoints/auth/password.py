@@ -18,6 +18,8 @@ from canaille.backends import Backend
 from canaille.core.auth import auth_step
 from canaille.core.auth import get_user_from_login
 from canaille.core.auth import redirect_to_next_auth_step
+from canaille.core.captcha import generate_captcha
+from canaille.core.captcha import should_show_captcha_on_login
 
 from ...mails import send_password_initialization_mail
 from ...mails import send_password_reset_mail
@@ -26,6 +28,7 @@ from ..forms import ForgottenPasswordCodeForm
 from ..forms import ForgottenPasswordForm
 from ..forms import PasswordForm
 from ..forms import PasswordResetForm
+from ..forms import PasswordWithCaptchaForm
 
 bp = Blueprint("password", __name__)
 
@@ -40,30 +43,62 @@ def global_processor():
 @bp.route("/auth/password", methods=("GET", "POST"))
 @auth_step("password")
 def password():
-    form = PasswordForm(request.form or None)
-    form.render_field_macro_file = "core/partial/login_field.html"
+    def make_password_form(show_captcha=None):
+        if show_captcha is None:
+            show_captcha = should_show_captcha_on_login()
+        form = (
+            PasswordWithCaptchaForm(request.form or None)
+            if show_captcha
+            else PasswordForm(request.form or None)
+        )
+        form.render_field_macro_file = "core/partial/login_field.html"
+        return form
+
+    def render_password_template(form=None):
+        captcha_data = None
+        show_captcha = should_show_captcha_on_login()
+        if form is None:
+            form = make_password_form(show_captcha)
+
+        if show_captcha:
+            captcha_data = generate_captcha()
+            form.captcha_token.data = captcha_data["token"]
+
+        return render_template(
+            "core/auth/password.html", form=form, captcha_data=captcha_data
+        )
+
+    form = make_password_form()
+    if request.form.get("action") == "refresh_captcha":
+        old_token = request.form.get("captcha_token")
+        if old_token:
+            session.pop(f"captcha_{old_token}", None)
+        return render_password_template(form)
 
     if not request.form or form.form_control():
-        return render_template("core/auth/password.html", form=form)
+        return render_password_template(form)
 
     if g.auth.user and not g.auth.user.has_password() and current_app.features.has_smtp:
         return redirect(url_for("core.auth.password.firstlogin", user=g.auth.user))
 
     if not form.validate() or not g.auth.user:
-        logout_user()
+        user = g.auth.user
         flash(_("Login failed, please check your information"), "error")
-        return render_template("core/auth/password.html", form=form)
-
-    success, message = Backend.instance.check_user_password(
-        g.auth.user, form.password.data
-    )
-    if not success:
+        response = render_password_template(form)
         logout_user()
-        current_app.logger.security(
-            f"Failed password authentication for {g.auth.user_name}"
-        )
+        return response
+
+    user = g.auth.user
+    success, message = Backend.instance.check_user_password(user, form.password.data)
+    if not success:
+        user_name = g.auth.user_name
+        user_id = user.id
+        logout_user()
+        current_app.logger.security(f"Failed password authentication for {user_name}")
         flash(message or _("Login failed, please check your information"), "error")
-        return render_template("core/auth/password.html", form=form)
+
+        user = Backend.instance.get(user.__class__, user_id)
+        return render_password_template()
 
     current_app.logger.security(
         f"Successful password authentication for {g.auth.user_name}"

@@ -23,6 +23,7 @@ from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
 from canaille.core.mails import RESET_CODE_LENGTH
 from canaille.core.models import OTP_DIGITS
+from canaille.core.validators import captcha_validator
 from canaille.core.validators import email_has_user
 from canaille.core.validators import existing_group_member
 from canaille.core.validators import existing_login
@@ -56,6 +57,22 @@ class LoginForm(Form):
     )
 
 
+class CaptchaField(wtforms.StringField):
+    """CAPTCHA field for security code input."""
+
+    def __init__(self, **kwargs):
+        super().__init__(
+            _("Security code"),
+            validators=[wtforms.validators.DataRequired(), captcha_validator],
+            render_kw={
+                "placeholder": _("Enter the security code displayed above"),
+                "autocomplete": "off",
+                "spellcheck": "false",
+            },
+            **kwargs,
+        )
+
+
 class PasswordForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
@@ -64,6 +81,11 @@ class PasswordForm(Form):
             "autocomplete": "section-login current-password",
         },
     )
+
+
+class PasswordWithCaptchaForm(PasswordForm):
+    captcha_token = wtforms.HiddenField()
+    captcha = CaptchaField()
 
 
 class ForgottenPasswordForm(Form):
@@ -352,6 +374,12 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
     return form
 
 
+def add_captcha_fields(form):
+    """Add CAPTCHA fields to a dynamically built form."""
+    form["captcha_token"] = wtforms.HiddenField()
+    form["captcha"] = CaptchaField()
+
+
 class CreateGroupForm(Form):
     """The group creation form."""
 
@@ -430,6 +458,11 @@ class JoinForm(Form):
     def validate_email(form, field):
         if not current_app.config["CANAILLE"]["HIDE_INVALID_LOGINS"]:
             unique_email(form, field)
+
+
+class JoinFormWithCaptcha(JoinForm):
+    captcha_token = wtforms.HiddenField()
+    captcha = CaptchaField()
 
 
 class InvitationForm(Form):

@@ -108,13 +108,22 @@ class SQLBackend(Backend):
                 return (False, get_lockout_delay_message(current_lockout_delay))
 
         if password != user.password:
-            if current_app.features.has_intruder_lockout:
+            if (
+                current_app.features.has_intruder_lockout
+                or current_app.features.has_captcha
+            ):
                 self.record_failed_attempt(user)
             return (False, None)
 
         if user.locked:
             return (False, "Your account has been locked.")
 
+        if (
+            current_app.features.has_intruder_lockout
+            or current_app.features.has_captcha
+        ):
+            user.password_failure_timestamps = []
+            self.save(user)
         return (True, None)
 
     def set_user_password(self, user, password) -> None:

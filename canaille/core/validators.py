@@ -1,5 +1,4 @@
-import wtforms.form
-import wtforms.validators
+import wtforms
 from flask import current_app
 
 from canaille.app import models
@@ -7,6 +6,7 @@ from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
+from canaille.core.captcha import verify_captcha
 
 
 def unique_user_name(form, field):
@@ -92,3 +92,10 @@ def user_not_in_group(form, field):
         raise wtforms.ValidationError(
             _("A user with this email address is already a member of this group.")
         )
+
+
+def captcha_validator(form, field):
+    """Validate CAPTCHA response against the stored token."""
+    token = form["captcha_token"].data
+    if not verify_captcha(token, field.data or ""):
+        raise wtforms.ValidationError(_("Invalid security code"))

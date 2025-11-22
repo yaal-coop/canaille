@@ -15,6 +15,7 @@ It is used in the registration page, and in the manual account creation page ava
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 {% import 'core/partial/profile_field.html' as profile %}
+{% import 'core/partial/captcha_field.html' as captcha_field %}
 
 {%- block title -%}
     {%- trans %}User creation{% endtrans -%}
@@ -22,6 +23,9 @@ It is used in the registration page, and in the manual account creation page ava
 
 {% block script %}
     <script src="{{ url_for("static", filename="js/profile.js") }}" defer></script>
+    {% if captcha_data %}
+        <script src="{{ url_for('static', filename='js/captcha.js') }}" defer></script>
+    {% endif %}
 {% endblock %}
 
 {% block submenu %}
@@ -181,6 +185,10 @@ It is used in the registration page, and in the manual account creation page ava
                         {{ profile.render_field(form.password2, noindicator=true) }}
                     </div>
                 {% endblock %}
+            {% endif %}
+
+            {% if captcha_data %}
+                {{ captcha_field.render_captcha_field(form, captcha_data, 'core.account.captcha_audio') }}
             {% endif %}
 
             {% if user and user.can_manage_users %}

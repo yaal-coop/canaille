@@ -5,6 +5,7 @@ SERVER_NAME = "canaille.localhost:5000"
 [CANAILLE]
 ENABLE_REGISTRATION = true
 ADMIN_EMAIL = "admin@example.org"
+CAPTCHA_ENABLED = true
 
 [CANAILLE.SMTP]
 HOST = "maildump.localhost"

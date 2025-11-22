@@ -8,11 +8,17 @@ import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 from flask import url_for
 
 from canaille.app import models
 from canaille.app.session import UserSession
 from canaille.core.endpoints.account import RegistrationPayload
+
+
+@pytest.fixture(autouse=True)
+def disable_captcha(testclient):
+    testclient.app.config["CANAILLE"]["CAPTCHA_ENABLED"] = False
 
 
 def test_prompt_none(testclient, logged_user, client, backend):

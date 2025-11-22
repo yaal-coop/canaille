@@ -80,7 +80,7 @@ def test_nominal_case_get(
     access_token = res.json["access_token"]
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
-    assert token.subject == logged_user
+    assert token.subject.id == logged_user.id
     assert set(token.scope) == {
         "openid",
         "profile",
@@ -178,7 +178,7 @@ def test_nominal_case_post(
     access_token = res.json["access_token"]
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
-    assert token.subject == logged_user
+    assert token.subject.id == logged_user.id
     assert set(token.scope) == {
         "openid",
         "profile",
@@ -252,7 +252,7 @@ def test_redirect_uri(testclient, logged_user, client, trusted_client, backend):
     access_token = res.json["access_token"]
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
-    assert token.subject == logged_user
+    assert token.subject.id == logged_user.id
 
     for consent in consents:
         backend.delete(consent)
@@ -301,7 +301,7 @@ def test_trusted_client(testclient, logged_user, client, trusted_client, backend
     access_token = res.json["access_token"]
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
-    assert token.subject == logged_user
+    assert token.subject.id == logged_user.id
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -371,7 +371,7 @@ def test_logout_login(testclient, logged_user, client, backend):
     access_token = res.json["access_token"]
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
-    assert token.subject == logged_user
+    assert token.subject.id == logged_user.id
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -460,7 +460,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
 
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
-    assert token.subject == logged_user
+    assert token.subject.id == logged_user.id
 
     res = testclient.get(
         "/oauth/userinfo",
@@ -763,7 +763,7 @@ def test_request_scope_too_large(testclient, logged_user, client, backend):
     access_token = res.json["access_token"]
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
-    assert token.subject == logged_user
+    assert token.subject.id == logged_user.id
     assert set(token.scope) == {
         "openid",
         "profile",

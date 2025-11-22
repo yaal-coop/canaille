@@ -471,6 +471,20 @@ class CoreSettings(BaseModel):
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
 
+    CAPTCHA_ENABLED: bool = True
+    """Enable CAPTCHA on authentication and registration forms."""
+
+    CAPTCHA_LENGTH: int = 5
+    """CAPTCHA length (number of characters)."""
+
+    CAPTCHA_FAILURE_THRESHOLD: int = 3
+    """Number of failed login attempts before showing CAPTCHA.
+
+    - If 0, CAPTCHA is always shown.
+    - If > 0, CAPTCHA appears after N failed attempts and persists until successful login.
+    - On registration forms, CAPTCHA is always shown when enabled.
+    """
+
     OTP_LIFETIME: datetime.timedelta = datetime.timedelta(minutes=10)
     """One-time password validity duration.
 

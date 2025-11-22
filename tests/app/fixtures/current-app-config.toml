@@ -239,6 +239,19 @@ ADMIN_EMAIL = "admin_default_mail@mydomain.test"
 # PASSWORD_COMPROMISSION_CHECK_API_URL = "https://api.pwnedpasswords.com/range/"
 PASSWORD_COMPROMISSION_CHECK_API_URL = "https://api.pwnedpasswords.test/range/"
 
+# Enable CAPTCHA on authentication and registration forms.
+# CAPTCHA_ENABLED = true
+
+# CAPTCHA length (number of characters).
+# CAPTCHA_LENGTH = 5
+
+# Number of failed login attempts before showing CAPTCHA.
+#
+# - If 0, CAPTCHA is always shown.
+# - If > 0, CAPTCHA appears after N failed attempts and persists until successful login.
+# - On registration forms, CAPTCHA is always shown when enabled.
+# CAPTCHA_FAILURE_THRESHOLD = 3
+
 # One-time password validity duration.
 #
 # Duration for which email and SMS one-time passwords remain valid. The value is
