@@ -318,7 +318,7 @@ commands = [
 [tool.tox.env.minversions]
 runner = "uv-venv-runner"
 uv_resolution = "lowest-direct"
-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "server"]
+extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "sms", "captcha", "server"]
 basepython = ["python3.10"]
 
 [tool.tox.env.doc]
