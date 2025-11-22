@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-16 11:57+0100\n"
+"POT-Creation-Date: 2025-11-22 10:59+0100\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -20,11 +20,11 @@ msgstr ""
 "X-Generator: Weblate 5.11-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: canaille/app/flask.py:50
+#: canaille/app/flask.py:52
 msgid "Your password has expired, please choose a new password."
 msgstr "Salasanasi on umpeutunut, valitse uusi salasana."
 
-#: canaille/app/flask.py:74
+#: canaille/app/flask.py:76
 msgid "No SMTP server has been configured"
 msgstr "SMTP-palvelinta ei ole määritetty"
 
@@ -111,7 +111,7 @@ msgstr "Sinun pitäisi vaihtaa salasanasi."
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr "En muista kirjautumistunnusta, jolla yritit kirjautua sisään"
 
-#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:872
+#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:947
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Yhteyden muodostaminen onnistui. Tervetuloa %(user)s"
@@ -124,8 +124,8 @@ msgstr ""
 msgid "John Doe"
 msgstr "Johannes Do"
 
-#: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:139
-#: canaille/core/endpoints/forms.py:440
+#: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:161
+#: canaille/core/endpoints/forms.py:473
 msgid "jdoe"
 msgstr "jdo"
 
@@ -234,29 +234,36 @@ msgstr "Sähköpostiosoitteesi."
 msgid "A user with this email address is already a member of this group."
 msgstr ""
 
-#: canaille/core/endpoints/account.py:94 canaille/core/endpoints/account.py:119
+#: canaille/core/validators.py:101
+#, fuzzy
+#| msgid "Invalid code."
+msgid "Invalid security code"
+msgstr "Epäkelvollinen koodi."
+
+#: canaille/core/endpoints/account.py:124
+#: canaille/core/endpoints/account.py:150
 msgid "You will receive soon an email to continue the registration process."
 msgstr "Saat pian sähköpostin rekisteröintiprosessin jatkamiseksi."
 
-#: canaille/core/endpoints/account.py:259
-#: canaille/core/endpoints/account.py:282
+#: canaille/core/endpoints/account.py:311
+#: canaille/core/endpoints/account.py:334
 msgid "The registration link that brought you here was invalid."
 msgstr "Tänne sinut tuonut r+ekisteröintilinkki, oli epäkelvollinen."
 
-#: canaille/core/endpoints/account.py:266
+#: canaille/core/endpoints/account.py:318
 msgid "The registration link that brought you here has expired."
 msgstr "Tänne sinut tuonut rekisteröintilinkki, on umpeutunut."
 
-#: canaille/core/endpoints/account.py:275
+#: canaille/core/endpoints/account.py:327
 msgid "Your account has already been created."
 msgstr "Tilisi on jo luotu."
 
-#: canaille/core/endpoints/account.py:289
+#: canaille/core/endpoints/account.py:341
 msgid "You are already logged in, you cannot create an account."
 msgstr "Olet jo kirjautunut sisään, joten et voi luoda tiliä."
 
-#: canaille/core/endpoints/account.py:310 canaille/core/endpoints/forms.py:302
-#: canaille/core/endpoints/forms.py:458 canaille/templates/base.html:111
+#: canaille/core/endpoints/account.py:362 canaille/core/endpoints/forms.py:324
+#: canaille/core/endpoints/forms.py:491 canaille/templates/base.html:111
 #: canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
 #: canaille/templates/core/invite_group_member.html:25
@@ -265,65 +272,65 @@ msgstr "Olet jo kirjautunut sisään, joten et voi luoda tiliä."
 msgid "Groups"
 msgstr "Ryhmät"
 
-#: canaille/core/endpoints/account.py:335 canaille/core/endpoints/forms.py:114
-#: canaille/core/endpoints/forms.py:263
+#: canaille/core/endpoints/account.py:394 canaille/core/endpoints/forms.py:136
+#: canaille/core/endpoints/forms.py:285
 msgid "Password and confirmation do not match."
 msgstr "Salasana ja vahvistus eivät täsmää."
 
-#: canaille/core/endpoints/account.py:349
-#: canaille/core/endpoints/account.py:438
+#: canaille/core/endpoints/account.py:426
+#: canaille/core/endpoints/account.py:512
 msgid "User account creation failed."
 msgstr "Käyttäjätilin luominen epäonnistui."
 
-#: canaille/core/endpoints/account.py:358
+#: canaille/core/endpoints/account.py:431
 msgid "Your account has been created successfully."
 msgstr "Tilisi luominen onnistui."
 
-#: canaille/core/endpoints/account.py:373
-#: canaille/core/endpoints/account.py:395
+#: canaille/core/endpoints/account.py:446
+#: canaille/core/endpoints/account.py:468
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "Tänne sinut tuonut sähköpostivahvistuslinkki, on epäkelvollinen."
 
-#: canaille/core/endpoints/account.py:380
+#: canaille/core/endpoints/account.py:453
 msgid "The email confirmation link that brought you here has expired."
 msgstr "Tänne sinut tuonut sähköpostivahvistuslinkki, on umpeutunut."
 
-#: canaille/core/endpoints/account.py:387 canaille/core/endpoints/groups.py:296
+#: canaille/core/endpoints/account.py:460 canaille/core/endpoints/groups.py:296
 #: canaille/core/endpoints/groups.py:306 canaille/core/endpoints/groups.py:329
 msgid "The invitation link that brought you here was invalid."
 msgstr "Tänne sinut tuonut kutsulinkki, on epäkelvollinen."
 
-#: canaille/core/endpoints/account.py:402
+#: canaille/core/endpoints/account.py:475
 msgid "This address email have already been confirmed."
 msgstr "Tämä sähköpostiosoite on jo vahvistettu."
 
-#: canaille/core/endpoints/account.py:409
+#: canaille/core/endpoints/account.py:482
 msgid "This address email is already associated with another account."
 msgstr "Tämä sähköpostiosoite on jo liitetty toiseen tiliin."
 
-#: canaille/core/endpoints/account.py:416
+#: canaille/core/endpoints/account.py:489
 msgid "Your email address have been confirmed."
 msgstr "Sähköpostiosoitteesi on vahvistettu."
 
-#: canaille/core/endpoints/account.py:446
+#: canaille/core/endpoints/account.py:521
 msgid "User account creation succeeded."
 msgstr "Käyttäjätilin luominen onnistui."
 
-#: canaille/core/endpoints/account.py:624
-#: canaille/core/endpoints/account.py:813
+#: canaille/core/endpoints/account.py:699
+#: canaille/core/endpoints/account.py:888
 msgid "Profile edition failed."
 msgstr "Profiilin muokkaaminen epäonnistui."
 
-#: canaille/core/endpoints/account.py:632
-#: canaille/core/endpoints/account.py:831
+#: canaille/core/endpoints/account.py:707
+#: canaille/core/endpoints/account.py:906
 msgid "Profile updated successfully."
 msgstr "Profiilin päivitys onnistui."
 
-#: canaille/core/endpoints/account.py:644
+#: canaille/core/endpoints/account.py:719
 msgid "Email addition failed."
 msgstr "Sähköpostin lisääminen epäonnistui."
 
-#: canaille/core/endpoints/account.py:650
+#: canaille/core/endpoints/account.py:725
 #, fuzzy
 #| msgid ""
 #| "An email has been sent to the email address. Please check your inbox and "
@@ -335,15 +342,15 @@ msgstr ""
 "Sähköpostiosoitteeseen on lähetetty sähköposti. Tarkista postilaatikkosi ja "
 "napsauta sen sisältämää vahvistuslinkkiä"
 
-#: canaille/core/endpoints/account.py:664
+#: canaille/core/endpoints/account.py:739
 msgid "Email deletion failed."
 msgstr "Sähköpostin poistaminen epäonnistui."
 
-#: canaille/core/endpoints/account.py:667
+#: canaille/core/endpoints/account.py:742
 msgid "The email have been successfully deleted."
 msgstr "Sähköposti on poistettu onnistuneesti."
 
-#: canaille/core/endpoints/account.py:703
+#: canaille/core/endpoints/account.py:778
 #, fuzzy
 #| msgid ""
 #| "A password initialization link has been sent at the user email address. "
@@ -355,7 +362,7 @@ msgstr ""
 "Salasanan alustuslinkki on lähetetty käyttäjän sähköpostiosoitteeseen. Sen "
 "pitäisi saapua muutamassa minuutissa."
 
-#: canaille/core/endpoints/account.py:716
+#: canaille/core/endpoints/account.py:791
 #, fuzzy
 #| msgid ""
 #| "A password reset link has been sent at the user email address. It should "
@@ -367,31 +374,31 @@ msgstr ""
 "Salasanan nollaamislinkki on lähetetty käyttäjän sähköpostiosoitteeseen. Sen "
 "pitäisi saapua muutamassa minuutissa."
 
-#: canaille/core/endpoints/account.py:736
+#: canaille/core/endpoints/account.py:811
 msgid "The account has been locked"
 msgstr "Tili on lukittu"
 
-#: canaille/core/endpoints/account.py:747
+#: canaille/core/endpoints/account.py:822
 msgid "The account has been unlocked"
 msgstr "Tilin lukitus on avattu"
 
-#: canaille/core/endpoints/account.py:761
+#: canaille/core/endpoints/account.py:836
 #, fuzzy
 #| msgid "One-time password authentication has been reset"
 msgid "Authenticator application passcode authentication has been reset"
 msgstr "Kertaluonteinen salasanatodennus on nollattu"
 
-#: canaille/core/endpoints/account.py:852
+#: canaille/core/endpoints/account.py:927
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "Käyttäjä %(user)s on poistettu onnistuneesti"
 
-#: canaille/core/endpoints/account.py:868
+#: canaille/core/endpoints/account.py:943
 msgid "Locked users cannot be impersonated."
 msgstr "Lukittuja käyttäjiä ei voi esiintyä toisena henkilönä."
 
-#: canaille/core/endpoints/account.py:911
-#: canaille/core/endpoints/auth/password.py:209
+#: canaille/core/endpoints/account.py:995
+#: canaille/core/endpoints/auth/password.py:244
 msgid "Your password has been updated successfully"
 msgstr "Salasanasi päivittäminen onnistui"
 
@@ -400,11 +407,11 @@ msgstr "Salasanasi päivittäminen onnistui"
 msgid "Email"
 msgstr "Sähköposti"
 
-#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:41
-#: canaille/core/endpoints/forms.py:74 canaille/core/endpoints/forms.py:188
-#: canaille/core/endpoints/forms.py:409 canaille/core/endpoints/forms.py:424
-#: canaille/core/endpoints/forms.py:452 canaille/core/endpoints/forms.py:476
-#: canaille/core/endpoints/forms.py:492
+#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:42
+#: canaille/core/endpoints/forms.py:96 canaille/core/endpoints/forms.py:210
+#: canaille/core/endpoints/forms.py:437 canaille/core/endpoints/forms.py:452
+#: canaille/core/endpoints/forms.py:485 canaille/core/endpoints/forms.py:509
+#: canaille/core/endpoints/forms.py:525
 msgid "jane.doe@example.com"
 msgstr "johanna.do@esimerkki.com"
 
@@ -428,48 +435,56 @@ msgstr "Sähköpostivahvistus {website_name}:lla"
 msgid "Passcode authentication on {website_name}"
 msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 
-#: canaille/core/endpoints/forms.py:38 canaille/core/endpoints/forms.py:71
+#: canaille/core/endpoints/forms.py:39 canaille/core/endpoints/forms.py:93
 #: canaille/templates/core/partial/group-members.html:9
 #: canaille/templates/core/partial/users.html:9
 msgid "Login"
 msgstr "Kirjaudu sisään"
 
-#: canaille/core/endpoints/forms.py:49
+#: canaille/core/endpoints/forms.py:50
 msgid "Remember me"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:53
+#: canaille/core/endpoints/forms.py:54
 msgid "If unchecked, the session will close when the browser is closed"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:61 canaille/core/endpoints/forms.py:98
-#: canaille/core/endpoints/forms.py:247
+#: canaille/core/endpoints/forms.py:65
+msgid "Security code"
+msgstr ""
+
+#: canaille/core/endpoints/forms.py:68
+msgid "Enter the security code displayed above"
+msgstr ""
+
+#: canaille/core/endpoints/forms.py:78 canaille/core/endpoints/forms.py:120
+#: canaille/core/endpoints/forms.py:269
 #: canaille/templates/core/profile_settings.html:113
 msgid "Password"
 msgstr "Salasana"
 
-#: canaille/core/endpoints/forms.py:83
+#: canaille/core/endpoints/forms.py:105
 msgid "Code"
 msgstr "Koodi"
 
-#: canaille/core/endpoints/forms.py:89 canaille/core/endpoints/forms.py:507
+#: canaille/core/endpoints/forms.py:111 canaille/core/endpoints/forms.py:540
 msgid "123456"
 msgstr "123456"
 
-#: canaille/core/endpoints/forms.py:111 canaille/core/endpoints/forms.py:260
+#: canaille/core/endpoints/forms.py:133 canaille/core/endpoints/forms.py:282
 msgid "Password confirmation"
 msgstr "Salasanan vahvistus"
 
-#: canaille/core/endpoints/forms.py:133
+#: canaille/core/endpoints/forms.py:155
 msgid "Automatic"
 msgstr "Automaattinen"
 
-#: canaille/core/endpoints/forms.py:138
+#: canaille/core/endpoints/forms.py:160
 msgid "Username"
 msgstr "Käyttäjänimi"
 
-#: canaille/core/endpoints/forms.py:142 canaille/core/endpoints/forms.py:359
-#: canaille/core/endpoints/forms.py:375 canaille/oidc/endpoints/forms.py:64
+#: canaille/core/endpoints/forms.py:164 canaille/core/endpoints/forms.py:387
+#: canaille/core/endpoints/forms.py:403 canaille/oidc/endpoints/forms.py:64
 #: canaille/oidc/endpoints/forms.py:118
 #: canaille/templates/core/partial/group-members.html:12
 #: canaille/templates/core/partial/groups.html:6
@@ -478,171 +493,171 @@ msgstr "Käyttäjänimi"
 msgid "Name"
 msgstr "Nimi"
 
-#: canaille/core/endpoints/forms.py:144
+#: canaille/core/endpoints/forms.py:166
 msgid "Title"
 msgstr "Otsikko"
 
-#: canaille/core/endpoints/forms.py:146
+#: canaille/core/endpoints/forms.py:168
 msgid "Vice president"
 msgstr "Varapresidentti"
 
-#: canaille/core/endpoints/forms.py:151
+#: canaille/core/endpoints/forms.py:173
 msgid "Given name"
 msgstr "Etunimi"
 
-#: canaille/core/endpoints/forms.py:153
+#: canaille/core/endpoints/forms.py:175
 msgid "John"
 msgstr "Johannes"
 
-#: canaille/core/endpoints/forms.py:159
+#: canaille/core/endpoints/forms.py:181
 msgid "Family Name"
 msgstr "Sukunimi"
 
-#: canaille/core/endpoints/forms.py:162
+#: canaille/core/endpoints/forms.py:184
 msgid "Doe"
 msgstr "Do"
 
-#: canaille/core/endpoints/forms.py:168
+#: canaille/core/endpoints/forms.py:190
 msgid "Display Name"
 msgstr "Näyttönimi"
 
-#: canaille/core/endpoints/forms.py:171
+#: canaille/core/endpoints/forms.py:193
 msgid "Johnny"
 msgstr "Juhani"
 
-#: canaille/core/endpoints/forms.py:178 canaille/core/endpoints/forms.py:482
+#: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:515
 #: canaille/templates/core/profile_edit.html:195
 msgid "Email addresses"
 msgstr "Sähköpostiosoitteet"
 
-#: canaille/core/endpoints/forms.py:185 canaille/core/endpoints/forms.py:473
+#: canaille/core/endpoints/forms.py:207 canaille/core/endpoints/forms.py:506
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 "Tätä sähköpostiosoitetta käytetään tarvittaessa palautusosoitteena salasanan "
 "nollaamista varten"
 
-#: canaille/core/endpoints/forms.py:199
+#: canaille/core/endpoints/forms.py:221
 msgid "Phone numbers"
 msgstr "Puhelinnumerot"
 
-#: canaille/core/endpoints/forms.py:200
+#: canaille/core/endpoints/forms.py:222
 msgid "555-000-555"
 msgstr "555-000-555"
 
-#: canaille/core/endpoints/forms.py:207
+#: canaille/core/endpoints/forms.py:229
 msgid "Address"
 msgstr "Osoite"
 
-#: canaille/core/endpoints/forms.py:209
+#: canaille/core/endpoints/forms.py:231
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "132, Fyy-katu, Goottikaupunki 12401, XX"
 
-#: canaille/core/endpoints/forms.py:213
+#: canaille/core/endpoints/forms.py:235
 msgid "Street"
 msgstr "Katu"
 
-#: canaille/core/endpoints/forms.py:215
+#: canaille/core/endpoints/forms.py:237
 msgid "132, Foobar Street"
 msgstr "132, Fyy-katu"
 
-#: canaille/core/endpoints/forms.py:220
+#: canaille/core/endpoints/forms.py:242
 msgid "Postal Code"
 msgstr "Postinumero"
 
-#: canaille/core/endpoints/forms.py:227
+#: canaille/core/endpoints/forms.py:249
 msgid "Locality"
 msgstr "Sijainti"
 
-#: canaille/core/endpoints/forms.py:229
+#: canaille/core/endpoints/forms.py:251
 msgid "Gotham City"
 msgstr "Goottikaupunki"
 
-#: canaille/core/endpoints/forms.py:234
+#: canaille/core/endpoints/forms.py:256
 msgid "Region"
 msgstr "Alue"
 
-#: canaille/core/endpoints/forms.py:236
+#: canaille/core/endpoints/forms.py:258
 msgid "North Pole"
 msgstr "Pohjoisnapa"
 
-#: canaille/core/endpoints/forms.py:241
+#: canaille/core/endpoints/forms.py:263
 msgid "Photo"
 msgstr "Valokuva"
 
-#: canaille/core/endpoints/forms.py:245
-#: canaille/templates/core/profile_add.html:71
+#: canaille/core/endpoints/forms.py:267
+#: canaille/templates/core/profile_add.html:75
 #: canaille/templates/core/profile_edit.html:84
 msgid "Delete the photo"
 msgstr "Poista valokuva"
 
-#: canaille/core/endpoints/forms.py:271
+#: canaille/core/endpoints/forms.py:293
 msgid "User number"
 msgstr "Käyttäjänumero"
 
-#: canaille/core/endpoints/forms.py:273 canaille/core/endpoints/forms.py:279
+#: canaille/core/endpoints/forms.py:295 canaille/core/endpoints/forms.py:301
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:277
+#: canaille/core/endpoints/forms.py:299
 msgid "Department"
 msgstr "Osasto"
 
-#: canaille/core/endpoints/forms.py:283
+#: canaille/core/endpoints/forms.py:305
 msgid "Organization"
 msgstr "Organisaatio"
 
-#: canaille/core/endpoints/forms.py:285
+#: canaille/core/endpoints/forms.py:307
 msgid "Cogip LTD."
 msgstr "Yht Oy."
 
-#: canaille/core/endpoints/forms.py:290
+#: canaille/core/endpoints/forms.py:312
 msgid "Website"
 msgstr "Verkkosivusto"
 
-#: canaille/core/endpoints/forms.py:292
+#: canaille/core/endpoints/forms.py:314
 msgid "https://mywebsite.example"
 msgstr "https://oma-verkkosivusto.esimerkki"
 
-#: canaille/core/endpoints/forms.py:297
+#: canaille/core/endpoints/forms.py:319
 msgid "Preferred language"
 msgstr "Ensisijainen kieli"
 
-#: canaille/core/endpoints/forms.py:311
+#: canaille/core/endpoints/forms.py:333
 msgid "users, admins …"
 msgstr "käyttäjät, järjestelmänvalvojat,…"
 
-#: canaille/core/endpoints/forms.py:336
+#: canaille/core/endpoints/forms.py:358
 msgid "Account expiration"
 msgstr "Tilin päättymisvoimassaolo"
 
-#: canaille/core/endpoints/forms.py:362
+#: canaille/core/endpoints/forms.py:390
 msgid "group"
 msgstr "ryhmä"
 
-#: canaille/core/endpoints/forms.py:366 canaille/core/endpoints/forms.py:385
+#: canaille/core/endpoints/forms.py:394 canaille/core/endpoints/forms.py:413
 #: canaille/templates/core/partial/groups.html:7
 msgid "Description"
 msgstr "Kuvaus"
 
-#: canaille/core/endpoints/forms.py:401 canaille/core/endpoints/forms.py:418
-#: canaille/core/endpoints/forms.py:445
+#: canaille/core/endpoints/forms.py:429 canaille/core/endpoints/forms.py:446
+#: canaille/core/endpoints/forms.py:478
 msgid "Email address"
 msgstr "Sähköpostiosoite"
 
-#: canaille/core/endpoints/forms.py:439
+#: canaille/core/endpoints/forms.py:472
 msgid "User name"
 msgstr "Käyttäjänimi"
 
-#: canaille/core/endpoints/forms.py:443
+#: canaille/core/endpoints/forms.py:476
 msgid "Username editable by the invitee"
 msgstr "Käyttäjänimi kutsutun muokattavissa"
 
-#: canaille/core/endpoints/forms.py:485
+#: canaille/core/endpoints/forms.py:518
 msgid "New email address"
 msgstr "Uusi sähköpostiosoite"
 
-#: canaille/core/endpoints/forms.py:501
+#: canaille/core/endpoints/forms.py:534
 #, fuzzy
 #| msgid "Password"
 msgid "Passcode"
@@ -730,8 +745,8 @@ msgid "You switched to {user_name} session."
 msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:112
-#: canaille/core/endpoints/auth/password.py:54
-#: canaille/core/endpoints/auth/password.py:65
+#: canaille/core/endpoints/auth/password.py:86
+#: canaille/core/endpoints/auth/password.py:98
 msgid "Login failed, please check your information"
 msgstr "Sisäänkirjautuminen epäonnistui; tarkista tietosi"
 
@@ -774,7 +789,7 @@ msgstr ""
 msgid "Authenticator application correctly configured."
 msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 
-#: canaille/core/endpoints/auth/password.py:91
+#: canaille/core/endpoints/auth/password.py:126
 #, fuzzy
 #| msgid ""
 #| "A password initialization link has been sent at the user email address. "
@@ -786,11 +801,11 @@ msgstr ""
 "Salasanan alustuslinkki on lähetetty käyttäjän sähköpostiosoitteeseen. Sen "
 "pitäisi saapua muutamassa minuutissa."
 
-#: canaille/core/endpoints/auth/password.py:118
+#: canaille/core/endpoints/auth/password.py:153
 msgid "You should receive it within a few minutes."
 msgstr "Sinun pitäisi saada se muutamassa minuutissa."
 
-#: canaille/core/endpoints/auth/password.py:130
+#: canaille/core/endpoints/auth/password.py:165
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -799,13 +814,13 @@ msgstr ""
 "Käyttäjällä '%(user)s' ei ole lupaa päivittää salasanaansa. Emme voi "
 "lähettää salasanan nollaamissähköpostia."
 
-#: canaille/core/endpoints/auth/password.py:164
+#: canaille/core/endpoints/auth/password.py:199
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 msgstr "Käyttäjällä '%(user)s' ei ole lupaa päivittää salasanaansa. "
 
-#: canaille/core/endpoints/auth/password.py:176
+#: canaille/core/endpoints/auth/password.py:211
 msgid "Invalid code."
 msgstr "Epäkelvollinen koodi."
 
@@ -1255,7 +1270,7 @@ msgid "Switch account"
 msgstr ""
 
 #: canaille/templates/base.html:173
-#: canaille/templates/core/auth/password.html:24
+#: canaille/templates/core/auth/password.html:35
 msgid "Sign in"
 msgstr ""
 
@@ -1323,14 +1338,14 @@ msgstr ""
 
 #: canaille/templates/core/group.html:33 canaille/templates/core/groups.html:24
 #: canaille/templates/core/invite.html:30
-#: canaille/templates/core/profile_add.html:31
+#: canaille/templates/core/profile_add.html:35
 #: canaille/templates/core/users.html:25
 msgid "View"
 msgstr ""
 
 #: canaille/templates/core/group.html:37 canaille/templates/core/groups.html:28
 #: canaille/templates/core/invite.html:34
-#: canaille/templates/core/profile_add.html:35
+#: canaille/templates/core/profile_add.html:39
 #: canaille/templates/core/users.html:29
 msgid "Add"
 msgstr ""
@@ -1381,7 +1396,7 @@ msgid "Invite a user"
 msgstr ""
 
 #: canaille/templates/core/invite.html:38
-#: canaille/templates/core/profile_add.html:40
+#: canaille/templates/core/profile_add.html:44
 #: canaille/templates/core/users.html:34
 msgid "Invite"
 msgstr ""
@@ -1492,45 +1507,45 @@ msgid ""
 "link to join this group."
 msgstr ""
 
-#: canaille/templates/core/join.html:14 canaille/templates/core/join.html:25
-#: canaille/templates/core/profile_add.html:20
-#: canaille/templates/core/profile_add.html:50
+#: canaille/templates/core/join.html:17 canaille/templates/core/join.html:37
+#: canaille/templates/core/profile_add.html:21
+#: canaille/templates/core/profile_add.html:54
 #: canaille/templates/core/profile_edit.html:28
 msgid "User creation"
 msgstr ""
 
-#: canaille/templates/core/join.html:27
-#: canaille/templates/core/profile_add.html:53
+#: canaille/templates/core/join.html:39
+#: canaille/templates/core/profile_add.html:57
 msgid "Create a new user account"
 msgstr ""
 
-#: canaille/templates/core/join.html:32
+#: canaille/templates/core/join.html:45
 msgid ""
 "Before you can create an account, please enter a valid email address. Then "
 "you will receive an email containing a link that will allow you to finish "
 "your registration."
 msgstr ""
 
-#: canaille/templates/core/auth/firstlogin.html:46
-#: canaille/templates/core/auth/forgotten-password-code.html:54
-#: canaille/templates/core/auth/forgotten-password.html:55
-#: canaille/templates/core/join.html:47
-#: canaille/templates/core/profile_add.html:206
+#: canaille/templates/core/auth/firstlogin.html:49
+#: canaille/templates/core/auth/forgotten-password-code.html:57
+#: canaille/templates/core/auth/forgotten-password.html:58
+#: canaille/templates/core/join.html:65
+#: canaille/templates/core/profile_add.html:214
 msgid "Login page"
 msgstr ""
 
-#: canaille/templates/core/auth/forgotten-password-code.html:18
-#: canaille/templates/core/auth/forgotten-password-code.html:29
-#: canaille/templates/core/auth/forgotten-password.html:17
-#: canaille/templates/core/auth/forgotten-password.html:28
-#: canaille/templates/core/auth/password.html:21
-#: canaille/templates/core/join.html:49
+#: canaille/templates/core/auth/forgotten-password-code.html:19
+#: canaille/templates/core/auth/forgotten-password-code.html:32
+#: canaille/templates/core/auth/forgotten-password.html:18
+#: canaille/templates/core/auth/forgotten-password.html:31
+#: canaille/templates/core/auth/password.html:32
+#: canaille/templates/core/join.html:67
 msgid "Forgotten password"
 msgstr ""
 
-#: canaille/templates/core/auth/forgotten-password-code.html:56
-#: canaille/templates/core/join.html:52
-#: canaille/templates/core/profile_add.html:209
+#: canaille/templates/core/auth/forgotten-password-code.html:59
+#: canaille/templates/core/join.html:70
+#: canaille/templates/core/profile_add.html:217
 msgid "Submit"
 msgstr ""
 
@@ -1554,8 +1569,8 @@ msgstr ""
 msgid "Use another account"
 msgstr ""
 
-#: canaille/templates/core/auth/forgotten-password-code.html:52
-#: canaille/templates/core/auth/forgotten-password.html:53
+#: canaille/templates/core/auth/forgotten-password-code.html:55
+#: canaille/templates/core/auth/forgotten-password.html:56
 #: canaille/templates/core/login.html:97
 msgid "Create an account"
 msgstr ""
@@ -1566,38 +1581,38 @@ msgid "Continue"
 msgstr ""
 
 #: canaille/templates/core/auth/setup-otp.html:27
-#: canaille/templates/core/profile_add.html:58
+#: canaille/templates/core/profile_add.html:62
 #: canaille/templates/core/profile_edit.html:43
 #: canaille/templates/core/profile_settings.html:34
 msgid "Personal information"
 msgstr ""
 
-#: canaille/templates/core/profile_add.html:69
-#: canaille/templates/core/profile_add.html:79
+#: canaille/templates/core/profile_add.html:73
+#: canaille/templates/core/profile_add.html:83
 #: canaille/templates/core/profile_edit.html:82
 #: canaille/templates/core/profile_edit.html:92
 msgid "Click to upload a photo"
 msgstr ""
 
 #: canaille/templates/core/auth/setup-otp.html:31
-#: canaille/templates/core/profile_add.html:167
+#: canaille/templates/core/profile_add.html:171
 #: canaille/templates/core/profile_edit.html:47
 #: canaille/templates/core/profile_settings.html:38
 #: canaille/templates/core/profile_settings.html:59
 msgid "Account settings"
 msgstr ""
 
-#: canaille/templates/core/profile_add.html:190
+#: canaille/templates/core/profile_add.html:198
 msgid "User password is not mandatory"
 msgstr ""
 
-#: canaille/templates/core/profile_add.html:194
+#: canaille/templates/core/profile_add.html:202
 msgid ""
 "The user will not be able to authenticate unless the password is set, but "
 "they will be able to ask for a password initialization mail."
 msgstr ""
 
-#: canaille/templates/core/profile_add.html:196
+#: canaille/templates/core/profile_add.html:204
 msgid "The user will not be able to authenticate unless the password is set."
 msgstr ""
 
@@ -1700,8 +1715,8 @@ msgstr ""
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 
-#: canaille/templates/core/auth/reset-password.html:30
-#: canaille/templates/core/auth/reset-password.html:36
+#: canaille/templates/core/auth/reset-password.html:33
+#: canaille/templates/core/auth/reset-password.html:41
 #: canaille/templates/core/mails/admin.html:101
 #: canaille/templates/core/mails/reset.html:19
 #: canaille/templates/core/profile_settings.html:166
@@ -1788,17 +1803,17 @@ msgstr ""
 #: canaille/templates/core/auth/email.html:45
 #: canaille/templates/core/auth/otp.html:36
 #: canaille/templates/core/auth/setup-otp.html:59
-#: canaille/templates/core/auth/setup-otp.html:94
+#: canaille/templates/core/auth/setup-otp.html:92
 #: canaille/templates/core/auth/sms.html:45
 #: canaille/templates/core/partial/emails_field.html:14
 msgid "Verify"
 msgstr ""
 
-#: canaille/templates/core/auth/firstlogin.html:24
+#: canaille/templates/core/auth/firstlogin.html:27
 msgid "First login"
 msgstr ""
 
-#: canaille/templates/core/auth/firstlogin.html:31
+#: canaille/templates/core/auth/firstlogin.html:34
 msgid ""
 "It seems this is the first time you are logging here. In order to finalize "
 "your account configuration, you need to set a password to your account. We "
@@ -1807,26 +1822,26 @@ msgid ""
 "to send the email."
 msgstr ""
 
-#: canaille/templates/core/auth/firstlogin.html:47
+#: canaille/templates/core/auth/firstlogin.html:50
 msgid "Send the initialization email"
 msgstr ""
 
-#: canaille/templates/core/auth/forgotten-password-code.html:36
+#: canaille/templates/core/auth/forgotten-password-code.html:39
 msgid "Please enter the reset password code you received via email."
 msgstr ""
 
-#: canaille/templates/core/auth/forgotten-password.html:35
+#: canaille/templates/core/auth/forgotten-password.html:38
 msgid ""
 "After this form is sent, if the email address or the login you provided "
 "exists, you will receive an email containing a link or code that will allow "
 "you to reset your password."
 msgstr ""
 
-#: canaille/templates/core/auth/forgotten-password.html:58
+#: canaille/templates/core/auth/forgotten-password.html:61
 msgid "Send again"
 msgstr ""
 
-#: canaille/templates/core/auth/forgotten-password.html:60
+#: canaille/templates/core/auth/forgotten-password.html:63
 #: canaille/templates/core/mails/admin.html:46
 msgid "Send"
 msgstr ""
@@ -1849,7 +1864,7 @@ msgid ""
 "in the form below."
 msgstr ""
 
-#: canaille/templates/core/auth/password.html:5
+#: canaille/templates/core/auth/password.html:12
 msgid "Please enter your password for this account."
 msgstr ""
 
@@ -2440,6 +2455,14 @@ msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 
 #: canaille/templates/core/modals/reset-otp.html:28
 msgid "Confirm"
+msgstr ""
+
+#: canaille/templates/core/partial/captcha_field.html:29
+msgid "Listen to the audio security code"
+msgstr ""
+
+#: canaille/templates/core/partial/captcha_field.html:37
+msgid "Refresh the security code"
 msgstr ""
 
 #: canaille/templates/core/partial/emails_field.html:9
