@@ -62,12 +62,12 @@ Display a list of trusted clients for which it is implied that users don't need 
                             {% if client.client_uri %}
                                 <a href="{{ client.client_uri }}" class="header">
                                     {{ client.client_name }}
-                                    <i class="small shield alternate icon" title="{% trans %}Trusted application{% endtrans %}"></i>
+                                    <i class="small shield alternate icon" data-tooltip="{% trans %}Trusted application{% endtrans %}"></i>
                                 </a>
                             {% else %}
                                 <div class="header">
                                     {{ client.client_name }}
-                                    <i class="small shield alternate icon" title="{% trans %}Trusted application{% endtrans %}"></i>
+                                    <i class="small shield alternate icon" data-tooltip="{% trans %}Trusted application{% endtrans %}"></i>
                                 </div>
                             {% endif %}
                             <div class="description">
@@ -78,9 +78,9 @@ Display a list of trusted clients for which it is implied that users don't need 
                                     {% for scope in client.scope %}
                                         {% if scope not in ignored_scopes %}
                                             {% if scope not in scope_details %}
-                                                <div class="item" title="{{ scope }}">{{ scope }}</div>
+                                                <div class="item" data-tooltip="{{ scope }}">{{ scope }}</div>
                                             {% else %}
-                                                <div class="item" title="{{ scope }}">
+                                                <div class="item" data-tooltip="{{ scope }}">
                                                     <i class="{{ scope_details[scope][0] }} icon"></i>
                                                     <div class="content">{{ scope_details[scope][1] }}</div>
                                                 </div>

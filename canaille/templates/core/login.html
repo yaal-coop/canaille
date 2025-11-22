@@ -45,13 +45,13 @@ This page displays a form to get the user identifier.
                                         {% if is_connected.value %}
                                             <a href="{{ url_for('core.auth.logout', username=user.user_name) }}"
                                                class="ui mini circular icon button"
-                                               title="{{ _('Log out') }}">
+                                               data-tooltip="{{ _('Log out') }}">
                                                 <i class="light grey times icon"></i>
                                             </a>
                                         {% else %}
                                             <a href="{{ url_for('core.auth.forget', username=user.user_name) }}"
                                                class="ui mini circular icon button"
-                                               title="{{ _('Remove from account list') }}">
+                                               data-tooltip="{{ _('Remove from account list') }}">
                                                 <i class="light grey times icon"></i>
                                             </a>
                                         {% endif %}

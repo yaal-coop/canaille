@@ -20,7 +20,7 @@ Macros for rendering table paginated with HTMX.
             <button
                 type="submit"
                 class="ui icon button search-button"
-                title="{{ _("Search") }}"
+                data-tooltip="{{ _("Search") }}"
                 hx-post="{{ url_for(request.url_rule.endpoint, **request.view_args) }}"
                 hx-target="{{ target }}"
                 hx-swap="morph"

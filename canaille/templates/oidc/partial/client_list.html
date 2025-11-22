@@ -23,7 +23,7 @@
                 <td>
                     <a href="{{ url_for('oidc.clients.edit', client=client) }}">{{ client.client_name }}</a>
                     {% if client.trusted %}
-                        <i class="small teal shield alternate icon" title="{% trans %}This application is trusted{% endtrans %}"></i>
+                        <i class="small teal shield alternate icon" data-tooltip="{% trans %}This application is trusted{% endtrans %}"></i>
                     {% endif %}
                 </td>
                 <td>

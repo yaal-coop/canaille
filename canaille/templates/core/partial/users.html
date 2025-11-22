@@ -26,7 +26,7 @@
                     <td class="collapsing">
                         <a href="{{ url_for('core.account.profile_edition', edited_user=watched_user) }}">
                             {% if user.can_manage_users and watched_user.locked %}
-                                <i class="lock circle big black icon" title="{% trans %}This account is locked{% endtrans %}"></i>
+                                <i class="lock circle big black icon" data-tooltip="{% trans %}This account is locked{% endtrans %}"></i>
                             {% elif watched_user.photo and watched_user.photo %}
                                 <img class="ui avatar image" src="{{ watched_user|photo_url }}" alt="User photo">
                             {% else %}
@@ -63,7 +63,7 @@
                 {% if user.can_manage_all_groups %}
                     <td>
                         {% for group in watched_user.groups %}
-                            <a class="ui label" href="{{ url_for('core.groups.group', group=group) }}"{% if group.description %} title="{{ group.description }}"{% endif %}>
+                            <a class="ui label" href="{{ url_for('core.groups.group', group=group) }}"{% if group.description %} data-tooltip="{{ group.description }}"{% endif %}>
                                 {{ group.display_name }}
                             </a>
                         {% endfor %}

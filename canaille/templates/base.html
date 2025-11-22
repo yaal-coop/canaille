@@ -125,7 +125,7 @@ The main template inherited by almost every other templates.
                                         {% for session in active_sessions %}
                                             {% if session.user.id == user.id %}
                                                 <div class="item active">
-                                                    <a href="{{ url_for('core.auth.logout', username=session.user.user_name) }}" class="ui right floated icon button" title="{% trans %}Log out{% endtrans %}">
+                                                    <a href="{{ url_for('core.auth.logout', username=session.user.user_name) }}" class="ui right floated icon button" data-tooltip="{% trans %}Log out{% endtrans %}">
                                                         <i class="sign out icon"></i>
                                                     </a>
 
@@ -140,7 +140,7 @@ The main template inherited by almost every other templates.
                                                 </div>
                                             {% else %}
                                                 <div class="item">
-                                                    <a href="{{ url_for('core.auth.logout', username=session.user.user_name) }}" class="ui right floated icon button" title="{% trans %}Log out{% endtrans %}">
+                                                    <a href="{{ url_for('core.auth.logout', username=session.user.user_name) }}" class="ui right floated icon button" data-tooltip="{% trans %}Log out{% endtrans %}">
                                                         <i class="sign out icon"></i>
                                                     </a>
 
