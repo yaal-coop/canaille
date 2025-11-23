@@ -419,7 +419,7 @@ def registration(data=None, hash=None):
             session.pop(f"captcha_{old_token}", None)
         return render_registration_template()
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_registration_template()
 
     if not form.validate():
@@ -500,7 +500,7 @@ def profile_creation(user):
         if is_readonly(field):
             set_writable(field)
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_template(
             "core/profile_add.html",
             form=form,
@@ -689,7 +689,7 @@ def profile_edition(user, edited_user):
         "emails_form": emails_form,
     }
 
-    if not request.form or profile_form.form_control():
+    if not request.form or profile_form.handle_fieldlist_operation():
         return render_template("core/profile_edit.html", **render_context)
 
     if request.form.get("action") == "edit-profile" or (

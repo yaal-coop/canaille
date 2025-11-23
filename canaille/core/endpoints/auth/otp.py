@@ -38,7 +38,7 @@ def otp():
     form = TwoFactorForm(request.form or None)
     form.render_field_macro_file = "core/partial/login_field.html"
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_template("core/auth/otp.html", form=form)
 
     if not form.validate() or not g.auth.user:
@@ -102,7 +102,7 @@ def setup():
     )
     base64_qr_image = get_b64encoded_qr_image(uri)
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_template(
             "core/auth/setup-otp.html",
             secret=secret,

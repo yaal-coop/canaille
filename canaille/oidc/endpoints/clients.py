@@ -56,7 +56,7 @@ def add(user):
             menuitem="admin",
         )
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_template(
             "oidc/client_add.html",
             form=form,
@@ -139,7 +139,7 @@ def client_edit(client):
             menuitem="admin",
         )
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_template(
             "oidc/client_edit.html",
             form=form,

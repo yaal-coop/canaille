@@ -210,54 +210,58 @@ class HTMXFormMixin:
         )
         abort(response)
 
-    def form_control(self):
+    def _handle_fieldlist_add(self, field_name, fieldlist_suffix):
+        fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
+        fieldlist, context = self.field_from_name(fieldlist_name)
+
+        if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
+            abort(400, f"{field_name} is not a valid field list")
+
+        if fieldlist.render_kw and (
+            "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
+        ):
+            abort(403)
+
+        if request_is_partial():
+            self.validate_field(fieldlist)
+
+        fieldlist.append_entry()
+
+        if request_is_partial():
+            self.render_field(fieldlist, **context)
+
+    def _handle_fieldlist_remove(self, field_name, fieldlist_suffix):
+        fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
+        fieldlist, context = self.field_from_name(fieldlist_name)
+
+        if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
+            abort(400, f"{field_name} is not a valid field list")
+
+        if fieldlist.render_kw and (
+            "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
+        ):
+            abort(403)
+
+        if request_is_partial():
+            self.validate_field(fieldlist)
+
+        fieldlist.pop_entry()
+
+        if request_is_partial():
+            self.render_field(fieldlist, **context)
+
+    def handle_fieldlist_operation(self):
         """Check whether the current request is the result of the users adding or removing a field from a FieldList."""
         FIELDLIST_ADD_BUTTON = "fieldlist_add"
         FIELDLIST_REMOVE_BUTTON = "fieldlist_remove"
 
         fieldlist_suffix = rf"{self.SEPARATOR}(\d+)$"
         if field_name := request.form.get(FIELDLIST_ADD_BUTTON):
-            fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
-            fieldlist, context = self.field_from_name(fieldlist_name)
-
-            if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
-                abort(400, f"{field_name} is not a valid field list")
-
-            if fieldlist.render_kw and (
-                "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
-            ):
-                abort(403)
-
-            if request_is_partial():
-                self.validate_field(fieldlist)
-
-            fieldlist.append_entry()
-
-            if request_is_partial():
-                self.render_field(fieldlist, **context)
-
+            self._handle_fieldlist_add(field_name, fieldlist_suffix)
             return True
 
         if field_name := request.form.get(FIELDLIST_REMOVE_BUTTON):
-            fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
-            fieldlist, context = self.field_from_name(fieldlist_name)
-
-            if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
-                abort(400, f"{field_name} is not a valid field list")
-
-            if fieldlist.render_kw and (
-                "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
-            ):
-                abort(403)
-
-            if request_is_partial():
-                self.validate_field(fieldlist)
-
-            fieldlist.pop_entry()
-
-            if request_is_partial():
-                self.render_field(fieldlist, **context)
-
+            self._handle_fieldlist_remove(field_name, fieldlist_suffix)
             return True
 
         return False

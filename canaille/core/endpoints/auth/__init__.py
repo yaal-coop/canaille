@@ -96,7 +96,7 @@ def login(username=None):
     form.render_field_macro_file = "core/partial/login_field.html"
     form["login"].render_kw["placeholder"] = login_placeholder()
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_template(
             "core/login.html",
             form=form,

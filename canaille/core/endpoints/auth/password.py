@@ -75,7 +75,7 @@ def password():
             session.pop(f"captcha_{old_token}", None)
         return render_password_template(form)
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_password_template(form)
 
     if g.auth.user and not g.auth.user.has_password() and current_app.features.has_smtp:

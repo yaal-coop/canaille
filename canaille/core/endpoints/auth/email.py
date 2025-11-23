@@ -45,7 +45,7 @@ def email():
         else datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
     )
 
-    if not request.form or form.form_control():
+    if not request.form or form.handle_fieldlist_operation():
         return render_template(
             "core/auth/email.html", form=form, resend_delay=resend_delay
         )
