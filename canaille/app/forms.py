@@ -147,8 +147,21 @@ class I18NFormMixin:
 
 class HTMXFormMixin:
     SEPARATOR = "-"
+
     render_field_macro_file = "macro/form.html"
+    """Jinja template file containing the macro to render form fields.
+
+    This template should define a render_field macro that will be used for
+    HTMX partial field rendering. Default is 'macro/form.html'.
+    Can be overridden per-form to use custom field rendering templates.
+    """
+
     render_field_extra_context: dict[str, Any] = {}
+    """Additional context variables to pass to the render_field macro.
+
+    These variables will be merged with field-specific context when rendering
+    fields via HTMX. Useful for passing form-level data that fields need access to.
+    """
 
     def field_from_name(self, field_name):
         """Return a tuple containing a field and its rendering context."""
