@@ -7,6 +7,8 @@ from flask import current_app
 from flask import g
 
 from canaille.app import models
+from canaille.app.session import USER_SESSION
+from canaille.app.session import UserSession
 from tests.core.test_auth_otp import generate_otp
 
 
@@ -851,6 +853,15 @@ def test_account_setup_otp(testclient, backend, logged_user, otp_method):
         "success",
         "Authenticator application correctly configured.",
     ) in res.flashes
+
+    with testclient.session_transaction() as sess:
+        user_sessions = [
+            UserSession.deserialize(payload)
+            for payload in sess.get(USER_SESSION, [])
+            if UserSession.deserialize(payload)
+        ]
+        assert len(user_sessions) == 1
+        assert user_sessions[0].user.id == logged_user.id
 
     backend.reload(logged_user)
     assert logged_user.secret_token

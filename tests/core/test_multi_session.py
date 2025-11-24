@@ -5,6 +5,7 @@ from flask import session
 from canaille.app.session import USER_SESSION
 from canaille.app.session import UserSession
 from canaille.app.session import get_active_sessions
+from canaille.app.session import login_user
 from canaille.app.session import switch_to_session
 from canaille.app.session import user_session_opened
 
@@ -148,3 +149,27 @@ def test_switch_to_session_via_form_without_redirect(
 
     assert res.status_code == 302
     assert "/profile" in res.location
+
+
+def test_login_user_removes_duplicate_sessions(testclient, user, backend):
+    """Test that login_user removes existing session for the same user."""
+    with testclient.app.test_request_context():
+        session[USER_SESSION] = [
+            UserSession(
+                user=user,
+                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                authentication_methods=["password"],
+            ).serialize(),
+        ]
+
+        sessions = get_active_sessions()
+        assert len(sessions) == 1
+        assert sessions[0].authentication_methods == ["password"]
+
+        login_user(user, remember=False)
+
+        sessions = get_active_sessions()
+        assert len(sessions) == 1
+        first_session = sessions[0]
+        assert first_session.user.id == user.id
+        assert first_session.authentication_methods is None

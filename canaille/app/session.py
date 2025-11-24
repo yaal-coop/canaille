@@ -85,6 +85,11 @@ def login_user(user, remember: bool = True) -> None:
             if isinstance(session[USER_SESSION], list)
             else [session[USER_SESSION]]
         )
+
+        existing_index = _find_session_index(previous, user.id)
+        if existing_index is not None:
+            previous.pop(existing_index)
+
         session[USER_SESSION] = [obj.serialize()] + previous
     except KeyError:
         session[USER_SESSION] = [obj.serialize()]
