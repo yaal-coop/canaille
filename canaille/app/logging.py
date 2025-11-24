@@ -54,6 +54,11 @@ def add_log_level(level_name, level_num, method_name=None) -> None:
     setattr(logging, method_name, log_to_root)
 
 
+def add_filter_to_handlers(logger, filter_) -> None:
+    for handler in logger.handlers:
+        handler.addFilter(filter_)
+
+
 def setup_logging(app) -> None:
     conf = app.config["CANAILLE"]["LOGGING"]
 
@@ -63,6 +68,8 @@ def setup_logging(app) -> None:
 
     if not hasattr(logging, security_level_name):
         add_log_level(security_level_name, security_level)
+
+    ip_filter = IPFilter()
 
     if conf is None:
         root_logger = logging.getLogger()
@@ -74,16 +81,19 @@ def setup_logging(app) -> None:
         )
         handler = logging.StreamHandler(stream=wsgi_errors_stream)
         handler.setFormatter(formatter)
+        handler.addFilter(ip_filter)
         app.logger.setLevel(log_level)
         app.logger.removeHandler(default_handler)
         app.logger.addHandler(handler)
 
     elif isinstance(conf, dict):
         dictConfig(conf)
+        add_filter_to_handlers(logging.getLogger(), ip_filter)
 
     else:
         fileConfig(conf, disable_existing_loggers=False)
+        add_filter_to_handlers(logging.getLogger(), ip_filter)
 
-    ip_filter = IPFilter()
     app.logger.addFilter(ip_filter)
     logging.getLogger().addFilter(ip_filter)
+    add_filter_to_handlers(app.logger, ip_filter)
