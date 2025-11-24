@@ -79,3 +79,18 @@ def test_random_jwk_generation_without_seed():
     assert "kty" in jwk1
     assert jwk1["kty"] == "OKP"
     assert jwk1["crv"] == "Ed25519"
+
+
+def test_jwks_endpoint(testclient):
+    """Test that the /oauth/jwks.json endpoint returns the server's public keys."""
+    res = testclient.get("/oauth/jwks.json")
+    assert res.status_code == 200
+    assert "keys" in res.json
+    assert len(res.json["keys"]) > 0
+
+    for key in res.json["keys"]:
+        assert "kty" in key
+        assert "kid" in key
+        assert "d" not in key
+        assert "p" not in key
+        assert "q" not in key
