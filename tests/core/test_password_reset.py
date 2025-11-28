@@ -1,5 +1,49 @@
 import time_machine
 
+from canaille.app.session import USER_SESSION
+
+
+def test_password_reset_does_not_bypass_mfa(testclient, user, backend):
+    """Password reset should not automatically log in users when MFA is enabled.
+
+    This is a security requirement: if an attacker compromises a user's email,
+    they should not be able to bypass MFA by using the password reset flow.
+    """
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
+
+    token = user.generate_url_safe_token()
+    backend.save(user)
+
+    res = testclient.get("/reset/user/" + token, status=200)
+    res.form["password"] = "foobarbaz"
+    res.form["confirmation"] = "foobarbaz"
+    res = res.form.submit()
+
+    assert ("success", "Your password has been updated successfully") in res.flashes
+
+    # User should NOT be logged in - they need to complete MFA
+    with testclient.session_transaction() as sess:
+        assert USER_SESSION not in sess
+
+
+def test_password_reset_logs_in_when_password_only(testclient, user, backend):
+    """Password reset can log in user when password is the only authentication factor."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password"]
+
+    token = user.generate_url_safe_token()
+    backend.save(user)
+
+    res = testclient.get("/reset/user/" + token, status=200)
+    res.form["password"] = "foobarbaz"
+    res.form["confirmation"] = "foobarbaz"
+    res = res.form.submit()
+
+    assert ("success", "Your password has been updated successfully") in res.flashes
+
+    # User should be logged in since password is the only factor
+    with testclient.session_transaction() as sess:
+        assert USER_SESSION in sess
+
 
 def test_password_reset(testclient, user, backend):
     """Test that password reset functionality works correctly with validation."""

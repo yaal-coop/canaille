@@ -239,12 +239,19 @@ def reset(user, token):
     Backend.instance.set_user_password(user, form.password.data)
     user.clear_otp()
     Backend.instance.save(user)
-    login_user(user)
 
     flash(_("Your password has been updated successfully"), "success")
-    return redirect(
-        session.pop(
-            "redirect-after-login",
-            url_for("core.account.profile_edition", edited_user=user),
+
+    # Only auto-login if password is the sole authentication factor.
+    # Otherwise, require full authentication to prevent MFA bypass.
+    auth_factors = current_app.config["CANAILLE"]["AUTHENTICATION_FACTORS"]
+    if auth_factors == ["password"]:
+        login_user(user)
+        return redirect(
+            session.pop(
+                "redirect-after-login",
+                url_for("core.account.profile_edition", edited_user=user),
+            )
         )
-    )
+
+    return redirect(url_for("core.auth.login", user=user))

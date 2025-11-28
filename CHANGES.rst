@@ -8,6 +8,7 @@ Added
 
 Fixed
 ^^^^^
+- Password reset no longer bypasses MFA.
 - Usernames don't appear in the photos URLs.
 
 [0.1.0] - 2025-11-13
