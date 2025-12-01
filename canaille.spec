@@ -13,6 +13,9 @@ with create_app().app_context():
 with importlib.resources.path('wtforms', 'locale') as locale_path:
     wtforms_locale = str(locale_path)
 
+with importlib.resources.path('captcha', 'data') as captcha_data_path:
+    captcha_data = str(captcha_data_path)
+
 def filter_wtforms_catalogs(item):
     dest, _, _ = item
     if not dest.startswith("wtforms/locale"):
@@ -66,6 +69,7 @@ a = Analysis(
         ('canaille/static', 'canaille/static'),
         ('canaille/translations', 'canaille/translations'),
         (wtforms_locale, 'wtforms/locale'),
+        (captcha_data, 'captcha/data'),
     ],
     hiddenimports=[
         "dramatiq_eager_broker",
