@@ -11,6 +11,7 @@ Fixed
 ^^^^^
 - Password reset no longer bypasses MFA.
 - Usernames don't appear in the photos URLs.
+- Include missing Babel data in the pyinstaller binary. :issue:`318`
 
 [0.1.0] - 2025-11-13
 --------------------
