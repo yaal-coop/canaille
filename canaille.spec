@@ -34,7 +34,7 @@ def filter_babel_catalogs(item):
         return True
 
     code = Path(dest).stem.split("_")[0]
-    return code in codes
+    return code == "root" or code in codes
 
 
 def filter_pycountry_catalogs(item):
