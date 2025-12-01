@@ -6,6 +6,7 @@ Added
 - OIDC ``amr`` claim support. :issue:`302`
 - Server-side sessions.
 - Captcha protection. :issue:`211` :pr:`310`
+- Support for Python 3.14. :pr:`313`
 
 Fixed
 ^^^^^
