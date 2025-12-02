@@ -265,6 +265,8 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
 
       - name: Run integration tests
+        env:
+          FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
           uv run pytest integration/ -v --build=dev
@@ -293,6 +295,8 @@ jobs:
           path: dist/
 
       - name: Run integration tests
+        env:
+          FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
           WHEEL=$(ls dist/*.whl | head -1)
@@ -325,6 +329,8 @@ jobs:
         run: chmod +x dist/canaille
 
       - name: Run integration tests
+        env:
+          FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
           uv run pytest integration/ -v --build=pyinstaller:dist/canaille
@@ -356,6 +362,8 @@ jobs:
         run: gunzip -c canaille-docker.tar.gz | docker load
 
       - name: Run integration tests
+        env:
+          FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
           uv run pytest integration/ -v --build=docker:canaille:integration-test
