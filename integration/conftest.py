@@ -99,8 +99,9 @@ def _get_or_create_runner(build_spec, tmp_path_factory):
 
         if build_type == "pyinstaller":
             if build_source:
-                # Use pre-built binary
-                binary_path = Path(build_source)
+                binary_path = Path(build_source).resolve()
+                if binary_path.is_dir():
+                    binary_path = binary_path / "canaille"
                 cache["runner"] = PyInstallerRunner(binary_path)
             else:
                 # Build from source
