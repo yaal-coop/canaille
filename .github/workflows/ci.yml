@@ -205,14 +205,14 @@ jobs:
           export TZ=UTC
           uv sync --group release --all-extras --no-dev
           uv run pyinstaller canaille.spec
-          ./dist/canaille/canaille --version
+          ./dist/canaille --version
           uv cache prune --ci
 
       - name: Upload PyInstaller artifact
         uses: actions/upload-artifact@v4
         with:
           name: canaille-pyinstaller
-          path: dist/canaille/
+          path: dist/canaille
           retention-days: 1
 
   build-docker:
@@ -319,15 +319,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: canaille-pyinstaller
-          path: dist/canaille/
+          path: dist/
 
       - name: Make PyInstaller binary executable
-        run: chmod +x dist/canaille/canaille
+        run: chmod +x dist/canaille
 
       - name: Run integration tests
         run: |
           uv sync --all-groups --all-extras
-          uv run pytest integration/ -v --build=pyinstaller:dist/canaille/canaille
+          uv run pytest integration/ -v --build=pyinstaller:dist/canaille
 
   integration-docker:
     name: integration (docker)
@@ -399,13 +399,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: canaille-pyinstaller
-          path: dist/canaille/
+          path: dist/
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            dist/canaille/canaille
+            dist/canaille
             dist/*.whl
 
   publish-docker-hub:
