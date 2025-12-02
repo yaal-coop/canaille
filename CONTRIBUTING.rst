@@ -164,6 +164,20 @@ The test coverage is 100%, patches won't be accepted if not entirely covered. Yo
 test coverage with ``uv run pytest --cov --cov-report=html`` or ``uv run tox -e coverage -- --cov-report=html``.
 You can check the HTML coverage report in the newly created `htmlcov` directory.
 
+Integration tests
+-----------------
+
+Integration tests verify that Canaille works correctly when built and deployed as a wheel package,
+a PyInstaller binary, or a Docker image. To run all build modes:
+
+.. code-block:: console
+
+    $ uv run pytest integration/
+
+To test a specific build mode, use ``--build=dev`` (source), ``--build=package`` (wheel),
+``--build=pyinstaller`` (binary), or ``--build=docker`` (container).
+You can also test a pre-built artifact: ``--build=pyinstaller:/path/to/binary`` or ``--build=docker:image:tag``.
+
 Code style
 ----------
 

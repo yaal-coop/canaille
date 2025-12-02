@@ -7,6 +7,7 @@ Added
 - Server-side sessions.
 - Captcha protection. :issue:`211` :pr:`310`
 - Support for Python 3.14. :pr:`313`
+- Integration test suite. :issue:`320`
 
 Fixed
 ^^^^^
