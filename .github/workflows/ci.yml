@@ -164,7 +164,7 @@ jobs:
   # BUILD
   # ============================================================
   build-wheel:
-    needs: [tests, minversions, style]
+    needs: [tests, style]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -185,7 +185,7 @@ jobs:
           retention-days: 1
 
   build-pyinstaller:
-    needs: [tests, minversions, style]
+    needs: [tests, style]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -216,7 +216,7 @@ jobs:
           retention-days: 1
 
   build-docker:
-    needs: [tests, minversions, style]
+    needs: [tests, style]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
