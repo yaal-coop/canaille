@@ -21,6 +21,13 @@ from canaille.app.flask import cache
 registry = jws.JWSRegistry(algorithms=list(jws.JWSRegistry.algorithms.keys()))
 
 
+def supported_verification_algorithms(excluded=None):
+    """Return the list of JWS algorithms the server can verify."""
+    return [
+        alg for alg in registry.algorithms.keys() if not excluded or alg not in excluded
+    ]
+
+
 def make_default_jwk(seed=None):
     """Generate a deterministic JWK based on a seed if available.
 
@@ -72,6 +79,37 @@ def server_jwks(include_inactive=True):
     for obj in key_objs:
         obj.ensure_kid()
     return jwk.KeySet(key_objs)
+
+
+def get_algorithms_for_key(key):
+    # hotfix for https://github.com/authlib/joserfc/pull/79
+    algorithms = registry.filter_algorithms(key, registry.algorithms.keys())
+
+    # hotfix for https://github.com/authlib/joserfc/pull/80
+    key_dict = key.as_dict()
+    if key_dict.get("kty") == "OKP":
+        crv = key_dict.get("crv")
+        algorithms = [alg for alg in algorithms if alg.name in ("EdDSA", crv)]
+
+    return algorithms
+
+
+def supported_signing_algorithms():
+    """Return the list of JWS algorithms the server can sign with.
+
+    This is computed dynamically from the active JWKS keys.
+    Includes 'none' as allowed by OIDC spec for id_token and userinfo signing.
+    """
+    keys = server_jwks(include_inactive=False)
+    algorithms = ["none"]
+
+    # hotfix for https://github.com/authlib/joserfc/pull/81
+    for key in keys.keys:
+        for alg in get_algorithms_for_key(key):
+            if alg.name not in algorithms:
+                algorithms.append(alg.name)
+
+    return algorithms
 
 
 def get_client_jwks(client, kid=None):

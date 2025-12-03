@@ -7,6 +7,8 @@ from flask import url_for
 
 from canaille.app import DOCUMENTATION_URL
 
+from .jose import supported_signing_algorithms
+from .jose import supported_verification_algorithms
 from .provider import CodeChallenge
 from .provider import get_issuer
 
@@ -28,12 +30,9 @@ def oauth_authorization_server():
             "client_secret_post",
             "none",
         ],
-        "token_endpoint_auth_signing_alg_values_supported": [
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
+        "token_endpoint_auth_signing_alg_values_supported": supported_verification_algorithms(
+            excluded=["none"]
+        ),
         "userinfo_endpoint": url_for("oidc.endpoints.userinfo", _external=True),
         "revocation_endpoint": url_for("oidc.endpoints.revoke_token", _external=True),
         "revocation_endpoint_auth_methods_supported": ["client_secret_basic"],
@@ -113,35 +112,17 @@ def openid_configuration():
         "claims_locales_supported": None,
         "claims_parameter_supported": False,
         "subject_types_supported": ["public"],
-        "id_token_signing_alg_values_supported": [
-            "none",
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
+        "id_token_signing_alg_values_supported": supported_signing_algorithms(),
         "id_token_encryption_alg_values_supported": None,
         "id_token_encryption_enc_values_supported": None,
-        "userinfo_signing_alg_values_supported": [
-            "none",
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
+        "userinfo_signing_alg_values_supported": supported_signing_algorithms(),
         "userinfo_encryption_alg_values_supported": None,
         "userinfo_encryption_enc_values_supported": None,
         "prompt_values_supported": prompt_values_supported,
         "request_parameter_supported": True,
         "request_uri_parameter_supported": True,
         "require_request_uri_registration": False,
-        "request_object_signing_alg_values_supported": [
-            "none",
-            "RS256",
-            "ES256",
-            "HS256",
-            "EdDSA",
-        ],
+        "request_object_signing_alg_values_supported": supported_verification_algorithms(),
         "request_object_encryption_alg_values_supported": None,
         "request_object_encryption_enc_values_supported": None,
         "response_modes_supported": ["query", "fragment"],
