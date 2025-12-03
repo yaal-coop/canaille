@@ -11,6 +11,7 @@ Added
 
 Fixed
 ^^^^^
+- ID token signing now selects a key compatible with the client's ``id_token_signed_response_alg``.
 - Password reset no longer bypasses MFA.
 - Usernames don't appear in the photos URLs.
 - Include missing Babel data in the pyinstaller binary. :issue:`318`

@@ -101,7 +101,16 @@ def get_issuer():
 
 def get_jwt_config(grant=None):
     jwks = server_jwks(include_inactive=False)
-    jwk = jwks.keys[0]
+
+    jwk = None
+    if (grant and hasattr(grant, "request") and grant.request.client) and (
+        alg := grant.request.client.id_token_signed_response_alg
+    ):
+        jwk = jwks.pick_random_key(alg)
+
+    if jwk is None:
+        jwk = jwks.keys[0]
+
     payload = {
         "key": jwk.as_dict(),
         "iss": get_issuer(),
