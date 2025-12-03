@@ -32,6 +32,24 @@ def old_server_jwk():
     return key
 
 
+@pytest.fixture(scope="session")
+def ec_jwk():
+    from joserfc import jwk
+
+    key = jwk.generate_key("EC", "P-256")
+    key.ensure_kid()
+    return key
+
+
+@pytest.fixture(scope="session")
+def okp_jwk():
+    from joserfc import jwk
+
+    key = jwk.generate_key("OKP", "Ed25519")
+    key.ensure_kid()
+    return key
+
+
 @pytest.fixture
 def configuration(configuration, server_jwk, old_server_jwk):
     configuration["CANAILLE_OIDC"] = {
