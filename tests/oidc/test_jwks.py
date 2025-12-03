@@ -1,6 +1,16 @@
+from urllib.parse import parse_qs
+from urllib.parse import urlsplit
+
+from joserfc import jwk
+from joserfc import jwt
+
 from canaille import create_app
+from canaille.app import models
 from canaille.oidc.jose import make_default_jwk
+from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
+
+from . import client_credentials
 
 
 def test_rsa_key_in_active_jwks(app, configuration):
@@ -94,3 +104,61 @@ def test_jwks_endpoint(testclient):
         assert "d" not in key
         assert "p" not in key
         assert "q" not in key
+
+
+def test_id_token_signing_uses_key_matching_client_algorithm(
+    testclient, logged_user, client, backend
+):
+    """Test that ID token signing selects a key compatible with the client's algorithm.
+
+    When ACTIVE_JWKS contains multiple keys (e.g., RSA first, then EC), and a client
+    is configured with id_token_signed_response_alg=ES256, the server should use
+    the EC key, not the first (RSA) key.
+    """
+    rsa_key = jwk.generate_key("RSA", 2048)
+    rsa_key.ensure_kid()
+    ec_key = jwk.generate_key("EC", "P-256")
+    ec_key.ensure_kid()
+
+    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [
+        rsa_key.as_dict(),
+        ec_key.as_dict(),
+    ]
+
+    backend.update(client, id_token_signed_response_alg="ES256")
+    backend.save(client)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params={
+            "response_type": "code",
+            "client_id": client.client_id,
+            "scope": "openid profile",
+            "nonce": "testnonce",
+            "redirect_uri": client.redirect_uris[0],
+        },
+    )
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+
+    res = testclient.post(
+        "/oauth/token",
+        params={
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": client.redirect_uris[0],
+        },
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    assert "id_token" in res.json
+
+    id_token = res.json["id_token"]
+    decoded = jwt.decode(id_token, ec_key, registry=registry)
+    assert decoded.header["alg"] == "ES256"
+
+    for consent in backend.query(models.Consent, subject=logged_user):
+        backend.delete(consent)
