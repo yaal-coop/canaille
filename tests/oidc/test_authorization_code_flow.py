@@ -983,15 +983,13 @@ def test_locked_account(testclient, logged_user, client, trusted_client, backend
     assert "access_token" not in res.json
 
 
-def test_logout_login_with_intruder_lockout(testclient, logged_user, client, backend):
+def test_logout_login_with_intruder_lockout(testclient, logged_user, client):
     """Test that intruder lockout prevents login after failed password attempts during authorization flow."""
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
-    # add 500 milliseconds to account for LDAP time
     with time_machine.travel(
-        datetime.datetime.now(datetime.timezone.utc)
-        + datetime.timedelta(milliseconds=500),
-        tick=False,
+        datetime.datetime.now(datetime.timezone.utc),
+        tick=True,
     ) as traveller:
         res = testclient.get(
             "/oauth/authorize",
