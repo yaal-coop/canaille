@@ -80,9 +80,9 @@ Display a list of clients for which users have given or revoked their consent.
                                     {% for scope in consent.scope %}
                                         {% if scope not in ignored_scopes %}
                                             {% if scope not in scope_details %}
-                                                <div class="item" data-tooltip="{{ scope }}">{{ scope }}</div>
+                                                <div class="item" title="{{ scope }}">{{ scope }}</div>
                                             {% else %}
-                                                <div class="item" data-tooltip="{{ scope }}">
+                                                <div class="item" title="{{ scope }}">
                                                     <i class="{{ scope_details[scope][0] }} icon"></i>
                                                     <div class="content">{{ scope_details[scope][1] }}</div>
                                                 </div>

@@ -58,7 +58,7 @@ Displays the user settings edition form.
             <div class="content">
                 {% trans %}Account settings{% endtrans %}
             </div>
-            <div class="sub header" data-tooltip="{{ edited_user.created|datetimeformat }}">
+            <div class="sub header" title="{{ edited_user.created|datetimeformat }}">
                 {% trans creation_datetime=edited_user.created|dateformat %}Created on {{ creation_datetime }}{% endtrans %}
             </div>
         </h2>

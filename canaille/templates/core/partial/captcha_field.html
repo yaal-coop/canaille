@@ -27,7 +27,7 @@ This macro renders a complete CAPTCHA field with:
                 <button type="button"
                         class="ui icon big button captcha-audio-button"
                         data-audio-id="captcha-audio-{{ captcha_data.token }}"
-                        data-tooltip="{% trans %}Listen to the audio security code{% endtrans %}">
+                        title="{% trans %}Listen to the audio security code{% endtrans %}">
                     <i class="volume up icon"></i>
                 </button>
 
@@ -35,7 +35,7 @@ This macro renders a complete CAPTCHA field with:
                         name="action"
                         value="refresh_captcha"
                         class="ui icon big button"
-                        data-tooltip="{% trans %}Refresh the security code{% endtrans %}"
+                        title="{% trans %}Refresh the security code{% endtrans %}"
                         formnovalidate>
                     <i class="refresh icon"></i>
                 </button>

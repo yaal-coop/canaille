@@ -70,9 +70,9 @@ It is used in the registration page, and in the manual account creation page ava
                             <label
                                 class="ui small bordered image photo-content hidden"
                                 for="{{ form.photo.id }}"
-                                data-tooltip="{{ _("Click to upload a photo") }}">
+                                title="{{ _("Click to upload a photo") }}">
 
-                                <a class="ui right corner label photo-delete-icon" data-tooltip="{{ _("Delete the photo") }}">
+                                <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
                                     <i class="times icon"></i>
                                 </a>
                                 <img src="" alt="User photo">
@@ -80,7 +80,7 @@ It is used in the registration page, and in the manual account creation page ava
                             <label
                                 class="ui centered photo-placeholder"
                                 for="{{ form.photo.id }}"
-                                data-tooltip="{{ _("Click to upload a photo") }}">
+                                title="{{ _("Click to upload a photo") }}">
                                 <i class="massive centered portrait icon"></i>
                             </label>
                         {% endblock %}

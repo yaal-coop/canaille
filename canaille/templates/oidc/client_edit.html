@@ -66,7 +66,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
         <h2 class="ui center aligned header">
             {% trans %}Edit an application{% endtrans %}
             {% if client.trusted %}
-                <span class="ui teal label" data-tooltip="{% trans %}The domain of this application is trusted and thus it bypasses user consent{% endtrans %}">
+                <span class="ui teal label" title="{% trans %}The domain of this application is trusted and thus it bypasses user consent{% endtrans %}">
                     <i class="shield alternate icon"></i>
                     {% trans %}Trusted{% endtrans %}
                 </span>
@@ -99,7 +99,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
                     <label>{% trans %}Issued at{% endtrans %}</label>
                     <div class="ui cornor labeled input">
                         <input type="text" value="{{ client.client_id_issued_at }}" readonly name="client_id_issued_at">
-                        <div class="ui corner label" data-tooltip="{{ _("This field is not editable") }}">
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
                             <i class="lock icon"></i>
                         </div>
                     </div>

@@ -79,9 +79,9 @@ Displays a user profile edition form.
                             <label
                                 class="ui small bordered image photo-content {% if not photo %}hidden{% endif %}"
                                 for="{{ profile_form.photo.id }}"
-                                data-tooltip="{{ _("Click to upload a photo") }}">
+                                title="{{ _("Click to upload a photo") }}">
 
-                                <a class="ui right corner label photo-delete-icon" data-tooltip="{{ _("Delete the photo") }}">
+                                <a class="ui right corner label photo-delete-icon" title="{{ _("Delete the photo") }}">
                                     <i class="times icon"></i>
                                 </a>
                                 <img src="{% if photo %}{{ edited_user|photo_url }}{% endif %}" alt="User photo">
@@ -89,7 +89,7 @@ Displays a user profile edition form.
                             <label
                                 class="ui centered photo-placeholder {% if photo %}hidden{% endif %}"
                                 for="{{ profile_form.photo.id }}"
-                                data-tooltip="{{ _("Click to upload a photo") }}">
+                                title="{{ _("Click to upload a photo") }}">
                                 <i class="massive centered portrait icon"></i>
                             </label>
                             </div>
@@ -205,13 +205,13 @@ Displays a user profile edition form.
                             <div class="ui corner labeled left icon{% if emails_form.old_emails|len>1 %} action{% endif %} input">
                                 {{ field(readonly=True) }}
                                 {% if field.description %}
-                                    <i class="question circle link icon" data-tooltip="{{ field.description }}"></i>
+                                    <i class="question circle link icon" title="{{ field.description }}"></i>
                                 {% endif %}
 
                                 {% if emails_form.old_emails|len > 1 %}
                                     <button
                                         class="ui teal icon button"
-                                        data-tooltip="{{ _("Remove this email address") }}"
+                                        title="{{ _("Remove this email address") }}"
                                         type="submit"
                                         name="email_remove"
                                         value="{{ field.data }}"
