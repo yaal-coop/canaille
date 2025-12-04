@@ -1,7 +1,3 @@
-html {
-    zoom: 1.2;
-}
-
 @media only screen and (min-width: 1200px) {
     .ui.ui.ui.container:not(.fluid) {
         width: 770px;
