@@ -196,7 +196,7 @@ Displays the user settings edition form.
                 </div>
             </div>
 
-            {% if features.has_otp and (edited_user==user or user.can_manage_users) %}
+            {% if features.has_otp and "otp" in config.CANAILLE.AUTHENTICATION_FACTORS and (edited_user==user or user.can_manage_users) %}
                 <h2 class="ui center aligned header">
                     <div class="content">
                         {% trans %}Authenticator application{% endtrans %}

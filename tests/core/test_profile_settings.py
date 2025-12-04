@@ -803,6 +803,7 @@ def test_edition_invalid_group(testclient, logged_admin, user, foo_group):
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_account_reset_otp(testclient, backend, caplog, logged_user, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
 
     assert logged_user.last_otp_login is not None
 
@@ -827,6 +828,7 @@ def test_account_reset_otp(testclient, backend, caplog, logged_user, otp_method)
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_account_setup_otp(testclient, backend, logged_user, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
 
     logged_user.secret_token = None
     backend.save(logged_user)
