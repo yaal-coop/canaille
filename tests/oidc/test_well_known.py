@@ -63,6 +63,8 @@ def test_oauth_authorization_server(testclient):
             "PS512",
             "EdDSA",
             "ES256K",
+            "Ed25519",
+            "Ed448",
         ],
         "ui_locales_supported": g.available_language_codes,
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
@@ -186,6 +188,8 @@ def test_openid_configuration(testclient):
             "PS512",
             "EdDSA",
             "ES256K",
+            "Ed25519",
+            "Ed448",
         ],
         "ui_locales_supported": g.available_language_codes,
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
@@ -207,6 +211,8 @@ def test_openid_configuration(testclient):
             "PS512",
             "EdDSA",
             "ES256K",
+            "Ed25519",
+            "Ed448",
         ],
     }
 
@@ -286,6 +292,7 @@ def test_signing_alg_with_multiple_keys(testclient, server_jwk, ec_jwk, okp_jwk)
         "PS512",
         "ES256",
         "EdDSA",
+        "Ed25519",
     ]
     assert res["id_token_signing_alg_values_supported"] == expected_server_algs
     assert res["userinfo_signing_alg_values_supported"] == expected_server_algs
