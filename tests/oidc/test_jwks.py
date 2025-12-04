@@ -1,11 +1,15 @@
+import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 from joserfc import jwk
 from joserfc import jwt
+from pydantic import ValidationError
 
 from canaille import create_app
 from canaille.app import models
+from canaille.oidc.configuration import OIDCSettings
 from canaille.oidc.jose import make_default_okp_jwk
 from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
@@ -162,3 +166,33 @@ def test_id_token_signing_uses_key_matching_client_algorithm(
 
     for consent in backend.query(models.Consent, subject=logged_user):
         backend.delete(consent)
+
+
+def test_missing_rsa_key_error():
+    """Test that an error is raised when no RSA key is configured."""
+    ec_key = jwk.generate_key("EC", "P-256")
+    ec_key.ensure_kid()
+
+    with pytest.raises(
+        ValidationError, match="OIDC specification requires RS256 support"
+    ):
+        OIDCSettings(ACTIVE_JWKS=[ec_key.as_dict()])
+
+
+def test_missing_active_jwks_warning(configuration, caplog):
+    """Test that a warning is logged when ACTIVE_JWKS is not configured."""
+    del configuration["CANAILLE_OIDC"]["ACTIVE_JWKS"]
+
+    with caplog.at_level(logging.WARNING):
+        app = create_app(configuration)
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "ACTIVE_JWKS is not configured. "
+        "Please generate one or several keys, including at least one RSA key. "
+        "https://canaille.readthedocs.io/en/latest/howtos/sso.html#server-key-management",
+    ) in caplog.record_tuples
+
+    with app.app_context():
+        assert len(server_jwks(False).keys) == 2

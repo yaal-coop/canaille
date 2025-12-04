@@ -11,11 +11,12 @@ Added
 
 Fixed
 ^^^^^
-- ID token signing now selects a key compatible with the client's ``id_token_signed_response_alg``.
 - Password reset no longer bypasses MFA.
 - Usernames don't appear in the photos URLs.
 - Include missing Babel data in the pyinstaller binary. :issue:`318`
+- ID token signing now selects a key compatible with the client's ``id_token_signed_response_alg``.
 - OIDC discovery signing algorithm claims are now dynamically computed from server keys. :issue:`323`
+- Explicitly make RSA keys mandatory.
 
 [0.1.0] - 2025-11-13
 --------------------

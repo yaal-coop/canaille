@@ -36,6 +36,7 @@ from .jose import build_client_management_token
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
 from .jose import make_default_okp_jwk
+from .jose import make_default_rsa_jwk
 from .jose import registry
 from .jose import server_jwks
 from .userinfo import UserInfo
@@ -673,8 +674,16 @@ def setup_oauth(app):
 
     oidc_config = app.config.get("CANAILLE_OIDC")
     if oidc_config and not oidc_config.get("ACTIVE_JWKS"):
+        if not app.debug:
+            app.logger.warning(
+                "ACTIVE_JWKS is not configured. "
+                "Please generate one or several keys, including at least one RSA key. "
+                "https://canaille.readthedocs.io/en/latest/howtos/sso.html#server-key-management"
+            )
+
         oidc_config["ACTIVE_JWKS"] = [
-            make_default_okp_jwk(app.config.get("SECRET_KEY")).as_dict()
+            make_default_okp_jwk(app.config.get("SECRET_KEY")).as_dict(),
+            make_default_rsa_jwk().as_dict(),
         ]
 
     # hacky, but needed for tests as somehow the same 'authorization' object is used

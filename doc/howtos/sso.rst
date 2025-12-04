@@ -174,6 +174,7 @@ Key generation
 
 The :ref:`canaille jwk create <cli_jwk>` command can be used to generate JSON Web Keys.
 To install a server key, put the output of the command in the :attr:`~canaille.oidc.configuration.OIDCSettings.ACTIVE_JWKS` configuration parameter.
+The OpenID Connect specification imposes to have at least one RSA key among the active keys.
 
 Key rotation
 ------------

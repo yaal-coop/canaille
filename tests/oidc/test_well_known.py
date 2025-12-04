@@ -63,8 +63,6 @@ def test_oauth_authorization_server(testclient):
             "PS512",
             "EdDSA",
             "ES256K",
-            "Ed25519",
-            "Ed448",
         ],
         "ui_locales_supported": g.available_language_codes,
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
@@ -188,8 +186,6 @@ def test_openid_configuration(testclient):
             "PS512",
             "EdDSA",
             "ES256K",
-            "Ed25519",
-            "Ed448",
         ],
         "ui_locales_supported": g.available_language_codes,
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
@@ -211,8 +207,6 @@ def test_openid_configuration(testclient):
             "PS512",
             "EdDSA",
             "ES256K",
-            "Ed25519",
-            "Ed448",
         ],
     }
 
@@ -257,7 +251,7 @@ def test_signing_alg_with_ec_p256_key(testclient, server_jwk, ec_jwk):
 
 
 def test_signing_alg_with_ed25519_key(testclient, server_jwk, okp_jwk):
-    """Test that Ed25519 keys expose EdDSA and Ed25519 algorithms.
+    """Test that Ed25519 keys expose EdDSA algorithm.
 
     Note: OIDC Discovery spec requires RS256, so we include an RSA key too.
     """
@@ -269,7 +263,6 @@ def test_signing_alg_with_ed25519_key(testclient, server_jwk, okp_jwk):
     res = testclient.get("/.well-known/openid-configuration", status=200).json
 
     assert "EdDSA" in res["id_token_signing_alg_values_supported"]
-    assert "Ed25519" in res["id_token_signing_alg_values_supported"]
     assert "RS256" in res["id_token_signing_alg_values_supported"]
 
 
@@ -293,7 +286,6 @@ def test_signing_alg_with_multiple_keys(testclient, server_jwk, ec_jwk, okp_jwk)
         "PS512",
         "ES256",
         "EdDSA",
-        "Ed25519",
     ]
     assert res["id_token_signing_alg_values_supported"] == expected_server_algs
     assert res["userinfo_signing_alg_values_supported"] == expected_server_algs

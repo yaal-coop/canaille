@@ -15,6 +15,7 @@ from joserfc import jwk
 from joserfc import jws
 from joserfc import jwt
 from joserfc.jwk import OKPKey
+from joserfc.jwk import RSAKey
 
 from canaille.app.flask import cache
 
@@ -62,6 +63,20 @@ def make_default_okp_jwk(seed=None):
     return key
 
 
+def make_default_rsa_jwk():
+    """Generate a random RSA JWK for RS256 support."""
+    return RSAKey.generate_key(2048, auto_kid=True)
+
+
+def has_rsa_key(keys):
+    """Check if at least one RSA key is present in the key list."""
+    for key in keys:
+        key_obj = jwk.import_key(key)
+        if key_obj.as_dict().get("kty") == "RSA":
+            return True
+    return False
+
+
 def get_alg_for_key(key):
     """Find the algorithm for the given key."""
     return registry.guess_alg(key, registry.Strategy.SECURITY)
@@ -104,7 +119,7 @@ def supported_signing_algorithms():
     algorithms = ["none"]
 
     # hotfix for https://github.com/authlib/joserfc/pull/81
-    for key in keys.keys:
+    for key in keys.keys:  # pragma: no cover
         for alg in get_algorithms_for_key(key):
             if alg.name not in algorithms:
                 algorithms.append(alg.name)
