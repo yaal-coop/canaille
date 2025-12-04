@@ -28,7 +28,7 @@ def supported_verification_algorithms(excluded=None):
     ]
 
 
-def make_default_jwk(seed=None):
+def make_default_okp_jwk(seed=None):
     """Generate a deterministic JWK based on a seed if available.
 
     If seed is provided, it will be used to generate a deterministic Ed25519 key.

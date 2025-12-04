@@ -35,7 +35,7 @@ from canaille.core.auth import get_user_from_login
 from .jose import build_client_management_token
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
-from .jose import make_default_jwk
+from .jose import make_default_okp_jwk
 from .jose import registry
 from .jose import server_jwks
 from .userinfo import UserInfo
@@ -674,7 +674,7 @@ def setup_oauth(app):
     oidc_config = app.config.get("CANAILLE_OIDC")
     if oidc_config and not oidc_config.get("ACTIVE_JWKS"):
         oidc_config["ACTIVE_JWKS"] = [
-            make_default_jwk(app.config.get("SECRET_KEY")).as_dict()
+            make_default_okp_jwk(app.config.get("SECRET_KEY")).as_dict()
         ]
 
     # hacky, but needed for tests as somehow the same 'authorization' object is used
