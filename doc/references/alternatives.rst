@@ -199,6 +199,17 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://developer.okta.com/docs/concepts/scim/>`__
       - `✅ <https://help.okta.com/en-us/content/topics/directory/ldap-interface-main.htm>`__
       - `✅ <https://help.okta.com/oag/en-us/content/topics/access-gateway/task-add-db-datastore.htm>`__
+    * - `Pocket ID <https://pocket-id.org>`_
+      - `✅ <https://github.com/pocket-id/pocket-id/blob/main/LICENSE>`__
+      - `Go <https://golang.org/>`_
+      - ❔
+      - ~20MB
+      - `✅ <https://pocket-id.org/docs>`__
+      - ❎
+      - ❎
+      - ❌
+      - `✅ <https://pocket-id.org/docs/configuration/ldap>`__
+      - ✅
     * - `SimpleIdServer <https://simpleidserver.com>`_
       - ✅
       - `C# <https://docs.microsoft.com/en-us/dotnet/csharp/>`_
@@ -372,6 +383,13 @@ Here is the support for the most common authentication methods.
       - `✅ <https://developer.okta.com/docs/api/openapi/okta-management/management/tag/UserFactor/>`__
       - `✅ <https://developer.okta.com/docs/api/openapi/okta-management/management/tag/UserFactor/>`__
       - `✅ <https://developer.okta.com/docs/guides/authenticators-web-authn/>`__
+    * - `Pocket ID <https://pocket-id.org>`_
+      - `❌ <https://pocket-id.org/docs>`__
+      - ❌
+      - ❌
+      - ❌
+      - ❌
+      - `✅ <https://pocket-id.org/docs>`__
     * - `SimpleIdServer <https://simpleidserver.com>`_
       - `✅ <https://simpleidserver.com/docs/idserver/quickstart/createidserverwithui/>`__
       - `✅ <https://simpleidserver.com/docs/userguide/authentication/forms/>`__
@@ -646,6 +664,20 @@ OAuth2/OIDC Specifications Compatibility
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/>`__
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/>`__
       - `✅ <https://developer.okta.com/docs/guides/dpop/main/>`__
+    * - `Pocket ID <https://pocket-id.org>`_
+      - ❔
+      - ❌
+      - ❌
+      - `✅ <https://github.com/pocket-id/pocket-id/issues/7>`__
+      - `✅ <https://github.com/pocket-id/pocket-id/discussions/891>`__
+      - ✅
+      - `✅ <https://github.com/pocket-id/pocket-id/issues/112>`__
+      - ❌
+      - ❌
+      - ❌
+      - ❌
+      - ❌
+      - ❌
     * - `SimpleIdServer <https://simpleidserver.com>`_
       - ✅
       - ✅
@@ -874,6 +906,16 @@ OpenID Connect Advanced Features
     * - `Okta <https://okta.com>`_
       - `✅ <https://developer.okta.com/docs/reference/api/apps/#add-oauth-2-0-client-application>`__
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/#logout>`__
+      - ❌
+      - ❌
+      - ❌
+      - ❌
+      - ❌
+      - ❌
+      - ❌
+    * - `Pocket ID <https://pocket-id.org>`_
+      - ❌
+      - ❌
       - ❌
       - ❌
       - ❌
