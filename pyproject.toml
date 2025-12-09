@@ -46,7 +46,7 @@ dependencies = [
 
 [project.optional-dependencies]
 front = [
-    "email_validator >= 2.0.0",
+    "email-validator >= 2.0.0",
     "flask-babel >= 4.0.0",
     "flask-talisman>=1.1.0",
     "flask-themer >= 2.0.0",
