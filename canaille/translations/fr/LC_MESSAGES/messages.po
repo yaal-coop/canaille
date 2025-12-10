@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-10 21:50+0100\n"
-"PO-Revision-Date: 2025-11-23 10:51+0000\n"
+"PO-Revision-Date: 2025-12-11 23:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -33,7 +33,7 @@ msgstr "Aucun serveur SMTP n'a été configuré"
 #: canaille/app/flask.py:227
 #, python-format
 msgid "This request should be sent to %(server_name)s"
-msgstr ""
+msgstr "La requête doit être envoyée à %(server_name)s"
 
 #: canaille/app/forms.py:30
 msgid "This is not a valid URL"
