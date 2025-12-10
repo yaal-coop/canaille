@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-22 10:59+0100\n"
+"POT-Creation-Date: 2025-12-10 21:50+0100\n"
 "PO-Revision-Date: 2024-06-26 11:09+0000\n"
 "Last-Translator: Sascha <swi@thechameleonway.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -27,6 +27,11 @@ msgstr ""
 #: canaille/app/flask.py:76
 msgid "No SMTP server has been configured"
 msgstr "Es wurde kein SMTP-Server konfiguriert"
+
+#: canaille/app/flask.py:227
+#, python-format
+msgid "This request should be sent to %(server_name)s"
+msgstr ""
 
 #: canaille/app/forms.py:30
 msgid "This is not a valid URL"
@@ -55,11 +60,11 @@ msgid ""
 "This password appears on public compromission databases and is not secure."
 msgstr ""
 
-#: canaille/app/forms.py:286
+#: canaille/app/forms.py:303
 msgid "The page number is not valid"
 msgstr "Die Seitenzahl ist nicht gültig"
 
-#: canaille/app/forms.py:314
+#: canaille/app/forms.py:331
 msgid "Not a valid datetime value."
 msgstr "Kein gültiger Datum-Zeit-Wert."
 
@@ -401,7 +406,7 @@ msgid "Locked users cannot be impersonated."
 msgstr "Gesperrte Benutzer können nicht imitiert werden."
 
 #: canaille/core/endpoints/account.py:995
-#: canaille/core/endpoints/auth/password.py:244
+#: canaille/core/endpoints/auth/password.py:243
 msgid "Your password has been updated successfully"
 msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
 
@@ -2659,11 +2664,11 @@ msgstr "Passwortinitialisierung auf {website_name}"
 msgid "Confirm"
 msgstr ""
 
-#: canaille/templates/core/partial/captcha_field.html:29
+#: canaille/templates/core/partial/captcha_field.html:30
 msgid "Listen to the audio security code"
 msgstr ""
 
-#: canaille/templates/core/partial/captcha_field.html:37
+#: canaille/templates/core/partial/captcha_field.html:38
 msgid "Refresh the security code"
 msgstr ""
 

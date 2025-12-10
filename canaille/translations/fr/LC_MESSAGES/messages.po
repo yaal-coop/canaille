@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-11-22 10:59+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-12-10 21:50+0100\n"
 "PO-Revision-Date: 2025-11-23 10:51+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -29,6 +29,11 @@ msgstr "Votre mot de passe a expiré, veuillez en choisir un nouveau."
 #: canaille/app/flask.py:76
 msgid "No SMTP server has been configured"
 msgstr "Aucun serveur SMTP n'a été configuré"
+
+#: canaille/app/flask.py:227
+#, python-format
+msgid "This request should be sent to %(server_name)s"
+msgstr ""
 
 #: canaille/app/forms.py:30
 msgid "This is not a valid URL"
@@ -61,11 +66,11 @@ msgstr ""
 "Ce mot de passe apparaît dans les bases de données publiques compromises et "
 "n'est pas sécurisé."
 
-#: canaille/app/forms.py:286
+#: canaille/app/forms.py:303
 msgid "The page number is not valid"
 msgstr "Le numéro de page est invalide"
 
-#: canaille/app/forms.py:314
+#: canaille/app/forms.py:331
 msgid "Not a valid datetime value."
 msgstr "N'est pas une date valide."
 
@@ -389,7 +394,7 @@ msgstr ""
 "verrouillé."
 
 #: canaille/core/endpoints/account.py:995
-#: canaille/core/endpoints/auth/password.py:244
+#: canaille/core/endpoints/auth/password.py:243
 msgid "Your password has been updated successfully"
 msgstr "Votre mot de passe a correctement été mis à jour"
 
@@ -2586,11 +2591,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: canaille/templates/core/partial/captcha_field.html:29
+#: canaille/templates/core/partial/captcha_field.html:30
 msgid "Listen to the audio security code"
 msgstr ""
 
-#: canaille/templates/core/partial/captcha_field.html:37
+#: canaille/templates/core/partial/captcha_field.html:38
 msgid "Refresh the security code"
 msgstr ""
 
