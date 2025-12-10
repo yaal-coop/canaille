@@ -233,16 +233,21 @@ def test_no_jwt_no_logout(testclient, backend, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name}", status=200)
 
 
-def test_jwt_not_issued_here(testclient, backend, logged_user, client, id_token):
-    testclient.app.config["SERVER_NAME"] = "foobar.test"
-
-    testclient.get(f"/profile/{logged_user.user_name}", status=200)
+def test_jwt_not_issued_here(testclient, backend, logged_user, client, user):
+    jwt_config = get_jwt_config(None)
+    jwt_config["iss"] = "https://other-issuer.test"
+    foreign_id_token = generate_id_token(
+        {},
+        UserInfo(generate_user_claims(user)).filter(client.scope),
+        aud=client.client_id,
+        **jwt_config,
+    )
 
     post_logout_redirect_url = "https://client.test/disconnected"
     res = testclient.get(
         "/oauth/end_session",
         params={
-            "id_token_hint": id_token,
+            "id_token_hint": foreign_id_token,
             "logout_hint": logged_user.user_name,
             "client_id": client.client_id,
             "post_logout_redirect_uri": post_logout_redirect_url,
