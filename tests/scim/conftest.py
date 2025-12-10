@@ -82,7 +82,12 @@ def scim_client(app, oidc_client, oidc_token):
     return TestSCIMClient(
         Client(app),
         scim_prefix=bp.url_prefix,
-        environ={"headers": {"Authorization": f"Bearer {oidc_token.access_token}"}},
+        environ={
+            "headers": {
+                "Authorization": f"Bearer {oidc_token.access_token}",
+                "Host": app.config["SERVER_NAME"],
+            }
+        },
         check_response_status_codes=False,
         service_provider_config=get_service_provider_config(),
         resource_types=get_resource_types().values(),

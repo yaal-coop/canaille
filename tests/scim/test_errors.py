@@ -21,7 +21,12 @@ def test_authentication_failure(app):
     scim_client = TestSCIMClient(
         Client(app),
         scim_prefix=bp.url_prefix,
-        environ={"headers": {"Authorization": "Bearer invalid"}},
+        environ={
+            "headers": {
+                "Authorization": "Bearer invalid",
+                "Host": app.config["SERVER_NAME"],
+            }
+        },
         service_provider_config=get_service_provider_config(),
         resource_types=get_resource_types().values(),
         resource_models=resource_models,
@@ -54,7 +59,12 @@ def test_authentication_with_an_user_token(app, backend, oidc_client, user):
     scim_client = TestSCIMClient(
         Client(app),
         scim_prefix=bp.url_prefix,
-        environ={"headers": {"Authorization": f"Bearer {scim_token.access_token}"}},
+        environ={
+            "headers": {
+                "Authorization": f"Bearer {scim_token.access_token}",
+                "Host": app.config["SERVER_NAME"],
+            }
+        },
         service_provider_config=get_service_provider_config(),
         resource_types=get_resource_types().values(),
         resource_models=resource_models,

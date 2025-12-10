@@ -8,6 +8,7 @@ Added
 - Captcha protection. :issue:`211` :pr:`310`
 - Support for Python 3.14. :pr:`313`
 - Integration test suite. :issue:`320`
+- Requests are redirected to ``SERVER_NAME`` when the HTTP Host header does not match.
 
 Fixed
 ^^^^^

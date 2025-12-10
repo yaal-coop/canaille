@@ -214,6 +214,28 @@ def setup_flask(app) -> None:
             pass
 
     @app.before_request
+    def redirect_to_server_name():
+        """Redirect requests to SERVER_NAME if host doesn't match."""
+        server_name = app.config.get("SERVER_NAME")
+        if not server_name or request.host == server_name:
+            return None
+
+        if request.method != "GET":
+            abort(
+                400,
+                _(
+                    "This request should be sent to %(server_name)s",
+                    server_name=server_name,
+                ),
+            )
+
+        url = f"{request.scheme}://{server_name}{request.path}"
+        if request.query_string:
+            url += "?" + request.query_string.decode()
+
+        return redirect(url)
+
+    @app.before_request
     def session_setup() -> None:
         # Let login_user() manage session.permanent based on remember choice
         if "session" not in g:
