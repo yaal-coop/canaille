@@ -306,5 +306,5 @@ Publish a new release
 11. Publish the Python package on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
 12. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade "canaille[front,oidc,postgresql,server,otp,sms]"``. Check that everything looks fine;
 13. Publish the Python package on production PyPI ``uv publish``;
-14. Tag the commit with ``git tag XX.YY.ZZ``;
+14. Tag the commit with ``git tag --annotate XX.YY.ZZ --message "Release version XX.YY.ZZ"``;
 15. Push the release commit and the new tag on the repository with ``git push --tags``.
