@@ -13,6 +13,7 @@ def test_group_invitation_payload(app):
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id="test-group-id",
             invited_user_id="test-user-id",
+            invite_as_owner=True,
         )
 
         assert payload.expiration_date == expiration_date
@@ -25,6 +26,7 @@ def test_group_invitation_payload(app):
             expiration_date_isoformat=past_date.isoformat(),
             group_id="test-group-id",
             invited_user_id="test-user-id",
+            invite_as_owner=True,
         )
         assert expired_payload.has_expired()
 
@@ -82,6 +84,7 @@ def test_join_group_with_valid_invitation(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=bar_group.id,
             invited_user_id=logged_user.id,
+            invite_as_owner=False,
         )
 
         assert logged_user not in bar_group.members
@@ -100,7 +103,9 @@ def test_join_group_with_valid_invitation(
 
         backend.reload(bar_group)
         backend.reload(logged_user)
+
         assert logged_user in bar_group.members
+        assert logged_user not in bar_group.owners
 
 
 def test_join_group_expired_invitation(testclient, logged_user, bar_group, app):
@@ -298,3 +303,39 @@ def test_group_invitation_workflow_with_email_extraction(
 def test_invite_to_group_unauthorized_user(testclient, logged_user, bar_group, smtpd):
     """Test that a user without access to a group cannot invite others to it."""
     testclient.get(f"/groups/{bar_group.display_name}/invite", status=403)
+
+
+def test_join_group_as_owner_with_valid_invitation(
+    testclient, logged_user, bar_group, backend, app
+):
+    """Test joining a group as owner with valid invitation adds user to owners."""
+    with app.app_context():
+        expiration_date = datetime.datetime.now(
+            datetime.timezone.utc
+        ) + datetime.timedelta(hours=24)
+        payload = GroupInvitationPayload(
+            expiration_date_isoformat=expiration_date.isoformat(),
+            group_id=bar_group.id,
+            invited_user_id=logged_user.id,
+            invite_as_owner=True,
+        )
+
+        assert logged_user not in bar_group.members
+
+        invitation_url = f"/groups/join/{payload.b64()}/{payload.build_hash()}"
+        res = testclient.get(invitation_url, status=302)
+
+        assert "/settings" in res.location
+
+        assert (
+            "success",
+            f"You have successfully joined {bar_group.display_name}!",
+        ) in res.flashes
+
+        res = res.follow()
+
+        backend.reload(bar_group)
+        backend.reload(logged_user)
+
+        assert logged_user in bar_group.members
+        assert logged_user in bar_group.owners

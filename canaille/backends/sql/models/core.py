@@ -103,6 +103,29 @@ class Membership(Base):
     )
 
 
+class GroupOwnership(Base):
+    """Association object for Group.owners with ordering support."""
+
+    __tablename__ = "group_ownership"
+
+    owner_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+    )
+    group_id: Mapped[str] = mapped_column(
+        ForeignKey("group.id", ondelete="CASCADE"), primary_key=True
+    )
+    created_at: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), server_default="CURRENT_TIMESTAMP"
+    )
+
+    owner: Mapped["User"] = relationship(
+        "User", foreign_keys=[owner_id], lazy="joined"
+    )
+    group: Mapped["Group"] = relationship(
+        "Group", foreign_keys=[group_id], lazy="joined"
+    )
+
+
 class User(canaille.core.models.User, Base, SqlAlchemyModel):
     __tablename__ = "user"
 
@@ -172,6 +195,18 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
         "group",
         creator=lambda grp: Membership(group=grp),
     )
+    _owned_groups_association: Mapped[list["GroupOwnership"]] = relationship(
+        "GroupOwnership",
+        foreign_keys="GroupOwnership.owner_id",
+        order_by="GroupOwnership.created_at",
+        cascade="all, delete-orphan",
+        overlaps="owner",
+    )
+    owned_groups = association_proxy(
+        "_owned_groups_association",
+        "group",
+        creator=lambda grp: GroupOwnership(group=grp),
+    )
     lock_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
@@ -229,7 +264,15 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
         "user",
         creator=lambda usr: Membership(user=usr),
     )
-    owner_id: Mapped[str] = mapped_column(
-        ForeignKey("user.id", ondelete="SET NULL"), nullable=True
+    _owners_association: Mapped[list["GroupOwnership"]] = relationship(
+        "GroupOwnership",
+        foreign_keys="GroupOwnership.group_id",
+        order_by="GroupOwnership.created_at",
+        cascade="all, delete-orphan",
+        overlaps="group",
     )
-    owner: Mapped["User"] = relationship()
+    owners = association_proxy(
+        "_owners_association",
+        "owner",
+        creator=lambda usr: GroupOwnership(owner=usr),
+    )

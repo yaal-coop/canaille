@@ -158,7 +158,9 @@ def test_moderator_can_create_edit_and_delete_group(
     assert bar_group.members == [
         logged_moderator
     ]  # Group cannot be empty so creator is added in it
-    assert bar_group.owner == logged_moderator  # Group creator should be added as owner
+    assert bar_group.owners == [
+        logged_moderator
+    ]  # Group creator should be added as owner
     res.mustcontain("bar")
 
     # Group name can not be edited
@@ -494,12 +496,12 @@ def test_group_owner_star_icon_displayed(
     testclient, logged_moderator, foo_group, bar_group, backend
 ):
     """Test that the group owner is displayed with a star icon on the group page."""
-    # Set logged_moderator as the owner of foo_group
-    foo_group.owner = logged_moderator
+    # Set logged_moderator as an owner of foo_group
+    foo_group.owners = [logged_moderator]
     foo_group.members = [logged_moderator]  # Make sure moderator is a member
     backend.save(foo_group)
 
-    # Access the foo_group page where logged_moderator should be the owner
+    # Access the foo_group page where logged_moderator should be an owner
     res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
 
     # Should see the group owner star icon and tooltip
@@ -513,9 +515,9 @@ def test_group_owner_star_icon_displayed(
 def test_group_owner_star_only_for_owner(
     testclient, logged_admin, foo_group, user, backend
 ):
-    """Test that the star icon only appears for the actual group owner."""
+    """Test that the star icon only appears for the actual group owners."""
     # Set admin as owner and add regular user to the group
-    foo_group.owner = logged_admin
+    foo_group.owners = [logged_admin]
     foo_group.members = [logged_admin, user]
     backend.save(foo_group)
 
@@ -526,24 +528,11 @@ def test_group_owner_star_only_for_owner(
     assert "star yellow icon" in res.text
     assert "Group owner" in res.text
 
-    # Both users should be listed but only one should have a star
-    # Count the number of star icons - should be exactly 1 (only in username column)
+    # Both users should be listed but only the owner should have a filled star
+    # The owner has 2 yellow stars: one in username column, one in actions column
+    # The non-owner has 1 outline star in actions column (to make them owner)
     star_count = res.text.count("star yellow icon")
-    assert star_count == 1  # One star for the owner (only in username column)
-
-
-def test_no_star_when_no_owner(testclient, logged_admin, foo_group, backend):
-    """Test that no star is displayed when group has no owner."""
-    # Remove the owner
-    foo_group.owner = None
-    backend.save(foo_group)
-
-    # Access the group page
-    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
-
-    # Should not see any star icons
-    assert "star yellow icon" not in res.text
-    assert "Group owner" not in res.text
+    assert star_count == 2  # Two stars for the owner (username + actions columns)
 
 
 def test_groups_page_includes_actions_column(
@@ -570,7 +559,7 @@ def test_user_can_delete_own_group(testclient, logged_user, backend):
     group = models.Group(
         members=[logged_user],
         display_name="user_group",
-        owner=logged_user,
+        owners=[logged_user],
     )
     backend.save(group)
 
@@ -591,7 +580,7 @@ def test_user_cannot_delete_others_group(testclient, logged_user, admin, backend
     group = models.Group(
         members=[admin],
         display_name="admin_group",
-        owner=admin,
+        owners=[admin],
     )
     backend.save(group)
 
@@ -731,11 +720,11 @@ def test_leave_group_not_member(testclient, logged_user, bar_group):
 
 
 def test_leave_group_owner_clears_ownership(testclient, logged_user, admin, backend):
-    """Test that leaving a group as owner clears the owner field."""
+    """Test that leaving a group as owner removes the user from owners."""
     group = models.Group(
         members=[logged_user, admin],
         display_name="owned_group",
-        owner=logged_user,
+        owners=[logged_user],
     )
     backend.save(group)
 
@@ -752,6 +741,295 @@ def test_leave_group_owner_clears_ownership(testclient, logged_user, admin, back
     assert logged_user not in group.members
     assert len(group.members) == 1
     assert group.members[0].id == admin.id
-    assert group.owner is None
+    assert group.owners == []
 
     backend.delete(group)
+
+
+def test_set_owner_by_admin(testclient, logged_admin, user, foo_group, backend):
+    """Test that an admin can promote a member to owner."""
+    foo_group.members = [logged_admin, user]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Promote user to owner
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "confirm-set-owner",
+            "user": user.id,
+        },
+    )
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "action": "set-owner",
+            "user": user.id,
+        },
+    )
+
+    backend.reload(foo_group)
+    backend.reload(user)
+    assert user in foo_group.owners
+    assert len(foo_group.owners) == 1
+
+
+def test_set_owner_by_owner(testclient, logged_user, admin, foo_group, backend):
+    """Test that an owner can promote a member to owner."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Promote admin to owner
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "confirm-set-owner",
+            "user": admin.id,
+        },
+    )
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "action": "set-owner",
+            "user": admin.id,
+        },
+    )
+
+    backend.reload(foo_group)
+    backend.reload(admin)
+    assert admin in foo_group.owners
+    assert len(foo_group.owners) == 2
+
+
+def test_unset_owner_by_admin(testclient, logged_admin, user, foo_group, backend):
+    """Test that an admin can remove owner status from a member."""
+    foo_group.members = [logged_admin, user]
+    foo_group.owners = [logged_admin, user]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Remove owner status from user
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "confirm-unset-owner",
+            "user": user.id,
+        },
+    )
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "action": "unset-owner",
+            "user": user.id,
+        },
+    )
+
+    backend.reload(foo_group)
+    backend.reload(user)
+    assert user not in foo_group.owners
+    assert len(foo_group.owners) == 1
+
+
+def test_confirm_unset_owner_forbidden_for_non_admin(
+    testclient, logged_user, admin, foo_group, backend
+):
+    """Test that a non-admin owner cannot access unset owner page."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Try to access remove owner page (should be forbidden)
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "confirm-unset-owner",
+            "user": admin.id,
+        },
+        status=403,
+    )
+
+    backend.reload(foo_group)
+    backend.reload(admin)
+    assert admin in foo_group.owners  # Owner status should not have been removed
+
+
+def test_unset_owner_forbidden_for_non_admin(
+    testclient, logged_user, admin, foo_group, backend
+):
+    """Test that a non-admin owner cannot remove owner status from others."""
+    testclient.app.config["WTF_CSRF_ENABLED"] = False
+
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    # Try to remove owner status from admin (should be forbidden)
+    testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {"action": "unset-owner", "user": admin.id},
+        status=403,
+    )
+
+    backend.reload(foo_group)
+    backend.reload(admin)
+    assert admin in foo_group.owners  # Owner status should not have been removed
+
+
+def test_remove_member_also_removes_owner(
+    testclient, logged_admin, user, foo_group, backend
+):
+    """Test that removing a member also removes them from owners."""
+    foo_group.members = [logged_admin, user]
+    foo_group.owners = [user]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Remove user from group
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "confirm-remove-member",
+            "member": user.id,
+        },
+    )
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "action": "remove-member",
+            "member": user.id,
+        },
+    )
+
+    backend.reload(foo_group)
+    assert user not in foo_group.members
+    assert user not in foo_group.owners
+
+
+def test_set_owner_non_member(testclient, logged_admin, user, foo_group, backend):
+    """Test that setting a non-member as owner fails."""
+    foo_group.members = [logged_admin]  # user is not a member
+    foo_group.owners = [logged_admin]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Try to set user as owner (but user is not a member)
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "set-owner",
+            "user": user.id,
+        },
+    )
+
+    # Should show error message
+    assert "not a member of this group" in res.text
+
+    backend.reload(foo_group)
+    assert user not in foo_group.owners
+
+
+def test_set_owner_already_owner(testclient, logged_admin, user, foo_group, backend):
+    """Test that setting someone who is already an owner fails."""
+    foo_group.members = [logged_admin, user]
+    foo_group.owners = [logged_admin, user]  # user is already owner
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Try to set user as owner (but user is already owner)
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "set-owner",
+            "user": user.id,
+        },
+    )
+
+    # Should show error message
+    assert "already an owner" in res.text
+
+
+def test_unset_owner_non_owner(testclient, logged_admin, user, foo_group, backend):
+    """Test that removing owner status from a non-owner fails."""
+    foo_group.members = [logged_admin, user]
+    foo_group.owners = [logged_admin]  # user is not owner
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Try to unset owner from user (but user is not owner)
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "unset-owner",
+            "user": user.id,
+        },
+    )
+
+    # Should show error message
+    assert "not an owner" in res.text
+
+
+def test_set_owner_invalid_user(testclient, logged_admin, foo_group, backend):
+    """Test that setting an invalid user as owner fails."""
+    foo_group.members = [logged_admin]
+    foo_group.owners = [logged_admin]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Try to set invalid user as owner
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "set-owner",
+            "user": "invalid-user-id",
+        },
+    )
+
+    # Should show error message
+    assert "does not exist" in res.text
+
+
+def test_unset_owner_invalid_user(testclient, logged_admin, foo_group, backend):
+    """Test that unsetting an invalid user as owner fails."""
+    foo_group.members = [logged_admin]
+    foo_group.owners = [logged_admin]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    # Try to unset invalid user as owner
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "unset-owner",
+            "user": "invalid-user-id",
+        },
+    )
+
+    # Should show error message
+    assert "does not exist" in res.text

@@ -99,3 +99,42 @@ def captcha_validator(form, field):
     token = form["captcha_token"].data
     if not verify_captcha(token, field.data or ""):
         raise wtforms.ValidationError(_("Invalid security code"))
+
+
+def is_group_member(form, field):
+    """Validate that the user is a member of the group."""
+    if field.data is None:
+        raise wtforms.ValidationError(gettext("This user does not exist."))
+
+    if field.data not in form.group.members:
+        raise wtforms.ValidationError(
+            gettext("The user '{user}' is not a member of this group.").format(
+                user=field.data.formatted_name
+            )
+        )
+
+
+def is_not_group_owner(form, field):
+    """Validate that the user is not already an owner of the group."""
+    if field.data is None:
+        return
+
+    if field.data in form.group.owners:
+        raise wtforms.ValidationError(
+            gettext("The user '{user}' is already an owner of this group.").format(
+                user=field.data.formatted_name
+            )
+        )
+
+
+def is_group_owner(form, field):
+    """Validate that the user is an owner of the group."""
+    if field.data is None:
+        raise wtforms.ValidationError(gettext("This user does not exist."))
+
+    if field.data not in form.group.owners:
+        raise wtforms.ValidationError(
+            gettext("The user '{user}' is not an owner of this group.").format(
+                user=field.data.formatted_name
+            )
+        )

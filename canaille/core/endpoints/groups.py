@@ -27,6 +27,8 @@ from .forms import CreateGroupForm
 from .forms import DeleteGroupMemberForm
 from .forms import EditGroupForm
 from .forms import GroupInvitationForm
+from .forms import SetGroupOwnerForm
+from .forms import UnsetGroupOwnerForm
 
 bp = Blueprint("groups", __name__, url_prefix="/groups")
 
@@ -75,7 +77,7 @@ def create_group(user):
         else:
             group = models.Group()
             group.members = [user]
-            group.owner = user
+            group.owners = [user]
             group.display_name = form.display_name.data
             group.description = form.description.data
             Backend.instance.save(group)
@@ -121,6 +123,18 @@ def group(user, group):
 
     if request.form.get("action") == "remove-member":
         return delete_member(group)
+
+    if request.form.get("action") == "confirm-set-owner":
+        return set_owner(user, group)
+
+    if request.form.get("action") == "set-owner":
+        return set_owner(user, group)
+
+    if request.form.get("action") == "confirm-unset-owner":
+        return unset_owner(user, group)
+
+    if request.form.get("action") == "unset-owner":
+        return unset_owner(user, group)
 
     abort(400, f"bad form action: {request.form.get('action')}")
 
@@ -194,6 +208,10 @@ def delete_member(group):
         group.members = [
             member for member in group.members if member != form.member.data
         ]
+        if form.member.data in group.owners:
+            group.owners = [
+                owner for owner in group.owners if owner != form.member.data
+            ]
         Backend.instance.save(group)
 
     return edit_group(group)
@@ -211,18 +229,83 @@ def delete_group(group):
     return redirect(url_for("core.groups.groups"))
 
 
+def set_owner(user, group):
+    """Promote a group member to owner."""
+    form = SetGroupOwnerForm(request.form or None)
+    form.group = group
+
+    if not form.validate():
+        flash(
+            "\n".join(form.errors.get("user", [])),
+            "error",
+        )
+
+    elif request.form.get("action") == "confirm-set-owner":
+        return render_template(
+            "core/modals/set-group-owner.html", group=group, form=form
+        )
+
+    else:
+        flash(
+            _(
+                "%(user_name)s is now an owner of the group %(group_name)s",
+                user_name=form.user.data.formatted_name,
+                group_name=group.display_name,
+            ),
+            "success",
+        )
+        group.owners = list(group.owners) + [form.user.data]
+        Backend.instance.save(group)
+
+    return edit_group(group)
+
+
+def unset_owner(user, group):
+    """Remove owner status from a group member."""
+    if not user.can("manage_all_groups"):
+        abort(403)
+
+    form = UnsetGroupOwnerForm(request.form or None)
+    form.group = group
+
+    if not form.validate():
+        flash(
+            "\n".join(form.errors.get("user", [])),
+            "error",
+        )
+
+    elif request.form.get("action") == "confirm-unset-owner":
+        return render_template(
+            "core/modals/unset-group-owner.html", group=group, form=form
+        )
+
+    else:
+        flash(
+            _(
+                "%(user_name)s is no longer an owner of the group %(group_name)s",
+                user_name=form.user.data.formatted_name,
+                group_name=group.display_name,
+            ),
+            "success",
+        )
+        group.owners = [owner for owner in group.owners if owner != form.user.data]
+        Backend.instance.save(group)
+
+    return edit_group(group)
+
+
 @bp.route("/<group:group>/leave", methods=["POST"])
 @user_needed()
 def leave_group(user, group):
-    """Allow a user to leave a group and remove ownership if they are the owner."""
+    """Allow a user to leave a group and remove ownership if they are an owner."""
     if user not in group.members:
         flash(_("You are not a member of this group."), "error")
         return redirect(url_for("core.account.index"))
 
     group.members = [member for member in group.members if member != user]
 
-    if user == group.owner:
-        group.owner = None
+    if user in group.owners:
+        group.owners = [owner for owner in group.owners if owner != user]
 
     Backend.instance.save(group)
 
@@ -256,6 +339,7 @@ def invite_to_group(user, group):
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=group.id,
             invited_user_id=invited_user.id,
+            invite_as_owner=form.invite_as_owner.data,
         )
 
         invitation_url = url_for(
@@ -339,6 +423,8 @@ def join_group(data, hash):
         )
 
     group.members = list(group.members) + [g.session.user]
+    if payload.invite_as_owner:
+        group.owners = list(group.owners) + [g.session.user]
     Backend.instance.save(group)
 
     flash(

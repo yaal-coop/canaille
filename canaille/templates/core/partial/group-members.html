@@ -13,6 +13,8 @@
             {% endif %}
             {% if user.can_manage_all_groups %}
                 <th>{% trans %}Groups{% endtrans %}</th>
+            {% endif %}
+            {% if edited_group and edited_group.user_can_edit(user) %}
                 <th>{% trans %}Actions{% endtrans %}</th>
             {% endif %}
         </tr>
@@ -42,8 +44,8 @@
                                 {{ watched_user.identifier }}
                             {% endif %}
                         </a>
-                        {% if edited_group and edited_group.owner == watched_user %}
-                            <i class="star yellow icon" title="{% trans %}Group owner{% endtrans %}"></i>
+                        {% if edited_group and watched_user in edited_group.owners %}
+                            <i class="crown yellow icon" title="{% trans %}Group owner{% endtrans %}"></i>
                         {% endif %}
                     </td>
                 {% endif %}
@@ -62,20 +64,49 @@
                             </a>
                         {% endfor %}
                     </td>
+                {% endif %}
+                {% if edited_group and edited_group.user_can_edit(user) %}
                     <td>
-                        {% if edited_group.members|len > 1 %}
-                            <form id="deletegroupmemberform-{{ watched_user.id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
-                                {{ form.hidden_tag() if form.hidden_tag }}
-                                <input type="hidden" name="member" value="{{ watched_user.id }}">
-                                <button class="basic negative ui button" name="action" value="confirm-remove-member">
-                                    {% trans %}Remove{% endtrans %}
-                                </button>
-                            </form>
-                        {% else %}
-                            <button class="basic negative ui button" title="{% trans %}Groups must have at least one member{% endtrans %}" disabled>
-                                {% trans %}Remove{% endtrans %}
-                            </button>
-                        {% endif %}
+                        <div class="ui buttons">
+                            {% if watched_user in edited_group.owners %}
+                                {% if user.can_manage_all_groups %}
+                                    <form id="unsetownerform-{{ watched_user.id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" style="display: inline;">
+                                        {{ form.hidden_tag() if form.hidden_tag }}
+                                        <input type="hidden" name="user" value="{{ watched_user.id }}">
+                                        <button class="ui icon button" name="action" value="confirm-unset-owner" title="{% trans %}Remove owner{% endtrans %}">
+                                            <i class="crown yellow icon"></i>
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <button class="ui icon button" title="{% trans %}Group owner{% endtrans %}" disabled>
+                                        <i class="crown yellow icon"></i>
+                                    </button>
+                                {% endif %}
+                            {% else %}
+                                <form id="setownerform-{{ watched_user.id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" style="display: inline;">
+                                    {{ form.hidden_tag() if form.hidden_tag }}
+                                    <input type="hidden" name="user" value="{{ watched_user.id }}">
+                                    <button class="ui icon button" name="action" value="confirm-set-owner" title="{% trans %}Make owner{% endtrans %}">
+                                        <i class="crown outline icon"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                            {% if user.can_manage_all_groups %}
+                                {% if edited_group.members|len > 1 %}
+                                    <form id="deletegroupmemberform-{{ watched_user.id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST" style="display: inline;">
+                                        {{ form.hidden_tag() if form.hidden_tag }}
+                                        <input type="hidden" name="member" value="{{ watched_user.id }}">
+                                        <button class="basic negative ui button" name="action" value="confirm-remove-member">
+                                            {% trans %}Remove{% endtrans %}
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <button class="basic negative ui button" title="{% trans %}Groups must have at least one member{% endtrans %}" disabled>
+                                        {% trans %}Remove{% endtrans %}
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                        </div>
                     </td>
                 {% endif %}
             </tr>

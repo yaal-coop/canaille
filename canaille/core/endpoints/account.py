@@ -240,6 +240,7 @@ class GroupInvitationPayload:
     expiration_date_isoformat: str
     group_id: str
     invited_user_id: str
+    invite_as_owner: bool = False
 
     @property
     def expiration_date(self):

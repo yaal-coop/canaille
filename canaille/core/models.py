@@ -489,11 +489,12 @@ class Group(Model):
     "Group" resource schema.
     """
 
-    owner: "User | None" = None
-    """The user who can manage this group.
+    owners: list[Annotated["User", {"backref": "owned_groups"}]] = []
+    """The users who can manage this group.
 
-    The group owner has the ability to edit the group description,
-    invite new members, and remove members from the group.
+    Group owners have the ability to edit the group description,
+    invite new members, remove members from the group, and promote
+    other members to owners. Only administrators can remove owners.
     """
 
     description: str | None = None
@@ -501,13 +502,13 @@ class Group(Model):
     def user_can_edit(self, user: "User") -> bool:
         """Check if a user can edit this group.
 
-        Returns True if the user has manage_all_groups permission or is the owner of the group
+        Returns True if the user has manage_all_groups permission or is an owner of the group
         and has manage_own_groups permission.
         """
         from canaille.core.configuration import Permission
 
         return user.can(Permission.MANAGE_ALL_GROUPS) or (
-            user == self.owner and user.can(Permission.MANAGE_OWN_GROUPS)
+            user in self.owners and user.can(Permission.MANAGE_OWN_GROUPS)
         )
 
 

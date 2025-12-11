@@ -27,6 +27,9 @@ from canaille.core.validators import captcha_validator
 from canaille.core.validators import email_has_user
 from canaille.core.validators import existing_group_member
 from canaille.core.validators import existing_login
+from canaille.core.validators import is_group_member
+from canaille.core.validators import is_group_owner
+from canaille.core.validators import is_not_group_owner
 from canaille.core.validators import non_empty_groups
 from canaille.core.validators import unique_email
 from canaille.core.validators import unique_group
@@ -438,6 +441,28 @@ class GroupInvitationForm(Form):
             "spellcheck": "false",
             "autocorrect": "off",
         },
+    )
+    invite_as_owner = wtforms.BooleanField(
+        _("Invite as owner"),
+        default=False,
+    )
+
+
+class SetGroupOwnerForm(Form):
+    """Form to promote a group member to owner."""
+
+    user = wtforms.StringField(
+        filters=[IDToModel("User", raise_on_errors=False)],
+        validators=[is_group_member, is_not_group_owner],
+    )
+
+
+class UnsetGroupOwnerForm(Form):
+    """Form to remove owner status from a group member."""
+
+    user = wtforms.StringField(
+        filters=[IDToModel("User", raise_on_errors=False)],
+        validators=[is_group_owner],
     )
 
 

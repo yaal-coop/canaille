@@ -91,6 +91,9 @@ Displays the group invitation form to users with the appropriate permissions.
                     {% block email_field scoped %}
                         {{ fui.render_field(form.email, icon="email") }}
                     {% endblock %}
+                    {% block invite_as_owner_field scoped %}
+                        {{ fui.render_field(form.invite_as_owner) }}
+                    {% endblock %}
 
                     <div class="ui right aligned container">
                         <div class="ui stackable buttons">

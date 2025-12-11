@@ -1,0 +1,31 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{% block content %}
+    <div class="ui info message" id="modal-set-owner">
+        {% call fui.render_form(form) %}
+            <input type="hidden" name="user" value="{{ form.user.data }}">
+            <div class="ui icon header">
+                <i class="star icon"></i>
+                {% trans %}Promote to group owner{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans group_name=group.display_name, user_name=form.user.data.formatted_name %}
+                        Are you sure you want to make {{ user_name }} an owner of the group "{{ group_name }}"?
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a href="{{ request.url }}" class="ui cancel button">
+                        {% trans %}Cancel{% endtrans %}
+                    </a>
+                    <button name="action" value="set-owner" id="set-owner" class="ui primary approve button">
+                        {% trans %}Make owner{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+{% endblock %}
