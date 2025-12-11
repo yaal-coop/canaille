@@ -13,6 +13,7 @@ from canaille.oidc.configuration import OIDCSettings
 from canaille.oidc.jose import make_default_okp_jwk
 from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
+from canaille.oidc.provider import get_jwt_config
 
 from . import client_credentials
 
@@ -196,3 +197,17 @@ def test_missing_active_jwks_warning(configuration, caplog):
 
     with app.app_context():
         assert len(server_jwks(False).keys) == 2
+
+
+def test_get_jwt_config_fallback_to_first_key(testclient):
+    """Test that get_jwt_config falls back to first key when no RSA key exists."""
+    okp_key = jwk.generate_key("OKP", "Ed25519")
+    okp_key.ensure_kid()
+
+    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [okp_key.as_dict()]
+
+    config = get_jwt_config(None)
+
+    assert config["key"]["kty"] == "OKP"
+    assert config["alg"] == "EdDSA"
+    assert config["kid"] == okp_key.kid

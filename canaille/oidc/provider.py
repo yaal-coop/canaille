@@ -110,6 +110,9 @@ def get_jwt_config(grant=None):
         jwk = jwks.pick_random_key(alg)
 
     if jwk is None:
+        jwk = jwks.pick_random_key("RS256")
+
+    if jwk is None:
         jwk = jwks.keys[0]
 
     payload = {
