@@ -291,8 +291,10 @@ def send_one_time_password_mail(mail, otp):
     )
 
 
-def send_group_invitation_mail(email, invitation_url, group_name, inviter_name):
-    """Send an email invitation to join a group."""
+def send_group_invitation_mail(
+    email, invitation_url, group_name, inviter_name, as_owner=False
+):
+    """Send an email invitation to join a group, possibly as an owner."""
     base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
@@ -307,6 +309,7 @@ def send_group_invitation_mail(email, invitation_url, group_name, inviter_name):
         invitation_url=invitation_url,
         group_name=group_name,
         inviter_name=inviter_name,
+        as_owner=as_owner,
     )
     html_body = render_template(
         "core/mails/group_invitation.html",
@@ -315,6 +318,7 @@ def send_group_invitation_mail(email, invitation_url, group_name, inviter_name):
         invitation_url=invitation_url,
         group_name=group_name,
         inviter_name=inviter_name,
+        as_owner=as_owner,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
         title=subject,
     )

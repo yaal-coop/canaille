@@ -10,10 +10,17 @@
             </div>
             <div class="content">
                 <p>
-                    {% trans group_name=group.display_name %}
-                        You have been invited to join the group "{{ group_name }}".
-                        Do you want to join it?
-                    {% endtrans %}
+                    {% if as_owner %}
+                        {% trans group_name=group.display_name %}
+                            You have been invited to join the group "{{ group_name }}" as an owner.
+                            You will be able to manage it. Do you want to join it?
+                        {% endtrans %}
+                    {% else %}
+                        {% trans group_name=group.display_name %}
+                            You have been invited to join the group "{{ group_name }}".
+                            Do you want to join it?
+                        {% endtrans %}
+                    {% endif %}
                 </p>
             </div>
             <div class="ui center aligned container">

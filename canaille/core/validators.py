@@ -3,7 +3,6 @@ from flask import current_app
 from werkzeug.datastructures import FileStorage
 
 from canaille.app import models
-from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
@@ -49,12 +48,12 @@ def existing_login(form, field):
 def existing_group_member(form, field):
     if field.data is None:
         raise wtforms.ValidationError(
-            gettext("The user you are trying to remove does not exist.")
+            _("The user you are trying to remove does not exist.")
         )
 
     if field.data not in form.group.members:
         raise wtforms.ValidationError(
-            gettext(
+            _(
                 "The user '{user}' has already been removed from the group '{group}'"
             ).format(user=field.data.formatted_name, group=form.group.display_name)
         )
@@ -115,3 +114,29 @@ def captcha_validator(form, field):
     token = form["captcha_token"].data
     if not verify_captcha(token, field.data or ""):
         raise wtforms.ValidationError(_("Invalid security code"))
+
+
+def group_owners(form, field):
+    """Validate that the owners are members, and that the editor can remove the former owners."""
+    for owner in field.data or []:
+        if owner not in form.group.members:
+            raise wtforms.ValidationError(
+                _("The user '{user}' is not a member of this group.").format(
+                    user=owner.formatted_name
+                )
+            )
+
+    for owner in form.group.owners:
+        if owner in (field.data or []) or form.group.owner_is_removable_by(
+            form.editor, owner
+        ):
+            continue
+
+        if owner == form.editor:
+            raise wtforms.ValidationError(_("A group must keep at least one owner."))
+
+        raise wtforms.ValidationError(
+            _("Only administrators can remove '{user}' from the owners.").format(
+                user=owner.formatted_name
+            )
+        )

@@ -14,7 +14,9 @@
             {% endif %}
             {% if user.can_manage_all_groups %}
                 <th>{% trans %}Groups{% endtrans %}</th>
-                <th>{% trans %}Actions{% endtrans %}</th>
+            {% endif %}
+            {% if edited_group and edited_group.is_editable_by(user) %}
+                <th class="collapsing">{% trans %}Actions{% endtrans %}</th>
             {% endif %}
         </tr>
     </thead>
@@ -43,7 +45,7 @@
                                 {{ watched_user.identifier }}
                             {% endif %}
                         </a>
-                        {% if edited_group and edited_group.owner == watched_user %}
+                        {% if edited_group and watched_user in edited_group.owners %}
                             <i class="star yellow icon" title="{% trans %}Group owner{% endtrans %}"></i>
                         {% endif %}
                     </td>
@@ -63,18 +65,22 @@
                             </a>
                         {% endfor %}
                     </td>
-                    <td>
-                        {% if edited_group.members|len > 1 %}
-                            {% call fui.render_form(form, action=url_for(request.url_rule.endpoint, **request.view_args), id="deletegroupmemberform-" ~ watched_user.id) %}
-                                <input type="hidden" name="member" value="{{ watched_user.id }}">
-                                {% call fui.render_button(form.action, "confirm-remove-member", class_="basic negative ui button") %}
-                                    {% trans %}Remove{% endtrans %}
+                {% endif %}
+                {% if edited_group and edited_group.is_editable_by(user) %}
+                    <td class="collapsing">
+                        {% if edited_group.member_is_removable_by(user, watched_user) %}
+                            {% if edited_group.members|len > 1 %}
+                                {% call fui.render_form(form, action=url_for(request.url_rule.endpoint, **request.view_args), id="deletegroupmemberform-" ~ watched_user.id) %}
+                                    <input type="hidden" name="member" value="{{ watched_user.id }}">
+                                    {% call fui.render_button(form.action, "confirm-remove-member", class_="basic negative ui button") %}
+                                        {% trans %}Remove{% endtrans %}
+                                    {% endcall %}
                                 {% endcall %}
-                            {% endcall %}
-                        {% else %}
-                            <button type="button" class="basic negative ui button" title="{% trans %}Groups must have at least one member{% endtrans %}" disabled>
-                                {% trans %}Remove{% endtrans %}
-                            </button>
+                            {% else %}
+                                <button type="button" class="basic negative ui button" title="{% trans %}Groups must have at least one member{% endtrans %}" disabled>
+                                    {% trans %}Remove{% endtrans %}
+                                </button>
+                            {% endif %}
                         {% endif %}
                     </td>
                 {% endif %}

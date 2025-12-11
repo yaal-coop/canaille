@@ -14,6 +14,7 @@ def test_group_invitation_payload(app):
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id="test-group-id",
             invited_user_id="test-user-id",
+            invite_as_owner=True,
         )
 
         assert payload.expiration_date == expiration_date
@@ -24,6 +25,7 @@ def test_group_invitation_payload(app):
             expiration_date_isoformat=past_date.isoformat(),
             group_id="test-group-id",
             invited_user_id="test-user-id",
+            invite_as_owner=True,
         )
         assert expired_payload.has_expired()
 
@@ -71,6 +73,19 @@ def test_group_invitation_invalid_email(testclient, logged_admin, foo_group, smt
     assert len(smtpd.messages) == 0
 
 
+def test_group_invitation_as_owner_email(
+    testclient, logged_admin, bar_group, user, smtpd
+):
+    """Test that the invitation email tells the user they will own the group."""
+    res = testclient.get(f"/groups/{bar_group.id}/invite", status=200)
+    res.form["email"] = user.emails[0]
+    res.form["invite_as_owner"] = True
+    res.form.submit(status=200)
+
+    text_mail = smtpd.messages[0].get_payload()[0].get_payload(decode=True).decode()
+    assert "You will be an owner of this group" in text_mail
+
+
 def test_group_invitation_nonexistent_user(testclient, logged_admin, foo_group, smtpd):
     """Test invitation with email not belonging to any user shows error message."""
     res = testclient.get(f"/groups/{foo_group.id}/invite", status=200)
@@ -93,6 +108,7 @@ def test_join_group_with_valid_invitation(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=bar_group.id,
             invited_user_id=logged_user.id,
+            invite_as_owner=False,
         )
 
         assert logged_user not in bar_group.members
@@ -118,7 +134,9 @@ def test_join_group_with_valid_invitation(
 
         backend.reload(bar_group)
         backend.reload(logged_user)
+
         assert logged_user in bar_group.members
+        assert logged_user not in bar_group.owners
 
 
 def test_join_group_expired_invitation(testclient, logged_user, bar_group, app):
@@ -328,3 +346,41 @@ def test_group_invitation_inline_validation(
     )
     res.mustcontain("A user with this email address is already a member of this group.")
     assert len(smtpd.messages) == 0
+
+
+def test_join_group_as_owner_with_valid_invitation(
+    testclient, logged_user, bar_group, backend, app
+):
+    """Test joining a group as owner with valid invitation adds user to owners."""
+    with app.app_context():
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
+        payload = GroupInvitationPayload(
+            expiration_date_isoformat=expiration_date.isoformat(),
+            group_id=bar_group.id,
+            invited_user_id=logged_user.id,
+            invite_as_owner=True,
+        )
+
+        assert logged_user not in bar_group.members
+
+        invitation_url = f"/groups/join/{payload.b64()}/{payload.build_hash()}"
+        res = testclient.get(invitation_url, status=200)
+        res.mustcontain("as an owner")
+        res = res.form.submit(status=302)
+
+        assert "/settings" in res.location
+
+        assert (
+            "success",
+            f"You have successfully joined {bar_group.display_name}!",
+        ) in res.flashes
+
+        res = res.follow()
+
+        backend.reload(bar_group)
+        backend.reload(logged_user)
+
+        assert logged_user in bar_group.members
+        assert logged_user in bar_group.owners

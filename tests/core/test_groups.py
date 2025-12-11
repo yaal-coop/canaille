@@ -2,6 +2,7 @@ from canaille.app import models
 from canaille.core.populate import fake_groups
 from tests.htmx import combobox_values
 from tests.htmx import pick_in_combobox
+from tests.htmx import remove_from_combobox
 
 
 def test_delete_group(testclient, backend, user, admin, foo_group):
@@ -140,7 +141,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res = testclient.get("/groups", status=200)
     assert backend.get(models.Group, display_name="bar") is None
     assert backend.get(models.Group, display_name="foo") == foo_group
-    res.mustcontain(no="bar")
+    res.mustcontain(no="/groups/bar")
     res.mustcontain("foo")
 
     # Fill the form for a new group
@@ -159,7 +160,9 @@ def test_moderator_can_create_edit_and_delete_group(
     assert bar_group.members == [
         logged_moderator
     ]  # Group cannot be empty so creator is added in it
-    assert bar_group.owner == logged_moderator  # Group creator should be added as owner
+    assert bar_group.owners == [
+        logged_moderator
+    ]  # Group creator should be added as owner
     res.mustcontain("bar")
 
     # Group name can not be edited
@@ -507,12 +510,12 @@ def test_group_owner_star_icon_displayed(
     testclient, logged_moderator, foo_group, bar_group, backend
 ):
     """Test that the group owner is displayed with a star icon on the group page."""
-    # Set logged_moderator as the owner of foo_group
-    foo_group.owner = logged_moderator
+    # Set logged_moderator as an owner of foo_group
+    foo_group.owners = [logged_moderator]
     foo_group.members = [logged_moderator]  # Make sure moderator is a member
     backend.save(foo_group)
 
-    # Access the foo_group page where logged_moderator should be the owner
+    # Access the foo_group page where logged_moderator should be an owner
     res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
 
     # Should see the group owner star icon and tooltip
@@ -526,9 +529,9 @@ def test_group_owner_star_icon_displayed(
 def test_group_owner_star_only_for_owner(
     testclient, logged_admin, foo_group, user, backend
 ):
-    """Test that the star icon only appears for the actual group owner."""
+    """Test that the star icon only appears for the actual group owners."""
     # Set admin as owner and add regular user to the group
-    foo_group.owner = logged_admin
+    foo_group.owners = [logged_admin]
     foo_group.members = [logged_admin, user]
     backend.save(foo_group)
 
@@ -539,24 +542,7 @@ def test_group_owner_star_only_for_owner(
     assert "star yellow icon" in res.text
     assert "Group owner" in res.text
 
-    # Both users should be listed but only one should have a star
-    # Count the number of star icons - should be exactly 1 (only in username column)
-    star_count = res.text.count("star yellow icon")
-    assert star_count == 1  # One star for the owner (only in username column)
-
-
-def test_no_star_when_no_owner(testclient, logged_admin, foo_group, backend):
-    """Test that no star is displayed when group has no owner."""
-    # Remove the owner
-    foo_group.owner = None
-    backend.save(foo_group)
-
-    # Access the group page
-    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
-
-    # Should not see any star icons
-    assert "star yellow icon" not in res.text
-    assert "Group owner" not in res.text
+    assert res.text.count("star yellow icon") == 1
 
 
 def test_groups_page_includes_actions_column(
@@ -583,7 +569,7 @@ def test_user_can_delete_own_group(testclient, logged_user, backend):
     group = models.Group(
         members=[logged_user],
         display_name="user_group",
-        owner=logged_user,
+        owners=[logged_user],
     )
     backend.save(group)
 
@@ -604,7 +590,7 @@ def test_user_cannot_delete_others_group(testclient, logged_user, admin, backend
     group = models.Group(
         members=[admin],
         display_name="admin_group",
-        owner=admin,
+        owners=[admin],
     )
     backend.save(group)
 
@@ -744,11 +730,11 @@ def test_leave_group_not_member(testclient, logged_user, bar_group):
 
 
 def test_leave_group_owner_clears_ownership(testclient, logged_user, admin, backend):
-    """Test that leaving a group as owner clears the owner field."""
+    """Test that leaving a group as owner removes the user from owners."""
     group = models.Group(
         members=[logged_user, admin],
         display_name="owned_group",
-        owner=logged_user,
+        owners=[logged_user, admin],
     )
     backend.save(group)
 
@@ -765,8 +751,34 @@ def test_leave_group_owner_clears_ownership(testclient, logged_user, admin, back
     assert logged_user not in group.members
     assert len(group.members) == 1
     assert group.members[0].id == admin.id
-    assert group.owner is None
+    assert group.owners == [admin]
 
+    backend.delete(group)
+
+
+def test_last_owner_cannot_leave_group(testclient, logged_user, admin, backend):
+    """Test that the last owner of a group cannot leave it."""
+    group = models.Group(
+        members=[logged_user, admin],
+        display_name="owned_group",
+        owners=[logged_user],
+    )
+    backend.save(group)
+
+    res = testclient.get("/groups")
+    res = testclient.post(
+        f"/groups/{group.display_name}/leave",
+        {"csrf_token": res.forms["tableform"]["csrf_token"].value},
+        status=302,
+    )
+    assert (
+        "error",
+        "You cannot leave owned_group because you are its last owner.",
+    ) in res.flashes
+
+    backend.reload(group)
+    assert logged_user in group.members
+    assert group.owners == [logged_user]
     backend.delete(group)
 
 
@@ -841,7 +853,7 @@ def test_admin_creates_group_with_members(testclient, logged_admin, user, backen
 def test_group_owner_cannot_add_members(testclient, logged_user, admin, backend):
     """Test that users who cannot manage all groups cannot list users to add them."""
     group = models.Group(
-        members=[logged_user], display_name="user_group", owner=logged_user
+        members=[logged_user], display_name="user_group", owners=[logged_user]
     )
     backend.save(group)
 
@@ -864,3 +876,306 @@ def test_group_owner_cannot_add_members(testclient, logged_user, admin, backend)
     backend.reload(group)
     assert group.members == [logged_user]
     backend.delete(group)
+
+
+def test_admin_creates_group_with_owners(
+    testclient, logged_admin, user, moderator, backend
+):
+    """Test that an admin can choose the owners when creating a group, who become members."""
+    res = testclient.get("/groups/add")
+    form = res.forms["creategroupform"]
+    assert combobox_values(form, "owners") == [logged_admin.id]
+
+    form["display_name"] = "newgroup"
+    res = pick_in_combobox(form, "members", "john", user.id)
+    res = remove_from_combobox(res.forms["creategroupform"], "owners", logged_admin.id)
+    res = pick_in_combobox(res.forms["creategroupform"], "owners", "jack", moderator.id)
+    res = res.forms["creategroupform"].submit(name="action", value="edit", status=302)
+
+    group = backend.get(models.Group, display_name="newgroup")
+    assert group.owners == [moderator]
+    assert set(group.members) == {logged_admin, user, moderator}
+    backend.delete(group)
+
+
+def test_user_creates_group_as_owner(testclient, logged_user, backend):
+    """Test that users who cannot manage all groups own the groups they create."""
+    res = testclient.get("/groups/add")
+    form = res.forms["creategroupform"]
+    assert "owners-query" not in form.fields
+
+    form["display_name"] = "newgroup"
+    form.submit(name="action", value="edit", status=302)
+
+    group = backend.get(models.Group, display_name="newgroup")
+    assert group.owners == [logged_user]
+    assert group.members == [logged_user]
+    backend.delete(group)
+
+
+def test_owners_suggestions_are_members(
+    testclient, logged_admin, foo_group, user, moderator
+):
+    """Test that the owner suggestions only list the members of the group."""
+    res = testclient.get("/groups/foo")
+    form = res.forms["editgroupform"]
+    form["owners-query"] = "doe"
+    res = form.submit("owners-search")
+
+    assert set(suggestions(res, "owners")) == {user.id}
+
+
+def test_owners_default_suggestions(
+    testclient, logged_admin, foo_group, user, moderator, backend
+):
+    """Test that an empty owner search lists the members who are not owners, by name."""
+    foo_group.members = [user, moderator, logged_admin]
+    foo_group.owners = [logged_admin]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = res.forms["editgroupform"].submit("owners-search")
+
+    assert list(suggestions(res, "owners")) == [moderator.id, user.id]
+
+
+def test_admin_promotes_owner(testclient, logged_admin, foo_group, user, backend):
+    """Test that an admin can make a member an owner."""
+    res = testclient.get("/groups/foo")
+    res = pick_in_combobox(res.forms["editgroupform"], "owners", "john", user.id)
+    res = res.forms["editgroupform"].submit(name="action", value="edit", status=302)
+    assert ("success", "The group foo has been successfully edited.") in res.flashes
+
+    backend.reload(foo_group)
+    assert foo_group.owners == [user]
+
+
+def test_owner_promotes_member(testclient, logged_user, admin, foo_group, backend):
+    """Test that an owner can make another member an owner."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = pick_in_combobox(res.forms["editgroupform"], "owners", "jane", admin.id)
+    res.forms["editgroupform"].submit(name="action", value="edit", status=302)
+
+    backend.reload(foo_group)
+    assert foo_group.owners == [logged_user, admin]
+
+
+def test_owners_must_be_members(testclient, logged_admin, foo_group, moderator):
+    """Test that a user who is not a member cannot be an owner."""
+    res = testclient.get("/groups/foo")
+    res = testclient.post(
+        "/groups/foo",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "display_name": "foo",
+            "owners-value": moderator.id,
+            "action": "edit",
+        },
+        status=200,
+    )
+    res.mustcontain("is not a member of this group.")
+
+
+def test_admin_removes_owner(testclient, logged_admin, user, foo_group, backend):
+    """Test that an admin can remove an owner."""
+    foo_group.members = [logged_admin, user]
+    foo_group.owners = [logged_admin, user]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = remove_from_combobox(res.forms["editgroupform"], "owners", user.id)
+    res.forms["editgroupform"].submit(name="action", value="edit", status=302)
+
+    backend.reload(foo_group)
+    assert foo_group.owners == [logged_admin]
+
+
+def test_owner_cannot_remove_another_owner(
+    testclient, logged_user, admin, foo_group, backend
+):
+    """Test that an owner cannot remove another owner from the owners."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = remove_from_combobox(res.forms["editgroupform"], "owners", admin.id)
+    res = res.forms["editgroupform"].submit(name="action", value="edit", status=200)
+    res.mustcontain("Only administrators can remove")
+
+    backend.reload(foo_group)
+    assert foo_group.owners == [logged_user, admin]
+
+
+def test_owner_removes_themself_from_owners(
+    testclient, logged_user, admin, foo_group, backend
+):
+    """Test that an owner who removes themself from the owners goes back to the group list."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = remove_from_combobox(res.forms["editgroupform"], "owners", logged_user.id)
+    res = res.forms["editgroupform"].submit(name="action", value="edit", status=302)
+    assert res.location == "/groups/"
+
+    backend.reload(foo_group)
+    assert foo_group.owners == [admin]
+
+
+def test_last_owner_cannot_remove_themself_from_owners(
+    testclient, logged_user, foo_group, backend
+):
+    """Test that the last owner cannot remove themself from the owners."""
+    foo_group.members = [logged_user]
+    foo_group.owners = [logged_user]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = remove_from_combobox(res.forms["editgroupform"], "owners", logged_user.id)
+    res = res.forms["editgroupform"].submit(name="action", value="edit", status=200)
+    res.mustcontain("A group must keep at least one owner.")
+
+    backend.reload(foo_group)
+    assert foo_group.owners == [logged_user]
+
+
+def test_owner_steps_down(testclient, logged_user, admin, foo_group, backend):
+    """Test that an owner can step down when another owner remains."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = res.forms["editgroupform"].submit(name="action", value="confirm-step-down")
+    res.mustcontain("Are you sure you want to stop being an owner")
+    res = res.form.submit(name="action", value="step-down", status=302)
+    assert res.location == "/groups/"
+    assert ("success", "You are no longer an owner of the group foo.") in res.flashes
+
+    backend.reload(foo_group)
+    assert foo_group.owners == [admin]
+    assert logged_user in foo_group.members
+
+
+def test_last_owner_cannot_step_down(testclient, logged_user, foo_group, backend):
+    """Test that the last owner cannot step down."""
+    foo_group.members = [logged_user]
+    foo_group.owners = [logged_user]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    assert "confirm-step-down" not in res.text
+    res.mustcontain("A group must keep at least one owner.")
+
+    testclient.post(
+        "/groups/foo",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "confirm-step-down",
+        },
+        status=403,
+    )
+    backend.reload(foo_group)
+    assert foo_group.owners == [logged_user]
+
+
+def test_owner_removes_member(testclient, logged_user, moderator, foo_group, backend):
+    """Test that an owner can remove a member who is not an owner."""
+    foo_group.members = [logged_user, moderator]
+    foo_group.owners = [logged_user]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    assert f"deletegroupmemberform-{logged_user.id}" not in res.forms
+    res = res.forms[f"deletegroupmemberform-{moderator.id}"].submit(
+        name="action", value="confirm-remove-member"
+    )
+    res.form.submit(name="action", value="remove-member")
+
+    backend.reload(foo_group)
+    assert foo_group.members == [logged_user]
+
+
+def test_owner_cannot_remove_another_owner_from_members(
+    testclient, logged_user, admin, foo_group, backend
+):
+    """Test that an owner cannot remove another owner by removing them from the members."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    assert f"deletegroupmemberform-{admin.id}" not in res.forms
+    testclient.post(
+        "/groups/foo",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "remove-member",
+            "member": admin.id,
+        },
+        status=403,
+    )
+
+    backend.reload(foo_group)
+    assert foo_group.members == [logged_user, admin]
+    assert foo_group.owners == [logged_user, admin]
+
+
+def test_remove_member_also_removes_owner(
+    testclient, logged_admin, user, foo_group, backend
+):
+    """Test that removing a member also removes them from owners."""
+    foo_group.members = [logged_admin, user]
+    foo_group.owners = [user]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    res = res.forms[f"deletegroupmemberform-{user.id}"].submit(
+        name="action", value="confirm-remove-member"
+    )
+    res.form.submit(name="action", value="remove-member")
+
+    backend.reload(foo_group)
+    assert user not in foo_group.members
+    assert user not in foo_group.owners
+
+
+def test_co_owner_cannot_delete_group(
+    testclient, logged_user, admin, foo_group, backend
+):
+    """Test that an owner cannot delete a group they share with other owners."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    assert "confirm-delete" not in res.text
+    testclient.post(
+        "/groups/foo",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "action": "delete",
+        },
+        status=403,
+    )
+    assert backend.get(models.Group, display_name="foo")
+
+
+def test_sole_owner_deletes_group(testclient, logged_user, backend):
+    """Test that the only owner of a group can delete it."""
+    group = models.Group(
+        members=[logged_user], display_name="owned_group", owners=[logged_user]
+    )
+    backend.save(group)
+
+    res = testclient.get("/groups/owned_group")
+    res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete", status=302)
+
+    assert backend.get(models.Group, display_name="owned_group") is None

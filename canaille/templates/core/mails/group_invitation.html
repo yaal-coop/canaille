@@ -27,6 +27,9 @@
                     {% trans inviter_name=inviter_name, group_name=group_name %}
                         {{ inviter_name }} has invited you to join the group "{{ group_name }}" on {{ site_name }}. To accept this invitation, click on the "Join Group" button below.
                     {% endtrans %}
+                    {% if as_owner %}
+                        {% trans %}You will be an owner of this group, and you will be able to manage it.{% endtrans %}
+                    {% endif %}
                 </td>
             </tr>
 

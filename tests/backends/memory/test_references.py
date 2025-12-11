@@ -21,3 +21,16 @@ def test_delete_user_with_webauthn_credential(backend, user):
 
     backend.delete(credential)
     assert backend.get(models.WebAuthnCredential, id=credential.id) is None
+
+
+def test_delete_user_owning_group(backend, user, admin, foo_group):
+    """Deleting a user removes it from the owners of its groups."""
+    other = models.User(user_name="other", family_name="Other", emails=["o@o.test"])
+    backend.save(other)
+    foo_group.members = [user, other]
+    foo_group.owners = [user, other]
+    backend.save(foo_group)
+
+    backend.delete(other)
+    backend.reload(foo_group)
+    assert foo_group.owners == [user]

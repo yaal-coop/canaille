@@ -64,6 +64,9 @@ Displays the group edition or creation form.
             {% if "members" in form %}
                 {{ form.members() }}
             {% endif %}
+            {% if "owners" in form %}
+                {{ form.owners() }}
+            {% endif %}
 
             {% if not edited_group %}
                 <div class="ui info visible message">
@@ -73,10 +76,21 @@ Displays the group edition or creation form.
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    {% if edited_group %}
+                    {% if edited_group and edited_group.is_deletable_by(user) %}
                         {% call fui.render_button(form.action, "confirm-delete", class_="ui right floated basic negative button confirm", id="confirm-delete") %}
                             {% trans %}Delete group{% endtrans %}
                         {% endcall %}
+                    {% endif %}
+                    {% if edited_group and user in edited_group.owners %}
+                        {% if edited_group.owner_is_removable_by(user, user) %}
+                            {% call fui.render_button(form.action, "confirm-step-down", class_="ui right floated basic button", id="confirm-step-down") %}
+                                {% trans %}Step down as owner{% endtrans %}
+                            {% endcall %}
+                        {% else %}
+                            <button type="button" class="ui right floated basic button" title="{% trans %}A group must keep at least one owner.{% endtrans %}" disabled>
+                                {% trans %}Step down as owner{% endtrans %}
+                            </button>
+                        {% endif %}
                     {% endif %}
                     {% call fui.render_button(form.action, "edit", class_="ui right floated primary button") %}
                         {% if not edited_group %}
