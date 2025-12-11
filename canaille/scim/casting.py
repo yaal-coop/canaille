@@ -5,6 +5,7 @@ from scim2_models import Meta
 
 from canaille.app import models
 from canaille.backends import Backend
+from canaille.core.endpoints.account import photo_url
 from canaille.scim.models import EnterpriseUser
 from canaille.scim.models import Group
 from canaille.scim.models import User
@@ -65,9 +66,7 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
         else None,
         photos=[
             user_class.Photos(
-                value=url_for(
-                    "core.account.photo", user=user, field="photo", _external=True
-                ),
+                value=photo_url(user),
                 primary=True,
                 type=user_class.Photos.Type.photo,
             )

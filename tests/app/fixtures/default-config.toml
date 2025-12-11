@@ -584,7 +584,7 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 # ADDRESS = "{% if user.formatted_address %}{{ user.formatted_address }}{% endif %}"
 
-# PICTURE = "{% if user.photo %}{{ url_for('core.account.photo', user=user, field='photo', _external=True) }}{% endif %}"
+# PICTURE = "{% if user.photo %}{{ user | photo_url }}{% endif %}"
 
 # WEBSITE = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
 

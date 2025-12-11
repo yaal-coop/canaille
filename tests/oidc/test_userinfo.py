@@ -242,3 +242,15 @@ def test_claim_is_omitted_if_empty(testclient, backend, user):
     data = generate_user_claims(user, default_userinfo_mapping)
 
     assert "email" not in data
+
+
+def test_picture_claim(testclient, backend, user, jpeg_photo):
+    """Test that picture claim is generated when user has a photo."""
+    user.photo = jpeg_photo
+    backend.save(user)
+
+    default_userinfo_mapping = UserInfoMappingSettings().model_dump()
+    data = generate_user_claims(user, default_userinfo_mapping)
+
+    assert "picture" in data
+    testclient.get(data["picture"], status=200)
