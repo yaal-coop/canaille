@@ -314,6 +314,7 @@ sqlite = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "auth-playground" },
     { name = "babel" },
     { name = "beautifulsoup4" },
     { name = "coverage", extra = ["toml"] },
@@ -433,6 +434,7 @@ provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgre
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "auth-playground", specifier = ">=0.1.2" },
     { name = "babel", specifier = ">=2.14.0" },
     { name = "beautifulsoup4", specifier = ">=4.13.4" },
     { name = "coverage", extras = ["toml"], specifier = ">=6.0.0" },
