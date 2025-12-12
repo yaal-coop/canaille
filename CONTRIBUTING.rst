@@ -238,38 +238,11 @@ Documentation translation
 
 .. include:: ../locales/readme.rst
 
-Production Docker image
------------------------
 
-Docker images are automatically built and published by the CI when a new tag is pushed.
+Build packages
+--------------
 
-Build
-~~~~~
-
-.. code-block:: console
-
-    $ docker build -t canaille .
-
-Authenticate
-~~~~~~~~~~~~
-
-.. code-block:: console
-
-    $ docker login --username <hub docker login>
-
-Publish
-~~~~~~~
-
-.. code-block:: console
-
-    $ export CANAILLE_VERSION=$(uv run python -c "from importlib.metadata import version; print(version('canaille'))")
-    $ docker tag canaille:latest "yaalcoop/canaille:latest"
-    $ docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
-    $ docker push yaalcoop/canaille:latest
-    $ docker push yaalcoop/canaille:${CANAILLE_VERSION}
-
-Build a release
----------------
+The CI checks that the build processes are functional with each commit.
 
 Python package
 ~~~~~~~~~~~~~~
@@ -290,21 +263,53 @@ To build a single binary of Canaille, you can use pyinstaller by installing the 
     $ uv sync --group release --all-extras --no-dev
     $ uv run pyinstaller canaille.spec
 
+Docker
+~~~~~~
+
+.. code-block:: console
+
+    $ docker build -t canaille .
+
+Publish packages
+----------------
+
+Python package
+~~~~~~~~~~~~~~
+
+.. code-block:: console
+
+    $ uv publish --publish-url https://test.pypi.org/legacy/
+    $ uv publish
+
+Docker
+~~~~~~
+
+You need to authenticate once on DockerHub.
+
+.. code-block:: console
+
+    $ docker login --username <hub docker login>
+
+Then you can push the images.
+
+.. code-block:: console
+
+    $ export CANAILLE_VERSION=$(uv run python -c "from importlib.metadata import version; print(version('canaille'))")
+    $ docker tag canaille:latest "yaalcoop/canaille:latest"
+    $ docker tag canaille:latest "yaalcoop/canaille:${CANAILLE_VERSION}"
+    $ docker push yaalcoop/canaille:latest
+    $ docker push yaalcoop/canaille:${CANAILLE_VERSION}
+
 Publish a new release
 ---------------------
 
-1. Check that dependencies are up to date with ``uv sync --all-extras --all-groups --upgrade`` and update dependencies accordingly in separated commits;
-2. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``;
-3. Check that the development environments are still working, both the local and the Docker one;
-4. Check that the :ref:`development/changelog:Release notes` section is correctly filled up;
-5. Increase the version number in ``pyproject.toml``;
-6. Commit with ``git commit``;
-7. :ref:`Build the packages <development/contributing:Build a release>` with ``uv build``;
-8. Install from the .whl generated with ``uv pip install <path/to/dist/canaille-x.x.xx-py3-none-any.whl>[front,oidc,postgresql,server,otp,sms]``;
-9. Test creation of a user with ``canaille config dump`` and ``canaille create user --user-name admin --password admin --emails admin@mydomain.example --given-name George --family-name Abitbol`` and ``canaille run``;
-10. Try to connect the user;
-11. Publish the Python package on test PyPI with ``uv publish --publish-url https://test.pypi.org/legacy/``;
-12. Install the test package somewhere with ``pip install --extra-index-url https://test.pypi.org/simple --upgrade "canaille[front,oidc,postgresql,server,otp,sms]"``. Check that everything looks fine;
-13. Publish the Python package on production PyPI ``uv publish``;
-14. Tag the commit with ``git tag --annotate XX.YY.ZZ --message "Release version XX.YY.ZZ"``;
-15. Push the release commit and the new tag on the repository with ``git push --tags``.
+The package building process is took care of by the CI when a git tag is pushed.
+It also publishes the different packages on the different stores.
+
+#. Check that dependencies are up to date with ``uv sync --all-extras --all-groups --upgrade`` and update dependencies accordingly in separated commits;
+#. Check that tests are still green for every supported python version, and that coverage is still at 100%, by running ``uv run tox``. Push and check that the CI is green;
+#. Check that the :ref:`development/changelog:Release notes` section is correctly filled up;
+#. Increase the version number in ``pyproject.toml``;
+#. Commit with ``git commit``;
+#. Tag the commit with ``git tag --annotate XX.YY.ZZ --message "Release version XX.YY.ZZ"``;
+#. Push the release commit and the new tag on the repository with ``git push --tags``.
