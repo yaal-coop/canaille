@@ -96,19 +96,6 @@ def server_jwks(include_inactive=True):
     return jwk.KeySet(key_objs)
 
 
-def get_algorithms_for_key(key):
-    # hotfix for https://github.com/authlib/joserfc/pull/79
-    algorithms = registry.filter_algorithms(key, registry.algorithms.keys())
-
-    # hotfix for https://github.com/authlib/joserfc/pull/80
-    key_dict = key.as_dict()
-    if key_dict.get("kty") == "OKP":
-        crv = key_dict.get("crv")
-        algorithms = [alg for alg in algorithms if alg.name in ("EdDSA", crv)]
-
-    return algorithms
-
-
 def supported_signing_algorithms():
     """Return the list of JWS algorithms the server can sign with.
 
@@ -116,14 +103,7 @@ def supported_signing_algorithms():
     Includes 'none' as allowed by OIDC spec for id_token and userinfo signing.
     """
     keys = server_jwks(include_inactive=False)
-    algorithms = ["none"]
-
-    # hotfix for https://github.com/authlib/joserfc/pull/81
-    for key in keys.keys:  # pragma: no cover
-        for alg in get_algorithms_for_key(key):
-            if alg.name not in algorithms:
-                algorithms.append(alg.name)
-
+    algorithms = ["none"] + [alg.name for alg in registry.filter_algorithms(keys)]
     return algorithms
 
 
