@@ -20,6 +20,7 @@ def sqlite_template_db(tmp_path_factory):
     template_path = template_dir / "template.db"
 
     template_config = {
+        "SECRET_KEY": "template-secret-key",
         "CANAILLE": {
             "DATABASE": "sql",
         },
