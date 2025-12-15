@@ -7,11 +7,22 @@ from .base import CanailleRunner
 
 
 def get_container_runtime() -> str:
-    """Return 'podman' or 'docker', whichever is available."""
-    for cmd in ("podman", "docker"):
+    """Return 'docker' or 'podman', whichever is available."""
+    for cmd in ("docker", "podman"):
         if shutil.which(cmd):
             return cmd
-    raise RuntimeError("Neither podman nor docker found")
+    raise RuntimeError("Neither docker nor podman found")
+
+
+def normalize_image_name(image_name: str, runtime: str) -> str:
+    """Normalize image name for the container runtime.
+
+    Podman requires 'localhost/' prefix to find local images,
+    otherwise it searches remote registries.
+    """
+    if runtime == "podman" and "/" not in image_name:
+        return f"localhost/{image_name}"
+    return image_name
 
 
 class DockerRunner(CanailleRunner):
@@ -27,7 +38,8 @@ class DockerRunner(CanailleRunner):
         database_mode: str = "unknown",
     ):
         self.runtime = get_container_runtime()
-        self.image_name = image_name or self.DEFAULT_IMAGE
+        raw_image = image_name or self.DEFAULT_IMAGE
+        self.image_name = normalize_image_name(raw_image, self.runtime)
         self.containers: list[str] = []
         self.network_host = network_host
         self.database_mode = database_mode
@@ -128,8 +140,9 @@ class DockerRunner(CanailleRunner):
     def prepare(cls, project_root: Path) -> None:
         """Build container image once before tests run."""
         runtime = get_container_runtime()
+        image_name = normalize_image_name(cls.DEFAULT_IMAGE, runtime)
         result = subprocess.run(
-            [runtime, "build", "-t", cls.DEFAULT_IMAGE, str(project_root)],
+            [runtime, "build", "-t", image_name, str(project_root)],
             capture_output=True,
             text=True,
         )
