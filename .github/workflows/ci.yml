@@ -165,7 +165,7 @@ jobs:
   # ============================================================
   build-wheel:
     needs: [tests, style]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -186,7 +186,7 @@ jobs:
 
   build-pyinstaller:
     needs: [tests, style]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -217,7 +217,7 @@ jobs:
 
   build-docker:
     needs: [tests, style]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -414,7 +414,7 @@ jobs:
   publish-pypi:
     needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: pypi
     permissions:
       id-token: write
@@ -431,7 +431,7 @@ jobs:
   publish-github-release:
     needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:
@@ -459,7 +459,7 @@ jobs:
   publish-docker-hub:
     needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
