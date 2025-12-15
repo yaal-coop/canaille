@@ -191,7 +191,7 @@ jobs:
   # BUILD
   # ============================================================
   build-wheel:
-    needs: [tests-latest, tests, style]
+    needs: [tests-latest, tests, minversions, style]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
