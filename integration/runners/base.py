@@ -29,6 +29,10 @@ class CanailleRunner(ABC):
     def cleanup(self) -> None:  # noqa: B027
         """Cleanup any resources created by this runner."""
 
+    @classmethod  # noqa: B027
+    def prepare(cls, project_root: Path) -> None:
+        """Prepare shared resources before tests run (called once by master)."""
+
     @abstractmethod
     def get_server_logs(self, handle: object) -> tuple[str, str]:
         """Get stdout and stderr from a server handle."""

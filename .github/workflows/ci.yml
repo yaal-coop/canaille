@@ -248,9 +248,13 @@ jobs:
   # INTEGRATION
   # ============================================================
   integration-dev:
-    name: integration (dev)
+    name: integration (dev, ${{ matrix.database }})
     needs: [tests, minversions, style]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -263,18 +267,28 @@ jobs:
         run: |
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
 
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
-          uv run pytest integration/ -v --build=dev
+          uv run pytest integration/ -v --build=dev --database=${{ matrix.database }}
 
   integration-package:
-    name: integration (package)
+    name: integration (package, ${{ matrix.database }})
     needs: [build-wheel]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -287,6 +301,12 @@ jobs:
         run: |
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
 
       - name: Download wheel artifact
         uses: actions/download-artifact@v4
@@ -300,12 +320,16 @@ jobs:
         run: |
           uv sync --all-groups --all-extras
           WHEEL=$(ls dist/*.whl | head -1)
-          uv run pytest integration/ -v --build=package:$WHEEL
+          uv run pytest integration/ -v --build=package:$WHEEL --database=${{ matrix.database }}
 
   integration-pyinstaller:
-    name: integration (pyinstaller)
+    name: integration (pyinstaller, ${{ matrix.database }})
     needs: [build-pyinstaller]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -318,6 +342,12 @@ jobs:
         run: |
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
 
       - name: Download PyInstaller artifact
         uses: actions/download-artifact@v4
@@ -333,12 +363,16 @@ jobs:
           FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
-          uv run pytest integration/ -v --build=pyinstaller:dist/canaille
+          uv run pytest integration/ -v --build=pyinstaller:dist/canaille --database=${{ matrix.database }}
 
   integration-docker:
-    name: integration (docker)
+    name: integration (docker, ${{ matrix.database }})
     needs: [build-docker]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -351,6 +385,12 @@ jobs:
         run: |
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
 
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
@@ -366,7 +406,7 @@ jobs:
           FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
-          uv run pytest integration/ -v --build=docker:canaille:integration-test
+          uv run pytest integration/ -v --build=docker:canaille:integration-test --database=${{ matrix.database }}
 
   # ============================================================
   # PUBLISH (only on tags)

@@ -15,6 +15,16 @@ class DevRunner(CanailleRunner):
         if not self.canaille_cmd:
             raise RuntimeError("canaille command not found in PATH")
 
+    @classmethod
+    def get_or_build(
+        cls,
+        build_source: str | None,
+        project_root: Path,
+        tmp_path_factory,
+        database_mode: str = "unknown",
+    ) -> "DevRunner":
+        return cls()
+
     def run_command(
         self, args: list[str], config_path: Path, workdir: Path
     ) -> subprocess.CompletedProcess:

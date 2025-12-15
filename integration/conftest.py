@@ -1,32 +1,63 @@
 import json
-import re
 from pathlib import Path
 
 import httpx
 import portpicker
 import pytest
 
+from integration.databases import get_database_config
+from integration.databases.ldap import create_slapd_server
 from integration.runners import DevRunner
 from integration.runners import DockerRunner
 from integration.runners import PackageRunner
 from integration.runners import PyInstallerRunner
+from integration.utils import extract_csrf_token
+
+RUNNERS = {
+    "dev": DevRunner,
+    "docker": DockerRunner,
+    "package": PackageRunner,
+    "pyinstaller": PyInstallerRunner,
+}
 
 ALL_BUILDS = ["dev", "docker", "package", "pyinstaller"]
+ALL_DATABASES = ["sqlite", "postgresql", "ldap"]
 
-# Cache for session-scoped resources per build mode
-_build_cache: dict[str, dict] = {}
+_cache: dict[str, dict] = {}
+
+
+def _cache_key(build_mode: str, database_mode: str) -> str:
+    return f"{build_mode}|{database_mode}"
 
 
 def parse_build_spec(spec: str) -> tuple[str, str | None]:
-    """Parse a build spec like 'pyinstaller:/path/to/binary' into (build_type, source).
-
-    For docker images with tags like 'docker:myimage:latest', handle multiple colons.
-    """
+    """Parse a build spec like 'pyinstaller:/path/to/binary' into (build_type, source)."""
     if ":" not in spec:
         return spec, None
 
     build_type, _, source = spec.partition(":")
     return build_type, source if source else None
+
+
+def pytest_configure(config):
+    """Prepare shared resources before workers start."""
+    if hasattr(config, "workerinput"):
+        # This is a xdist worker, skip preparation
+        return
+
+    project_root = Path(__file__).parent.parent
+    requested_builds = config.getoption("--build", default=[])
+    if not requested_builds:
+        requested_builds = ALL_BUILDS
+
+    for spec in requested_builds:
+        build_type, build_source = parse_build_spec(spec)
+        if build_source:
+            # Pre-built source provided, no preparation needed
+            continue
+        runner_cls = RUNNERS.get(build_type)
+        if runner_cls:
+            runner_cls.prepare(project_root)
 
 
 def pytest_addoption(parser):
@@ -42,17 +73,24 @@ def pytest_addoption(parser):
         "--build docker:myimage:tag, --build package:canaille[sqlite]. "
         "Default: all builds.",
     )
+    parser.addoption(
+        "--database",
+        action="append",
+        default=[],
+        help="Database backend(s) to test. Can be specified multiple times. "
+        "Options: sqlite, postgresql, ldap. "
+        "Default: all databases.",
+    )
 
 
 def pytest_generate_tests(metafunc):
     if "build_mode" not in metafunc.fixturenames:
         return
 
-    requested = metafunc.config.getoption("--build")
-    if requested:
-        # Parse specs and validate build types
+    requested_builds = metafunc.config.getoption("--build")
+    if requested_builds:
         build_specs = []
-        for spec in requested:
+        for spec in requested_builds:
             build_type, source = parse_build_spec(spec)
             if build_type not in ALL_BUILDS:
                 raise ValueError(
@@ -62,130 +100,106 @@ def pytest_generate_tests(metafunc):
             build_specs.append(spec)
     else:
         build_specs = ALL_BUILDS
-    metafunc.parametrize("build_mode", build_specs)
+
+    requested_databases = metafunc.config.getoption("--database")
+    if requested_databases:
+        for db in requested_databases:
+            if db not in ALL_DATABASES:
+                raise ValueError(
+                    f"Invalid database '{db}'. "
+                    f"Must be one of: {', '.join(ALL_DATABASES)}"
+                )
+        database_specs = requested_databases
+    else:
+        database_specs = ALL_DATABASES
+
+    if "database_mode" in metafunc.fixturenames:
+        metafunc.parametrize(
+            "build_mode,database_mode",
+            [(b, d) for b in build_specs for d in database_specs],
+            ids=[f"{b}-{d}" for b in build_specs for d in database_specs],
+        )
+    else:
+        metafunc.parametrize("build_mode", build_specs)
 
 
 def pytest_sessionfinish(session, exitstatus):
     """Cleanup all cached resources at end of session."""
-    for cache in _build_cache.values():
+    for cache in _cache.values():
         if "runner" in cache:
             if "server_handle" in cache:
                 cache["runner"].stop_server(cache["server_handle"])
             cache["runner"].cleanup()
 
 
-def extract_csrf_token(html: str) -> str:
-    """Extract CSRF token from HTML form."""
-    match = re.search(r'name="csrf_token"[^>]*value="([^"]+)"', html)
-    if match:
-        return match.group(1)
-    match = re.search(r'value="([^"]+)"[^>]*name="csrf_token"', html)
-    if match:
-        return match.group(1)
-    raise ValueError("CSRF token not found in HTML")
+@pytest.fixture(scope="session")
+def slapd_server():
+    """Start a LDAP server for the test session."""
+    server = create_slapd_server()
+    try:
+        yield server
+    finally:
+        server.stop()
 
 
-def _get_or_create_runner(build_spec, tmp_path_factory):
-    """Get or create a runner for the given build spec."""
-    build_type, build_source = parse_build_spec(build_spec)
+@pytest.fixture
+def canaille_runner(build_mode, database_mode, tmp_path_factory):
+    """Build and return the appropriate Canaille runner."""
+    build_type, build_source = parse_build_spec(build_mode)
+    key = _cache_key(build_mode, database_mode)
 
-    if build_spec not in _build_cache:
-        _build_cache[build_spec] = {}
+    if key not in _cache:
+        _cache[key] = {}
 
-    cache = _build_cache[build_spec]
-
+    cache = _cache[key]
     if "runner" not in cache:
         project_root = Path(__file__).parent.parent
-
-        if build_type == "pyinstaller":
-            if build_source:
-                binary_path = Path(build_source).resolve()
-                if binary_path.is_dir():
-                    binary_path = binary_path / "canaille"
-                cache["runner"] = PyInstallerRunner(binary_path)
-            else:
-                # Build from source
-                dist_dir = tmp_path_factory.mktemp(f"dist-{build_type}")
-                cache["runner"] = PyInstallerRunner.build(project_root, dist_dir)
-
-        elif build_type == "docker":
-            if build_source:
-                # Use pre-built image
-                cache["runner"] = DockerRunner(image_name=build_source)
-            else:
-                # Build from source
-                cache["runner"] = DockerRunner.build(project_root)
-
-        elif build_type == "package":
-            venv_path = tmp_path_factory.mktemp(f"venv-{build_type}")
-            if build_source:
-                source_path = Path(build_source)
-                if source_path.suffix == ".whl":
-                    # Use pre-built wheel
-                    cache["runner"] = PackageRunner.from_wheel(source_path, venv_path)
-                else:
-                    # Assume it's a package spec like "canaille[sqlite,front]"
-                    cache["runner"] = PackageRunner.from_package(
-                        build_source, venv_path
-                    )
-            else:
-                # Build from source
-                dist_dir = tmp_path_factory.mktemp(f"dist-{build_type}")
-                cache["runner"] = PackageRunner.build(project_root, dist_dir, venv_path)
-
-        else:  # dev
-            cache["runner"] = DevRunner()
+        runner_cls = RUNNERS[build_type]
+        cache["runner"] = runner_cls.get_or_build(
+            build_source, project_root, tmp_path_factory, database_mode
+        )
 
     return cache["runner"]
 
 
 @pytest.fixture
-def canaille_runner(build_mode, tmp_path_factory):
-    """Build and return the appropriate Canaille runner."""
-    return _get_or_create_runner(build_mode, tmp_path_factory)
-
-
-@pytest.fixture
-def workdir(tmp_path_factory, build_mode):
+def workdir(tmp_path_factory, build_mode, database_mode):
     """Create a temporary working directory for all subprocess calls."""
-    if build_mode not in _build_cache:
-        _build_cache[build_mode] = {}
+    key = _cache_key(build_mode, database_mode)
+    if key not in _cache:
+        _cache[key] = {}
 
-    cache = _build_cache[build_mode]
+    cache = _cache[key]
     if "workdir" not in cache:
         build_type, _ = parse_build_spec(build_mode)
-        cache["workdir"] = tmp_path_factory.mktemp(f"workdir-{build_type}")
+        cache["workdir"] = tmp_path_factory.mktemp(
+            f"workdir-{build_type}-{database_mode}"
+        )
 
     return cache["workdir"]
 
 
 @pytest.fixture
-def config_path(workdir, build_mode):
-    """Create a minimal configuration file with a temporary SQLite database."""
-    cache = _build_cache[build_mode]
+def config_path(workdir, build_mode, database_mode, request):
+    """Create configuration file for the appropriate database backend."""
+    key = _cache_key(build_mode, database_mode)
+    cache = _cache[key]
     build_type, _ = parse_build_spec(build_mode)
 
     if "config_path" not in cache:
         config_file = workdir / "config.toml"
 
-        if build_type == "docker":
-            db_path = f"{DockerRunner.CONTAINER_MOUNT}/canaille.sqlite"
-        else:
-            db_path = workdir / "canaille.sqlite"
-
-        config_file.write_text(
-            f"""\
+        base_config = """\
 SECRET_KEY = "integration-test-secret-key"
 TRUSTED_HOSTS = ["localhost", "127.0.0.1"]
 
 [CANAILLE]
-DATABASE = "sql"
 JAVASCRIPT = false
 HTMX = false
-
-[CANAILLE_SQL]
-DATABASE_URI = "sqlite:///{db_path}"
 """
+        db_config = get_database_config(database_mode)
+        config_file.write_text(
+            base_config + db_config.get_config(workdir, build_type, request)
         )
         cache["config_path"] = config_file
 
@@ -193,18 +207,20 @@ DATABASE_URI = "sqlite:///{db_path}"
 
 
 @pytest.fixture
-def installed_database(canaille_runner, config_path, workdir, build_mode):
+def installed_database(
+    canaille_runner, config_path, workdir, build_mode, database_mode
+):
     """Initialize the database with install and migrations."""
-    cache = _build_cache[build_mode]
+    key = _cache_key(build_mode, database_mode)
+    cache = _cache[key]
 
     if "installed_database" not in cache:
         result = canaille_runner.run_command(["install"], config_path, workdir)
         if result.returncode != 0:
             pytest.fail(f"Install failed:\n{result.stdout}\n{result.stderr}")
 
-        result = canaille_runner.run_command(["db", "upgrade"], config_path, workdir)
-        if result.returncode != 0:
-            pytest.fail(f"DB upgrade failed:\n{result.stdout}\n{result.stderr}")
+        db_config = get_database_config(database_mode)
+        db_config.setup(canaille_runner, config_path, workdir)
 
         cache["installed_database"] = True
 
@@ -212,25 +228,32 @@ def installed_database(canaille_runner, config_path, workdir, build_mode):
 
 
 @pytest.fixture
-def user_data(canaille_runner, config_path, workdir, installed_database, build_mode):
+def user_data(
+    canaille_runner, config_path, workdir, installed_database, build_mode, database_mode
+):
     """Create a regular user via CLI and return the JSON output."""
-    cache = _build_cache[build_mode]
+    key = _cache_key(build_mode, database_mode)
+    cache = _cache[key]
 
     if "user_data" not in cache:
+        build_type, _ = parse_build_spec(build_mode)
+        username = f"testuser-{build_type}"
         result = canaille_runner.run_command(
             [
                 "create",
                 "user",
                 "--user-name",
-                "testuser",
+                username,
                 "--password",
                 "testpassword123",
                 "--emails",
-                "test@example.com",
+                f"test-{build_type}@example.com",
                 "--given-name",
                 "Test",
                 "--family-name",
                 "User",
+                "--formatted-name",
+                "Test User",
             ],
             config_path,
             workdir,
@@ -239,30 +262,38 @@ def user_data(canaille_runner, config_path, workdir, installed_database, build_m
             pytest.fail(f"User creation failed:\n{result.stdout}\n{result.stderr}")
 
         cache["user_data"] = json.loads(result.stdout)
+        cache["user_data"]["login"] = username
 
     return cache["user_data"]
 
 
 @pytest.fixture
-def admin_data(canaille_runner, config_path, workdir, installed_database, build_mode):
+def admin_data(
+    canaille_runner, config_path, workdir, installed_database, build_mode, database_mode
+):
     """Create an admin user via CLI and return the JSON output."""
-    cache = _build_cache[build_mode]
+    key = _cache_key(build_mode, database_mode)
+    cache = _cache[key]
 
     if "admin_data" not in cache:
+        build_type, _ = parse_build_spec(build_mode)
+        username = f"admin-{build_type}"
         result = canaille_runner.run_command(
             [
                 "create",
                 "user",
                 "--user-name",
-                "admin",
+                username,
                 "--password",
                 "adminpassword123",
                 "--emails",
-                "admin@example.com",
+                f"admin-{build_type}@example.com",
                 "--given-name",
                 "Admin",
                 "--family-name",
                 "User",
+                "--formatted-name",
+                "Admin User",
             ],
             config_path,
             workdir,
@@ -271,16 +302,24 @@ def admin_data(canaille_runner, config_path, workdir, installed_database, build_
             pytest.fail(f"Admin creation failed:\n{result.stdout}\n{result.stderr}")
 
         cache["admin_data"] = json.loads(result.stdout)
+        cache["admin_data"]["login"] = username
 
     return cache["admin_data"]
 
 
 @pytest.fixture
 def canaille_server(
-    canaille_runner, config_path, workdir, user_data, admin_data, build_mode
+    canaille_runner,
+    config_path,
+    workdir,
+    user_data,
+    admin_data,
+    build_mode,
+    database_mode,
 ):
     """Start the canaille server and yield the base URL."""
-    cache = _build_cache[build_mode]
+    key = _cache_key(build_mode, database_mode)
+    cache = _cache[key]
 
     if "server_url" not in cache:
         host = "127.0.0.1"
@@ -315,7 +354,7 @@ def logged_admin_client(canaille_server, admin_data):
 
         response = client.post(
             "/login",
-            data={"login": "admin", "csrf_token": csrf_token},
+            data={"login": admin_data["login"], "csrf_token": csrf_token},
         )
         csrf_token = extract_csrf_token(response.text)
 
