@@ -98,6 +98,9 @@ def test_get(testclient, backend, client, user, client_jwk):
         "userinfo_encrypted_response_enc": None,
         "userinfo_signed_response_alg": None,
         "require_signed_request_object": None,
+        "post_logout_redirect_uris": [
+            "https://client.test/disconnected",
+        ],
     }
 
 
@@ -209,6 +212,9 @@ def test_update(testclient, backend, client, user, client_jwk):
         "userinfo_encrypted_response_enc": None,
         "userinfo_signed_response_alg": None,
         "require_signed_request_object": False,
+        "post_logout_redirect_uris": [
+            "https://client.test/disconnected",
+        ],
     }
 
     assert client.redirect_uris == ["https://newname.example.test/callback"]

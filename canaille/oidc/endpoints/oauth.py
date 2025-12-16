@@ -8,40 +8,32 @@ from authlib.oidc.core.errors import ConsentRequiredError
 from flask import Blueprint
 from flask import abort
 from flask import current_app
-from flask import flash
 from flask import g
 from flask import jsonify
 from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
-from joserfc import jwt
-from joserfc.errors import JoseError
-from werkzeug.datastructures import CombinedMultiDict
 from werkzeug.exceptions import HTTPException
 
 from canaille.app import models
 from canaille.app.flask import cache
 from canaille.app.flask import csrf
-from canaille.app.i18n import gettext as _
-from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import redirect_to_next_auth_step
 
-from ..jose import registry
 from ..jose import server_jwks
 from ..provider import ClientConfigurationEndpoint
 from ..provider import ClientRegistrationEndpoint
+from ..provider import EndSessionEndpoint
 from ..provider import IntrospectionEndpoint
 from ..provider import RevocationEndpoint
 from ..provider import UserInfoEndpoint
 from ..provider import authorization
-from ..provider import get_issuer
 from ..utils import SCOPE_DETAILS
 from .forms import AuthorizeForm
-from .forms import LogoutForm
 from .well_known import openid_configuration
 
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
@@ -455,114 +447,7 @@ def userinfo():
 @bp.route("/end_session", methods=["GET", "POST"])
 @csrf.exempt
 def end_session():
-    data = CombinedMultiDict((request.args, request.form))
-    user = g.session and g.session.user
-
-    if not user:
-        return redirect(url_for("core.account.index"))
-
-    form = LogoutForm(request.form)
-    form.action = url_for("oidc.endpoints.end_session_submit")
-
-    client = None
-    valid_uris = []
-
-    if "client_id" in data:
-        client = Backend.instance.get(models.Client, client_id=data["client_id"])
-        if client and client.post_logout_redirect_uris:
-            valid_uris = client.post_logout_redirect_uris
-
-    if (
-        not data.get("id_token_hint")
-        or (data.get("logout_hint") and data["logout_hint"] != user.user_name)
-    ) and not session.get("end_session_confirmation"):
-        session["end_session_data"] = data
-        return render_template("oidc/logout.html", form=form, client=client, menu=False)
-
-    if data.get("id_token_hint"):
-        try:
-            id_token = jwt.decode(
-                data["id_token_hint"],
-                server_jwks(),
-                registry=registry,
-            )
-        except JoseError as exc:
-            return jsonify(
-                {
-                    "status": "error",
-                    "message": str(exc),
-                }
-            )
-
-        if not id_token.claims["iss"] == get_issuer():
-            return jsonify(
-                {
-                    "status": "error",
-                    "message": "id_token_hint has not been issued here",
-                }
-            )
-
-        if "client_id" in data:
-            if (
-                data["client_id"] != id_token.claims["aud"]
-                and data["client_id"] not in id_token.claims["aud"]
-            ):
-                return jsonify(
-                    {
-                        "status": "error",
-                        "message": "id_token audience and client_id don't match",
-                    }
-                )
-
-        else:
-            client_ids = (
-                id_token.claims["aud"]
-                if isinstance(id_token.claims["aud"], list)
-                else [id_token.claims["aud"]]
-            )
-            for client_id in client_ids:
-                client = Backend.instance.get(models.Client, client_id=client_id)
-                if client:
-                    valid_uris.extend(client.post_logout_redirect_uris or [])
-
-        if user.user_name != id_token.claims["sub"] and not session.get(
-            "end_session_confirmation"
-        ):
-            session["end_session_data"] = data
-            return render_template(
-                "oidc/logout.html", form=form, client=client, menu=False
-            )
-
-    logout_user()
-
-    if "end_session_confirmation" in session:
-        del session["end_session_confirmation"]
-
-    if (url := data.get("post_logout_redirect_uri")) and data[
-        "post_logout_redirect_uri"
-    ] in valid_uris:
-        if "state" in data:
-            url = add_params_to_uri(url, dict(state=data["state"]))
-        return redirect(url)
-
-    flash(_("You have been disconnected."), "success")
-    return redirect(url_for("core.account.index"))
-
-
-@bp.route("/end_session_confirm", methods=["POST"])
-@csrf.exempt
-def end_session_submit():
-    form = LogoutForm(request.form)
-    form.validate()
-
-    data = session["end_session_data"]
-    del session["end_session_data"]
-
-    if request.form["answer"] == "logout":
-        session["end_session_confirmation"] = True
-        url = add_params_to_uri(url_for("oidc.endpoints.end_session"), data)
-        return redirect(url)
-
-    flash(_("You have not been disconnected."), "info")
-
-    return redirect(url_for("core.account.index"))
+    current_app.logger.debug("end_session endpoint request: %s", request.args)
+    response = authorization.create_endpoint_response(EndSessionEndpoint.ENDPOINT_NAME)
+    current_app.logger.debug("end_session endpoint response: %s", response)
+    return response
