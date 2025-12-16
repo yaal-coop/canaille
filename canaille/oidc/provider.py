@@ -18,10 +18,14 @@ from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
+from authlib.oidc import rpinitiated
 from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
+from flask import flash
 from flask import g
+from flask import redirect
 from flask import request
+from flask import session
 from flask import url_for
 from joserfc import jwt
 from joserfc.errors import JoseError
@@ -29,6 +33,9 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.app.flask import cache
+from canaille.app.i18n import gettext as _
+from canaille.app.session import logout_user
+from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 
@@ -606,6 +613,41 @@ class UserInfoEndpoint(oidc_core.UserInfoEndpoint):
         return server_jwks(include_inactive=False).as_dict()
 
 
+class EndSessionEndpoint(rpinitiated.EndSessionEndpoint):
+    def get_client_by_id(self, client_id):
+        return Backend.instance.get(models.Client, client_id=client_id)
+
+    def get_server_jwks(self):
+        return server_jwks(include_inactive=True).as_dict()
+
+    def end_session(self, request):
+        session.pop("logout_confirmation")
+        logout_user()
+
+    def create_end_session_response(self, request):
+        flash(_("You have been disconnected"), "success")
+        return redirect(url_for("core.account.index"))
+
+    def need_confirmation_response(self):
+        return session.get("logout_confirmation", False)
+
+    def create_confirmation_response(self, request, client, redirect_uri, ui_locales):
+        from canaille.oidc.endpoints import LogoutForm
+
+        form = LogoutForm(request.form)
+        if not request.form or not form.validate():
+            return render_template(
+                "oidc/logout.html", form=form, client=client, menu=False
+            )
+
+        if request.form["answer"] == "logout":
+            session["logout_confirmation"] = True
+            return redirect(request.uri)
+
+        flash(_("You have not been disconnected"), "info")
+        return redirect(url_for("core.account.index"))
+
+
 class IssuerParameter(rfc9207.IssuerParameter):
     def get_issuer(self) -> str:
         return get_issuer()
@@ -712,6 +754,7 @@ def setup_oauth(app):
                 rfc7591.ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
+                rpinitiated.ClientMetadataClaims,
             ]
         )
     )
@@ -721,9 +764,11 @@ def setup_oauth(app):
                 rfc7591.ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
+                rpinitiated.ClientMetadataClaims,
             ]
         )
     )
+    authorization.register_endpoint(EndSessionEndpoint())
 
     authorization.register_extension(IssuerParameter())
     authorization.register_extension(JWTAuthenticationRequest())
