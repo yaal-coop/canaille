@@ -12,6 +12,8 @@ Added
 
 Fixed
 ^^^^^
+- LDAP: OTP feature is now disabled when the OTP module is not loaded in OpenLDAP.
+- LDAP: ``PostReadControl`` only requests attributes that exist in the LDAP schema.
 - Password reset no longer bypasses MFA.
 - Usernames don't appear in the photos URLs.
 - Include missing Babel data in the pyinstaller binary. :issue:`318`

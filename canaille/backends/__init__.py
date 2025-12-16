@@ -255,6 +255,10 @@ class Backend:
         """Indicate whether the backend supports locking user accounts."""
         raise NotImplementedError()
 
+    def has_otp_support(self) -> bool:
+        """Indicate whether the backend supports OTP attributes."""
+        raise NotImplementedError()
+
     def register_models(self, app) -> None:
         import inspect
 

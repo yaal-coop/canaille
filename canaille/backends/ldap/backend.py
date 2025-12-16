@@ -221,6 +221,14 @@ class LDAPBackend(Backend):
         except ldap.SERVER_DOWN:  # pragma: no cover
             return False
 
+    def has_otp_support(self) -> bool:
+        from .ldapobject import LDAPObject
+
+        try:
+            return "oathSecret" in LDAPObject.ldap_object_attributes()
+        except ldap.SERVER_DOWN:  # pragma: no cover
+            return False
+
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:
             if current_lockout_delay := user.get_intruder_lockout_delay():
@@ -423,6 +431,8 @@ class LDAPBackend(Backend):
         return {attr: replace_attr(attr, value) for attr, value in state.items()}
 
     def do_save(self, instance) -> None:
+        from .ldapobject import LDAPObject
+
         current_object_classes = instance.get_ldap_attribute("objectClass") or []
         instance.set_ldap_attribute(
             "objectClass",
@@ -430,10 +440,13 @@ class LDAPBackend(Backend):
         )
 
         # PostReadControl allows to read the updated object attributes on creation/edition
+        available_attrs = LDAPObject.ldap_object_attributes()
         attributes = ["objectClass"] + [
             instance.python_attribute_to_ldap(name)
             for name in instance.attributes
-            if instance.attribute_map and name in instance.attribute_map
+            if instance.attribute_map
+            and name in instance.attribute_map
+            and instance.python_attribute_to_ldap(name) in available_attrs
         ]
         read_post_control = PostReadControl(criticality=True, attrList=attributes)
 

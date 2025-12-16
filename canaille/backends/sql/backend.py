@@ -101,6 +101,9 @@ class SQLBackend(Backend):
     def has_account_lockability(self) -> bool:
         return True
 
+    def has_otp_support(self) -> bool:
+        return True
+
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:
             if current_lockout_delay := user.get_intruder_lockout_delay():
