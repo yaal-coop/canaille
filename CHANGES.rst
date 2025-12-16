@@ -1,3 +1,10 @@
+[unreleased]
+-----------
+
+Added
+^^^^^
+- OIDC RP-Initiated Logout support. :issue:`157`
+
 [0.2.7] - 2026-04-14
 --------------------
 

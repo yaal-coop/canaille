@@ -74,6 +74,9 @@ def test_client_registration_with_authentication_jwt_token(
             "https://client.test/callback",
             "https://client.test/callback2",
         ],
+        "post_logout_redirect_uris": [
+            "https://client.test/logout_callback",
+        ],
         "registration_access_token": mock.ANY,
         "registration_client_uri": f"http://canaille.test/oauth/register/{client_id}",
         "token_endpoint_auth_method": "client_secret_basic",

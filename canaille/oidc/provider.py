@@ -19,10 +19,14 @@ from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
+from authlib.oidc import rpinitiated
 from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
+from flask import flash
 from flask import g
+from flask import redirect
 from flask import request
+from flask import session
 from flask import url_for
 from joserfc import jwt
 from joserfc.errors import JoseError
@@ -30,8 +34,11 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.app.flask import cache
+from canaille.app.i18n import gettext as _
+from canaille.app.session import logout_user
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
+from canaille.oidc.utils import is_trusted_domain
 
 from .jose import build_client_management_token
 from .jose import get_alg_for_key
@@ -559,12 +566,6 @@ class ClientRegistrationEndpoint(
 
     def save_client(self, client_info, client_metadata, request):
         client = models.Client(
-            # this won't be needed when OIDC RP Initiated Logout is
-            # directly implemented in authlib:
-            # https://gitlab.com/yaal/canaille/-/issues/157
-            post_logout_redirect_uris=request.payload.data.get(
-                "post_logout_redirect_uris"
-            ),
             **self.client_convert_data(**client_info, **client_metadata),
         )
         Backend.instance.save(client)
@@ -646,6 +647,44 @@ class UserInfoEndpoint(oidc_core.UserInfoEndpoint):
 
     def resolve_private_key(self):
         return server_jwks(include_inactive=False)
+
+
+class EndSessionEndpoint(rpinitiated.EndSessionEndpoint):
+    def get_client_by_id(self, client_id):
+        return Backend.instance.get(models.Client, client_id=client_id)
+
+    def get_server_jwks(self):
+        return server_jwks(include_inactive=True).as_dict()
+
+    def get_server_registry(self):
+        return registry
+
+    def end_session(self, end_session_request):
+        session.pop("logout_confirmation", None)
+        logout_user()
+
+    def create_end_session_response(self, request):
+        flash(_("You have been disconnected"), "success")
+        response = redirect(url_for("core.account.index"))
+        return (response.status_code, response.get_data(as_text=True), response.headers)
+
+    def was_confirmation_given(self):
+        return session.get("logout_confirmation", False)
+
+    def is_confirmation_needed(self, request, redirect_uri, client, logout_hint):
+        user = g.session and g.session.user
+        if not user:
+            return False
+        return logout_hint and logout_hint != user.user_name
+
+    def is_post_logout_redirect_uri_legitimate(
+        self,
+        request,
+        post_logout_redirect_uri,
+        client,
+        logout_hint,
+    ):
+        return is_trusted_domain(post_logout_redirect_uri)
 
 
 class IssuerParameter(rfc9207.IssuerParameter):
@@ -751,12 +790,14 @@ def setup_oauth(app):
     authorization.register_endpoint(UserInfoEndpoint(resource_protector=require_oauth))
     authorization.register_endpoint(IntrospectionEndpoint)
     authorization.register_endpoint(RevocationEndpoint)
+    authorization.register_endpoint(EndSessionEndpoint)
     authorization.register_endpoint(
         ClientRegistrationEndpoint(
             claims_classes=[
                 rfc7591.ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
+                rpinitiated.ClientMetadataClaims,
             ]
         )
     )
@@ -766,6 +807,7 @@ def setup_oauth(app):
                 rfc7591.ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
+                rpinitiated.ClientMetadataClaims,
             ]
         )
     )

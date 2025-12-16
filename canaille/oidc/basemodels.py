@@ -3,12 +3,10 @@ from typing import ClassVar
 
 # keep 'List' instead of 'list' for audiences to not break py310 with the memory backend
 from typing import List  # noqa: UP035
-from urllib.parse import urlparse
-
-from flask import current_app
 
 from canaille.backends.models import Model
 from canaille.core.models import User
+from canaille.oidc.utils import is_trusted_domain
 
 
 class Client(Model):
@@ -32,27 +30,7 @@ class Client(Model):
         - Subdomain match: "example.com" also matches "sub.example.com"
         - Wildcard match: ".example.com" matches "example.com" and all its subdomains
         """
-        if not self.client_uri:
-            return False
-
-        parsed = urlparse(self.client_uri)
-        hostname = parsed.hostname
-        if not hostname:
-            return False
-
-        trusted_domains = current_app.config["CANAILLE_OIDC"]["TRUSTED_DOMAINS"]
-        for domain in trusted_domains:
-            # Wildcard match: .example.com matches example.com and all subdomains
-            if domain.startswith("."):
-                domain_without_dot = domain[1:]
-                if hostname == domain_without_dot or hostname.endswith(domain):
-                    return True
-
-            # Exact match only for non-wildcard domains
-            elif hostname == domain:
-                return True
-
-        return False
+        return is_trusted_domain(self.client_uri)
 
     # keep 'List' instead of 'list' do not break py310 with the memory backend
     audience: List["Client"] = []  # noqa: UP006
