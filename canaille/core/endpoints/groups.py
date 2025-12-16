@@ -14,6 +14,7 @@ from flask import url_for
 from canaille.app import b64_to_obj
 from canaille.app import models
 from canaille.app.flask import render_htmx_template
+from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
@@ -107,6 +108,7 @@ def group(user, group):
         request.method == "GET"
         or request.form.get("action") == "edit"
         or request.form.get("page")
+        or request_is_partial()
     ):
         return edit_group(group)
 
@@ -140,7 +142,7 @@ def edit_group(group):
 
     if (
         request.form
-        and request.form.get("action") == "edit"
+        and (request.form.get("action") == "edit" or request_is_partial())
         and not request.form.get("page")
     ):
         if form.validate():
