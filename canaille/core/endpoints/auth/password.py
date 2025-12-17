@@ -18,7 +18,6 @@ from canaille.backends import Backend
 from canaille.core.auth import auth_step
 from canaille.core.auth import get_user_from_login
 from canaille.core.auth import redirect_to_next_auth_step
-from canaille.core.captcha import generate_captcha
 from canaille.core.captcha import should_show_captcha_on_login
 
 from ...mails import send_password_initialization_mail
@@ -61,6 +60,8 @@ def password():
             form = make_password_form(show_captcha)
 
         if show_captcha:
+            from canaille.core.captcha import generate_captcha
+
             captcha_data = generate_captcha()
             form.captcha_token.data = captcha_data["token"]
 

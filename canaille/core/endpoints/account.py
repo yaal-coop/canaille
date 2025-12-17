@@ -163,6 +163,9 @@ def about():
 @bp.route("/captcha-audio/<token>")
 def captcha_audio(token):
     """Serve audio CAPTCHA."""
+    if not current_app.features.has_captcha:  # pragma: no cover
+        abort(404)
+
     session_key = f"captcha_{token}"
     text = session.get(session_key)
 
