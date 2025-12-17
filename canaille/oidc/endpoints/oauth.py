@@ -57,6 +57,14 @@ def http_error_handler(error):
     }, error.code
 
 
+@bp.errorhandler(Exception)
+def internal_error_handler(error):
+    return {
+        "error": "internal_server_error",
+        "error_description": str(error),
+    }, 500
+
+
 @bp.before_request
 def extract_ui_locales():
     """Extract OIDC ui_locales parameter for locale selection."""

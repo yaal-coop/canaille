@@ -671,3 +671,23 @@ def test_client_registration_with_existing_client_id(testclient, backend, client
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
     assert res.json["error"] == "access_denied"
+
+
+def test_client_registration_internal_error_returns_json(testclient, backend):
+    """Internal server errors on OIDC endpoints should return JSON, not HTML."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Test Client",
+    }
+
+    with mock.patch(
+        "canaille.oidc.endpoints.oauth.authorization.create_endpoint_response",
+        side_effect=RuntimeError("Unexpected internal error"),
+    ):
+        res = testclient.post_json("/oauth/register", payload, status=500)
+
+    assert res.content_type == "application/json"
+    assert res.json["error"] == "internal_server_error"
+    assert "error_description" in res.json
