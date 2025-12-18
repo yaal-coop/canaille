@@ -620,13 +620,14 @@ class EndSessionEndpoint(rpinitiated.EndSessionEndpoint):
     def get_server_jwks(self):
         return server_jwks(include_inactive=True).as_dict()
 
-    def end_session(self, request):
-        session.pop("logout_confirmation")
+    def end_session(self, request, id_token_claims):
+        session.pop("logout_confirmation", None)
         logout_user()
 
     def create_end_session_response(self, request):
         flash(_("You have been disconnected"), "success")
-        return redirect(url_for("core.account.index"))
+        response = redirect(url_for("core.account.index"))
+        return (response.status_code, response.get_data(as_text=True), response.headers)
 
     def need_confirmation_response(self):
         return session.get("logout_confirmation", False)
@@ -748,6 +749,7 @@ def setup_oauth(app):
     authorization.register_endpoint(UserInfoEndpoint(resource_protector=require_oauth))
     authorization.register_endpoint(IntrospectionEndpoint)
     authorization.register_endpoint(RevocationEndpoint)
+    authorization.register_endpoint(EndSessionEndpoint)
     authorization.register_endpoint(
         ClientRegistrationEndpoint(
             claims_classes=[
@@ -768,7 +770,6 @@ def setup_oauth(app):
             ]
         )
     )
-    authorization.register_endpoint(EndSessionEndpoint())
 
     authorization.register_extension(IssuerParameter())
     authorization.register_extension(JWTAuthenticationRequest())
