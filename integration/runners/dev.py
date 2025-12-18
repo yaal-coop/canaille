@@ -22,6 +22,7 @@ class DevRunner(CanailleRunner):
         project_root: Path,
         tmp_path_factory,
         database_mode: str = "unknown",
+        extras: str | None = None,
     ) -> "DevRunner":
         return cls()
 

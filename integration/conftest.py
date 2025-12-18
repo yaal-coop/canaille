@@ -41,6 +41,11 @@ def parse_build_spec(spec: str) -> tuple[str, str | None]:
 
 def pytest_configure(config):
     """Prepare shared resources before workers start."""
+    config.addinivalue_line(
+        "markers",
+        "requires_extra(name): skip test if the specified extra is not in --extras",
+    )
+
     if hasattr(config, "workerinput"):
         # This is a xdist worker, skip preparation
         return
@@ -50,6 +55,8 @@ def pytest_configure(config):
     if not requested_builds:
         requested_builds = ALL_BUILDS
 
+    extras = config.getoption("--extras", default=None)
+
     for spec in requested_builds:
         build_type, build_source = parse_build_spec(spec)
         if build_source:
@@ -57,7 +64,7 @@ def pytest_configure(config):
             continue
         runner_cls = RUNNERS.get(build_type)
         if runner_cls:
-            runner_cls.prepare(project_root)
+            runner_cls.prepare(project_root, extras)
 
 
 def pytest_addoption(parser):
@@ -80,6 +87,14 @@ def pytest_addoption(parser):
         help="Database backend(s) to test. Can be specified multiple times. "
         "Options: sqlite, postgresql, ldap. "
         "Default: all databases.",
+    )
+    parser.addoption(
+        "--extras",
+        default=None,
+        help="Extras to install for package builds (comma-separated). "
+        "The database extra is always added automatically. "
+        "Examples: --extras=server, --extras=front,oidc,server. "
+        "Default: front,oidc,captcha,server.",
     )
 
 
@@ -123,6 +138,15 @@ def pytest_generate_tests(metafunc):
         metafunc.parametrize("build_mode", build_specs)
 
 
+def pytest_runtest_setup(item):
+    """Skip tests marked with requires_extra if the extra is not installed."""
+    for marker in item.iter_markers(name="requires_extra"):
+        extra = marker.args[0]
+        extras = item.config.getoption("--extras") or ""
+        if extras and extra not in extras.split(","):
+            pytest.skip(f"requires '{extra}' extra (not in --extras={extras})")
+
+
 def pytest_sessionfinish(session, exitstatus):
     """Cleanup all cached resources at end of session."""
     for cache in _cache.values():
@@ -143,10 +167,13 @@ def slapd_server():
 
 
 @pytest.fixture
-def canaille_runner(build_mode, database_mode, tmp_path_factory):
+def canaille_runner(build_mode, database_mode, tmp_path_factory, request):
     """Build and return the appropriate Canaille runner."""
     build_type, build_source = parse_build_spec(build_mode)
+    extras = request.config.getoption("--extras")
     key = _cache_key(build_mode, database_mode)
+    if extras is not None:
+        key = f"{key}|{extras}"
 
     if key not in _cache:
         _cache[key] = {}
@@ -156,7 +183,7 @@ def canaille_runner(build_mode, database_mode, tmp_path_factory):
         project_root = Path(__file__).parent.parent
         runner_cls = RUNNERS[build_type]
         cache["runner"] = runner_cls.get_or_build(
-            build_source, project_root, tmp_path_factory, database_mode
+            build_source, project_root, tmp_path_factory, database_mode, extras
         )
 
     return cache["runner"]
@@ -361,6 +388,27 @@ def logged_admin_client(canaille_server, admin_data):
         client.post(
             "/auth/password",
             data={"password": "adminpassword123", "csrf_token": csrf_token},
+        )
+
+        yield client
+
+
+@pytest.fixture
+def logged_user_client(canaille_server, user_data):
+    """Create an httpx client logged in as regular user."""
+    with httpx.Client(base_url=canaille_server, follow_redirects=True) as client:
+        response = client.get("/login")
+        csrf_token = extract_csrf_token(response.text)
+
+        response = client.post(
+            "/login",
+            data={"login": user_data["login"], "csrf_token": csrf_token},
+        )
+        csrf_token = extract_csrf_token(response.text)
+
+        client.post(
+            "/auth/password",
+            data={"password": "testpassword123", "csrf_token": csrf_token},
         )
 
         yield client

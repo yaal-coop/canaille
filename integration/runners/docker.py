@@ -51,6 +51,7 @@ class DockerRunner(CanailleRunner):
         project_root: Path,
         tmp_path_factory,
         database_mode: str = "unknown",
+        extras: str | None = None,
     ) -> "DockerRunner":
         if build_source:
             return cls(
@@ -88,6 +89,7 @@ class DockerRunner(CanailleRunner):
             "-d",
             "--name",
             container_name,
+            "--pids-limit=-1",
             "-v",
             f"{workdir}:{self.CONTAINER_MOUNT}",
             "-e",
@@ -137,7 +139,7 @@ class DockerRunner(CanailleRunner):
         self.containers.clear()
 
     @classmethod
-    def prepare(cls, project_root: Path) -> None:
+    def prepare(cls, project_root: Path, extras: str | None = None) -> None:
         """Build container image once before tests run."""
         runtime = get_container_runtime()
         image_name = normalize_image_name(cls.DEFAULT_IMAGE, runtime)

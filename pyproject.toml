@@ -301,6 +301,8 @@ env_list = [
     "doc",
     "coverage",
     "binary",
+    "integration",
+    "integration-minimal",
 ]
 
 [tool.tox.env_run_base]
@@ -345,6 +347,24 @@ dependency_groups = ["release"]
 uv_sync_flags = ["--all-extras"]
 commands = [
     ["pyinstaller", "--log-level", "WARN", "canaille.spec"],
+]
+
+[tool.tox.env.integration]
+skip_install = true
+runner = "uv-venv-lock-runner"
+dependency_groups = ["dev"]
+uv_sync_flags = ["--all-extras"]
+commands = [
+    ["pytest", "integration/", "--build=package", "{posargs}"],
+]
+
+[tool.tox.env.integration-minimal]
+skip_install = true
+runner = "uv-venv-lock-runner"
+dependency_groups = ["dev"]
+uv_sync_flags = ["--extra", "server", "--extra", "sqlite"]
+commands = [
+    ["pytest", "integration/", "--build=package", "--database=sqlite", "--extras=server,sqlite", "{posargs}"],
 ]
 
 [[tool.babel.mappings]]

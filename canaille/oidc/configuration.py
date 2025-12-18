@@ -2,7 +2,6 @@ from pydantic import model_validator
 
 from canaille.app.configuration import BaseModel
 from canaille.app.configuration import CommaSeparatedList
-from canaille.oidc.jose import has_rsa_key
 
 
 class UserInfoMappingSettings(BaseModel):
@@ -104,9 +103,12 @@ class OIDCSettings(BaseModel):
 
     @model_validator(mode="after")
     def validate_rsa_key_present(self):
-        if self.ACTIVE_JWKS is not None and not has_rsa_key(self.ACTIVE_JWKS):
-            raise ValueError(
-                "OIDC specification requires RS256 support. "
-                "Please configure at least one RSA key in ACTIVE_JWKS."
-            )
+        if self.ACTIVE_JWKS is not None:
+            from canaille.oidc.jose import has_rsa_key
+
+            if not has_rsa_key(self.ACTIVE_JWKS):
+                raise ValueError(
+                    "OIDC specification requires RS256 support. "
+                    "Please configure at least one RSA key in ACTIVE_JWKS."
+                )
         return self

@@ -18,7 +18,7 @@ class PyInstallerRunner(CanailleRunner):
         self.binary_path = binary_path
 
     @classmethod
-    def prepare(cls, project_root: Path) -> None:
+    def prepare(cls, project_root: Path, extras: str | None = None) -> None:
         """Build PyInstaller binary once before tests run."""
         dist_dir = project_root / cls.SHARED_BUILD_DIR
 
@@ -74,6 +74,7 @@ DATABASE_URI = "sqlite:///{dist_dir}/build.sqlite"
         project_root: Path,
         tmp_path_factory,
         database_mode: str = "unknown",
+        extras: str | None = None,
     ) -> "PyInstallerRunner":
         if build_source:
             binary_path = Path(build_source).resolve()

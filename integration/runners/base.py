@@ -30,7 +30,7 @@ class CanailleRunner(ABC):
         """Cleanup any resources created by this runner."""
 
     @classmethod  # noqa: B027
-    def prepare(cls, project_root: Path) -> None:
+    def prepare(cls, project_root: Path, extras: str | None = None) -> None:
         """Prepare shared resources before tests run (called once by master)."""
 
     @abstractmethod
