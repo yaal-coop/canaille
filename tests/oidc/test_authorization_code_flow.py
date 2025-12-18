@@ -559,22 +559,39 @@ def test_consent_with_openid_scope_only(testclient, logged_user, client, backend
         backend.delete(consent)
 
 
-def test_consent_with_no_scope(testclient, logged_user, client, backend):
-    """When no scope is passed to the authentication request, an error message should be displayed."""
+def test_consent_with_no_scope(testclient, logged_user, backend):
+    """When no scope is passed and the client has no scope defined, an error should be displayed."""
+    client_without_scope = models.Client(
+        client_id=gen_salt(24),
+        client_name="Client without scope",
+        contacts=["contact@mydomain.test"],
+        client_uri="https://client.test",
+        redirect_uris=["https://client.test/redirect1"],
+        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_secret=gen_salt(48),
+        grant_types=["authorization_code"],
+        response_types=["code"],
+        scope=[],
+        token_endpoint_auth_method="client_secret_basic",
+    )
+    backend.save(client_without_scope)
+
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
             response_type="code",
-            client_id=client.client_id,
+            client_id=client_without_scope.client_id,
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),
         status=200,
     )
 
-    res.mustcontain("The application Some client does not allow user authentication.")
-
+    res.mustcontain(
+        "The application Client without scope does not allow user authentication."
+    )
     res.mustcontain(no="Accept")
+    backend.delete(client_without_scope)
 
 
 def test_when_consent_already_given_but_for_a_smaller_scope(
@@ -1053,3 +1070,75 @@ def test_rfc9207(testclient, logged_user, client, trusted_client, backend, caplo
     params = parse_qs(urlsplit(res.location).query)
     issuer = params["iss"][0]
     assert issuer == "http://canaille.test"
+
+
+def test_nominal_missing_scope(testclient, logged_user, client, backend):
+    """Test that authorization requests without scope are handled correctly.
+
+    As per RFC6749 §4.1.1 the scope claim is optional
+    https://www.rfc-editor.org/rfc/rfc6749.html#section-4.1.1
+    https://www.rfc-editor.org/rfc/rfc6749.html#section-4.3.2
+
+    When scope is missing, the client scope is used.
+    """
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=200,
+    )
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+    params = parse_qs(urlsplit(res.location).query)
+    code = params["code"][0]
+    authcode = backend.get(models.AuthorizationCode, code=code)
+    assert set(authcode.scope) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
+
+    consents = backend.query(models.Consent, client=client, subject=logged_user)
+    assert set(consents[0].scope) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=code,
+            redirect_uri=client.redirect_uris[0],
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+
+    token = backend.get(models.Token, access_token=access_token)
+    assert set(token.scope) == {
+        "openid",
+        "profile",
+        "email",
+        "groups",
+        "address",
+        "phone",
+    }
+
+    assert res.json["scope"] == "openid email profile groups address phone"
+
+    for consent in consents:
+        backend.delete(consent)

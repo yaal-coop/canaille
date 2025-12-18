@@ -313,6 +313,8 @@ def authorize_consent(redirect_url, now):
 
         form = AuthorizeForm(request.form or None)
         form.action = redirect_url
+        requested_scope = request.values.get("scope")
+        effective_scope = grant.client.get_allowed_scope(requested_scope)
         return render_template(
             "oidc/authorize.html",
             user=user,
@@ -322,6 +324,7 @@ def authorize_consent(redirect_url, now):
             scope_details=SCOPE_DETAILS,
             ignored_scopes=["openid"],
             form=form,
+            effective_scope=effective_scope,
         )
 
     if request.form["answer"] == "logout":

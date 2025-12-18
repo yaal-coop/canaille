@@ -29,7 +29,7 @@ It lists the personal information requested by the application, and offers the u
             {% trans name=client.client_name %}The application {{ name }} is requesting access to:{% endtrans %}
         </h2>
 
-        {% if grant.request.payload.scope is none %}
+        {% if not effective_scope %}
             <div class="ui error message">
                 {% trans application_name=client.client_name %}
                     The application {{ application_name }} does not allow user authentication.
@@ -40,7 +40,7 @@ It lists the personal information requested by the application, and offers the u
             </div>
         {% else %}
             <div class="ui divided items">
-                {% for scope in grant.request.payload.scope.split(" ") %}
+                {% for scope in effective_scope.split(" ") %}
                     {% if scope not in ignored_scopes %}
                         <div class="item">
                             {% if scope in scope_details %}
