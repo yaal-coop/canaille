@@ -68,7 +68,16 @@ class Client(BaseClient, ClientMixin):
     def get_client_id(self):
         return self.client_id
 
-    def get_allowed_scope(self, scope: str) -> str:
+    def get_allowed_scope(self, scope: str | None) -> str:
+        """Return the allowed scope for a given requested scope.
+
+        As per RFC6749 section 3.3, if the client omits the scope parameter,
+        the authorization server uses a pre-defined default value.
+        Here we use the client's configured scope as the default.
+        """
+        if not scope:
+            return util.list_to_scope(self.scope or [])
+
         allowed_scope = [
             scope_piece
             for scope_piece in (self.scope or scope.split())

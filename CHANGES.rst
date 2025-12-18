@@ -20,6 +20,7 @@ Fixed
 - ID token signing now selects a key compatible with the client's ``id_token_signed_response_alg``.
 - OIDC discovery signing algorithm claims are now dynamically computed from server keys. :issue:`323`
 - Explicitly make RSA keys mandatory.
+- When the scope parameter is omitted from authorization requests, the client's configured scope is now used as the default value.
 
 [0.1.0] - 2025-11-13
 --------------------
