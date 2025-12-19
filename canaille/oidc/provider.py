@@ -16,6 +16,7 @@ from authlib.oauth2 import rfc7662
 from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
+from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc.core.grants.util import generate_id_token
@@ -308,19 +309,48 @@ def query_client(client_id):
 
 def save_token(token, request):
     now = datetime.datetime.now(datetime.timezone.utc)
+    scope = token.get("scope", "").split() if token.get("scope") else []
     t = models.Token(
         token_id=gen_salt(48),
         type=token["token_type"],
         access_token=token["access_token"],
         issue_date=now,
         lifetime=token["expires_in"],
-        scope=token["scope"].split(" "),
+        scope=scope,
         client=request.client,
         refresh_token=token.get("refresh_token"),
         subject=request.user,
         audience=request.client.audience,
     )
     Backend.instance.save(t)
+
+
+class BearerTokenGenerator(rfc6750.BearerTokenGenerator):
+    """Custom token generator that handles missing scope parameter.
+
+    Hotfix for https://github.com/authlib/authlib/pull/847
+    Per RFC 6749 Section 3.3, if the client omits the scope parameter,
+    the server should use the client's default scope.
+    """
+
+    @staticmethod
+    def get_allowed_scope(client, scope):
+        scope = client.get_allowed_scope(scope)
+        if scope is None:
+            raise InvalidScopeError()
+        return scope
+
+
+class CanailleAuthorizationServer(AuthorizationServer):
+    """Custom AuthorizationServer that uses our BearerTokenGenerator."""
+
+    def create_bearer_token_generator(self, config):
+        access_token_generator = super().create_bearer_token_generator(config)
+        return BearerTokenGenerator(
+            access_token_generator.access_token_generator,
+            access_token_generator.refresh_token_generator,
+            access_token_generator.expires_generator,
+        )
 
 
 class BearerTokenValidator(rfc6750.BearerTokenValidator):
@@ -627,7 +657,7 @@ class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
         return client.client_metadata.get("require_signed_request_object", False)
 
 
-authorization = AuthorizationServer()
+authorization = CanailleAuthorizationServer()
 require_oauth = ResourceProtector()
 
 
