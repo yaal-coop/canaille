@@ -29,13 +29,17 @@ class DatabaseConfig(Protocol):
 
 def get_database_config(database_mode: str) -> DatabaseConfig:
     """Get the database configuration provider for the given mode."""
-    from integration.databases import ldap as ldap_module
-    from integration.databases import postgresql as postgresql_module
-    from integration.databases import sqlite as sqlite_module
+    if database_mode == "sqlite":
+        from integration.databases import sqlite as sqlite_module
 
-    configs: dict[str, DatabaseConfig] = {
-        "sqlite": sqlite_module.SQLiteConfig(),
-        "postgresql": postgresql_module.PostgreSQLConfig(),
-        "ldap": ldap_module.LDAPConfig(),
-    }
-    return configs[database_mode]
+        return sqlite_module.SQLiteConfig()
+    elif database_mode == "postgresql":
+        from integration.databases import postgresql as postgresql_module
+
+        return postgresql_module.PostgreSQLConfig()
+    elif database_mode == "ldap":
+        from integration.databases import ldap as ldap_module
+
+        return ldap_module.LDAPConfig()
+    else:
+        raise ValueError(f"Unknown database mode: {database_mode}")
