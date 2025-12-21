@@ -27,8 +27,6 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
-      - name: Install Python 3.14
-        run: uv python install 3.14
       - name: Install apt dependencies
         run: |
           sudo apt update
@@ -91,8 +89,6 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
-      - name: Install Python 3.14
-        run: uv python install 3.14
       - name: Install apt dependencies
         run: |
           sudo apt update
@@ -176,8 +172,6 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
-      - name: Install Python 3.14
-        run: uv python install 3.14
       - name: Install apt dependencies
         run: |
           sudo apt update
