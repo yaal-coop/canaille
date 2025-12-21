@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-12-10 21:50+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-12-21 00:09+0100\n"
 "PO-Revision-Date: 2025-12-11 23:00+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -103,11 +103,11 @@ msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 "L'authentification au serveur LDAP a échoué pour l'utilisateur '{user}'"
 
-#: canaille/backends/ldap/backend.py:259
+#: canaille/backends/ldap/backend.py:267
 msgid "Your account has been locked."
 msgstr "Votre compte a été verrouillé."
 
-#: canaille/backends/ldap/backend.py:264
+#: canaille/backends/ldap/backend.py:272
 msgid "You should change your password."
 msgstr "Vous devriez changer votre mot de passe."
 
@@ -117,7 +117,7 @@ msgstr ""
 "Impossible de retrouver l’identifiant avec lequel vous avez tenté de vous "
 "connecter."
 
-#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:947
+#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:1066
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Connexion réussie. Bienvenue %(user)s"
@@ -252,24 +252,24 @@ msgstr ""
 "Vous recevrez sous peu un courriel qui vous permettra de poursuivre votre "
 "inscription."
 
-#: canaille/core/endpoints/account.py:311
-#: canaille/core/endpoints/account.py:334
+#: canaille/core/endpoints/account.py:314
+#: canaille/core/endpoints/account.py:337
 msgid "The registration link that brought you here was invalid."
 msgstr "Le lien qui vous a amené ici est invalide."
 
-#: canaille/core/endpoints/account.py:318
+#: canaille/core/endpoints/account.py:321
 msgid "The registration link that brought you here has expired."
 msgstr "Le lien qui vous a amené ici a expiré."
 
-#: canaille/core/endpoints/account.py:327
+#: canaille/core/endpoints/account.py:330
 msgid "Your account has already been created."
 msgstr "Votre compte a déjà été créé."
 
-#: canaille/core/endpoints/account.py:341
+#: canaille/core/endpoints/account.py:344
 msgid "You are already logged in, you cannot create an account."
 msgstr "Vous êtes déjà connectés, vous ne pouvez pas créer de compte."
 
-#: canaille/core/endpoints/account.py:362 canaille/core/endpoints/forms.py:324
+#: canaille/core/endpoints/account.py:365 canaille/core/endpoints/forms.py:324
 #: canaille/core/endpoints/forms.py:491 canaille/templates/base.html:111
 #: canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
@@ -279,65 +279,65 @@ msgstr "Vous êtes déjà connectés, vous ne pouvez pas créer de compte."
 msgid "Groups"
 msgstr "Groupes"
 
-#: canaille/core/endpoints/account.py:394 canaille/core/endpoints/forms.py:136
+#: canaille/core/endpoints/account.py:397 canaille/core/endpoints/forms.py:136
 #: canaille/core/endpoints/forms.py:285
 msgid "Password and confirmation do not match."
 msgstr "Le mot de passe et sa confirmation ne correspondent pas."
 
-#: canaille/core/endpoints/account.py:426
-#: canaille/core/endpoints/account.py:512
+#: canaille/core/endpoints/account.py:429
+#: canaille/core/endpoints/account.py:515
 msgid "User account creation failed."
 msgstr "La création du compte utilisateur a échoué."
 
-#: canaille/core/endpoints/account.py:431
+#: canaille/core/endpoints/account.py:434
 msgid "Your account has been created successfully."
 msgstr "Votre compte utilisateur a été créé avec succès."
 
-#: canaille/core/endpoints/account.py:446
-#: canaille/core/endpoints/account.py:468
+#: canaille/core/endpoints/account.py:449
+#: canaille/core/endpoints/account.py:471
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "Le lien de confirmation qui vous a amené ici est invalide."
 
-#: canaille/core/endpoints/account.py:453
+#: canaille/core/endpoints/account.py:456
 msgid "The email confirmation link that brought you here has expired."
 msgstr "Le lien de confirmation qui vous a amené ici a expiré."
 
-#: canaille/core/endpoints/account.py:460 canaille/core/endpoints/groups.py:296
-#: canaille/core/endpoints/groups.py:306 canaille/core/endpoints/groups.py:329
+#: canaille/core/endpoints/account.py:463 canaille/core/endpoints/groups.py:298
+#: canaille/core/endpoints/groups.py:308 canaille/core/endpoints/groups.py:331
 msgid "The invitation link that brought you here was invalid."
 msgstr "Le lien d'invitation qui vous a amené ici est invalide."
 
-#: canaille/core/endpoints/account.py:475
+#: canaille/core/endpoints/account.py:478
 msgid "This address email have already been confirmed."
 msgstr "Cette adresse email a déjà été confirmée."
 
-#: canaille/core/endpoints/account.py:482
+#: canaille/core/endpoints/account.py:485
 msgid "This address email is already associated with another account."
 msgstr "Cette adresse email est déjà associée à un autre compte."
 
-#: canaille/core/endpoints/account.py:489
+#: canaille/core/endpoints/account.py:492
 msgid "Your email address have been confirmed."
 msgstr "Votre adresse email a été confirmée."
 
-#: canaille/core/endpoints/account.py:521
+#: canaille/core/endpoints/account.py:524
 msgid "User account creation succeeded."
 msgstr "La création du compte utilisateur a réussi."
 
-#: canaille/core/endpoints/account.py:699
-#: canaille/core/endpoints/account.py:888
+#: canaille/core/endpoints/account.py:611
+#: canaille/core/endpoints/account.py:1007
 msgid "Profile edition failed."
 msgstr "L'édition du profil a échoué."
 
-#: canaille/core/endpoints/account.py:707
-#: canaille/core/endpoints/account.py:906
+#: canaille/core/endpoints/account.py:638
+#: canaille/core/endpoints/account.py:1025
 msgid "Profile updated successfully."
 msgstr "Le profil a été mis à jour avec succès."
 
-#: canaille/core/endpoints/account.py:719
+#: canaille/core/endpoints/account.py:644
 msgid "Email addition failed."
 msgstr "L’ajout de l’adresse email a échoué."
 
-#: canaille/core/endpoints/account.py:725
+#: canaille/core/endpoints/account.py:665
 msgid ""
 "Sending an email to this email address. Please check your inbox and click on "
 "the verification link it contains"
@@ -345,15 +345,16 @@ msgstr ""
 "Un courriel a été envoyé à cette adresse email. Veuillez consulter votre "
 "boîte de réception et cliquer sur le lien de confirmation qu’il contient"
 
-#: canaille/core/endpoints/account.py:739
+#: canaille/core/endpoints/account.py:675
+#: canaille/core/endpoints/account.py:679
 msgid "Email deletion failed."
 msgstr "La suppression de l’adresse email a échoué."
 
-#: canaille/core/endpoints/account.py:742
+#: canaille/core/endpoints/account.py:685
 msgid "The email have been successfully deleted."
 msgstr "L’adresse email a correctement été supprimée."
 
-#: canaille/core/endpoints/account.py:778
+#: canaille/core/endpoints/account.py:761
 msgid ""
 "Sending password initialization link at the user email address. It should be "
 "received within a few minutes."
@@ -361,7 +362,7 @@ msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "courriel. Il devrait arriver d'ici une quelques minutes."
 
-#: canaille/core/endpoints/account.py:791
+#: canaille/core/endpoints/account.py:773
 msgid ""
 "Sending password reset link at the user email address. It should be received "
 "within a few minutes."
@@ -369,32 +370,61 @@ msgstr ""
 "Un lien de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
 "courriel. Il devrait arriver d'ici quelques de minutes."
 
-#: canaille/core/endpoints/account.py:811
+#: canaille/core/endpoints/account.py:791
 msgid "The account has been locked"
 msgstr "Le compte a été verrouillé"
 
-#: canaille/core/endpoints/account.py:822
+#: canaille/core/endpoints/account.py:797
 msgid "The account has been unlocked"
 msgstr "Le compte a été déverrouillé"
 
-#: canaille/core/endpoints/account.py:836
+#: canaille/core/endpoints/account.py:814
 msgid "Authenticator application passcode authentication has been reset"
 msgstr ""
 "L'authentification par application d'authentification a été ré-initialisée"
 
-#: canaille/core/endpoints/account.py:927
+#: canaille/core/endpoints/account.py:853
+#: canaille/core/endpoints/account.py:877
+#: canaille/core/endpoints/account.py:888
+#: canaille/core/endpoints/account.py:900
+#, fuzzy
+#| msgid "Page not found"
+msgid "Credential not found"
+msgstr "Page non trouvée"
+
+#: canaille/core/endpoints/account.py:868
+msgid "All WebAuthn credentials have been removed"
+msgstr ""
+
+#: canaille/core/endpoints/account.py:883
+#, fuzzy
+#| msgid "The client has been created."
+msgid "WebAuthn credential has been removed"
+msgstr "Le client a été créé."
+
+#: canaille/core/endpoints/account.py:895
+msgid "Name cannot be empty"
+msgstr ""
+
+#: canaille/core/endpoints/account.py:905
+#, fuzzy
+#| msgid "Profile updated successfully."
+msgid "Security key renamed successfully"
+msgstr "Le profil a été mis à jour avec succès."
+
+#: canaille/core/endpoints/account.py:1046
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "L'utilisateur %(user)s a bien été supprimé"
 
-#: canaille/core/endpoints/account.py:943
+#: canaille/core/endpoints/account.py:1062
 msgid "Locked users cannot be impersonated."
 msgstr ""
 "Impossible de prendre l’identité d’utilisateurs dont le compte est "
 "verrouillé."
 
-#: canaille/core/endpoints/account.py:995
-#: canaille/core/endpoints/auth/password.py:243
+#: canaille/core/endpoints/account.py:1114
+#: canaille/core/endpoints/auth/password.py:244
 msgid "Your password has been updated successfully"
 msgstr "Votre mot de passe a correctement été mis à jour"
 
@@ -454,7 +484,7 @@ msgstr "Entrez le code de sécurité affiché ci-dessus"
 
 #: canaille/core/endpoints/forms.py:78 canaille/core/endpoints/forms.py:120
 #: canaille/core/endpoints/forms.py:269
-#: canaille/templates/core/profile_settings.html:113
+#: canaille/templates/core/partial/profile_settings_password.html:5
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -484,6 +514,7 @@ msgstr "Nom d'utilisateur"
 #: canaille/templates/core/partial/group-members.html:12
 #: canaille/templates/core/partial/groups.html:6
 #: canaille/templates/core/partial/users.html:12
+#: canaille/templates/core/partials/profile_settings_fido.html:39
 #: canaille/templates/oidc/partial/client_list.html:6
 msgid "Name"
 msgstr "Nom"
@@ -656,53 +687,53 @@ msgstr "Nouvelle adresse e-mail"
 msgid "Passcode"
 msgstr "Code de connexion"
 
-#: canaille/core/endpoints/groups.py:50 canaille/core/endpoints/groups.py:219
+#: canaille/core/endpoints/groups.py:51 canaille/core/endpoints/groups.py:221
 msgid "You are not a member of this group."
 msgstr "Vous n'êtes pas membre de ce groupe."
 
-#: canaille/core/endpoints/groups.py:74
+#: canaille/core/endpoints/groups.py:75
 msgid "Group creation failed."
 msgstr "La création du groupe a échoué."
 
-#: canaille/core/endpoints/groups.py:84
+#: canaille/core/endpoints/groups.py:85
 #, python-format
 msgid "The group %(group)s has been successfully created"
 msgstr "Le groupe %(group)s a bien été créé"
 
-#: canaille/core/endpoints/groups.py:151
+#: canaille/core/endpoints/groups.py:153
 #, python-format
 msgid "The group %(group)s has been successfully edited."
 msgstr "Le groupe %(group)s a bien été modifié."
 
-#: canaille/core/endpoints/groups.py:158
+#: canaille/core/endpoints/groups.py:160
 msgid "Group edition failed."
 msgstr "La modification du groupe a échoué."
 
-#: canaille/core/endpoints/groups.py:188
+#: canaille/core/endpoints/groups.py:190
 #, python-format
 msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
 
-#: canaille/core/endpoints/groups.py:205
+#: canaille/core/endpoints/groups.py:207
 #, python-format
 msgid "The group %(group)s has been successfully deleted"
 msgstr "Le groupe %(group)s a bien été supprimé"
 
-#: canaille/core/endpoints/groups.py:229
+#: canaille/core/endpoints/groups.py:231
 #, python-format
 msgid "You have left %(group)s."
 msgstr "Vous avez quitté %(group)s."
 
-#: canaille/core/endpoints/groups.py:276
+#: canaille/core/endpoints/groups.py:278
 #, python-format
 msgid "An invitation email has been sent to %(email)s."
 msgstr "Une invitation par email a été envoyé à l'adresse %(email)s."
 
-#: canaille/core/endpoints/groups.py:300
+#: canaille/core/endpoints/groups.py:302
 msgid "The group you were invited to no longer exists."
 msgstr "Le groupe auquel vous avez été invité n’existe plus."
 
-#: canaille/core/endpoints/groups.py:312
+#: canaille/core/endpoints/groups.py:314
 #, python-format
 msgid ""
 "You have been invited to join the group '%(group)s'. Please log in to accept "
@@ -711,45 +742,45 @@ msgstr ""
 "Vous avez été invité à joindre le groupe '%(group)s'. Veuillez vous "
 "identifier pour accepter l’invitation."
 
-#: canaille/core/endpoints/groups.py:321
+#: canaille/core/endpoints/groups.py:323
 msgid "This invitation was not sent to you."
 msgstr "Ce lien d’invitation ne vous était pas destiné."
 
-#: canaille/core/endpoints/groups.py:325
+#: canaille/core/endpoints/groups.py:327
 msgid "The invitation link that brought you here has expired."
 msgstr "Le lien d’invitation qui vous a amené ici a expiré."
 
-#: canaille/core/endpoints/groups.py:334
+#: canaille/core/endpoints/groups.py:336
 #, python-format
 msgid "You are already a member of %(group)s."
 msgstr "Vous faites déjà partie du groupe %(group)s."
 
-#: canaille/core/endpoints/groups.py:345
+#: canaille/core/endpoints/groups.py:347
 #, python-format
 msgid "You have successfully joined %(group)s!"
 msgstr "Vous avez rejoint le groupe %(group)s!"
 
-#: canaille/core/endpoints/auth/__init__.py:80
+#: canaille/core/endpoints/auth/__init__.py:82
 #, python-brace-format
 msgid "You switched to {user_name} session."
 msgstr "Vous êtes passé sur la session de {user_name}."
 
-#: canaille/core/endpoints/auth/__init__.py:112
-#: canaille/core/endpoints/auth/password.py:86
-#: canaille/core/endpoints/auth/password.py:98
+#: canaille/core/endpoints/auth/__init__.py:114
+#: canaille/core/endpoints/auth/password.py:87
+#: canaille/core/endpoints/auth/password.py:99
 msgid "Login failed, please check your information"
 msgstr "La connexion a échoué, veuillez vérifier vos informations"
 
-#: canaille/core/endpoints/auth/__init__.py:142
+#: canaille/core/endpoints/auth/__init__.py:144
 #, python-brace-format
 msgid "You have been disconnected from {user_name} account."
 msgstr "Vous avez été déconnecté·e du compte {user_name}."
 
-#: canaille/core/endpoints/auth/__init__.py:148
+#: canaille/core/endpoints/auth/__init__.py:150
 msgid "The session could not be closed."
 msgstr "La session n’a pas pu être close."
 
-#: canaille/core/endpoints/auth/__init__.py:153
+#: canaille/core/endpoints/auth/__init__.py:155
 msgid "All sessions have been closed."
 msgstr "Toutes les sessions ont été closes."
 
@@ -765,6 +796,26 @@ msgstr ""
 msgid "Sending new verification code."
 msgstr "Envoi d’un nouveau code de vérification."
 
+#: canaille/core/endpoints/auth/fido.py:199
+#, python-brace-format
+msgid ""
+"Maximum number of security keys reached ({max}). Please remove one before "
+"adding another."
+msgstr ""
+
+#: canaille/core/endpoints/auth/fido.py:310
+#: canaille/templates/core/partials/profile_settings_fido.html:50
+#, fuzzy
+#| msgid "Security code"
+msgid "My security key"
+msgstr "Code de sécurité"
+
+#: canaille/core/endpoints/auth/fido.py:319
+#, fuzzy
+#| msgid "The token has successfully been revoked."
+msgid "Security key successfully registered."
+msgstr "Le jeton a été révoqué avec succès."
+
 #: canaille/core/endpoints/auth/otp.py:121
 msgid "The passcode you entered is invalid. Please try again."
 msgstr ""
@@ -774,7 +825,7 @@ msgstr ""
 msgid "Authenticator application correctly configured."
 msgstr "L’application d’authentification a été correctement configurée."
 
-#: canaille/core/endpoints/auth/password.py:126
+#: canaille/core/endpoints/auth/password.py:127
 msgid ""
 "Sending password initialization link at your email address. It should be "
 "received within a few minutes."
@@ -782,11 +833,11 @@ msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "courriel. Il devrait arriver d'ici une quelques minutes."
 
-#: canaille/core/endpoints/auth/password.py:153
+#: canaille/core/endpoints/auth/password.py:154
 msgid "You should receive it within a few minutes."
 msgstr "Vous devriez le recevoir dans quelques minutes."
 
-#: canaille/core/endpoints/auth/password.py:165
+#: canaille/core/endpoints/auth/password.py:166
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. We "
@@ -795,14 +846,14 @@ msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission de modifier son mot de passe. "
 "Nous ne pouvons pas lui envoyer un courriel de réinitialisation."
 
-#: canaille/core/endpoints/auth/password.py:199
+#: canaille/core/endpoints/auth/password.py:200
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission de modifier son mot de passe. "
 
-#: canaille/core/endpoints/auth/password.py:211
+#: canaille/core/endpoints/auth/password.py:212
 msgid "Invalid code."
 msgstr "Code invalide."
 
@@ -1208,11 +1259,11 @@ msgid ""
 "object and provided through either request or request_uri parameter."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:533
+#: canaille/oidc/endpoints/oauth.py:544
 msgid "You have been disconnected"
 msgstr "Vous avez été déconnecté·e"
 
-#: canaille/oidc/endpoints/oauth.py:551
+#: canaille/oidc/endpoints/oauth.py:562
 msgid "You have not been disconnected"
 msgstr "Vous n'avez pas été déconnecté"
 
@@ -1276,6 +1327,8 @@ msgid "Log out"
 msgstr "Déconnexion"
 
 #: canaille/templates/base.html:162 canaille/templates/core/auth/base.html:58
+#: canaille/templates/core/auth/fido-setup.html:42
+#: canaille/templates/core/auth/fido.html:39
 #: canaille/templates/core/auth/setup-otp.html:53
 msgid "Switch account"
 msgstr "Changer de compte"
@@ -1393,9 +1446,9 @@ msgid "Create group"
 msgstr "Créer le groupe"
 
 #: canaille/templates/core/group.html:86
+#: canaille/templates/core/partial/profile_settings_password.html:86
 #: canaille/templates/core/profile_edit.html:183
 #: canaille/templates/core/profile_settings.html:105
-#: canaille/templates/core/profile_settings.html:194
 #: canaille/templates/oidc/client_edit.html:122
 msgid "Edit"
 msgstr "Modifier"
@@ -1609,6 +1662,7 @@ msgstr "S’inscrire"
 msgid "Continue"
 msgstr "Continuer"
 
+#: canaille/templates/core/auth/fido-setup.html:23
 #: canaille/templates/core/auth/setup-otp.html:27
 #: canaille/templates/core/profile_add.html:62
 #: canaille/templates/core/profile_edit.html:43
@@ -1623,6 +1677,7 @@ msgstr "Informations personnelles"
 msgid "Click to upload a photo"
 msgstr "Cliquez pour mettre en ligne une photo"
 
+#: canaille/templates/core/auth/fido-setup.html:27
 #: canaille/templates/core/auth/setup-otp.html:31
 #: canaille/templates/core/profile_add.html:171
 #: canaille/templates/core/profile_edit.html:47
@@ -1709,118 +1764,6 @@ msgstr "Supprimer mon compte"
 msgid "Impersonate"
 msgstr "Prendre l'identité"
 
-#: canaille/templates/core/profile_settings.html:117
-msgid ""
-"You can change your password here by typing it once in each field below. The "
-"longer the password, the stronger it is. A good password is a long password "
-"that you will remember, not a complicated password that your use for all "
-"your accounts."
-msgstr ""
-"Vous pouvez choisir un nouveau mot de passe en l'écrivant dans chacun des "
-"champs ci-dessous. Les mots de passe les plus longs sont les plus forts. Un "
-"bon mot de passe est un mot de passe long dont vous vous souviendrez, pas un "
-"mot de passe compliqué que vous utilisez pour tous vos comptes."
-
-#: canaille/templates/core/profile_settings.html:141
-#: canaille/templates/core/profile_settings.html:163
-msgid "Send mail"
-msgstr "Envoyer le courriel"
-
-#: canaille/templates/core/profile_settings.html:145
-msgid "This user does not have a password yet"
-msgstr "L'utilisateur n'a pas encore de mot de passe"
-
-#: canaille/templates/core/profile_settings.html:148
-msgid "You can solve this by:"
-msgstr "Vous pouvez régler ceci en :"
-
-#: canaille/templates/core/profile_settings.html:150
-msgid "setting a password using this form;"
-msgstr "renseignant un mot de passe via ce formulaire ;"
-
-#: canaille/templates/core/profile_settings.html:151
-msgid ""
-"sending the user a password initialization mail, by clicking this button;"
-msgstr ""
-"envoyant un lien d'initialisation de mot de passe, par courriel à "
-"l'utilisateur, en cliquant sur ce bouton ;"
-
-#: canaille/templates/core/profile_settings.html:152
-msgid ""
-"or simply waiting for the user to sign-in a first time, and then receive a "
-"password initialization mail."
-msgstr ""
-"ou simplement en attendant la première connexion de l'utilisateur, afin "
-"qu'il reçoive un lien d'initialisation de mot de passe par courriel."
-
-#: canaille/templates/core/profile_settings.html:155
-msgid "The user will not be able to authenticate unless the password is set"
-msgstr ""
-"L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
-"défini"
-
-#: canaille/templates/core/auth/reset-password.html:33
-#: canaille/templates/core/auth/reset-password.html:41
-#: canaille/templates/core/mails/admin.html:101
-#: canaille/templates/core/mails/reset.html:19
-#: canaille/templates/core/profile_settings.html:166
-msgid "Password reset"
-msgstr "Réinitialisation du mot de passe"
-
-#: canaille/templates/core/profile_settings.html:168
-msgid ""
-"If the user has forgotten his password, you can send him a password reset "
-"email by clicking this button."
-msgstr ""
-"Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un "
-"courriel contenant un lien de réinitialisation en cliquant sur ce bouton."
-
-#: canaille/templates/core/profile_settings.html:177
-msgid "Unlock"
-msgstr "Déverrouiller"
-
-#: canaille/templates/core/profile_settings.html:180
-msgid "This user account is locked"
-msgstr "Ce compte utilisateur est verrouillé"
-
-#: canaille/templates/core/profile_settings.html:183
-msgid "The user won't be able to connect until their account is unlocked."
-msgstr ""
-"L'utilisateur ne pourra pas se connecter tant que son compte n’est pas "
-"déverrouillé."
-
-#: canaille/templates/core/profile_settings.html:202
-msgid "Authenticator application"
-msgstr "Application d'authentification"
-
-#: canaille/templates/core/profile_settings.html:209
-msgid ""
-"You have configured an authenticator application. If you cannot access this "
-"application anymore, you can reset its configuration. After this, you will "
-"be able to set up a new authenticator application configuration."
-msgstr ""
-"Vous avez configuré une application d’authentification. Si vous perdez "
-"l’accès à cette application, vous pouvez ré-initialiser sa configuration. "
-"Après cette étape, vous pourrez à nouveau une application d’authentification."
-
-#: canaille/templates/core/profile_settings.html:218
-msgid "Reset"
-msgstr "Ré-initialiser"
-
-#: canaille/templates/core/profile_settings.html:226
-msgid ""
-"You have no authenticator application configured. Click on the following "
-"button and follow the instructions to get your authenticator application "
-"configured."
-msgstr ""
-"Vous n’avez aucune application d’authentification configurée. Cliquez sur le "
-"bouton suivant et suivez les instructions pour configurer votre application "
-"d’authentification."
-
-#: canaille/templates/core/profile_settings.html:234
-msgid "Set-up"
-msgstr "Initialiser"
-
 #: canaille/templates/core/auth/base.html:36
 #, python-format
 msgid "Sign in at %(website)s"
@@ -1861,6 +1804,38 @@ msgstr "Envoyer un autre code"
 #: canaille/templates/core/partial/emails_field.html:14
 msgid "Verify"
 msgstr "Vérifier"
+
+#: canaille/templates/core/auth/fido-setup.html:33
+#: canaille/templates/core/auth/fido-setup.html:62
+msgid "Security key registration"
+msgstr ""
+
+#: canaille/templates/core/auth/fido-setup.html:47
+#: canaille/templates/core/auth/fido-setup.html:77
+#, fuzzy
+#| msgid "Registration"
+msgid "Register"
+msgstr "Inscription"
+
+#: canaille/templates/core/auth/fido.html:15
+#, fuzzy
+#| msgid "Set up a new authenticator."
+msgid "Security key authentication"
+msgstr "Mettez en place d'un nouvel authentificateur."
+
+#: canaille/templates/core/auth/fido.html:23
+msgid "Use your security key"
+msgstr ""
+
+#: canaille/templates/core/auth/fido.html:25
+msgid ""
+"Insert your security key or use your device biometric authentication, then "
+"press the button below, and finally authenticate with your security key."
+msgstr ""
+
+#: canaille/templates/core/auth/fido.html:44
+msgid "Authenticate"
+msgstr ""
 
 #: canaille/templates/core/auth/firstlogin.html:27
 msgid "First login"
@@ -1929,6 +1904,14 @@ msgstr ""
 msgid "Please enter your password for this account."
 msgstr "Veuillez saisir votre mot de passe pour ce compte."
 
+#: canaille/templates/core/auth/reset-password.html:33
+#: canaille/templates/core/auth/reset-password.html:41
+#: canaille/templates/core/mails/admin.html:101
+#: canaille/templates/core/mails/reset.html:19
+#: canaille/templates/core/partial/profile_settings_password.html:58
+msgid "Password reset"
+msgstr "Réinitialisation du mot de passe"
+
 #: canaille/templates/core/auth/setup-otp.html:37
 msgid "Authenticator application set-up."
 msgstr "Mise en place de l’application d’authentification."
@@ -1954,6 +1937,68 @@ msgstr ""
 "Si l’identifiant que vous avez entré existe, un SMS contenant un code de "
 "vérification a été envoyé à votre téléphone. Veuillez entrer le code dans le "
 "formulaire suivant pour continuer."
+
+#: canaille/templates/core/auth/partials/fido_errors.html:18
+msgid ""
+"Please click the button below first, then touch your security key when "
+"prompted."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_errors.html:25
+msgid "Failed to parse the security key options."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_errors.html:32
+msgid "The operation was cancelled or timed out."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_errors.html:39
+#, fuzzy
+#| msgid "The access is already revoked"
+msgid "This authenticator is already registered."
+msgstr "L'accès a déjà été révoqué"
+
+#: canaille/templates/core/auth/partials/fido_errors.html:46
+msgid "Your browser does not support WebAuthn."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_errors.html:53
+msgid "Security error. Make sure you are using HTTPS."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_errors.html:60
+msgid "An unknown error occurred."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_setup_content.html:12
+#, fuzzy
+#| msgid "Set up multi-factor authentication."
+msgid "Set up WebAuthn authentication"
+msgstr "Mise en place l'authentification multi-facteurs."
+
+#: canaille/templates/core/auth/partials/fido_setup_content.html:14
+msgid "Follow these steps to register your security key:"
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_setup_content.html:16
+msgid ""
+"Insert your security key (YubiKey, USB key, etc.) or prepare your biometric "
+"device (fingerprint, face recognition)."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_setup_content.html:17
+msgid "Optionally, choose a name for the key."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_setup_content.html:18
+msgid "Click the \"Register\" button below."
+msgstr ""
+
+#: canaille/templates/core/auth/partials/fido_setup_content.html:19
+msgid ""
+"Follow your device's prompts: touch your security key or use your biometric "
+"authentication."
+msgstr ""
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:3
 msgid "Authenticator application configuration"
@@ -2475,10 +2520,12 @@ msgstr ""
 "irrévocable et toutes vos données seront supprimées pour toujours."
 
 #: canaille/templates/core/modals/delete-account.html:26
+#: canaille/templates/core/modals/delete-credential.html:30
 #: canaille/templates/core/modals/delete-group.html:22
 #: canaille/templates/core/modals/leave-group.html:22
 #: canaille/templates/core/modals/lock-account.html:26
 #: canaille/templates/core/modals/remove-group-member.html:22
+#: canaille/templates/core/modals/reset-fido.html:26
 #: canaille/templates/core/modals/reset-otp.html:26
 #: canaille/templates/oidc/modals/delete-client.html:20
 #: canaille/templates/oidc/modals/revoke-token.html:20
@@ -2487,9 +2534,45 @@ msgstr "Annuler"
 
 #: canaille/templates/core/modals/delete-account.html:27
 #: canaille/templates/core/modals/delete-group.html:25
+#: canaille/templates/core/partials/profile_settings_fido.html:65
 #: canaille/templates/oidc/modals/delete-client.html:21
 msgid "Delete"
 msgstr "Supprimer"
+
+#: canaille/templates/core/modals/delete-credential.html:10
+#, fuzzy
+#| msgid "Delete the client"
+msgid "Delete security key"
+msgstr "Supprimer le client"
+
+#: canaille/templates/core/modals/delete-credential.html:15
+#, fuzzy, python-format
+#| msgid ""
+#| "Are you sure you want to remove %(user_name)s from the group "
+#| "\"%(group_name)s\"?"
+msgid "Are you sure you want to delete the security key \"%(name)s\"?"
+msgstr ""
+"Confirmez-vous vouloir retirer %(user_name)s du groupe \"%(group_name)s\" ?"
+
+#: canaille/templates/core/modals/delete-credential.html:19
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to revoke this token? This action is unrevokable."
+msgid "Are you sure you want to delete this security key?"
+msgstr ""
+"Êtes-vous sûrs de vouloir révoquer ce jeton ? Cette action est irrévocable."
+
+#: canaille/templates/core/modals/delete-credential.html:25
+#, fuzzy
+#| msgid "This field cannot be edited"
+msgid "This action cannot be undone."
+msgstr "Ce champ ne peut pas être édité"
+
+#: canaille/templates/core/modals/delete-credential.html:32
+#: canaille/templates/core/modals/reset-fido.html:28
+#: canaille/templates/core/modals/reset-otp.html:28
+msgid "Confirm"
+msgstr "Confirmer"
 
 #: canaille/templates/core/modals/delete-group.html:9
 msgid "Group deletion"
@@ -2567,6 +2650,31 @@ msgstr ""
 msgid "Remove"
 msgstr "Retirer"
 
+#: canaille/templates/core/modals/reset-fido.html:9
+msgid "WebAuthn credential reset"
+msgstr ""
+
+#: canaille/templates/core/modals/reset-fido.html:14
+#, fuzzy, python-format
+#| msgid ""
+#| "Are you sure you want to reset the authenticator application "
+#| "configuration for %(user_name)s?"
+msgid ""
+"Are you sure you want to remove the WebAuthn credential for %(user_name)s?"
+msgstr ""
+"Êtes-vous sûr de vouloir ré-initialiser la configuration de l’application "
+"d'authentification pour %(user_name)s ?"
+
+#: canaille/templates/core/modals/reset-fido.html:18
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to reset your authenticator application "
+#| "configuration?"
+msgid "Are you sure you want to remove your WebAuthn credential?"
+msgstr ""
+"Êtes-vous sûr de vouloir ré-initialiser la configuration de votre "
+"application d’authentification ?"
+
 #: canaille/templates/core/modals/reset-otp.html:9
 msgid "One-time passcode authentication reset"
 msgstr "Réinitialisation de l'authentification par code à usage unique"
@@ -2587,10 +2695,6 @@ msgstr ""
 "Êtes-vous sûr de vouloir ré-initialiser la configuration de votre "
 "application d’authentification ?"
 
-#: canaille/templates/core/modals/reset-otp.html:28
-msgid "Confirm"
-msgstr "Confirmer"
-
 #: canaille/templates/core/partial/captcha_field.html:30
 msgid "Listen to the audio security code"
 msgstr ""
@@ -2605,6 +2709,7 @@ msgstr "Envoyer un courriel de confirmation à cette adresse."
 
 #: canaille/templates/core/partial/group-members.html:16
 #: canaille/templates/core/partial/groups.html:9
+#: canaille/templates/core/partials/profile_settings_fido.html:42
 msgid "Actions"
 msgstr "Actions"
 
@@ -2649,6 +2754,188 @@ msgstr "Il n'y a rien ici"
 #: canaille/templates/core/partial/groups.html:8
 msgid "Number of members"
 msgstr "Nombre de membres"
+
+#: canaille/templates/core/partial/profile_settings_otp.html:3
+msgid "Authenticator application"
+msgstr "Application d'authentification"
+
+#: canaille/templates/core/partial/profile_settings_otp.html:10
+msgid ""
+"You have configured an authenticator application. If you cannot access this "
+"application anymore, you can reset its configuration. After this, you will "
+"be able to set up a new authenticator application configuration."
+msgstr ""
+"Vous avez configuré une application d’authentification. Si vous perdez "
+"l’accès à cette application, vous pouvez ré-initialiser sa configuration. "
+"Après cette étape, vous pourrez à nouveau une application d’authentification."
+
+#: canaille/templates/core/partial/profile_settings_otp.html:19
+msgid "Reset"
+msgstr "Ré-initialiser"
+
+#: canaille/templates/core/partial/profile_settings_otp.html:27
+msgid ""
+"You have no authenticator application configured. Click on the following "
+"button and follow the instructions to get your authenticator application "
+"configured."
+msgstr ""
+"Vous n’avez aucune application d’authentification configurée. Cliquez sur le "
+"bouton suivant et suivez les instructions pour configurer votre application "
+"d’authentification."
+
+#: canaille/templates/core/partial/profile_settings_otp.html:35
+#: canaille/templates/core/partials/profile_settings_fido.html:104
+msgid "Set-up"
+msgstr "Initialiser"
+
+#: canaille/templates/core/partial/profile_settings_password.html:9
+msgid ""
+"You can change your password here by typing it once in each field below. The "
+"longer the password, the stronger it is. A good password is a long password "
+"that you will remember, not a complicated password that your use for all "
+"your accounts."
+msgstr ""
+"Vous pouvez choisir un nouveau mot de passe en l'écrivant dans chacun des "
+"champs ci-dessous. Les mots de passe les plus longs sont les plus forts. Un "
+"bon mot de passe est un mot de passe long dont vous vous souviendrez, pas un "
+"mot de passe compliqué que vous utilisez pour tous vos comptes."
+
+#: canaille/templates/core/partial/profile_settings_password.html:33
+#: canaille/templates/core/partial/profile_settings_password.html:55
+msgid "Send mail"
+msgstr "Envoyer le courriel"
+
+#: canaille/templates/core/partial/profile_settings_password.html:37
+msgid "This user does not have a password yet"
+msgstr "L'utilisateur n'a pas encore de mot de passe"
+
+#: canaille/templates/core/partial/profile_settings_password.html:40
+msgid "You can solve this by:"
+msgstr "Vous pouvez régler ceci en :"
+
+#: canaille/templates/core/partial/profile_settings_password.html:42
+msgid "setting a password using this form;"
+msgstr "renseignant un mot de passe via ce formulaire ;"
+
+#: canaille/templates/core/partial/profile_settings_password.html:43
+msgid ""
+"sending the user a password initialization mail, by clicking this button;"
+msgstr ""
+"envoyant un lien d'initialisation de mot de passe, par courriel à "
+"l'utilisateur, en cliquant sur ce bouton ;"
+
+#: canaille/templates/core/partial/profile_settings_password.html:44
+msgid ""
+"or simply waiting for the user to sign-in a first time, and then receive a "
+"password initialization mail."
+msgstr ""
+"ou simplement en attendant la première connexion de l'utilisateur, afin "
+"qu'il reçoive un lien d'initialisation de mot de passe par courriel."
+
+#: canaille/templates/core/partial/profile_settings_password.html:47
+msgid "The user will not be able to authenticate unless the password is set"
+msgstr ""
+"L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
+"défini"
+
+#: canaille/templates/core/partial/profile_settings_password.html:60
+msgid ""
+"If the user has forgotten his password, you can send him a password reset "
+"email by clicking this button."
+msgstr ""
+"Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un "
+"courriel contenant un lien de réinitialisation en cliquant sur ce bouton."
+
+#: canaille/templates/core/partial/profile_settings_password.html:69
+msgid "Unlock"
+msgstr "Déverrouiller"
+
+#: canaille/templates/core/partial/profile_settings_password.html:72
+msgid "This user account is locked"
+msgstr "Ce compte utilisateur est verrouillé"
+
+#: canaille/templates/core/partial/profile_settings_password.html:75
+msgid "The user won't be able to connect until their account is unlocked."
+msgstr ""
+"L'utilisateur ne pourra pas se connecter tant que son compte n’est pas "
+"déverrouillé."
+
+#: canaille/templates/core/partials/profile_settings_fido.html:10
+#, fuzzy
+#| msgid "Security code"
+msgid "Security keys"
+msgstr "Code de sécurité"
+
+#: canaille/templates/core/partials/profile_settings_fido.html:17
+#, python-format
+msgid "You have %(count)s security key configured."
+msgid_plural "You have %(count)s security keys configured."
+msgstr[0] ""
+msgstr[1] ""
+
+#: canaille/templates/core/partials/profile_settings_fido.html:24
+#, fuzzy
+#| msgid "Set up multi-factor authentication."
+msgid "Security keys can be used for authentication."
+msgstr "Mise en place l'authentification multi-facteurs."
+
+#: canaille/templates/core/partials/profile_settings_fido.html:28
+msgid ""
+"As they are unrecoverable in case of loss, it is generally recommended to "
+"register at least one additional backup key."
+msgstr ""
+
+#: canaille/templates/core/partials/profile_settings_fido.html:40
+#, fuzzy
+#| msgid "Registration"
+msgid "Registered"
+msgstr "Inscription"
+
+#: canaille/templates/core/partials/profile_settings_fido.html:41
+msgid "Last used"
+msgstr ""
+
+#: canaille/templates/core/partials/profile_settings_fido.html:51
+#, fuzzy
+#| msgid "Username"
+msgid "Rename"
+msgstr "Nom d'utilisateur"
+
+#: canaille/templates/core/partials/profile_settings_fido.html:61
+msgid "Never"
+msgstr ""
+
+#: canaille/templates/core/partials/profile_settings_fido.html:79
+#: canaille/templates/core/partials/profile_settings_fido.html:84
+#, fuzzy
+#| msgid "Add another field"
+msgid "Add another key"
+msgstr "Ajouter un autre champ"
+
+#: canaille/templates/core/partials/profile_settings_fido.html:82
+#, python-format
+msgid "Maximum limit reached (%(max)s)"
+msgstr ""
+
+#: canaille/templates/core/partials/profile_settings_fido.html:88
+#, fuzzy
+#| msgid "Remove this email address"
+msgid "Remove all keys"
+msgstr "Supprimer cette adresse email"
+
+#: canaille/templates/core/partials/profile_settings_fido.html:96
+#, fuzzy
+#| msgid ""
+#| "You have no authenticator application configured. Click on the following "
+#| "button and follow the instructions to get your authenticator application "
+#| "configured."
+msgid ""
+"You have no security key configured. Click on the following button to "
+"register your security key."
+msgstr ""
+"Vous n’avez aucune application d’authentification configurée. Cliquez sur le "
+"bouton suivant et suivez les instructions pour configurer votre application "
+"d’authentification."
 
 #: canaille/templates/core/sms/sms_otp.txt:1
 #, python-format
@@ -3198,9 +3485,6 @@ msgstr "Jeton"
 #~ "Installez une application de génération de code à usage unique (ou One-"
 #~ "Time Password, OTP) sur votre mobile."
 
-#~ msgid "Set up a new authenticator."
-#~ msgstr "Mettez en place d'un nouvel authentificateur."
-
 #~ msgid "Scan the QR code below and click \"Continue\"."
 #~ msgstr "Scannez le QR code ci-dessous et cliquez sur « Continuer »."
 
@@ -3259,9 +3543,6 @@ msgstr "Jeton"
 
 #~ msgid "Send email"
 #~ msgstr "Envoyer le courriel"
-
-#~ msgid "This field cannot be edited"
-#~ msgstr "Ce champ ne peut pas être édité"
 
 #~ msgid "Continue creating my account"
 #~ msgstr "Poursuivre mon inscription"
