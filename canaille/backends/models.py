@@ -1,5 +1,6 @@
 import datetime
 import inspect
+import sys
 import typing
 from collections import ChainMap
 from typing import Annotated
@@ -128,6 +129,11 @@ class BackendModel:
     def get_model_annotations(cls, attribute):
         annotations = cls.attributes[attribute]
         attribute_type, metadata = get_root_type(annotations)
+
+        # Handle forward references (strings) that weren't resolved by get_type_hints
+        # This can happen in Python 3.10 with forward references inside generic types
+        if sys.version_info < (3, 11) and isinstance(attribute_type, str):
+            attribute_type = getattr(models, attribute_type, None)
 
         if not inspect.isclass(attribute_type) or not issubclass(attribute_type, Model):
             return None, None
