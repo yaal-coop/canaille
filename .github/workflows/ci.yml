@@ -153,6 +153,8 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
+      - name: Install Python 3.14
+        run: uv python install 3.14
       - name: Install apt dependencies
         run: |
           sudo apt update
@@ -223,6 +225,9 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
+
+      - name: Install Python 3.14
+        run: uv python install 3.14
 
       - name: Install apt dependencies
         run: |
@@ -303,6 +308,9 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
           sudo aa-complain /usr/sbin/slapd
 
+      - name: Install Python 3.14
+        run: uv python install 3.14
+
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
@@ -342,6 +350,9 @@ jobs:
         with:
           name: canaille-wheel
           path: dist/
+
+      - name: Install Python 3.14
+        run: uv python install 3.14
 
       - name: Run integration tests
         env:
@@ -387,6 +398,9 @@ jobs:
       - name: Make PyInstaller binary executable
         run: chmod +x dist/canaille
 
+      - name: Install Python 3.14
+        run: uv python install 3.14
+
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
@@ -430,6 +444,9 @@ jobs:
       - name: Load Docker image
         run: gunzip -c canaille-docker.tar.gz | docker load
 
+      - name: Install Python 3.14
+        run: uv python install 3.14
+
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
@@ -454,6 +471,9 @@ jobs:
         with:
           name: canaille-wheel
           path: dist/
+
+      - name: Install Python 3.14
+        run: uv python install 3.14
 
       - name: Run integration tests with minimal extras
         env:
