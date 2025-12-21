@@ -84,7 +84,7 @@ def test_redirect_to_setup_without_credential(testclient, user):
     assert res.location == "/auth/fido2-setup"
 
 
-@patch("canaille.core.endpoints.auth.fido.generate_authentication_options")
+@patch("webauthn.generate_authentication_options")
 def test_generate_auth_options(mock_gen_options, testclient, user, fido_credential):
     """Test generation of authentication options."""
     mock_options = MagicMock()
@@ -97,7 +97,7 @@ def test_generate_auth_options(mock_gen_options, testclient, user, fido_credenti
             remaining=["fido2"],
         ).serialize()
 
-    with patch("canaille.core.endpoints.auth.fido.options_to_json") as mock_to_json:
+    with patch("webauthn.options_to_json") as mock_to_json:
         mock_to_json.return_value = '{"challenge": "test_challenge"}'
 
         res = testclient.get("/auth/fido2", status=200)
@@ -111,7 +111,7 @@ def test_generate_auth_options(mock_gen_options, testclient, user, fido_credenti
         assert b"test_challenge" in res.body
 
 
-@patch("canaille.core.endpoints.auth.fido.verify_authentication_response")
+@patch("webauthn.verify_authentication_response")
 def test_successful_authentication(
     mock_verify, testclient, user, fido_credential, backend, caplog
 ):
@@ -150,7 +150,7 @@ def test_successful_authentication(
     assert user_reloaded.webauthn_credentials[0].last_used_at is not None
 
 
-@patch("canaille.core.endpoints.auth.fido.verify_authentication_response")
+@patch("webauthn.verify_authentication_response")
 def test_full_login_flow_with_existing_credential(
     mock_verify,
     testclient,
@@ -208,7 +208,7 @@ def test_full_login_flow_with_existing_credential(
     assert user_reloaded.webauthn_credentials[0].last_used_at is not None
 
 
-@patch("canaille.core.endpoints.auth.fido.verify_registration_response")
+@patch("webauthn.verify_registration_response")
 def test_full_login_flow_with_credential_setup(mock_verify, testclient, user, backend):
     """Test complete login flow requiring FIDO2 credential setup."""
     assert len(user.webauthn_credentials) == 0
@@ -275,7 +275,7 @@ def test_full_login_flow_with_credential_setup(mock_verify, testclient, user, ba
     assert user_reloaded.webauthn_credentials[0].sign_count == 0
 
 
-@patch("canaille.core.endpoints.auth.fido.generate_registration_options")
+@patch("webauthn.generate_registration_options")
 def test_generate_registration_options(mock_gen_options, testclient, user):
     """Test generation of registration options."""
     mock_options = MagicMock()
@@ -288,7 +288,7 @@ def test_generate_registration_options(mock_gen_options, testclient, user):
             remaining=["fido2"],
         ).serialize()
 
-    with patch("canaille.core.endpoints.auth.fido.options_to_json") as mock_to_json:
+    with patch("webauthn.options_to_json") as mock_to_json:
         mock_to_json.return_value = '{"challenge": "test_reg_challenge"}'
 
         testclient.get("/auth/fido2-setup", status=200)
@@ -299,7 +299,7 @@ def test_generate_registration_options(mock_gen_options, testclient, user):
             )
 
 
-@patch("canaille.core.endpoints.auth.fido.verify_registration_response")
+@patch("webauthn.verify_registration_response")
 def test_successful_registration(mock_verify, testclient, user, backend, caplog):
     """Test successful FIDO2 credential registration."""
     with testclient.session_transaction() as session:
@@ -438,9 +438,7 @@ def test_auth_response_with_exception(testclient, user, fido_credential, caplog)
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
-    with patch(
-        "canaille.core.endpoints.auth.fido.verify_authentication_response"
-    ) as mock_verify:
+    with patch("webauthn.verify_authentication_response") as mock_verify:
         mock_verify.side_effect = InvalidAuthenticationResponse("Verification failed")
 
         response = testclient.post_json(
@@ -549,9 +547,7 @@ def test_registration_with_exception(testclient, user, caplog):
             data={"fido_challenge": "dGVzdA"},
         ).serialize()
 
-    with patch(
-        "canaille.core.endpoints.auth.fido.verify_registration_response"
-    ) as mock_verify:
+    with patch("webauthn.verify_registration_response") as mock_verify:
         mock_verify.side_effect = InvalidRegistrationResponse("Registration failed")
 
         response = testclient.post_json(
@@ -582,9 +578,7 @@ def test_registration_with_string_aaguid(testclient, user, backend):
     # String AAGUID (UUID format)
     mock_verification.aaguid = "00000000-0000-0000-0000-000000000000"
 
-    with patch(
-        "canaille.core.endpoints.auth.fido.verify_registration_response"
-    ) as mock_verify:
+    with patch("webauthn.verify_registration_response") as mock_verify:
         mock_verify.return_value = mock_verification
 
         testclient.post_json(
@@ -616,9 +610,7 @@ def test_registration_with_uuid_aaguid(testclient, user, backend):
     # UUID object AAGUID
     mock_verification.aaguid = uuid.UUID("00000000-0000-0000-0000-000000000001")
 
-    with patch(
-        "canaille.core.endpoints.auth.fido.verify_registration_response"
-    ) as mock_verify:
+    with patch("webauthn.verify_registration_response") as mock_verify:
         mock_verify.return_value = mock_verification
 
         testclient.post_json(
@@ -634,7 +626,7 @@ def test_registration_with_uuid_aaguid(testclient, user, backend):
     assert isinstance(user_reloaded.webauthn_credentials[0].aaguid, bytes)
 
 
-@patch("canaille.core.endpoints.auth.fido.generate_authentication_options")
+@patch("webauthn.generate_authentication_options")
 def test_auth_with_credential_without_transports(
     mock_gen_options, testclient, user, backend
 ):
@@ -662,7 +654,7 @@ def test_auth_with_credential_without_transports(
             remaining=["fido2"],
         ).serialize()
 
-    with patch("canaille.core.endpoints.auth.fido.options_to_json") as mock_to_json:
+    with patch("webauthn.options_to_json") as mock_to_json:
         mock_to_json.return_value = '{"challenge": "test"}'
         testclient.get("/auth/fido2", status=200)
 
@@ -672,7 +664,7 @@ def test_auth_with_credential_without_transports(
     assert len(call_kwargs["allow_credentials"]) == 1
 
 
-@patch("canaille.core.endpoints.auth.fido.generate_authentication_options")
+@patch("webauthn.generate_authentication_options")
 def test_auth_with_credential_empty_transports(
     mock_gen_options, testclient, user, backend
 ):
@@ -700,7 +692,7 @@ def test_auth_with_credential_empty_transports(
             remaining=["fido2"],
         ).serialize()
 
-    with patch("canaille.core.endpoints.auth.fido.options_to_json") as mock_to_json:
+    with patch("webauthn.options_to_json") as mock_to_json:
         mock_to_json.return_value = '{"challenge": "test"}'
         testclient.get("/auth/fido2", status=200)
 
@@ -710,7 +702,7 @@ def test_auth_with_credential_empty_transports(
     assert len(call_kwargs["allow_credentials"]) == 1
 
 
-@patch("canaille.core.endpoints.auth.fido.verify_registration_response")
+@patch("webauthn.verify_registration_response")
 def test_registration_with_none_aaguid(mock_verify, testclient, user, backend):
     """Test credential registration when aaguid is None."""
     with testclient.session_transaction() as session:
@@ -839,7 +831,7 @@ def test_max_credentials_reached_during_setup_post(testclient, user, backend):
     assert "Maximum number of security keys reached" in response.json["error"]
 
 
-@patch("canaille.core.endpoints.auth.fido.generate_registration_options")
+@patch("webauthn.generate_registration_options")
 def test_setup_with_existing_credentials_with_transports(
     mock_gen_options, testclient, user, backend
 ):
@@ -868,7 +860,7 @@ def test_setup_with_existing_credentials_with_transports(
             remaining=["fido2"],
         ).serialize()
 
-    with patch("canaille.core.endpoints.auth.fido.options_to_json") as mock_to_json:
+    with patch("webauthn.options_to_json") as mock_to_json:
         mock_to_json.return_value = '{"challenge": "test"}'
         testclient.get("/auth/fido2-setup", status=200)
 
@@ -879,7 +871,7 @@ def test_setup_with_existing_credentials_with_transports(
     assert len(call_kwargs["exclude_credentials"]) == 2
 
 
-@patch("canaille.core.endpoints.auth.fido.generate_registration_options")
+@patch("webauthn.generate_registration_options")
 def test_setup_with_credentials_without_and_empty_transports(
     mock_gen_options, testclient, user, backend
 ):
@@ -919,7 +911,7 @@ def test_setup_with_credentials_without_and_empty_transports(
             remaining=["fido2"],
         ).serialize()
 
-    with patch("canaille.core.endpoints.auth.fido.options_to_json") as mock_to_json:
+    with patch("webauthn.options_to_json") as mock_to_json:
         mock_to_json.return_value = '{"challenge": "test"}'
         testclient.get("/auth/fido2-setup", status=200)
 
@@ -930,7 +922,7 @@ def test_setup_with_credentials_without_and_empty_transports(
     assert len(call_kwargs["exclude_credentials"]) == 2
 
 
-@patch("canaille.core.endpoints.auth.fido.verify_registration_response")
+@patch("webauthn.verify_registration_response")
 def test_registration_from_profile_while_logged_in(
     mock_verify, testclient, logged_user, backend
 ):

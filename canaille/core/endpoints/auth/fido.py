@@ -11,19 +11,6 @@ from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
-from webauthn import generate_authentication_options
-from webauthn import generate_registration_options
-from webauthn import options_to_json
-from webauthn import verify_authentication_response
-from webauthn import verify_registration_response
-from webauthn.helpers.base64url_to_bytes import base64url_to_bytes
-from webauthn.helpers.bytes_to_base64url import bytes_to_base64url
-from webauthn.helpers.exceptions import InvalidAuthenticationResponse
-from webauthn.helpers.exceptions import InvalidRegistrationResponse
-from webauthn.helpers.structs import AttestationConveyancePreference
-from webauthn.helpers.structs import AuthenticatorSelectionCriteria
-from webauthn.helpers.structs import PublicKeyCredentialDescriptor
-from webauthn.helpers.structs import UserVerificationRequirement
 
 from canaille.app import models
 from canaille.app.fido import deserialize_transports
@@ -70,6 +57,12 @@ def webauthn():
 
 def generate_auth_options():
     """Generate WebAuthn authentication options (challenge)."""
+    from webauthn import generate_authentication_options
+    from webauthn import options_to_json
+    from webauthn.helpers.bytes_to_base64url import bytes_to_base64url
+    from webauthn.helpers.structs import PublicKeyCredentialDescriptor
+    from webauthn.helpers.structs import UserVerificationRequirement
+
     rp_id = get_rp_id()
 
     allowed_credentials = []
@@ -107,6 +100,10 @@ def generate_auth_options():
 
 def verify_auth_response():
     """Verify WebAuthn authentication response."""
+    from webauthn import verify_authentication_response
+    from webauthn.helpers.base64url_to_bytes import base64url_to_bytes
+    from webauthn.helpers.exceptions import InvalidAuthenticationResponse
+
     challenge = g.auth.data.get("fido_challenge")
     if not challenge:
         return jsonify({"success": False, "error": "No challenge found"}), 400
@@ -189,6 +186,14 @@ def setup():
 
 def generate_registration_options_view():
     """Generate WebAuthn registration options."""
+    from webauthn import generate_registration_options
+    from webauthn import options_to_json
+    from webauthn.helpers.bytes_to_base64url import bytes_to_base64url
+    from webauthn.helpers.structs import AttestationConveyancePreference
+    from webauthn.helpers.structs import AuthenticatorSelectionCriteria
+    from webauthn.helpers.structs import PublicKeyCredentialDescriptor
+    from webauthn.helpers.structs import UserVerificationRequirement
+
     if not g.auth.user:
         abort(400)
 
@@ -251,6 +256,10 @@ def generate_registration_options_view():
 
 def verify_registration_response_view():
     """Verify WebAuthn registration response and create credential."""
+    from webauthn import verify_registration_response
+    from webauthn.helpers.base64url_to_bytes import base64url_to_bytes
+    from webauthn.helpers.exceptions import InvalidRegistrationResponse
+
     challenge = g.auth.data.get("fido_challenge")
 
     if not challenge or not g.auth.user:
