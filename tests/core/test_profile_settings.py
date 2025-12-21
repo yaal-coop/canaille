@@ -180,8 +180,8 @@ def test_account_locking(
     res.mustcontain("Lock the account")
     res.mustcontain(no="Unlock")
 
-    res = res.form.submit(name="action", value="confirm-lock")
-    res = res.form.submit(name="action", value="lock")
+    res = res.form.submit(name="action", value="lock-confirm")
+    res = res.form.submit(name="action", value="lock-execute")
     user = backend.get(models.User, id=user.id)
     assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
     assert user.locked

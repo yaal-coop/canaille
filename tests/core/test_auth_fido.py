@@ -937,7 +937,7 @@ def test_registration_from_profile_while_logged_in(
     """Test credential registration when user is already logged in (adding from profile)."""
     testclient.post(
         f"/profile/{logged_user.user_name}/settings",
-        {"action": "setup-fido2"},
+        {"action": "fido2-setup"},
         status=302,
     )
 

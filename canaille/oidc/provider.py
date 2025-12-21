@@ -337,7 +337,7 @@ class BearerTokenGenerator(rfc6750.BearerTokenGenerator):
     @staticmethod
     def get_allowed_scope(client, scope):
         scope = client.get_allowed_scope(scope)
-        if scope is None:
+        if scope is None:  # pragma: no cover
             raise InvalidScopeError()
         return scope
 

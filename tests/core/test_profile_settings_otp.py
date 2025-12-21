@@ -17,8 +17,8 @@ def test_account_reset_otp(testclient, backend, caplog, logged_user, otp_method)
     res = testclient.get("/profile/user/settings")
     res.mustcontain("Reset")
 
-    res = res.form.submit(name="action", value="confirm-reset-otp")
-    res = res.form.submit(name="action", value="reset-otp")
+    res = res.form.submit(name="action", value="otp-reset-confirm")
+    res = res.form.submit(name="action", value="otp-reset")
 
     backend.reload(logged_user)
     assert logged_user.secret_token is None
@@ -43,7 +43,7 @@ def test_account_setup_otp(testclient, backend, logged_user, otp_method):
     res = testclient.get("/profile/user/settings")
     res.mustcontain("Set-up")
 
-    res = res.form.submit(name="action", value="setup-otp")
+    res = res.form.submit(name="action", value="otp-setup")
     assert res.location == "/auth/otp-setup"
     res = res.follow()
 

@@ -80,13 +80,13 @@ Displays the user settings edition form.
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     {% if features.has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-lock" id="lock" formnovalidate>
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="lock-confirm" id="lock" formnovalidate>
                             {% trans %}Lock the account{% endtrans %}
                         </button>
                     {% endif %}
 
                     {% if user.can_manage_users or self_deletion %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-delete" id="delete" formnovalidate>
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete-confirm" id="delete" formnovalidate>
                             {% if user.user_name != edited_user.user_name %}
                                 {{ _("Delete the user") }}
                             {% else %}

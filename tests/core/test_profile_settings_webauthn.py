@@ -43,11 +43,11 @@ def test_confirm_delete_single_credential(testclient, logged_user, fido_credenti
 
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
-        {"confirm_credential": str(credential_id)},
+        {"fido2-confirm-credential": str(credential_id)},
         status=200,
     )
 
-    res.mustcontain("delete-credential")
+    res.mustcontain("fido2-delete-credential")
     res.mustcontain(fido_credential[0].name)
 
 
@@ -58,7 +58,7 @@ def test_confirm_delete_credential_not_found(testclient, logged_user, fido_crede
 
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
-        {"confirm_credential": "nonexistent-id"},
+        {"fido2-confirm-credential": "nonexistent-id"},
         status=200,
     )
 
@@ -76,7 +76,7 @@ def test_delete_single_credential(testclient, logged_user, fido_credential, back
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
         {
-            "action": "delete-credential",
+            "action": "fido2-delete-credential",
             "credential_id": str(credential_id),
         },
         status=200,
@@ -97,7 +97,7 @@ def test_delete_credential_without_id(testclient, logged_user, fido_credential):
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
         {
-            "action": "delete-credential",
+            "action": "fido2-delete-credential",
         },
         status=200,
     )
@@ -113,7 +113,7 @@ def test_delete_credential_not_found(testclient, logged_user, fido_credential):
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
         {
-            "action": "delete-credential",
+            "action": "fido2-delete-credential",
             "credential_id": "nonexistent-id",
         },
         status=200,
@@ -133,7 +133,7 @@ def test_rename_credential(testclient, logged_user, fido_credential, backend):
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
         {
-            "rename_credential": str(credential_id),
+            "fido2-rename-credential": str(credential_id),
             f"credential_name_{credential_id}": new_name,
         },
         status=200,
@@ -158,7 +158,7 @@ def test_rename_credential_empty_name(testclient, logged_user, fido_credential):
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
         {
-            "rename_credential": str(credential_id),
+            "fido2-rename-credential": str(credential_id),
             f"credential_name_{credential_id}": "   ",
         },
         status=200,
@@ -175,7 +175,7 @@ def test_rename_credential_not_found(testclient, logged_user, fido_credential):
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
         {
-            "rename_credential": "nonexistent-id",
+            "fido2-rename-credential": "nonexistent-id",
             "credential_name_nonexistent-id": "New Name",
         },
         status=200,
@@ -194,7 +194,7 @@ def test_reset_fido(testclient, logged_user, fido_credential, backend):
     # Confirm reset
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
-        {"action": "confirm-reset-fido2"},
+        {"action": "fido2-reset-confirm"},
         status=200,
     )
     assert b"reset" in res.body.lower()
@@ -202,7 +202,7 @@ def test_reset_fido(testclient, logged_user, fido_credential, backend):
     # Perform reset
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
-        {"action": "reset-fido2"},
+        {"action": "fido2-reset"},
         status=200,
     )
 
@@ -219,7 +219,7 @@ def test_setup_fido_redirects_to_auth(testclient, logged_user):
 
     res = testclient.post(
         f"/profile/{logged_user.user_name}/settings",
-        {"action": "setup-fido2"},
+        {"action": "fido2-setup"},
         status=302,
     )
 

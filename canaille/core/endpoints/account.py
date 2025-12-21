@@ -744,12 +744,29 @@ def profile_edition(user, edited_user):
     abort(400, f"bad form action: {action}")
 
 
-def _handle_account_deletion(edited_user, action):
-    if action == "confirm-delete":
+def _handle_delete_actions(user, edited_user, action):
+    if action == "delete-confirm":
         return render_template(
             "core/modals/delete-account.html", edited_user=edited_user
         )
-    return None
+
+    else:  # delete-execute
+        self_deletion = user.id == edited_user.id
+        if self_deletion:
+            logout_user()
+
+        flash(
+            _(
+                "The user %(user)s has been successfully deleted",
+                user=edited_user.formatted_name,
+            ),
+            "success",
+        )
+        Backend.instance.delete(edited_user)
+
+        if self_deletion:
+            return redirect(url_for("core.account.index"))
+        return redirect(url_for("core.account.users"))
 
 
 def _handle_password_mail(user, edited_user, action):
@@ -765,7 +782,7 @@ def _handle_password_mail(user, edited_user, action):
         )
         return _handle_profile_settings_edit(user, edited_user)
 
-    if action == "password-reset-mail":
+    else:  # password-reset-mail
         for email in edited_user.emails or []:
             send_password_reset_mail(edited_user, email)
         flash(
@@ -777,39 +794,29 @@ def _handle_password_mail(user, edited_user, action):
         )
         return _handle_profile_settings_edit(user, edited_user)
 
-    return None
-
 
 def _handle_lock_actions(user, edited_user, action):
-    if not current_app.features.has_account_lockability:
-        return None
-
-    if action == "confirm-lock" and not edited_user.locked:
+    if action == "lock-confirm":
         return render_template("core/modals/lock-account.html", edited_user=edited_user)
 
-    if action == "lock" and not edited_user.locked:
+    elif action == "lock-execute":
         flash(_("The account has been locked"), "success")
         edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
         Backend.instance.save(edited_user)
         return _handle_profile_settings_edit(user, edited_user)
 
-    if action == "unlock" and edited_user.locked:
+    else:  # unlock
         flash(_("The account has been unlocked"), "success")
         edited_user.lock_date = None
         Backend.instance.save(edited_user)
         return _handle_profile_settings_edit(user, edited_user)
 
-    return None
-
 
 def _handle_otp_actions(user, edited_user, action):
-    if not current_app.features.has_otp:
-        return None
-
-    if action == "confirm-reset-otp":
+    if action == "otp-reset-confirm":
         return render_template("core/modals/reset-otp.html", edited_user=edited_user)
 
-    if action == "reset-otp":
+    elif action == "otp-reset":
         flash(
             _("Authenticator application passcode authentication has been reset"),
             "success",
@@ -822,7 +829,7 @@ def _handle_otp_actions(user, edited_user, action):
         Backend.instance.save(edited_user)
         return _handle_profile_settings_edit(user, edited_user)
 
-    if action == "setup-otp":
+    else:  # otp-setup
         session["redirect-after-login"] = url_for(
             "core.account.profile_settings", edited_user=edited_user
         )
@@ -831,8 +838,6 @@ def _handle_otp_actions(user, edited_user, action):
         )
         g.auth.save()
         return redirect(url_for("core.auth.otp.setup"))
-
-    return None
 
 
 def _find_credential(edited_user, credential_id):
@@ -843,10 +848,7 @@ def _find_credential(edited_user, credential_id):
 
 
 def _handle_fido_actions(user, edited_user, action):
-    if not current_app.features.has_fido:
-        return None
-
-    credential_id = request.form.get("confirm_credential")
+    credential_id = request.form.get("fido2-confirm-credential")
     if credential_id:
         credential = _find_credential(edited_user, credential_id)
         if not credential:
@@ -859,36 +861,7 @@ def _handle_fido_actions(user, edited_user, action):
             credential_name=credential.name,
         )
 
-    if action == "confirm-reset-fido2":
-        return render_template("core/modals/reset-fido.html", edited_user=edited_user)
-
-    if action == "reset-fido2":
-        for credential in list(edited_user.webauthn_credentials):
-            Backend.instance.delete(credential)
-        flash(_("All WebAuthn credentials have been removed"), "success")
-        current_app.logger.security(
-            f"Reset all WebAuthn credentials for {edited_user.user_name} by {user.user_name}"
-        )
-        return _handle_profile_settings_edit(user, edited_user)
-
-    if action == "delete-credential":
-        credential_id = request.form.get("credential_id")
-        if not credential_id:
-            flash(_("Credential not found"), "error")
-            return _handle_profile_settings_edit(user, edited_user)
-
-        credential = _find_credential(edited_user, credential_id)
-        if credential:
-            Backend.instance.delete(credential)
-            flash(_("WebAuthn credential has been removed"), "success")
-            current_app.logger.security(
-                f"Deleted WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
-            )
-        else:
-            flash(_("Credential not found"), "error")
-        return _handle_profile_settings_edit(user, edited_user)
-
-    credential_id = request.form.get("rename_credential")
+    credential_id = request.form.get("fido2-rename-credential")
     if credential_id:
         new_name = request.form.get(f"credential_name_{credential_id}", "").strip()
         if not new_name:
@@ -908,7 +881,36 @@ def _handle_fido_actions(user, edited_user, action):
         )
         return _handle_profile_settings_edit(user, edited_user)
 
-    if action == "setup-fido2":
+    if action == "fido2-reset-confirm":
+        return render_template("core/modals/reset-fido.html", edited_user=edited_user)
+
+    elif action == "fido2-reset":
+        for credential in list(edited_user.webauthn_credentials):
+            Backend.instance.delete(credential)
+        flash(_("All WebAuthn credentials have been removed"), "success")
+        current_app.logger.security(
+            f"Reset all WebAuthn credentials for {edited_user.user_name} by {user.user_name}"
+        )
+        return _handle_profile_settings_edit(user, edited_user)
+
+    elif action == "fido2-delete-credential":
+        credential_id = request.form.get("credential_id")
+        if not credential_id:
+            flash(_("Credential not found"), "error")
+            return _handle_profile_settings_edit(user, edited_user)
+
+        credential = _find_credential(edited_user, credential_id)
+        if credential:
+            Backend.instance.delete(credential)
+            flash(_("WebAuthn credential has been removed"), "success")
+            current_app.logger.security(
+                f"Deleted WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
+            )
+        else:
+            flash(_("Credential not found"), "error")
+        return _handle_profile_settings_edit(user, edited_user)
+
+    else:  # fido2-setup
         session["redirect-after-login"] = url_for(
             "core.account.profile_settings", edited_user=edited_user
         )
@@ -921,8 +923,6 @@ def _handle_fido_actions(user, edited_user, action):
         response = redirect(url_for("core.auth.fido2.setup"))
         response.headers["HX-Redirect"] = url_for("core.auth.fido2.setup")
         return response
-
-    return None
 
 
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
@@ -942,37 +942,38 @@ def profile_settings(user, edited_user):
 
     action = request.form.get("action")
 
-    if action == "delete":
-        return _handle_profile_delete(user, edited_user)
-
-    if action in ("confirm-delete",):
-        return _handle_account_deletion(edited_user, action)
+    if action in ("delete-confirm", "delete-execute"):
+        return _handle_delete_actions(user, edited_user, action)
 
     if action in ("password-initialization-mail", "password-reset-mail"):
         return _handle_password_mail(user, edited_user, action)
 
-    if action in ("confirm-lock", "lock", "unlock") and (
-        result := _handle_lock_actions(user, edited_user, action)
+    if current_app.features.has_account_lockability and action in (
+        "lock-confirm",
+        "lock-execute",
+        "unlock",
     ):
-        return result
+        return _handle_lock_actions(user, edited_user, action)
 
-    if action in ("confirm-reset-otp", "reset-otp", "setup-otp") and (
-        result := _handle_otp_actions(user, edited_user, action)
+    if current_app.features.has_otp and action in (
+        "otp-reset-confirm",
+        "otp-reset",
+        "otp-setup",
     ):
-        return result
+        return _handle_otp_actions(user, edited_user, action)
 
     fido_actions = (
-        "confirm-reset-fido2",
-        "reset-fido2",
-        "delete-credential",
-        "setup-fido2",
+        "fido2-reset-confirm",
+        "fido2-reset",
+        "fido2-delete-credential",
+        "fido2-setup",
     )
-    if (
+    if current_app.features.has_fido and (
         action in fido_actions
-        or request.form.get("confirm_credential")
-        or request.form.get("rename_credential")
-    ) and (result := _handle_fido_actions(user, edited_user, action)):
-        return result
+        or request.form.get("fido2-confirm-credential")
+        or request.form.get("fido2-rename-credential")
+    ):
+        return _handle_fido_actions(user, edited_user, action)
 
     abort(400, f"bad form action: {action}")
 
@@ -1034,25 +1035,6 @@ def _handle_profile_settings_edit(editor, edited_user):
         edited_user=edited_user,
         self_deletion=edited_user.can_delete_account,
     )
-
-
-def _handle_profile_delete(user, edited_user):
-    self_deletion = user.id == edited_user.id
-    if self_deletion:
-        logout_user()
-
-    flash(
-        _(
-            "The user %(user)s has been successfully deleted",
-            user=edited_user.formatted_name,
-        ),
-        "success",
-    )
-    Backend.instance.delete(edited_user)
-
-    if self_deletion:
-        return redirect(url_for("core.account.index"))
-    return redirect(url_for("core.account.users"))
 
 
 @bp.route("/impersonate/<user:puppet>")

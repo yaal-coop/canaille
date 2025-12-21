@@ -48,7 +48,7 @@ Displays the security keys section in profile settings.
                     <td>
                         <div class="ui action input" style="width: 100%;">
                             <input type="text" name="credential_name_{{ credential.id }}" value="{{ credential.name or _('My security key') }}" maxlength="255">
-                            <button type="submit" class="ui icon button" name="rename_credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Rename{% endtrans %}">
+                            <button type="submit" class="ui icon button" name="fido2-rename-credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Rename{% endtrans %}">
                                 <i class="edit icon"></i>
                             </button>
                         </div>
@@ -62,7 +62,7 @@ Displays the security keys section in profile settings.
                         {% endif %}
                     </td>
                     <td>
-                        <button type="submit" class="ui basic negative icon button" name="confirm_credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Delete{% endtrans %}">
+                        <button type="submit" class="ui basic negative icon button" name="fido2-confirm-credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Delete{% endtrans %}">
                             <i class="trash icon"></i>
                         </button>
                     </td>
@@ -74,7 +74,7 @@ Displays the security keys section in profile settings.
     <div class="ui right aligned container">
         <div class="ui stackable buttons">
             {% if edited_user.webauthn_credentials|length < config.CANAILLE.FIDO_MAX_CREDENTIALS %}
-                <button type="submit" class="ui primary button" name="action" value="setup-fido2" id="setup-fido2" formnovalidate>
+                <button type="submit" class="ui primary button" name="action" value="fido2-setup" id="setup-fido2" formnovalidate>
                     <i class="plus icon"></i>
                     {% trans %}Add another key{% endtrans %}
                 </button>
@@ -84,7 +84,7 @@ Displays the security keys section in profile settings.
                     {% trans %}Add another key{% endtrans %}
                 </div>
             {% endif %}
-            <button type="submit" class="ui basic negative button confirm" name="action" value="confirm-reset-fido2" id="reset-fido2-all" formnovalidate>
+            <button type="submit" class="ui basic negative button confirm" name="action" value="fido2-reset-confirm" id="reset-fido2-all" formnovalidate>
                 {% trans %}Remove all keys{% endtrans %}
             </button>
         </div>
@@ -100,7 +100,7 @@ Displays the security keys section in profile settings.
     </div>
     <div class="ui right aligned container">
         <div class="ui stackable buttons">
-            <button type="submit" class="ui right floated primary button" name="action" value="setup-fido2" id="setup-fido2" formnovalidate>
+            <button type="submit" class="ui right floated primary button" name="action" value="fido2-setup" id="setup-fido2" formnovalidate>
                 {% trans %}Set-up{% endtrans %}
             </button>
         </div>
