@@ -13,11 +13,6 @@ from flask import session
 from flask import url_for
 
 from canaille.app import models
-from canaille.app.fido import deserialize_transports
-from canaille.app.fido import get_origin
-from canaille.app.fido import get_rp_id
-from canaille.app.fido import get_rp_name
-from canaille.app.fido import serialize_transports
 from canaille.app.flask import csrf
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
@@ -63,6 +58,9 @@ def generate_auth_options():
     from webauthn.helpers.structs import PublicKeyCredentialDescriptor
     from webauthn.helpers.structs import UserVerificationRequirement
 
+    from canaille.app.fido import deserialize_transports
+    from canaille.app.fido import get_rp_id
+
     rp_id = get_rp_id()
 
     allowed_credentials = []
@@ -103,6 +101,9 @@ def verify_auth_response():
     from webauthn import verify_authentication_response
     from webauthn.helpers.base64url_to_bytes import base64url_to_bytes
     from webauthn.helpers.exceptions import InvalidAuthenticationResponse
+
+    from canaille.app.fido import get_origin
+    from canaille.app.fido import get_rp_id
 
     challenge = g.auth.data.get("fido_challenge")
     if not challenge:
@@ -194,6 +195,10 @@ def generate_registration_options_view():
     from webauthn.helpers.structs import PublicKeyCredentialDescriptor
     from webauthn.helpers.structs import UserVerificationRequirement
 
+    from canaille.app.fido import deserialize_transports
+    from canaille.app.fido import get_rp_id
+    from canaille.app.fido import get_rp_name
+
     if not g.auth.user:
         abort(400)
 
@@ -259,6 +264,10 @@ def verify_registration_response_view():
     from webauthn import verify_registration_response
     from webauthn.helpers.base64url_to_bytes import base64url_to_bytes
     from webauthn.helpers.exceptions import InvalidRegistrationResponse
+
+    from canaille.app.fido import get_origin
+    from canaille.app.fido import get_rp_id
+    from canaille.app.fido import serialize_transports
 
     challenge = g.auth.data.get("fido_challenge")
 
