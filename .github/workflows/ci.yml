@@ -77,7 +77,7 @@ jobs:
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
-          uv sync --all-extras
+          uv sync --all-extras --python ${{ matrix.python }}
           uv run pytest --numprocesses auto
 
   coverage:
@@ -138,7 +138,7 @@ jobs:
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
-          uv sync --all-extras --resolution=lowest-direct
+          uv sync --all-extras --resolution=lowest-direct --python 3.10
           uv run pytest --numprocesses auto
 
   style:
