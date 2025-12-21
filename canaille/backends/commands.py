@@ -1,5 +1,7 @@
 import datetime
+import inspect
 import json
+import sys
 import typing
 
 import click
@@ -53,7 +55,12 @@ def click_type(attribute_type):
     if typing.get_origin(attribute_type) in (typing.Annotated, list):
         attribute_type = typing.get_args(attribute_type)[0]
 
-    if issubclass(attribute_type, Model):
+    # Handle forward references (strings) that weren't resolved by get_type_hints
+    # This can happen in Python 3.10 with forward references inside generic types
+    if sys.version_info < (3, 11) and isinstance(attribute_type, str):
+        attribute_type = getattr(models, attribute_type, attribute_type)
+
+    if inspect.isclass(attribute_type) and issubclass(attribute_type, Model):
         return model_getter(attribute_type)
 
     if attribute_type is datetime.datetime:
