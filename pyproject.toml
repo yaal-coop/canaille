@@ -107,6 +107,10 @@ otp = [
     "qrcode>=8.0",
 ]
 
+fido = [
+    "webauthn>=2.7.0",
+]
+
 sms = [
     "smpplib>=2.2.3",
 ]

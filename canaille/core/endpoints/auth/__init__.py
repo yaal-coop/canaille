@@ -25,6 +25,7 @@ from canaille.core.auth import redirect_to_next_auth_step
 
 from ..forms import LoginForm
 from . import email
+from . import fido
 from . import otp
 from . import password
 from . import sms
@@ -34,6 +35,7 @@ bp.register_blueprint(password.bp)
 bp.register_blueprint(email.bp)
 bp.register_blueprint(sms.bp)
 bp.register_blueprint(otp.bp)
+bp.register_blueprint(fido.bp)
 
 
 @bp.context_processor

@@ -227,8 +227,8 @@ class MemoryBackend(Backend):
             mirror_attribute_index = self.attribute_index(
                 model, mirror_attribute
             ).setdefault(instance.id, set())
-            for subinstance_id in self.index(instance.__class__)[instance.id].get(
-                attribute, []
+            for subinstance_id in listify(
+                self.index(instance.__class__)[instance.id].get(attribute, [])
             ):
                 # remove the current object from the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]

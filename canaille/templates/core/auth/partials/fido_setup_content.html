@@ -1,0 +1,28 @@
+{# WebAuthn registration content partial.
+
+Displays the registration instructions, error messages, and options.
+
+:param options_json: The WebAuthn registration options in JSON format.
+:type options_json: str
+#}
+<div class="ui {% if not g.auth.current_step_try_dt %}attached{% endif %} icon message" id="webauthn-message">
+    <i class="key icon"></i>
+    <div class="content">
+        <div class="header">
+            {% trans %}Set up WebAuthn authentication{% endtrans %}
+        </div>
+        <p>{% trans %}Follow these steps to register your security key:{% endtrans %}</p>
+        <ol>
+            <li>{% trans %}Insert your security key (YubiKey, USB key, etc.) or prepare your biometric device (fingerprint, face recognition).{% endtrans %}</li>
+            <li>{% trans %}Optionally, choose a name for the key.{% endtrans %}</li>
+            <li>{% trans %}Click the "Register" button below.{% endtrans %}</li>
+            <li>{% trans %}Follow your device's prompts: touch your security key or use your biometric authentication.{% endtrans %}</li>
+        </ol>
+    </div>
+</div>
+
+{% with attached=true %}
+    {% include 'core/auth/partials/fido_errors.html' %}
+{% endwith %}
+
+<input type="hidden" id="webauthn-options" value="{{ options_json }}">

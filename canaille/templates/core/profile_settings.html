@@ -114,6 +114,10 @@ Displays the user settings edition form.
                 {% include "core/partial/profile_settings_otp.html" %}
             {% endif %}
 
+            {% if features.has_fido and "fido2" in config.CANAILLE.AUTHENTICATION_FACTORS and (edited_user==user or user.can_manage_users) %}
+                {% include 'core/partials/profile_settings_fido.html' %}
+            {% endif %}
+
         {% endcall %}
     </div>
 {% endblock %}

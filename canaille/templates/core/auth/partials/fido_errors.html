@@ -1,0 +1,62 @@
+{# WebAuthn error messages partial.
+
+Displays all possible WebAuthn error messages (hidden by default).
+
+:param attached: If true, use 'attached' style instead of 'icon' style.
+:type attached: bool
+#}
+{% set style = 'attached' if attached|default(false) else 'icon' %}
+
+<div class="ui negative {{ style }} message hidden error-message" id="webauthn-error">
+    <i class="exclamation triangle icon"></i>
+    <div class="content" id="webauthn-error-message"></div>
+</div>
+
+<div class="ui warning {{ style }} message hidden error-message" id="otp">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        {% trans %}Please click the button below first, then touch your security key when prompted.{% endtrans %}
+    </div>
+</div>
+
+<div class="ui negative {{ style }} message hidden error-message" id="parse">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        {% trans %}Failed to parse the security key options.{% endtrans %}
+    </div>
+</div>
+
+<div class="ui negative {{ style }} message hidden error-message" id="notallowederror">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        {% trans %}The operation was cancelled or timed out.{% endtrans %}
+    </div>
+</div>
+
+<div class="ui negative {{ style }} message hidden error-message" id="invalidstateerror">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        {% trans %}This authenticator is already registered.{% endtrans %}
+    </div>
+</div>
+
+<div class="ui negative {{ style }} message hidden error-message" id="notsupportederror">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        {% trans %}Your browser does not support WebAuthn.{% endtrans %}
+    </div>
+</div>
+
+<div class="ui negative {{ style }} message hidden error-message" id="securityerror">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        {% trans %}Security error. Make sure you are using HTTPS.{% endtrans %}
+    </div>
+</div>
+
+<div class="ui negative {{ style }} message hidden error-message" id="unknown">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        {% trans %}An unknown error occurred.{% endtrans %}
+    </div>
+</div>

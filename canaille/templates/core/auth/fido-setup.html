@@ -1,0 +1,85 @@
+{# WebAuthn credential registration template.
+
+Displays the WebAuthn registration interface.
+
+:param options_json: The WebAuthn registration options in JSON format.
+:type options_json: str
+#}
+{% if g.auth and (not g.session or g.auth.user != g.session.user) %}
+    {% extends g.auth.template or 'core/auth/base.html' %}
+{% else %}
+    {% extends theme('base.html') %}
+{% endif %}
+{% import 'macro/flask.html' as flask %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/fido.js') }}" defer></script>
+{% endblock %}
+
+{% block submenu %}
+    {% if g.session %}
+        <a class="item" href="{{ url_for('core.account.profile_edition', edited_user=user) }}">
+            <i class="id card icon"></i>
+            {% trans %}Personal information{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('core.account.profile_settings', edited_user=user) }}">
+            <i class="tools icon"></i>
+            {% trans %}Account settings{% endtrans %}
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block auth_subtitle %}
+    <div class="sub header">{% trans %}Security key registration{% endtrans %}</div>
+{% endblock %}
+
+{% block auth_content %}
+    {% include 'core/auth/partials/fido_setup_content.html' %}
+
+    <div class="ui clearing container">
+        <div class="ui left floated stackable buttons">
+            <a type="button" class="ui button" href="{{ url_for('core.auth.login') }}">
+                {% trans %}Switch account{% endtrans %}
+            </a>
+        </div>
+        <div class="ui right floated stackable buttons">
+            <button type="button" id="webauthn-register" class="ui primary button">
+                {% trans %}Register{% endtrans %}
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block container %}
+    {% if g.auth and (not g.session or g.auth.user != g.session.user) %}
+        {{ super() }}
+    {% else %}
+        <div class="ui container">
+            <div class="content">
+                <div class="ui top attached segment">
+                    <h2 class="ui center aligned header">
+                        <div class="content">
+                            {% trans %}Security key registration{% endtrans %}
+                        </div>
+                    </h2>
+                </div>
+
+                {% block messages %}
+                    {{ flask.messages() }}
+                {% endblock %}
+
+                {% include 'core/auth/partials/fido_setup_content.html' %}
+
+                <div class="ui attached clearing segment">
+                    <div class="ui clearing container">
+                        <div class="ui right floated stackable buttons">
+                            <button type="button" id="webauthn-register" class="ui primary button">
+                                {% trans %}Register{% endtrans %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

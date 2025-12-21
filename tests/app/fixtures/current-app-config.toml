@@ -191,7 +191,7 @@ JAVASCRIPT = false
 # Users will need to authenticate with factors in the order of this list. For
 # instance, this will show a password form and then ask for a one-time passcode:
 #
-# Valid factors are password, otp, email and sms.
+# Valid factors are password, otp, email, sms and fido2.
 #
 #     AUTHENTICATION_FACTORS = ["password", "otp"]
 # AUTHENTICATION_FACTORS = ["password"]
@@ -206,6 +206,40 @@ JAVASCRIPT = false
 # Should be provided in ISO8601 duration format (e.g., "PT30S" for 30 seconds,
 # "PT1M" for 1 minute).
 # TOTP_LIFETIME = "PT30S"
+
+# Timeout for FIDO2/WebAuthn operations.
+# FIDO_TIMEOUT = "PT1M"
+
+# User verification requirement for FIDO2/WebAuthn.
+#
+# - required: User verification (PIN/biometric) is required.
+# - preferred: User verification is preferred but not required.
+# - discouraged: User verification should not be used.
+# FIDO_USER_VERIFICATION = "preferred"
+
+# Attestation conveyance preference for FIDO2/WebAuthn.
+#
+# Attestation allows the server to verify the authenticator's identity
+# (manufacturer, model) during registration. This is useful in high-security
+# environments where only specific certified authenticators should be allowed.
+#
+# - none: No attestation requested. The server cannot identify the
+#   authenticator type. Most privacy-preserving option, recommended for
+#   most use cases.
+# - indirect: Anonymized attestation. The authenticator may provide
+#   manufacturer information without revealing the exact model.
+# - direct: Full attestation. The authenticator provides a signed
+#   certificate identifying its manufacturer and model. This can be validated
+#   against the FIDO Alliance Metadata Service (MDS) to ensure only trusted
+#   authenticators are accepted.
+#
+# Note that even with "direct", authenticators may refuse to provide attestation
+# for privacy reasons. Additionally, validating attestation certificates requires
+# additional server-side implementation.
+# FIDO_ATTESTATION = "none"
+
+# Maximum number of WebAuthn credentials per user.
+# FIDO_MAX_CREDENTIALS = 5
 
 # The validity duration of registration invitations, in seconds.
 #

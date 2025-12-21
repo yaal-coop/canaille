@@ -1,0 +1,47 @@
+{# WebAuthn authentication template.
+
+Displays the WebAuthn authentication interface.
+
+:param options_json: The WebAuthn authentication options in JSON format.
+:type options_json: str
+#}
+{% extends g.auth.template or 'core/auth/base.html' %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='js/fido.js') }}" defer></script>
+{% endblock %}
+
+{% block auth_subtitle %}
+    <div class="sub header">{% trans %}Security key authentication{% endtrans %}</div>
+{% endblock %}
+
+{% block auth_content %}
+    <div class="ui icon message" id="webauthn-message">
+        <i class="key icon"></i>
+        <div class="content">
+            <div class="header">
+                {% trans %}Use your security key{% endtrans %}
+            </div>
+            {% trans %}
+                Insert your security key or use your device biometric authentication,
+                then press the button below,
+                and finally authenticate with your security key.
+            {% endtrans %}
+        </div>
+    </div>
+
+    {% include 'core/auth/partials/fido_errors.html' %}
+
+    <input type="hidden" id="webauthn-options" value="{{ options_json }}">
+
+    <div class="ui left floated stackable buttons">
+        <a type="button" class="ui button" href="{{ url_for('core.auth.login') }}">
+            {% trans %}Switch account{% endtrans %}
+        </a>
+    </div>
+    <div class="ui right floated stackable buttons">
+        <button type="button" id="webauthn-authenticate" class="ui primary button">
+            {% trans %}Authenticate{% endtrans %}
+        </button>
+    </div>
+{% endblock %}

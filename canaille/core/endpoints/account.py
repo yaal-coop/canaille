@@ -835,6 +835,96 @@ def _handle_otp_actions(user, edited_user, action):
     return None
 
 
+def _find_credential(edited_user, credential_id):
+    for cred in edited_user.webauthn_credentials:
+        if str(cred.id) == credential_id:
+            return cred
+    return None
+
+
+def _handle_fido_actions(user, edited_user, action):
+    if not current_app.features.has_fido:
+        return None
+
+    credential_id = request.form.get("confirm_credential")
+    if credential_id:
+        credential = _find_credential(edited_user, credential_id)
+        if not credential:
+            flash(_("Credential not found"), "error")
+            return _handle_profile_settings_edit(user, edited_user)
+        return render_template(
+            "core/modals/delete-credential.html",
+            edited_user=edited_user,
+            credential_id=credential_id,
+            credential_name=credential.name,
+        )
+
+    if action == "confirm-reset-fido2":
+        return render_template("core/modals/reset-fido.html", edited_user=edited_user)
+
+    if action == "reset-fido2":
+        for credential in list(edited_user.webauthn_credentials):
+            Backend.instance.delete(credential)
+        flash(_("All WebAuthn credentials have been removed"), "success")
+        current_app.logger.security(
+            f"Reset all WebAuthn credentials for {edited_user.user_name} by {user.user_name}"
+        )
+        return _handle_profile_settings_edit(user, edited_user)
+
+    if action == "delete-credential":
+        credential_id = request.form.get("credential_id")
+        if not credential_id:
+            flash(_("Credential not found"), "error")
+            return _handle_profile_settings_edit(user, edited_user)
+
+        credential = _find_credential(edited_user, credential_id)
+        if credential:
+            Backend.instance.delete(credential)
+            flash(_("WebAuthn credential has been removed"), "success")
+            current_app.logger.security(
+                f"Deleted WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
+            )
+        else:
+            flash(_("Credential not found"), "error")
+        return _handle_profile_settings_edit(user, edited_user)
+
+    credential_id = request.form.get("rename_credential")
+    if credential_id:
+        new_name = request.form.get(f"credential_name_{credential_id}", "").strip()
+        if not new_name:
+            flash(_("Name cannot be empty"), "error")
+            return _handle_profile_settings_edit(user, edited_user)
+
+        credential = _find_credential(edited_user, credential_id)
+        if not credential:
+            flash(_("Credential not found"), "error")
+            return _handle_profile_settings_edit(user, edited_user)
+
+        credential.name = new_name
+        Backend.instance.save(credential)
+        flash(_("Security key renamed successfully"), "success")
+        current_app.logger.security(
+            f"Renamed WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
+        )
+        return _handle_profile_settings_edit(user, edited_user)
+
+    if action == "setup-fido2":
+        session["redirect-after-login"] = url_for(
+            "core.account.profile_settings", edited_user=edited_user
+        )
+        g.auth = AuthenticationSession(
+            user_name=g.session.user.user_name,
+            welcome_flash=False,
+            remaining=["fido2"],
+        )
+        g.auth.save()
+        response = redirect(url_for("core.auth.fido2.setup"))
+        response.headers["HX-Redirect"] = url_for("core.auth.fido2.setup")
+        return response
+
+    return None
+
+
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
 @user_needed()
 def profile_settings(user, edited_user):
@@ -869,6 +959,19 @@ def profile_settings(user, edited_user):
     if action in ("confirm-reset-otp", "reset-otp", "setup-otp") and (
         result := _handle_otp_actions(user, edited_user, action)
     ):
+        return result
+
+    fido_actions = (
+        "confirm-reset-fido2",
+        "reset-fido2",
+        "delete-credential",
+        "setup-fido2",
+    )
+    if (
+        action in fido_actions
+        or request.form.get("confirm_credential")
+        or request.form.get("rename_credential")
+    ) and (result := _handle_fido_actions(user, edited_user, action)):
         return result
 
     abort(400, f"bad form action: {action}")

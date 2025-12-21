@@ -51,6 +51,7 @@ AMR_MAPPING = {
     "otp": ["otp"],
     "sms": ["sms", "mca"],
     "email": ["mca"],
+    "fido2": ["hwk"],
 }
 
 
