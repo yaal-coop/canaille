@@ -14,12 +14,8 @@ from tests.core.test_auth_otp import generate_otp
 
 def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     res = testclient.get("/profile/user/settings", status=200)
-    # hotfix for https://github.com/Pylons/webtest/pull/268
-    trimmed_options = [
-        (*args, label.strip()) for *args, label in res.form["groups"].options
-    ]
-    assert (foo_group.id, True, "foo") in trimmed_options
-    assert (bar_group.id, False, "bar") in trimmed_options
+    assert (foo_group.id, True, "foo") in res.form["groups"].options
+    assert (bar_group.id, False, "bar") in res.form["groups"].options
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
