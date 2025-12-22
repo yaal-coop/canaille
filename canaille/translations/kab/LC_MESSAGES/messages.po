@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:27+0100\n"
+"POT-Creation-Date: 2025-12-22 09:30+0100\n"
 "PO-Revision-Date: 2025-05-24 14:03+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -1868,7 +1868,7 @@ msgid "This passkey is already registered."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
-msgid "Your browser does not support WebAuthn."
+msgid "Your browser does not support passkeys."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
@@ -1880,8 +1880,10 @@ msgid "An unknown error occurred."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
-msgid "Set up WebAuthn authentication"
-msgstr ""
+#, fuzzy
+#| msgid "Password confirmation"
+msgid "Set up passkey authentication"
+msgstr "Sentem awal n uɛeddi"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
 msgid "Follow these steps to register your passkey:"

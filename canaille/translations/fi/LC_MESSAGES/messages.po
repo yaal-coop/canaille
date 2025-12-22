@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:27+0100\n"
+"POT-Creation-Date: 2025-12-22 09:30+0100\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -1915,7 +1915,7 @@ msgid "This passkey is already registered."
 msgstr "Profiilin päivitys onnistui."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
-msgid "Your browser does not support WebAuthn."
+msgid "Your browser does not support passkeys."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
@@ -1929,7 +1929,7 @@ msgstr ""
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
 #, fuzzy
 #| msgid "One-time password authentication has been reset"
-msgid "Set up WebAuthn authentication"
+msgid "Set up passkey authentication"
 msgstr "Kertaluonteinen salasanatodennus on nollattu"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
@@ -3158,6 +3158,11 @@ msgstr ""
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr ""
+
+#, fuzzy
+#~| msgid "One-time password authentication has been reset"
+#~ msgid "Set up WebAuthn authentication"
+#~ msgstr "Kertaluonteinen salasanatodennus on nollattu"
 
 #, fuzzy
 #~| msgid "Invalid code."

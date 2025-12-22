@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-12-22 09:27+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-12-22 09:30+0100\n"
 "PO-Revision-Date: 2025-12-22 08:30+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -1981,7 +1981,9 @@ msgid "This passkey is already registered."
 msgstr "La clé de sécurité a déjà été enregistrée."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
-msgid "Your browser does not support WebAuthn."
+#, fuzzy
+#| msgid "Your browser does not support WebAuthn."
+msgid "Your browser does not support passkeys."
 msgstr "Votre navigateur ne supporte pas le protocole WebAuthn."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
@@ -1993,8 +1995,10 @@ msgid "An unknown error occurred."
 msgstr "Un erreur inconnue est survenue."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
-msgid "Set up WebAuthn authentication"
-msgstr "Mise en place de l’authentification par clé de sécurité"
+#, fuzzy
+#| msgid "Passkey authentication"
+msgid "Set up passkey authentication"
+msgstr "Authentification par clé de sécurité"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
 msgid "Follow these steps to register your passkey:"
@@ -3365,6 +3369,9 @@ msgstr "Cette application est fiable"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Jeton"
+
+#~ msgid "Set up WebAuthn authentication"
+#~ msgstr "Mise en place de l’authentification par clé de sécurité"
 
 #~ msgid "My security key"
 #~ msgstr "Ma clé de sécurité"

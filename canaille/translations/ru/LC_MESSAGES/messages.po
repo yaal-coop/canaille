@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:27+0100\n"
+"POT-Creation-Date: 2025-12-22 09:30+0100\n"
 "PO-Revision-Date: 2025-07-31 10:02+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/canaille/"
@@ -2005,7 +2005,7 @@ msgid "This passkey is already registered."
 msgstr "Доступ уже был отозван"
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
-msgid "Your browser does not support WebAuthn."
+msgid "Your browser does not support passkeys."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
@@ -2018,8 +2018,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
 #, fuzzy
-#| msgid "Set up multi-factor authentication."
-msgid "Set up WebAuthn authentication"
+msgid "Set up passkey authentication"
 msgstr "Настроить многоэтапную аутентификацию."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
@@ -3370,6 +3369,11 @@ msgstr "Эта учётная запись заблокирована"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Токен"
+
+#, fuzzy
+#~| msgid "Set up multi-factor authentication."
+#~ msgid "Set up WebAuthn authentication"
+#~ msgstr "Настроить многоэтапную аутентификацию."
 
 #, fuzzy
 #~| msgid "Source code"

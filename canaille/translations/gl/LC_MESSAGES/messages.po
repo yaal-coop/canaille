@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:27+0100\n"
+"POT-Creation-Date: 2025-12-22 09:30+0100\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -2082,7 +2082,7 @@ msgid "This passkey is already registered."
 msgstr "Acceso xa revogado"
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
-msgid "Your browser does not support WebAuthn."
+msgid "Your browser does not support passkeys."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
@@ -2096,7 +2096,7 @@ msgstr ""
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Set up WebAuthn authentication"
+msgid "Set up passkey authentication"
 msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
@@ -3503,6 +3503,11 @@ msgstr "A aplicación %(name)s está solicitando acceso a:"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#, fuzzy
+#~| msgid "Password initialization on {website_name}"
+#~ msgid "Set up WebAuthn authentication"
+#~ msgstr "Inicialización do contrasinal en {website_name}"
 
 #, fuzzy
 #~| msgid "Source code"

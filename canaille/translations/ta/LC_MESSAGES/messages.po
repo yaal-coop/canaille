@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:27+0100\n"
+"POT-Creation-Date: 2025-12-22 09:30+0100\n"
 "PO-Revision-Date: 2024-12-12 04:24+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -1997,7 +1997,7 @@ msgid "This passkey is already registered."
 msgstr "அணுகல் ஏற்கனவே ரத்து செய்யப்பட்டுள்ளது"
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
-msgid "Your browser does not support WebAuthn."
+msgid "Your browser does not support passkeys."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
@@ -2011,7 +2011,7 @@ msgstr ""
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Set up WebAuthn authentication"
+msgid "Set up passkey authentication"
 msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
@@ -3373,6 +3373,11 @@ msgstr "இந்த கணக்கு பூட்டப்பட்டுள�
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "கிள்ளாக்கு"
+
+#, fuzzy
+#~| msgid "Password initialization on {website_name}"
+#~ msgid "Set up WebAuthn authentication"
+#~ msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #, fuzzy
 #~| msgid "Source code"
