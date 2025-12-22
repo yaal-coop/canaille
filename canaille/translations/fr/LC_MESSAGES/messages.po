@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-22 09:12+0100\n"
-"PO-Revision-Date: 2025-12-22 08:13+0000\n"
+"PO-Revision-Date: 2025-12-22 08:28+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -400,10 +400,8 @@ msgid "Name cannot be empty"
 msgstr "Le nom ne peut pas être vide"
 
 #: canaille/core/endpoints/account.py:878
-#, fuzzy
-#| msgid "Security key renamed successfully"
 msgid "Passkey renamed successfully"
-msgstr "La clé de sécurité a été renommée avec succès."
+msgstr "La clé de sécurité a été renommée avec succès"
 
 #: canaille/core/endpoints/account.py:890
 msgid "All passkeys have been removed"
@@ -793,10 +791,7 @@ msgid "Sending new verification code."
 msgstr "Envoi d’un nouveau code de vérification."
 
 #: canaille/core/endpoints/auth/fido.py:209
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Maximum number of security keys reached ({max}). Please remove one before "
-#| "adding another."
+#, python-brace-format
 msgid ""
 "Maximum number of passkeys reached ({max}). Please remove one before adding "
 "another."
@@ -807,11 +802,9 @@ msgstr ""
 #: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
 msgid "My passkey"
-msgstr ""
+msgstr "Ma clé de sécurité"
 
 #: canaille/core/endpoints/auth/fido.py:337
-#, fuzzy
-#| msgid "Security key successfully registered."
 msgid "Passkey successfully registered."
 msgstr "La clé de sécurité a été enregistrée avec succès."
 
@@ -1194,16 +1187,22 @@ msgid ""
 "than the specified number of seconds. The max_age request parameter "
 "overrides this default value."
 msgstr ""
+"Durée maximum d'authentification par défaut. Indique que l'utilisateur doit "
+"explicitement se ré-authentifier si la session est plus vieille que le "
+"nombre de secondes indiqué. Le paramètre max_age de la requête surcharge "
+"cette valeur par défaut."
 
 #: canaille/oidc/endpoints/forms.py:386
 msgid "Require auth_time claim"
-msgstr ""
+msgstr "Requiert le paramètre auth_time"
 
 #: canaille/oidc/endpoints/forms.py:389
 msgid ""
 "Boolean value specifying whether the auth_time claim in the ID Token is "
 "required. It is required when the value is true."
 msgstr ""
+"Valeur booléenne indiquant si le paramètre auth_time est requis dans l'ID "
+"Token. Il est requis quand la valeur est vraie."
 
 #: canaille/oidc/endpoints/forms.py:395
 msgid "Default ACR values"
@@ -1216,6 +1215,11 @@ msgid ""
 "to use for processing requests from this client, with the values appearing "
 "in order of preference."
 msgstr ""
+"Valeurs par défaut demandées pour la référence de classe du contexte "
+"d'authentification (Authentication Context Class Reference). Tableau de "
+"chaînes de caractères spécifiant les valeurs acr par défaut que le "
+"fournisseur d'identité doit utiliser pour traiter les requêtes de ce client, "
+"les valeurs étant listées par ordre de préférence."
 
 #: canaille/oidc/endpoints/forms.py:407
 msgid "Initiate login URI"
@@ -1226,10 +1230,12 @@ msgid ""
 "URI using the https scheme that a third party can use to initiate a login by "
 "the RP. The URI must accept requests via both GET and POST."
 msgstr ""
+"URI utilisant le schéma https qu'un tiers doit utiliser pour initier une "
+"connexion auprès du client. L'URI doit accepter les requêtes via GET et POST."
 
 #: canaille/oidc/endpoints/forms.py:419
 msgid "Request object signing algorithm"
-msgstr ""
+msgstr "Algorithme de signature du « Request object »"
 
 #: canaille/oidc/endpoints/forms.py:425
 msgid ""
@@ -1239,6 +1245,12 @@ msgid ""
 "passed by value (using the request parameter) and when it is passed by "
 "reference (using the request_uri parameter)."
 msgstr ""
+"Algorithme JWS devant être utilisé pour signer les Request object envoyés au "
+"fournisseur d'identité. Tous les Request object de ce client doivent être "
+"rejetés s'ils ne sont pas signés avec cet algorithme. Cet algorithme doit "
+"être utilisé aussi bien lorsque l'objet de requête est transmis par valeur "
+"(via le paramètre request) que lorsqu'il est transmis par référence (via le "
+"paramètre request_uri)."
 
 #: canaille/oidc/endpoints/forms.py:431
 msgid "Request URIs"
@@ -1251,16 +1263,23 @@ msgid ""
 "signed in a way that is verifiable by the OP. Servers may cache the contents "
 "of the files referenced by these URIs."
 msgstr ""
+"Tableau de valeurs request_uri pré-enregistrées par le RP (Relying Party) "
+"pour utilisation auprès du fournisseur d'identité. Ces URL doivent utiliser "
+"le schéma https, sauf si l'objet de requête cible est signé d'une manière "
+"vérifiable par le fournisseur d'identité. Les serveurs peuvent mettre en "
+"cache le contenu des fichiers référencés par ces URI."
 
 #: canaille/oidc/endpoints/forms.py:448
 msgid "Require signed request object"
-msgstr ""
+msgstr "Signature du Request object requise"
 
 #: canaille/oidc/endpoints/forms.py:451
 msgid ""
 "Indicates whether authorization request needs to be protected as a request "
 "object and provided through either request or request_uri parameter."
 msgstr ""
+"Indique si la requête d'autorisation doit être protégée sous forme de "
+"Request object et transmise via le paramètre request ou request_uri."
 
 #: canaille/oidc/endpoints/oauth.py:544
 msgid "You have been disconnected"
@@ -1810,37 +1829,34 @@ msgstr "Vérifier"
 
 #: canaille/templates/core/auth/fido-setup.html:33
 #: canaille/templates/core/auth/fido-setup.html:62
-#, fuzzy
-#| msgid "Password reset"
 msgid "Passkey registration"
-msgstr "Réinitialisation du mot de passe"
+msgstr "Enregistrement d'une clé de sécurité"
 
 #: canaille/templates/core/auth/fido-setup.html:47
 #: canaille/templates/core/auth/fido-setup.html:77
-#, fuzzy
-#| msgid "Registration"
 msgid "Register"
-msgstr "Inscription"
+msgstr "Enregistrer"
 
 #: canaille/templates/core/auth/fido.html:15
-#, fuzzy
-#| msgid "Set up a new authenticator."
 msgid "Passkey authentication"
-msgstr "Mettez en place d'un nouvel authentificateur."
+msgstr "Authentification par clé de sécurité"
 
 #: canaille/templates/core/auth/fido.html:23
 msgid "Use your passkey"
-msgstr ""
+msgstr "Utilisez votre clé de sécurité"
 
 #: canaille/templates/core/auth/fido.html:25
 msgid ""
 "Insert your passkey or use your device biometric authentication, then press "
 "the button below, and finally authenticate with your passkey."
 msgstr ""
+"Insérer votre clé de sécurité ou utilisez votre appareil d'authentification "
+"biométrique, puis appuyez sur le bouton ci-dessous, et enfin authentifiez-"
+"vous avec votre clé de sécurité."
 
 #: canaille/templates/core/auth/fido.html:44
 msgid "Authenticate"
-msgstr ""
+msgstr "S’authentifier"
 
 #: canaille/templates/core/auth/firstlogin.html:27
 msgid "First login"
@@ -1947,32 +1963,32 @@ msgstr ""
 msgid ""
 "Please click the button below first, then touch your passkey when prompted."
 msgstr ""
+"Veuillez d’abord cliquer sur le bouton ci-dessous, puis touchez votre clé de "
+"sécurité lorsque le navigateur vous le demande."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:25
 msgid "Failed to parse the passkey options."
-msgstr ""
+msgstr "Échec de l’analyse des options de la clé de sécurité."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:32
 msgid "The operation was cancelled or timed out."
-msgstr ""
+msgstr "L’opération a été annulée ou a expiré."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:39
-#, fuzzy
-#| msgid "The access is already revoked"
 msgid "This authenticator is already registered."
-msgstr "L'accès a déjà été révoqué"
+msgstr "La clé de sécurité a déjà été enregistrée."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
 msgid "Your browser does not support WebAuthn."
-msgstr ""
+msgstr "Votre navigateur ne supporte pas le protocole WebAuthn."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
 msgid "Security error. Make sure you are using HTTPS."
-msgstr ""
+msgstr "Erreur de sécurité. Veuillez utiliser le protocole HTTPS."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:60
 msgid "An unknown error occurred."
-msgstr ""
+msgstr "Un erreur inconnue est survenue."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
 #, fuzzy
