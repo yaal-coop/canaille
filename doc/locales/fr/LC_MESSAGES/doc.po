@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-21 00:13+0100\n"
-"PO-Revision-Date: 2025-10-10 20:07+0000\n"
-"Last-Translator: sblondon <stephane.blondon@gmail.com>\n"
+"PO-Revision-Date: 2025-12-22 12:46+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 41ffeccba4e9433f9ccb055196625b58
@@ -6337,6 +6337,7 @@ msgstr ""
 msgid ""
 "The other clients that are intended to use the tokens emitted by this client."
 msgstr ""
+"Les autres applications qui pourront utiliser les jetons émis pour ce client."
 
 #: ../howtos/sso.rst:130 80c9eb15639041adab0eb9e4f7e26025
 msgid "Logo URI"
@@ -8064,10 +8065,8 @@ msgstr ""
 "rafraîchissement. :pr:`157`"
 
 #: ../references/alternatives.rst:268 5a2e550185c34bdf8c45311aff6b6815
-#, fuzzy
-#| msgid "Password reset"
 msgid "Password"
-msgstr "Réinitialisation de mot de passe"
+msgstr "Mot de passe"
 
 #: ../references/alternatives.rst:269 ad06382b061341b6a7aa1ce7d04ff11b
 msgid "TOTP"
@@ -8085,7 +8084,7 @@ msgstr "Authentification unique (SSO)"
 
 #: ../references/alternatives.rst:272 290da7b622ad4d70aa3ecd9422c5a321
 msgid "Email"
-msgstr ""
+msgstr "Courriel"
 
 #: ../references/alternatives.rst:273 b4c97810ce1e4a8e81f35d8b9044b4cb
 msgid "WebAuthn"
