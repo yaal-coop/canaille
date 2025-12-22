@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-22 09:30+0100\n"
-"PO-Revision-Date: 2025-12-22 08:30+0000\n"
+"PO-Revision-Date: 2025-12-22 08:53+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -1975,16 +1975,12 @@ msgid "The operation was cancelled or timed out."
 msgstr "L’opération a été annulée ou a expiré."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:39
-#, fuzzy
-#| msgid "This authenticator is already registered."
 msgid "This passkey is already registered."
 msgstr "La clé de sécurité a déjà été enregistrée."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
-#, fuzzy
-#| msgid "Your browser does not support WebAuthn."
 msgid "Your browser does not support passkeys."
-msgstr "Votre navigateur ne supporte pas le protocole WebAuthn."
+msgstr "Votre navigateur ne gère pas les clés de sécurité."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
 msgid "Security error. Make sure you are using HTTPS."
@@ -1995,10 +1991,8 @@ msgid "An unknown error occurred."
 msgstr "Un erreur inconnue est survenue."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
-#, fuzzy
-#| msgid "Passkey authentication"
 msgid "Set up passkey authentication"
-msgstr "Authentification par clé de sécurité"
+msgstr "Mise en place de l’authentification par clé de sécurité"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
 msgid "Follow these steps to register your passkey:"
@@ -2014,17 +2008,19 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:17
 msgid "Optionally, choose a name for the key."
-msgstr ""
+msgstr "Optionnellement, choisissez un nom pour la clé."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:18
 msgid "Click the \"Register\" button below."
-msgstr ""
+msgstr "Cliquez sur le bouton « Enregistrer » ci-dessous."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:19
 msgid ""
 "Follow your device's prompts: touch your passkey or use your biometric "
 "authentication."
 msgstr ""
+"Suivez les instructions de votre appareil : touchez votre clé de sécurité ou "
+"utilisez votre authentification biométrique."
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:3
 msgid "Authenticator application configuration"
@@ -2566,33 +2562,21 @@ msgid "Delete"
 msgstr "Supprimer"
 
 #: canaille/templates/core/modals/delete-credential.html:10
-#, fuzzy
-#| msgid "Delete the client"
 msgid "Delete passkey"
-msgstr "Supprimer le client"
+msgstr "Supprimer la clé de sécurité"
 
 #: canaille/templates/core/modals/delete-credential.html:15
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to remove %(user_name)s from the group "
-#| "\"%(group_name)s\"?"
+#, python-format
 msgid "Are you sure you want to delete the passkey \"%(name)s\"?"
-msgstr ""
-"Confirmez-vous vouloir retirer %(user_name)s du groupe \"%(group_name)s\" ?"
+msgstr "Êtes-vous sûr de vouloir supprimer la clé de sécurité « %(name)s » ?"
 
 #: canaille/templates/core/modals/delete-credential.html:19
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to revoke this token? This action is unrevokable."
 msgid "Are you sure you want to delete this passkey?"
-msgstr ""
-"Êtes-vous sûrs de vouloir révoquer ce jeton ? Cette action est irrévocable."
+msgstr "Êtes-vous sûr de vouloir supprimer cette clé de sécurité ?"
 
 #: canaille/templates/core/modals/delete-credential.html:25
-#, fuzzy
-#| msgid "This field cannot be edited"
 msgid "This action cannot be undone."
-msgstr "Ce champ ne peut pas être édité"
+msgstr "Cet action ne peut être révoquée."
 
 #: canaille/templates/core/modals/delete-credential.html:32
 #: canaille/templates/core/modals/reset-fido.html:28
@@ -2677,30 +2661,17 @@ msgid "Remove"
 msgstr "Retirer"
 
 #: canaille/templates/core/modals/reset-fido.html:9
-#, fuzzy
-#| msgid "Password reset"
 msgid "Passkey reset"
-msgstr "Réinitialisation du mot de passe"
+msgstr "Réinitialisation des clés de sécurité"
 
 #: canaille/templates/core/modals/reset-fido.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to reset the authenticator application "
-#| "configuration for %(user_name)s?"
+#, python-format
 msgid "Are you sure you want to remove the passkey for %(user_name)s?"
-msgstr ""
-"Êtes-vous sûr de vouloir ré-initialiser la configuration de l’application "
-"d'authentification pour %(user_name)s ?"
+msgstr "Êtes-vous sûr de vouloir la clé de sécurité de %(user_name)s ?"
 
 #: canaille/templates/core/modals/reset-fido.html:18
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to reset your authenticator application "
-#| "configuration?"
 msgid "Are you sure you want to remove your passkey?"
-msgstr ""
-"Êtes-vous sûr de vouloir ré-initialiser la configuration de votre "
-"application d’authentification ?"
+msgstr "Êtes-vous sûr de vouloir supprimer votre clé de sécurité ?"
 
 #: canaille/templates/core/modals/reset-otp.html:9
 msgid "One-time passcode authentication reset"
@@ -2724,11 +2695,11 @@ msgstr ""
 
 #: canaille/templates/core/partial/captcha_field.html:30
 msgid "Listen to the audio security code"
-msgstr ""
+msgstr "Écoutez la version audio du code de sécurité"
 
 #: canaille/templates/core/partial/captcha_field.html:38
 msgid "Refresh the security code"
-msgstr ""
+msgstr "Générer un nouveau code de sécurité"
 
 #: canaille/templates/core/partial/emails_field.html:9
 msgid "Send a verification email to validate this address."
@@ -2888,81 +2859,66 @@ msgstr ""
 "déverrouillé."
 
 #: canaille/templates/core/partials/profile_settings_fido.html:10
-#, fuzzy
-#| msgid "Password reset"
 msgid "Passkeys"
-msgstr "Réinitialisation du mot de passe"
+msgstr "Clés de sécurité"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:17
 #, python-format
 msgid "You have %(count)s passkey configured."
 msgid_plural "You have %(count)s passkeys configured."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vous avez %(count)s clé de sécurité configurée."
+msgstr[1] "Vous avez %(count)s clés de sécurité configurées."
 
 #: canaille/templates/core/partials/profile_settings_fido.html:24
-#, fuzzy
-#| msgid "Set up multi-factor authentication."
 msgid "Passkeys can be used for authentication."
-msgstr "Mise en place l'authentification multi-facteurs."
+msgstr "Les clés de sécurité peuvent être utilisées pour l'authentification."
 
 #: canaille/templates/core/partials/profile_settings_fido.html:28
 msgid ""
 "As they are unrecoverable in case of loss, it is generally recommended to "
 "register at least one additional backup key."
 msgstr ""
+"Comme elles sont irrécupérables en cas de perte, il est généralement "
+"recommandé d’enregistrer au moins une clé de sécurité additionnelle de "
+"secours."
 
 #: canaille/templates/core/partials/profile_settings_fido.html:40
-#, fuzzy
-#| msgid "Registration"
 msgid "Registered"
-msgstr "Inscription"
+msgstr "Enregistrement"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:41
 msgid "Last used"
-msgstr ""
+msgstr "Dernière utilisation"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:51
-#, fuzzy
-#| msgid "Username"
 msgid "Rename"
-msgstr "Nom d'utilisateur"
+msgstr "Renommer"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:61
 msgid "Never"
-msgstr ""
+msgstr "Jamais"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:79
 #: canaille/templates/core/partials/profile_settings_fido.html:84
-#, fuzzy
-#| msgid "Add another field"
 msgid "Add another key"
-msgstr "Ajouter un autre champ"
+msgstr "Ajouter un autre clé de sécurité"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:82
 #, python-format
 msgid "Maximum limit reached (%(max)s)"
-msgstr ""
+msgstr "Limite maximum de %(max)s atteinte"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:88
-#, fuzzy
-#| msgid "Remove this email address"
 msgid "Remove all keys"
-msgstr "Supprimer cette adresse email"
+msgstr "Supprimer toutes les clés de sécurité"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:96
-#, fuzzy
-#| msgid ""
-#| "You have no authenticator application configured. Click on the following "
-#| "button and follow the instructions to get your authenticator application "
-#| "configured."
 msgid ""
 "You have no passkey configured. Click on the following button to register "
 "your passkey."
 msgstr ""
-"Vous n’avez aucune application d’authentification configurée. Cliquez sur le "
-"bouton suivant et suivez les instructions pour configurer votre application "
-"d’authentification."
+"Vous n’avez aucune clé de sécurité configurée. Cliquez sur le bouton suivant "
+"pour enregistrer une clé de sécurité."
 
 #: canaille/templates/core/sms/sms_otp.txt:1
 #, python-format
