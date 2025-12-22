@@ -442,7 +442,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin, caplog):
 
     assert (
         "info",
-        "Sending password reset link at the user email address. "
+        "Sending password reset link to the user email address. "
         "It should be received within a few minutes.",
     ) in res.flashes
 
@@ -482,7 +482,7 @@ def test_password_reset_email_failed(
 
     assert (
         "info",
-        "Sending password reset link at the user email address. "
+        "Sending password reset link to the user email address. "
         "It should be received within a few minutes.",
     ) in res.flashes
 

@@ -50,7 +50,10 @@ def test_registration_failure_with_different_passwords_and_too_short_password(
     res.form["family_name"] = "newuser"
     res.form["emails-0"] = "newuser@example.test"
     res = res.form.submit()
-    assert ("error", "User account creation failed.") in res.flashes
+    assert (
+        "error",
+        "Your account couldn't be created. Please check the form and try again.",
+    ) in res.flashes
     res.mustcontain("Field must be at least 8 characters long.")
 
     res.form["password1"] = "i'm a little pea"

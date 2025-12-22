@@ -96,7 +96,7 @@ def password():
         user_id = user.id
         logout_user()
         current_app.logger.security(f"Failed password authentication for {user_name}")
-        flash(message or _("Login failed, please check your information"), "error")
+        flash(message or _("Login failed. Please check your information."), "error")
 
         user = Backend.instance.get(user.__class__, user_id)
         return render_password_template()
@@ -143,17 +143,24 @@ def forgotten():
     if not request.form:
         return render_template("core/auth/forgotten-password.html", form=form)
 
-    item_name = "link" if current_app.features.has_trusted_hosts else "code"
-
     if not form.validate():
-        flash(_(f"Could not send the password reset {item_name}."), "error")
+        if current_app.features.has_trusted_hosts:
+            flash(_("Could not send the password reset link."), "error")
+        else:
+            flash(_("Could not send the password reset code."), "error")
         return render_template("core/auth/forgotten-password.html", form=form)
 
     user = get_user_from_login(form.login.data)
-    sending_message = _(
-        f"Sending password reset {item_name} at your email address. "
-        "You should receive it within a few minutes."
-    )
+    if current_app.features.has_trusted_hosts:
+        sending_message = _(
+            "Sending password reset link to your email address. "
+            "You should receive it within a few minutes."
+        )
+    else:
+        sending_message = _(
+            "Sending password reset code to your email address. "
+            "You should receive it within a few minutes."
+        )
     if current_app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] and (
         not user or not user.can_edit_self or user.locked
     ):
@@ -209,7 +216,9 @@ def forgotten_code(user):
         return render_template("core/auth/forgotten-password-code.html", form=form)
 
     if not form.validate() or not user.is_email_or_sms_otp_valid(form.code.data):
-        flash(_("Invalid code."), "error")
+        flash(
+            _("This code is invalid or has expired. Please request a new one."), "error"
+        )
         return render_template("core/auth/forgotten-password-code.html", form=form)
 
     return redirect(url_for(".reset", user=user, token=form.code.data))
@@ -225,11 +234,16 @@ def reset(user, token):
         token = build_hash(token)
 
     if not user or not user.is_email_or_sms_otp_valid(token):
-        item_name = "link" if current_app.features.has_trusted_hosts else "code"
-        flash(
-            _(f"The password reset {item_name} that brought you here was invalid."),
-            "error",
-        )
+        if current_app.features.has_trusted_hosts:
+            flash(
+                _("The password reset link that brought you here was invalid."),
+                "error",
+            )
+        else:
+            flash(
+                _("The password reset code that brought you here was invalid."),
+                "error",
+            )
         return redirect(url_for("core.account.index"))
 
     if not request.form or not form.validate():

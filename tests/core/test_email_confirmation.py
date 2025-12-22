@@ -236,7 +236,12 @@ def test_confirmation_mail_form_failed(testclient, backend, user, smtpd):
             name="action", value="add_email"
         )
 
-    assert res.flashes == [("error", "Email addition failed.")]
+    assert res.flashes == [
+        (
+            "error",
+            "This email couldn't be added. Please check the format and try again.",
+        )
+    ]
     backend.reload(user)
     assert user.emails == ["john@doe.test"]
 
@@ -447,7 +452,7 @@ def test_delete_wrong_email(testclient, logged_user, backend, smtpd):
     res2 = res.forms["emailconfirmationform"].submit(
         name="email_remove", value="new@email.test"
     )
-    assert res2.flashes == [("error", "Email deletion failed.")]
+    assert res2.flashes == [("error", "This email couldn't be removed.")]
 
     backend.reload(logged_user)
     assert logged_user.emails == ["john@doe.test"]
@@ -468,7 +473,9 @@ def test_delete_last_email(testclient, logged_user, backend, smtpd):
     res2 = res.forms["emailconfirmationform"].submit(
         name="email_remove", value="john@doe.test"
     )
-    assert res2.flashes == [("error", "Email deletion failed.")]
+    assert res2.flashes == [
+        ("error", "This email couldn't be removed. You must keep at least one.")
+    ]
 
     backend.reload(logged_user)
     assert logged_user.emails == ["john@doe.test"]

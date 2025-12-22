@@ -17,7 +17,12 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
 
     res.form["user_name"] = "toto"
     res = res.form.submit(name="action", value="edit-settings")
-    assert res.flashes == [("error", "Profile edition failed.")]
+    assert res.flashes == [
+        (
+            "error",
+            "Your changes couldn't be saved. Please check the form and try again.",
+        )
+    ]
     backend.reload(logged_user)
 
     assert logged_user.user_name == "user"
@@ -76,7 +81,12 @@ def test_empty_group_removal(testclient, logged_admin, user, foo_group, backend)
     res = testclient.get("/profile/user/settings", status=200)
     res.form["groups"] = []
     res = res.form.submit(name="action", value="edit-settings")
-    assert res.flashes == [("error", "Profile edition failed.")]
+    assert res.flashes == [
+        (
+            "error",
+            "Your changes couldn't be saved. Please check the form and try again.",
+        )
+    ]
 
     res.mustcontain(
         "The group 'foo' cannot be removed, because it must have at least one user left."
@@ -294,5 +304,10 @@ def test_edition_invalid_group(testclient, logged_admin, user, foo_group):
     res = testclient.get("/profile/user/settings", status=200)
     res.form["groups"].force_value("invalid")
     res = res.form.submit(name="action", value="edit-settings")
-    assert res.flashes == [("error", "Profile edition failed.")]
+    assert res.flashes == [
+        (
+            "error",
+            "Your changes couldn't be saved. Please check the form and try again.",
+        )
+    ]
     res.mustcontain("Invalid choice(s): one or more data inputs could not be coerced.")

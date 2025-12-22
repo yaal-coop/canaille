@@ -72,10 +72,10 @@ def pre_consents(user):
 @user_needed()
 def revoke(user, consent):
     if not consent or consent.subject != user:
-        flash(_("Could not revoke this access."), "error")
+        flash(_("This access couldn't be revoked."), "error")
 
     elif consent.revokation_date:
-        flash(_("The access is already revoked."), "error")
+        flash(_("This access is already revoked."), "error")
 
     else:
         consent.revoke()
@@ -91,10 +91,10 @@ def revoke(user, consent):
 @user_needed()
 def restore(user, consent):
     if not consent or consent.subject != user:
-        flash(_("Could not restore this access."), "error")
+        flash(_("This access couldn't be restored."), "error")
 
     elif not consent.revokation_date:
-        flash(_("The access is not revoked."), "error")
+        flash(_("This access hasn't been revoked."), "error")
 
     else:
         consent.restore()
@@ -110,7 +110,7 @@ def restore(user, consent):
 @user_needed()
 def revoke_trusted(user, client):
     if not client or not client.trusted:
-        flash(_("Could not revoke this access."), "error")
+        flash(_("This access couldn't be revoked."), "error")
         return redirect(url_for("oidc.consents.consents"))
 
     consent = Backend.instance.get(models.Consent, client=client, subject=user)

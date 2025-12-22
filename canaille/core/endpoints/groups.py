@@ -72,7 +72,13 @@ def create_group(user):
 
     if request.form:
         if not form.validate():
-            flash(_("Group creation failed."), "error")
+            flash(
+                _(
+                    "The group couldn't be created. "
+                    "Please check the form and try again."
+                ),
+                "error",
+            )
         else:
             group = models.Group()
             group.members = [user]
@@ -157,7 +163,13 @@ def edit_group(group):
             )
             return redirect(url_for("core.groups.group", group=group))
         else:
-            flash(_("Group edition failed."), "error")
+            flash(
+                _(
+                    "Your changes couldn't be saved. "
+                    "Please check the form and try again."
+                ),
+                "error",
+            )
 
     return render_htmx_template(
         "core/group.html",

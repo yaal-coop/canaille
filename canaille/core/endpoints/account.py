@@ -426,7 +426,10 @@ def registration(data=None, hash=None):
         return render_registration_template()
 
     if not form.validate():
-        flash(_("User account creation failed."), "error")
+        flash(
+            _("Your account couldn't be created. Please check the form and try again."),
+            "error",
+        )
         return render_registration_template()
 
     user = profile_create(current_app, form)
@@ -512,7 +515,10 @@ def profile_creation(user):
         )
 
     if not form.validate():
-        flash(_("User account creation failed."), "error")
+        flash(
+            _("The account couldn't be created. Please check the form and try again."),
+            "error",
+        )
         return render_template(
             "core/profile_add.html",
             form=form,
@@ -608,7 +614,10 @@ def _handle_edit_profile(
     user, edited_user, profile_form, has_email_changed, render_context
 ):
     if not profile_form.validate():
-        flash(_("Profile edition failed."), "error")
+        flash(
+            _("Your changes couldn't be saved. Please check the form and try again."),
+            "error",
+        )
         return render_template("core/profile_edit.html", **render_context)
 
     for field in profile_form:
@@ -641,7 +650,10 @@ def _handle_edit_profile(
 
 def _handle_add_email(edited_user, emails_form, render_context):
     if not emails_form.validate():
-        flash(_("Email addition failed."), "error")
+        flash(
+            _("This email couldn't be added. Please check the format and try again."),
+            "error",
+        )
         return render_template("core/profile_edit.html", **render_context)
 
     email_confirmation = EmailConfirmationPayload(
@@ -672,11 +684,11 @@ def _handle_add_email(edited_user, emails_form, render_context):
 
 def _handle_remove_email(edited_user, email, render_context):
     if email not in (edited_user.emails or []):
-        flash(_("Email deletion failed."), "error")
+        flash(_("This email couldn't be removed."), "error")
         return render_template("core/profile_edit.html", **render_context)
 
     if not edited_user.emails or len(edited_user.emails) == 1:
-        flash(_("Email deletion failed."), "error")
+        flash(_("This email couldn't be removed. You must keep at least one."), "error")
         return render_template("core/profile_edit.html", **render_context)
 
     edited_user.emails = [m for m in edited_user.emails if m != email]
@@ -787,7 +799,7 @@ def _handle_password_mail(user, edited_user, action):
             send_password_reset_mail(edited_user, email)
         flash(
             _(
-                "Sending password reset link at the user email address. "
+                "Sending password reset link to the user email address. "
                 "It should be received within a few minutes."
             ),
             "info",
@@ -1005,7 +1017,13 @@ def _handle_profile_settings_edit(editor, edited_user):
         or request_is_partial()
     ):
         if not form.validate():
-            flash(_("Profile edition failed."), "error")
+            flash(
+                _(
+                    "Your changes couldn't be saved. "
+                    "Please check the form and try again."
+                ),
+                "error",
+            )
 
         else:
             for attribute in form:

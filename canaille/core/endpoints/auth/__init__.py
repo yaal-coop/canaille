@@ -147,7 +147,7 @@ def logout(username=None):
                 "success",
             )
         else:
-            flash(_("The session could not be closed."), "error")
+            flash(_("This session couldn't be closed. Please try again."), "error")
         return redirect(url_for("core.auth.login"))
     else:
         if g.session and g.session.user:

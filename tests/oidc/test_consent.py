@@ -45,7 +45,7 @@ def test_revokation_already_revoked(testclient, client, consent, logged_user, ba
     assert consent.revoked
 
     res = testclient.get(f"/consent/revoke/{consent.consent_id}", status=302)
-    assert ("error", "The access is already revoked.") in res.flashes
+    assert ("error", "This access is already revoked.") in res.flashes
     res = res.follow(status=200)
 
     backend.reload(consent)
@@ -75,7 +75,7 @@ def test_restoration_already_restored(testclient, client, consent, logged_user, 
     assert not consent.revoked
 
     res = testclient.get(f"/consent/restore/{consent.consent_id}", status=302)
-    assert ("error", "The access is not revoked.") in res.flashes
+    assert ("error", "This access hasn't been revoked.") in res.flashes
     res = res.follow(status=200)
 
 
@@ -83,21 +83,21 @@ def test_invalid_consent_revokation(testclient, client, logged_user):
     """Test that revoking invalid consent IDs fails with an error."""
     res = testclient.get("/consent/revoke/invalid", status=302)
     assert ("success", "The access has been revoked.") not in res.flashes
-    assert ("error", "Could not revoke this access.") in res.flashes
+    assert ("error", "This access couldn't be revoked.") in res.flashes
 
 
 def test_someone_else_consent_revokation(testclient, client, consent, logged_moderator):
     """Test that users cannot revoke other users' consents."""
     res = testclient.get(f"/consent/revoke/{consent.consent_id}", status=302)
     assert ("success", "The access has been revoked.") not in res.flashes
-    assert ("error", "Could not revoke this access.") in res.flashes
+    assert ("error", "This access couldn't be revoked.") in res.flashes
 
 
 def test_invalid_consent_restoration(testclient, client, logged_user):
     """Test that restoring invalid consent IDs fails with an error."""
     res = testclient.get("/consent/restore/invalid", status=302)
     assert ("success", "The access has been restored.") not in res.flashes
-    assert ("error", "Could not restore this access.") in res.flashes
+    assert ("error", "This access couldn't be restored.") in res.flashes
 
 
 def test_someone_else_consent_restoration(
@@ -106,7 +106,7 @@ def test_someone_else_consent_restoration(
     """Test that users cannot restore other users' consents."""
     res = testclient.get(f"/consent/restore/{consent.consent_id}", status=302)
     assert ("success", "The access has been restore") not in res.flashes
-    assert ("error", "Could not restore this access.") in res.flashes
+    assert ("error", "This access couldn't be restored.") in res.flashes
 
 
 def test_oidc_authorization_after_revokation(
@@ -206,7 +206,7 @@ def test_revoke_trusted_client(testclient, client, logged_user, token, backend):
 def test_revoke_invalid_trusted_client(testclient, logged_user):
     """Test that revoking an invalid trusted client ID fails with an error."""
     res = testclient.get("/consent/revoke-trusted/invalid", status=302)
-    assert ("error", "Could not revoke this access.") in res.flashes
+    assert ("error", "This access couldn't be revoked.") in res.flashes
 
 
 def test_revoke_trusted_client_with_manual_consent(
@@ -231,7 +231,7 @@ def test_revoke_trusted_client_with_manual_revokation(
 
     res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     res = res.follow()
-    assert ("error", "The access is already revoked.") in res.flashes
+    assert ("error", "This access is already revoked.") in res.flashes
 
 
 def test_tos_policy(testclient, logged_user, client, trusted_client, backend, caplog):

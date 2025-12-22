@@ -236,7 +236,10 @@ def test_field_permissions_read(testclient, logged_user, backend):
             "csrf_token": form["csrf_token"].value,
         },
     )
-    assert ("error", "Profile edition failed.") in res.flashes
+    assert (
+        "error",
+        "Your changes couldn't be saved. Please check the form and try again.",
+    ) in res.flashes
 
     backend.reload(logged_user)
     assert logged_user.phone_numbers == ["555-666-777"]
