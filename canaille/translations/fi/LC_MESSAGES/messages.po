@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:12+0100\n"
+"POT-Creation-Date: 2025-12-22 09:27+0100\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -1910,8 +1910,9 @@ msgid "The operation was cancelled or timed out."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:39
-msgid "This authenticator is already registered."
-msgstr ""
+#, fuzzy
+msgid "This passkey is already registered."
+msgstr "Profiilin päivitys onnistui."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
 msgid "Your browser does not support WebAuthn."

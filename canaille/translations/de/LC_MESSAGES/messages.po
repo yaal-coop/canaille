@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:12+0100\n"
+"POT-Creation-Date: 2025-12-22 09:27+0100\n"
 "PO-Revision-Date: 2024-06-26 11:09+0000\n"
 "Last-Translator: Sascha <swi@thechameleonway.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -2018,7 +2018,7 @@ msgstr ""
 #: canaille/templates/core/auth/partials/fido_errors.html:39
 #, fuzzy
 #| msgid "The access is already revoked"
-msgid "This authenticator is already registered."
+msgid "This passkey is already registered."
 msgstr "Der Zugang ist bereits widerrufen"
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46

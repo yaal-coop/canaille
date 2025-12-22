@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-12-22 09:12+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-12-22 09:27+0100\n"
 "PO-Revision-Date: 2025-12-22 08:28+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -1975,7 +1975,9 @@ msgid "The operation was cancelled or timed out."
 msgstr "L’opération a été annulée ou a expiré."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:39
-msgid "This authenticator is already registered."
+#, fuzzy
+#| msgid "This authenticator is already registered."
+msgid "This passkey is already registered."
 msgstr "La clé de sécurité a déjà été enregistrée."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
