@@ -339,7 +339,7 @@ def test_logout_login(testclient, logged_user, client, backend):
 
     res.form["password"] = "wrong password"
     res = res.form.submit(status=200)
-    assert ("error", "Login failed, please check your information") in res.flashes
+    assert ("error", "Login failed. Please check your information.") in res.flashes
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
@@ -1032,7 +1032,7 @@ def test_logout_login_with_intruder_lockout(testclient, logged_user, client):
 
         res.form["password"] = "wrong password"
         res = res.form.submit(status=200)
-        assert ("error", "Login failed, please check your information") in res.flashes
+        assert ("error", "Login failed. Please check your information.") in res.flashes
 
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit(status=200)

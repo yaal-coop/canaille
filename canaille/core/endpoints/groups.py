@@ -82,7 +82,7 @@ def create_group(user):
             Backend.instance.save(group)
             flash(
                 _(
-                    "The group %(group)s has been successfully created",
+                    "The group %(group)s has been successfully created.",
                     group=group.display_name,
                 ),
                 "success",
@@ -204,7 +204,7 @@ def delete_member(group):
 def delete_group(group):
     flash(
         _(
-            "The group %(group)s has been successfully deleted",
+            "The group %(group)s has been successfully deleted.",
             group=group.display_name,
         ),
         "success",

@@ -99,7 +99,7 @@ def test_signin_wrong_password(testclient, user, caplog):
 
     res.form["password"] = "incorrect horse"
     res = res.form.submit(status=200)
-    assert ("error", "Login failed, please check your information") in res.flashes
+    assert ("error", "Login failed. Please check your information.") in res.flashes
     assert (
         "canaille",
         logging.SECURITY,
@@ -120,7 +120,7 @@ def test_signin_password_substring(testclient, user):
 
     res.form["password"] = "c"
     res = res.form.submit(status=200)
-    assert ("error", "Login failed, please check your information") in res.flashes
+    assert ("error", "Login failed. Please check your information.") in res.flashes
 
 
 def test_signin_bad_csrf(testclient, user):
@@ -136,7 +136,7 @@ def test_signin_bad_csrf(testclient, user):
 
     res.form["password"] = ""
     res = res.form.submit(status=200)
-    assert ("error", "Login failed, please check your information") in res.flashes
+    assert ("error", "Login failed. Please check your information.") in res.flashes
 
 
 def test_signin_with_alternate_attribute(testclient, user):

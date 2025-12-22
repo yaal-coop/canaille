@@ -171,7 +171,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation(
     with time_machine.travel("2020-01-01 03:00:00+00:00", tick=False):
         res = testclient.get(email_confirmation_url)
 
-    assert ("success", "Your email address have been confirmed.") in res.flashes
+    assert ("success", "Your email address has been confirmed.") in res.flashes
     backend.reload(user)
     assert "new_email@mydomain.test" in user.emails
 
@@ -378,7 +378,7 @@ def test_confirmation_email_already_confirmed_link(testclient, backend, user, ad
 
     assert (
         "error",
-        "This address email have already been confirmed.",
+        "This email address has already been confirmed.",
     ) in res.flashes
     backend.reload(user)
     assert "new_email@mydomain.test" not in user.emails
@@ -407,7 +407,7 @@ def test_confirmation_email_already_used_link(testclient, backend, user, admin):
 
     assert (
         "error",
-        "This address email is already associated with another account.",
+        "This email address is already associated with another account.",
     ) in res.flashes
     backend.reload(user)
     assert "new_email@mydomain.test" not in user.emails
@@ -426,7 +426,7 @@ def test_delete_email(testclient, logged_user, backend, smtpd):
     res = res.forms["emailconfirmationform"].submit(
         name="email_remove", value="new@email.test"
     )
-    assert res.flashes == [("success", "The email have been successfully deleted.")]
+    assert res.flashes == [("success", "The email has been successfully deleted.")]
 
     backend.reload(logged_user)
     assert logged_user.emails == ["john@doe.test"]
@@ -442,7 +442,7 @@ def test_delete_wrong_email(testclient, logged_user, backend, smtpd):
     res1 = res.forms["emailconfirmationform"].submit(
         name="email_remove", value="new@email.test"
     )
-    assert res1.flashes == [("success", "The email have been successfully deleted.")]
+    assert res1.flashes == [("success", "The email has been successfully deleted.")]
 
     res2 = res.forms["emailconfirmationform"].submit(
         name="email_remove", value="new@email.test"
@@ -463,7 +463,7 @@ def test_delete_last_email(testclient, logged_user, backend, smtpd):
     res1 = res.forms["emailconfirmationform"].submit(
         name="email_remove", value="new@email.test"
     )
-    assert res1.flashes == [("success", "The email have been successfully deleted.")]
+    assert res1.flashes == [("success", "The email has been successfully deleted.")]
 
     res2 = res.forms["emailconfirmationform"].submit(
         name="email_remove", value="john@doe.test"

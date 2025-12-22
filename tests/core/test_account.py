@@ -270,7 +270,10 @@ def test_expired_password_redirection_and_register_new_password_for_memory_and_s
         res.form["password"] = "foobarbaz"
         res.form["confirmation"] = "foobarbaz"
         res = res.form.submit()
-        assert ("success", "Your password has been updated successfully") in res.flashes
+        assert (
+            "success",
+            "Your password has been updated successfully.",
+        ) in res.flashes
 
 
 @mock.patch("canaille.core.models.User.has_expired_password")
@@ -309,7 +312,7 @@ def test_expired_password_redirection_and_register_new_password_for_ldap_sql_and
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
-    assert ("success", "Your password has been updated successfully") in res.flashes
+    assert ("success", "Your password has been updated successfully.") in res.flashes
 
 
 def test_not_expired_password_or_wrong_user_redirection(

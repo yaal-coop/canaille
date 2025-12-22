@@ -66,7 +66,7 @@ def test_captcha_shown_after_threshold(testclient, user, caplog, backend):
         res = res.form.submit(status=200)
         assert (
             "error",
-            "Login failed, please check your information",
+            "Login failed. Please check your information.",
         ) in res.flashes
 
     res.mustcontain("captcha")

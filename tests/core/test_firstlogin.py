@@ -149,9 +149,9 @@ def test_smtp_disabled(testclient, backend, smtpd):
     res = res.follow()
     res.form["password"] = "incorrect horse"
     res = res.form.submit()
-    assert ("error", "Login failed, please check your information") in res.flashes
+    assert ("error", "Login failed. Please check your information.") in res.flashes
     res.form["password"] = ""
     res = res.form.submit()
-    assert ("error", "Login failed, please check your information") in res.flashes
+    assert ("error", "Login failed. Please check your information.") in res.flashes
 
     backend.delete(u)

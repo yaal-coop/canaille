@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:30+0100\n"
+"POT-Creation-Date: 2025-12-22 09:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,7 +149,7 @@ msgstr ""
 
 #: canaille/core/mails.py:170
 #, python-brace-format
-msgid "Confirm your address email on {website_name}"
+msgid "Confirm your email address on {website_name}"
 msgstr ""
 
 #: canaille/core/mails.py:201
@@ -281,15 +281,15 @@ msgid "The invitation link that brought you here was invalid."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:478
-msgid "This address email have already been confirmed."
+msgid "This email address has already been confirmed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:485
-msgid "This address email is already associated with another account."
+msgid "This email address is already associated with another account."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:492
-msgid "Your email address have been confirmed."
+msgid "Your email address has been confirmed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:524
@@ -322,7 +322,7 @@ msgid "Email deletion failed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:685
-msgid "The email have been successfully deleted."
+msgid "The email has been successfully deleted."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:760
@@ -343,38 +343,38 @@ msgid ""
 msgstr ""
 
 #: canaille/core/endpoints/account.py:803
-msgid "The account has been locked"
+msgid "The account has been locked."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:809
-msgid "The account has been unlocked"
+msgid "The account has been unlocked."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:821
-msgid "Authenticator application passcode authentication has been reset"
+msgid "Authenticator application passcode authentication has been reset."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:855
 #: canaille/core/endpoints/account.py:873
 #: canaille/core/endpoints/account.py:899
 #: canaille/core/endpoints/account.py:910
-msgid "Credential not found"
+msgid "Credential not found."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:868
-msgid "Name cannot be empty"
+msgid "Name cannot be empty."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:878
-msgid "Passkey renamed successfully"
+msgid "The passkey has been renamed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:890
-msgid "All passkeys have been removed"
+msgid "All passkeys have been removed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:905
-msgid "Passkey has been removed"
+msgid "The passkey has been removed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:1044
@@ -383,7 +383,7 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
-msgid "Your password has been updated successfully"
+msgid "Your password has been updated successfully."
 msgstr ""
 
 #: canaille/core/endpoints/admin.py:23
@@ -654,7 +654,7 @@ msgstr ""
 
 #: canaille/core/endpoints/groups.py:85
 #, python-format
-msgid "The group %(group)s has been successfully created"
+msgid "The group %(group)s has been successfully created."
 msgstr ""
 
 #: canaille/core/endpoints/groups.py:153
@@ -673,7 +673,7 @@ msgstr ""
 
 #: canaille/core/endpoints/groups.py:207
 #, python-format
-msgid "The group %(group)s has been successfully deleted"
+msgid "The group %(group)s has been successfully deleted."
 msgstr ""
 
 #: canaille/core/endpoints/groups.py:231
@@ -722,8 +722,7 @@ msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:114
 #: canaille/core/endpoints/auth/password.py:87
-#: canaille/core/endpoints/auth/password.py:99
-msgid "Login failed, please check your information"
+msgid "Login failed. Please check your information."
 msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:144
@@ -740,10 +739,9 @@ msgid "All sessions have been closed."
 msgstr ""
 
 #: canaille/core/endpoints/auth/email.py:62
-#: canaille/core/endpoints/auth/otp.py:46
-#: canaille/core/endpoints/auth/otp.py:60
+#: canaille/core/endpoints/auth/otp.py:121
 #: canaille/core/endpoints/auth/sms.py:62
-msgid "The passcode you entered is invalid. Please try again"
+msgid "The passcode you entered is invalid. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth/email.py:97
@@ -766,12 +764,17 @@ msgstr ""
 msgid "Passkey successfully registered."
 msgstr ""
 
-#: canaille/core/endpoints/auth/otp.py:121
-msgid "The passcode you entered is invalid. Please try again."
+#: canaille/core/endpoints/auth/otp.py:46
+#: canaille/core/endpoints/auth/otp.py:60
+msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
 #: canaille/core/endpoints/auth/otp.py:139
 msgid "Authenticator application correctly configured."
+msgstr ""
+
+#: canaille/core/endpoints/auth/password.py:99
+msgid "Login failed, please check your information"
 msgstr ""
 
 #: canaille/core/endpoints/auth/password.py:127
@@ -801,7 +804,7 @@ msgid "Invalid code."
 msgstr ""
 
 #: canaille/core/endpoints/auth/sms.py:97
-msgid "The new verification code have been sent."
+msgid "The new verification code has been sent."
 msgstr ""
 
 #: canaille/oidc/utils.py:6
@@ -852,30 +855,35 @@ msgstr ""
 msgid "The client has been deleted."
 msgstr ""
 
+#: canaille/oidc/endpoints/clients.py:217
+#, python-brace-format
+msgid "A token has been created for the client {client_name}."
+msgstr ""
+
 #: canaille/oidc/endpoints/consents.py:75
 #: canaille/oidc/endpoints/consents.py:113
-msgid "Could not revoke this access"
+msgid "Could not revoke this access."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:78
-msgid "The access is already revoked"
+msgid "The access is already revoked."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:85
 #: canaille/oidc/endpoints/consents.py:128
-msgid "The access has been revoked"
+msgid "The access has been revoked."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:94
-msgid "Could not restore this access"
+msgid "Could not restore this access."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:97
-msgid "The access is not revoked"
+msgid "The access is not revoked."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:104
-msgid "The access has been restored"
+msgid "The access has been restored."
 msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:30
@@ -1177,11 +1185,11 @@ msgid ""
 msgstr ""
 
 #: canaille/oidc/endpoints/oauth.py:544
-msgid "You have been disconnected"
+msgid "You have been disconnected."
 msgstr ""
 
 #: canaille/oidc/endpoints/oauth.py:562
-msgid "You have not been disconnected"
+msgid "You have not been disconnected."
 msgstr ""
 
 #: canaille/oidc/endpoints/tokens.py:49
@@ -1530,7 +1538,7 @@ msgid "Choose an account"
 msgstr ""
 
 #: canaille/templates/core/login.html:40
-msgid "Connected"
+msgid "Logged in"
 msgstr ""
 
 #: canaille/templates/core/login.html:54

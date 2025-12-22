@@ -111,7 +111,7 @@ def login(username=None):
 
     if not form.validate():
         logout_user()
-        flash(_("Login failed, please check your information"), "error")
+        flash(_("Login failed. Please check your information."), "error")
         return render_template(
             "core/login.html", form=form, login_history=get_login_history()
         )

@@ -59,7 +59,7 @@ def email():
         or not g.auth.user
         or not g.auth.user.is_email_or_sms_otp_valid(form.otp.data)
     ):
-        flash(_("The passcode you entered is invalid. Please try again"), "error")
+        flash(_("The passcode you entered is invalid. Please try again."), "error")
         current_app.logger.security(
             f"Failed email code authentication for {g.auth.user_name}"
         )

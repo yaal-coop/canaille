@@ -23,7 +23,7 @@ def test_account_reset_otp(testclient, backend, caplog, logged_user, otp_method)
     backend.reload(logged_user)
     assert logged_user.secret_token is None
     assert res.flashes == [
-        ("success", "Authenticator application passcode authentication has been reset")
+        ("success", "Authenticator application passcode authentication has been reset.")
     ]
     assert (
         "canaille",

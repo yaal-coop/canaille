@@ -185,7 +185,7 @@ def test_account_locking(
     user = backend.get(models.User, id=user.id)
     assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
     assert user.locked
-    res.mustcontain("The account has been locked")
+    res.mustcontain("The account has been locked.")
     res.mustcontain(no="Lock the account")
     res.mustcontain("Unlock")
 
@@ -193,7 +193,7 @@ def test_account_locking(
     user = backend.get(models.User, id=user.id)
     assert not user.lock_date
     assert not user.locked
-    res.mustcontain("The account has been unlocked")
+    res.mustcontain("The account has been unlocked.")
     res.mustcontain("Lock the account")
     res.mustcontain(no="Unlock")
 

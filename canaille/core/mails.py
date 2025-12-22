@@ -167,7 +167,7 @@ def send_confirmation_email(email, confirmation_url):
     base_url = url_for("core.account.index", _external=True)
     logo_cid, logo_filename, logo_raw = logo()
 
-    subject = _("Confirm your address email on {website_name}").format(
+    subject = _("Confirm your email address on {website_name}").format(
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
     text_body = render_template(

@@ -62,7 +62,7 @@ def test_confirm_delete_credential_not_found(testclient, logged_user, fido_crede
         status=200,
     )
 
-    assert ("error", "Credential not found") in res.flashes
+    assert ("error", "Credential not found.") in res.flashes
 
 
 def test_delete_single_credential(testclient, logged_user, fido_credential, backend):
@@ -82,7 +82,7 @@ def test_delete_single_credential(testclient, logged_user, fido_credential, back
         status=200,
     )
 
-    assert ("success", "Passkey has been removed") in res.flashes
+    assert ("success", "The passkey has been removed.") in res.flashes
 
     backend.reload(logged_user)
     assert len(logged_user.webauthn_credentials) == 2
@@ -102,7 +102,7 @@ def test_delete_credential_without_id(testclient, logged_user, fido_credential):
         status=200,
     )
 
-    assert ("error", "Credential not found") in res.flashes
+    assert ("error", "Credential not found.") in res.flashes
 
 
 def test_delete_credential_not_found(testclient, logged_user, fido_credential):
@@ -119,7 +119,7 @@ def test_delete_credential_not_found(testclient, logged_user, fido_credential):
         status=200,
     )
 
-    assert ("error", "Credential not found") in res.flashes
+    assert ("error", "Credential not found.") in res.flashes
 
 
 def test_rename_credential(testclient, logged_user, fido_credential, backend):
@@ -139,7 +139,7 @@ def test_rename_credential(testclient, logged_user, fido_credential, backend):
         status=200,
     )
 
-    assert ("success", "Passkey renamed successfully") in res.flashes
+    assert ("success", "The passkey has been renamed.") in res.flashes
 
     backend.reload(logged_user)
     credential = next(
@@ -164,7 +164,7 @@ def test_rename_credential_empty_name(testclient, logged_user, fido_credential):
         status=200,
     )
 
-    assert ("error", "Name cannot be empty") in res.flashes
+    assert ("error", "Name cannot be empty.") in res.flashes
 
 
 def test_rename_credential_not_found(testclient, logged_user, fido_credential):
@@ -181,7 +181,7 @@ def test_rename_credential_not_found(testclient, logged_user, fido_credential):
         status=200,
     )
 
-    assert ("error", "Credential not found") in res.flashes
+    assert ("error", "Credential not found.") in res.flashes
 
 
 def test_reset_fido(testclient, logged_user, fido_credential, backend):
@@ -206,7 +206,7 @@ def test_reset_fido(testclient, logged_user, fido_credential, backend):
         status=200,
     )
 
-    assert ("success", "All passkeys have been removed") in res.flashes
+    assert ("success", "All passkeys have been removed.") in res.flashes
 
     backend.reload(logged_user)
     assert len(logged_user.webauthn_credentials) == 0

@@ -541,7 +541,7 @@ def end_session():
             url = add_params_to_uri(url, dict(state=data["state"]))
         return redirect(url)
 
-    flash(_("You have been disconnected"), "success")
+    flash(_("You have been disconnected."), "success")
     return redirect(url_for("core.account.index"))
 
 
@@ -559,6 +559,6 @@ def end_session_submit():
         url = add_params_to_uri(url_for("oidc.endpoints.end_session"), data)
         return redirect(url)
 
-    flash(_("You have not been disconnected"), "info")
+    flash(_("You have not been disconnected."), "info")
 
     return redirect(url_for("core.account.index"))

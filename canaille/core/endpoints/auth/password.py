@@ -84,7 +84,7 @@ def password():
 
     if not form.validate() or not g.auth.user:
         user = g.auth.user
-        flash(_("Login failed, please check your information"), "error")
+        flash(_("Login failed. Please check your information."), "error")
         response = render_password_template(form)
         logout_user()
         return response
@@ -241,7 +241,7 @@ def reset(user, token):
     user.clear_otp()
     Backend.instance.save(user)
 
-    flash(_("Your password has been updated successfully"), "success")
+    flash(_("Your password has been updated successfully."), "success")
 
     # Only auto-login if password is the sole authentication factor.
     # Otherwise, require full authentication to prevent MFA bypass.

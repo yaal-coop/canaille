@@ -193,7 +193,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res = res.forms["editgroupform"].submit(name="action", value="confirm-delete")
     res = res.form.submit(name="action", value="delete", status=302)
     assert backend.get(models.Group, display_name="bar") is None
-    assert ("success", "The group bar has been successfully deleted") in res.flashes
+    assert ("success", "The group bar has been successfully deleted.") in res.flashes
 
 
 def test_cannot_create_already_existing_group(testclient, logged_moderator, foo_group):
@@ -582,7 +582,7 @@ def test_user_can_delete_own_group(testclient, logged_user, backend):
     assert backend.get(models.Group, display_name="user_group") is None
     assert (
         "success",
-        "The group user_group has been successfully deleted",
+        "The group user_group has been successfully deleted.",
     ) in res.flashes
 
 

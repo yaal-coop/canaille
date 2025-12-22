@@ -475,21 +475,21 @@ def email_confirmation(data, hash):
 
     if confirmation_obj.email in user.emails or []:
         flash(
-            _("This address email have already been confirmed."),
+            _("This email address has already been confirmed."),
             "error",
         )
         return redirect(url_for("core.account.index"))
 
     if Backend.instance.query(models.User, emails=confirmation_obj.email):
         flash(
-            _("This address email is already associated with another account."),
+            _("This email address is already associated with another account."),
             "error",
         )
         return redirect(url_for("core.account.index"))
 
     user.emails = (user.emails or []) + [confirmation_obj.email]
     Backend.instance.save(user)
-    flash(_("Your email address have been confirmed."), "success")
+    flash(_("Your email address has been confirmed."), "success")
     return redirect(url_for("core.account.index"))
 
 
@@ -682,7 +682,7 @@ def _handle_remove_email(edited_user, email, render_context):
     edited_user.emails = [m for m in edited_user.emails if m != email]
     Backend.instance.save(edited_user)
 
-    flash(_("The email have been successfully deleted."), "success")
+    flash(_("The email has been successfully deleted."), "success")
     return redirect(url_for("core.account.profile_edition", edited_user=edited_user))
 
 
@@ -800,13 +800,13 @@ def _handle_lock_actions(user, edited_user, action):
         return render_template("core/modals/lock-account.html", edited_user=edited_user)
 
     elif action == "lock-execute":
-        flash(_("The account has been locked"), "success")
+        flash(_("The account has been locked."), "success")
         edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
         Backend.instance.save(edited_user)
         return _handle_profile_settings_edit(user, edited_user)
 
     else:  # unlock
-        flash(_("The account has been unlocked"), "success")
+        flash(_("The account has been unlocked."), "success")
         edited_user.lock_date = None
         Backend.instance.save(edited_user)
         return _handle_profile_settings_edit(user, edited_user)
@@ -818,7 +818,7 @@ def _handle_otp_actions(user, edited_user, action):
 
     elif action == "otp-reset":
         flash(
-            _("Authenticator application passcode authentication has been reset"),
+            _("Authenticator application passcode authentication has been reset."),
             "success",
         )
         current_app.logger.security(
@@ -852,7 +852,7 @@ def _handle_fido_actions(user, edited_user, action):
     if credential_id:
         credential = _find_credential(edited_user, credential_id)
         if not credential:
-            flash(_("Credential not found"), "error")
+            flash(_("Credential not found."), "error")
             return _handle_profile_settings_edit(user, edited_user)
         return render_template(
             "core/modals/delete-credential.html",
@@ -865,17 +865,17 @@ def _handle_fido_actions(user, edited_user, action):
     if credential_id:
         new_name = request.form.get(f"credential_name_{credential_id}", "").strip()
         if not new_name:
-            flash(_("Name cannot be empty"), "error")
+            flash(_("Name cannot be empty."), "error")
             return _handle_profile_settings_edit(user, edited_user)
 
         credential = _find_credential(edited_user, credential_id)
         if not credential:
-            flash(_("Credential not found"), "error")
+            flash(_("Credential not found."), "error")
             return _handle_profile_settings_edit(user, edited_user)
 
         credential.name = new_name
         Backend.instance.save(credential)
-        flash(_("Passkey renamed successfully"), "success")
+        flash(_("The passkey has been renamed."), "success")
         current_app.logger.security(
             f"Renamed WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
         )
@@ -887,7 +887,7 @@ def _handle_fido_actions(user, edited_user, action):
     elif action == "fido2-reset":
         for credential in list(edited_user.webauthn_credentials):
             Backend.instance.delete(credential)
-        flash(_("All passkeys have been removed"), "success")
+        flash(_("All passkeys have been removed."), "success")
         current_app.logger.security(
             f"Reset all WebAuthn credentials for {edited_user.user_name} by {user.user_name}"
         )
@@ -896,18 +896,18 @@ def _handle_fido_actions(user, edited_user, action):
     elif action == "fido2-delete-credential":
         credential_id = request.form.get("credential_id")
         if not credential_id:
-            flash(_("Credential not found"), "error")
+            flash(_("Credential not found."), "error")
             return _handle_profile_settings_edit(user, edited_user)
 
         credential = _find_credential(edited_user, credential_id)
         if credential:
             Backend.instance.delete(credential)
-            flash(_("Passkey has been removed"), "success")
+            flash(_("The passkey has been removed."), "success")
             current_app.logger.security(
                 f"Deleted WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
             )
         else:
-            flash(_("Credential not found"), "error")
+            flash(_("Credential not found."), "error")
         return _handle_profile_settings_edit(user, edited_user)
 
     else:  # fido2-setup
@@ -1093,7 +1093,7 @@ def reset(user):
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
         login_user(user)
-        flash(_("Your password has been updated successfully"), "success")
+        flash(_("Your password has been updated successfully."), "success")
         return redirect(
             session.pop(
                 "redirect-after-login",

@@ -214,7 +214,9 @@ def client_delete(client):
 
 def client_new_token(client):
     flash(
-        _(f"A token have been created for the client {client.client_name}"),
+        _("A token has been created for the client {client_name}.").format(
+            client_name=client.client_name
+        ),
         "success",
     )
     now = datetime.datetime.now(datetime.timezone.utc)

@@ -114,7 +114,7 @@ def test_signin_wrong_sms_otp(testclient, user, caplog):
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again.",
     ) in res.flashes
     assert (
         "canaille",
@@ -144,7 +144,7 @@ def test_expired_sms_otp(testclient, user, caplog):
 
         assert (
             "error",
-            "The passcode you entered is invalid. Please try again",
+            "The passcode you entered is invalid. Please try again.",
         ) in res.flashes
         assert (
             "canaille",

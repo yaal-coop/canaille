@@ -59,7 +59,7 @@ def sms():
         or not g.auth.user
         or not g.auth.user.is_email_or_sms_otp_valid(form.otp.data)
     ):
-        flash(_("The passcode you entered is invalid. Please try again"), "error")
+        flash(_("The passcode you entered is invalid. Please try again."), "error")
         current_app.logger.security(
             f"Failed sms code authentication for {g.auth.user_name}"
         )
@@ -94,4 +94,4 @@ def send_sms_otp(flashes=True):
             f"Sent one-time passcode for {g.auth.user_name} at {phone_number}"
         )
     if flashes:
-        flash(_("The new verification code have been sent."), "success")
+        flash(_("The new verification code has been sent."), "success")

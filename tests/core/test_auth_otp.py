@@ -102,7 +102,7 @@ def test_signin_wrong_otp(testclient, user, caplog, otp_method):
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again.",
     ) in res.flashes
     assert (
         "canaille",
@@ -130,7 +130,7 @@ def test_signin_wrong_user(testclient, user, caplog, otp_method):
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again.",
     ) in res.flashes
     assert (
         "canaille",
@@ -164,7 +164,7 @@ def test_signin_expired_totp(testclient, user, caplog):
 
         assert (
             "error",
-            "The passcode you entered is invalid. Please try again",
+            "The passcode you entered is invalid. Please try again.",
         ) in res.flashes
         assert (
             "canaille",
@@ -192,7 +192,7 @@ def test_signin_invalid_otp_chars(testclient, user, caplog, otp_method):
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again.",
     ) in res.flashes
     assert (
         "canaille",
@@ -293,7 +293,7 @@ def test_setup_otp_bad_otp(testclient, backend, caplog, otp_method):
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again.",
+        "The passcode you entered is invalid. Please try again..",
     ) in res.flashes
 
     backend.reload(user)
@@ -390,7 +390,7 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user, caplog
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again.",
     ) in res.flashes
     assert (
         "canaille",

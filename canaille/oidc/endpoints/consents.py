@@ -72,17 +72,17 @@ def pre_consents(user):
 @user_needed()
 def revoke(user, consent):
     if not consent or consent.subject != user:
-        flash(_("Could not revoke this access"), "error")
+        flash(_("Could not revoke this access."), "error")
 
     elif consent.revokation_date:
-        flash(_("The access is already revoked"), "error")
+        flash(_("The access is already revoked."), "error")
 
     else:
         consent.revoke()
         current_app.logger.security(
             f"Consent revoked for {user.user_name} in client {consent.client.client_name}"
         )
-        flash(_("The access has been revoked"), "success")
+        flash(_("The access has been revoked."), "success")
 
     return redirect(url_for("oidc.consents.consents"))
 
@@ -91,17 +91,17 @@ def revoke(user, consent):
 @user_needed()
 def restore(user, consent):
     if not consent or consent.subject != user:
-        flash(_("Could not restore this access"), "error")
+        flash(_("Could not restore this access."), "error")
 
     elif not consent.revokation_date:
-        flash(_("The access is not revoked"), "error")
+        flash(_("The access is not revoked."), "error")
 
     else:
         consent.restore()
         if not consent.issue_date:
             consent.issue_date = datetime.datetime.now(datetime.timezone.utc)
         Backend.instance.save(consent)
-        flash(_("The access has been restored"), "success")
+        flash(_("The access has been restored."), "success")
 
     return redirect(url_for("oidc.consents.consents"))
 
@@ -110,7 +110,7 @@ def restore(user, consent):
 @user_needed()
 def revoke_trusted(user, client):
     if not client or not client.trusted:
-        flash(_("Could not revoke this access"), "error")
+        flash(_("Could not revoke this access."), "error")
         return redirect(url_for("oidc.consents.consents"))
 
     consent = Backend.instance.get(models.Consent, client=client, subject=user)
@@ -125,6 +125,6 @@ def revoke_trusted(user, client):
     )
     consent.revoke()
     Backend.instance.save(consent)
-    flash(_("The access has been revoked"), "success")
+    flash(_("The access has been revoked."), "success")
 
     return redirect(url_for("oidc.consents.consents"))

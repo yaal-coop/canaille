@@ -111,7 +111,7 @@ def test_signin_wrong_email_otp(testclient, user, caplog, smtpd):
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again",
+        "The passcode you entered is invalid. Please try again.",
     ) in res.flashes
     assert (
         "canaille",
@@ -141,7 +141,7 @@ def test_expired_email_otp(testclient, user, caplog, smtpd):
 
         assert (
             "error",
-            "The passcode you entered is invalid. Please try again",
+            "The passcode you entered is invalid. Please try again.",
         ) in res.flashes
         assert (
             "canaille",
