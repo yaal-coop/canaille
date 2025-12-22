@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:30+0100\n"
+"POT-Creation-Date: 2025-12-22 09:52+0100\n"
 "PO-Revision-Date: 2024-08-08 19:09+0000\n"
 "Last-Translator: Moha684 <nahil82466@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -165,8 +165,9 @@ msgid "You have been invited to create an account on {website_name}"
 msgstr "Pedet oc'h da grouiñ ur gont war {website_name}"
 
 #: canaille/core/mails.py:170
-#, python-brace-format
-msgid "Confirm your address email on {website_name}"
+#, fuzzy, python-brace-format
+#| msgid "Confirm your address email on {website_name}"
+msgid "Confirm your email address on {website_name}"
 msgstr "Kadarnait ho chomlec'h postel war {website_name}"
 
 #: canaille/core/mails.py:201
@@ -303,15 +304,21 @@ msgid "The invitation link that brought you here was invalid."
 msgstr "Direizh eo al liamm pedadenn ho peus degaset amañ."
 
 #: canaille/core/endpoints/account.py:478
-msgid "This address email have already been confirmed."
+#, fuzzy
+#| msgid "This address email have already been confirmed."
+msgid "This email address has already been confirmed."
 msgstr "Kadarnaet eo bet ar chomlec'h postel-mañ dija."
 
 #: canaille/core/endpoints/account.py:485
-msgid "This address email is already associated with another account."
+#, fuzzy
+#| msgid "This address email is already associated with another account."
+msgid "This email address is already associated with another account."
 msgstr "Liammet eo ar chomlec'h postel-mañ ouzh ur gont all dija."
 
 #: canaille/core/endpoints/account.py:492
-msgid "Your email address have been confirmed."
+#, fuzzy
+#| msgid "Your email address have been confirmed."
+msgid "Your email address has been confirmed."
 msgstr "Kadarnaet eo bet ho chomlec'h postel."
 
 #: canaille/core/endpoints/account.py:524
@@ -346,8 +353,10 @@ msgid "Email deletion failed."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:685
-msgid "The email have been successfully deleted."
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been created successfully."
+msgid "The email has been successfully deleted."
+msgstr "Krouet eo bet ho kont implijer gant berzh."
 
 #: canaille/core/endpoints/account.py:760
 #, python-format
@@ -367,45 +376,51 @@ msgid ""
 msgstr ""
 
 #: canaille/core/endpoints/account.py:803
-msgid "The account has been locked"
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been locked."
+msgid "The account has been locked."
+msgstr "Berzet eo bet ho kont."
 
 #: canaille/core/endpoints/account.py:809
-msgid "The account has been unlocked"
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been locked."
+msgid "The account has been unlocked."
+msgstr "Berzet eo bet ho kont."
 
 #: canaille/core/endpoints/account.py:821
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Authenticator application passcode authentication has been reset"
+msgid "Authenticator application passcode authentication has been reset."
 msgstr "O teraouekaat ho ger-tremen war {website_name}"
 
 #: canaille/core/endpoints/account.py:855
 #: canaille/core/endpoints/account.py:873
 #: canaille/core/endpoints/account.py:899
 #: canaille/core/endpoints/account.py:910
-msgid "Credential not found"
+msgid "Credential not found."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:868
-msgid "Name cannot be empty"
+msgid "Name cannot be empty."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:878
 #, fuzzy
-#| msgid "Profile updated successfully."
-msgid "Passkey renamed successfully"
-msgstr "Hizivaet eo bet an aelad gant berzh."
+#| msgid "Your email address have been confirmed."
+msgid "The passkey has been renamed."
+msgstr "Kadarnaet eo bet ho chomlec'h postel."
 
 #: canaille/core/endpoints/account.py:890
 #, fuzzy
 #| msgid "Your email address have been confirmed."
-msgid "All passkeys have been removed"
+msgid "All passkeys have been removed."
 msgstr "Kadarnaet eo bet ho chomlec'h postel."
 
 #: canaille/core/endpoints/account.py:905
-msgid "Passkey has been removed"
-msgstr ""
+#, fuzzy
+#| msgid "Your email address have been confirmed."
+msgid "The passkey has been removed."
+msgstr "Kadarnaet eo bet ho chomlec'h postel."
 
 #: canaille/core/endpoints/account.py:1044
 msgid "Locked users cannot be impersonated."
@@ -413,8 +428,10 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
-msgid "Your password has been updated successfully"
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been created successfully."
+msgid "Your password has been updated successfully."
+msgstr "Krouet eo bet ho kont implijer gant berzh."
 
 #: canaille/core/endpoints/admin.py:23
 #: canaille/templates/core/partial/users.html:15
@@ -685,9 +702,10 @@ msgid "Group creation failed."
 msgstr ""
 
 #: canaille/core/endpoints/groups.py:85
-#, python-format
-msgid "The group %(group)s has been successfully created"
-msgstr ""
+#, fuzzy, python-format
+#| msgid "Your account has been created successfully."
+msgid "The group %(group)s has been successfully created."
+msgstr "Krouet eo bet ho kont implijer gant berzh."
 
 #: canaille/core/endpoints/groups.py:153
 #, fuzzy, python-format
@@ -705,9 +723,10 @@ msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr ""
 
 #: canaille/core/endpoints/groups.py:207
-#, python-format
-msgid "The group %(group)s has been successfully deleted"
-msgstr ""
+#, fuzzy, python-format
+#| msgid "Your account has been created successfully."
+msgid "The group %(group)s has been successfully deleted."
+msgstr "Krouet eo bet ho kont implijer gant berzh."
 
 #: canaille/core/endpoints/groups.py:231
 #, python-format
@@ -757,8 +776,7 @@ msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:114
 #: canaille/core/endpoints/auth/password.py:87
-#: canaille/core/endpoints/auth/password.py:99
-msgid "Login failed, please check your information"
+msgid "Login failed. Please check your information."
 msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:144
@@ -777,10 +795,9 @@ msgid "All sessions have been closed."
 msgstr "Kadarnaet eo bet ho chomlec'h postel."
 
 #: canaille/core/endpoints/auth/email.py:62
-#: canaille/core/endpoints/auth/otp.py:46
-#: canaille/core/endpoints/auth/otp.py:60
+#: canaille/core/endpoints/auth/otp.py:121
 #: canaille/core/endpoints/auth/sms.py:62
-msgid "The passcode you entered is invalid. Please try again"
+msgid "The passcode you entered is invalid. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth/email.py:97
@@ -806,8 +823,9 @@ msgstr ""
 msgid "Passkey successfully registered."
 msgstr "Hizivaet eo bet an aelad gant berzh."
 
-#: canaille/core/endpoints/auth/otp.py:121
-msgid "The passcode you entered is invalid. Please try again."
+#: canaille/core/endpoints/auth/otp.py:46
+#: canaille/core/endpoints/auth/otp.py:60
+msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
 #: canaille/core/endpoints/auth/otp.py:139
@@ -815,6 +833,10 @@ msgstr ""
 #| msgid "Password initialization on {website_name}"
 msgid "Authenticator application correctly configured."
 msgstr "O teraouekaat ho ger-tremen war {website_name}"
+
+#: canaille/core/endpoints/auth/password.py:99
+msgid "Login failed, please check your information"
+msgstr ""
 
 #: canaille/core/endpoints/auth/password.py:127
 msgid ""
@@ -844,8 +866,10 @@ msgid "Invalid code."
 msgstr ""
 
 #: canaille/core/endpoints/auth/sms.py:97
-msgid "The new verification code have been sent."
-msgstr ""
+#, fuzzy
+#| msgid "Email addition failed."
+msgid "The new verification code has been sent."
+msgstr "C’hwitadenn war ouzhpennañ ar chomlec’h postel."
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
@@ -895,31 +919,41 @@ msgstr ""
 msgid "The client has been deleted."
 msgstr ""
 
+#: canaille/oidc/endpoints/clients.py:217
+#, python-brace-format
+msgid "A token has been created for the client {client_name}."
+msgstr ""
+
 #: canaille/oidc/endpoints/consents.py:75
 #: canaille/oidc/endpoints/consents.py:113
-msgid "Could not revoke this access"
+msgid "Could not revoke this access."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:78
-msgid "The access is already revoked"
-msgstr ""
+#, fuzzy
+msgid "The access is already revoked."
+msgstr "Hizivaet eo bet an aelad gant berzh."
 
 #: canaille/oidc/endpoints/consents.py:85
 #: canaille/oidc/endpoints/consents.py:128
-msgid "The access has been revoked"
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been locked."
+msgid "The access has been revoked."
+msgstr "Berzet eo bet ho kont."
 
 #: canaille/oidc/endpoints/consents.py:94
-msgid "Could not restore this access"
+msgid "Could not restore this access."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:97
-msgid "The access is not revoked"
+msgid "The access is not revoked."
 msgstr ""
 
 #: canaille/oidc/endpoints/consents.py:104
-msgid "The access has been restored"
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been locked."
+msgid "The access has been restored."
+msgstr "Berzet eo bet ho kont."
 
 #: canaille/oidc/endpoints/forms.py:30
 #, fuzzy
@@ -1222,12 +1256,16 @@ msgid ""
 msgstr ""
 
 #: canaille/oidc/endpoints/oauth.py:544
-msgid "You have been disconnected"
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been locked."
+msgid "You have been disconnected."
+msgstr "Berzet eo bet ho kont."
 
 #: canaille/oidc/endpoints/oauth.py:562
-msgid "You have not been disconnected"
-msgstr ""
+#, fuzzy
+#| msgid "Your account has been locked."
+msgid "You have not been disconnected."
+msgstr "Berzet eo bet ho kont."
 
 #: canaille/oidc/endpoints/tokens.py:49
 msgid "The token has successfully been revoked."
@@ -1575,7 +1613,7 @@ msgid "Choose an account"
 msgstr ""
 
 #: canaille/templates/core/login.html:40
-msgid "Connected"
+msgid "Logged in"
 msgstr ""
 
 #: canaille/templates/core/login.html:54
@@ -3102,6 +3140,11 @@ msgstr ""
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Profile updated successfully."
+#~ msgid "Passkey renamed successfully"
+#~ msgstr "Hizivaet eo bet an aelad gant berzh."
 
 #, fuzzy
 #~| msgid "Password initialization on {website_name}"

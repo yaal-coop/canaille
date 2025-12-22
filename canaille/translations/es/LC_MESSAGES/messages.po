@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:30+0100\n"
+"POT-Creation-Date: 2025-12-22 09:52+0100\n"
 "PO-Revision-Date: 2024-12-16 20:00+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -167,8 +167,9 @@ msgid "You have been invited to create an account on {website_name}"
 msgstr "Has sido invitado a crear una cuenta en {website_name}"
 
 #: canaille/core/mails.py:170
-#, python-brace-format
-msgid "Confirm your address email on {website_name}"
+#, fuzzy, python-brace-format
+#| msgid "Confirm your address email on {website_name}"
+msgid "Confirm your email address on {website_name}"
 msgstr "Confirma tu dirección de correo electrónico en {website_name}"
 
 #: canaille/core/mails.py:201
@@ -310,15 +311,21 @@ msgid "The invitation link that brought you here was invalid."
 msgstr "El enlace de invitación con el que has accedido no es válido."
 
 #: canaille/core/endpoints/account.py:478
-msgid "This address email have already been confirmed."
+#, fuzzy
+#| msgid "This address email have already been confirmed."
+msgid "This email address has already been confirmed."
 msgstr "Esta dirección de correo electrónico ya ha sido confirmada."
 
 #: canaille/core/endpoints/account.py:485
-msgid "This address email is already associated with another account."
+#, fuzzy
+#| msgid "This address email is already associated with another account."
+msgid "This email address is already associated with another account."
 msgstr "Esta dirección de correo electrónico ya está asociada a otra cuenta."
 
 #: canaille/core/endpoints/account.py:492
-msgid "Your email address have been confirmed."
+#, fuzzy
+#| msgid "Your email address have been confirmed."
+msgid "Your email address has been confirmed."
 msgstr "Tu dirección de correo electrónico ha sido confirmada."
 
 #: canaille/core/endpoints/account.py:524
@@ -360,7 +367,9 @@ msgid "Email deletion failed."
 msgstr "Error al eliminar el correo electrónico."
 
 #: canaille/core/endpoints/account.py:685
-msgid "The email have been successfully deleted."
+#, fuzzy
+#| msgid "The email have been successfully deleted."
+msgid "The email has been successfully deleted."
 msgstr "El correo electrónico se ha eliminado correctamente."
 
 #: canaille/core/endpoints/account.py:760
@@ -393,17 +402,21 @@ msgstr ""
 "del correo electrónico del usuario. Deberías recibirlo en unos minutos."
 
 #: canaille/core/endpoints/account.py:803
-msgid "The account has been locked"
+#, fuzzy
+#| msgid "The account has been locked"
+msgid "The account has been locked."
 msgstr "La cuenta ha sido bloqueada"
 
 #: canaille/core/endpoints/account.py:809
-msgid "The account has been unlocked"
+#, fuzzy
+#| msgid "The account has been unlocked"
+msgid "The account has been unlocked."
 msgstr "La cuenta ha sido desbloqueada"
 
 #: canaille/core/endpoints/account.py:821
 #, fuzzy
 #| msgid "One-time password authentication has been reset"
-msgid "Authenticator application passcode authentication has been reset"
+msgid "Authenticator application passcode authentication has been reset."
 msgstr "Se ha restablecido la autenticación de contraseña de un solo uso"
 
 #: canaille/core/endpoints/account.py:855
@@ -412,29 +425,29 @@ msgstr "Se ha restablecido la autenticación de contraseña de un solo uso"
 #: canaille/core/endpoints/account.py:910
 #, fuzzy
 #| msgid "Page not found"
-msgid "Credential not found"
+msgid "Credential not found."
 msgstr "Página no encontrada"
 
 #: canaille/core/endpoints/account.py:868
-msgid "Name cannot be empty"
+msgid "Name cannot be empty."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:878
 #, fuzzy
-#| msgid "Profile updated successfully."
-msgid "Passkey renamed successfully"
-msgstr "Perfil actualizado correctamente."
+#| msgid "The access has been revoked"
+msgid "The passkey has been renamed."
+msgstr "El acceso ha sido revocado"
 
 #: canaille/core/endpoints/account.py:890
 #, fuzzy
 #| msgid "Your email address have been confirmed."
-msgid "All passkeys have been removed"
+msgid "All passkeys have been removed."
 msgstr "Tu dirección de correo electrónico ha sido confirmada."
 
 #: canaille/core/endpoints/account.py:905
 #, fuzzy
 #| msgid "The access has been revoked"
-msgid "Passkey has been removed"
+msgid "The passkey has been removed."
 msgstr "El acceso ha sido revocado"
 
 #: canaille/core/endpoints/account.py:1044
@@ -443,7 +456,9 @@ msgstr "Los usuarios bloqueados no pueden ser suplantados."
 
 #: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
-msgid "Your password has been updated successfully"
+#, fuzzy
+#| msgid "Your password has been updated successfully"
+msgid "Your password has been updated successfully."
 msgstr "Tu contraseña se ha actualizado correctamente"
 
 #: canaille/core/endpoints/admin.py:23
@@ -721,8 +736,9 @@ msgid "Group creation failed."
 msgstr "Error en la creación del grupo."
 
 #: canaille/core/endpoints/groups.py:85
-#, python-format
-msgid "The group %(group)s has been successfully created"
+#, fuzzy, python-format
+#| msgid "The group %(group)s has been successfully created"
+msgid "The group %(group)s has been successfully created."
 msgstr "El grupo %(group)s se ha creado correctamente"
 
 #: canaille/core/endpoints/groups.py:153
@@ -740,8 +756,9 @@ msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "%(user_name)s ha sido eliminado del grupo %(group_name)s"
 
 #: canaille/core/endpoints/groups.py:207
-#, python-format
-msgid "The group %(group)s has been successfully deleted"
+#, fuzzy, python-format
+#| msgid "The group %(group)s has been successfully deleted"
+msgid "The group %(group)s has been successfully deleted."
 msgstr "El grupo %(group)s ha sido eliminado correctamente"
 
 #: canaille/core/endpoints/groups.py:231
@@ -798,8 +815,9 @@ msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:114
 #: canaille/core/endpoints/auth/password.py:87
-#: canaille/core/endpoints/auth/password.py:99
-msgid "Login failed, please check your information"
+#, fuzzy
+#| msgid "Login failed, please check your information"
+msgid "Login failed. Please check your information."
 msgstr "Falló el inicio de sesión, comprueba tus credenciales"
 
 #: canaille/core/endpoints/auth/__init__.py:144
@@ -821,10 +839,9 @@ msgid "All sessions have been closed."
 msgstr "Tu dirección de correo electrónico ha sido confirmada."
 
 #: canaille/core/endpoints/auth/email.py:62
-#: canaille/core/endpoints/auth/otp.py:46
-#: canaille/core/endpoints/auth/otp.py:60
+#: canaille/core/endpoints/auth/otp.py:121
 #: canaille/core/endpoints/auth/sms.py:62
-msgid "The passcode you entered is invalid. Please try again"
+msgid "The passcode you entered is invalid. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth/email.py:97
@@ -851,8 +868,9 @@ msgstr ""
 msgid "Passkey successfully registered."
 msgstr "El token ha sido revocado correctamente."
 
-#: canaille/core/endpoints/auth/otp.py:121
-msgid "The passcode you entered is invalid. Please try again."
+#: canaille/core/endpoints/auth/otp.py:46
+#: canaille/core/endpoints/auth/otp.py:60
+msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
 #: canaille/core/endpoints/auth/otp.py:139
@@ -860,6 +878,10 @@ msgstr ""
 #| msgid "One-time password authentication reset"
 msgid "Authenticator application correctly configured."
 msgstr "Restablecer la autenticación de contraseña de un solo uso"
+
+#: canaille/core/endpoints/auth/password.py:99
+msgid "Login failed, please check your information"
+msgstr "Falló el inicio de sesión, comprueba tus credenciales"
 
 #: canaille/core/endpoints/auth/password.py:127
 #, fuzzy
@@ -902,8 +924,10 @@ msgid "Invalid code."
 msgstr ""
 
 #: canaille/core/endpoints/auth/sms.py:97
-msgid "The new verification code have been sent."
-msgstr ""
+#, fuzzy
+#| msgid "Email verification"
+msgid "The new verification code has been sent."
+msgstr "Verificación del correo electrónico"
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
@@ -955,30 +979,47 @@ msgstr "El cliente ha sido editado."
 msgid "The client has been deleted."
 msgstr "El cliente ha sido eliminado."
 
+#: canaille/oidc/endpoints/clients.py:217
+#, python-brace-format
+msgid "A token has been created for the client {client_name}."
+msgstr ""
+
 #: canaille/oidc/endpoints/consents.py:75
 #: canaille/oidc/endpoints/consents.py:113
-msgid "Could not revoke this access"
+#, fuzzy
+#| msgid "Could not revoke this access"
+msgid "Could not revoke this access."
 msgstr "No se pudo revocar este acceso"
 
 #: canaille/oidc/endpoints/consents.py:78
-msgid "The access is already revoked"
+#, fuzzy
+#| msgid "The access is already revoked"
+msgid "The access is already revoked."
 msgstr "El acceso ya está revocado"
 
 #: canaille/oidc/endpoints/consents.py:85
 #: canaille/oidc/endpoints/consents.py:128
-msgid "The access has been revoked"
+#, fuzzy
+#| msgid "The access has been revoked"
+msgid "The access has been revoked."
 msgstr "El acceso ha sido revocado"
 
 #: canaille/oidc/endpoints/consents.py:94
-msgid "Could not restore this access"
+#, fuzzy
+#| msgid "Could not restore this access"
+msgid "Could not restore this access."
 msgstr "No se ha podido restablecer este acceso"
 
 #: canaille/oidc/endpoints/consents.py:97
-msgid "The access is not revoked"
+#, fuzzy
+#| msgid "The access is not revoked"
+msgid "The access is not revoked."
 msgstr "El acceso no está revocado"
 
 #: canaille/oidc/endpoints/consents.py:104
-msgid "The access has been restored"
+#, fuzzy
+#| msgid "The access has been restored"
+msgid "The access has been restored."
 msgstr "Se ha restablecido el acceso"
 
 #: canaille/oidc/endpoints/forms.py:30
@@ -1294,11 +1335,15 @@ msgid ""
 msgstr ""
 
 #: canaille/oidc/endpoints/oauth.py:544
-msgid "You have been disconnected"
+#, fuzzy
+#| msgid "You have been disconnected"
+msgid "You have been disconnected."
 msgstr "Has sido desconectado"
 
 #: canaille/oidc/endpoints/oauth.py:562
-msgid "You have not been disconnected"
+#, fuzzy
+#| msgid "You have not been disconnected"
+msgid "You have not been disconnected."
 msgstr "No has sido desconectado"
 
 #: canaille/oidc/endpoints/tokens.py:49
@@ -1683,10 +1728,8 @@ msgid "Choose an account"
 msgstr "Crear una cuenta"
 
 #: canaille/templates/core/login.html:40
-#, fuzzy
-#| msgid "Connectivity test"
-msgid "Connected"
-msgstr "Prueba de conectividad"
+msgid "Logged in"
+msgstr ""
 
 #: canaille/templates/core/login.html:54
 msgid "Remove from account list"
@@ -3430,6 +3473,16 @@ msgstr "Esta cuenta está bloqueada"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#, fuzzy
+#~| msgid "Profile updated successfully."
+#~ msgid "Passkey renamed successfully"
+#~ msgstr "Perfil actualizado correctamente."
+
+#, fuzzy
+#~| msgid "Connectivity test"
+#~ msgid "Connected"
+#~ msgstr "Prueba de conectividad"
 
 #, fuzzy
 #~| msgid "Set up multi-factor authentication."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:30+0100\n"
+"POT-Creation-Date: 2025-12-22 09:52+0100\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -160,7 +160,7 @@ msgstr "Du har blitt invitert til å opprette en konto på {website_name}"
 #: canaille/core/mails.py:170
 #, fuzzy, python-brace-format
 #| msgid "Test email from {website_name}"
-msgid "Confirm your address email on {website_name}"
+msgid "Confirm your email address on {website_name}"
 msgstr "Test per e-post fra {website_name}"
 
 #: canaille/core/mails.py:201
@@ -311,16 +311,17 @@ msgid "The invitation link that brought you here was invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
 #: canaille/core/endpoints/account.py:478
-msgid "This address email have already been confirmed."
-msgstr ""
+#, fuzzy
+msgid "This email address has already been confirmed."
+msgstr "Din e-postadresse."
 
 #: canaille/core/endpoints/account.py:485
-msgid "This address email is already associated with another account."
+msgid "This email address is already associated with another account."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:492
 #, fuzzy
-msgid "Your email address have been confirmed."
+msgid "Your email address has been confirmed."
 msgstr "Din e-postadresse."
 
 #: canaille/core/endpoints/account.py:524
@@ -361,7 +362,7 @@ msgstr "Kunne ikke redigere profil."
 #: canaille/core/endpoints/account.py:685
 #, fuzzy
 #| msgid "The user %(user)s has been sucessfuly deleted"
-msgid "The email have been successfully deleted."
+msgid "The email has been successfully deleted."
 msgstr "Brukeren %(user)s ble slettet"
 
 #: canaille/core/endpoints/account.py:760
@@ -389,18 +390,18 @@ msgstr ""
 #: canaille/core/endpoints/account.py:803
 #, fuzzy
 #| msgid "The access has been revoked"
-msgid "The account has been locked"
+msgid "The account has been locked."
 msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/core/endpoints/account.py:809
 #, fuzzy
 #| msgid "The access has been revoked"
-msgid "The account has been unlocked"
+msgid "The account has been unlocked."
 msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/core/endpoints/account.py:821
 #, fuzzy
-msgid "Authenticator application passcode authentication has been reset"
+msgid "Authenticator application passcode authentication has been reset."
 msgstr "Oppsett av passord på {website_name}"
 
 #: canaille/core/endpoints/account.py:855
@@ -409,28 +410,28 @@ msgstr "Oppsett av passord på {website_name}"
 #: canaille/core/endpoints/account.py:910
 #, fuzzy
 #| msgid "Page not found"
-msgid "Credential not found"
+msgid "Credential not found."
 msgstr "Fant ikke siden"
 
 #: canaille/core/endpoints/account.py:868
-msgid "Name cannot be empty"
+msgid "Name cannot be empty."
 msgstr ""
 
 #: canaille/core/endpoints/account.py:878
 #, fuzzy
-#| msgid "Profile updated successfuly."
-msgid "Passkey renamed successfully"
-msgstr "Profil redigert."
+#| msgid "The access has been revoked"
+msgid "The passkey has been renamed."
+msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/core/endpoints/account.py:890
 #, fuzzy
-msgid "All passkeys have been removed"
+msgid "All passkeys have been removed."
 msgstr "Din e-postadresse."
 
 #: canaille/core/endpoints/account.py:905
 #, fuzzy
 #| msgid "The access has been revoked"
-msgid "Passkey has been removed"
+msgid "The passkey has been removed."
 msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/core/endpoints/account.py:1044
@@ -440,7 +441,7 @@ msgstr ""
 #: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
 #, fuzzy
-msgid "Your password has been updated successfully"
+msgid "Your password has been updated successfully."
 msgstr "Passordet ditt er oppdatert."
 
 #: canaille/core/endpoints/admin.py:23
@@ -739,7 +740,7 @@ msgstr "Kunne ikke opprette gruppe."
 
 #: canaille/core/endpoints/groups.py:85
 #, fuzzy, python-format
-msgid "The group %(group)s has been successfully created"
+msgid "The group %(group)s has been successfully created."
 msgstr "Gruppen «%(group)s» ble opprettet"
 
 #: canaille/core/endpoints/groups.py:153
@@ -759,7 +760,7 @@ msgstr ""
 
 #: canaille/core/endpoints/groups.py:207
 #, fuzzy, python-format
-msgid "The group %(group)s has been successfully deleted"
+msgid "The group %(group)s has been successfully deleted."
 msgstr "Gruppen «%(group)s» har blitt slettet"
 
 #: canaille/core/endpoints/groups.py:231
@@ -816,9 +817,8 @@ msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:114
 #: canaille/core/endpoints/auth/password.py:87
-#: canaille/core/endpoints/auth/password.py:99
 #, fuzzy
-msgid "Login failed, please check your information"
+msgid "Login failed. Please check your information."
 msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
 #: canaille/core/endpoints/auth/__init__.py:144
@@ -839,10 +839,9 @@ msgid "All sessions have been closed."
 msgstr "Din e-postadresse."
 
 #: canaille/core/endpoints/auth/email.py:62
-#: canaille/core/endpoints/auth/otp.py:46
-#: canaille/core/endpoints/auth/otp.py:60
+#: canaille/core/endpoints/auth/otp.py:121
 #: canaille/core/endpoints/auth/sms.py:62
-msgid "The passcode you entered is invalid. Please try again"
+msgid "The passcode you entered is invalid. Please try again."
 msgstr ""
 
 #: canaille/core/endpoints/auth/email.py:97
@@ -868,14 +867,20 @@ msgstr ""
 msgid "Passkey successfully registered."
 msgstr "Tilgangen har blitt tilbakekalt"
 
-#: canaille/core/endpoints/auth/otp.py:121
-msgid "The passcode you entered is invalid. Please try again."
+#: canaille/core/endpoints/auth/otp.py:46
+#: canaille/core/endpoints/auth/otp.py:60
+msgid "The passcode you entered is invalid. Please try again"
 msgstr ""
 
 #: canaille/core/endpoints/auth/otp.py:139
 #, fuzzy
 msgid "Authenticator application correctly configured."
 msgstr "Oppsett av passord på {website_name}"
+
+#: canaille/core/endpoints/auth/password.py:99
+#, fuzzy
+msgid "Login failed, please check your information"
+msgstr "Kunne ikke logge inn. Sjekk at alt er riktig."
 
 #: canaille/core/endpoints/auth/password.py:127
 #, fuzzy
@@ -910,8 +915,10 @@ msgid "Invalid code."
 msgstr ""
 
 #: canaille/core/endpoints/auth/sms.py:97
-msgid "The new verification code have been sent."
-msgstr ""
+#, fuzzy
+#| msgid "Invitation link"
+msgid "The new verification code has been sent."
+msgstr "Invitasjonslenke"
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
@@ -965,35 +972,42 @@ msgstr "Klienten har blitt redigert."
 msgid "The client has been deleted."
 msgstr "Klienten har blitt slettet."
 
+#: canaille/oidc/endpoints/clients.py:217
+#, python-brace-format
+msgid "A token has been created for the client {client_name}."
+msgstr ""
+
 #: canaille/oidc/endpoints/consents.py:75
 #: canaille/oidc/endpoints/consents.py:113
 #, fuzzy
-msgid "Could not revoke this access"
+msgid "Could not revoke this access."
 msgstr "Kunne ikke slette denne tilgangen"
 
 #: canaille/oidc/endpoints/consents.py:78
 #, fuzzy
-msgid "The access is already revoked"
+msgid "The access is already revoked."
 msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/oidc/endpoints/consents.py:85
 #: canaille/oidc/endpoints/consents.py:128
-msgid "The access has been revoked"
+#, fuzzy
+#| msgid "The access has been revoked"
+msgid "The access has been revoked."
 msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/oidc/endpoints/consents.py:94
 #, fuzzy
-msgid "Could not restore this access"
+msgid "Could not restore this access."
 msgstr "Kunne ikke slette denne tilgangen"
 
 #: canaille/oidc/endpoints/consents.py:97
 #, fuzzy
-msgid "The access is not revoked"
+msgid "The access is not revoked."
 msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/oidc/endpoints/consents.py:104
 #, fuzzy
-msgid "The access has been restored"
+msgid "The access has been restored."
 msgstr "Tilgangen har blitt tilbakekalt"
 
 #: canaille/oidc/endpoints/forms.py:30
@@ -1308,11 +1322,15 @@ msgid ""
 msgstr ""
 
 #: canaille/oidc/endpoints/oauth.py:544
-msgid "You have been disconnected"
+#, fuzzy
+#| msgid "You have been disconnected"
+msgid "You have been disconnected."
 msgstr "Du har blitt frakoblet"
 
 #: canaille/oidc/endpoints/oauth.py:562
-msgid "You have not been disconnected"
+#, fuzzy
+#| msgid "You have not been disconnected"
+msgid "You have not been disconnected."
 msgstr "Du har ikke blitt koblet fra"
 
 #: canaille/oidc/endpoints/tokens.py:49
@@ -1679,10 +1697,8 @@ msgid "Choose an account"
 msgstr "Opprett min konto"
 
 #: canaille/templates/core/login.html:40
-#, fuzzy
-#| msgid "Connectivity test"
-msgid "Connected"
-msgstr "Tilkoblingstest"
+msgid "Logged in"
+msgstr ""
 
 #: canaille/templates/core/login.html:54
 msgid "Remove from account list"
@@ -3306,6 +3322,16 @@ msgstr "Programmet %(name)s forespør tilgang til:"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Symbol"
+
+#, fuzzy
+#~| msgid "Profile updated successfuly."
+#~ msgid "Passkey renamed successfully"
+#~ msgstr "Profil redigert."
+
+#, fuzzy
+#~| msgid "Connectivity test"
+#~ msgid "Connected"
+#~ msgstr "Tilkoblingstest"
 
 #, fuzzy
 #~ msgid "Set up WebAuthn authentication"
