@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-22 09:52+0100\n"
-"PO-Revision-Date: 2025-12-22 08:53+0000\n"
+"PO-Revision-Date: 2025-12-22 12:46+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -168,8 +168,7 @@ msgid "You have been invited to create an account on {website_name}"
 msgstr "Vous êtes invités à vous créer un compte sur {website_name}"
 
 #: canaille/core/mails.py:170
-#, fuzzy, python-brace-format
-#| msgid "Confirm your address email on {website_name}"
+#, python-brace-format
 msgid "Confirm your email address on {website_name}"
 msgstr "Confirmez votre adresse email sur {website_name}"
 
@@ -244,7 +243,7 @@ msgstr "Un utilisateur avec cette adresse email fait déjà parti de ce groupe."
 
 #: canaille/core/validators.py:101
 msgid "Invalid security code"
-msgstr "Code de sécurité invalide."
+msgstr "Code de sécurité invalide"
 
 #: canaille/core/endpoints/account.py:124
 #: canaille/core/endpoints/account.py:150
@@ -309,20 +308,14 @@ msgid "The invitation link that brought you here was invalid."
 msgstr "Le lien d'invitation qui vous a amené ici est invalide."
 
 #: canaille/core/endpoints/account.py:478
-#, fuzzy
-#| msgid "This address email have already been confirmed."
 msgid "This email address has already been confirmed."
 msgstr "Cette adresse email a déjà été confirmée."
 
 #: canaille/core/endpoints/account.py:485
-#, fuzzy
-#| msgid "This address email is already associated with another account."
 msgid "This email address is already associated with another account."
 msgstr "Cette adresse email est déjà associée à un autre compte."
 
 #: canaille/core/endpoints/account.py:492
-#, fuzzy
-#| msgid "Your email address have been confirmed."
 msgid "Your email address has been confirmed."
 msgstr "Votre adresse email a été confirmée."
 
@@ -358,8 +351,6 @@ msgid "Email deletion failed."
 msgstr "La suppression de l’adresse email a échoué."
 
 #: canaille/core/endpoints/account.py:685
-#, fuzzy
-#| msgid "The email have been successfully deleted."
 msgid "The email has been successfully deleted."
 msgstr "L’adresse email a correctement été supprimée."
 
@@ -385,56 +376,40 @@ msgstr ""
 "courriel. Il devrait arriver d'ici quelques de minutes."
 
 #: canaille/core/endpoints/account.py:803
-#, fuzzy
-#| msgid "The account has been locked"
 msgid "The account has been locked."
-msgstr "Le compte a été verrouillé"
+msgstr "Le compte a été verrouillé."
 
 #: canaille/core/endpoints/account.py:809
-#, fuzzy
-#| msgid "The account has been unlocked"
 msgid "The account has been unlocked."
-msgstr "Le compte a été déverrouillé"
+msgstr "Le compte a été déverrouillé."
 
 #: canaille/core/endpoints/account.py:821
-#, fuzzy
-#| msgid "Authenticator application passcode authentication has been reset"
 msgid "Authenticator application passcode authentication has been reset."
 msgstr ""
-"L'authentification par application d'authentification a été ré-initialisée"
+"L'authentification par application d'authentification a été ré-initialisée."
 
 #: canaille/core/endpoints/account.py:855
 #: canaille/core/endpoints/account.py:873
 #: canaille/core/endpoints/account.py:899
 #: canaille/core/endpoints/account.py:910
-#, fuzzy
-#| msgid "Credential not found"
 msgid "Credential not found."
-msgstr "Clé de sécurité non trouvée"
+msgstr "Clé de sécurité non trouvée."
 
 #: canaille/core/endpoints/account.py:868
-#, fuzzy
-#| msgid "Name cannot be empty"
 msgid "Name cannot be empty."
-msgstr "Le nom ne peut pas être vide"
+msgstr "Le nom ne peut pas être vide."
 
 #: canaille/core/endpoints/account.py:878
-#, fuzzy
-#| msgid "Passkey has been removed"
 msgid "The passkey has been renamed."
-msgstr "La clé de sécurité a été supprimée"
+msgstr "La clé de sécurité a été renommée."
 
 #: canaille/core/endpoints/account.py:890
-#, fuzzy
-#| msgid "All passkeys have been removed"
 msgid "All passkeys have been removed."
 msgstr "Toutes les clés de sécurité ont été supprimées."
 
 #: canaille/core/endpoints/account.py:905
-#, fuzzy
-#| msgid "Passkey has been removed"
 msgid "The passkey has been removed."
-msgstr "La clé de sécurité a été supprimée"
+msgstr "La clé de sécurité a été supprimée."
 
 #: canaille/core/endpoints/account.py:1044
 msgid "Locked users cannot be impersonated."
@@ -444,10 +419,8 @@ msgstr ""
 
 #: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
-#, fuzzy
-#| msgid "Your password has been updated successfully"
 msgid "Your password has been updated successfully."
-msgstr "Votre mot de passe a correctement été mis à jour"
+msgstr "Votre mot de passe a correctement été mis à jour."
 
 #: canaille/core/endpoints/admin.py:23
 #: canaille/templates/core/partial/users.html:15
@@ -717,10 +690,9 @@ msgid "Group creation failed."
 msgstr "La création du groupe a échoué."
 
 #: canaille/core/endpoints/groups.py:85
-#, fuzzy, python-format
-#| msgid "The group %(group)s has been successfully created"
+#, python-format
 msgid "The group %(group)s has been successfully created."
-msgstr "Le groupe %(group)s a bien été créé"
+msgstr "Le groupe %(group)s a bien été créé."
 
 #: canaille/core/endpoints/groups.py:153
 #, python-format
@@ -737,10 +709,9 @@ msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
 
 #: canaille/core/endpoints/groups.py:207
-#, fuzzy, python-format
-#| msgid "The group %(group)s has been successfully deleted"
+#, python-format
 msgid "The group %(group)s has been successfully deleted."
-msgstr "Le groupe %(group)s a bien été supprimé"
+msgstr "Le groupe %(group)s a bien été supprimé."
 
 #: canaille/core/endpoints/groups.py:231
 #, python-format
@@ -790,10 +761,8 @@ msgstr "Vous êtes passé sur la session de {user_name}."
 
 #: canaille/core/endpoints/auth/__init__.py:114
 #: canaille/core/endpoints/auth/password.py:87
-#, fuzzy
-#| msgid "Login failed, please check your information"
 msgid "Login failed. Please check your information."
-msgstr "La connexion a échoué, veuillez vérifier vos informations"
+msgstr "La connexion a échoué. Veuillez vérifier vos informations."
 
 #: canaille/core/endpoints/auth/__init__.py:144
 #, python-brace-format
@@ -884,8 +853,6 @@ msgid "Invalid code."
 msgstr "Code invalide."
 
 #: canaille/core/endpoints/auth/sms.py:97
-#, fuzzy
-#| msgid "The new verification code have been sent."
 msgid "The new verification code has been sent."
 msgstr "Le nouveau code de vérification a été envoyé."
 
@@ -940,45 +907,33 @@ msgstr "Le client a été supprimé."
 #: canaille/oidc/endpoints/clients.py:217
 #, python-brace-format
 msgid "A token has been created for the client {client_name}."
-msgstr ""
+msgstr "Un jeton a été créé pour le client {client_name}."
 
 #: canaille/oidc/endpoints/consents.py:75
 #: canaille/oidc/endpoints/consents.py:113
-#, fuzzy
-#| msgid "Could not revoke this access"
 msgid "Could not revoke this access."
-msgstr "Impossible de révoquer cet accès"
+msgstr "Impossible de révoquer cet accès."
 
 #: canaille/oidc/endpoints/consents.py:78
-#, fuzzy
-#| msgid "The access is already revoked"
 msgid "The access is already revoked."
-msgstr "L'accès a déjà été révoqué"
+msgstr "L'accès a déjà été révoqué."
 
 #: canaille/oidc/endpoints/consents.py:85
 #: canaille/oidc/endpoints/consents.py:128
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The access has been revoked."
-msgstr "L'accès a été révoqué"
+msgstr "L'accès a été révoqué."
 
 #: canaille/oidc/endpoints/consents.py:94
-#, fuzzy
-#| msgid "Could not restore this access"
 msgid "Could not restore this access."
-msgstr "Impossible de restaurer cet accès"
+msgstr "Impossible de restaurer cet accès."
 
 #: canaille/oidc/endpoints/consents.py:97
-#, fuzzy
-#| msgid "The access is not revoked"
 msgid "The access is not revoked."
-msgstr "L'accès n’est pas révoqué"
+msgstr "L'accès n’est pas révoqué."
 
 #: canaille/oidc/endpoints/consents.py:104
-#, fuzzy
-#| msgid "The access has been restored"
 msgid "The access has been restored."
-msgstr "L'accès a été restauré"
+msgstr "L'accès a été restauré."
 
 #: canaille/oidc/endpoints/forms.py:30
 msgid "This value is not a valid JSON string."
@@ -1083,7 +1038,7 @@ msgstr "Audiences des jetons"
 msgid ""
 "The other clients that are intended to use the tokens emitted by this client."
 msgstr ""
-"Les autres clients qui pourront utiliser les jetons émis pour ce client."
+"Les autres applications qui pourront utiliser les jetons émis pour ce client."
 
 #: canaille/oidc/endpoints/forms.py:244
 msgid "Logo URI"
@@ -1335,16 +1290,12 @@ msgstr ""
 "Request object et transmise via le paramètre request ou request_uri."
 
 #: canaille/oidc/endpoints/oauth.py:544
-#, fuzzy
-#| msgid "You have been disconnected"
 msgid "You have been disconnected."
-msgstr "Vous avez été déconnecté·e"
+msgstr "Vous avez été déconnecté·e."
 
 #: canaille/oidc/endpoints/oauth.py:562
-#, fuzzy
-#| msgid "You have not been disconnected"
 msgid "You have not been disconnected."
-msgstr "Vous n'avez pas été déconnecté"
+msgstr "Vous n'avez pas été déconnecté."
 
 #: canaille/oidc/endpoints/tokens.py:49
 msgid "The token has successfully been revoked."
@@ -1715,10 +1666,8 @@ msgid "Choose an account"
 msgstr "Choisissez un compte"
 
 #: canaille/templates/core/login.html:40
-#, fuzzy
-#| msgid "Logged in as"
 msgid "Logged in"
-msgstr "Connecté en tant que"
+msgstr "Connecté"
 
 #: canaille/templates/core/login.html:54
 msgid "Remove from account list"
