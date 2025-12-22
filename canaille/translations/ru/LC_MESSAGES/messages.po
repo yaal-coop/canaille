@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:02+0100\n"
+"POT-Creation-Date: 2025-12-22 09:12+0100\n"
 "PO-Revision-Date: 2025-07-31 10:02+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/canaille/"
@@ -417,7 +417,7 @@ msgstr ""
 #: canaille/core/endpoints/account.py:878
 #, fuzzy
 #| msgid "Profile updated successfully."
-msgid "Security key renamed successfully"
+msgid "Passkey renamed successfully"
 msgstr "Профиль успешно обновлён."
 
 #: canaille/core/endpoints/account.py:890
@@ -825,21 +825,19 @@ msgstr "Проверка электронной почты"
 #: canaille/core/endpoints/auth/fido.py:209
 #, python-brace-format
 msgid ""
-"Maximum number of security keys reached ({max}). Please remove one before "
-"adding another."
+"Maximum number of passkeys reached ({max}). Please remove one before adding "
+"another."
 msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
-#, fuzzy
-#| msgid "Source code"
-msgid "My security key"
-msgstr "Исходный код"
+msgid "My passkey"
+msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:337
 #, fuzzy
 #| msgid "The token has successfully been revoked."
-msgid "Security key successfully registered."
+msgid "Passkey successfully registered."
 msgstr "Токен успешно отозван."
 
 #: canaille/core/endpoints/auth/otp.py:121
@@ -1854,8 +1852,10 @@ msgstr "Проверить"
 
 #: canaille/templates/core/auth/fido-setup.html:33
 #: canaille/templates/core/auth/fido-setup.html:62
-msgid "Security key registration"
-msgstr ""
+#, fuzzy
+#| msgid "Password reset"
+msgid "Passkey registration"
+msgstr "Сброс пароля"
 
 #: canaille/templates/core/auth/fido-setup.html:47
 #: canaille/templates/core/auth/fido-setup.html:77
@@ -1866,17 +1866,17 @@ msgstr "Регистрация"
 
 #: canaille/templates/core/auth/fido.html:15
 #, fuzzy
-msgid "Security key authentication"
+msgid "Passkey authentication"
 msgstr "Настроить многоэтапную аутентификацию."
 
 #: canaille/templates/core/auth/fido.html:23
-msgid "Use your security key"
+msgid "Use your passkey"
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:25
 msgid ""
-"Insert your security key or use your device biometric authentication, then "
-"press the button below, and finally authenticate with your security key."
+"Insert your passkey or use your device biometric authentication, then press "
+"the button below, and finally authenticate with your passkey."
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:44
@@ -1987,12 +1987,11 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:18
 msgid ""
-"Please click the button below first, then touch your security key when "
-"prompted."
+"Please click the button below first, then touch your passkey when prompted."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:25
-msgid "Failed to parse the security key options."
+msgid "Failed to parse the passkey options."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:32
@@ -2024,12 +2023,12 @@ msgid "Set up WebAuthn authentication"
 msgstr "Настроить многоэтапную аутентификацию."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
-msgid "Follow these steps to register your security key:"
+msgid "Follow these steps to register your passkey:"
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:16
 msgid ""
-"Insert your security key (YubiKey, USB key, etc.) or prepare your biometric "
+"Insert your passkey (YubiKey, USB key, etc.) or prepare your biometric "
 "device (fingerprint, face recognition)."
 msgstr ""
 
@@ -2043,7 +2042,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:19
 msgid ""
-"Follow your device's prompts: touch your security key or use your biometric "
+"Follow your device's prompts: touch your passkey or use your biometric "
 "authentication."
 msgstr ""
 
@@ -2575,7 +2574,7 @@ msgstr "Удалить"
 #: canaille/templates/core/modals/delete-credential.html:10
 #, fuzzy
 #| msgid "Delete the client"
-msgid "Delete security key"
+msgid "Delete passkey"
 msgstr "Удалить клиент"
 
 #: canaille/templates/core/modals/delete-credential.html:15
@@ -2583,7 +2582,7 @@ msgstr "Удалить клиент"
 #| msgid ""
 #| "Are you sure you want to remove %(user_name)s from the group "
 #| "\"%(group_name)s\"?"
-msgid "Are you sure you want to delete the security key \"%(name)s\"?"
+msgid "Are you sure you want to delete the passkey \"%(name)s\"?"
 msgstr ""
 "Вы уверены, что хотите удалить %(user_name)s из группы \"%(group_name)s\"?"
 
@@ -2591,7 +2590,7 @@ msgstr ""
 #, fuzzy
 #| msgid ""
 #| "Are you sure you want to revoke this token? This action is unrevokable."
-msgid "Are you sure you want to delete this security key?"
+msgid "Are you sure you want to delete this passkey?"
 msgstr "Вы уверены, что хотите отозвать этот токен? Это действие безвозвратно."
 
 #: canaille/templates/core/modals/delete-credential.html:25
@@ -2892,14 +2891,14 @@ msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:10
 #, fuzzy
-#| msgid "Source code"
-msgid "Security keys"
-msgstr "Исходный код"
+#| msgid "Password reset"
+msgid "Passkeys"
+msgstr "Сброс пароля"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:17
 #, python-format
-msgid "You have %(count)s security key configured."
-msgid_plural "You have %(count)s security keys configured."
+msgid "You have %(count)s passkey configured."
+msgid_plural "You have %(count)s passkeys configured."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -2907,7 +2906,7 @@ msgstr[2] ""
 #: canaille/templates/core/partials/profile_settings_fido.html:24
 #, fuzzy
 #| msgid "Set up multi-factor authentication."
-msgid "Security keys can be used for authentication."
+msgid "Passkeys can be used for authentication."
 msgstr "Настроить многоэтапную аутентификацию."
 
 #: canaille/templates/core/partials/profile_settings_fido.html:28
@@ -2956,8 +2955,8 @@ msgstr "Удалить адрес электронной почты"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:96
 msgid ""
-"You have no security key configured. Click on the following button to "
-"register your security key."
+"You have no passkey configured. Click on the following button to register "
+"your passkey."
 msgstr ""
 
 #: canaille/templates/core/sms/sms_otp.txt:1
@@ -3371,6 +3370,16 @@ msgstr "Эта учётная запись заблокирована"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Токен"
+
+#, fuzzy
+#~| msgid "Source code"
+#~ msgid "My security key"
+#~ msgstr "Исходный код"
+
+#, fuzzy
+#~| msgid "Source code"
+#~ msgid "Security keys"
+#~ msgstr "Исходный код"
 
 #, fuzzy
 #~| msgid "The client has been created."

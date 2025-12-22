@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:02+0100\n"
+"POT-Creation-Date: 2025-12-22 09:12+0100\n"
 "PO-Revision-Date: 2024-08-08 19:09+0000\n"
 "Last-Translator: Moha684 <nahil82466@gmail.com>\n"
 "Language-Team: Breton <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -394,7 +394,7 @@ msgstr ""
 #: canaille/core/endpoints/account.py:878
 #, fuzzy
 #| msgid "Profile updated successfully."
-msgid "Security key renamed successfully"
+msgid "Passkey renamed successfully"
 msgstr "Hizivaet eo bet an aelad gant berzh."
 
 #: canaille/core/endpoints/account.py:890
@@ -792,18 +792,19 @@ msgstr "C’hwitadenn war ouzhpennañ ar chomlec’h postel."
 #: canaille/core/endpoints/auth/fido.py:209
 #, python-brace-format
 msgid ""
-"Maximum number of security keys reached ({max}). Please remove one before "
-"adding another."
+"Maximum number of passkeys reached ({max}). Please remove one before adding "
+"another."
 msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
-msgid "My security key"
+msgid "My passkey"
 msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:337
-msgid "Security key successfully registered."
-msgstr ""
+#, fuzzy
+msgid "Passkey successfully registered."
+msgstr "Hizivaet eo bet an aelad gant berzh."
 
 #: canaille/core/endpoints/auth/otp.py:121
 msgid "The passcode you entered is invalid. Please try again."
@@ -1739,7 +1740,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/fido-setup.html:33
 #: canaille/templates/core/auth/fido-setup.html:62
-msgid "Security key registration"
+msgid "Passkey registration"
 msgstr ""
 
 #: canaille/templates/core/auth/fido-setup.html:47
@@ -1750,17 +1751,17 @@ msgstr ""
 #: canaille/templates/core/auth/fido.html:15
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Security key authentication"
+msgid "Passkey authentication"
 msgstr "O teraouekaat ho ger-tremen war {website_name}"
 
 #: canaille/templates/core/auth/fido.html:23
-msgid "Use your security key"
+msgid "Use your passkey"
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:25
 msgid ""
-"Insert your security key or use your device biometric authentication, then "
-"press the button below, and finally authenticate with your security key."
+"Insert your passkey or use your device biometric authentication, then press "
+"the button below, and finally authenticate with your passkey."
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:44
@@ -1861,12 +1862,11 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:18
 msgid ""
-"Please click the button below first, then touch your security key when "
-"prompted."
+"Please click the button below first, then touch your passkey when prompted."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:25
-msgid "Failed to parse the security key options."
+msgid "Failed to parse the passkey options."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:32
@@ -1896,12 +1896,12 @@ msgid "Set up WebAuthn authentication"
 msgstr "O teraouekaat ho ger-tremen war {website_name}"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
-msgid "Follow these steps to register your security key:"
+msgid "Follow these steps to register your passkey:"
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:16
 msgid ""
-"Insert your security key (YubiKey, USB key, etc.) or prepare your biometric "
+"Insert your passkey (YubiKey, USB key, etc.) or prepare your biometric "
 "device (fingerprint, face recognition)."
 msgstr ""
 
@@ -1915,7 +1915,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:19
 msgid ""
-"Follow your device's prompts: touch your security key or use your biometric "
+"Follow your device's prompts: touch your passkey or use your biometric "
 "authentication."
 msgstr ""
 
@@ -2380,19 +2380,19 @@ msgid "Delete"
 msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:10
-msgid "Delete security key"
+msgid "Delete passkey"
 msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:15
 #, fuzzy, python-format
 #| msgid "Password initialization on {website_name}"
-msgid "Are you sure you want to delete the security key \"%(name)s\"?"
+msgid "Are you sure you want to delete the passkey \"%(name)s\"?"
 msgstr "O teraouekaat ho ger-tremen war {website_name}"
 
 #: canaille/templates/core/modals/delete-credential.html:19
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Are you sure you want to delete this security key?"
+msgid "Are you sure you want to delete this passkey?"
 msgstr "O teraouekaat ho ger-tremen war {website_name}"
 
 #: canaille/templates/core/modals/delete-credential.html:25
@@ -2655,13 +2655,13 @@ msgid "The user won't be able to connect until their account is unlocked."
 msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:10
-msgid "Security keys"
+msgid "Passkeys"
 msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:17
 #, python-format
-msgid "You have %(count)s security key configured."
-msgid_plural "You have %(count)s security keys configured."
+msgid "You have %(count)s passkey configured."
+msgid_plural "You have %(count)s passkeys configured."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -2669,7 +2669,7 @@ msgstr[3] ""
 msgstr[4] ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:24
-msgid "Security keys can be used for authentication."
+msgid "Passkeys can be used for authentication."
 msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:28
@@ -2710,8 +2710,8 @@ msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:96
 msgid ""
-"You have no security key configured. Click on the following button to "
-"register your security key."
+"You have no passkey configured. Click on the following button to register "
+"your passkey."
 msgstr ""
 
 #: canaille/templates/core/sms/sms_otp.txt:1
@@ -3110,10 +3110,6 @@ msgstr ""
 #~ "C’hoarvezet ez eus ur fazi en ur gas ho postel enskrivañ. Adkrogit a-benn "
 #~ "un nebeud munutennoù, mar plij. M'emaoc'h dindan ar gudenn, deuit e "
 #~ "darempred gant ar verourien."
-
-#, fuzzy
-#~ msgid "Passcode successfully sent!"
-#~ msgstr "Hizivaet eo bet an aelad gant berzh."
 
 #, fuzzy
 #~ msgid "Reset one-time passcode authentication"

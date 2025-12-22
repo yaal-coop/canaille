@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:02+0100\n"
+"POT-Creation-Date: 2025-12-22 09:12+0100\n"
 "PO-Revision-Date: 2023-02-19 22:35+0000\n"
 "Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
@@ -432,7 +432,7 @@ msgstr ""
 #: canaille/core/endpoints/account.py:878
 #, fuzzy
 #| msgid "Profile updated successfuly."
-msgid "Security key renamed successfully"
+msgid "Passkey renamed successfully"
 msgstr "Perfil actualizado correctamente."
 
 #: canaille/core/endpoints/account.py:890
@@ -874,21 +874,19 @@ msgstr "Ligazón de invitación"
 #: canaille/core/endpoints/auth/fido.py:209
 #, python-brace-format
 msgid ""
-"Maximum number of security keys reached ({max}). Please remove one before "
-"adding another."
+"Maximum number of passkeys reached ({max}). Please remove one before adding "
+"another."
 msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
-#, fuzzy
-#| msgid "Source code"
-msgid "My security key"
-msgstr "Código fonte"
+msgid "My passkey"
+msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:337
 #, fuzzy
 #| msgid "The token has successfully been revoked."
-msgid "Security key successfully registered."
+msgid "Passkey successfully registered."
 msgstr "O token foi revogado correctamente."
 
 #: canaille/core/endpoints/auth/otp.py:121
@@ -1924,8 +1922,10 @@ msgstr ""
 
 #: canaille/templates/core/auth/fido-setup.html:33
 #: canaille/templates/core/auth/fido-setup.html:62
-msgid "Security key registration"
-msgstr ""
+#, fuzzy
+#| msgid "Password reset"
+msgid "Passkey registration"
+msgstr "Restablecer contrasinal"
 
 #: canaille/templates/core/auth/fido-setup.html:47
 #: canaille/templates/core/auth/fido-setup.html:77
@@ -1937,17 +1937,17 @@ msgstr "Invitación"
 #: canaille/templates/core/auth/fido.html:15
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Security key authentication"
+msgid "Passkey authentication"
 msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/auth/fido.html:23
-msgid "Use your security key"
+msgid "Use your passkey"
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:25
 msgid ""
-"Insert your security key or use your device biometric authentication, then "
-"press the button below, and finally authenticate with your security key."
+"Insert your passkey or use your device biometric authentication, then press "
+"the button below, and finally authenticate with your passkey."
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:44
@@ -2064,12 +2064,11 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:18
 msgid ""
-"Please click the button below first, then touch your security key when "
-"prompted."
+"Please click the button below first, then touch your passkey when prompted."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:25
-msgid "Failed to parse the security key options."
+msgid "Failed to parse the passkey options."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:32
@@ -2101,12 +2100,12 @@ msgid "Set up WebAuthn authentication"
 msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
-msgid "Follow these steps to register your security key:"
+msgid "Follow these steps to register your passkey:"
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:16
 msgid ""
-"Insert your security key (YubiKey, USB key, etc.) or prepare your biometric "
+"Insert your passkey (YubiKey, USB key, etc.) or prepare your biometric "
 "device (fingerprint, face recognition)."
 msgstr ""
 
@@ -2120,7 +2119,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:19
 msgid ""
-"Follow your device's prompts: touch your security key or use your biometric "
+"Follow your device's prompts: touch your passkey or use your biometric "
 "authentication."
 msgstr ""
 
@@ -2684,20 +2683,20 @@ msgstr "Eliminar"
 #: canaille/templates/core/modals/delete-credential.html:10
 #, fuzzy
 #| msgid "Delete the client"
-msgid "Delete security key"
+msgid "Delete passkey"
 msgstr "Eliminar o cliente"
 
 #: canaille/templates/core/modals/delete-credential.html:15
 #, fuzzy, python-format
 #| msgid "Password initialization on {website_name}"
-msgid "Are you sure you want to delete the security key \"%(name)s\"?"
+msgid "Are you sure you want to delete the passkey \"%(name)s\"?"
 msgstr "Inicialización do contrasinal en {website_name}"
 
 #: canaille/templates/core/modals/delete-credential.html:19
 #, fuzzy
 #| msgid ""
 #| "Are you sure you want to revoke this token? This action is unrevokable."
-msgid "Are you sure you want to delete this security key?"
+msgid "Are you sure you want to delete this passkey?"
 msgstr ""
 "Estás seguro de que queres revogar este token? Esta acción non pode ser "
 "desfeita."
@@ -3008,19 +3007,19 @@ msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:10
 #, fuzzy
-#| msgid "Source code"
-msgid "Security keys"
-msgstr "Código fonte"
+#| msgid "Password reset"
+msgid "Passkeys"
+msgstr "Restablecer contrasinal"
 
 #: canaille/templates/core/partials/profile_settings_fido.html:17
 #, python-format
-msgid "You have %(count)s security key configured."
-msgid_plural "You have %(count)s security keys configured."
+msgid "You have %(count)s passkey configured."
+msgid_plural "You have %(count)s passkeys configured."
 msgstr[0] ""
 msgstr[1] ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:24
-msgid "Security keys can be used for authentication."
+msgid "Passkeys can be used for authentication."
 msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:28
@@ -3069,8 +3068,8 @@ msgstr "Dirección de correo electrónico."
 
 #: canaille/templates/core/partials/profile_settings_fido.html:96
 msgid ""
-"You have no security key configured. Click on the following button to "
-"register your security key."
+"You have no passkey configured. Click on the following button to register "
+"your passkey."
 msgstr ""
 
 #: canaille/templates/core/sms/sms_otp.txt:1
@@ -3504,6 +3503,16 @@ msgstr "A aplicación %(name)s está solicitando acceso a:"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#, fuzzy
+#~| msgid "Source code"
+#~ msgid "My security key"
+#~ msgstr "Código fonte"
+
+#, fuzzy
+#~| msgid "Source code"
+#~ msgid "Security keys"
+#~ msgstr "Código fonte"
 
 #, fuzzy
 #~| msgid "The client has been created."
