@@ -1,13 +1,13 @@
-{# WebAuthn security keys management partial.
+{# WebAuthn passkeys management partial.
 
-Displays the security keys section in profile settings.
+Displays the passkeys section in profile settings.
 
 :param edited_user: The user being edited.
 :type edited_user: :class:`~canaille.core.models.User`
 #}
 <h2 class="ui center aligned header">
     <div class="content">
-        {% trans %}Security keys{% endtrans %}
+        {% trans %}Passkeys{% endtrans %}
     </div>
 </h2>
 
@@ -15,14 +15,14 @@ Displays the security keys section in profile settings.
     <div class="ui top attached info message">
         <div class="header">
             {% trans count=edited_user.webauthn_credentials|length %}
-                You have {{ count }} security key configured.
+                You have {{ count }} passkey configured.
                 {% pluralize %}
-                You have {{ count }} security keys configured.
+                You have {{ count }} passkeys configured.
             {% endtrans %}
         </div>
         <p>
             {% trans %}
-                Security keys can be used for authentication.
+                Passkeys can be used for authentication.
             {% endtrans %}
             {% if edited_user.webauthn_credentials|length < 2 %}
                 {% trans %}
@@ -47,7 +47,7 @@ Displays the security keys section in profile settings.
                 <tr>
                     <td>
                         <div class="ui action input" style="width: 100%;">
-                            <input type="text" name="credential_name_{{ credential.id }}" value="{{ credential.name or _('My security key') }}" maxlength="255">
+                            <input type="text" name="credential_name_{{ credential.id }}" value="{{ credential.name or _('My passkey') }}" maxlength="255">
                             <button type="submit" class="ui icon button" name="fido2-rename-credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Rename{% endtrans %}">
                                 <i class="edit icon"></i>
                             </button>
@@ -94,8 +94,8 @@ Displays the security keys section in profile settings.
 
     <div class="ui info message">
         {% trans %}
-            You have no security key configured.
-            Click on the following button to register your security key.
+            You have no passkey configured.
+            Click on the following button to register your passkey.
         {% endtrans %}
     </div>
     <div class="ui right aligned container">

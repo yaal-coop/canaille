@@ -206,7 +206,7 @@ def generate_registration_options_view():
     if len(g.auth.user.webauthn_credentials) >= max_credentials:
         flash(
             _(
-                "Maximum number of security keys reached ({max}). Please remove one before adding another."
+                "Maximum number of passkeys reached ({max}). Please remove one before adding another."
             ).format(max=max_credentials),
             "error",
         )
@@ -280,7 +280,7 @@ def verify_registration_response_view():
             jsonify(
                 {
                     "success": False,
-                    "error": f"Maximum number of security keys reached ({max_credentials})",
+                    "error": f"Maximum number of passkeys reached ({max_credentials})",
                 }
             ),
             400,
@@ -325,7 +325,7 @@ def verify_registration_response_view():
     credential.transports = serialize_transports(
         credential_response.get("response", {}).get("transports", [])
     )
-    credential.name = _("My security key")
+    credential.name = _("My passkey")
     credential.created_at = datetime.datetime.now(datetime.timezone.utc)
     credential.user = g.auth.user
 
@@ -334,7 +334,7 @@ def verify_registration_response_view():
     current_app.logger.security(
         f"WebAuthn credential registered for {g.auth.user_name}"
     )
-    flash(_("Security key successfully registered."), "success")
+    flash(_("Passkey successfully registered."), "success")
 
     if g.get("session"):
         g.auth = None

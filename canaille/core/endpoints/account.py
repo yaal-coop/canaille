@@ -875,7 +875,7 @@ def _handle_fido_actions(user, edited_user, action):
 
         credential.name = new_name
         Backend.instance.save(credential)
-        flash(_("Security key renamed successfully"), "success")
+        flash(_("Passkey renamed successfully"), "success")
         current_app.logger.security(
             f"Renamed WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
         )

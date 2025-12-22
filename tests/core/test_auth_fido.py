@@ -271,7 +271,7 @@ def test_full_login_flow_with_credential_setup(mock_verify, testclient, user, ba
 
     user_reloaded = backend.get(models.User, id=user.id)
     assert len(user_reloaded.webauthn_credentials) > 0
-    assert user_reloaded.webauthn_credentials[0].name == "My security key"
+    assert user_reloaded.webauthn_credentials[0].name == "My passkey"
     assert user_reloaded.webauthn_credentials[0].sign_count == 0
 
 
@@ -336,7 +336,7 @@ def test_successful_registration(mock_verify, testclient, user, backend, caplog)
 
     user_reloaded = backend.get(models.User, id=user.id)
     assert len(user_reloaded.webauthn_credentials) > 0
-    assert user_reloaded.webauthn_credentials[0].name == "My security key"
+    assert user_reloaded.webauthn_credentials[0].name == "My passkey"
     assert user_reloaded.webauthn_credentials[0].credential_id == b"new_credential_id"
 
 
@@ -792,9 +792,7 @@ def test_max_credentials_reached_during_setup_get(testclient, user, backend):
 
     res = testclient.get("/auth/fido2-setup", status=302)
     assert res.location == f"/profile/{user.user_name}/settings"
-    assert any(
-        "Maximum number of security keys reached" in msg for _, msg in res.flashes
-    )
+    assert any("Maximum number of passkeys reached" in msg for _, msg in res.flashes)
 
 
 def test_max_credentials_reached_during_setup_post(testclient, user, backend):
@@ -828,7 +826,7 @@ def test_max_credentials_reached_during_setup_post(testclient, user, backend):
         status=400,
     )
     assert response.json["success"] is False
-    assert "Maximum number of security keys reached" in response.json["error"]
+    assert "Maximum number of passkeys reached" in response.json["error"]
 
 
 @patch("webauthn.generate_registration_options")

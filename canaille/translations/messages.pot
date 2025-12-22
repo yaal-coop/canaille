@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-22 09:02+0100\n"
+"POT-Creation-Date: 2025-12-22 09:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -366,7 +366,7 @@ msgid "Name cannot be empty"
 msgstr ""
 
 #: canaille/core/endpoints/account.py:878
-msgid "Security key renamed successfully"
+msgid "Passkey renamed successfully"
 msgstr ""
 
 #: canaille/core/endpoints/account.py:890
@@ -753,17 +753,17 @@ msgstr ""
 #: canaille/core/endpoints/auth/fido.py:209
 #, python-brace-format
 msgid ""
-"Maximum number of security keys reached ({max}). Please remove one before"
-" adding another."
+"Maximum number of passkeys reached ({max}). Please remove one before "
+"adding another."
 msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
-msgid "My security key"
+msgid "My passkey"
 msgstr ""
 
 #: canaille/core/endpoints/auth/fido.py:337
-msgid "Security key successfully registered."
+msgid "Passkey successfully registered."
 msgstr ""
 
 #: canaille/core/endpoints/auth/otp.py:121
@@ -1693,7 +1693,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/fido-setup.html:33
 #: canaille/templates/core/auth/fido-setup.html:62
-msgid "Security key registration"
+msgid "Passkey registration"
 msgstr ""
 
 #: canaille/templates/core/auth/fido-setup.html:47
@@ -1702,18 +1702,17 @@ msgid "Register"
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:15
-msgid "Security key authentication"
+msgid "Passkey authentication"
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:23
-msgid "Use your security key"
+msgid "Use your passkey"
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:25
 msgid ""
-"Insert your security key or use your device biometric authentication, "
-"then press the button below, and finally authenticate with your security "
-"key."
+"Insert your passkey or use your device biometric authentication, then "
+"press the button below, and finally authenticate with your passkey."
 msgstr ""
 
 #: canaille/templates/core/auth/fido.html:44
@@ -1808,12 +1807,12 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:18
 msgid ""
-"Please click the button below first, then touch your security key when "
+"Please click the button below first, then touch your passkey when "
 "prompted."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:25
-msgid "Failed to parse the security key options."
+msgid "Failed to parse the passkey options."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:32
@@ -1841,13 +1840,13 @@ msgid "Set up WebAuthn authentication"
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
-msgid "Follow these steps to register your security key:"
+msgid "Follow these steps to register your passkey:"
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:16
 msgid ""
-"Insert your security key (YubiKey, USB key, etc.) or prepare your "
-"biometric device (fingerprint, face recognition)."
+"Insert your passkey (YubiKey, USB key, etc.) or prepare your biometric "
+"device (fingerprint, face recognition)."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:17
@@ -1860,8 +1859,8 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:19
 msgid ""
-"Follow your device's prompts: touch your security key or use your "
-"biometric authentication."
+"Follow your device's prompts: touch your passkey or use your biometric "
+"authentication."
 msgstr ""
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:3
@@ -2320,16 +2319,16 @@ msgid "Delete"
 msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:10
-msgid "Delete security key"
+msgid "Delete passkey"
 msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:15
 #, python-format
-msgid "Are you sure you want to delete the security key \"%(name)s\"?"
+msgid "Are you sure you want to delete the passkey \"%(name)s\"?"
 msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:19
-msgid "Are you sure you want to delete this security key?"
+msgid "Are you sure you want to delete this passkey?"
 msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:25
@@ -2582,18 +2581,18 @@ msgid "The user won't be able to connect until their account is unlocked."
 msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:10
-msgid "Security keys"
+msgid "Passkeys"
 msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:17
 #, python-format
-msgid "You have %(count)s security key configured."
-msgid_plural "You have %(count)s security keys configured."
+msgid "You have %(count)s passkey configured."
+msgid_plural "You have %(count)s passkeys configured."
 msgstr[0] ""
 msgstr[1] ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:24
-msgid "Security keys can be used for authentication."
+msgid "Passkeys can be used for authentication."
 msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:28
@@ -2634,8 +2633,8 @@ msgstr ""
 
 #: canaille/templates/core/partials/profile_settings_fido.html:96
 msgid ""
-"You have no security key configured. Click on the following button to "
-"register your security key."
+"You have no passkey configured. Click on the following button to register"
+" your passkey."
 msgstr ""
 
 #: canaille/templates/core/sms/sms_otp.txt:1

@@ -24,7 +24,7 @@ def fido_credential(testclient, logged_user, backend):
             sign_count=0,
             aaguid=b"\x00" * 16,
             transports='["usb", "nfc"]',
-            name=f"Security Key {i}",
+            name=f"Passkey {i}",
             created_at=datetime.datetime.now(datetime.timezone.utc),
             user=logged_user,
         )
@@ -139,7 +139,7 @@ def test_rename_credential(testclient, logged_user, fido_credential, backend):
         status=200,
     )
 
-    assert ("success", "Security key renamed successfully") in res.flashes
+    assert ("success", "Passkey renamed successfully") in res.flashes
 
     backend.reload(logged_user)
     credential = next(

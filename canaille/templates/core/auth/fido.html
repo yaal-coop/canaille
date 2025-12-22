@@ -12,7 +12,7 @@ Displays the WebAuthn authentication interface.
 {% endblock %}
 
 {% block auth_subtitle %}
-    <div class="sub header">{% trans %}Security key authentication{% endtrans %}</div>
+    <div class="sub header">{% trans %}Passkey authentication{% endtrans %}</div>
 {% endblock %}
 
 {% block auth_content %}
@@ -20,12 +20,12 @@ Displays the WebAuthn authentication interface.
         <i class="key icon"></i>
         <div class="content">
             <div class="header">
-                {% trans %}Use your security key{% endtrans %}
+                {% trans %}Use your passkey{% endtrans %}
             </div>
             {% trans %}
-                Insert your security key or use your device biometric authentication,
+                Insert your passkey or use your device biometric authentication,
                 then press the button below,
-                and finally authenticate with your security key.
+                and finally authenticate with your passkey.
             {% endtrans %}
         </div>
     </div>
