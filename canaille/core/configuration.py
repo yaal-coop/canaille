@@ -439,7 +439,7 @@ class CoreSettings(BaseModel):
     certificates requires additional server-side implementation."""
 
     FIDO_MAX_CREDENTIALS: int = 5
-    """Maximum number of WebAuthn credentials per user."""
+    """Maximum number of passkeys per user."""
 
     @model_validator(mode="after")
     def validate_otp_configuration(self) -> Self:

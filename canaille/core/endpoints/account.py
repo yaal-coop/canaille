@@ -887,7 +887,7 @@ def _handle_fido_actions(user, edited_user, action):
     elif action == "fido2-reset":
         for credential in list(edited_user.webauthn_credentials):
             Backend.instance.delete(credential)
-        flash(_("All WebAuthn credentials have been removed"), "success")
+        flash(_("All passkeys have been removed"), "success")
         current_app.logger.security(
             f"Reset all WebAuthn credentials for {edited_user.user_name} by {user.user_name}"
         )
@@ -902,7 +902,7 @@ def _handle_fido_actions(user, edited_user, action):
         credential = _find_credential(edited_user, credential_id)
         if credential:
             Backend.instance.delete(credential)
-            flash(_("WebAuthn credential has been removed"), "success")
+            flash(_("Passkey has been removed"), "success")
             current_app.logger.security(
                 f"Deleted WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
             )

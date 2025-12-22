@@ -82,7 +82,7 @@ def test_delete_single_credential(testclient, logged_user, fido_credential, back
         status=200,
     )
 
-    assert ("success", "WebAuthn credential has been removed") in res.flashes
+    assert ("success", "Passkey has been removed") in res.flashes
 
     backend.reload(logged_user)
     assert len(logged_user.webauthn_credentials) == 2
@@ -206,7 +206,7 @@ def test_reset_fido(testclient, logged_user, fido_credential, backend):
         status=200,
     )
 
-    assert ("success", "All WebAuthn credentials have been removed") in res.flashes
+    assert ("success", "All passkeys have been removed") in res.flashes
 
     backend.reload(logged_user)
     assert len(logged_user.webauthn_credentials) == 0

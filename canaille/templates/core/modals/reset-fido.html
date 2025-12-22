@@ -6,17 +6,17 @@
             <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
             <div class="ui icon header">
                 <i class="key icon"></i>
-                {% trans %}WebAuthn credential reset{% endtrans %}
+                {% trans %}Passkey reset{% endtrans %}
             </div>
             <div class="content">
                 <p>
                     {% if user != edited_user %}
                         {% trans user_name=(edited_user.formatted_name or edited_user.identifier) %}
-                            Are you sure you want to remove the WebAuthn credential for {{ user_name }}?
+                            Are you sure you want to remove the passkey for {{ user_name }}?
                         {% endtrans %}
                     {% else %}
                         {% trans %}
-                            Are you sure you want to remove your WebAuthn credential?
+                            Are you sure you want to remove your passkey?
                         {% endtrans %}
                     {% endif %}
                 </p>
