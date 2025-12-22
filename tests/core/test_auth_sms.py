@@ -193,7 +193,7 @@ def test_send_new_sms_otp_on_time(smpp_client, testclient, backend, user, caplog
         assert user.one_time_password in sms_content
         assert (
             "success",
-            "The new verification code have been sent.",
+            "The new verification code has been sent.",
         ) in res.flashes
         assert (
             "canaille",
@@ -219,7 +219,7 @@ def test_send_new_sms_invalid_user(smpp_client, testclient, backend, user, caplo
         assert not smpp_client.send_message.called
         assert (
             "success",
-            "The new verification code have been sent.",
+            "The new verification code has been sent.",
         ) in res.flashes
         assert (
             "canaille",

@@ -238,7 +238,7 @@ JAVASCRIPT = false
 # additional server-side implementation.
 # FIDO_ATTESTATION = "none"
 
-# Maximum number of WebAuthn credentials per user.
+# Maximum number of passkeys per user.
 # FIDO_MAX_CREDENTIALS = 5
 
 # The validity duration of registration invitations, in seconds.

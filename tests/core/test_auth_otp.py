@@ -293,7 +293,7 @@ def test_setup_otp_bad_otp(testclient, backend, caplog, otp_method):
 
     assert (
         "error",
-        "The passcode you entered is invalid. Please try again..",
+        "The passcode you entered is invalid. Please try again.",
     ) in res.flashes
 
     backend.reload(user)

@@ -2629,12 +2629,9 @@ msgid "Delete passkey"
 msgstr "கிளையண்டை நீக்கு"
 
 #: canaille/templates/core/modals/delete-credential.html:15
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to remove %(user_name)s from the group "
-#| "\"%(group_name)s\"?"
+#, python-format
 msgid "Are you sure you want to delete the passkey \"%(name)s\"?"
-msgstr "\" %(user_name)s குழுவிலிருந்து %(group_name)s அகற்ற விரும்புகிறீர்களா?"
+msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:19
 #, fuzzy
