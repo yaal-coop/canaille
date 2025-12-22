@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-22 09:02+0100\n"
-"PO-Revision-Date: 2025-12-22 08:05+0000\n"
+"PO-Revision-Date: 2025-12-22 08:13+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -397,25 +397,19 @@ msgstr "Clé de sécurité non trouvée"
 
 #: canaille/core/endpoints/account.py:868
 msgid "Name cannot be empty"
-msgstr ""
+msgstr "Le nom ne peut pas être vide"
 
 #: canaille/core/endpoints/account.py:878
-#, fuzzy
-#| msgid "Profile updated successfully."
 msgid "Security key renamed successfully"
-msgstr "Le profil a été mis à jour avec succès."
+msgstr "La clé de sécurité a été renommée avec succès."
 
 #: canaille/core/endpoints/account.py:890
-#, fuzzy
-#| msgid "All sessions have been closed."
 msgid "All passkeys have been removed"
-msgstr "Toutes les sessions ont été closes."
+msgstr "Toutes les clés de sécurité ont été supprimées."
 
 #: canaille/core/endpoints/account.py:905
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "Passkey has been removed"
-msgstr "L'accès a été révoqué"
+msgstr "La clé de sécurité a été supprimée"
 
 #: canaille/core/endpoints/account.py:1044
 msgid "Locked users cannot be impersonated."
@@ -802,19 +796,17 @@ msgid ""
 "Maximum number of security keys reached ({max}). Please remove one before "
 "adding another."
 msgstr ""
+"Maximum de {max} clés de sécurité atteint. Veuillez en supprimer une avant "
+"d'en ajouter une nouvelle."
 
 #: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
-#, fuzzy
-#| msgid "Security code"
 msgid "My security key"
-msgstr "Code de sécurité"
+msgstr "Ma clé de sécurité"
 
 #: canaille/core/endpoints/auth/fido.py:337
-#, fuzzy
-#| msgid "The token has successfully been revoked."
 msgid "Security key successfully registered."
-msgstr "Le jeton a été révoqué avec succès."
+msgstr "La clé de sécurité a été enregistrée avec succès."
 
 #: canaille/core/endpoints/auth/otp.py:121
 msgid "The passcode you entered is invalid. Please try again."
@@ -1179,6 +1171,10 @@ msgid ""
 "UserInfo response will return the claims as a UTF-8 encoded JSON object "
 "using the application/json content-type."
 msgstr ""
+"Algorithme JWS requis pour signer les réponses UserInfo. Si renseigné, la "
+"réponse sera sérialisée en JWT et signée en utilisant la JWS. Si omis, la "
+"réponse UserInfo sera au format JSON encodé en UTF-8 avec le type "
+"application/json."
 
 #: canaille/oidc/endpoints/forms.py:377
 msgid "Default maximum authentication age"
