@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-21 00:09+0100\n"
+"POT-Creation-Date: 2025-12-22 09:02+0100\n"
 "PO-Revision-Date: 2024-06-26 11:09+0000\n"
 "Last-Translator: Sascha <swi@thechameleonway.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -114,7 +114,7 @@ msgstr ""
 "Sie können sich nicht an das Login erinnern, mit dem Sie versucht haben, "
 "sich anzumelden"
 
-#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:1066
+#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:1048
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Verbindung erfolgreich. Willkommen %(user)s"
@@ -324,12 +324,12 @@ msgid "User account creation succeeded."
 msgstr "Benutzerkonto erfolgreich erstellt."
 
 #: canaille/core/endpoints/account.py:611
-#: canaille/core/endpoints/account.py:1007
+#: canaille/core/endpoints/account.py:1008
 msgid "Profile edition failed."
 msgstr "Profiländerung fehlgeschlagen."
 
 #: canaille/core/endpoints/account.py:638
-#: canaille/core/endpoints/account.py:1025
+#: canaille/core/endpoints/account.py:1026
 msgid "Profile updated successfully."
 msgstr "Profil erfolgreich aktualisiert."
 
@@ -358,7 +358,13 @@ msgstr "E-Mail löschen fehlgeschlagen."
 msgid "The email have been successfully deleted."
 msgstr "Die E-Mail wurde erfolgreich entfernt."
 
-#: canaille/core/endpoints/account.py:761
+#: canaille/core/endpoints/account.py:760
+#, fuzzy, python-format
+#| msgid "The user %(user)s has been sucessfuly deleted"
+msgid "The user %(user)s has been successfully deleted"
+msgstr "Der Benutzer %(user)s wurde erfolgreich gelöscht"
+
+#: canaille/core/endpoints/account.py:778
 #, fuzzy
 #| msgid ""
 #| "A password initialization link has been sent at the user email address. "
@@ -370,7 +376,7 @@ msgstr ""
 "Ein Link zur Initialisierung des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/account.py:773
+#: canaille/core/endpoints/account.py:790
 #, fuzzy
 #| msgid ""
 #| "A password reset link has been sent at the user email address. It should "
@@ -382,60 +388,56 @@ msgstr ""
 "Ein Link zum Zurücksetzen des Passworts wurde an die E-Mail-Adresse des "
 "Benutzers gesendet. Sie sollten ihn innerhalb weniger Minuten erhalten."
 
-#: canaille/core/endpoints/account.py:791
+#: canaille/core/endpoints/account.py:803
 msgid "The account has been locked"
 msgstr "Das Konto wurde gesperrt"
 
-#: canaille/core/endpoints/account.py:797
+#: canaille/core/endpoints/account.py:809
 msgid "The account has been unlocked"
 msgstr "Das Konto wurde entsperrt"
 
-#: canaille/core/endpoints/account.py:814
+#: canaille/core/endpoints/account.py:821
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
 msgid "Authenticator application passcode authentication has been reset"
 msgstr "Passwortinitialisierung auf {website_name}"
 
-#: canaille/core/endpoints/account.py:853
-#: canaille/core/endpoints/account.py:877
-#: canaille/core/endpoints/account.py:888
-#: canaille/core/endpoints/account.py:900
+#: canaille/core/endpoints/account.py:855
+#: canaille/core/endpoints/account.py:873
+#: canaille/core/endpoints/account.py:899
+#: canaille/core/endpoints/account.py:910
 #, fuzzy
 #| msgid "Page not found"
 msgid "Credential not found"
 msgstr "Seite nicht gefunden"
 
 #: canaille/core/endpoints/account.py:868
-msgid "All WebAuthn credentials have been removed"
-msgstr ""
-
-#: canaille/core/endpoints/account.py:883
-#, fuzzy
-#| msgid "The client has been created."
-msgid "WebAuthn credential has been removed"
-msgstr "Der Client wurde erstellt."
-
-#: canaille/core/endpoints/account.py:895
 msgid "Name cannot be empty"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:905
+#: canaille/core/endpoints/account.py:878
 #, fuzzy
 #| msgid "Profile updated successfully."
 msgid "Security key renamed successfully"
 msgstr "Profil erfolgreich aktualisiert."
 
-#: canaille/core/endpoints/account.py:1046
-#, fuzzy, python-format
-#| msgid "The user %(user)s has been sucessfuly deleted"
-msgid "The user %(user)s has been successfully deleted"
-msgstr "Der Benutzer %(user)s wurde erfolgreich gelöscht"
+#: canaille/core/endpoints/account.py:890
+#, fuzzy
+#| msgid "Your email address have been confirmed."
+msgid "All passkeys have been removed"
+msgstr "Ihre E-Mail-Adresse wurde bestätigt."
 
-#: canaille/core/endpoints/account.py:1062
+#: canaille/core/endpoints/account.py:905
+#, fuzzy
+#| msgid "The access has been revoked"
+msgid "Passkey has been removed"
+msgstr "Der Zugang wurde widerrufen"
+
+#: canaille/core/endpoints/account.py:1044
 msgid "Locked users cannot be impersonated."
 msgstr "Gesperrte Benutzer können nicht imitiert werden."
 
-#: canaille/core/endpoints/account.py:1114
+#: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
 msgid "Your password has been updated successfully"
 msgstr "Ihr Passwort wurde erfolgreich aktualisiert"
@@ -833,21 +835,21 @@ msgstr ""
 msgid "Sending new verification code."
 msgstr "E-Mail-Bestätigung"
 
-#: canaille/core/endpoints/auth/fido.py:199
+#: canaille/core/endpoints/auth/fido.py:209
 #, python-brace-format
 msgid ""
 "Maximum number of security keys reached ({max}). Please remove one before "
 "adding another."
 msgstr ""
 
-#: canaille/core/endpoints/auth/fido.py:310
+#: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
 #, fuzzy
 #| msgid "Source code"
 msgid "My security key"
 msgstr "Quellcode"
 
-#: canaille/core/endpoints/auth/fido.py:319
+#: canaille/core/endpoints/auth/fido.py:337
 #, fuzzy
 #| msgid "The token has successfully been revoked."
 msgid "Security key successfully registered."
@@ -2722,20 +2724,21 @@ msgid "Remove"
 msgstr "Entfernen"
 
 #: canaille/templates/core/modals/reset-fido.html:9
-msgid "WebAuthn credential reset"
-msgstr ""
+#, fuzzy
+#| msgid "Password reset"
+msgid "Passkey reset"
+msgstr "Passwort zurücksetzen"
 
 #: canaille/templates/core/modals/reset-fido.html:14
 #, fuzzy, python-format
 #| msgid "Password initialization on {website_name}"
-msgid ""
-"Are you sure you want to remove the WebAuthn credential for %(user_name)s?"
+msgid "Are you sure you want to remove the passkey for %(user_name)s?"
 msgstr "Passwortinitialisierung auf {website_name}"
 
 #: canaille/templates/core/modals/reset-fido.html:18
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Are you sure you want to remove your WebAuthn credential?"
+msgid "Are you sure you want to remove your passkey?"
 msgstr "Passwortinitialisierung auf {website_name}"
 
 #: canaille/templates/core/modals/reset-otp.html:9
@@ -3427,6 +3430,11 @@ msgstr "Dieses Konto ist gesperrt"
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "Token"
+
+#, fuzzy
+#~| msgid "The client has been created."
+#~ msgid "WebAuthn credential has been removed"
+#~ msgstr "Der Client wurde erstellt."
 
 #, python-format
 #~ msgid "You have been disconnected. See you next time %(user)s"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-21 00:09+0100\n"
+"POT-Creation-Date: 2025-12-22 09:02+0100\n"
 "PO-Revision-Date: 2024-12-12 04:24+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -112,7 +112,7 @@ msgstr "உங்கள் கடவுச்சொல்லை மாற்ற 
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr "நீங்கள் உள்நுழைய முயற்சித்த உள்நுழைவை நினைவில் கொள்ள முடியாது"
 
-#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:1066
+#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:1048
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "இணைப்பு வெற்றிகரமாக. வரவேற்பு %(user)s"
@@ -318,12 +318,12 @@ msgid "User account creation succeeded."
 msgstr "பயனர் கணக்கு உருவாக்கம் செய் பெறுகிறது."
 
 #: canaille/core/endpoints/account.py:611
-#: canaille/core/endpoints/account.py:1007
+#: canaille/core/endpoints/account.py:1008
 msgid "Profile edition failed."
 msgstr "சுயவிவர பதிப்பு தோல்வியடைந்தது."
 
 #: canaille/core/endpoints/account.py:638
-#: canaille/core/endpoints/account.py:1025
+#: canaille/core/endpoints/account.py:1026
 msgid "Profile updated successfully."
 msgstr "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
 
@@ -352,7 +352,12 @@ msgstr "மின்னஞ்சல் நீக்குதல் தோல்�
 msgid "The email have been successfully deleted."
 msgstr "மின்னஞ்சல் வெற்றிகரமாக நீக்கப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account.py:761
+#: canaille/core/endpoints/account.py:760
+#, python-format
+msgid "The user %(user)s has been successfully deleted"
+msgstr "பயனர் %(user)s வெற்றிகரமாக நீக்கப்பட்டன"
+
+#: canaille/core/endpoints/account.py:778
 #, fuzzy
 #| msgid ""
 #| "A password initialization link has been sent at the user email address. "
@@ -364,7 +369,7 @@ msgstr ""
 "கடவுச்சொல் துவக்க இணைப்பு பயனர் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. இது சில "
 "நிமிடங்களுக்குள் பெறப்பட வேண்டும்."
 
-#: canaille/core/endpoints/account.py:773
+#: canaille/core/endpoints/account.py:790
 #, fuzzy
 #| msgid ""
 #| "A password reset link has been sent at the user email address. It should "
@@ -376,59 +381,56 @@ msgstr ""
 "கடவுச்சொல் மீட்டமைப்பு இணைப்பு பயனர் மின்னஞ்சல் முகவரியில் அனுப்பப்பட்டுள்ளது. இது சில "
 "நிமிடங்களுக்குள் பெறப்பட வேண்டும்."
 
-#: canaille/core/endpoints/account.py:791
+#: canaille/core/endpoints/account.py:803
 msgid "The account has been locked"
 msgstr "கணக்கு பூட்டப்பட்டுள்ளது"
 
-#: canaille/core/endpoints/account.py:797
+#: canaille/core/endpoints/account.py:809
 msgid "The account has been unlocked"
 msgstr "கணக்கு திறக்கப்பட்டுள்ளது"
 
-#: canaille/core/endpoints/account.py:814
+#: canaille/core/endpoints/account.py:821
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
 msgid "Authenticator application passcode authentication has been reset"
 msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
-#: canaille/core/endpoints/account.py:853
-#: canaille/core/endpoints/account.py:877
-#: canaille/core/endpoints/account.py:888
-#: canaille/core/endpoints/account.py:900
+#: canaille/core/endpoints/account.py:855
+#: canaille/core/endpoints/account.py:873
+#: canaille/core/endpoints/account.py:899
+#: canaille/core/endpoints/account.py:910
 #, fuzzy
 #| msgid "Page not found"
 msgid "Credential not found"
 msgstr "பக்கம் கிடைக்கவில்லை"
 
 #: canaille/core/endpoints/account.py:868
-msgid "All WebAuthn credentials have been removed"
-msgstr ""
-
-#: canaille/core/endpoints/account.py:883
-#, fuzzy
-#| msgid "The client has been created."
-msgid "WebAuthn credential has been removed"
-msgstr "கிளையன்ட் உருவாக்கப்பட்டது."
-
-#: canaille/core/endpoints/account.py:895
 msgid "Name cannot be empty"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:905
+#: canaille/core/endpoints/account.py:878
 #, fuzzy
 #| msgid "Profile updated successfully."
 msgid "Security key renamed successfully"
 msgstr "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
 
-#: canaille/core/endpoints/account.py:1046
-#, python-format
-msgid "The user %(user)s has been successfully deleted"
-msgstr "பயனர் %(user)s வெற்றிகரமாக நீக்கப்பட்டன"
+#: canaille/core/endpoints/account.py:890
+#, fuzzy
+#| msgid "Your email address have been confirmed."
+msgid "All passkeys have been removed"
+msgstr "உங்கள் மின்னஞ்சல் முகவரி உறுதிப்படுத்தப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account.py:1062
+#: canaille/core/endpoints/account.py:905
+#, fuzzy
+#| msgid "The access has been revoked"
+msgid "Passkey has been removed"
+msgstr "அணுகல் ரத்து செய்யப்பட்டுள்ளது"
+
+#: canaille/core/endpoints/account.py:1044
 msgid "Locked users cannot be impersonated."
 msgstr "பூட்டப்பட்ட பயனர்களை ஆள்மாறாட்டம் செய்ய முடியாது."
 
-#: canaille/core/endpoints/account.py:1114
+#: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
 msgid "Your password has been updated successfully"
 msgstr "உங்கள் கடவுச்சொல் வெற்றிகரமாக புதுப்பிக்கப்பட்டுள்ளது"
@@ -819,21 +821,21 @@ msgstr ""
 msgid "Sending new verification code."
 msgstr "மின்னஞ்சல் சரிபார்ப்பு"
 
-#: canaille/core/endpoints/auth/fido.py:199
+#: canaille/core/endpoints/auth/fido.py:209
 #, python-brace-format
 msgid ""
 "Maximum number of security keys reached ({max}). Please remove one before "
 "adding another."
 msgstr ""
 
-#: canaille/core/endpoints/auth/fido.py:310
+#: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
 #, fuzzy
 #| msgid "Source code"
 msgid "My security key"
 msgstr "மூலக் குறியீடு"
 
-#: canaille/core/endpoints/auth/fido.py:319
+#: canaille/core/endpoints/auth/fido.py:337
 #, fuzzy
 #| msgid "The token has successfully been revoked."
 msgid "Security key successfully registered."
@@ -2690,20 +2692,21 @@ msgid "Remove"
 msgstr "அகற்று"
 
 #: canaille/templates/core/modals/reset-fido.html:9
-msgid "WebAuthn credential reset"
-msgstr ""
+#, fuzzy
+#| msgid "Password reset"
+msgid "Passkey reset"
+msgstr "கடவுச்சொல் மீட்டமைப்பு"
 
 #: canaille/templates/core/modals/reset-fido.html:14
 #, fuzzy, python-format
 #| msgid "Password initialization on {website_name}"
-msgid ""
-"Are you sure you want to remove the WebAuthn credential for %(user_name)s?"
+msgid "Are you sure you want to remove the passkey for %(user_name)s?"
 msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/templates/core/modals/reset-fido.html:18
 #, fuzzy
 #| msgid "Password initialization on {website_name}"
-msgid "Are you sure you want to remove your WebAuthn credential?"
+msgid "Are you sure you want to remove your passkey?"
 msgstr "கடவுச்சொல் துவக்கம் {website_name}"
 
 #: canaille/templates/core/modals/reset-otp.html:9
@@ -3371,6 +3374,11 @@ msgstr "இந்த கணக்கு பூட்டப்பட்டுள�
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "கிள்ளாக்கு"
+
+#, fuzzy
+#~| msgid "The client has been created."
+#~ msgid "WebAuthn credential has been removed"
+#~ msgstr "கிளையன்ட் உருவாக்கப்பட்டது."
 
 #, python-format
 #~ msgid "You have been disconnected. See you next time %(user)s"

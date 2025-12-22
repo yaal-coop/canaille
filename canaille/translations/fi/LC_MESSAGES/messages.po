@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-21 00:09+0100\n"
+"POT-Creation-Date: 2025-12-22 09:02+0100\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -116,7 +116,7 @@ msgstr "Sinun pitäisi vaihtaa salasanasi."
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr "En muista kirjautumistunnusta, jolla yritit kirjautua sisään"
 
-#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:1066
+#: canaille/core/auth.py:218 canaille/core/endpoints/account.py:1048
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "Yhteyden muodostaminen onnistui. Tervetuloa %(user)s"
@@ -322,12 +322,12 @@ msgid "User account creation succeeded."
 msgstr "Käyttäjätilin luominen onnistui."
 
 #: canaille/core/endpoints/account.py:611
-#: canaille/core/endpoints/account.py:1007
+#: canaille/core/endpoints/account.py:1008
 msgid "Profile edition failed."
 msgstr "Profiilin muokkaaminen epäonnistui."
 
 #: canaille/core/endpoints/account.py:638
-#: canaille/core/endpoints/account.py:1025
+#: canaille/core/endpoints/account.py:1026
 msgid "Profile updated successfully."
 msgstr "Profiilin päivitys onnistui."
 
@@ -356,7 +356,12 @@ msgstr "Sähköpostin poistaminen epäonnistui."
 msgid "The email have been successfully deleted."
 msgstr "Sähköposti on poistettu onnistuneesti."
 
-#: canaille/core/endpoints/account.py:761
+#: canaille/core/endpoints/account.py:760
+#, python-format
+msgid "The user %(user)s has been successfully deleted"
+msgstr "Käyttäjä %(user)s on poistettu onnistuneesti"
+
+#: canaille/core/endpoints/account.py:778
 #, fuzzy
 #| msgid ""
 #| "A password initialization link has been sent at the user email address. "
@@ -368,7 +373,7 @@ msgstr ""
 "Salasanan alustuslinkki on lähetetty käyttäjän sähköpostiosoitteeseen. Sen "
 "pitäisi saapua muutamassa minuutissa."
 
-#: canaille/core/endpoints/account.py:773
+#: canaille/core/endpoints/account.py:790
 #, fuzzy
 #| msgid ""
 #| "A password reset link has been sent at the user email address. It should "
@@ -380,57 +385,54 @@ msgstr ""
 "Salasanan nollaamislinkki on lähetetty käyttäjän sähköpostiosoitteeseen. Sen "
 "pitäisi saapua muutamassa minuutissa."
 
-#: canaille/core/endpoints/account.py:791
+#: canaille/core/endpoints/account.py:803
 msgid "The account has been locked"
 msgstr "Tili on lukittu"
 
-#: canaille/core/endpoints/account.py:797
+#: canaille/core/endpoints/account.py:809
 msgid "The account has been unlocked"
 msgstr "Tilin lukitus on avattu"
 
-#: canaille/core/endpoints/account.py:814
+#: canaille/core/endpoints/account.py:821
 #, fuzzy
 #| msgid "One-time password authentication has been reset"
 msgid "Authenticator application passcode authentication has been reset"
 msgstr "Kertaluonteinen salasanatodennus on nollattu"
 
-#: canaille/core/endpoints/account.py:853
-#: canaille/core/endpoints/account.py:877
-#: canaille/core/endpoints/account.py:888
-#: canaille/core/endpoints/account.py:900
+#: canaille/core/endpoints/account.py:855
+#: canaille/core/endpoints/account.py:873
+#: canaille/core/endpoints/account.py:899
+#: canaille/core/endpoints/account.py:910
 msgid "Credential not found"
 msgstr ""
 
 #: canaille/core/endpoints/account.py:868
-msgid "All WebAuthn credentials have been removed"
-msgstr ""
-
-#: canaille/core/endpoints/account.py:883
-#, fuzzy
-#| msgid "The client has been created."
-msgid "WebAuthn credential has been removed"
-msgstr "Asiakas on luotu."
-
-#: canaille/core/endpoints/account.py:895
 msgid "Name cannot be empty"
 msgstr ""
 
-#: canaille/core/endpoints/account.py:905
+#: canaille/core/endpoints/account.py:878
 #, fuzzy
 #| msgid "Profile updated successfully."
 msgid "Security key renamed successfully"
 msgstr "Profiilin päivitys onnistui."
 
-#: canaille/core/endpoints/account.py:1046
-#, python-format
-msgid "The user %(user)s has been successfully deleted"
-msgstr "Käyttäjä %(user)s on poistettu onnistuneesti"
+#: canaille/core/endpoints/account.py:890
+#, fuzzy
+#| msgid "Your email address have been confirmed."
+msgid "All passkeys have been removed"
+msgstr "Sähköpostiosoitteesi on vahvistettu."
 
-#: canaille/core/endpoints/account.py:1062
+#: canaille/core/endpoints/account.py:905
+#, fuzzy
+#| msgid "The client has been created."
+msgid "Passkey has been removed"
+msgstr "Asiakas on luotu."
+
+#: canaille/core/endpoints/account.py:1044
 msgid "Locked users cannot be impersonated."
 msgstr "Lukittuja käyttäjiä ei voi esiintyä toisena henkilönä."
 
-#: canaille/core/endpoints/account.py:1114
+#: canaille/core/endpoints/account.py:1096
 #: canaille/core/endpoints/auth/password.py:244
 msgid "Your password has been updated successfully"
 msgstr "Salasanasi päivittäminen onnistui"
@@ -813,21 +815,21 @@ msgstr ""
 msgid "Sending new verification code."
 msgstr "Sähköpostin lisääminen epäonnistui."
 
-#: canaille/core/endpoints/auth/fido.py:199
+#: canaille/core/endpoints/auth/fido.py:209
 #, python-brace-format
 msgid ""
 "Maximum number of security keys reached ({max}). Please remove one before "
 "adding another."
 msgstr ""
 
-#: canaille/core/endpoints/auth/fido.py:310
+#: canaille/core/endpoints/auth/fido.py:328
 #: canaille/templates/core/partials/profile_settings_fido.html:50
 #, fuzzy
 #| msgid "Invalid code."
 msgid "My security key"
 msgstr "Epäkelvollinen koodi."
 
-#: canaille/core/endpoints/auth/fido.py:319
+#: canaille/core/endpoints/auth/fido.py:337
 msgid "Security key successfully registered."
 msgstr ""
 
@@ -2524,20 +2526,19 @@ msgid "Remove"
 msgstr ""
 
 #: canaille/templates/core/modals/reset-fido.html:9
-msgid "WebAuthn credential reset"
+msgid "Passkey reset"
 msgstr ""
 
 #: canaille/templates/core/modals/reset-fido.html:14
 #, fuzzy, python-format
 #| msgid "One-time password authentication on {website_name}"
-msgid ""
-"Are you sure you want to remove the WebAuthn credential for %(user_name)s?"
+msgid "Are you sure you want to remove the passkey for %(user_name)s?"
 msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 
 #: canaille/templates/core/modals/reset-fido.html:18
 #, fuzzy
 #| msgid "One-time password authentication on {website_name}"
-msgid "Are you sure you want to remove your WebAuthn credential?"
+msgid "Are you sure you want to remove your passkey?"
 msgstr "Kertaluonteinen salasanan todennus {website_name}:lla"
 
 #: canaille/templates/core/modals/reset-otp.html:9
