@@ -30,7 +30,7 @@ Displays a form that asks for the multi-factor authentication code.
         </div>
     </div>
 
-    {{ login_field.render_field(form.otp, class="autofocus") }}
+    {{ login_field.render_field(form.otp, autofocus=true) }}
 {% endblock %}
 
 {% block auth_right_buttons %}

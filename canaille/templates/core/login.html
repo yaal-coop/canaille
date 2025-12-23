@@ -87,7 +87,7 @@ This page displays a form to get the user identifier.
 
         {% call fui.render_form(form) %}
             {% block fields %}
-                {% block login_field scoped %}{{ login_field.render_field(form.login, class="autofocus") }}{% endblock %}
+                {% block login_field scoped %}{{ login_field.render_field(form.login, autofocus=true) }}{% endblock %}
             {% endblock %}
 
             {% block buttons %}
