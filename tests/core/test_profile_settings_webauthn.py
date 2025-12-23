@@ -13,6 +13,12 @@ def skip_ldap(backend):
         pytest.skip("FIDO2 is not supported with LDAP backend")
 
 
+@pytest.fixture(autouse=True)
+def enable_fido2(testclient):
+    """Enable FIDO2 authentication factor."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "fido2"]
+
+
 @pytest.fixture
 def fido_credential(testclient, logged_user, backend):
     """Create test FIDO2 credentials for the user."""
@@ -42,7 +48,7 @@ def test_confirm_delete_single_credential(testclient, logged_user, fido_credenti
     credential_id = fido_credential[0].id
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {"fido2-confirm-credential": str(credential_id)},
         status=200,
     )
@@ -57,9 +63,9 @@ def test_confirm_delete_credential_not_found(testclient, logged_user, fido_crede
     testclient.app.config["WTF_CSRF_ENABLED"] = False
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {"fido2-confirm-credential": "nonexistent-id"},
-        status=200,
+        status=302,
     )
 
     assert ("error", "Credential not found.") in res.flashes
@@ -74,12 +80,12 @@ def test_delete_single_credential(testclient, logged_user, fido_credential, back
     assert len(logged_user.webauthn_credentials) == 3
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {
             "action": "fido2-delete-credential",
             "credential_id": str(credential_id),
         },
-        status=200,
+        status=302,
     )
 
     assert ("success", "The passkey has been removed.") in res.flashes
@@ -95,11 +101,11 @@ def test_delete_credential_without_id(testclient, logged_user, fido_credential):
     testclient.app.config["WTF_CSRF_ENABLED"] = False
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {
             "action": "fido2-delete-credential",
         },
-        status=200,
+        status=302,
     )
 
     assert ("error", "Credential not found.") in res.flashes
@@ -111,12 +117,12 @@ def test_delete_credential_not_found(testclient, logged_user, fido_credential):
     testclient.app.config["WTF_CSRF_ENABLED"] = False
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {
             "action": "fido2-delete-credential",
             "credential_id": "nonexistent-id",
         },
-        status=200,
+        status=302,
     )
 
     assert ("error", "Credential not found.") in res.flashes
@@ -131,12 +137,12 @@ def test_rename_credential(testclient, logged_user, fido_credential, backend):
     new_name = "My YubiKey 5C"
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {
             "fido2-rename-credential": str(credential_id),
             f"credential_name_{credential_id}": new_name,
         },
-        status=200,
+        status=302,
     )
 
     assert ("success", "The passkey has been renamed.") in res.flashes
@@ -156,12 +162,12 @@ def test_rename_credential_empty_name(testclient, logged_user, fido_credential):
     credential_id = fido_credential[0].id
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {
             "fido2-rename-credential": str(credential_id),
             f"credential_name_{credential_id}": "   ",
         },
-        status=200,
+        status=302,
     )
 
     assert ("error", "Name cannot be empty.") in res.flashes
@@ -173,12 +179,12 @@ def test_rename_credential_not_found(testclient, logged_user, fido_credential):
     testclient.app.config["WTF_CSRF_ENABLED"] = False
 
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {
             "fido2-rename-credential": "nonexistent-id",
             "credential_name_nonexistent-id": "New Name",
         },
-        status=200,
+        status=302,
     )
 
     assert ("error", "Credential not found.") in res.flashes
@@ -193,7 +199,7 @@ def test_reset_fido(testclient, logged_user, fido_credential, backend):
 
     # Confirm reset
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {"action": "fido2-reset-confirm"},
         status=200,
     )
@@ -201,9 +207,9 @@ def test_reset_fido(testclient, logged_user, fido_credential, backend):
 
     # Perform reset
     res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {"action": "fido2-reset"},
-        status=200,
+        status=302,
     )
 
     assert ("success", "All passkeys have been removed.") in res.flashes
@@ -212,17 +218,14 @@ def test_reset_fido(testclient, logged_user, fido_credential, backend):
     assert len(logged_user.webauthn_credentials) == 0
 
 
-def test_setup_fido_redirects_to_auth(testclient, logged_user):
-    """Test setting up FIDO2 from user profile redirects to setup flow."""
+def test_setup_fido_redirects_to_auth(testclient, logged_user, fido_credential):
+    """Test adding another FIDO2 key from user profile redirects to setup flow."""
     testclient.app.config["CANAILLE"]["JAVASCRIPT"] = True
-    testclient.app.config["WTF_CSRF_ENABLED"] = False
 
-    res = testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
-        {"action": "fido2-setup"},
-        status=302,
-    )
+    res = testclient.get(f"/profile/{logged_user.user_name}/auth/fido2", status=200)
+    res.mustcontain("Add another key")
 
+    res = res.form.submit(name="action", value="fido2-setup", status=302)
     assert res.location == "/auth/fido2-setup"
 
     with testclient.session_transaction() as session:

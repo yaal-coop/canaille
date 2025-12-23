@@ -305,9 +305,9 @@ def test_minimum_password_length_config(testclient):
 
 def test_password_strength_progress_bar(testclient, logged_user):
     """Test that password strength progress bar displays correctly in HTMX response."""
-    res = testclient.get("/profile/user/settings")
+    res = testclient.get("/profile/user/auth/password")
     res = testclient.post(
-        "/profile/user/settings",
+        "/profile/user/auth/password",
         {
             "csrf_token": res.form["csrf_token"].value,
             "password1": "i'm a little pea",
@@ -393,9 +393,9 @@ def test_compromised_password_validator_with_failure_of_api_request_without_form
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
-    res = testclient.get("/profile/user/settings")
+    res = testclient.get("/profile/user/auth/password")
     res = testclient.post(
-        "/profile/user/settings",
+        "/profile/user/auth/password",
         {
             "csrf_token": res.form["csrf_token"].value,
             "password1": "correct horse battery staple",

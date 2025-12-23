@@ -26,9 +26,13 @@ Display a QR-code and the OTP secret.
             <i class="id card icon"></i>
             {% trans %}Personal information{% endtrans %}
         </a>
-        <a class="active item" href="{{ url_for('core.account.profile_settings', edited_user=user) }}">
+        <a class="item" href="{{ url_for('core.account.profile_settings', edited_user=user) }}">
             <i class="tools icon"></i>
             {% trans %}Account settings{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('core.account.auth.profile_auth', edited_user=user) }}">
+            <i class="shield alternate icon"></i>
+            {% trans %}Authentication{% endtrans %}
         </a>
     {% endif %}
 {% endblock %}

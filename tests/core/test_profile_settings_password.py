@@ -7,9 +7,9 @@ from canaille.app import models
 
 
 def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
-    res = testclient.get("/profile/admin/settings")
+    res = testclient.get("/profile/admin/auth/password")
     res = testclient.post(
-        "/profile/admin/settings",
+        "/profile/admin/auth/password",
         {
             "csrf_token": res.form["csrf_token"].value,
             "password1": "short",
@@ -27,9 +27,9 @@ def test_profile_settings_minimum_password_length_validation(testclient, logged_
 
     def with_different_values(password, length):
         current_app.config["CANAILLE"]["MIN_PASSWORD_LENGTH"] = length
-        res = testclient.get("/profile/user/settings")
+        res = testclient.get("/profile/user/auth/password")
         res = testclient.post(
-            "/profile/user/settings",
+            "/profile/user/auth/password",
             {
                 "csrf_token": res.form["csrf_token"].value,
                 "password1": password,
@@ -51,9 +51,9 @@ def test_profile_settings_too_long_password(testclient, logged_user):
 
     def with_different_values(password, length, message):
         current_app.config["CANAILLE"]["MAX_PASSWORD_LENGTH"] = length
-        res = testclient.get("/profile/user/settings")
+        res = testclient.get("/profile/user/auth/password")
         res = testclient.post(
-            "/profile/user/settings",
+            "/profile/user/auth/password",
             {
                 "csrf_token": res.form["csrf_token"].value,
                 "password1": password,
@@ -92,9 +92,9 @@ def test_profile_settings_compromised_password(api_get, testclient, logged_user)
     api_get.return_value = Response
 
     def with_different_values(password, message):
-        res = testclient.get("/profile/user/settings")
+        res = testclient.get("/profile/user/auth/password")
         res = testclient.post(
-            "/profile/user/settings",
+            "/profile/user/auth/password",
             {
                 "csrf_token": res.form["csrf_token"].value,
                 "password1": password,
@@ -127,12 +127,12 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
 
     current_app.config["CANAILLE"]["ACL"]["ADMIN"]["FILTER"] = {"groups": "admin"}
 
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
 
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
 
-    res = res.form.submit(name="action", value="edit-settings")
+    res = res.form.submit(name="action", value="edit-password")
 
     assert (
         "canaille",
@@ -143,7 +143,7 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
         "error",
         "Password compromise investigation failed. Please contact the administrators.",
     ) in res.flashes
-    assert ("success", "Profile updated successfully.") in res.flashes
+    assert ("success", "Password updated successfully.") in res.flashes
 
     backend.reload(logged_user)
 
@@ -158,13 +158,13 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     api_get.side_effect = mock.Mock(side_effect=Exception())
 
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
 
     res.form.user = user
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
 
-    res = res.form.submit(name="action", value="edit-settings")
+    res = res.form.submit(name="action", value="edit-password")
 
     assert (
         "canaille",
@@ -189,7 +189,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
         "The mail has been sent correctly.",
     ) in caplog.record_tuples
 
-    assert ("success", "Profile updated successfully.") in res.flashes
+    assert ("success", "Password updated successfully.") in res.flashes
     assert len(smtpd.messages) == 1
 
 
@@ -201,12 +201,12 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
     api_get.side_effect = mock.Mock(side_effect=Exception())
     current_app.config["CANAILLE"]["SMTP"]["TLS"] = False
 
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
     res.form.user = user
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
 
-    res = res.form.submit(name="action", value="edit-settings")
+    res = res.form.submit(name="action", value="edit-password")
 
     assert (
         "canaille",
@@ -231,7 +231,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
         "Could not send email: SMTP AUTH extension not supported by server.",
     ) in caplog.record_tuples
 
-    assert ("success", "Profile updated successfully.") in res.flashes
+    assert ("success", "Password updated successfully.") in res.flashes
     assert len(smtpd.messages) == 0
 
 
@@ -245,12 +245,12 @@ def test_compromised_password_validator_with_failure_of_api_request_without_smtp
         current_app.config["CANAILLE"]["SMTP"] = smtp
         current_app.config["CANAILLE"]["ADMIN_EMAIL"] = mail
 
-        res = testclient.get("/profile/user/settings", status=200)
+        res = testclient.get("/profile/user/auth/password", status=200)
         res.form.user = user
         res.form["password1"] = "123456789"
         res.form["password2"] = "123456789"
 
-        res = res.form.submit(name="action", value="edit-settings")
+        res = res.form.submit(name="action", value="edit-password")
 
         assert (
             "canaille",
@@ -269,23 +269,23 @@ def test_compromised_password_validator_with_failure_of_api_request_without_smtp
 
 
 def test_password_change(testclient, logged_user, backend, caplog):
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
 
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = "i'm a little pea"
 
-    res = res.form.submit(name="action", value="edit-settings").follow()
+    res = res.form.submit(name="action", value="edit-password").follow()
 
     backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "i'm a little pea")[0]
 
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
 
     res.form["password1"] = "i'm a little chickpea"
     res.form["password2"] = "i'm a little chickpea"
 
-    res = res.form.submit(name="action", value="edit-settings")
-    assert ("success", "Profile updated successfully.") in res.flashes
+    res = res.form.submit(name="action", value="edit-password")
+    assert ("success", "Password updated successfully.") in res.flashes
 
     assert (
         "canaille",
@@ -300,22 +300,22 @@ def test_password_change(testclient, logged_user, backend, caplog):
 
 
 def test_password_change_fail(testclient, logged_user, backend, caplog):
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
 
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = "i'm a little chickpea"
 
-    res = res.form.submit(name="action", value="edit-settings", status=200)
+    res = res.form.submit(name="action", value="edit-password", status=200)
 
     backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
 
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
 
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = ""
 
-    res = res.form.submit(name="action", value="edit-settings", status=200)
+    res = res.form.submit(name="action", value="edit-password", status=200)
 
     backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
@@ -330,7 +330,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin, 
     )
     backend.save(u)
 
-    res = testclient.get("/profile/temp/settings", status=200)
+    res = testclient.get("/profile/temp/auth/password", status=200)
     res.mustcontain("This user does not have a password yet")
     res.mustcontain("Send")
 
@@ -355,7 +355,7 @@ def test_password_initialization_mail(smtpd, testclient, backend, logged_admin, 
     u.password = "correct horse battery staple"
     backend.save(u)
 
-    res = testclient.get("/profile/temp/settings", status=200)
+    res = testclient.get("/profile/temp/auth/password", status=200)
     res.mustcontain(no="This user does not have a password yet")
 
     backend.delete(u)
@@ -374,7 +374,7 @@ def test_password_initialization_mail_send_fail(
     )
     backend.save(u)
 
-    res = testclient.get("/profile/temp/settings", status=200)
+    res = testclient.get("/profile/temp/auth/password", status=200)
     res.mustcontain("This user does not have a password yet")
     res.mustcontain("Send")
 
@@ -401,9 +401,9 @@ def test_password_initialization_mail_send_fail(
 
 def test_password_initialization_invalid_user(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 0
-    res = testclient.get("/profile/admin/settings")
+    res = testclient.get("/profile/admin/auth/password")
     testclient.post(
-        "/profile/invalid/settings",
+        "/profile/invalid/auth/password",
         {
             "action": "password-initialization-mail",
             "csrf_token": res.form["csrf_token"].value,
@@ -415,9 +415,9 @@ def test_password_initialization_invalid_user(smtpd, testclient, backend, logged
 
 def test_password_reset_invalid_user(smtpd, testclient, backend, logged_admin):
     assert len(smtpd.messages) == 0
-    res = testclient.get("/profile/admin/settings")
+    res = testclient.get("/profile/admin/auth/password")
     testclient.post(
-        "/profile/invalid/settings",
+        "/profile/invalid/auth/password",
         {"action": "password-reset-mail", "csrf_token": res.form["csrf_token"].value},
         status=404,
     )
@@ -434,7 +434,7 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin, caplog):
     )
     backend.save(u)
 
-    res = testclient.get("/profile/temp/settings", status=200)
+    res = testclient.get("/profile/temp/auth/password", status=200)
     res.mustcontain("If the user has forgotten his password")
     res.mustcontain("Send")
 
@@ -472,7 +472,7 @@ def test_password_reset_email_failed(
     )
     backend.save(u)
 
-    res = testclient.get("/profile/temp/settings", status=200)
+    res = testclient.get("/profile/temp/auth/password", status=200)
     res.mustcontain("If the user has forgotten his password")
     res.mustcontain("Send")
 

@@ -14,7 +14,7 @@ def test_account_reset_otp(testclient, backend, caplog, logged_user, otp_method)
 
     assert logged_user.last_otp_login is not None
 
-    res = testclient.get("/profile/user/settings")
+    res = testclient.get("/profile/user/auth/otp")
     res.mustcontain("Reset")
 
     res = res.form.submit(name="action", value="otp-reset-confirm")
@@ -40,10 +40,8 @@ def test_account_setup_otp(testclient, backend, logged_user, otp_method):
     logged_user.secret_token = None
     backend.save(logged_user)
 
-    res = testclient.get("/profile/user/settings")
-    res.mustcontain("Set-up")
-
-    res = res.form.submit(name="action", value="otp-setup")
+    # When OTP is not configured, accessing the page redirects directly to setup
+    res = testclient.get("/profile/user/auth/otp", status=302)
     assert res.location == "/auth/otp-setup"
     res = res.follow()
 
@@ -57,7 +55,7 @@ def test_account_setup_otp(testclient, backend, logged_user, otp_method):
     res.form["otp"] = generate_otp(otp_method, secret_token)
     res = res.form.submit(status=302)
 
-    assert res.location == "/profile/user/settings"
+    assert res.location == "/profile/user/auth/otp"
     assert (
         "success",
         "Authenticator application correctly configured.",

@@ -37,6 +37,10 @@ Displays the user settings edition form.
         <i class="tools icon"></i>
         {% trans %}Account settings{% endtrans %}
     </a>
+    <a class="item" href="{{ url_for('core.account.auth.profile_auth', edited_user=edited_user) }}">
+        <i class="shield alternate icon"></i>
+        {% trans %}Authentication{% endtrans %}
+    </a>
 {% endblock %}
 
 {% macro render_field(field, noindicator=false) %}
@@ -77,6 +81,20 @@ Displays the user settings edition form.
                 {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
             {% endif %}
 
+            {% if features.has_account_lockability and edited_user.locked and user.can_manage_users %}
+                <div class="ui message warning visible">
+                    <button type="submit" name="action" value="unlock" class="ui right floated button">
+                        {% trans %}Unlock{% endtrans %}
+                    </button>
+                    <div class="header">
+                        {% trans %}This user account is locked{% endtrans %}
+                    </div>
+                    <p>
+                        {% trans %}The user won't be able to connect until their account is unlocked.{% endtrans %}
+                    </p>
+                </div>
+            {% endif %}
+
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     {% if features.has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
@@ -107,16 +125,6 @@ Displays the user settings edition form.
 
                 </div>
             </div>
-
-            {% include "core/partial/profile_settings_password.html" %}
-
-            {% if features.has_otp and "otp" in config.CANAILLE.AUTHENTICATION_FACTORS and (edited_user==user or user.can_manage_users) %}
-                {% include "core/partial/profile_settings_otp.html" %}
-            {% endif %}
-
-            {% if features.has_fido and "fido2" in config.CANAILLE.AUTHENTICATION_FACTORS and (edited_user==user or user.can_manage_users) %}
-                {% include 'core/partials/profile_settings_fido.html' %}
-            {% endif %}
 
         {% endcall %}
     </div>
