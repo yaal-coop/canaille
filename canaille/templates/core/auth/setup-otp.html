@@ -42,7 +42,7 @@ Display a QR-code and the OTP secret.
 
     {% call fui.render_form(form, hx_boost="false") %}
         <div class="ui attached clearing segment">
-            {{ login_field.render_field(form.otp, class="autofocus") }}
+            {{ login_field.render_field(form.otp, autofocus=true) }}
         </div>
 
         <div class="ui attached clearing segment">
@@ -84,7 +84,7 @@ Display a QR-code and the OTP secret.
 
                 <div class="ui attached clearing segment">
                     {% call fui.render_form(form, hx_boost="false") %}
-                        {{ login_field.render_field(form.otp, class="autofocus") }}
+                        {{ login_field.render_field(form.otp, autofocus=true) }}
 
                         <div class="ui clearing container">
                             <div class="ui right floated stackable buttons">

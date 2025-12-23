@@ -28,9 +28,10 @@ function togglePasswordVisibility(icon) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    $('.autofocus').focus();
-    htmx.config.requestClass = "loading"
-    htmx.config.includeIndicatorStyles = false
+    if (typeof htmx !== 'undefined') {
+        htmx.config.requestClass = "loading"
+        htmx.config.includeIndicatorStyles = false
+    }
     onDomChanges();
 });
 
