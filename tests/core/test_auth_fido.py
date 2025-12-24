@@ -791,7 +791,7 @@ def test_max_credentials_reached_during_setup_get(testclient, user, backend):
         ).serialize()
 
     res = testclient.get("/auth/fido2-setup", status=302)
-    assert res.location == f"/profile/{user.user_name}/settings"
+    assert res.location == f"/profile/{user.user_name}/auth/fido2"
     assert any("Maximum number of passkeys reached" in msg for _, msg in res.flashes)
 
 
@@ -926,7 +926,7 @@ def test_registration_from_profile_while_logged_in(
 ):
     """Test credential registration when user is already logged in (adding from profile)."""
     testclient.post(
-        f"/profile/{logged_user.user_name}/settings",
+        f"/profile/{logged_user.user_name}/auth/fido2",
         {"action": "fido2-setup"},
         status=302,
     )
@@ -960,7 +960,7 @@ def test_registration_from_profile_while_logged_in(
     data = json.loads(res.body)
 
     assert data["success"] is True
-    assert data["redirect"] == f"/profile/{logged_user.user_name}/settings"
+    assert data["redirect"] == f"/profile/{logged_user.user_name}/auth/fido2"
 
     user_reloaded = backend.get(models.User, id=logged_user.id)
     assert len(user_reloaded.webauthn_credentials) > 0

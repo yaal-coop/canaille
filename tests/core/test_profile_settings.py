@@ -35,19 +35,6 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     assert "readonly" in res.form["groups"].attrs
     assert "readonly" in res.form["user_name"].attrs
 
-    res = testclient.get("/profile/user/settings", status=200)
-    res.form["user_name"] = "user"
-    res.form["password1"] = "i'm a little pea"
-    res.form["password2"] = "i'm a little pea"
-    res = res.form.submit(name="action", value="edit-settings")
-    assert res.flashes == [("success", "Profile updated successfully.")]
-
-    backend.reload(logged_user)
-    assert backend.check_user_password(logged_user, "i'm a little pea")[0]
-
-    logged_user.user_name = "user"
-    backend.save(logged_user)
-
 
 def test_group_removal(testclient, logged_admin, user, foo_group, backend):
     """Tests that one can remove a group from a user."""

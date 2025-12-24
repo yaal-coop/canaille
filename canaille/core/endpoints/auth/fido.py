@@ -170,7 +170,8 @@ def setup():
 
     if not g.auth and g.get("session"):
         session["redirect-after-login"] = url_for(
-            "core.account.profile_settings", edited_user=g.session.user
+            "core.account.auth.profile_auth_fido2",
+            edited_user=g.session.user,
         )
         g.auth = AuthenticationSession(
             user_name=g.session.user.user_name,
@@ -211,7 +212,10 @@ def generate_registration_options_view():
             "error",
         )
         return redirect(
-            url_for("core.account.profile_settings", edited_user=g.auth.user)
+            url_for(
+                "core.account.auth.profile_auth_fido2",
+                edited_user=g.auth.user,
+            )
         )
 
     rp_id = get_rp_id()
@@ -340,7 +344,8 @@ def verify_registration_response_view():
         g.auth = None
         session.pop("auth", None)
         redirect_url = url_for(
-            "core.account.profile_settings", edited_user=g.session.user
+            "core.account.auth.profile_auth_fido2",
+            edited_user=g.session.user,
         )
     else:
         g.auth.set_step_finished("fido2")

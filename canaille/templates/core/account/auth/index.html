@@ -1,0 +1,96 @@
+{#
+The authentication factors list template.
+
+Displays the list of available authentication factors for a user.
+
+:param edited_user: The user being edited.
+:type edited_user: :class:`~canaille.core.models.User`
+#}
+{% extends theme('base.html') %}
+
+{%- block title -%}
+    {% if user.user_name == edited_user.user_name %}
+        {%- trans %}My profile{% endtrans -%}
+    {% else %}
+        {%- trans %}User profile edition{% endtrans -%}
+    {% endif %}
+{%- endblock -%}
+
+{% block submenu %}
+    <a class="item" href="{{ url_for('core.account.profile_edition', edited_user=edited_user) }}">
+        <i class="id card icon"></i>
+        {% trans %}Personal information{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('core.account.profile_settings', edited_user=edited_user) }}">
+        <i class="tools icon"></i>
+        {% trans %}Account settings{% endtrans %}
+    </a>
+    <a class="active item" href="{{ url_for('core.account.auth.profile_auth', edited_user=edited_user) }}">
+        <i class="shield alternate icon"></i>
+        {% trans %}Authentication{% endtrans %}
+    </a>
+{% endblock %}
+
+{% macro render_factor(name, icon, configured, url) %}
+    <a class="item" href="{{ url }}">
+        <i class="{{ icon }} large middle aligned icon"></i>
+        <div class="content">
+            <div class="header">{{ name }}</div>
+            <div class="description">
+                {% if configured %}
+                    <span class="ui green text">
+                        <i class="check circle icon"></i>
+                        {% trans %}Configured{% endtrans %}
+                    </span>
+                {% else %}
+                    <span class="ui grey text">
+                        <i class="circle outline icon"></i>
+                        {% trans %}Not configured{% endtrans %}
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+        <i class="angle right middle aligned icon"></i>
+    </a>
+{% endmacro %}
+
+{% block content %}
+    <div class="ui clearing segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Authentication{% endtrans %}
+            </div>
+            <div class="sub header">
+                {% trans %}Manage your authentication methods{% endtrans %}
+            </div>
+        </h2>
+        <div class="ui relaxed divided list">
+            {% if "password" in config.CANAILLE.AUTHENTICATION_FACTORS %}
+                {{ render_factor(
+                _("Password"),
+                "key",
+                edited_user.has_password(),
+                url_for("core.account.auth.profile_auth_password", edited_user=edited_user)
+                ) }}
+            {% endif %}
+
+            {% if features.has_otp and "otp" in config.CANAILLE.AUTHENTICATION_FACTORS %}
+                {{ render_factor(
+                _("Authenticator application"),
+                "mobile alternate",
+                edited_user.secret_token,
+                url_for("core.account.auth.profile_auth_otp", edited_user=edited_user)
+                ) }}
+            {% endif %}
+
+            {% if features.has_fido and "fido2" in config.CANAILLE.AUTHENTICATION_FACTORS %}
+                {{ render_factor(
+                _("Passkeys"),
+                "fingerprint",
+                edited_user.webauthn_credentials,
+                url_for("core.account.auth.profile_auth_fido2", edited_user=edited_user)
+                ) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

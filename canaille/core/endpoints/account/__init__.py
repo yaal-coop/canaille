@@ -46,25 +46,24 @@ from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
-from canaille.core.auth import AuthenticationSession
 from canaille.core.captcha import generate_audio_captcha
 from canaille.core.captcha import generate_captcha
+from canaille.core.endpoints.forms import EmailConfirmationForm
+from canaille.core.endpoints.forms import InvitationForm
+from canaille.core.endpoints.forms import JoinForm
+from canaille.core.endpoints.forms import JoinFormWithCaptcha
+from canaille.core.endpoints.forms import PasswordResetForm
+from canaille.core.endpoints.forms import add_captcha_fields
+from canaille.core.endpoints.forms import build_profile_form
+from canaille.core.mails import send_confirmation_email
+from canaille.core.mails import send_invitation_mail
+from canaille.core.mails import send_registration_mail
 from canaille.core.utils import guess_image_mimetype
 
-from ..mails import send_confirmation_email
-from ..mails import send_invitation_mail
-from ..mails import send_password_initialization_mail
-from ..mails import send_password_reset_mail
-from ..mails import send_registration_mail
-from .forms import EmailConfirmationForm
-from .forms import InvitationForm
-from .forms import JoinForm
-from .forms import JoinFormWithCaptcha
-from .forms import PasswordResetForm
-from .forms import add_captcha_fields
-from .forms import build_profile_form
+from . import auth
 
 bp = Blueprint("account", __name__)
+bp.register_blueprint(auth.bp)
 
 
 @bp.route("/")
@@ -410,7 +409,7 @@ def registration(data=None, hash=None):
             form["captcha_token"].data = captcha_data["token"]
 
         return render_template(
-            "core/profile_add.html",
+            "core/account/add.html",
             form=form,
             menu=False,
             captcha_data=captcha_data,
@@ -508,7 +507,7 @@ def profile_creation(user):
 
     if not request.form or form.handle_fieldlist_operation():
         return render_template(
-            "core/profile_add.html",
+            "core/account/add.html",
             form=form,
             menuitem="users",
             captcha_data=None,
@@ -520,7 +519,7 @@ def profile_creation(user):
             "error",
         )
         return render_template(
-            "core/profile_add.html",
+            "core/account/add.html",
             form=form,
             menuitem="users",
             captcha_data=None,
@@ -618,7 +617,7 @@ def _handle_edit_profile(
             _("Your changes couldn't be saved. Please check the form and try again."),
             "error",
         )
-        return render_template("core/profile_edit.html", **render_context)
+        return render_template("core/account/edit.html", **render_context)
 
     for field in profile_form:
         if field.name in edited_user.attributes and field.name in user.writable_fields:
@@ -654,7 +653,7 @@ def _handle_add_email(edited_user, emails_form, render_context):
             _("This email couldn't be added. Please check the format and try again."),
             "error",
         )
-        return render_template("core/profile_edit.html", **render_context)
+        return render_template("core/account/edit.html", **render_context)
 
     email_confirmation = EmailConfirmationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -685,11 +684,11 @@ def _handle_add_email(edited_user, emails_form, render_context):
 def _handle_remove_email(edited_user, email, render_context):
     if email not in (edited_user.emails or []):
         flash(_("This email couldn't be removed."), "error")
-        return render_template("core/profile_edit.html", **render_context)
+        return render_template("core/account/edit.html", **render_context)
 
     if not edited_user.emails or len(edited_user.emails) == 1:
         flash(_("This email couldn't be removed. You must keep at least one."), "error")
-        return render_template("core/profile_edit.html", **render_context)
+        return render_template("core/account/edit.html", **render_context)
 
     edited_user.emails = [m for m in edited_user.emails if m != email]
     Backend.instance.save(edited_user)
@@ -730,7 +729,7 @@ def profile_edition(user, edited_user):
     }
 
     if not request.form or profile_form.handle_fieldlist_operation():
-        return render_template("core/profile_edit.html", **render_context)
+        return render_template("core/account/edit.html", **render_context)
 
     action = request.form.get("action")
 
@@ -781,32 +780,6 @@ def _handle_delete_actions(user, edited_user, action):
         return redirect(url_for("core.account.users"))
 
 
-def _handle_password_mail(user, edited_user, action):
-    if action == "password-initialization-mail":
-        for email in edited_user.emails or []:
-            send_password_initialization_mail(edited_user, email)
-        flash(
-            _(
-                "Sending password initialization link at the user email address. "
-                "It should be received within a few minutes."
-            ),
-            "info",
-        )
-        return _handle_profile_settings_edit(user, edited_user)
-
-    else:  # password-reset-mail
-        for email in edited_user.emails or []:
-            send_password_reset_mail(edited_user, email)
-        flash(
-            _(
-                "Sending password reset link to the user email address. "
-                "It should be received within a few minutes."
-            ),
-            "info",
-        )
-        return _handle_profile_settings_edit(user, edited_user)
-
-
 def _handle_lock_actions(user, edited_user, action):
     if action == "lock-confirm":
         return render_template("core/modals/lock-account.html", edited_user=edited_user)
@@ -822,119 +795,6 @@ def _handle_lock_actions(user, edited_user, action):
         edited_user.lock_date = None
         Backend.instance.save(edited_user)
         return _handle_profile_settings_edit(user, edited_user)
-
-
-def _handle_otp_actions(user, edited_user, action):
-    if action == "otp-reset-confirm":
-        return render_template("core/modals/reset-otp.html", edited_user=edited_user)
-
-    elif action == "otp-reset":
-        flash(
-            _("Authenticator application passcode authentication has been reset."),
-            "success",
-        )
-        current_app.logger.security(
-            f"Reset one-time passcode authentication for {edited_user.user_name} by {user.user_name}"
-        )
-        edited_user.secret_token = None
-        edited_user.hotp_counter = None
-        Backend.instance.save(edited_user)
-        return _handle_profile_settings_edit(user, edited_user)
-
-    else:  # otp-setup
-        session["redirect-after-login"] = url_for(
-            "core.account.profile_settings", edited_user=edited_user
-        )
-        g.auth = AuthenticationSession(
-            user_name=g.session.user.user_name, welcome_flash=False, remaining=["otp"]
-        )
-        g.auth.save()
-        return redirect(url_for("core.auth.otp.setup"))
-
-
-def _find_credential(edited_user, credential_id):
-    for cred in edited_user.webauthn_credentials:
-        if str(cred.id) == credential_id:
-            return cred
-    return None
-
-
-def _handle_fido_actions(user, edited_user, action):
-    credential_id = request.form.get("fido2-confirm-credential")
-    if credential_id:
-        credential = _find_credential(edited_user, credential_id)
-        if not credential:
-            flash(_("Credential not found."), "error")
-            return _handle_profile_settings_edit(user, edited_user)
-        return render_template(
-            "core/modals/delete-credential.html",
-            edited_user=edited_user,
-            credential_id=credential_id,
-            credential_name=credential.name,
-        )
-
-    credential_id = request.form.get("fido2-rename-credential")
-    if credential_id:
-        new_name = request.form.get(f"credential_name_{credential_id}", "").strip()
-        if not new_name:
-            flash(_("Name cannot be empty."), "error")
-            return _handle_profile_settings_edit(user, edited_user)
-
-        credential = _find_credential(edited_user, credential_id)
-        if not credential:
-            flash(_("Credential not found."), "error")
-            return _handle_profile_settings_edit(user, edited_user)
-
-        credential.name = new_name
-        Backend.instance.save(credential)
-        flash(_("The passkey has been renamed."), "success")
-        current_app.logger.security(
-            f"Renamed WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
-        )
-        return _handle_profile_settings_edit(user, edited_user)
-
-    if action == "fido2-reset-confirm":
-        return render_template("core/modals/reset-fido.html", edited_user=edited_user)
-
-    elif action == "fido2-reset":
-        for credential in list(edited_user.webauthn_credentials):
-            Backend.instance.delete(credential)
-        flash(_("All passkeys have been removed."), "success")
-        current_app.logger.security(
-            f"Reset all WebAuthn credentials for {edited_user.user_name} by {user.user_name}"
-        )
-        return _handle_profile_settings_edit(user, edited_user)
-
-    elif action == "fido2-delete-credential":
-        credential_id = request.form.get("credential_id")
-        if not credential_id:
-            flash(_("Credential not found."), "error")
-            return _handle_profile_settings_edit(user, edited_user)
-
-        credential = _find_credential(edited_user, credential_id)
-        if credential:
-            Backend.instance.delete(credential)
-            flash(_("The passkey has been removed."), "success")
-            current_app.logger.security(
-                f"Deleted WebAuthn credential {credential_id} for {edited_user.user_name} by {user.user_name}"
-            )
-        else:
-            flash(_("Credential not found."), "error")
-        return _handle_profile_settings_edit(user, edited_user)
-
-    else:  # fido2-setup
-        session["redirect-after-login"] = url_for(
-            "core.account.profile_settings", edited_user=edited_user
-        )
-        g.auth = AuthenticationSession(
-            user_name=g.session.user.user_name,
-            welcome_flash=False,
-            remaining=["fido2"],
-        )
-        g.auth.save()
-        response = redirect(url_for("core.auth.fido2.setup"))
-        response.headers["HX-Redirect"] = url_for("core.auth.fido2.setup")
-        return response
 
 
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
@@ -957,35 +817,12 @@ def profile_settings(user, edited_user):
     if action in ("delete-confirm", "delete-execute"):
         return _handle_delete_actions(user, edited_user, action)
 
-    if action in ("password-initialization-mail", "password-reset-mail"):
-        return _handle_password_mail(user, edited_user, action)
-
     if current_app.features.has_account_lockability and action in (
         "lock-confirm",
         "lock-execute",
         "unlock",
     ):
         return _handle_lock_actions(user, edited_user, action)
-
-    if current_app.features.has_otp and action in (
-        "otp-reset-confirm",
-        "otp-reset",
-        "otp-setup",
-    ):
-        return _handle_otp_actions(user, edited_user, action)
-
-    fido_actions = (
-        "fido2-reset-confirm",
-        "fido2-reset",
-        "fido2-delete-credential",
-        "fido2-setup",
-    )
-    if current_app.features.has_fido and (
-        action in fido_actions
-        or request.form.get("fido2-confirm-credential")
-        or request.form.get("fido2-rename-credential")
-    ):
-        return _handle_fido_actions(user, edited_user, action)
 
     abort(400, f"bad form action: {action}")
 
@@ -994,7 +831,7 @@ def _handle_profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.readable_fields | editor.writable_fields
 
-    available_fields = {"password", "groups", "user_name", "lock_date"}
+    available_fields = {"groups", "user_name", "lock_date"}
     data = {
         k: getattr(edited_user, k)[0]
         if getattr(edited_user, k) and isinstance(getattr(edited_user, k), list)
@@ -1030,16 +867,6 @@ def _handle_profile_settings_edit(editor, edited_user):
                 if attribute.name in available_fields & editor.writable_fields:
                     setattr(edited_user, attribute.name, attribute.data)
 
-            if (
-                "password1" in request.form
-                and form["password1"].data
-                and request.form["action"] == "edit-settings"
-            ):
-                Backend.instance.set_user_password(edited_user, form["password1"].data)
-                current_app.logger.security(
-                    f"Changed password in settings for {edited_user.user_name}"
-                )
-
             Backend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")
             return redirect(
@@ -1047,7 +874,7 @@ def _handle_profile_settings_edit(editor, edited_user):
             )
 
     return render_template(
-        "core/profile_settings.html",
+        "core/account/settings.html",
         form=form,
         menuitem=menuitem,
         edited_user=edited_user,
