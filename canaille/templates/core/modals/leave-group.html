@@ -5,7 +5,7 @@
         <form method="post" action="{{ url_for('core.groups.leave_group', group=group) }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="ui icon header">
-                <i class="sign out icon"></i>
+                <i class="door open icon"></i>
                 {% trans %}Leave group{% endtrans %}
             </div>
             <div class="content">
