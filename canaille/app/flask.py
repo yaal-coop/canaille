@@ -213,6 +213,17 @@ def setup_flask(app) -> None:
         except ImportError:
             pass
 
+    if app.debug:
+
+        @app.before_request
+        def clear_jinja_cache():
+            """Clear the Jinja template cache on each request.
+
+            Jinja2 caches imported templates ({% import %}) separately and
+            doesn't check their mtime even with TEMPLATES_AUTO_RELOAD enabled.
+            """
+            app.jinja_env.cache.clear()
+
     @app.before_request
     def redirect_to_server_name():
         """Redirect requests to SERVER_NAME if host doesn't match."""
