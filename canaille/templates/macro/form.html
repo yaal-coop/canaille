@@ -120,6 +120,7 @@ del_button=false
                 type="submit"
                 name="fieldlist_remove"
                 value="{{ field.name }}"
+                hx-post=""
                 hx-target="closest .fieldlist"
                 formnovalidate>
                 <i class="minus icon"></i>
@@ -132,6 +133,7 @@ del_button=false
                 type="submit"
                 name="fieldlist_add"
                 value="{{ field.name }}"
+                hx-post=""
                 hx-target="closest .fieldlist"
                 formnovalidate>
                 <i class="plus icon"></i>
