@@ -12,6 +12,8 @@ from sqlalchemy import select
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.types import JSON as JSONType
 from sqlalchemy_utils import Password
 
@@ -42,6 +44,7 @@ class SQLModelEncoder(ModelEncoder):
 
 class SQLBackend(Backend):
     engine = None
+    session_factory = None
     db_session = None
     json_encoder = SQLModelEncoder
     alembic = None
@@ -51,6 +54,8 @@ class SQLBackend(Backend):
         SQLBackend.engine = create_engine(
             self.config["CANAILLE_SQL"]["DATABASE_URI"], echo=False, future=True
         )
+        SQLBackend.session_factory = sessionmaker(bind=SQLBackend.engine)
+        SQLBackend.db_session = scoped_session(SQLBackend.session_factory)
         SQLBackend.alembic = Alembic(
             metadatas=Base.metadata, engines=SQLBackend.engine, run_mkdir=False
         )
@@ -82,10 +87,6 @@ class SQLBackend(Backend):
         if init_backend:  # pragma: no cover
             with app.app_context():
                 self.alembic.upgrade()
-
-    def setup(self) -> None:
-        if not self.db_session:
-            self.db_session = Session(SQLBackend.engine)
 
     def teardown(self) -> None:
         if self.db_session:  # pragma: no branch
