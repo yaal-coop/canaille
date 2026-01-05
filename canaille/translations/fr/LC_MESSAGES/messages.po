@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-24 10:11+0100\n"
-"PO-Revision-Date: 2025-12-25 10:00+0000\n"
+"PO-Revision-Date: 2026-01-06 16:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -3276,7 +3276,7 @@ msgstr "Applications pré-autorisées"
 
 #: canaille/templates/oidc/consent_list.html:48
 msgid "Consult and revoke the authorization you gave to websites."
-msgstr "Consultez et révoquez les autorisation que vous avez données."
+msgstr "Consultez et révoquez les autorisations que vous avez données."
 
 #: canaille/templates/oidc/consent_list.html:66
 msgid "From:"
