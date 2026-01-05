@@ -2,7 +2,7 @@ function onDomChanges() {
     $('.ui.dropdown').each(function(){
         $(this).dropdown({"placeholder": $(this).attr("placeholder")});
     });
-    $('*[title]').popup();
+    $('*[title]').popup({exclusive: true});
 
     $('.toggle-password-visibility').off('click').on('click', function() {
         togglePasswordVisibility(this);
