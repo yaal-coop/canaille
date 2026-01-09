@@ -43,6 +43,8 @@ def sqlite_template_db(tmp_path_factory):
 
     yield template_path
 
+    SQLBackend.engine.dispose()
+
 
 @pytest.fixture
 def sqlite_configuration(configuration):
@@ -73,4 +75,5 @@ def sqlite_backend(sqlite_configuration, sqlite_template_db):
         with backend.session():
             yield backend
     finally:
+        SQLBackend.engine.dispose()
         Path(test_db_path).unlink(missing_ok=True)
