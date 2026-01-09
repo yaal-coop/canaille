@@ -33,6 +33,13 @@ Download the latest Canaille binary with your preferred method: :ref:`one-file b
 
          $ docker pull yaalcoop/canaille:latest
 
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ podman pull yaalcoop/canaille:latest
+
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
 
@@ -70,6 +77,13 @@ Check the Canaille version:
       .. code-block:: console
 
          $ docker run --rm yaalcoop/canaille:latest --version
+
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ podman run --rm yaalcoop/canaille:latest --version
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
@@ -110,6 +124,14 @@ Let's create a configuration file with default values:
 
          $ mkdir -p data
          $ docker run --rm yaalcoop/canaille:latest config dump > data/canaille.toml
+
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ mkdir -p data
+         $ podman run --rm yaalcoop/canaille:latest config dump > data/canaille.toml
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
@@ -200,6 +222,13 @@ Then let Canaille create the tables and run the migrations:
 
          $ docker run --rm -v ./data:/data yaalcoop/canaille:latest install
 
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ podman run --rm -v ./data:/data yaalcoop/canaille:latest install
+
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
 
@@ -246,6 +275,19 @@ an user called ``admin`` gets all the privileges.
       .. code-block:: console
 
          $ docker run --rm -v ./data:/data yaalcoop/canaille:latest create user \
+             --user-name admin \
+             --password admin123 \
+             --emails admin@example.com \
+             --given-name Admin \
+             --family-name User \
+             --formatted-name "Admin User"
+
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ podman run --rm -v ./data:/data yaalcoop/canaille:latest create user \
              --user-name admin \
              --password admin123 \
              --emails admin@example.com \
@@ -304,6 +346,13 @@ Now we are ready to start the Canaille server:
       .. code-block:: console
 
          $ docker run --rm -p 8000:8000 -v ./data:/data yaalcoop/canaille:latest
+
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ podman run --rm -p 8000:8000 -v ./data:/data yaalcoop/canaille:latest
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv

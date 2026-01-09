@@ -113,6 +113,23 @@ Alternatively, you can register the client using Canaille's CLI:
              --scope openid --scope profile --scope email \
              --token-endpoint-auth-method client_secret_post
 
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ podman run --rm -v ./data:/data yaalcoop/canaille:latest create client \
+             --client-name "Auth Playground" \
+             --client-uri http://localhost:4000 \
+             --contacts your-email@example.com \
+             --redirect-uris http://localhost:4000/authorize_callback \
+             --redirect-uris http://localhost:4000/logout_callback \
+             --post-logout-redirect-uris http://localhost:4000/ \
+             --grant-types authorization_code \
+             --response-types code \
+             --scope openid --scope profile --scope email \
+             --token-endpoint-auth-method client_secret_post
+
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
 
@@ -173,6 +190,13 @@ Install and run it using your preferred method:
       .. code-block:: console
 
          $ docker run --rm --network host ghcr.io/authlib/auth-playground:latest
+
+   .. tab-item:: :iconify:`devicon:podman` Podman
+      :sync: podman
+
+      .. code-block:: console
+
+         $ podman run --rm --network host ghcr.io/authlib/auth-playground:latest
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
