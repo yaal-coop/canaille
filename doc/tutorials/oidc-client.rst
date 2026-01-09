@@ -86,13 +86,14 @@ Alternatively, you can register the client using Canaille's CLI:
 
          $ ./canaille create client \
              --client-name "Auth Playground" \
+             --client-uri http://localhost:4000 \
              --contacts your-email@example.com \
              --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
              --response-types code \
-             --scope openid profile email \
+             --scope openid --scope profile --scope email \
              --token-endpoint-auth-method client_secret_post
 
    .. tab-item:: :iconify:`devicon:docker` Docker
@@ -100,16 +101,16 @@ Alternatively, you can register the client using Canaille's CLI:
 
       .. code-block:: console
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml \
-             yaalcoop/canaille:latest create client \
+         $ docker run --rm -v ./data:/data yaalcoop/canaille:latest create client \
              --client-name "Auth Playground" \
+             --client-uri http://localhost:4000 \
              --contacts your-email@example.com \
              --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
              --response-types code \
-             --scope openid profile email \
+             --scope openid --scope profile --scope email \
              --token-endpoint-auth-method client_secret_post
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
@@ -119,13 +120,14 @@ Alternatively, you can register the client using Canaille's CLI:
 
          $ uvx "canaille[front,oidc,server]" create client \
              --client-name "Auth Playground" \
+             --client-uri http://localhost:4000 \
              --contacts your-email@example.com \
              --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
              --response-types code \
-             --scope openid profile email \
+             --scope openid --scope profile --scope email \
              --token-endpoint-auth-method client_secret_post
 
    .. tab-item:: :iconify:`devicon:pypi` pip
@@ -135,13 +137,14 @@ Alternatively, you can register the client using Canaille's CLI:
 
          $ canaille create client \
              --client-name "Auth Playground" \
+             --client-uri http://localhost:4000 \
              --contacts your-email@example.com \
              --redirect-uris http://localhost:4000/authorize_callback \
              --redirect-uris http://localhost:4000/logout_callback \
              --post-logout-redirect-uris http://localhost:4000/ \
              --grant-types authorization_code \
              --response-types code \
-             --scope openid profile email \
+             --scope openid --scope profile --scope email \
              --token-endpoint-auth-method client_secret_post
 
 The command will output the **Client ID** and **Client Secret** - note these down.
@@ -169,8 +172,7 @@ Install and run it using your preferred method:
 
       .. code-block:: console
 
-         $ docker run --rm -p 4000:4000 \
-             ghcr.io/authlib/auth-playground:latest
+         $ docker run --rm --network host ghcr.io/authlib/auth-playground:latest
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv

@@ -21,15 +21,18 @@ Generate a default configuration file with the following command:
    :substitutions:
    :caption: Create a default configuration file for Canaille
 
-   $ docker run --rm yaalcoop/canaille:|version| config dump > canaille.toml
+   $ mkdir -p data
+   $ docker run --rm yaalcoop/canaille:|version| config dump > data/canaille.toml
 
-Then edit it as you like. You can find details on the configuration parameters on the :doc:`dedicated section <../../references/configuration>`. Then load the configuration with the following command:
+Then edit it as you like. You can find details on the configuration parameters on the :doc:`dedicated section <../../references/configuration>`.
+Then load the configuration with the following command:
 
 .. code-block:: console
    :substitutions:
    :caption: Run Canaille with a configuration file
 
-   $ docker run --name canaille-web -p 8000:8000 -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version|
+   $ docker run --name canaille-web -p 8000:8000 -v ./data:/data yaalcoop/canaille:|version|
+
 
 **Worker**
 
@@ -39,7 +42,7 @@ If you plan to use a :doc:`worker <../worker>` for asynchronous tasks (emails, S
    :substitutions:
    :caption: Run the Canaille worker with Docker
 
-   $ docker run --name canaille-worker -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| worker
+   $ docker run --name canaille-worker -v ./data:/data yaalcoop/canaille:|version| worker
 
 Docker Compose
 ==============
@@ -60,9 +63,8 @@ Here is an example of how to embed Canaille in Docker Compose with a worker and 
            ports:
            - 8000:8000
            volumes:
-           - ./canaille.toml:/etc/canaille/config.toml:ro
+           - ./data:/data
            environment:
-           - CANAILLE_CONFIG=/etc/canaille/config.toml
            - CANAILLE_BROKER_URL=redis://redis:6379
            depends_on:
            - redis
@@ -71,9 +73,8 @@ Here is an example of how to embed Canaille in Docker Compose with a worker and 
            image: yaalcoop/canaille:latest
            command: worker
            volumes:
-           - ./canaille.toml:/etc/canaille/config.toml:ro
+           - ./data:/data
            environment:
-           - CANAILLE_CONFIG=/etc/canaille/config.toml
            - CANAILLE_BROKER_URL=redis://redis:6379
            depends_on:
            - redis
@@ -102,7 +103,7 @@ Depending on the configured :doc:`database <../databases>` it will create the SQ
       .. code-block:: console
          :substitutions:
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| install
+         $ docker run --rm -v ./data:/data yaalcoop/canaille:|version| install
 
    .. tab-item:: :iconify:`simple-icons:docker` Docker Compose
       :sync: docker-compose
@@ -126,7 +127,7 @@ It will attempt to connect your :class:`SMTP server <canaille.core.configuration
       .. code-block:: console
          :substitutions:
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| config check
+         $ docker run --rm -v ./data:/data yaalcoop/canaille:|version| config check
 
    .. tab-item:: :iconify:`simple-icons:docker` Docker Compose
       :sync: docker-compose
@@ -150,7 +151,7 @@ To create your first user you can use the :ref:`canaille create <cli_create>` CL
       .. code-block:: console
          :substitutions:
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| create user \
+         $ docker run --rm -v ./data:/data yaalcoop/canaille:|version| create user \
              --user-name admin \
              --password admin \
              --emails admin@mydomain.example \
