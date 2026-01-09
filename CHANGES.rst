@@ -3,6 +3,7 @@
 
 Added
 ^^^^^
+- CORS support for OIDC and SCIM endpoints. :issue:`332`
 - OIDC ``amr`` claim support. :issue:`302`
 - Server-side sessions.
 - Captcha protection. :issue:`211` :pr:`310`
