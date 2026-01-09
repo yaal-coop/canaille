@@ -14,16 +14,13 @@ from canaille.backends import Backend
 
 
 def get_client_origin(client) -> str | None:
-    """Extract the origin from a client's client_uri or redirect_uris."""
-    if client.client_uri:
-        parsed = urlparse(client.client_uri)
-        if parsed.scheme and parsed.netloc:
-            return f"{parsed.scheme}://{parsed.netloc}"
+    """Extract the origin from a client's client_uri."""
+    if not client.client_uri:
+        return None
 
-    for redirect_uri in client.redirect_uris or []:
-        parsed = urlparse(redirect_uri)
-        if parsed.scheme and parsed.netloc:
-            return f"{parsed.scheme}://{parsed.netloc}"
+    parsed = urlparse(client.client_uri)
+    if parsed.scheme and parsed.netloc:
+        return f"{parsed.scheme}://{parsed.netloc}"
 
     return None
 

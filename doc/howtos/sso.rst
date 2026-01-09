@@ -50,6 +50,11 @@ URI
 
 URL string of a web page providing information about the client.
 
+.. note::
+
+   This URL is used to determine the allowed origin for cross-origin requests (CORS) to OIDC and SCIM endpoints.
+   This enables Single Page Applications to directly call these endpoints from the browser.
+
 Redirect URIs
 -------------
 

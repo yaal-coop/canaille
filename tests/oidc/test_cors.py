@@ -10,27 +10,12 @@ def test_get_client_origin_from_client_uri(testclient, client):
     assert get_client_origin(client) == "https://client.test"
 
 
-def test_get_client_origin_from_redirect_uris(testclient, backend):
-    """When client_uri is not set, origin is extracted from redirect_uris."""
+def test_get_client_origin_none(testclient, backend):
+    """When client_uri is not set, return None."""
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Client without client_uri",
         redirect_uris=["https://app.example.com/callback"],
-        client_secret=gen_salt(48),
-    )
-    backend.save(c)
-
-    try:
-        assert get_client_origin(c) == "https://app.example.com"
-    finally:
-        backend.delete(c)
-
-
-def test_get_client_origin_none(testclient, backend):
-    """When neither client_uri nor redirect_uris are set, return None."""
-    c = models.Client(
-        client_id=gen_salt(24),
-        client_name="Client without URIs",
         client_secret=gen_salt(48),
     )
     backend.save(c)
@@ -222,29 +207,11 @@ def test_cors_preflight_not_on_authorize_endpoint(testclient, client):
 
 
 def test_get_client_origin_invalid_client_uri(testclient, backend):
-    """Invalid client_uri (no scheme) falls back to redirect_uris."""
+    """Invalid client_uri (no scheme) returns None."""
     c = models.Client(
         client_id=gen_salt(24),
         client_name="Client with invalid URI",
         client_uri="not-a-valid-uri",
-        redirect_uris=["https://fallback.example.com/callback"],
-        client_secret=gen_salt(48),
-    )
-    backend.save(c)
-
-    try:
-        assert get_client_origin(c) == "https://fallback.example.com"
-    finally:
-        backend.delete(c)
-
-
-def test_get_client_origin_all_uris_invalid(testclient, backend):
-    """Return None when both client_uri and all redirect_uris are invalid."""
-    c = models.Client(
-        client_id=gen_salt(24),
-        client_name="Client with all invalid URIs",
-        client_uri="not-valid",
-        redirect_uris=["also-not-valid", "still-not-valid"],
         client_secret=gen_salt(48),
     )
     backend.save(c)
@@ -259,9 +226,8 @@ def test_get_allowed_origins_no_valid_origins(testclient, backend):
     """Return empty set when no client has a valid origin."""
     c = models.Client(
         client_id=gen_salt(24),
-        client_name="Client with invalid URIs",
+        client_name="Client with invalid client_uri",
         client_uri="invalid",
-        redirect_uris=["also-invalid"],
         client_secret=gen_salt(48),
     )
     backend.save(c)
