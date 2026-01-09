@@ -21,7 +21,7 @@ Generate a default configuration file with the following command:
    :substitutions:
    :caption: Create a default configuration file for Canaille
 
-   $ docker run --rm yaalcoop/canaille:|version| canaille config dump > canaille.toml
+   $ docker run --rm yaalcoop/canaille:|version| config dump > canaille.toml
 
 Then edit it as you like. You can find details on the configuration parameters on the :doc:`dedicated section <../../references/configuration>`. Then load the configuration with the following command:
 
@@ -102,14 +102,14 @@ Depending on the configured :doc:`database <../databases>` it will create the SQ
       .. code-block:: console
          :substitutions:
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| canaille install
+         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| install
 
    .. tab-item:: :iconify:`simple-icons:docker` Docker Compose
       :sync: docker-compose
 
       .. code-block:: console
 
-         $ docker compose run --rm canaille canaille install
+         $ docker compose run --rm canaille install
 
 Check
 =====
@@ -126,14 +126,14 @@ It will attempt to connect your :class:`SMTP server <canaille.core.configuration
       .. code-block:: console
          :substitutions:
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| canaille config check
+         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| config check
 
    .. tab-item:: :iconify:`simple-icons:docker` Docker Compose
       :sync: docker-compose
 
       .. code-block:: console
 
-         $ docker compose run --rm canaille canaille config check
+         $ docker compose run --rm canaille config check
 
 Create the first user
 ======================
@@ -150,7 +150,7 @@ To create your first user you can use the :ref:`canaille create <cli_create>` CL
       .. code-block:: console
          :substitutions:
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| canaille create user \
+         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:|version| create user \
              --user-name admin \
              --password admin \
              --emails admin@mydomain.example \
@@ -163,7 +163,7 @@ To create your first user you can use the :ref:`canaille create <cli_create>` CL
 
       .. code-block:: console
 
-         $ docker compose run --rm canaille canaille create user \
+         $ docker compose run --rm canaille create user \
              --user-name admin \
              --password admin \
              --emails admin@mydomain.example \

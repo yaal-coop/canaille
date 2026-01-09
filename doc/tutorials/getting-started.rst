@@ -69,7 +69,7 @@ Check the Canaille version:
 
       .. code-block:: console
 
-         $ docker run --rm yaalcoop/canaille:latest canaille --version
+         $ docker run --rm yaalcoop/canaille:latest --version
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
@@ -108,7 +108,7 @@ Let's create a configuration file with default values:
 
       .. code-block:: console
 
-         $ docker run --rm yaalcoop/canaille:latest canaille config dump > canaille.toml
+         $ docker run --rm yaalcoop/canaille:latest config dump > canaille.toml
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
@@ -197,7 +197,7 @@ Then let Canaille create the tables and run the migrations:
 
       .. code-block:: console
 
-         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:latest canaille install
+         $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml yaalcoop/canaille:latest install
 
    .. tab-item:: :iconify:`material-icon-theme:uv` uv
       :sync: uv
@@ -245,7 +245,7 @@ an user called ``admin`` gets all the privileges.
       .. code-block:: console
 
          $ docker run --rm -v ./canaille.toml:/etc/canaille/config.toml \
-             yaalcoop/canaille:latest canaille create user \
+             yaalcoop/canaille:latest create user \
              --user-name admin \
              --password admin123 \
              --emails admin@example.com \
