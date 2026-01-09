@@ -117,7 +117,7 @@ def execute_scim_user_action(client_id, user_id, method):
     if method == "delete" and distant_scim_user:
         try:
             scim.delete(User, distant_scim_user.id)
-        except:
+        except SCIMClientError:
             current_app.logger.warning(
                 f"SCIM User {user.user_name} delete for client {client.client_name} failed"
             )

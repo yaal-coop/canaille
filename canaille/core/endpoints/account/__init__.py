@@ -1,4 +1,3 @@
-import binascii
 import datetime
 import io
 from dataclasses import astuple
@@ -306,14 +305,14 @@ def registration(data=None, hash=None):
             abort(403)
 
     else:
-        try:
-            payload = RegistrationPayload(*b64_to_obj(data))
-        except binascii.Error:
+        data_obj = b64_to_obj(data)
+        if data_obj is None:
             flash(
                 _("The registration link that brought you here was invalid."),
                 "error",
             )
             return redirect(url_for("core.account.index"))
+        payload = RegistrationPayload(*data_obj)
 
         if payload.has_expired():
             flash(
@@ -444,14 +443,14 @@ def registration(data=None, hash=None):
 
 @bp.route("/email-confirmation/<data>/<hash>")
 def email_confirmation(data, hash):
-    try:
-        confirmation_obj = EmailConfirmationPayload(*b64_to_obj(data))
-    except:
+    data_obj = b64_to_obj(data)
+    if data_obj is None:
         flash(
             _("The email confirmation link that brought you here is invalid."),
             "error",
         )
         return redirect(url_for("core.account.index"))
+    confirmation_obj = EmailConfirmationPayload(*data_obj)
 
     if confirmation_obj.has_expired():
         flash(
