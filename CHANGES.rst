@@ -14,6 +14,7 @@ Added
 
 Fixed
 ^^^^^
+- CSP violation caused by Fomantic-UI inline styles.
 - LDAP: OTP feature is now disabled when the OTP module is not loaded in OpenLDAP.
 - LDAP: ``PostReadControl`` only requests attributes that exist in the LDAP schema.
 - Password reset no longer bypasses MFA.
