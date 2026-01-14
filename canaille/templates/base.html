@@ -199,6 +199,7 @@ The main template inherited by almost every other templates.
         {% if config["CANAILLE"]["JAVASCRIPT"] %}
             {% if not request_is_boosted %}
                 <script src="{{ url_for("static", filename="jquery/jquery.min.js") }}" defer></script>
+                <script src="{{ url_for("static", filename="fomanticui/semantic.csp.js") }}" defer></script>
                 <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
                 {% if config["CANAILLE"]["HTMX"] %}
                     <script src="{{ url_for("static", filename="htmx/htmx.min.js") }}" defer></script>
