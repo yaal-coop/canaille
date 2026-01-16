@@ -127,7 +127,7 @@ wheels = [
 
 [[package]]
 name = "auth-playground"
-version = "0.1.6"
+version = "0.1.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "authlib" },
@@ -139,9 +139,9 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/54/bb/4821ffa738e55fa43f0e348e67cfc868d2099680bba49894461cec6db185/auth_playground-0.1.6.tar.gz", hash = "sha256:3d1851f8d58cb15ea781e1ab921eeec6f677ce3de213f13e1629ec54b239eefc", size = 59508, upload-time = "2026-01-16T14:37:24.578Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fb/22/0076dc021e7b4c1db769c9d1486ffcdef2f032abe71bb07ccd1951aaada9/auth_playground-0.1.7.tar.gz", hash = "sha256:2fa8c15e5cd4a877dbf7254f1218f6b0dd0a8c634e7c948049c22fb669d3d65b", size = 59535, upload-time = "2026-01-16T15:04:34.167Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b6/54/da609ea432c596333615937705c5086138e2c5363661649e2757cf92acc8/auth_playground-0.1.6-py3-none-any.whl", hash = "sha256:2f305c2b4fca5f9917ada47107a788ffbd394b7b84beef41c95835f182fba1e9", size = 72933, upload-time = "2026-01-16T14:37:23.572Z" },
+    { url = "https://files.pythonhosted.org/packages/a2/62/b3df4856ffc69f540397e68671bf246680278c82206e0a0413e425b250ca/auth_playground-0.1.7-py3-none-any.whl", hash = "sha256:f6bc43ed50ddd79abae47069b26ebe64c18121fdb9ca3a02153fe91eb41419f4", size = 72959, upload-time = "2026-01-16T15:04:32.423Z" },
 ]
 
 [[package]]
