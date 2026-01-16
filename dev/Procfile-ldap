@@ -1,4 +1,4 @@
 slapd: env BIN=$BIN:/usr/bin:/usr/sbin python dev/ldap-server.py
 canaille: env CANAILLE__DATABASE=ldap FLASK_DEBUG=1 AUTHLIB_INSECURE_TRANSPORT=1 CANAILLE_ENV=.env CANAILLE_CONFIG=dev/conf/canaille.toml FLASK_APP=dev.devapp flask run --extra-files dev/conf/canaille.toml --extra-files "$CANAILLE__THEME"
-client: env OAUTH_CLIENT_ID="client" OAUTH_CLIENT_SECRET="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x" OAUTH_AUTH_SERVER="http://canaille.localhost:5000" auth-playground
+client: env SERVER_NAME="client.localhost:4000" OAUTH_CLIENT_ID="client" OAUTH_CLIENT_SECRET="2xYPSReTQRmGG1yppMVZQ0ASXwFejPyirvuPbKhNa6TmKC5x" OAUTH_AUTH_SERVER="http://canaille.localhost:5000" auth-playground
 maildump: maildump
