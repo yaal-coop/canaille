@@ -61,7 +61,7 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
     </div>
 
     <div class="ui segment">
-        {% call fui.render_form(form, csrf=false) %}
+        {% call fui.render_form(form) %}
             <h2 class="ui center aligned header">
                 {% trans %}Add an application{% endtrans %}
             </h2>

@@ -2,6 +2,7 @@ import logging
 from unittest import mock
 
 import pytest
+from scim2_client import SCIMClientError
 from scim2_models import SearchRequest
 
 from canaille.app import models
@@ -249,7 +250,7 @@ def test_failed_scim_user_creation(
     caplog,
 ):
     """Test that a warning is logged when SCIM user creation fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=Exception())
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
 
     alice = models.User(
         formatted_name="Alice Alice",
@@ -278,7 +279,7 @@ def test_failed_scim_user_update(
     user,
 ):
     """Test that a warning is logged when SCIM user update fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=Exception())
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
 
     backend.save(user)
 
@@ -299,7 +300,7 @@ def test_failed_scim_user_delete(
     user,
 ):
     """Test that a warning is logged when SCIM user deletion fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=Exception())
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
 
     backend.delete(user)
 
@@ -320,7 +321,7 @@ def test_failed_scim_group_creation(
     user,
 ):
     """Test that a warning is logged when SCIM group creation fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=Exception())
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
 
     group = models.Group(
         members=[user],
@@ -347,7 +348,7 @@ def test_failed_scim_group_update(
     bar_group,
 ):
     """Test that a warning is logged when SCIM group update fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=Exception())
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
 
     backend.save(bar_group)
 
@@ -368,7 +369,7 @@ def test_failed_scim_group_delete(
     user,
 ):
     """Test that a warning is logged when SCIM group deletion fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=Exception())
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
 
     group = models.Group(
         members=[user],

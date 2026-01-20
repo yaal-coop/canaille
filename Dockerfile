@@ -14,6 +14,8 @@ COPY canaille /opt/canaille/canaille
 WORKDIR /opt/canaille
 RUN uv sync --all-extras
 ENV PATH="/opt/canaille/.venv/bin:$PATH"
+ENV CANAILLE_CONFIG=/data/canaille.toml
+ENV CANAILLE_SQL__DATABASE_URI=sqlite:////data/canaille.sqlite
 EXPOSE 8000
 ENTRYPOINT ["canaille"]
 CMD ["run", "--bind", "0.0.0.0:8000"]

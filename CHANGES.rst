@@ -3,6 +3,7 @@
 
 Added
 ^^^^^
+- CORS support for OIDC and SCIM endpoints. :issue:`332`
 - OIDC ``amr`` claim support. :issue:`302`
 - Server-side sessions.
 - Captcha protection. :issue:`211` :pr:`310`
@@ -13,6 +14,7 @@ Added
 
 Fixed
 ^^^^^
+- CSP violation caused by Fomantic-UI inline styles.
 - LDAP: OTP feature is now disabled when the OTP module is not loaded in OpenLDAP.
 - LDAP: ``PostReadControl`` only requests attributes that exist in the LDAP schema.
 - Password reset no longer bypasses MFA.

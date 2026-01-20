@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2025-12-24 10:11+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-01-09 13:20+0100\n"
 "PO-Revision-Date: 2026-01-06 16:01+0000\n"
 "Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -30,7 +30,7 @@ msgstr "Votre mot de passe a expiré, veuillez en choisir un nouveau."
 msgid "No SMTP server has been configured"
 msgstr "Aucun serveur SMTP n'a été configuré"
 
-#: canaille/app/flask.py:227
+#: canaille/app/flask.py:238
 #, python-format
 msgid "This request should be sent to %(server_name)s"
 msgstr "La requête doit être envoyée à %(server_name)s"
@@ -301,9 +301,9 @@ msgstr "Entrez le code de sécurité affiché ci-dessus"
 
 #: canaille/core/endpoints/forms.py:78 canaille/core/endpoints/forms.py:120
 #: canaille/core/endpoints/forms.py:269
+#: canaille/templates/core/account/auth/index.html:70
+#: canaille/templates/core/account/auth/password.html:42
 #: canaille/templates/core/partial/profile_settings_password.html:5
-#: canaille/templates/core/profile_auth.html:71
-#: canaille/templates/core/profile_auth_password.html:42
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -335,11 +335,11 @@ msgstr "Nom d'utilisateur"
 #: canaille/core/endpoints/forms.py:164 canaille/core/endpoints/forms.py:387
 #: canaille/core/endpoints/forms.py:403 canaille/oidc/endpoints/forms.py:64
 #: canaille/oidc/endpoints/forms.py:118
+#: canaille/templates/core/account/auth/fido2.html:71
 #: canaille/templates/core/partial/group-members.html:12
 #: canaille/templates/core/partial/groups.html:6
 #: canaille/templates/core/partial/users.html:12
 #: canaille/templates/core/partials/profile_settings_fido.html:39
-#: canaille/templates/core/profile_auth_fido2.html:71
 #: canaille/templates/oidc/partial/client_list.html:6
 msgid "Name"
 msgstr "Nom"
@@ -377,7 +377,7 @@ msgid "Johnny"
 msgstr "Martin.D"
 
 #: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:515
-#: canaille/templates/core/profile_edit.html:199
+#: canaille/templates/core/account/edit.html:199
 msgid "Email addresses"
 msgstr "Adresse email"
 
@@ -437,8 +437,8 @@ msgid "Photo"
 msgstr "Photo"
 
 #: canaille/core/endpoints/forms.py:267
-#: canaille/templates/core/profile_add.html:75
-#: canaille/templates/core/profile_edit.html:88
+#: canaille/templates/core/account/add.html:75
+#: canaille/templates/core/account/edit.html:88
 msgid "Delete the photo"
 msgstr "Supprimer la photo"
 
@@ -476,7 +476,7 @@ msgstr "Langue préférée"
 
 #: canaille/core/endpoints/account/__init__.py:364
 #: canaille/core/endpoints/forms.py:324 canaille/core/endpoints/forms.py:491
-#: canaille/templates/base.html:111 canaille/templates/core/groups.html:18
+#: canaille/templates/base.html:110 canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
 #: canaille/templates/core/invite_group_member.html:25
 #: canaille/templates/core/partial/group-members.html:15
@@ -722,26 +722,26 @@ msgstr ""
 msgid "Your password has been updated successfully."
 msgstr "Votre mot de passe a correctement été mis à jour."
 
-#: canaille/core/endpoints/account/auth/fido2.py:63
-#: canaille/core/endpoints/account/auth/fido2.py:91
-#: canaille/core/endpoints/account/auth/fido2.py:134
-#: canaille/core/endpoints/account/auth/fido2.py:150
+#: canaille/core/endpoints/account/auth/fido2.py:37
+#: canaille/core/endpoints/account/auth/fido2.py:56
+#: canaille/core/endpoints/account/auth/fido2.py:83
+#: canaille/core/endpoints/account/auth/fido2.py:94
 msgid "Credential not found."
 msgstr "Clé de sécurité non trouvée."
 
-#: canaille/core/endpoints/account/auth/fido2.py:81
+#: canaille/core/endpoints/account/auth/fido2.py:51
 msgid "Name cannot be empty."
 msgstr "Le nom ne peut pas être vide."
 
-#: canaille/core/endpoints/account/auth/fido2.py:101
+#: canaille/core/endpoints/account/auth/fido2.py:61
 msgid "The passkey has been renamed."
 msgstr "La clé de sécurité a été renommée."
 
-#: canaille/core/endpoints/account/auth/fido2.py:120
+#: canaille/core/endpoints/account/auth/fido2.py:72
 msgid "All passkeys have been removed."
 msgstr "Toutes les clés de sécurité ont été supprimées."
 
-#: canaille/core/endpoints/account/auth/fido2.py:145
+#: canaille/core/endpoints/account/auth/fido2.py:89
 msgid "The passkey has been removed."
 msgstr "La clé de sécurité a été supprimée."
 
@@ -817,8 +817,8 @@ msgstr ""
 "d'en ajouter une nouvelle."
 
 #: canaille/core/endpoints/auth/fido.py:332
+#: canaille/templates/core/account/auth/fido2.html:82
 #: canaille/templates/core/partials/profile_settings_fido.html:50
-#: canaille/templates/core/profile_auth_fido2.html:82
 msgid "My passkey"
 msgstr "Ma clé de sécurité"
 
@@ -1327,11 +1327,11 @@ msgstr ""
 "Indique si la requête d'autorisation doit être protégée sous forme de "
 "Request object et transmise via le paramètre request ou request_uri."
 
-#: canaille/oidc/endpoints/oauth.py:544
+#: canaille/oidc/endpoints/oauth.py:548
 msgid "You have been disconnected."
 msgstr "Vous avez été déconnecté·e."
 
-#: canaille/oidc/endpoints/oauth.py:562
+#: canaille/oidc/endpoints/oauth.py:566
 msgid "You have not been disconnected."
 msgstr "Vous n'avez pas été déconnecté."
 
@@ -1343,11 +1343,11 @@ msgstr "Le jeton a été révoqué avec succès."
 msgid "Authorization interface"
 msgstr "Interface de gestion des autorisations"
 
-#: canaille/templates/base.html:49
+#: canaille/templates/base.html:48
 msgid "Network error"
 msgstr "Erreur réseau"
 
-#: canaille/templates/base.html:52
+#: canaille/templates/base.html:51
 #, python-format
 msgid ""
 "%(website_name)s could not be reached. Are you sure to be connected to the "
@@ -1355,7 +1355,7 @@ msgid ""
 msgstr ""
 "%(website_name)s est injoignable. Êtes-vous bien connectés à internet ?"
 
-#: canaille/templates/base.html:66
+#: canaille/templates/base.html:65
 #, python-format
 msgid ""
 "Your Canaille instance is not fully configured and not ready for production."
@@ -1367,46 +1367,46 @@ msgstr ""
 "que la <a href=\"%(documentation_url)s\">documentation</a> pour plus de "
 "détails."
 
-#: canaille/templates/base.html:77
+#: canaille/templates/base.html:76
 msgid "Skip main menu"
 msgstr "Sauter le menu principal"
 
-#: canaille/templates/base.html:90
+#: canaille/templates/base.html:89
 msgid "Profile"
 msgstr "Profil"
 
-#: canaille/templates/base.html:97
+#: canaille/templates/base.html:96
 msgid "Consents"
 msgstr "Autorisations"
 
-#: canaille/templates/base.html:104 canaille/templates/core/users.html:18
+#: canaille/templates/base.html:103 canaille/templates/core/users.html:18
 #: canaille/templates/core/users.html:44
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: canaille/templates/base.html:117
+#: canaille/templates/base.html:116
 msgid "Admin"
 msgstr "Administration"
 
-#: canaille/templates/base.html:128 canaille/templates/base.html:143
-#: canaille/templates/base.html:166 canaille/templates/core/login.html:48
+#: canaille/templates/base.html:127 canaille/templates/base.html:142
+#: canaille/templates/base.html:165 canaille/templates/core/login.html:48
 #: canaille/templates/oidc/logout.html:18
 msgid "Log out"
 msgstr "Déconnexion"
 
-#: canaille/templates/base.html:162 canaille/templates/core/auth/base.html:58
+#: canaille/templates/base.html:161 canaille/templates/core/auth/base.html:58
 #: canaille/templates/core/auth/fido-setup.html:46
 #: canaille/templates/core/auth/fido.html:39
 #: canaille/templates/core/auth/setup-otp.html:57
 msgid "Switch account"
 msgstr "Changer de compte"
 
-#: canaille/templates/base.html:173
+#: canaille/templates/base.html:172
 #: canaille/templates/core/auth/password.html:35
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: canaille/templates/base.html:198 canaille/templates/core/about.html:22
+#: canaille/templates/base.html:197 canaille/templates/core/about.html:22
 #: canaille/templates/core/about.html:33
 msgid "About Canaille"
 msgstr "À propos de canaille"
@@ -1468,17 +1468,15 @@ msgstr "Nouveau groupe"
 msgid "Group edition"
 msgstr "Édition d'un groupe"
 
+#: canaille/templates/core/account/add.html:35
 #: canaille/templates/core/group.html:33 canaille/templates/core/groups.html:24
-#: canaille/templates/core/invite.html:30
-#: canaille/templates/core/profile_add.html:35
-#: canaille/templates/core/users.html:25
+#: canaille/templates/core/invite.html:30 canaille/templates/core/users.html:25
 msgid "View"
 msgstr "Consulter"
 
+#: canaille/templates/core/account/add.html:39
 #: canaille/templates/core/group.html:37 canaille/templates/core/groups.html:28
-#: canaille/templates/core/invite.html:34
-#: canaille/templates/core/profile_add.html:39
-#: canaille/templates/core/users.html:29
+#: canaille/templates/core/invite.html:34 canaille/templates/core/users.html:29
 msgid "Add"
 msgstr "Ajouter"
 
@@ -1513,11 +1511,11 @@ msgstr "Inviter des membres"
 msgid "Create group"
 msgstr "Créer le groupe"
 
+#: canaille/templates/core/account/auth/password.html:102
+#: canaille/templates/core/account/edit.html:187
+#: canaille/templates/core/account/settings.html:123
 #: canaille/templates/core/group.html:86
 #: canaille/templates/core/partial/profile_settings_password.html:86
-#: canaille/templates/core/profile_auth_password.html:102
-#: canaille/templates/core/profile_edit.html:187
-#: canaille/templates/core/profile_settings.html:123
 #: canaille/templates/oidc/client_edit.html:122
 msgid "Edit"
 msgstr "Modifier"
@@ -1531,9 +1529,8 @@ msgstr "Membres du groupe"
 msgid "Invite a user"
 msgstr "Inviter un utilisateur"
 
-#: canaille/templates/core/invite.html:38
-#: canaille/templates/core/profile_add.html:44
-#: canaille/templates/core/users.html:34
+#: canaille/templates/core/account/add.html:44
+#: canaille/templates/core/invite.html:38 canaille/templates/core/users.html:34
 msgid "Invite"
 msgstr "Inviter"
 
@@ -1655,15 +1652,15 @@ msgstr ""
 "Après que ce formulaire sera envoyé, le destinataire que vous avez indiqué "
 "recevra un courriel contenant un lien lui permettant de rejoindre ce groupe."
 
+#: canaille/templates/core/account/add.html:21
+#: canaille/templates/core/account/add.html:54
+#: canaille/templates/core/account/edit.html:28
 #: canaille/templates/core/join.html:17 canaille/templates/core/join.html:37
-#: canaille/templates/core/profile_add.html:21
-#: canaille/templates/core/profile_add.html:54
-#: canaille/templates/core/profile_edit.html:28
 msgid "User creation"
 msgstr "Nouvel utilisateur"
 
+#: canaille/templates/core/account/add.html:57
 #: canaille/templates/core/join.html:39
-#: canaille/templates/core/profile_add.html:57
 msgid "Create a new user account"
 msgstr "Création d'un nouveau compte utilisateur"
 
@@ -1677,11 +1674,11 @@ msgstr ""
 "Vous recevrez ensuite un courriel contenant un lien qui vous permettra de "
 "poursuivre votre inscription."
 
+#: canaille/templates/core/account/add.html:214
 #: canaille/templates/core/auth/firstlogin.html:49
 #: canaille/templates/core/auth/forgotten-password-code.html:57
 #: canaille/templates/core/auth/forgotten-password.html:58
 #: canaille/templates/core/join.html:65
-#: canaille/templates/core/profile_add.html:214
 msgid "Login page"
 msgstr "Page de connexion"
 
@@ -1694,9 +1691,9 @@ msgstr "Page de connexion"
 msgid "Forgotten password"
 msgstr "Mot de passe oublié"
 
+#: canaille/templates/core/account/add.html:217
 #: canaille/templates/core/auth/forgotten-password-code.html:59
 #: canaille/templates/core/join.html:70
-#: canaille/templates/core/profile_add.html:217
 msgid "Submit"
 msgstr "Valider"
 
@@ -1731,43 +1728,43 @@ msgstr "S’inscrire"
 msgid "Continue"
 msgstr "Continuer"
 
+#: canaille/templates/core/account/add.html:62
+#: canaille/templates/core/account/auth/fido2.html:23
+#: canaille/templates/core/account/auth/index.html:22
+#: canaille/templates/core/account/auth/otp.html:23
+#: canaille/templates/core/account/auth/password.html:26
+#: canaille/templates/core/account/edit.html:43
+#: canaille/templates/core/account/settings.html:34
 #: canaille/templates/core/auth/fido-setup.html:23
 #: canaille/templates/core/auth/setup-otp.html:27
-#: canaille/templates/core/profile_add.html:62
-#: canaille/templates/core/profile_auth.html:22
-#: canaille/templates/core/profile_auth_fido2.html:23
-#: canaille/templates/core/profile_auth_otp.html:23
-#: canaille/templates/core/profile_auth_password.html:26
-#: canaille/templates/core/profile_edit.html:43
-#: canaille/templates/core/profile_settings.html:34
 msgid "Personal information"
 msgstr "Informations personnelles"
 
-#: canaille/templates/core/profile_add.html:73
-#: canaille/templates/core/profile_add.html:83
-#: canaille/templates/core/profile_edit.html:86
-#: canaille/templates/core/profile_edit.html:96
+#: canaille/templates/core/account/add.html:73
+#: canaille/templates/core/account/add.html:83
+#: canaille/templates/core/account/edit.html:86
+#: canaille/templates/core/account/edit.html:96
 msgid "Click to upload a photo"
 msgstr "Cliquez pour mettre en ligne une photo"
 
+#: canaille/templates/core/account/add.html:171
+#: canaille/templates/core/account/auth/fido2.html:27
+#: canaille/templates/core/account/auth/index.html:26
+#: canaille/templates/core/account/auth/otp.html:27
+#: canaille/templates/core/account/auth/password.html:30
+#: canaille/templates/core/account/edit.html:47
+#: canaille/templates/core/account/settings.html:38
+#: canaille/templates/core/account/settings.html:63
 #: canaille/templates/core/auth/fido-setup.html:27
 #: canaille/templates/core/auth/setup-otp.html:31
-#: canaille/templates/core/profile_add.html:171
-#: canaille/templates/core/profile_auth.html:26
-#: canaille/templates/core/profile_auth_fido2.html:27
-#: canaille/templates/core/profile_auth_otp.html:27
-#: canaille/templates/core/profile_auth_password.html:30
-#: canaille/templates/core/profile_edit.html:47
-#: canaille/templates/core/profile_settings.html:38
-#: canaille/templates/core/profile_settings.html:63
 msgid "Account settings"
 msgstr "Paramètres du compte"
 
-#: canaille/templates/core/profile_add.html:198
+#: canaille/templates/core/account/add.html:198
 msgid "User password is not mandatory"
 msgstr "Le mot de passe utilisateur n'est pas requis à la création"
 
-#: canaille/templates/core/profile_add.html:202
+#: canaille/templates/core/account/add.html:202
 msgid ""
 "The user will not be able to authenticate unless the password is set, but "
 "they will be able to ask for a password initialization mail."
@@ -1776,83 +1773,129 @@ msgstr ""
 "n'est pas défini, mais sera en mesure de demander l'envoi d'un courriel "
 "d'initialisation de mot de passe."
 
-#: canaille/templates/core/profile_add.html:204
+#: canaille/templates/core/account/add.html:204
 msgid "The user will not be able to authenticate unless the password is set."
 msgstr ""
 "L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
 "défini."
 
-#: canaille/templates/core/profile_auth.html:13
-#: canaille/templates/core/profile_auth_fido2.html:14
-#: canaille/templates/core/profile_auth_otp.html:14
-#: canaille/templates/core/profile_auth_password.html:17
-#: canaille/templates/core/profile_edit.html:30
-#: canaille/templates/core/profile_edit.html:60
-#: canaille/templates/core/profile_settings.html:25
+#: canaille/templates/core/account/auth/fido2.html:14
+#: canaille/templates/core/account/auth/index.html:13
+#: canaille/templates/core/account/auth/otp.html:14
+#: canaille/templates/core/account/auth/password.html:17
+#: canaille/templates/core/account/edit.html:30
+#: canaille/templates/core/account/edit.html:60
+#: canaille/templates/core/account/settings.html:25
 msgid "My profile"
 msgstr "Mon profil"
 
-#: canaille/templates/core/profile_auth.html:15
-#: canaille/templates/core/profile_auth_fido2.html:16
-#: canaille/templates/core/profile_auth_otp.html:16
-#: canaille/templates/core/profile_auth_password.html:19
-#: canaille/templates/core/profile_edit.html:32
-#: canaille/templates/core/profile_edit.html:62
-#: canaille/templates/core/profile_settings.html:27
+#: canaille/templates/core/account/auth/fido2.html:16
+#: canaille/templates/core/account/auth/index.html:15
+#: canaille/templates/core/account/auth/otp.html:16
+#: canaille/templates/core/account/auth/password.html:19
+#: canaille/templates/core/account/edit.html:32
+#: canaille/templates/core/account/edit.html:62
+#: canaille/templates/core/account/settings.html:27
 msgid "User profile edition"
 msgstr "Édition d'un profil utilisateur"
 
+#: canaille/templates/core/account/auth/fido2.html:31
+#: canaille/templates/core/account/auth/index.html:30
+#: canaille/templates/core/account/auth/index.html:61
+#: canaille/templates/core/account/auth/otp.html:31
+#: canaille/templates/core/account/auth/password.html:34
+#: canaille/templates/core/account/edit.html:51
+#: canaille/templates/core/account/settings.html:42
 #: canaille/templates/core/auth/fido-setup.html:31
 #: canaille/templates/core/auth/setup-otp.html:35
-#: canaille/templates/core/profile_auth.html:30
-#: canaille/templates/core/profile_auth.html:61
-#: canaille/templates/core/profile_auth_fido2.html:31
-#: canaille/templates/core/profile_auth_otp.html:31
-#: canaille/templates/core/profile_auth_password.html:34
-#: canaille/templates/core/profile_edit.html:51
-#: canaille/templates/core/profile_settings.html:42
 msgid "Authentication"
 msgstr "Authentification"
 
-#: canaille/templates/core/profile_auth.html:43
-msgid "Configured"
-msgstr "Configuré"
+#: canaille/templates/core/account/edit.html:68
+msgid "Edit your personal information"
+msgstr "Éditez vos informations personnelles"
 
-#: canaille/templates/core/profile_auth.html:48
-msgid "Not configured"
-msgstr "Non configuré"
+#: canaille/templates/core/account/edit.html:70
+msgid "Edit information about a user"
+msgstr "Éditez les informations d'un utilisateur"
 
-#: canaille/templates/core/profile_auth.html:64
-msgid "Manage your authentication methods"
-msgstr "Gérez vos méthodes d'authentification"
+#: canaille/templates/core/account/edit.html:197
+msgid "My email addresses"
+msgstr "Mes adresses email"
 
-#: canaille/templates/core/partial/profile_settings_otp.html:3
-#: canaille/templates/core/profile_auth.html:80
-#: canaille/templates/core/profile_auth_otp.html:39
-msgid "Authenticator application"
-msgstr "Application d'authentification"
+#: canaille/templates/core/account/edit.html:218
+msgid "Remove this email address"
+msgstr "Supprimer cette adresse email"
 
+#: canaille/templates/core/account/settings.html:53
+#: canaille/templates/core/partial/profile_field.html:31
+msgid "This user cannot edit this field"
+msgstr "Cet utilisateur ne peut pas éditer ce champ"
+
+#: canaille/templates/core/account/settings.html:55
+#: canaille/templates/core/partial/profile_field.html:40
+msgid "This user cannot see this field"
+msgstr "Cet utilisateur ne peut pas voir ce champ"
+
+#: canaille/templates/core/account/settings.html:66
+#, python-format
+msgid "Created on %(creation_datetime)s"
+msgstr "Créé le %(creation_datetime)s"
+
+#: canaille/templates/core/account/settings.html:87
+#: canaille/templates/core/partial/profile_settings_password.html:69
+msgid "Unlock"
+msgstr "Déverrouiller"
+
+#: canaille/templates/core/account/settings.html:90
+#: canaille/templates/core/partial/profile_settings_password.html:72
+msgid "This user account is locked"
+msgstr "Ce compte utilisateur est verrouillé"
+
+#: canaille/templates/core/account/settings.html:93
+#: canaille/templates/core/partial/profile_settings_password.html:75
+msgid "The user won't be able to connect until their account is unlocked."
+msgstr ""
+"L'utilisateur ne pourra pas se connecter tant que son compte n’est pas "
+"déverrouillé."
+
+#: canaille/templates/core/account/settings.html:102
+msgid "Lock the account"
+msgstr "Verrouiller le compte"
+
+#: canaille/templates/core/account/settings.html:109
+msgid "Delete the user"
+msgstr "Supprimer l'utilisateur"
+
+#: canaille/templates/core/account/settings.html:111
+msgid "Delete my account"
+msgstr "Supprimer mon compte"
+
+#: canaille/templates/core/account/settings.html:118
+msgid "Impersonate"
+msgstr "Prendre l'identité"
+
+#: canaille/templates/core/account/auth/fido2.html:39
+#: canaille/templates/core/account/auth/index.html:88
 #: canaille/templates/core/partials/profile_settings_fido.html:10
-#: canaille/templates/core/profile_auth.html:89
-#: canaille/templates/core/profile_auth_fido2.html:39
 msgid "Passkeys"
 msgstr "Clés de sécurité"
 
+#: canaille/templates/core/account/auth/fido2.html:49
 #: canaille/templates/core/partials/profile_settings_fido.html:17
-#: canaille/templates/core/profile_auth_fido2.html:49
 #, python-format
 msgid "You have %(count)s passkey configured."
 msgid_plural "You have %(count)s passkeys configured."
 msgstr[0] "Vous avez %(count)s clé de sécurité configurée."
 msgstr[1] "Vous avez %(count)s clés de sécurité configurées."
 
+#: canaille/templates/core/account/auth/fido2.html:56
 #: canaille/templates/core/partials/profile_settings_fido.html:24
-#: canaille/templates/core/profile_auth_fido2.html:56
 msgid "Passkeys can be used for authentication."
 msgstr "Les clés de sécurité peuvent être utilisées pour l'authentification."
 
+#: canaille/templates/core/account/auth/fido2.html:60
 #: canaille/templates/core/partials/profile_settings_fido.html:28
-#: canaille/templates/core/profile_auth_fido2.html:60
 msgid ""
 "As they are unrecoverable in case of loss, it is generally recommended to "
 "register at least one additional backup key."
@@ -1861,61 +1904,61 @@ msgstr ""
 "recommandé d’enregistrer au moins une clé de sécurité additionnelle de "
 "secours."
 
+#: canaille/templates/core/account/auth/fido2.html:72
 #: canaille/templates/core/partials/profile_settings_fido.html:40
-#: canaille/templates/core/profile_auth_fido2.html:72
 msgid "Registered"
 msgstr "Enregistrement"
 
+#: canaille/templates/core/account/auth/fido2.html:73
 #: canaille/templates/core/partials/profile_settings_fido.html:41
-#: canaille/templates/core/profile_auth_fido2.html:73
 msgid "Last used"
 msgstr "Dernière utilisation"
 
+#: canaille/templates/core/account/auth/fido2.html:74
 #: canaille/templates/core/partial/group-members.html:16
 #: canaille/templates/core/partial/groups.html:9
 #: canaille/templates/core/partials/profile_settings_fido.html:42
-#: canaille/templates/core/profile_auth_fido2.html:74
 msgid "Actions"
 msgstr "Actions"
 
+#: canaille/templates/core/account/auth/fido2.html:83
 #: canaille/templates/core/partials/profile_settings_fido.html:51
-#: canaille/templates/core/profile_auth_fido2.html:83
 msgid "Rename"
 msgstr "Renommer"
 
+#: canaille/templates/core/account/auth/fido2.html:93
 #: canaille/templates/core/partials/profile_settings_fido.html:61
-#: canaille/templates/core/profile_auth_fido2.html:93
 msgid "Never"
 msgstr "Jamais"
 
+#: canaille/templates/core/account/auth/fido2.html:97
 #: canaille/templates/core/modals/delete-account.html:27
 #: canaille/templates/core/modals/delete-group.html:25
 #: canaille/templates/core/partials/profile_settings_fido.html:65
-#: canaille/templates/core/profile_auth_fido2.html:97
 #: canaille/templates/oidc/modals/delete-client.html:21
 msgid "Delete"
 msgstr "Supprimer"
 
+#: canaille/templates/core/account/auth/fido2.html:111
+#: canaille/templates/core/account/auth/fido2.html:116
 #: canaille/templates/core/partials/profile_settings_fido.html:79
 #: canaille/templates/core/partials/profile_settings_fido.html:84
-#: canaille/templates/core/profile_auth_fido2.html:111
-#: canaille/templates/core/profile_auth_fido2.html:116
 msgid "Add another key"
 msgstr "Ajouter un autre clé de sécurité"
 
+#: canaille/templates/core/account/auth/fido2.html:114
 #: canaille/templates/core/partials/profile_settings_fido.html:82
-#: canaille/templates/core/profile_auth_fido2.html:114
 #, python-format
 msgid "Maximum limit reached (%(max)s)"
 msgstr "Limite maximum de %(max)s atteinte"
 
+#: canaille/templates/core/account/auth/fido2.html:120
 #: canaille/templates/core/partials/profile_settings_fido.html:88
-#: canaille/templates/core/profile_auth_fido2.html:120
 msgid "Remove all keys"
 msgstr "Supprimer toutes les clés de sécurité"
 
+#: canaille/templates/core/account/auth/fido2.html:127
 #: canaille/templates/core/partials/profile_settings_fido.html:96
-#: canaille/templates/core/profile_auth_fido2.html:127
 msgid ""
 "You have no passkey configured. Click on the following button to register "
 "your passkey."
@@ -1923,14 +1966,32 @@ msgstr ""
 "Vous n’avez aucune clé de sécurité configurée. Cliquez sur le bouton suivant "
 "pour enregistrer une clé de sécurité."
 
+#: canaille/templates/core/account/auth/fido2.html:135
 #: canaille/templates/core/partial/profile_settings_otp.html:35
 #: canaille/templates/core/partials/profile_settings_fido.html:104
-#: canaille/templates/core/profile_auth_fido2.html:135
 msgid "Set-up"
 msgstr "Initialiser"
 
+#: canaille/templates/core/account/auth/index.html:43
+msgid "Configured"
+msgstr "Configuré"
+
+#: canaille/templates/core/account/auth/index.html:48
+msgid "Not configured"
+msgstr "Non configuré"
+
+#: canaille/templates/core/account/auth/index.html:64
+msgid "Manage your authentication methods"
+msgstr "Gérez vos méthodes d'authentification"
+
+#: canaille/templates/core/account/auth/index.html:79
+#: canaille/templates/core/account/auth/otp.html:39
+#: canaille/templates/core/partial/profile_settings_otp.html:3
+msgid "Authenticator application"
+msgstr "Application d'authentification"
+
+#: canaille/templates/core/account/auth/otp.html:47
 #: canaille/templates/core/partial/profile_settings_otp.html:10
-#: canaille/templates/core/profile_auth_otp.html:47
 msgid ""
 "You have configured an authenticator application. If you cannot access this "
 "application anymore, you can reset its configuration. After this, you will "
@@ -1940,13 +2001,13 @@ msgstr ""
 "l’accès à cette application, vous pouvez ré-initialiser sa configuration. "
 "Après cette étape, vous pourrez à nouveau une application d’authentification."
 
+#: canaille/templates/core/account/auth/otp.html:56
 #: canaille/templates/core/partial/profile_settings_otp.html:19
-#: canaille/templates/core/profile_auth_otp.html:56
 msgid "Reset"
 msgstr "Ré-initialiser"
 
+#: canaille/templates/core/account/auth/password.html:48
 #: canaille/templates/core/partial/profile_settings_password.html:9
-#: canaille/templates/core/profile_auth_password.html:48
 msgid ""
 "You can change your password here by typing it once in each field below. The "
 "longer the password, the stronger it is. A good password is a long password "
@@ -1958,38 +2019,38 @@ msgstr ""
 "bon mot de passe est un mot de passe long dont vous vous souviendrez, pas un "
 "mot de passe compliqué que vous utilisez pour tous vos comptes."
 
+#: canaille/templates/core/account/auth/password.html:68
+#: canaille/templates/core/account/auth/password.html:89
 #: canaille/templates/core/partial/profile_settings_password.html:33
 #: canaille/templates/core/partial/profile_settings_password.html:55
-#: canaille/templates/core/profile_auth_password.html:68
-#: canaille/templates/core/profile_auth_password.html:89
 msgid "Send mail"
 msgstr "Envoyer le courriel"
 
+#: canaille/templates/core/account/auth/password.html:72
 #: canaille/templates/core/partial/profile_settings_password.html:37
-#: canaille/templates/core/profile_auth_password.html:72
 msgid "This user does not have a password yet"
 msgstr "L'utilisateur n'a pas encore de mot de passe"
 
+#: canaille/templates/core/account/auth/password.html:75
 #: canaille/templates/core/partial/profile_settings_password.html:40
-#: canaille/templates/core/profile_auth_password.html:75
 msgid "You can solve this by:"
 msgstr "Vous pouvez régler ceci en :"
 
+#: canaille/templates/core/account/auth/password.html:77
 #: canaille/templates/core/partial/profile_settings_password.html:42
-#: canaille/templates/core/profile_auth_password.html:77
 msgid "setting a password using this form;"
 msgstr "renseignant un mot de passe via ce formulaire ;"
 
+#: canaille/templates/core/account/auth/password.html:78
 #: canaille/templates/core/partial/profile_settings_password.html:43
-#: canaille/templates/core/profile_auth_password.html:78
 msgid ""
 "sending the user a password initialization mail, by clicking this button;"
 msgstr ""
 "envoyant un lien d'initialisation de mot de passe, par courriel à "
 "l'utilisateur, en cliquant sur ce bouton ;"
 
+#: canaille/templates/core/account/auth/password.html:79
 #: canaille/templates/core/partial/profile_settings_password.html:44
-#: canaille/templates/core/profile_auth_password.html:79
 msgid ""
 "or simply waiting for the user to sign-in a first time, and then receive a "
 "password initialization mail."
@@ -1997,94 +2058,30 @@ msgstr ""
 "ou simplement en attendant la première connexion de l'utilisateur, afin "
 "qu'il reçoive un lien d'initialisation de mot de passe par courriel."
 
+#: canaille/templates/core/account/auth/password.html:82
 #: canaille/templates/core/partial/profile_settings_password.html:47
-#: canaille/templates/core/profile_auth_password.html:82
 msgid "The user will not be able to authenticate unless the password is set"
 msgstr ""
 "L'utilisateur ne pourra pas se connecter tant que son mot de passe n'est pas "
 "défini"
 
+#: canaille/templates/core/account/auth/password.html:92
 #: canaille/templates/core/auth/reset-password.html:33
 #: canaille/templates/core/auth/reset-password.html:41
 #: canaille/templates/core/mails/admin.html:101
 #: canaille/templates/core/mails/reset.html:19
 #: canaille/templates/core/partial/profile_settings_password.html:58
-#: canaille/templates/core/profile_auth_password.html:92
 msgid "Password reset"
 msgstr "Réinitialisation du mot de passe"
 
+#: canaille/templates/core/account/auth/password.html:94
 #: canaille/templates/core/partial/profile_settings_password.html:60
-#: canaille/templates/core/profile_auth_password.html:94
 msgid ""
 "If the user has forgotten his password, you can send him a password reset "
 "email by clicking this button."
 msgstr ""
 "Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un "
 "courriel contenant un lien de réinitialisation en cliquant sur ce bouton."
-
-#: canaille/templates/core/profile_edit.html:68
-msgid "Edit your personal information"
-msgstr "Éditez vos informations personnelles"
-
-#: canaille/templates/core/profile_edit.html:70
-msgid "Edit information about a user"
-msgstr "Éditez les informations d'un utilisateur"
-
-#: canaille/templates/core/profile_edit.html:197
-msgid "My email addresses"
-msgstr "Mes adresses email"
-
-#: canaille/templates/core/profile_edit.html:218
-msgid "Remove this email address"
-msgstr "Supprimer cette adresse email"
-
-#: canaille/templates/core/partial/profile_field.html:31
-#: canaille/templates/core/profile_settings.html:53
-msgid "This user cannot edit this field"
-msgstr "Cet utilisateur ne peut pas éditer ce champ"
-
-#: canaille/templates/core/partial/profile_field.html:40
-#: canaille/templates/core/profile_settings.html:55
-msgid "This user cannot see this field"
-msgstr "Cet utilisateur ne peut pas voir ce champ"
-
-#: canaille/templates/core/profile_settings.html:66
-#, python-format
-msgid "Created on %(creation_datetime)s"
-msgstr "Créé le %(creation_datetime)s"
-
-#: canaille/templates/core/partial/profile_settings_password.html:69
-#: canaille/templates/core/profile_settings.html:87
-msgid "Unlock"
-msgstr "Déverrouiller"
-
-#: canaille/templates/core/partial/profile_settings_password.html:72
-#: canaille/templates/core/profile_settings.html:90
-msgid "This user account is locked"
-msgstr "Ce compte utilisateur est verrouillé"
-
-#: canaille/templates/core/partial/profile_settings_password.html:75
-#: canaille/templates/core/profile_settings.html:93
-msgid "The user won't be able to connect until their account is unlocked."
-msgstr ""
-"L'utilisateur ne pourra pas se connecter tant que son compte n’est pas "
-"déverrouillé."
-
-#: canaille/templates/core/profile_settings.html:102
-msgid "Lock the account"
-msgstr "Verrouiller le compte"
-
-#: canaille/templates/core/profile_settings.html:109
-msgid "Delete the user"
-msgstr "Supprimer l'utilisateur"
-
-#: canaille/templates/core/profile_settings.html:111
-msgid "Delete my account"
-msgstr "Supprimer mon compte"
-
-#: canaille/templates/core/profile_settings.html:118
-msgid "Impersonate"
-msgstr "Prendre l'identité"
 
 #: canaille/templates/core/auth/base.html:36
 #, python-format
@@ -3067,11 +3064,11 @@ msgstr "Ce champ est requis"
 msgid "Remove this field"
 msgstr "Supprimer ce champ"
 
-#: canaille/templates/macro/form.html:131
+#: canaille/templates/macro/form.html:132
 msgid "Add another field"
 msgstr "Ajouter un autre champ"
 
-#: canaille/templates/macro/form.html:160
+#: canaille/templates/macro/form.html:162
 msgid "Password strength"
 msgstr "Robustesse du mot de passe"
 
@@ -3079,15 +3076,15 @@ msgstr "Robustesse du mot de passe"
 msgid "Search…"
 msgstr "Recherche…"
 
-#: canaille/templates/macro/table.html:23
+#: canaille/templates/macro/table.html:22
 msgid "Search"
 msgstr "Rechercher"
 
-#: canaille/templates/macro/table.html:65
+#: canaille/templates/macro/table.html:62
 msgid "Page"
 msgstr "Page"
 
-#: canaille/templates/macro/table.html:112
+#: canaille/templates/macro/table.html:109
 #, python-format
 msgid "%(nb_items_formatted)s item"
 msgid_plural "%(nb_items_formatted)s items"

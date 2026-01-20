@@ -1,4 +1,3 @@
-import binascii
 import datetime
 
 from flask import Blueprint
@@ -304,11 +303,11 @@ def invite_to_group(user, group):
 @bp.route("/join/<data>/<hash>", methods=["GET", "POST"])
 def join_group(data, hash):
     """Handle group invitation link validation and add user to group."""
-    try:
-        payload = GroupInvitationPayload(*b64_to_obj(data))
-    except (binascii.Error, TypeError):
+    data_obj = b64_to_obj(data)
+    if data_obj is None:
         flash(_("The invitation link that brought you here was invalid."), "error")
         return redirect(url_for("core.account.index"))
+    payload = GroupInvitationPayload(*data_obj)
 
     if not (group := Backend.instance.get(models.Group, id=payload.group_id)):
         flash(_("The group you were invited to no longer exists."), "error")

@@ -111,58 +111,9 @@ class ClientAddForm(Form):
     )
 
 
-class ClientEditForm(Form):
+class ClientEditForm(ClientAddForm):
     """Complete form for editing a client with all metadata fields."""
 
-    client_name = wtforms.StringField(
-        _("Name"),
-        validators=[wtforms.validators.DataRequired()],
-        render_kw={"placeholder": "Client Name"},
-        description=_(
-            "This is the name that will be displayed on the web interface, and notably on the consent page."
-        ),
-    )
-
-    contacts = wtforms.FieldList(
-        wtforms.EmailField(
-            _("Contacts"),
-            validators=[wtforms.validators.Optional(), email_validator],
-            render_kw={"placeholder": "admin@client.example"},
-        ),
-        min_entries=1,
-        validators=[unique_values],
-        description=_(
-            "Those are the email addresses of people responsible for the client."
-        ),
-    )
-
-    client_uri = wtforms.URLField(
-        _("URI"),
-        validators=[
-            wtforms.validators.DataRequired(),
-            is_uri,
-        ],
-        render_kw={"placeholder": "https://client.example"},
-        description=_(
-            "URL string of a web page providing information about the client."
-        ),
-    )
-
-    redirect_uris = wtforms.FieldList(
-        wtforms.URLField(
-            _("Redirect URIs"),
-            validators=[
-                wtforms.validators.DataRequired(),
-                is_uri,
-            ],
-            render_kw={"placeholder": "https://client.example/oauth/callback"},
-        ),
-        min_entries=1,
-        validators=[unique_values],
-        description=_(
-            "URIs for use in redirect-based flows such as the authorization code and implicit flows."
-        ),
-    )
     post_logout_redirect_uris = wtforms.FieldList(
         wtforms.URLField(
             _("Post logout redirect URIs"),

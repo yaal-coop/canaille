@@ -107,7 +107,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
             </form>
         </div>
 
-        {% call fui.render_form(form, csrf=false) %}
+        {% call fui.render_form(form) %}
             {{ fui.render_fields(form) }}
 
             <div class="ui right aligned container">
