@@ -75,16 +75,7 @@ def oauth2_error(error):
 
 @bp.errorhandler(ValidationError)
 def scim_error_handler(error):
-    error_details = error.errors()[0]
-    obj = Error(
-        status=400,
-        detail=f"{error_details['msg']}: {' ,'.join(str(loc) for loc in error_details['loc'])}",
-    )
-    # TODO: maybe the Pydantic <=> SCIM error code mapping could go in scim2_models
-    obj.scim_type = (
-        "invalidValue" if error_details["type"] == "required_error" else None
-    )
-
+    obj = Error.from_validation_error(error.errors()[0])
     return obj.model_dump(), obj.status
 
 

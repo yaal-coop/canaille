@@ -2,11 +2,12 @@ from functools import cache
 from typing import Annotated
 from typing import Any
 from typing import ClassVar
-from typing import Literal
+from typing import Union
 
 from flask import url_for
 from pydantic import EmailStr
 from pydantic import Field
+from scim2_models import URN
 from scim2_models import AnyExtension
 from scim2_models import AuthenticationScheme
 from scim2_models import Bulk
@@ -15,7 +16,7 @@ from scim2_models import ChangePassword
 from scim2_models import ComplexAttribute
 from scim2_models import ETag
 from scim2_models import Extension
-from scim2_models import ExternalReference
+from scim2_models import External
 from scim2_models import Filter
 from scim2_models import Meta
 from scim2_models import Mutability
@@ -60,7 +61,7 @@ class PhoneNumber(ComplexAttribute):
 
 class Photo(ComplexAttribute):
     value: Annotated[
-        Reference[ExternalReference] | None,
+        Reference[External] | None,
         Mutability.read_only,
         CaseExact.true,
         Required.true,
@@ -101,7 +102,7 @@ class GroupMembership(ComplexAttribute):
     """The identifier of the User's group."""
 
     ref: Annotated[
-        Reference[Literal["User"] | Literal["Group"]] | None,
+        Reference[Union["User", "Group"]] | None,
         Mutability.read_only,
     ] = Field(None, serialization_alias="$ref")
     """The reference URI of a target resource, if the attribute is a
@@ -112,9 +113,7 @@ class GroupMembership(ComplexAttribute):
 
 
 class User(Resource[AnyExtension]):
-    schemas: Annotated[list[str], Required.true] = [
-        "urn:ietf:params:scim:schemas:core:2.0:User"
-    ]
+    __schema__: ClassVar[URN] = URN("urn:ietf:params:scim:schemas:core:2.0:User")
 
     external_id: Annotated[str | None, Mutability.read_only, Returned.never] = None
 
@@ -132,7 +131,7 @@ class User(Resource[AnyExtension]):
     display_name: str | None = None
     """The name of the User, suitable for display to end-users."""
 
-    profile_url: Reference[ExternalReference] | None = None
+    profile_url: Reference[External] | None = None
     """A fully qualified URL pointing to a page representing the User's online
     profile."""
 
@@ -184,7 +183,7 @@ class GroupMember(ComplexAttribute):
     """Identifier of the member of this Group."""
 
     ref: Annotated[
-        Reference[Literal["User"] | Literal["Group"]] | None,
+        Reference[Union["User", "Group"]] | None,
         Mutability.immutable,
         Required.true,
     ] = Field(None, serialization_alias="$ref")
@@ -196,9 +195,7 @@ class GroupMember(ComplexAttribute):
 
 
 class Group(Resource[Any]):
-    schemas: Annotated[list[str], Required.true] = [
-        "urn:ietf:params:scim:schemas:core:2.0:Group"
-    ]
+    __schema__: ClassVar[URN] = URN("urn:ietf:params:scim:schemas:core:2.0:Group")
 
     external_id: Annotated[str | None, Mutability.read_only, Returned.never] = None
 
@@ -212,9 +209,9 @@ class Group(Resource[Any]):
 
 
 class EnterpriseUser(Extension):
-    schemas: Annotated[list[str], Required.true] = [
+    __schema__: ClassVar[URN] = URN(
         "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-    ]
+    )
 
     employee_number: str | None = None
     """Numeric or alphanumeric identifier assigned to a person, typically based
@@ -300,7 +297,7 @@ def get_resource_types():
 @cache
 def get_schemas():
     schemas = {
-        model.model_fields["schemas"].default[0]: model.to_schema()
+        str(model.__schema__): model.to_schema()
         for model in (
             ServiceProviderConfig,
             ResourceType,
