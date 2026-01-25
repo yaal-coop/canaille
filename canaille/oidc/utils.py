@@ -15,6 +15,7 @@ SCOPE_DETAILS = {
     "groups": ("users", _("Groups you belong to.")),
 }
 
+
 def is_trusted_domain(domain):
     if not domain:
         return False

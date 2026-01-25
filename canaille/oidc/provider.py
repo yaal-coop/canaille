@@ -36,7 +36,6 @@ from canaille.app import models
 from canaille.app.flask import cache
 from canaille.app.i18n import gettext as _
 from canaille.app.session import logout_user
-from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 from canaille.oidc.utils import is_trusted_domain
@@ -646,7 +645,10 @@ class EndSessionEndpoint(rpinitiated.EndSessionEndpoint):
     def get_server_jwks(self):
         return server_jwks(include_inactive=True).as_dict()
 
-    def end_session(self, request, id_token_claims):
+    def get_server_registry(self):
+        return registry
+
+    def end_session(self, end_session_request):
         session.pop("logout_confirmation", None)
         logout_user()
 
@@ -663,26 +665,6 @@ class EndSessionEndpoint(rpinitiated.EndSessionEndpoint):
         if not user:
             return False
         return logout_hint and logout_hint != user.user_name
-
-    def create_confirmation_response(self, request, client, redirect_uri, ui_locales):
-        from canaille.oidc.endpoints.forms import LogoutForm
-
-        form = LogoutForm(request.form)
-        if not request.form or not form.validate():
-            return (
-                200,
-                render_template(
-                    "oidc/logout.html", form=form, client=client, menu=False
-                ),
-                [("Content-Type", "text/html")],
-            )
-
-        if request.form["answer"] == "logout":
-            session["logout_confirmation"] = True
-            return 302, "", [("Location", request.uri)]
-
-        flash(_("You have not been disconnected"), "info")
-        return 302, "", [("Location", url_for("core.account.index"))]
 
     def is_post_logout_redirect_uri_legitimate(
         self,

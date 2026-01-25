@@ -8,6 +8,7 @@ from authlib.oidc.core.errors import ConsentRequiredError
 from flask import Blueprint
 from flask import abort
 from flask import current_app
+from flask import flash
 from flask import g
 from flask import jsonify
 from flask import redirect
@@ -19,10 +20,12 @@ from werkzeug.exceptions import HTTPException
 from canaille.app import models
 from canaille.app.flask import cache
 from canaille.app.flask import csrf
+from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import redirect_to_next_auth_step
+from canaille.oidc.endpoints.forms import LogoutForm
 
 from ..jose import server_jwks
 from ..provider import ClientConfigurationEndpoint
@@ -448,6 +451,38 @@ def userinfo():
 @csrf.exempt
 def end_session():
     current_app.logger.debug("end_session endpoint request: %s", request.args)
-    response = authorization.create_endpoint_response(EndSessionEndpoint.ENDPOINT_NAME)
-    current_app.logger.debug("end_session endpoint response: %s", response)
-    return response
+    try:
+        req = authorization.validate_endpoint_request(EndSessionEndpoint.ENDPOINT_NAME)
+    except OAuth2Error as error:
+        return authorization.handle_error_response(None, error)
+
+    needs_confirmation = (
+        req.logout_hint and g.user and req.logout_hint != g.user.user_name
+    )
+    if request.method == "GET" and req.needs_confirmation or needs_confirmation:
+        form = LogoutForm()
+        return render_template(
+            "oidc/logout.html", client=req.client, form=form, menu=False
+        )
+
+    if request.method == "POST":
+        form = LogoutForm(request.form)
+        if not form.validate():
+            return render_template(
+                "oidc/logout.html", client=req.client, form=form, menu=False
+            )
+
+        if request.form.get("answer") != "logout":
+            flash(_("You have not been disconnected"), "info")
+            return redirect(url_for("core.account.index"))
+
+    # redirect to the client post_logout_redirect_uri
+    if response := authorization.create_endpoint_response(
+        EndSessionEndpoint.ENDPOINT_NAME, req
+    ):
+        current_app.logger.debug("end_session endpoint response: %s", response)
+        return response
+
+    # display local logout page
+    flash(_("You have been disconnected"), "success")
+    return redirect(url_for("core.account.index"))

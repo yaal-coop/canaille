@@ -125,7 +125,6 @@ def test_no_id_token_hint_no_redirect(
         status=200,
     )
     res = res.form.submit(name="answer", value="logout", status=302)
-    res = res.follow(status=302)
 
     assert res.location == "/"
 
@@ -151,7 +150,6 @@ def test_end_session_invalid_client_id(testclient, backend, logged_user, client)
     )
 
     res = res.form.submit(name="answer", value="logout", status=302)
-    res = res.follow(status=302)
 
     assert res.location == "/"
 
@@ -209,7 +207,6 @@ def test_no_jwt_untrusted_domain_logout_no_redirection(
     )
 
     res = res.form.submit(name="answer", value="logout", status=302)
-    res = res.follow(status=302)
 
     with testclient.session_transaction() as sess:
         assert not sess.get("sessions")
@@ -237,7 +234,6 @@ def test_no_jwt_trusted_domain_logout_redirection(
     )
 
     res = res.form.submit(name="answer", value="logout", status=302)
-    res = res.follow(status=302)
 
     with testclient.session_transaction() as sess:
         assert not sess.get("sessions")
@@ -343,9 +339,7 @@ def test_end_session_bad_id_token(testclient, backend, logged_user, client, id_t
         status=400,
     )
 
-    assert res.json == {
-        "error": "invalid_request",
-    }
+    assert res.json["error"] == "invalid_request"
 
 
 def test_bad_user_hint(testclient, backend, logged_user, client, id_token, admin):
@@ -365,7 +359,6 @@ def test_bad_user_hint(testclient, backend, logged_user, client, id_token, admin
     )
 
     res = res.form.submit(name="answer", value="logout", status=302)
-    res = res.follow(status=302)
 
     with testclient.session_transaction() as sess:
         assert not sess.get("sessions")
