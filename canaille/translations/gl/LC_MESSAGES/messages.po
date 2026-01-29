@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2023-02-19 22:35+0000\n"
-"Last-Translator: Jesús P Rey <i18n@chuso.net>\n"
+"PO-Revision-Date: 2026-01-30 18:01+0000\n"
+"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/canaille/"
 "canaille/gl/>\n"
 "Language: gl\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.16-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:52
@@ -117,18 +118,16 @@ msgstr ""
 
 #: canaille/core/auth.py:267
 msgid "John Doe"
-msgstr "John Doe"
+msgstr "Mariló Fulana"
 
 #: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:161
 #: canaille/core/endpoints/forms.py:473
 msgid "jdoe"
-msgstr "jdoe"
+msgstr "mfulana"
 
 #: canaille/core/auth.py:269
-#, fuzzy
-#| msgid "john@doe.com"
 msgid "john.doe@example.com"
-msgstr "john@doe.com"
+msgstr "marilo.fulana@exemplo.com"
 
 #: canaille/core/auth.py:276
 msgid " or "
@@ -251,10 +250,8 @@ msgstr "Correo electrónico"
 #: canaille/core/endpoints/forms.py:437 canaille/core/endpoints/forms.py:452
 #: canaille/core/endpoints/forms.py:485 canaille/core/endpoints/forms.py:509
 #: canaille/core/endpoints/forms.py:525
-#, fuzzy
-#| msgid "jane@doe.com"
 msgid "jane.doe@example.com"
-msgstr "jane@doe.com"
+msgstr "xalo.fulano@exemplo.com"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "Sending test mail. Please check the recipient mail box."
@@ -362,7 +359,7 @@ msgstr "Nome de pila"
 
 #: canaille/core/endpoints/forms.py:175
 msgid "John"
-msgstr "John"
+msgstr "María Dores"
 
 #: canaille/core/endpoints/forms.py:181
 msgid "Family Name"
@@ -370,7 +367,7 @@ msgstr "Apelidos"
 
 #: canaille/core/endpoints/forms.py:184
 msgid "Doe"
-msgstr "Doe"
+msgstr "Fulana"
 
 #: canaille/core/endpoints/forms.py:190
 msgid "Display Name"
@@ -378,7 +375,7 @@ msgstr "Nome a amosar"
 
 #: canaille/core/endpoints/forms.py:193
 msgid "Johnny"
-msgstr "Johnny"
+msgstr "Maló"
 
 #: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:515
 #: canaille/templates/core/account/edit.html:199
