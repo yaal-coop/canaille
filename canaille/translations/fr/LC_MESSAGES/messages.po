@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2026-01-06 16:01+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2026-01-30 18:02+0000\n"
+"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:52
@@ -130,16 +130,16 @@ msgstr ""
 
 #: canaille/core/auth.py:267
 msgid "John Doe"
-msgstr "Camille Dupont"
+msgstr "Jean Dupont"
 
 #: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:161
 #: canaille/core/endpoints/forms.py:473
 msgid "jdoe"
-msgstr "cdupont"
+msgstr "jdupont"
 
 #: canaille/core/auth.py:269
 msgid "john.doe@example.com"
-msgstr "camille.dupont@exemple.fr"
+msgstr "jean.dupont@schmilblick.fr"
 
 #: canaille/core/auth.py:276
 msgid " or "
@@ -148,7 +148,7 @@ msgstr " ou "
 #: canaille/core/endpoints/admin.py:56 canaille/core/mails.py:17
 #, python-brace-format
 msgid "Test email from {website_name}"
-msgstr "Courriel de test de {website_name}"
+msgstr "Email d’essai de {website_name}"
 
 #: canaille/core/endpoints/admin.py:128 canaille/core/endpoints/admin.py:143
 #: canaille/core/mails.py:46
@@ -235,7 +235,7 @@ msgstr ""
 
 #: canaille/core/validators.py:81
 msgid "No user found with this email address."
-msgstr "Aucun utilisateur avec cette adresse email."
+msgstr "Aucun utilisateur enregistré avec cet email."
 
 #: canaille/core/validators.py:93
 msgid "A user with this email address is already a member of this group."
@@ -248,7 +248,7 @@ msgstr "Code de sécurité invalide"
 #: canaille/core/endpoints/admin.py:23
 #: canaille/templates/core/partial/users.html:15
 msgid "Email"
-msgstr "Courriel"
+msgstr "Email"
 
 #: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:42
 #: canaille/core/endpoints/forms.py:96 canaille/core/endpoints/forms.py:210
@@ -256,11 +256,11 @@ msgstr "Courriel"
 #: canaille/core/endpoints/forms.py:485 canaille/core/endpoints/forms.py:509
 #: canaille/core/endpoints/forms.py:525
 msgid "jane.doe@example.com"
-msgstr "camille.dupont@exemple.fr"
+msgstr "camille.dupont@schmilblick.fr"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "Sending test mail. Please check the recipient mail box."
-msgstr "Envoi d'un email de test. Veuillez vérifier votre boîte de réception."
+msgstr "Envoi d'un email d’essai. Veuillez vérifier votre boîte de réception."
 
 #: canaille/core/endpoints/admin.py:190
 #, python-brace-format
@@ -379,14 +379,14 @@ msgstr "Martin.D"
 #: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:515
 #: canaille/templates/core/account/edit.html:199
 msgid "Email addresses"
-msgstr "Adresse email"
+msgstr "Adresses email"
 
 #: canaille/core/endpoints/forms.py:207 canaille/core/endpoints/forms.py:506
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
-"Cette adresse servira d'adresse électronique de récupération pour recevoir "
-"un courriel de réinitialisation de mot de passe en cas de besoin"
+"Cet email servira d'adresse électronique de récupération pour recevoir une "
+"réinitialisation de mot de passe en cas de besoin"
 
 #: canaille/core/endpoints/forms.py:221
 msgid "Phone numbers"
@@ -504,7 +504,7 @@ msgstr "Description"
 #: canaille/core/endpoints/forms.py:429 canaille/core/endpoints/forms.py:446
 #: canaille/core/endpoints/forms.py:478
 msgid "Email address"
-msgstr "Courriel"
+msgstr "Adresse email"
 
 #: canaille/core/endpoints/forms.py:472
 msgid "User name"
@@ -516,7 +516,7 @@ msgstr "Le nom d'utilisateur sera modifiable par la personne invitée"
 
 #: canaille/core/endpoints/forms.py:518
 msgid "New email address"
-msgstr "Nouvelle adresse e-mail"
+msgstr "Nouvelle adresse email"
 
 #: canaille/core/endpoints/forms.py:534
 msgid "Passcode"
@@ -610,7 +610,7 @@ msgstr "Vous avez rejoint le groupe %(group)s!"
 #: canaille/core/endpoints/account/__init__.py:149
 msgid "You will receive soon an email to continue the registration process."
 msgstr ""
-"Vous recevrez sous peu un courriel qui vous permettra de poursuivre votre "
+"Vous recevrez sous peu un email qui vous permettra de poursuivre votre "
 "inscription."
 
 #: canaille/core/endpoints/account/__init__.py:313
@@ -674,24 +674,25 @@ msgstr "Le profil a été mis à jour avec succès."
 
 #: canaille/core/endpoints/account/__init__.py:653
 msgid "This email couldn't be added. Please check the format and try again."
-msgstr "L’adresse email n'a pas été ajoutée. Veuillez vérifier le formulaire."
+msgstr ""
+"L’adresse email n'a pas pu être ajouté. Veuillez vérifier le formulaire."
 
 #: canaille/core/endpoints/account/__init__.py:676
 msgid ""
 "Sending an email to this email address. Please check your inbox and click on "
 "the verification link it contains"
 msgstr ""
-"Un courriel a été envoyé à cette adresse email. Veuillez consulter votre "
-"boîte de réception et cliquer sur le lien de confirmation qu’il contient"
+"Un email a été envoyé à cette adresse. Veuillez consulter votre boîte de "
+"réception et cliquer sur le lien de confirmation qu’il contient"
 
 #: canaille/core/endpoints/account/__init__.py:686
 msgid "This email couldn't be removed."
-msgstr "L'adresse email n'a pas été supprimée."
+msgstr "Cet email n'a pas été supprimé."
 
 #: canaille/core/endpoints/account/__init__.py:690
 msgid "This email couldn't be removed. You must keep at least one."
 msgstr ""
-"Cette adresse email ne peut être supprimée. Vous devez en garder au moins "
+"Cette adresse email n'a pas pu être supprimé. Vous devez en garder au moins "
 "une."
 
 #: canaille/core/endpoints/account/__init__.py:696
@@ -760,7 +761,7 @@ msgid ""
 "received within a few minutes."
 msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
-"courriel. Il devrait arriver d'ici une quelques minutes."
+"email. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/endpoints/account/auth/password.py:101
 msgid ""
@@ -768,7 +769,7 @@ msgid ""
 "within a few minutes."
 msgstr ""
 "Un lien de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
-"courriel. Il devrait arriver d'ici quelques de minutes."
+"email. Il devrait arriver d'ici quelques de minutes."
 
 #: canaille/core/endpoints/auth/__init__.py:82
 #, python-brace-format
@@ -836,7 +837,7 @@ msgid ""
 "received within a few minutes."
 msgstr ""
 "Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
-"courriel. Il devrait arriver d'ici une quelques minutes."
+"email. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/endpoints/auth/password.py:148
 msgid "Could not send the password reset link."
@@ -851,7 +852,7 @@ msgid ""
 "Sending password reset link to your email address. You should receive it "
 "within a few minutes."
 msgstr ""
-"Un lien de réinitialisation de mot de passe vous a été envoyé par courriel. "
+"Un lien de réinitialisation de mot de passe vous a été envoyé par email. "
 "Vous devriez le recevoir d'ici quelques minutes."
 
 #: canaille/core/endpoints/auth/password.py:161
@@ -859,8 +860,8 @@ msgid ""
 "Sending password reset code to your email address. You should receive it "
 "within a few minutes."
 msgstr ""
-"Envoi d'un lien de ré-initialisation de votre mot de passe par courriel. "
-"Vous devriez le recevoir d'ici quelques minutes."
+"Envoi d'un lien de ré-initialisation de votre mot de passe par email. Vous "
+"devriez le recevoir d'ici quelques minutes."
 
 #: canaille/core/endpoints/auth/password.py:173
 #, python-format
@@ -869,7 +870,7 @@ msgid ""
 "cannot send a password reset email."
 msgstr ""
 "L'utilisateur '%(user)s' n'a pas la permission de modifier son mot de passe. "
-"Nous ne pouvons pas lui envoyer un courriel de réinitialisation."
+"Nous ne pouvons pas lui envoyer un email de réinitialisation."
 
 #: canaille/core/endpoints/auth/password.py:207
 #, python-format
@@ -999,7 +1000,7 @@ msgstr "Contacts"
 
 #: canaille/oidc/endpoints/forms.py:81 canaille/oidc/endpoints/forms.py:135
 msgid "Those are the email addresses of people responsible for the client."
-msgstr "Ce sont les adresses e-mail des personnes responsables du client."
+msgstr "Ce sont les adresses email des personnes responsables du client."
 
 #: canaille/oidc/endpoints/forms.py:86 canaille/oidc/endpoints/forms.py:140
 msgid "URI"
@@ -1564,8 +1565,8 @@ msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "there:"
 msgstr ""
-"Si vous avez besoin de communiquer ce lien par d'autres moyen que le "
-"courriel, vous pouvez le copier ici :"
+"Si vous avez besoin de communiquer ce lien par d'autres moyen que l'email, "
+"vous pouvez le copier ici :"
 
 #: canaille/templates/core/invite.html:77
 #, python-format
@@ -1580,7 +1581,7 @@ msgid ""
 "However you can copy the link there to provide it by other ways than email:"
 msgstr ""
 "Cependant, vous pouvez copier ce lien pour le transmettre par d'autres "
-"moyens que le courriel :"
+"moyens que l’email :"
 
 #: canaille/templates/core/invite.html:89
 #: canaille/templates/core/invite_group_member.html:56
@@ -1608,7 +1609,7 @@ msgid ""
 "containing an account creation link."
 msgstr ""
 "Après que ce formulaire sera envoyé, le destinataire que vous avez indiqué "
-"recevra un courriel contenant un lien lui permettant de créer un compte "
+"recevra un email contenant un lien lui permettant de créer un compte "
 "utilisateur."
 
 #: canaille/templates/core/invite.html:146
@@ -1637,8 +1638,8 @@ msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "here:"
 msgstr ""
-"Si vous avez besoin de communiquer ce lien par d'autres moyen que le "
-"courriel, vous pouvez le copier ici :"
+"Si vous avez besoin de communiquer ce lien par d'autres moyen que l'email, "
+"vous pouvez le copier ici :"
 
 #: canaille/templates/core/invite_group_member.html:68
 msgid "Invite another member"
@@ -1650,7 +1651,7 @@ msgid ""
 "link to join this group."
 msgstr ""
 "Après que ce formulaire sera envoyé, le destinataire que vous avez indiqué "
-"recevra un courriel contenant un lien lui permettant de rejoindre ce groupe."
+"recevra un email contenant un lien lui permettant de rejoindre ce groupe."
 
 #: canaille/templates/core/account/add.html:21
 #: canaille/templates/core/account/add.html:54
@@ -1671,7 +1672,7 @@ msgid ""
 "your registration."
 msgstr ""
 "Avant de pouvoir créer un compte, veuillez entrer une adresse email valide. "
-"Vous recevrez ensuite un courriel contenant un lien qui vous permettra de "
+"Vous recevrez ensuite un mail contenant un lien qui vous permettra de "
 "poursuivre votre inscription."
 
 #: canaille/templates/core/account/add.html:214
@@ -2080,8 +2081,8 @@ msgid ""
 "If the user has forgotten his password, you can send him a password reset "
 "email by clicking this button."
 msgstr ""
-"Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un "
-"courriel contenant un lien de réinitialisation en cliquant sur ce bouton."
+"Si l'utilisateur a oublié son mot de passe, vous pouvez lui envoyer un email "
+"contenant un lien de réinitialisation en cliquant sur ce bouton."
 
 #: canaille/templates/core/auth/base.html:36
 #, python-format
@@ -2107,8 +2108,8 @@ msgid ""
 "to continue."
 msgstr ""
 "Si l’identifiant que vous avez entré existe, un email contenant un code de "
-"vérification a été envoyé à votre adresse email. Veuillez entrer le code "
-"dans le formulaire suivant pour continuer."
+"vérification a été envoyé à votre adresse mail. Veuillez entrer le code dans "
+"le formulaire suivant pour continuer."
 
 #: canaille/templates/core/auth/email.html:42
 #: canaille/templates/core/auth/sms.html:42
@@ -2169,19 +2170,18 @@ msgid ""
 msgstr ""
 "Il semblerait que vous vous connectez ici pour la première fois. Afin de "
 "finaliser la configuration de votre compte, vous devez mettre en place un "
-"mot de passe. Nous allons vous envoyer un courriel contenant un lien qui "
-"vous permettra de choisir un mot de passe. Pour continuer et envoyer le "
-"courriel, cliquez sur le bouton « Envoyer le courriel d'initialisation » ci-"
-"dessous."
+"mot de passe. Nous allons vous envoyer un email contenant un lien qui vous "
+"permettra de choisir un mot de passe. Pour continuer et envoyer l'email, "
+"cliquez sur le bouton « Envoyer le lien d'initialisation » ci-dessous."
 
 #: canaille/templates/core/auth/firstlogin.html:50
 msgid "Send the initialization email"
-msgstr "Envoyer le courriel d'initialisation"
+msgstr "Envoyer le lien d'initialisation"
 
 #: canaille/templates/core/auth/forgotten-password-code.html:39
 msgid "Please enter the reset password code you received via email."
 msgstr ""
-"Veuillez entrer le code de réinitialisation que vous avez reçu par courriel."
+"Veuillez entrer le code de réinitialisation que vous avez reçu par email."
 
 #: canaille/templates/core/auth/forgotten-password.html:38
 msgid ""
@@ -2189,9 +2189,9 @@ msgid ""
 "exists, you will receive an email containing a link or code that will allow "
 "you to reset your password."
 msgstr ""
-"Après envoi de ce formulaire, si l'identifiant ou l'adresse courriel que "
-"vous indiquez existe, vous recevrez un courriel contenant un lien ou un code "
-"qui vous permettra de ré-initialiser votre mot de passe."
+"Après envoi de ce formulaire, si l'identifiant ou l'adresse email que vous "
+"indiquez existe, vous recevrez un email contenant un lien ou un code qui "
+"vous permettra de ré-initialiser votre mot de passe."
 
 #: canaille/templates/core/auth/forgotten-password.html:61
 msgid "Send again"
@@ -2400,7 +2400,7 @@ msgstr ""
 #: canaille/templates/core/mails/admin.html:5
 #: canaille/templates/core/mails/admin.html:11
 msgid "Emails"
-msgstr "Courriels"
+msgstr "Emails"
 
 #: canaille/templates/core/mails/admin.html:16
 #: canaille/templates/oidc/client_add.html:30
@@ -2433,8 +2433,8 @@ msgid ""
 "This form will send a dummy email to the address you want. This should be "
 "used for testing mail configuration."
 msgstr ""
-"Ce formulaire enverra un courriel factice à l'adresse que vous indiquerez. À "
-"utiliser pour tester les configurations de courriel."
+"Ce formulaire enverra un email factice à l'adresse que vous indiquerez. À "
+"utiliser pour tester les configurations de l’email."
 
 #: canaille/templates/core/mails/admin.html:54
 msgid "No mail server has been configured. The mail sending test is disabled."
@@ -2444,7 +2444,7 @@ msgstr ""
 
 #: canaille/templates/core/mails/admin.html:65
 msgid "Email preview"
-msgstr "Prévisualisation des courriels"
+msgstr "Prévisualisation des emails"
 
 #: canaille/templates/core/mails/admin.html:77
 #: canaille/templates/core/mails/test.html:19
@@ -2805,8 +2805,8 @@ msgid ""
 "This email is a test to check that you receive communications from "
 "%(site_name)s."
 msgstr ""
-"Ce courriel est une vérification que vous recevez les communications du site "
-"%(site_name)s."
+"Cet email est une vérification que vous recevez les communications du site %"
+"(site_name)s."
 
 #: canaille/templates/core/modals/delete-account.html:9
 msgid "Account deletion"
@@ -2985,7 +2985,7 @@ msgstr "Générer un nouveau code de sécurité"
 
 #: canaille/templates/core/partial/emails_field.html:9
 msgid "Send a verification email to validate this address."
-msgstr "Envoyer un courriel de confirmation à cette adresse."
+msgstr "Envoyer un email de confirmation à cette adresse."
 
 #: canaille/templates/core/partial/group-members.html:27
 #: canaille/templates/core/partial/users.html:29
