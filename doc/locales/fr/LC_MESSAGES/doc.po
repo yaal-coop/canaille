@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-21 00:13+0100\n"
-"PO-Revision-Date: 2025-12-22 12:46+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2026-01-30 18:01+0000\n"
+"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.16-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 41ffeccba4e9433f9ccb055196625b58
@@ -5368,14 +5368,15 @@ msgstr ""
 "Vous pourriez vouloir configurer un terminal `WebFinger`_ sur votre site web "
 "principal pour permettre la découverte automatique de votre installation "
 "Canaille basée sur le nom de compte d'un de vos utilisateurs. Par exemple, "
-"supposons que votre domaine soit ``mydomain.example`` et que votre domaine "
-"Canaille soit ``auth.mydomain.example`` et qu'il existe un utilisateur "
-"``john.doe``. Une application tierce pourrait avoir besoin d'authentifier "
-"l'utilisateur et lui demander son compte. L'utilisateur fournirait son "
-"compte ``john.doe@mydomain.example``, alors l'application exécuterait une "
-"requête WebFinger sur ``https://mydomain.example/.well-known/webfinger`` et "
-"la réponse contiendrait l'adresse du serveur d'authentification ``https://"
-"auth.mydomain.example``. Avec cette information, l'application tierce "
+"supposons que votre domaine soit ``mondomain.schmilblick`` et que votre "
+"domaine Canaille soit ``auth.mondomain.schmilblick`` et qu'il existe un "
+"utilisateur ``jean.dupont``. Une application tierce pourrait avoir besoin "
+"d'authentifier l'utilisateur et lui demander son compte. L'utilisateur "
+"fournirait son compte ``jean.dupont@mondomain.schmilblick``, alors "
+"l'application exécuterait une requête WebFinger sur ``https://"
+"mondomain.schmilblick/.well-known/webfinger`` et la réponse contiendrait "
+"l'adresse du serveur d'authentification ``https://"
+"auth.mondomain.schmilblick``. Avec cette information, l'application tierce "
 "pourrait rediriger l'utilisateur vers la page d'authentification Canaille."
 
 #: ../howtos/deployment.rst:177 48c971f541d14687b928e699f44f4951
@@ -6110,7 +6111,7 @@ msgstr "Contacts"
 
 #: ../howtos/sso.rst:46 3566f8b152034ff5815c5bf79c400c4c
 msgid "Those are the email addresses of people responsible for the client."
-msgstr "Ce sont les adresses e-mail des personnes responsables du client."
+msgstr "Ce sont les adresses email des personnes responsables du client."
 
 #: ../howtos/sso.rst:49 20b1078eeb3a4bb287fb60e23672f382
 msgid "URI"
@@ -8084,7 +8085,7 @@ msgstr "Authentification unique (SSO)"
 
 #: ../references/alternatives.rst:272 290da7b622ad4d70aa3ecd9422c5a321
 msgid "Email"
-msgstr "Courriel"
+msgstr "Email"
 
 #: ../references/alternatives.rst:273 b4c97810ce1e4a8e81f35d8b9044b4cb
 msgid "WebAuthn"
@@ -15722,7 +15723,7 @@ msgstr ""
 
 #: ../tutorials/getting-started.rst:379 e2804679a09c48cb9032b748f9d5adc9
 msgid "**User name**: john"
-msgstr ""
+msgstr "**Pseudonyme**: jean"
 
 #: ../tutorials/getting-started.rst:380 c026dd25d4724f54b33755a500356f9a
 msgid "**Family name**: Doe"
@@ -15730,15 +15731,15 @@ msgstr ""
 
 #: ../tutorials/getting-started.rst:381 cdea1ca5ffab44869ace1c4074e1e5e1
 msgid "**Given name**: John"
-msgstr ""
+msgstr "**Prénom**: Jean"
 
 #: ../tutorials/getting-started.rst:382 50e4e367ba034272bbdf1f5aa5bb1fd4
 msgid "**Formatted name**: John Doe"
-msgstr ""
+msgstr "**Nom formaté **: Jean Dupont"
 
 #: ../tutorials/getting-started.rst:383 ebe1d77cacb349b2b315750b27251af3
 msgid "**Email**: john@example.com"
-msgstr ""
+msgstr "**Email**: jean@schmilblick.fr"
 
 #: ../tutorials/getting-started.rst:384 502cd52974d042dc9f07f179fdc454f3
 #, fuzzy
@@ -15785,6 +15786,7 @@ msgstr ""
 #: ../tutorials/getting-started.rst:409 0fef14f56a6a4c03a3b474248a2d9792
 msgid "In the **Members** section, select both **admin** and **john**"
 msgstr ""
+"Dans la section **Membres**, sélectionnez à la fois **admin** et **jean**"
 
 #: ../tutorials/getting-started.rst:412 e04dc0713eab40eaa875f3d516ba03ab
 msgid "Great! You now have users organized in a group."
@@ -15924,7 +15926,7 @@ msgstr ""
 
 #: ../tutorials/oidc-client.rst:54 24ddfd87bbf7432daf2b972774f49790
 msgid "**Contacts**: your-email@example.com"
-msgstr ""
+msgstr "**Contacts**: votre-email@schmilblick.fr"
 
 #: ../tutorials/oidc-client.rst:55 10a9f60647f742659544cf3b72b23ac4
 #, fuzzy
