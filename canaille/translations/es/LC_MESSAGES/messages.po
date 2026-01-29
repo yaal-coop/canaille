@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2024-12-16 20:00+0000\n"
-"Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
+"PO-Revision-Date: 2026-01-30 18:01+0000\n"
+"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9\n"
+"X-Generator: Weblate 5.16-dev\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:52
@@ -129,16 +129,16 @@ msgstr ""
 
 #: canaille/core/auth.py:267
 msgid "John Doe"
-msgstr "John Doe"
+msgstr "Pepito Pérez"
 
 #: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:161
 #: canaille/core/endpoints/forms.py:473
 msgid "jdoe"
-msgstr "jdoe"
+msgstr "pperez"
 
 #: canaille/core/auth.py:269
 msgid "john.doe@example.com"
-msgstr "john.doe@example.com"
+msgstr "pepito.perez@ejemplo.com"
 
 #: canaille/core/auth.py:276
 msgid " or "
@@ -167,8 +167,7 @@ msgid "You have been invited to create an account on {website_name}"
 msgstr "Has sido invitado a crear una cuenta en {website_name}"
 
 #: canaille/core/mails.py:170
-#, fuzzy, python-brace-format
-#| msgid "Confirm your address email on {website_name}"
+#, python-brace-format
 msgid "Confirm your email address on {website_name}"
 msgstr "Confirma tu dirección de correo electrónico en {website_name}"
 
@@ -257,7 +256,7 @@ msgstr "Correo electrónico"
 #: canaille/core/endpoints/forms.py:485 canaille/core/endpoints/forms.py:509
 #: canaille/core/endpoints/forms.py:525
 msgid "jane.doe@example.com"
-msgstr "jane.doe@example.com"
+msgstr "pepita.perez@ejemplo.com"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "Sending test mail. Please check the recipient mail box."
@@ -362,7 +361,7 @@ msgstr "Nombre de pila"
 
 #: canaille/core/endpoints/forms.py:175
 msgid "John"
-msgstr "John"
+msgstr "Pepito"
 
 #: canaille/core/endpoints/forms.py:181
 msgid "Family Name"
@@ -370,7 +369,7 @@ msgstr "Apellidos"
 
 #: canaille/core/endpoints/forms.py:184
 msgid "Doe"
-msgstr "Doe"
+msgstr "Pérez"
 
 #: canaille/core/endpoints/forms.py:190
 msgid "Display Name"
@@ -378,7 +377,7 @@ msgstr "Nombre a mostrar"
 
 #: canaille/core/endpoints/forms.py:193
 msgid "Johnny"
-msgstr "Johnny"
+msgstr "Fulano"
 
 #: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:515
 #: canaille/templates/core/account/edit.html:199
