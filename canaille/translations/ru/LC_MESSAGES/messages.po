@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2025-07-31 10:02+0000\n"
-"Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
+"PO-Revision-Date: 2026-01-30 18:01+0000\n"
+"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/canaille/"
 "canaille/ru/>\n"
 "Language: ru\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 #: canaille/app/flask.py:52
@@ -258,7 +258,7 @@ msgstr "Email"
 #: canaille/core/endpoints/forms.py:485 canaille/core/endpoints/forms.py:509
 #: canaille/core/endpoints/forms.py:525
 msgid "jane.doe@example.com"
-msgstr "jane.doe@example.com"
+msgstr "vasya.ivanov@example.com"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "Sending test mail. Please check the recipient mail box."
