@@ -186,6 +186,13 @@ Please run ``uv run tox -e style`` on your patches before submitting them.
 In order to perform a style check and correction at each commit you can use our
 `prek <https://github.com/authlib/authlib/pull/803>`_ configuration with ``uv run prek install``.
 
+Coding agents
+~~~~~~~~~~~~~
+
+The use of coding agents in contributions is allowed as long as all the other points of this document are respected, and it does not impact the software quality.
+Contribution authors MUST understand and be able to explain ANY line of code that has been produced, like the code they write themselves.
+The use of an agent must be indicated in the PR.
+
 Front
 -----
 
