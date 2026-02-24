@@ -255,7 +255,8 @@ def setup_flask(app) -> None:
     @app.after_request
     def update_login_history_cookie(response):
         """Update login history cookie if needed."""
-        if login_history := g.pop("login_history_needs_update", None):
+        login_history = g.pop("login_history_needs_update", None)
+        if login_history is not None:
             _set_login_history_cookie(login_history, response)
         return response
 

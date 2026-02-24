@@ -268,6 +268,33 @@ def test_forget(testclient, user):
     assert res.location.endswith("/login")
 
 
+def test_forget_last_account_clears_login_history(testclient, user, backend):
+    """Test that forgetting the last account actually removes it from login history.
+
+    Regression test: when the login history becomes empty after removal,
+    the cookie was not updated because an empty list is falsy in Python.
+    """
+    with testclient.session_transaction() as sess:
+        sess.clear()
+
+    res = testclient.get("/login")
+    res.form["login"] = user.user_name
+    res = res.form.submit()
+    res = res.follow()
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit()
+    testclient.get("/logout")
+
+    res = testclient.get("/login")
+    assert "Choose an account" in res.text
+    assert user.name in res.text
+
+    res = testclient.get(f"/forget/{user.user_name}")
+    res = res.follow()
+    assert "Choose an account" not in res.text
+    assert user.name not in res.text
+
+
 def test_forget_nonexistent_user(testclient):
     """Test removing a non-existent user returns redirect (security)."""
     with testclient.session_transaction() as sess:
