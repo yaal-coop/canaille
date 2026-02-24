@@ -13,12 +13,25 @@ def test_create_rsa_key(cli_runner):
     payload = json.loads(res.stdout)
     jwk.import_key(payload, "RSA")
 
+
+def test_create_rsa_key_format_json(cli_runner):
+    """Test the RSA key creation command with explicit --format json."""
+    res = cli_runner.invoke(
+        cli, ["jwk", "create", "rsa", "--format", "json"], catch_exceptions=False
+    )
+    assert res.exit_code == 0, res.stdout
+    payload = json.loads(res.stdout)
+    jwk.import_key(payload, "RSA")
+
+
 def test_create_rsa_key_format_toml(cli_runner):
     """Test the RSA key creation command with output toml."""
-    res = cli_runner.invoke(cli, ["jwk", "create", "rsa", "--format", "toml"], catch_exceptions=False)
+    res = cli_runner.invoke(
+        cli, ["jwk", "create", "rsa", "--format", "toml"], catch_exceptions=False
+    )
     assert res.exit_code == 0, res.stdout
-    payload = tomlkit.loads("KEY=" + res.stdout).unwrap()
-    jwk.import_key(payload["KEY"], "RSA")
+    payload = tomlkit.loads("_=" + res.stdout).unwrap()["_"]
+    jwk.import_key(payload, "RSA")
 
 
 def test_create_rsa_key_with_size(cli_runner):
@@ -38,12 +51,16 @@ def test_create_oct_key(cli_runner):
     payload = json.loads(res.stdout)
     jwk.import_key(payload, "oct")
 
+
 def test_create_oct_key_format_toml(cli_runner):
     """Test the Oct key creation command with output toml."""
-    res = cli_runner.invoke(cli, ["jwk", "create", "oct", "--format", "toml"], catch_exceptions=False)
+    res = cli_runner.invoke(
+        cli, ["jwk", "create", "oct", "--format", "toml"], catch_exceptions=False
+    )
     assert res.exit_code == 0, res.stdout
-    payload = tomlkit.loads("KEY=" + res.stdout).unwrap()
-    jwk.import_key(payload["KEY"], "oct")
+    payload = tomlkit.loads("_=" + res.stdout).unwrap()["_"]
+    jwk.import_key(payload, "oct")
+
 
 def test_create_oct_key_with_size(cli_runner):
     """Test the Oct key creation command with a size parameter."""
@@ -62,12 +79,15 @@ def test_create_ec_key(cli_runner):
     payload = json.loads(res.stdout)
     jwk.import_key(payload, "EC")
 
+
 def test_create_ec_key_format_toml(cli_runner):
     """Test the EC key creation command with output toml."""
-    res = cli_runner.invoke(cli, ["jwk", "create", "ec", "--format", "toml"], catch_exceptions=False)
+    res = cli_runner.invoke(
+        cli, ["jwk", "create", "ec", "--format", "toml"], catch_exceptions=False
+    )
     assert res.exit_code == 0, res.stdout
-    payload = tomlkit.loads("KEY=" + res.stdout).unwrap()
-    jwk.import_key(payload["KEY"], "EC")
+    payload = tomlkit.loads("_=" + res.stdout).unwrap()["_"]
+    jwk.import_key(payload, "EC")
 
 
 def test_create_ec_key_with_crv(cli_runner):
@@ -87,12 +107,16 @@ def test_create_opk_key(cli_runner):
     payload = json.loads(res.stdout)
     jwk.import_key(payload, "OKP")
 
+
 def test_create_okp_key_format_toml(cli_runner):
     """Test the OKP key creation command with output toml."""
-    res = cli_runner.invoke(cli, ["jwk", "create", "okp", "--format", "toml"], catch_exceptions=False)
+    res = cli_runner.invoke(
+        cli, ["jwk", "create", "okp", "--format", "toml"], catch_exceptions=False
+    )
     assert res.exit_code == 0, res.stdout
-    payload = tomlkit.loads("KEY=" + res.stdout).unwrap()
-    jwk.import_key(payload["KEY"], "OKP")
+    payload = tomlkit.loads("_=" + res.stdout).unwrap()["_"]
+    jwk.import_key(payload, "OKP")
+
 
 def test_create_opk_key_with_crv(cli_runner):
     """Test the OPK key creation command with a crv param."""

@@ -43,15 +43,17 @@ def create():
     """JSON Web Key creation."""
     pass
 
-class OutputFormat(enum.Enum):
-    JSON = enum.auto()
-    TOML = enum.auto()
 
-def _print_key(key, format: OutputFormat):
+class OutputFormat(enum.Enum):
+    JSON = "json"
+    TOML = "toml"
+
+
+def _print_key(key, output_format: OutputFormat):
     """Print key with the selected output format."""
-    if format == OutputFormat.JSON:
+    if output_format == OutputFormat.JSON:
         click.echo(json.dumps(key.as_dict()))
-    elif format == OutputFormat.TOML:
+    else:
         key_as_table = tomlkit.inline_table()
         key_as_table.update(key.as_dict())
         click.echo(key_as_table.as_string())
@@ -59,38 +61,62 @@ def _print_key(key, format: OutputFormat):
 
 @create.command()
 @click.option("--size", default=2048, type=int, help="The key size")
-@click.option("--format", type=click.Choice(OutputFormat, case_sensitive=False), default=OutputFormat.JSON, help="Output format")
-def rsa(size: int, format: OutputFormat):
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(OutputFormat, case_sensitive=False),
+    default=OutputFormat.JSON,
+    help="Output format",
+)
+def rsa(size: int, output_format: OutputFormat):
     """Create a RSA JSON Web Key."""
     key = RSAKey.generate_key(size, auto_kid=True)
-    _print_key(key, format)
+    _print_key(key, output_format)
 
 
 @create.command()
 @click.option("--size", default=256, type=int, help="The key size")
-@click.option("--format", type=click.Choice(OutputFormat, case_sensitive=False), default=OutputFormat.JSON, help="Output format")
-def oct(size: int, format: OutputFormat):
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(OutputFormat, case_sensitive=False),
+    default=OutputFormat.JSON,
+    help="Output format",
+)
+def oct(size: int, output_format: OutputFormat):
     """Create a Oct JSON Web Key."""
     key = OctKey.generate_key(size, auto_kid=True)
-    _print_key(key, format)
+    _print_key(key, output_format)
 
 
 @create.command()
 @click.option("--crv", default="P-256", type=str, help="The key CRV")
-@click.option("--format", type=click.Choice(OutputFormat, case_sensitive=False), default=OutputFormat.JSON, help="Output format")
-def ec(crv: str, format: OutputFormat):
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(OutputFormat, case_sensitive=False),
+    default=OutputFormat.JSON,
+    help="Output format",
+)
+def ec(crv: str, output_format: OutputFormat):
     """Create a EC JSON Web Key."""
     key = ECKey.generate_key(crv, auto_kid=True)
-    _print_key(key, format)
+    _print_key(key, output_format)
 
 
 @create.command()
 @click.option("--crv", default="Ed25519", type=str, help="The key CRV")
-@click.option("--format", type=click.Choice(OutputFormat, case_sensitive=False), default=OutputFormat.JSON, help="Output format")
-def okp(crv: str, format: OutputFormat):
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(OutputFormat, case_sensitive=False),
+    default=OutputFormat.JSON,
+    help="Output format",
+)
+def okp(crv: str, output_format: OutputFormat):
     """Create a OKP JSON Web Key."""
     key = OKPKey.generate_key(crv, auto_kid=True)
-    _print_key(key, format)
+    _print_key(key, output_format)
 
 
 @click.group()
