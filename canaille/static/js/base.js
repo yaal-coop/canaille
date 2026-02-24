@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         htmx.config.requestClass = "loading"
         htmx.config.includeIndicatorStyles = false
         htmx.config.defaultSwapStyle = "morph"
+        Idiomorph.defaults.ignoreActiveValue = true
     }
     onDomChanges();
 });
