@@ -26,6 +26,9 @@ del_button=false
     {%- set ignore_me = kwargs.update({"hx-post": ""}) -%}
     {%- set ignore_me = kwargs.update({"hx-indicator": "closest .input", "hx-trigger": "input changed delay:500ms"}) -%}
 {%- endif -%}
+{%- if field.errors -%}
+    {%- set ignore_me = kwargs.update({"aria-invalid": "true", "aria-describedby": field.name ~ "-error"}) -%}
+{%- endif -%}
 {%- if request.headers.get("HX-Request") and not request.headers.get("HX-Boosted") -%}
     {# Prevent password to be automatically refilled when reset during edition #}
     {%- if field.type == "PasswordField" -%}
@@ -148,11 +151,13 @@ del_button=false
 {% endif %}
 
 {% if field.errors %}
-    {% for error in field.errors %}
-        <div class="ui pointing red basic label">
-            <p>{{ error }}</p>
-        </div>
-    {% endfor %}
+    <div id="{{ field.name }}-error" role="alert">
+        {% for error in field.errors %}
+            <div class="ui pointing red basic label">
+                <p>{{ error }}</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endif %}
 
 {% set display_strength_indicator = field.render_kw and "class" in field.render_kw and "password_strength" in field.render_kw["class"] %}

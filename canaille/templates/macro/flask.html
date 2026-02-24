@@ -9,7 +9,12 @@
                             {% endif %}
                             message
                             {{ category }}
-                            {{ classes }}">
+                            {{ classes }}"
+                     {% if category in ("error", "negative") %}
+                         role="alert"
+                     {% else %}
+                         role="status"
+                     {% endif %}>
                     {{ message }}
                 </div>
             {% endfor %}
