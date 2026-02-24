@@ -26,7 +26,8 @@ Fixed
 - When the scope parameter is omitted from authorization requests, the client's configured scope is now used as the default value.
 - Password field autofocus. :issue:`325`
 - Broken photo upload. :issue:`327`
-- Disable HTMX boosting for redirections after redirections.
+- Disable HTMX boosting for redirections after redirections. :issue:`334`
+- Fix HTMX resetting inputs :issue:`335`
 
 [0.1.0] - 2025-11-13
 --------------------
