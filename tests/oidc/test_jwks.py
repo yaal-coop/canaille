@@ -161,6 +161,25 @@ def test_missing_active_jwks_warning(configuration, caplog):
         assert len(server_jwks(False).keys) == 2
 
 
+def test_get_jwt_config_uses_client_algorithm(testclient, client, backend):
+    """Test that get_jwt_config uses the client's id_token_signed_response_alg rather than deriving the algorithm from the key via Strategy.SECURITY.
+
+    An RSA key with Strategy.SECURITY would yield RS512, but when the client
+    requests RS256, the signed token must use RS256.
+    """
+    rsa_key = jwk.generate_key("RSA", 2048)
+    rsa_key.ensure_kid()
+
+    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [rsa_key.as_dict()]
+
+    backend.update(client, id_token_signed_response_alg="RS256")
+    backend.save(client)
+
+    config = get_jwt_config(client=client)
+    assert config["alg"] == "RS256"
+    assert config["kid"] == rsa_key.kid
+
+
 def test_get_jwt_config_fallback_to_first_key(testclient):
     """Test that get_jwt_config falls back to first key when no RSA key exists."""
     okp_key = jwk.generate_key("OKP", "Ed25519")

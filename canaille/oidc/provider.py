@@ -106,10 +106,12 @@ def get_jwt_config(grant=None, client=None):
     jwks = server_jwks(include_inactive=False)
 
     jwk = None
+    alg = None
     if client and (alg := client.id_token_signed_response_alg):
         jwk = jwks.pick_random_key(alg)
 
     if jwk is None:
+        alg = None
         jwk = jwks.pick_random_key("RS256")
 
     if jwk is None:
@@ -119,7 +121,7 @@ def get_jwt_config(grant=None, client=None):
         "key": jwk.as_dict(),
         "iss": get_issuer(),
         "kid": jwk.kid,
-        "alg": get_alg_for_key(jwk),
+        "alg": alg or get_alg_for_key(jwk),
     }
     return payload
 
