@@ -43,7 +43,7 @@ from .jose import server_jwks
 from .userinfo import UserInfo
 from .userinfo import generate_user_claims
 
-AUTHORIZATION_CODE_LIFETIME = 84400
+AUTHORIZATION_CODE_LIFETIME = 300
 JWT_JTI_CACHE_LIFETIME = 3600
 
 AMR_MAPPING = {
