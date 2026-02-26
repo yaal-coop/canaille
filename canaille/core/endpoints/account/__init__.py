@@ -773,6 +773,11 @@ def _handle_delete_actions(user, edited_user, action):
             "success",
         )
         Backend.instance.delete(edited_user)
+        current_app.logger.security(
+            f"Deleted user {edited_user.id} by {user.id}"
+            if not self_deletion
+            else f"User {edited_user.id} deleted their own account"
+        )
 
         if self_deletion:
             return redirect(url_for("core.account.index"))
@@ -888,6 +893,7 @@ def impersonate(user, puppet):
         abort(403, _("Locked users cannot be impersonated."))
 
     login_user(puppet, remember=False)
+    current_app.logger.security(f"User {user.id} impersonated {puppet.id}")
     flash(
         _("Connection successful. Welcome %(user)s", user=puppet.name),
         "success",

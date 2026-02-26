@@ -2,6 +2,7 @@ import json
 from http import HTTPStatus
 
 from authlib.integrations.flask_oauth2 import ResourceProtector
+from authlib.integrations.flask_oauth2 import current_token
 from authlib.integrations.flask_oauth2.errors import (
     _HTTPException as AuthlibHTTPException,
 )
@@ -9,6 +10,7 @@ from authlib.oauth2.rfc6750 import BearerTokenValidator
 from flask import Blueprint
 from flask import Response
 from flask import abort
+from flask import current_app
 from flask import request
 from pydantic import ValidationError
 from scim2_models import Context
@@ -231,6 +233,9 @@ def create_user():
     )
     user = user_from_scim_to_canaille(request_user, models.User())
     Backend.instance.save(user)
+    current_app.logger.security(
+        f"SCIM created user {user.id} by client {current_token.client.client_id}"
+    )
     response_user = user_from_canaille_to_scim_server(user)
     payload = response_user.model_dump_json(scim_ctx=Context.RESOURCE_CREATION_RESPONSE)
     return Response(payload, status=HTTPStatus.CREATED)
@@ -245,6 +250,9 @@ def create_group():
     )
     group = group_from_scim_to_canaille(request_group, models.Group())
     Backend.instance.save(group)
+    current_app.logger.security(
+        f"SCIM created group {group.id} by client {current_token.client.client_id}"
+    )
     response_group = group_from_canaille_to_scim_server(group)
     payload = response_group.model_dump_json(
         scim_ctx=Context.RESOURCE_CREATION_RESPONSE
@@ -264,6 +272,9 @@ def replace_user(user):
     )
     updated_user = user_from_scim_to_canaille(request_scim_user, user)
     Backend.instance.save(updated_user)
+    current_app.logger.security(
+        f"SCIM replaced user {updated_user.id} by client {current_token.client.client_id}"
+    )
     response_scim_user = user_from_canaille_to_scim_server(updated_user)
     payload = response_scim_user.model_dump(
         scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE
@@ -283,6 +294,9 @@ def replace_group(group):
     )
     updated_group = group_from_scim_to_canaille(request_scim_group, group)
     Backend.instance.save(updated_group)
+    current_app.logger.security(
+        f"SCIM replaced group {updated_group.id} by client {current_token.client.client_id}"
+    )
     response_group = group_from_canaille_to_scim_server(updated_group)
     payload = response_group.model_dump(scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE)
     return payload
@@ -301,6 +315,9 @@ def patch_user(user):
     if modified:
         updated_user = user_from_scim_to_canaille(scim_user, user)
         Backend.instance.save(updated_user)
+        current_app.logger.security(
+            f"SCIM patched user {updated_user.id} by client {current_token.client.client_id}"
+        )
         scim_user = user_from_canaille_to_scim_server(updated_user)
 
     return scim_user.model_dump(scim_ctx=Context.RESOURCE_PATCH_RESPONSE)
@@ -319,6 +336,9 @@ def patch_group(group):
     if modified:
         updated_group = group_from_scim_to_canaille(scim_group, group)
         Backend.instance.save(updated_group)
+        current_app.logger.security(
+            f"SCIM patched group {updated_group.id} by client {current_token.client.client_id}"
+        )
         scim_group = group_from_canaille_to_scim_server(updated_group)
 
     return scim_group.model_dump(scim_ctx=Context.RESOURCE_PATCH_RESPONSE)
@@ -328,6 +348,9 @@ def patch_group(group):
 @csrf.exempt
 @require_oauth()
 def delete_user(user):
+    current_app.logger.security(
+        f"SCIM deleted user {user.id} by client {current_token.client.client_id}"
+    )
     Backend.instance.delete(user)
     return "", HTTPStatus.NO_CONTENT
 
@@ -336,5 +359,8 @@ def delete_user(user):
 @csrf.exempt
 @require_oauth()
 def delete_group(group):
+    current_app.logger.security(
+        f"SCIM deleted group {group.id} by client {current_token.client.client_id}"
+    )
     Backend.instance.delete(group)
     return "", HTTPStatus.NO_CONTENT
