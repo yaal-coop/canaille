@@ -73,7 +73,7 @@ PREFERRED_URL_SCHEME = "http"
 # - P1W for 1 week
 # - PT12H for 12 hours
 # - P1DT12H for 1 day and 12 hours
-# PERMANENT_SESSION_LIFETIME = "P365D"
+# PERMANENT_SESSION_LIFETIME = "P30D"
 
 # The Flask-Session backend type.
 #

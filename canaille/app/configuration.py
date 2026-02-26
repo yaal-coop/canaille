@@ -197,7 +197,7 @@ class RootSettings(BaseSettings):
     See the :doc:`Flask-Caching documentation <flask-caching:index>` for further details.
     """
 
-    PERMANENT_SESSION_LIFETIME: datetime.timedelta = datetime.timedelta(days=365)
+    PERMANENT_SESSION_LIFETIME: datetime.timedelta = datetime.timedelta(days=30)
     """The Flask :external:py:data:`PERMANENT_SESSION_LIFETIME` configuration setting.
 
     This sets the lifetime of a permanent session. Users sessions are permanent when
