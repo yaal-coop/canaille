@@ -1,6 +1,11 @@
 import logging
 from unittest import mock
 
+from cachelib import FileSystemCache
+from flask_webtest import TestApp
+from jinja2 import FileSystemBytecodeCache
+
+from canaille import create_app
 from canaille.core.auth import AuthenticationSession
 
 
@@ -84,6 +89,45 @@ def test_signin_and_out(testclient, user, caplog):
     ) in caplog.record_tuples
     res = res.follow(status=302)
     res = res.follow(status=200)
+
+
+def test_signin_regenerates_session_id(
+    configuration, backend, user, tmp_path, jinja_cache_directory
+):
+    """Test session ID regeneration after login (session fixation prevention)."""
+    configuration["SESSION_TYPE"] = "cachelib"
+    configuration["SESSION_CACHELIB"] = FileSystemCache(str(tmp_path / "sessions"))
+
+    app = create_app(configuration, backend=backend)
+    app.jinja_env.bytecode_cache = FileSystemBytecodeCache(jinja_cache_directory)
+    testclient = TestApp(app)
+
+    cookie_name = app.config.get("SESSION_COOKIE_NAME", "session")
+
+    def get_session_cookie():
+        return (
+            testclient.cookiejar._cookies.get("canaille.test", {})
+            .get("/", {})
+            .get(cookie_name, None)
+        )
+
+    res = testclient.get("/login", status=200)
+    cookie_before = get_session_cookie()
+    assert cookie_before is not None
+    sid_before = cookie_before.value
+
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+
+    cookie_after = get_session_cookie()
+    assert cookie_after is not None
+    sid_after = cookie_after.value
+
+    assert sid_before != sid_after
 
 
 def test_signin_wrong_password(testclient, user, caplog):
