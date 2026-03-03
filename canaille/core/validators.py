@@ -2,7 +2,6 @@ import wtforms
 from flask import current_app
 
 from canaille.app import models
-from canaille.app.i18n import gettext
 from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
@@ -46,12 +45,12 @@ def existing_login(form, field):
 def existing_group_member(form, field):
     if field.data is None:
         raise wtforms.ValidationError(
-            gettext("The user you are trying to remove does not exist.")
+            _("The user you are trying to remove does not exist.")
         )
 
     if field.data not in form.group.members:
         raise wtforms.ValidationError(
-            gettext(
+            _(
                 "The user '{user}' has already been removed from the group '{group}'"
             ).format(user=field.data.formatted_name, group=form.group.display_name)
         )
@@ -104,11 +103,11 @@ def captcha_validator(form, field):
 def is_group_member(form, field):
     """Validate that the user is a member of the group."""
     if field.data is None:
-        raise wtforms.ValidationError(gettext("This user does not exist."))
+        raise wtforms.ValidationError(_("This user does not exist."))
 
     if field.data not in form.group.members:
         raise wtforms.ValidationError(
-            gettext("The user '{user}' is not a member of this group.").format(
+            _("The user '{user}' is not a member of this group.").format(
                 user=field.data.formatted_name
             )
         )
@@ -121,7 +120,7 @@ def is_not_group_owner(form, field):
 
     if field.data in form.group.owners:
         raise wtforms.ValidationError(
-            gettext("The user '{user}' is already an owner of this group.").format(
+            _("The user '{user}' is already an owner of this group.").format(
                 user=field.data.formatted_name
             )
         )
@@ -130,11 +129,11 @@ def is_not_group_owner(form, field):
 def is_group_owner(form, field):
     """Validate that the user is an owner of the group."""
     if field.data is None:
-        raise wtforms.ValidationError(gettext("This user does not exist."))
+        raise wtforms.ValidationError(_("This user does not exist."))
 
     if field.data not in form.group.owners:
         raise wtforms.ValidationError(
-            gettext("The user '{user}' is not an owner of this group.").format(
+            _("The user '{user}' is not an owner of this group.").format(
                 user=field.data.formatted_name
             )
         )
