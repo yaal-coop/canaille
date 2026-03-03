@@ -236,7 +236,7 @@ def set_owner(user, group):
 
     if not form.validate():
         flash(
-            "\n".join(form.errors.get("user", [])),
+            _("Please check your input"),
             "error",
         )
 
@@ -270,7 +270,7 @@ def unset_owner(user, group):
 
     if not form.validate():
         flash(
-            "\n".join(form.errors.get("user", [])),
+            _("Please check your input"),
             "error",
         )
 
