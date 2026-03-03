@@ -187,7 +187,7 @@ def delete_member(group):
 
     if not form.validate():
         flash(
-            "\n".join(form.errors.get("member")),
+            "\n".join(str(e) for e in form.errors.get("member")),
             "error",
         )
 
@@ -236,7 +236,7 @@ def set_owner(user, group):
 
     if not form.validate():
         flash(
-            "\n".join(form.errors.get("user", [])),
+            "\n".join(str(e) for e in form.errors.get("user", [])),
             "error",
         )
 
@@ -262,15 +262,15 @@ def set_owner(user, group):
 
 def unset_owner(user, group):
     """Remove owner status from a group member."""
-    if not user.can("manage_all_groups"):
-        abort(403)
-
     form = UnsetGroupOwnerForm(request.form or None)
     form.group = group
 
+    if not user.can("manage_all_groups") and form.user.data is not None and form.user.data != user:
+        abort(403)
+
     if not form.validate():
         flash(
-            "\n".join(form.errors.get("user", [])),
+            "\n".join(str(e) for e in form.errors.get("user", [])),
             "error",
         )
 
