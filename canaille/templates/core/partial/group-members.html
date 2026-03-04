@@ -1,4 +1,5 @@
 {% import "macro/table.html" as table %}
+{% import "macro/form.html" as fui %}
 <table class="ui bottom attached table users">
     <thead>
         <tr>
@@ -68,8 +69,7 @@
                 {% if edited_group and edited_group.user_can_edit(user) %}
                     <td>
                         {% if user.can_manage_all_groups %}
-                            <form id="deletegroupmemberform-{{ watched_user.id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
-                                {{ form.hidden_tag() if form.hidden_tag }}
+                            {% call fui.render_form(form, id="deletegroupmemberform-" ~ watched_user.id) %}
                                 <input type="hidden" name="user" value="{{ watched_user.id }}">
                                 <input type="hidden" name="member" value="{{ watched_user.id }}">
                                 <div class="ui buttons">
@@ -92,23 +92,21 @@
                                         </button>
                                     {% endif %}
                                 </div>
-                            </form>
+                            {% endcall %}
                         {% elif watched_user == user and watched_user in edited_group.owners %}
-                            <form action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
-                                {{ form.hidden_tag() if form.hidden_tag }}
+                            {% call fui.render_form(form) %}
                                 <input type="hidden" name="user" value="{{ watched_user.id }}">
                                 <button class="ui icon button" name="action" value="confirm-unset-owner" title="{% trans %}Step down as owner{% endtrans %}">
                                     <i class="star yellow icon"></i>
                                 </button>
-                            </form>
+                            {% endcall %}
                         {% elif watched_user not in edited_group.owners %}
-                            <form action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
-                                {{ form.hidden_tag() if form.hidden_tag }}
+                            {% call fui.render_form(form) %}
                                 <input type="hidden" name="user" value="{{ watched_user.id }}">
                                 <button class="ui icon button" name="action" value="confirm-set-owner" title="{% trans %}Make owner{% endtrans %}">
                                     <i class="star outline icon"></i>
                                 </button>
-                            </form>
+                            {% endcall %}
                         {% endif %}
                     </td>
                 {% endif %}
