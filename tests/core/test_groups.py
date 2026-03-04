@@ -889,6 +889,39 @@ def test_unset_owner_forbidden_for_non_admin(
     assert admin in foo_group.owners  # Owner status should not have been removed
 
 
+def test_unset_owner_self(testclient, logged_user, admin, foo_group, backend):
+    """Test that an owner can step down from ownership."""
+    foo_group.members = [logged_user, admin]
+    foo_group.owners = [logged_user, admin]
+    backend.save(foo_group)
+
+    res = testclient.get(f"/groups/{foo_group.display_name}", status=200)
+
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.forms["unsetownerform-" + str(logged_user.id)][
+                "csrf_token"
+            ].value,
+            "action": "confirm-unset-owner",
+            "user": logged_user.id,
+        },
+    )
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "action": "unset-owner",
+            "user": logged_user.id,
+        },
+    )
+
+    backend.reload(foo_group)
+    backend.reload(logged_user)
+    assert logged_user not in foo_group.owners
+    assert len(foo_group.owners) == 1
+
+
 def test_remove_member_also_removes_owner(
     testclient, logged_admin, user, foo_group, backend
 ):
