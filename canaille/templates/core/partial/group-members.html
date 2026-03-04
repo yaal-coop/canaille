@@ -94,14 +94,14 @@
                                 </div>
                             {% endcall %}
                         {% elif watched_user == user and watched_user in edited_group.owners %}
-                            {% call fui.render_form(form) %}
+                            {% call fui.render_form(form, id="unsetownerform-" ~ watched_user.id) %}
                                 <input type="hidden" name="user" value="{{ watched_user.id }}">
                                 <button class="ui icon button" name="action" value="confirm-unset-owner" title="{% trans %}Step down as owner{% endtrans %}">
                                     <i class="star yellow icon"></i>
                                 </button>
                             {% endcall %}
                         {% elif watched_user not in edited_group.owners %}
-                            {% call fui.render_form(form) %}
+                            {% call fui.render_form(form, id="setownerform-" ~ watched_user.id) %}
                                 <input type="hidden" name="user" value="{{ watched_user.id }}">
                                 <button class="ui icon button" name="action" value="confirm-set-owner" title="{% trans %}Make owner{% endtrans %}">
                                     <i class="star outline icon"></i>
