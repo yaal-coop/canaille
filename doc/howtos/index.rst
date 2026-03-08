@@ -7,7 +7,7 @@ How-tos are task-oriented recipes that help you accomplish specific goals.
 
    install
    deployment
-   databases
+   database/index
    sso
    provisioning
    worker

@@ -167,7 +167,7 @@ Install
 =======
 
 The :ref:`install command <cli_install>` will apply most of the things needed to get Canaille working.
-Depending on the configured :doc:`database <../databases>` it will create the SQL tables, or install the LDAP schemas for instance.
+Depending on the configured :doc:`database <../database/index>` it will create the SQL tables, or install the LDAP schemas for instance.
 
 .. tab-set::
    :class: outline

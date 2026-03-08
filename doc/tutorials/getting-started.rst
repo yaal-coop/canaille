@@ -244,7 +244,7 @@ Then let Canaille create the tables and run the migrations:
          $ canaille install
 
 To read in more depth how to configure SQL databases and LDAP directories,
-have a look at :doc:`../howtos/databases`.
+have a look at :doc:`../howtos/database/index`.
 
 Step 4: Create Your First Admin User
 =====================================
