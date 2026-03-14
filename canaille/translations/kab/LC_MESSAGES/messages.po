@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2025-05-24 14:03+0000\n"
+"PO-Revision-Date: 2026-03-15 09:09+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
 "kab/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: canaille/app/flask.py:52
@@ -2248,11 +2248,11 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:40
 msgid "Secret token"
-msgstr ""
+msgstr "Tiddest tuffirt"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:48
 msgid "3 - Secret token"
-msgstr ""
+msgstr "3 - Tiddest tuffirt"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:51
 msgid ""
@@ -2303,7 +2303,7 @@ msgstr "Tigawin"
 #: canaille/templates/oidc/token_list.html:38
 #: canaille/templates/oidc/token_view.html:34
 msgid "Tokens"
-msgstr ""
+msgstr "Tiddas"
 
 #: canaille/templates/core/mails/admin.html:29
 msgid "Mail sending test"
@@ -2992,7 +2992,7 @@ msgstr ""
 
 #: canaille/templates/oidc/client_add.html:42
 msgid "Registration token"
-msgstr ""
+msgstr "Tiddest n usekles"
 
 #: canaille/templates/oidc/client_add.html:45
 msgid ""
@@ -3021,7 +3021,7 @@ msgstr ""
 
 #: canaille/templates/oidc/client_edit.html:44
 msgid "Management token"
-msgstr ""
+msgstr "Tiddest n usefrek"
 
 #: canaille/templates/oidc/client_edit.html:47
 msgid ""
@@ -3052,7 +3052,7 @@ msgstr ""
 
 #: canaille/templates/oidc/client_edit.html:116
 msgid "New access token"
-msgstr ""
+msgstr "Tiddest tamaynut n wadduf"
 
 #: canaille/templates/oidc/client_edit.html:119
 msgid "Delete the client"
@@ -3131,7 +3131,7 @@ msgstr "Senser tuqqna"
 #: canaille/templates/oidc/token_view.html:20
 #: canaille/templates/oidc/token_view.html:41
 msgid "Token details"
-msgstr ""
+msgstr "Talqayt n tiddest"
 
 #: canaille/templates/oidc/partial/token_list.html:6
 #: canaille/templates/oidc/token_view.html:48
@@ -3175,11 +3175,11 @@ msgstr ""
 
 #: canaille/templates/oidc/token_view.html:124
 msgid "Token type"
-msgstr ""
+msgstr "Tawsit n tiddest"
 
 #: canaille/templates/oidc/token_view.html:128
 msgid "Access token"
-msgstr ""
+msgstr "Tiddest n wadduf"
 
 #: canaille/templates/oidc/token_view.html:139
 msgid "Refresh token"
@@ -3245,7 +3245,7 @@ msgstr "Asnas %(name)s yessutur anekcum ɣer:"
 
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
-msgstr ""
+msgstr "Tiddest"
 
 #, fuzzy
 #~| msgid "Source code"
