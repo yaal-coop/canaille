@@ -70,7 +70,9 @@ def oauth_authorization_server():
             "client_credentials",
             "refresh_token",
         ],
-        "ui_locales_supported": g.available_language_codes,
+        "ui_locales_supported": [
+            code.replace("_", "-") for code in g.available_language_codes
+        ],
         "code_challenge_methods_supported": CodeChallenge.SUPPORTED_CODE_CHALLENGE_METHOD,
         "service_documentation": DOCUMENTATION_URL,
         "authorization_response_iss_parameter_supported": True,

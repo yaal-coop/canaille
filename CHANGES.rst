@@ -1,7 +1,14 @@
+[0.2.2] - 2025-03-20
+--------------------
+
+Fixed
+^^^^^
+- ``ui_locales_supported`` in OIDC well-known now uses BCP 47 language tags (hyphens) instead of POSIX locale codes (underscores).
+
 [0.2.1] - 2025-02-25
 --------------------
 
-Added
+Fixed
 ^^^^^
 - Fix alg selection on JWT emission.
 
