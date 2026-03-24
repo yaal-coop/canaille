@@ -294,7 +294,7 @@ def cli_runner(app):
 
 
 @pytest.fixture
-def user(app, backend):
+def user(app, backend, jpeg_photo):
     from canaille.app import models
 
     u = models.User(
@@ -313,6 +313,11 @@ def user(app, backend):
         locality="some city",
         postal_code="6789",
         region="some state",
+        photo=jpeg_photo,
+        title="Dr.",
+        organization="Acme Corp.",
+        employee_number="EMP-001",
+        department="Engineering",
         secret_token="fefe9b10",
         hotp_counter=1,
         last_otp_login=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
@@ -427,7 +432,7 @@ def bar_group(app, admin, backend):
     backend.delete(group)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def jpeg_photo():
     with open("tests/fixtures/minimal.jpg", "rb") as fd:
         return fd.read()

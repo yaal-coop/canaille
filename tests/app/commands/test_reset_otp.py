@@ -48,6 +48,11 @@ def test_reset_otp_by_id(testclient, cli_runner, backend, caplog, user, otp_meth
         "postal_code": "6789",
         "region": "some state",
         "street": "1234, some street",
+        "photo": mock.ANY,
+        "title": "Dr.",
+        "organization": "Acme Corp.",
+        "employee_number": "EMP-001",
+        "department": "Engineering",
         "last_otp_login": "2020-01-01T00:00:00+00:00",
     }
     assert (

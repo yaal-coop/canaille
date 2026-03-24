@@ -1,3 +1,4 @@
+import base64
 import collections.abc
 import datetime
 import importlib
@@ -53,6 +54,9 @@ class ModelEncoder(json.JSONEncoder):
 
         if isinstance(obj, datetime.datetime):
             return obj.isoformat()
+
+        if isinstance(obj, bytes):
+            return base64.b64encode(obj).decode("ascii")
 
         if isinstance(obj, Model):
             return self.serialize_model(obj)

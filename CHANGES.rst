@@ -1,3 +1,10 @@
+[0.2.3] - 2026-03-24
+--------------------
+
+Fixed
+^^^^^
+- SCIM server no longer crashes with a 500 error when querying or patching users that have a profile photo.
+
 [0.2.2] - 2025-03-20
 --------------------
 
