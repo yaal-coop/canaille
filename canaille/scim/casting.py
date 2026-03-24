@@ -32,7 +32,7 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
         display_name=user.display_name,
         password=user.get_password_hash(),
         title=user.title,
-        profile_url=user.profile_url,
+        profile_url=user.profile_url or None,
         emails=[
             user_class.Emails(
                 value=email,

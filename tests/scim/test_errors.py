@@ -90,6 +90,31 @@ def test_missing_field(app, backend, scim_client):
     assert error.status == 400
 
 
+def test_query_user_with_empty_profile_url(app, backend, scim_client):
+    """Test that querying users does not crash when a user has an empty profile_url."""
+    from canaille.app import models
+
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    u = models.User(
+        user_name="noprofile",
+        emails=["noprofile@test.test"],
+        family_name="noprofile",
+        formatted_name="noprofile",
+        profile_url="",
+    )
+    backend.save(u)
+
+    response = scim_client.query(User)
+    assert any(r.user_name == "noprofile" for r in response.resources)
+    assert all(
+        r.profile_url is None for r in response.resources if r.user_name == "noprofile"
+    )
+
+    backend.delete(u)
+
+
 def test_invalid_payload(app, backend, scim_client):
     """Test that SCIM API returns an invalidValue error when creating a user with an empty payload."""
     # TODO: push this test in scim2-tester

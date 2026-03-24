@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - SCIM server no longer crashes with a 500 error when querying or patching users that have a profile photo.
+- SCIM server no longer returns an ``invalidSyntax`` error when a user has an empty ``profile_url``.
 
 [0.2.2] - 2025-03-20
 --------------------

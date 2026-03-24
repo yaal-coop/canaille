@@ -56,7 +56,12 @@ def test_photo_absent(testclient, backend):
     """Test that accessing photo for user without photo returns 404."""
     from canaille.app import models
 
-    u = models.User(user_name="nophoto", emails=["nophoto@test.test"])
+    u = models.User(
+        user_name="nophoto",
+        emails=["nophoto@test.test"],
+        family_name="nophoto",
+        formatted_name="nophoto",
+    )
     backend.save(u)
     testclient.get(photo_url(testclient, u.identifier), status=404)
     backend.delete(u)
