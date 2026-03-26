@@ -139,7 +139,7 @@ def test_moderator_can_create_edit_and_delete_group(
     res = testclient.get("/groups", status=200)
     assert backend.get(models.Group, display_name="bar") is None
     assert backend.get(models.Group, display_name="foo") == foo_group
-    res.mustcontain(no="bar")
+    res.mustcontain(no="/groups/bar")
     res.mustcontain("foo")
 
     # Fill the form for a new group
