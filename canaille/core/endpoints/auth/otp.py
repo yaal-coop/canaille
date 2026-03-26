@@ -43,7 +43,7 @@ def otp():
 
     if not form.validate() or not g.auth.user:
         flash(
-            _("The passcode you entered is invalid. Please try again"),
+            _("The passcode you entered is invalid. Please try again."),
             "error",
         )
         current_app.logger.security(f"Failed OTP authentication for {g.auth.user_name}")
@@ -57,7 +57,7 @@ def otp():
     )
     if not otp_valid:
         flash(
-            _("The passcode you entered is invalid. Please try again"),
+            _("The passcode you entered is invalid. Please try again."),
             "error",
         )
         current_app.logger.security(f"Failed OTP authentication for {g.auth.user_name}")

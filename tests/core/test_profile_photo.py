@@ -52,10 +52,19 @@ def test_photo_nonexistent_user(testclient, user):
     testclient.get(photo_url(testclient, "nonexistent"), status=404)
 
 
-def test_photo_absent(testclient, user):
+def test_photo_absent(testclient, backend):
     """Test that accessing photo for user without photo returns 404."""
-    assert not user.photo
-    testclient.get(photo_url(testclient, user.identifier), status=404)
+    from canaille.app import models
+
+    u = models.User(
+        user_name="nophoto",
+        emails=["nophoto@test.test"],
+        family_name="nophoto",
+        formatted_name="nophoto",
+    )
+    backend.save(u)
+    testclient.get(photo_url(testclient, u.identifier), status=404)
+    backend.delete(u)
 
 
 def test_photo_on_profile_edition(

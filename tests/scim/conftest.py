@@ -67,17 +67,11 @@ def oidc_token(testclient, oidc_client, backend):
 @pytest.fixture
 def scim_client(app, oidc_client, oidc_token):
     from scim2_client.engines.werkzeug import TestSCIMClient
-    from scim2_models import Resource
     from werkzeug.test import Client
 
     from canaille.scim.endpoints import bp
     from canaille.scim.endpoints import get_resource_types
-    from canaille.scim.endpoints import get_schemas
     from canaille.scim.endpoints import get_service_provider_config
-
-    resource_models = [
-        Resource.from_schema(schema) for schema in get_schemas().values()
-    ]
 
     return TestSCIMClient(
         Client(app),
@@ -91,7 +85,6 @@ def scim_client(app, oidc_client, oidc_token):
         check_response_status_codes=False,
         service_provider_config=get_service_provider_config(),
         resource_types=get_resource_types().values(),
-        resource_models=resource_models,
     )
 
 

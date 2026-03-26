@@ -37,7 +37,7 @@ This page displays a form to get the user identifier.
                                     {% if is_connected.value %}
                                         <div class="ui left floated green ribbon label">
                                             <i class="check icon"></i>
-                                            {% trans %}Connected{% endtrans %}
+                                            {% trans %}Logged in{% endtrans %}
                                         </div>
                                     {% endif %}
 
@@ -87,7 +87,7 @@ This page displays a form to get the user identifier.
 
         {% call fui.render_form(form) %}
             {% block fields %}
-                {% block login_field scoped %}{{ login_field.render_field(form.login, class="autofocus") }}{% endblock %}
+                {% block login_field scoped %}{{ login_field.render_field(form.login, autofocus=true) }}{% endblock %}
             {% endblock %}
 
             {% block buttons %}

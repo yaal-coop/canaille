@@ -19,7 +19,7 @@ def test_password_reset_does_not_bypass_mfa(testclient, user, backend):
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
 
-    assert ("success", "Your password has been updated successfully") in res.flashes
+    assert ("success", "Your password has been updated successfully.") in res.flashes
 
     # User should NOT be logged in - they need to complete MFA
     with testclient.session_transaction() as sess:
@@ -38,7 +38,7 @@ def test_password_reset_logs_in_when_password_only(testclient, user, backend):
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
 
-    assert ("success", "Your password has been updated successfully") in res.flashes
+    assert ("success", "Your password has been updated successfully.") in res.flashes
 
     # User should be logged in since password is the only factor
     with testclient.session_transaction() as sess:
@@ -67,7 +67,7 @@ def test_password_reset(testclient, user, backend):
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
-    assert ("success", "Your password has been updated successfully") in res.flashes
+    assert ("success", "Your password has been updated successfully.") in res.flashes
     assert res.location == "/profile/user"
 
     backend.reload(user)
@@ -113,7 +113,7 @@ def test_password_reset_multiple_emails(testclient, user, backend):
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
-    assert ("success", "Your password has been updated successfully") in res.flashes
+    assert ("success", "Your password has been updated successfully.") in res.flashes
 
     backend.reload(user)
     assert backend.check_user_password(user, "foobarbaz")[0]

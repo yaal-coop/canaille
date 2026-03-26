@@ -5,7 +5,7 @@
         <form method="post" action="{{ request.url }}">
             <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
             <div class="ui icon header">
-                <i class="trash alternate icon"></i>
+                <i class="trash icon"></i>
                 {% trans %}Group deletion{% endtrans %}
             </div>
             <div class="content">

@@ -1,46 +1,3 @@
-Databases
-#########
-
-Canaille can read and save data in different databases.
-This page presents the different database backends and their specificities:
-
-Memory
-======
-
-Canaille comes with a lightweight inmemory backend by default.
-It is used when no other backend has been configured.
-
-This backend is only for test purpose and should not be used in production environments.
-
-SQL
-===
-
-Canaille can use any database supported by `SQLAlchemy <https://www.sqlalchemy.org/>`_, such as
-sqlite or postgresql.
-
-Configuration
--------------
-
-It is used when the ``CANAILLE_SQL`` configuration parameter is defined. For instance:
-
-.. code-block:: toml
-    :caption: config.toml
-
-    [CANAILLE_SQL]
-    SQL_DATABASE_URI = "postgresql://user:password@localhost/database"
-
-You can find more details on the SQL configuration in the :class:`dedicated section <canaille.backends.sql.configuration.SQLSettings>`.
-
-Migrations
-----------
-
-By default, migrations are applied when you run the web application.
-You can disable this behavior with the :attr:`~canaille.backends.sql.configuration.SQLSettings.AUTO_MIGRATE` setting.
-Migrations are not automatically applied with the use of the CLI though.
-
-Migrations are done with :doc:`flask-alembic <flask-alembic:use>`, that provides a dedicated CLI to manually tune migrations.
-You can check the :doc:`flask-alembic documentation <flask-alembic:index>` and the ``canaille db`` command line if you are in trouble.
-
 LDAP
 ====
 
@@ -88,11 +45,11 @@ overlays are needed for the Canaille group membership to work correctly.
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../..//dev/ldif/memberof-config.ldif
+.. literalinclude :: ../../..//dev/ldif/memberof-config.ldif
    :language: ldif
    :caption: memberof-config.ldif
 
-.. literalinclude :: ../..//dev/ldif/refint-config.ldif
+.. literalinclude :: ../../..//dev/ldif/refint-config.ldif
    :language: ldif
    :caption: refint-config.ldif
 
@@ -111,11 +68,11 @@ If the `ppolicy <https://www.ietf.org/archive/id/draft-behera-ldap-password-poli
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../../dev/ldif/ppolicy-config.ldif
+.. literalinclude :: ../../../dev/ldif/ppolicy-config.ldif
    :language: ldif
    :caption: ppolicy-config.ldif
 
-.. literalinclude :: ../../dev/ldif/ppolicy.ldif
+.. literalinclude :: ../../../dev/ldif/ppolicy.ldif
    :language: ldif
    :caption: ppolicy.ldif
 
@@ -134,7 +91,7 @@ If the `otp <https://www.openldap.org/software/man.cgi?query=slapo-otp>`_ overla
 
 Here is a configuration example compatible with canaille:
 
-.. literalinclude :: ../../dev/ldif/otp-config.ldif
+.. literalinclude :: ../../../dev/ldif/otp-config.ldif
    :language: ldif
    :caption: otp-config.ldif
 
@@ -233,27 +190,3 @@ Now that the schemas are updated, you can restore the saved data:
     :caption: Restore OIDC related objects
 
     $ canaille restore < dump.json
-
-Dump and restore
-================
-
-Backups
--------
-
-The :ref:`cli_dump` and :ref:`cli_restore` commands can be used to dump all the Canaille objects, or load them in the current database.
-Those commands can be used for backuping Canaille data.
-
-.. _database_migration:
-
-Migration
----------
-
-The dump format is the same whatever database backend is used, and thus it can be used to migrate from a database backend to another.
-To achieve a migration, you need to have two configuration files prepared for the source database and the destination database.
-For instance, if you want to migrate from a LDAP database to a SQL database, you can execute something like this:
-
-.. code-block:: console
-    :caption: Migrating data from a LDAP directory to a SQL database
-
-    $ env CANAILLE_CONFIG=sql-config.toml canaille install
-    $ env CANAILLE_CONFIG=ldap -config.toml canaille dump | env CANAILLE_CONFIG=sql-config.toml canaille restore

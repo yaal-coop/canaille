@@ -18,6 +18,34 @@ jobs:
   # ============================================================
   # TESTS
   # ============================================================
+  tests-latest:
+    name: py3.14 unit tests
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - name: Install Python 3.14
+        run: uv python install 3.14
+      - name: Install apt dependencies
+        run: |
+          sudo apt update
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+      - name: App armor configuration for slapd
+        if: ${{ !env.ACT }}
+        run: sudo aa-complain /usr/sbin/slapd
+      - name: Run tests
+        env:
+          FORCE_COLOR: "1"
+        run: |
+          # python tzinfo fails on 'act' without this
+          ulimit -n 1024
+          export TZ=UTC
+          uv sync --all-extras
+          uv run pytest --numprocesses auto
+
   tests:
     name: py${{ matrix.python }} unit tests
     runs-on: ubuntu-22.04
@@ -25,7 +53,6 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - '3.14'
           - '3.13'
           - '3.12'
           - '3.11'
@@ -52,7 +79,7 @@ jobs:
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
-          uv sync --all-extras
+          uv sync --all-extras --python ${{ matrix.python }}
           uv run pytest --numprocesses auto
 
   coverage:
@@ -115,7 +142,7 @@ jobs:
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
-          uv sync --all-extras --resolution=lowest-direct
+          uv sync --all-extras --resolution=lowest-direct --python 3.10
           uv run pytest --numprocesses auto
 
   style:
@@ -126,6 +153,8 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
+      - name: Install Python 3.14
+        run: uv python install 3.14
       - name: Install apt dependencies
         run: |
           sudo apt update
@@ -149,6 +178,8 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
+      - name: Install Python 3.14
+        run: uv python install 3.14
       - name: Install apt dependencies
         run: |
           sudo apt update
@@ -157,15 +188,15 @@ jobs:
         run: |
           export TZ=UTC
           uv sync --group doc --all-extras
-          uv run playwright install firefox
+          uv run playwright install --with-deps firefox
           uv run sphinx-build doc build/sphinx/html --fail-on-warning
 
   # ============================================================
   # BUILD
   # ============================================================
   build-wheel:
-    needs: [tests, style]
-    runs-on: ubuntu-latest
+    needs: [tests-latest, tests, minversions, style]
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -185,8 +216,8 @@ jobs:
           retention-days: 1
 
   build-pyinstaller:
-    needs: [tests, style]
-    runs-on: ubuntu-latest
+    needs: [tests-latest, style]
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -194,6 +225,9 @@ jobs:
         uses: astral-sh/setup-uv@v3
         with:
           enable-cache: true
+
+      - name: Install Python 3.14
+        run: uv python install 3.14
 
       - name: Install apt dependencies
         run: |
@@ -216,8 +250,8 @@ jobs:
           retention-days: 1
 
   build-docker:
-    needs: [tests, style]
-    runs-on: ubuntu-latest
+    needs: [tests-latest, style]
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -248,9 +282,13 @@ jobs:
   # INTEGRATION
   # ============================================================
   integration-dev:
-    name: integration (dev)
-    needs: [tests, minversions, style]
-    runs-on: ubuntu-latest
+    name: integration (dev, ${{ matrix.database }})
+    needs: [tests-latest, tests, minversions, style]
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -263,18 +301,31 @@ jobs:
         run: |
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
+
+      - name: Install Python 3.14
+        run: uv python install 3.14
 
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
-          uv run pytest integration/ -v --build=dev
+          uv run pytest integration/ -v --build=dev --database=${{ matrix.database }}
 
   integration-package:
-    name: integration (package)
+    name: integration (package, ${{ matrix.database }})
     needs: [build-wheel]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -287,6 +338,12 @@ jobs:
         run: |
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
 
       - name: Download wheel artifact
         uses: actions/download-artifact@v4
@@ -294,18 +351,25 @@ jobs:
           name: canaille-wheel
           path: dist/
 
+      - name: Install Python 3.14
+        run: uv python install 3.14
+
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
           WHEEL=$(ls dist/*.whl | head -1)
-          uv run pytest integration/ -v --build=package:$WHEEL
+          uv run pytest integration/ -v --build=package:$WHEEL --database=${{ matrix.database }}
 
   integration-pyinstaller:
-    name: integration (pyinstaller)
+    name: integration (pyinstaller, ${{ matrix.database }})
     needs: [build-pyinstaller]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -318,6 +382,12 @@ jobs:
         run: |
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
 
       - name: Download PyInstaller artifact
         uses: actions/download-artifact@v4
@@ -328,17 +398,24 @@ jobs:
       - name: Make PyInstaller binary executable
         run: chmod +x dist/canaille
 
+      - name: Install Python 3.14
+        run: uv python install 3.14
+
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
-          uv run pytest integration/ -v --build=pyinstaller:dist/canaille
+          uv run pytest integration/ -v --build=pyinstaller:dist/canaille --database=${{ matrix.database }}
 
   integration-docker:
-    name: integration (docker)
+    name: integration (docker, ${{ matrix.database }})
     needs: [build-docker]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [sqlite, postgresql, ldap]
     steps:
       - uses: actions/checkout@v4
 
@@ -352,6 +429,12 @@ jobs:
           sudo apt update
           sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev
 
+      - name: Install slapd for LDAP tests
+        if: matrix.database == 'ldap'
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install apparmor-utils slapd ldap-utils
+          sudo aa-complain /usr/sbin/slapd
+
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
         with:
@@ -361,20 +444,52 @@ jobs:
       - name: Load Docker image
         run: gunzip -c canaille-docker.tar.gz | docker load
 
+      - name: Install Python 3.14
+        run: uv python install 3.14
+
       - name: Run integration tests
         env:
           FORCE_COLOR: "1"
         run: |
           uv sync --all-groups --all-extras
-          uv run pytest integration/ -v --build=docker:canaille:integration-test
+          uv run pytest integration/ -v --build=docker:canaille:integration-test --database=${{ matrix.database }}
+
+  integration-minimal:
+    name: integration (minimal extras)
+    needs: [build-wheel]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Download wheel artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: canaille-wheel
+          path: dist/
+
+      - name: Install Python 3.14
+        run: uv python install 3.14
+
+      - name: Run integration tests with minimal extras
+        env:
+          FORCE_COLOR: "1"
+        run: |
+          uv sync --all-groups --extra server --extra sqlite
+          WHEEL=$(ls dist/*.whl | head -1)
+          uv run pytest integration/ -v --build=package:$WHEEL --database=sqlite --extras=server,sqlite
 
   # ============================================================
   # PUBLISH (only on tags)
   # ============================================================
   publish-pypi:
-    needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker]
+    needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker, integration-minimal]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: pypi
     permissions:
       id-token: write
@@ -389,9 +504,9 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
 
   publish-github-release:
-    needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker]
+    needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker, integration-minimal]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
     steps:
@@ -417,9 +532,9 @@ jobs:
             dist/*.whl
 
   publish-docker-hub:
-    needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker]
+    needs: [integration-dev, integration-package, integration-pyinstaller, integration-docker, integration-minimal]
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4

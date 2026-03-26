@@ -91,9 +91,9 @@ def test_admin_self_deletion(testclient, backend):
         ]
 
     res = testclient.get("/profile/temp/settings")
-    res = res.form.submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete-confirm")
     res = (
-        res.form.submit(name="action", value="delete", status=302)
+        res.form.submit(name="action", value="delete-execute", status=302)
         .follow(status=302)
         .follow(status=200)
     )
@@ -135,9 +135,9 @@ def test_user_self_deletion(testclient, backend):
 
     res = testclient.get("/profile/temp/settings")
     res.mustcontain("Delete my account")
-    res = res.form.submit(name="action", value="confirm-delete")
+    res = res.form.submit(name="action", value="delete-confirm")
     res = (
-        res.form.submit(name="action", value="delete", status=302)
+        res.form.submit(name="action", value="delete-execute", status=302)
         .follow(status=302)
         .follow(status=200)
     )
@@ -241,12 +241,12 @@ def test_expired_password_redirection_and_register_new_password_for_memory_and_s
 
     testclient.app.config["WTF_CSRF_ENABLED"] = False
     backend.reload(logged_user)
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
 
     with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
-        res = res.form.submit(name="action", value="edit-settings")
+        res = res.form.submit(name="action", value="edit-password")
 
         testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = "P5D"
 
@@ -270,7 +270,10 @@ def test_expired_password_redirection_and_register_new_password_for_memory_and_s
         res.form["password"] = "foobarbaz"
         res.form["confirmation"] = "foobarbaz"
         res = res.form.submit()
-        assert ("success", "Your password has been updated successfully") in res.flashes
+        assert (
+            "success",
+            "Your password has been updated successfully.",
+        ) in res.flashes
 
 
 @mock.patch("canaille.core.models.User.has_expired_password")
@@ -285,15 +288,15 @@ def test_expired_password_redirection_and_register_new_password_for_ldap_sql_and
     """time_machine does not work with ldap."""
     has_expired.return_value = False
     assert user.password_last_update is None
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
-    res = res.form.submit(name="action", value="edit-settings")
+    res = res.form.submit(name="action", value="edit-password")
     backend.reload(logged_user)
     assert user.password_last_update is not None
 
     has_expired.return_value = True
-    res = testclient.get("/profile/user/settings")
+    res = testclient.get("/profile/user/auth/password")
     testclient.get("/reset/admin", status=403)
     assert (
         "info",
@@ -309,7 +312,7 @@ def test_expired_password_redirection_and_register_new_password_for_ldap_sql_and
     res.form["password"] = "foobarbaz"
     res.form["confirmation"] = "foobarbaz"
     res = res.form.submit()
-    assert ("success", "Your password has been updated successfully") in res.flashes
+    assert ("success", "Your password has been updated successfully.") in res.flashes
 
 
 def test_not_expired_password_or_wrong_user_redirection(
@@ -317,10 +320,10 @@ def test_not_expired_password_or_wrong_user_redirection(
 ):
     """Test that users without expired passwords cannot access password reset pages."""
     assert user.password_last_update is None
-    res = testclient.get("/profile/user/settings", status=200)
+    res = testclient.get("/profile/user/auth/password", status=200)
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
-    res = res.form.submit(name="action", value="edit-settings")
+    res = res.form.submit(name="action", value="edit-password")
     backend.reload(logged_user)
     assert user.password_last_update is not None
 
@@ -340,10 +343,10 @@ def test_not_expired_password_or_wrong_user_redirection(
     assert res.location == "/reset/user"
 
     testclient.app.config["CANAILLE"]["PASSWORD_LIFETIME"] = "P1D"
-    res = testclient.get("/profile/user/settings")
+    res = testclient.get("/profile/user/auth/password")
     res.form["password1"] = "123456789"
     res.form["password2"] = "123456789"
-    res = res.form.submit(name="action", value="edit-settings")
+    res = res.form.submit(name="action", value="edit-password")
 
     test_two_redirections("P1D")
 

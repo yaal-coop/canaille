@@ -1,3 +1,4 @@
+import base64
 import collections.abc
 import datetime
 import importlib
@@ -53,6 +54,9 @@ class ModelEncoder(json.JSONEncoder):
 
         if isinstance(obj, datetime.datetime):
             return obj.isoformat()
+
+        if isinstance(obj, bytes):
+            return base64.b64encode(obj).decode("ascii")
 
         if isinstance(obj, Model):
             return self.serialize_model(obj)
@@ -253,6 +257,10 @@ class Backend:
 
     def has_account_lockability(self) -> bool:
         """Indicate whether the backend supports locking user accounts."""
+        raise NotImplementedError()
+
+    def has_otp_support(self) -> bool:
+        """Indicate whether the backend supports OTP attributes."""
         raise NotImplementedError()
 
     def register_models(self, app) -> None:

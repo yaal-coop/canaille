@@ -32,12 +32,16 @@ class Features:
         """Indicate whether the OTP authentication factor is enabled.
 
         It is controlled by the :attr:`CANAILLE.OTP_METHOD <canaille.core.configuration.CoreSettings.OTP_METHOD>` configuration parameter,
-        and needs the ``otp`` extra package to be installed.
+        needs the ``otp`` extra package to be installed,
+        and requires the backend to support OTP attributes.
         """
         try:
             import otpauth  # noqa: F401
 
-            return bool(self.app.config["CANAILLE"]["OTP_METHOD"])
+            return (
+                bool(self.app.config["CANAILLE"]["OTP_METHOD"])
+                and self.app.backend.instance.has_otp_support()
+            )
         except ImportError:  # pragma: no cover
             return False
 
@@ -144,6 +148,23 @@ class Features:
             return False
 
         return self.app.config["CANAILLE"]["CAPTCHA_ENABLED"]
+
+    @property
+    def has_fido(self):
+        """Indicate whether the FIDO2/WebAuthn authentication factor is enabled.
+
+        It requires the ``fido`` extra package to be installed, a SQL backend,
+        and JavaScript to be enabled.
+        LDAP backend is not supported.
+        """
+        try:
+            import webauthn  # noqa: F401
+        except ImportError:  # pragma: no cover
+            return False
+
+        backend_name = self.app.config["CANAILLE"]["DATABASE"]
+        javascript_enabled = self.app.config["CANAILLE"].get("JAVASCRIPT", True)
+        return backend_name != "ldap" and javascript_enabled
 
 
 def setup_features(app):

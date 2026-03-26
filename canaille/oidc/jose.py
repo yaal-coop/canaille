@@ -5,11 +5,6 @@ from datetime import timedelta
 from datetime import timezone
 
 import httpx
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import ed25519
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from flask import current_app
 from joserfc import jwk
 from joserfc import jws
@@ -30,37 +25,11 @@ def supported_verification_algorithms(excluded=None):
 
 
 def make_default_okp_jwk(seed=None):
-    """Generate a deterministic JWK based on a seed if available.
+    """Generate a deterministic JWK based on a seed."""
+    if not seed:
+        return OKPKey.generate_key(auto_kid=True)
 
-    If seed is provided, it will be used to generate a deterministic Ed25519 key.
-    Otherwise, a random Ed25519 key is generated.
-    """
-    if seed:
-        salt = b"canaille-jwk-generation-salt-v1"
-
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=salt,
-            iterations=100000,
-            backend=default_backend(),
-        )
-        key_material = kdf.derive(seed.encode())
-
-        private_key = ed25519.Ed25519PrivateKey.from_private_bytes(key_material)
-    else:
-        private_key = ed25519.Ed25519PrivateKey.generate()
-
-    pem = private_key.private_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption(),
-    )
-
-    key = OKPKey.import_key(pem)
-    key.ensure_kid()
-
-    return key
+    return OKPKey.derive_key(seed, auto_kid=True)
 
 
 def make_default_rsa_jwk():
@@ -79,7 +48,7 @@ def has_rsa_key(keys):
 
 def get_alg_for_key(key):
     """Find the algorithm for the given key."""
-    return registry.guess_alg(key, registry.Strategy.SECURITY)
+    return registry.guess_algorithm(key, registry.Strategy.SECURITY).name
 
 
 def server_jwks(include_inactive=True):
@@ -96,19 +65,6 @@ def server_jwks(include_inactive=True):
     return jwk.KeySet(key_objs)
 
 
-def get_algorithms_for_key(key):
-    # hotfix for https://github.com/authlib/joserfc/pull/79
-    algorithms = registry.filter_algorithms(key, registry.algorithms.keys())
-
-    # hotfix for https://github.com/authlib/joserfc/pull/80
-    key_dict = key.as_dict()
-    if key_dict.get("kty") == "OKP":
-        crv = key_dict.get("crv")
-        algorithms = [alg for alg in algorithms if alg.name in ("EdDSA", crv)]
-
-    return algorithms
-
-
 def supported_signing_algorithms():
     """Return the list of JWS algorithms the server can sign with.
 
@@ -116,14 +72,7 @@ def supported_signing_algorithms():
     Includes 'none' as allowed by OIDC spec for id_token and userinfo signing.
     """
     keys = server_jwks(include_inactive=False)
-    algorithms = ["none"]
-
-    # hotfix for https://github.com/authlib/joserfc/pull/81
-    for key in keys.keys:  # pragma: no cover
-        for alg in get_algorithms_for_key(key):
-            if alg.name not in algorithms:
-                algorithms.append(alg.name)
-
+    algorithms = ["none"] + [alg.name for alg in registry.filter_algorithms(keys)]
     return algorithms
 
 

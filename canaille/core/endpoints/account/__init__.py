@@ -1,4 +1,3 @@
-import binascii
 import datetime
 import io
 from dataclasses import astuple
@@ -46,25 +45,24 @@ from canaille.app.session import login_user
 from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
-from canaille.core.auth import AuthenticationSession
 from canaille.core.captcha import generate_audio_captcha
 from canaille.core.captcha import generate_captcha
+from canaille.core.endpoints.forms import EmailConfirmationForm
+from canaille.core.endpoints.forms import InvitationForm
+from canaille.core.endpoints.forms import JoinForm
+from canaille.core.endpoints.forms import JoinFormWithCaptcha
+from canaille.core.endpoints.forms import PasswordResetForm
+from canaille.core.endpoints.forms import add_captcha_fields
+from canaille.core.endpoints.forms import build_profile_form
+from canaille.core.mails import send_confirmation_email
+from canaille.core.mails import send_invitation_mail
+from canaille.core.mails import send_registration_mail
 from canaille.core.utils import guess_image_mimetype
 
-from ..mails import send_confirmation_email
-from ..mails import send_invitation_mail
-from ..mails import send_password_initialization_mail
-from ..mails import send_password_reset_mail
-from ..mails import send_registration_mail
-from .forms import EmailConfirmationForm
-from .forms import InvitationForm
-from .forms import JoinForm
-from .forms import JoinFormWithCaptcha
-from .forms import PasswordResetForm
-from .forms import add_captcha_fields
-from .forms import build_profile_form
+from . import auth
 
 bp = Blueprint("account", __name__)
+bp.register_blueprint(auth.bp)
 
 
 @bp.route("/")
@@ -163,6 +161,9 @@ def about():
 @bp.route("/captcha-audio/<token>")
 def captcha_audio(token):
     """Serve audio CAPTCHA."""
+    if not current_app.features.has_captcha:  # pragma: no cover
+        abort(404)
+
     session_key = f"captcha_{token}"
     text = session.get(session_key)
 
@@ -305,14 +306,14 @@ def registration(data=None, hash=None):
             abort(403)
 
     else:
-        try:
-            payload = RegistrationPayload(*b64_to_obj(data))
-        except binascii.Error:
+        data_obj = b64_to_obj(data)
+        if data_obj is None:
             flash(
                 _("The registration link that brought you here was invalid."),
                 "error",
             )
             return redirect(url_for("core.account.index"))
+        payload = RegistrationPayload(*data_obj)
 
         if payload.has_expired():
             flash(
@@ -408,7 +409,7 @@ def registration(data=None, hash=None):
             form["captcha_token"].data = captcha_data["token"]
 
         return render_template(
-            "core/profile_add.html",
+            "core/account/add.html",
             form=form,
             menu=False,
             captcha_data=captcha_data,
@@ -424,7 +425,10 @@ def registration(data=None, hash=None):
         return render_registration_template()
 
     if not form.validate():
-        flash(_("User account creation failed."), "error")
+        flash(
+            _("Your account couldn't be created. Please check the form and try again."),
+            "error",
+        )
         return render_registration_template()
 
     user = profile_create(current_app, form)
@@ -440,14 +444,14 @@ def registration(data=None, hash=None):
 
 @bp.route("/email-confirmation/<data>/<hash>")
 def email_confirmation(data, hash):
-    try:
-        confirmation_obj = EmailConfirmationPayload(*b64_to_obj(data))
-    except:
+    data_obj = b64_to_obj(data)
+    if data_obj is None:
         flash(
             _("The email confirmation link that brought you here is invalid."),
             "error",
         )
         return redirect(url_for("core.account.index"))
+    confirmation_obj = EmailConfirmationPayload(*data_obj)
 
     if confirmation_obj.has_expired():
         flash(
@@ -473,21 +477,21 @@ def email_confirmation(data, hash):
 
     if confirmation_obj.email in user.emails or []:
         flash(
-            _("This address email have already been confirmed."),
+            _("This email address has already been confirmed."),
             "error",
         )
         return redirect(url_for("core.account.index"))
 
     if Backend.instance.query(models.User, emails=confirmation_obj.email):
         flash(
-            _("This address email is already associated with another account."),
+            _("This email address is already associated with another account."),
             "error",
         )
         return redirect(url_for("core.account.index"))
 
     user.emails = (user.emails or []) + [confirmation_obj.email]
     Backend.instance.save(user)
-    flash(_("Your email address have been confirmed."), "success")
+    flash(_("Your email address has been confirmed."), "success")
     return redirect(url_for("core.account.index"))
 
 
@@ -503,16 +507,19 @@ def profile_creation(user):
 
     if not request.form or form.handle_fieldlist_operation():
         return render_template(
-            "core/profile_add.html",
+            "core/account/add.html",
             form=form,
             menuitem="users",
             captcha_data=None,
         )
 
     if not form.validate():
-        flash(_("User account creation failed."), "error")
+        flash(
+            _("The account couldn't be created. Please check the form and try again."),
+            "error",
+        )
         return render_template(
-            "core/profile_add.html",
+            "core/account/add.html",
             form=form,
             menuitem="users",
             captcha_data=None,
@@ -549,7 +556,7 @@ def profile_create(current_app, form):
     return user
 
 
-def profile_edition_main_form(user, edited_user, emails_readonly):
+def _build_profile_form(user, edited_user, emails_readonly):
     available_fields = {
         "formatted_name",
         "title",
@@ -593,34 +600,7 @@ def profile_edition_main_form(user, edited_user, emails_readonly):
     return profile_form
 
 
-def profile_edition_main_form_validation(user, edited_user, profile_form):
-    for field in profile_form:
-        if field.name in edited_user.attributes and field.name in user.writable_fields:
-            if isinstance(field, wtforms.FieldList):
-                # too bad wtforms cannot sanitize the list itself
-                data = [value for value in field.data if value] or None
-            elif isinstance(field.data, FileStorage):
-                data = field.data.stream.read()
-            else:
-                data = field.data
-
-            setattr(edited_user, field.name, data)
-
-    if "photo" in profile_form and profile_form["photo_delete"].data:
-        edited_user.photo = None
-
-    if "preferred_language" in request.form:
-        # Refresh the babel cache in case the lang is updated
-        reload_translations()
-
-        if profile_form["preferred_language"].data == "auto":
-            edited_user.preferred_language = None
-
-    Backend.instance.save(edited_user)
-    Backend.instance.reload(user)
-
-
-def profile_edition_emails_form(user, edited_user, has_smtp):
+def _build_emails_form(edited_user, has_smtp):
     emails_form = EmailConfirmationForm(
         request.form or None, data={"old_emails": edited_user.emails or []}
     )
@@ -629,7 +609,52 @@ def profile_edition_emails_form(user, edited_user, has_smtp):
     return emails_form
 
 
-def profile_edition_add_email(user, edited_user, emails_form):
+def _handle_edit_profile(
+    user, edited_user, profile_form, has_email_changed, render_context
+):
+    if not profile_form.validate():
+        flash(
+            _("Your changes couldn't be saved. Please check the form and try again."),
+            "error",
+        )
+        return render_template("core/account/edit.html", **render_context)
+
+    for field in profile_form:
+        if field.name in edited_user.attributes and field.name in user.writable_fields:
+            if isinstance(field, wtforms.FieldList):
+                data = [value for value in field.data if value] or None
+            elif isinstance(field.data, FileStorage):
+                data = field.data.stream.read()
+            else:
+                data = field.data
+            setattr(edited_user, field.name, data)
+
+    if "photo" in profile_form and profile_form["photo_delete"].data:
+        edited_user.photo = None
+
+    if "preferred_language" in request.form:
+        reload_translations()
+        if profile_form["preferred_language"].data == "auto":
+            edited_user.preferred_language = None
+
+    Backend.instance.save(edited_user)
+    Backend.instance.reload(user)
+
+    if has_email_changed:
+        current_app.logger.security(f"Updated email for {edited_user.user_name}")
+
+    flash(_("Profile updated successfully."), "success")
+    return redirect(url_for("core.account.profile_edition", edited_user=edited_user))
+
+
+def _handle_add_email(edited_user, emails_form, render_context):
+    if not emails_form.validate():
+        flash(
+            _("This email couldn't be added. Please check the format and try again."),
+            "error",
+        )
+        return render_template("core/account/edit.html", **render_context)
+
     email_confirmation = EmailConfirmationPayload(
         datetime.datetime.now(datetime.timezone.utc).isoformat(),
         edited_user.identifier,
@@ -644,19 +669,32 @@ def profile_edition_add_email(user, edited_user, emails_form):
     current_app.logger.debug(
         f"Attempt to send a verification mail with link: {email_confirmation_url}"
     )
-    return send_confirmation_email(emails_form.new_email.data, email_confirmation_url)
+    send_confirmation_email(emails_form.new_email.data, email_confirmation_url)
+
+    flash(
+        _(
+            "Sending an email to this email address. "
+            "Please check your inbox and click on the verification link it contains"
+        ),
+        "info",
+    )
+    return redirect(url_for("core.account.profile_edition", edited_user=edited_user))
 
 
-def profile_edition_remove_email(user, edited_user, email):
+def _handle_remove_email(edited_user, email, render_context):
     if email not in (edited_user.emails or []):
-        return False
+        flash(_("This email couldn't be removed."), "error")
+        return render_template("core/account/edit.html", **render_context)
 
     if not edited_user.emails or len(edited_user.emails) == 1:
-        return False
+        flash(_("This email couldn't be removed. You must keep at least one."), "error")
+        return render_template("core/account/edit.html", **render_context)
 
     edited_user.emails = [m for m in edited_user.emails if m != email]
     Backend.instance.save(edited_user)
-    return True
+
+    flash(_("The email has been successfully deleted."), "success")
+    return redirect(url_for("core.account.profile_edition", edited_user=edited_user))
 
 
 @bp.route("/profile/<user:edited_user>", methods=("GET", "POST"))
@@ -672,9 +710,9 @@ def profile_edition(user, edited_user):
         current_app.features.has_email_confirmation and not user.can_manage_users
     )
 
-    profile_form = profile_edition_main_form(user, edited_user, emails_readonly)
+    profile_form = _build_profile_form(user, edited_user, emails_readonly)
     emails_form = (
-        profile_edition_emails_form(user, edited_user, current_app.features.has_smtp)
+        _build_emails_form(edited_user, current_app.features.has_smtp)
         if emails_readonly
         else None
     )
@@ -691,61 +729,77 @@ def profile_edition(user, edited_user):
     }
 
     if not request.form or profile_form.handle_fieldlist_operation():
-        return render_template("core/profile_edit.html", **render_context)
+        return render_template("core/account/edit.html", **render_context)
 
-    if request.form.get("action") == "edit-profile" or (
+    action = request.form.get("action")
+
+    if action == "edit-profile" or (
         request_is_partial() and partial_request_trigger() in profile_form
     ):
-        if not profile_form.validate():
-            flash(_("Profile edition failed."), "error")
-            return render_template("core/profile_edit.html", **render_context)
-
-        profile_edition_main_form_validation(user, edited_user, profile_form)
-
-        if has_email_changed:
-            current_app.logger.security(f"Updated email for {edited_user.user_name}")
-
-        flash(_("Profile updated successfully."), "success")
-
-        return redirect(
-            url_for("core.account.profile_edition", edited_user=edited_user)
+        return _handle_edit_profile(
+            user, edited_user, profile_form, has_email_changed, render_context
         )
 
-    if request.form.get("action") == "add_email" or (
+    if action == "add_email" or (
         request_is_partial()
         and emails_form
         and partial_request_trigger() in emails_form
     ):
-        if not emails_form.validate():
-            flash(_("Email addition failed."), "error")
-            return render_template("core/profile_edit.html", **render_context)
-
-        profile_edition_add_email(user, edited_user, emails_form)
-        flash(
-            _(
-                "Sending an email to this email address. "
-                "Please check your inbox and click on the verification link it contains"
-            ),
-            "info",
-        )
-
-        return redirect(
-            url_for("core.account.profile_edition", edited_user=edited_user)
-        )
+        return _handle_add_email(edited_user, emails_form, render_context)
 
     if request.form.get("email_remove"):
-        if not profile_edition_remove_email(
-            user, edited_user, request.form.get("email_remove")
-        ):
-            flash(_("Email deletion failed."), "error")
-            return render_template("core/profile_edit.html", **render_context)
-
-        flash(_("The email have been successfully deleted."), "success")
-        return redirect(
-            url_for("core.account.profile_edition", edited_user=edited_user)
+        return _handle_remove_email(
+            edited_user, request.form.get("email_remove"), render_context
         )
 
-    abort(400, f"bad form action: {request.form.get('action')}")
+    abort(400, f"bad form action: {action}")
+
+
+def _handle_delete_actions(user, edited_user, action):
+    if action == "delete-confirm":
+        return render_template(
+            "core/modals/delete-account.html", edited_user=edited_user
+        )
+
+    else:  # delete-execute
+        self_deletion = user.id == edited_user.id
+        if self_deletion:
+            logout_user()
+
+        flash(
+            _(
+                "The user %(user)s has been successfully deleted",
+                user=edited_user.formatted_name,
+            ),
+            "success",
+        )
+        Backend.instance.delete(edited_user)
+        current_app.logger.security(
+            f"Deleted user {edited_user.id} by {user.id}"
+            if not self_deletion
+            else f"User {edited_user.id} deleted their own account"
+        )
+
+        if self_deletion:
+            return redirect(url_for("core.account.index"))
+        return redirect(url_for("core.account.users"))
+
+
+def _handle_lock_actions(user, edited_user, action):
+    if action == "lock-confirm":
+        return render_template("core/modals/lock-account.html", edited_user=edited_user)
+
+    elif action == "lock-execute":
+        flash(_("The account has been locked."), "success")
+        edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+        Backend.instance.save(edited_user)
+        return _handle_profile_settings_edit(user, edited_user)
+
+    else:  # unlock
+        flash(_("The account has been unlocked."), "success")
+        edited_user.lock_date = None
+        Backend.instance.save(edited_user)
+        return _handle_profile_settings_edit(user, edited_user)
 
 
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
@@ -761,109 +815,28 @@ def profile_settings(user, edited_user):
         or request.form.get("action") == "edit-settings"
         or request_is_partial()
     ):
-        return profile_settings_edit(user, edited_user)
+        return _handle_profile_settings_edit(user, edited_user)
 
-    if request.form.get("action") == "confirm-delete":
-        return render_template(
-            "core/modals/delete-account.html", edited_user=edited_user
-        )
+    action = request.form.get("action")
 
-    if request.form.get("action") == "delete":
-        return profile_delete(user, edited_user)
+    if action in ("delete-confirm", "delete-execute"):
+        return _handle_delete_actions(user, edited_user, action)
 
-    if request.form.get("action") == "password-initialization-mail":
-        for email in edited_user.emails or []:
-            send_password_initialization_mail(edited_user, email)
-        flash(
-            _(
-                "Sending password initialization link at the user email address. "
-                "It should be received within a few minutes."
-            ),
-            "info",
-        )
-
-        return profile_settings_edit(user, edited_user)
-
-    if request.form.get("action") == "password-reset-mail":
-        for email in edited_user.emails or []:
-            send_password_reset_mail(edited_user, email)
-        flash(
-            _(
-                "Sending password reset link at the user email address. "
-                "It should be received within a few minutes."
-            ),
-            "info",
-        )
-
-        return profile_settings_edit(user, edited_user)
-
-    if (
-        request.form.get("action") == "confirm-lock"
-        and current_app.features.has_account_lockability
-        and not edited_user.locked
+    if current_app.features.has_account_lockability and action in (
+        "lock-confirm",
+        "lock-execute",
+        "unlock",
     ):
-        return render_template("core/modals/lock-account.html", edited_user=edited_user)
+        return _handle_lock_actions(user, edited_user, action)
 
-    if (
-        request.form.get("action") == "lock"
-        and current_app.features.has_account_lockability
-        and not edited_user.locked
-    ):
-        flash(_("The account has been locked"), "success")
-        edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
-        Backend.instance.save(edited_user)
-
-        return profile_settings_edit(user, edited_user)
-
-    if (
-        request.form.get("action") == "unlock"
-        and current_app.features.has_account_lockability
-        and edited_user.locked
-    ):
-        flash(_("The account has been unlocked"), "success")
-        edited_user.lock_date = None
-        Backend.instance.save(edited_user)
-
-        return profile_settings_edit(user, edited_user)
-
-    if (
-        request.form.get("action") == "confirm-reset-otp"
-        and current_app.features.has_otp
-    ):
-        return render_template("core/modals/reset-otp.html", edited_user=edited_user)
-
-    if request.form.get("action") == "reset-otp" and current_app.features.has_otp:
-        flash(
-            _("Authenticator application passcode authentication has been reset"),
-            "success",
-        )
-        current_app.logger.security(
-            f"Reset one-time passcode authentication for {edited_user.user_name} by {user.user_name}"
-        )
-        edited_user.secret_token = None
-        edited_user.hotp_counter = None
-        Backend.instance.save(edited_user)
-
-        return profile_settings_edit(user, edited_user)
-
-    if request.form.get("action") == "setup-otp" and current_app.features.has_otp:
-        session["redirect-after-login"] = url_for(
-            "core.account.profile_settings", edited_user=edited_user
-        )
-        g.auth = AuthenticationSession(
-            user_name=g.session.user.user_name, welcome_flash=False, remaining=["otp"]
-        )
-        g.auth.save()
-        return redirect(url_for("core.auth.otp.setup"))
-
-    abort(400, f"bad form action: {request.form.get('action')}")
+    abort(400, f"bad form action: {action}")
 
 
-def profile_settings_edit(editor, edited_user):
+def _handle_profile_settings_edit(editor, edited_user):
     menuitem = "profile" if editor.id == editor.id else "users"
     fields = editor.readable_fields | editor.writable_fields
 
-    available_fields = {"password", "groups", "user_name", "lock_date"}
+    available_fields = {"groups", "user_name", "lock_date"}
     data = {
         k: getattr(edited_user, k)[0]
         if getattr(edited_user, k) and isinstance(getattr(edited_user, k), list)
@@ -886,22 +859,18 @@ def profile_settings_edit(editor, edited_user):
         or request_is_partial()
     ):
         if not form.validate():
-            flash(_("Profile edition failed."), "error")
+            flash(
+                _(
+                    "Your changes couldn't be saved. "
+                    "Please check the form and try again."
+                ),
+                "error",
+            )
 
         else:
             for attribute in form:
                 if attribute.name in available_fields & editor.writable_fields:
                     setattr(edited_user, attribute.name, attribute.data)
-
-            if (
-                "password1" in request.form
-                and form["password1"].data
-                and request.form["action"] == "edit-settings"
-            ):
-                Backend.instance.set_user_password(edited_user, form["password1"].data)
-                current_app.logger.security(
-                    f"Changed password in settings for {edited_user.user_name}"
-                )
 
             Backend.instance.save(edited_user)
             flash(_("Profile updated successfully."), "success")
@@ -910,31 +879,12 @@ def profile_settings_edit(editor, edited_user):
             )
 
     return render_template(
-        "core/profile_settings.html",
+        "core/account/settings.html",
         form=form,
         menuitem=menuitem,
         edited_user=edited_user,
         self_deletion=edited_user.can_delete_account,
     )
-
-
-def profile_delete(user, edited_user):
-    self_deletion = user.id == edited_user.id
-    if self_deletion:
-        logout_user()
-
-    flash(
-        _(
-            "The user %(user)s has been successfully deleted",
-            user=edited_user.formatted_name,
-        ),
-        "success",
-    )
-    Backend.instance.delete(edited_user)
-
-    if self_deletion:
-        return redirect(url_for("core.account.index"))
-    return redirect(url_for("core.account.users"))
 
 
 @bp.route("/impersonate/<user:puppet>")
@@ -944,6 +894,7 @@ def impersonate(user, puppet):
         abort(403, _("Locked users cannot be impersonated."))
 
     login_user(puppet, remember=False)
+    current_app.logger.security(f"User {user.id} impersonated {puppet.id}")
     flash(
         _("Connection successful. Welcome %(user)s", user=puppet.name),
         "success",
@@ -993,7 +944,7 @@ def reset(user):
     if request.form and form.validate():
         Backend.instance.set_user_password(user, form.password.data)
         login_user(user)
-        flash(_("Your password has been updated successfully"), "success")
+        flash(_("Your password has been updated successfully."), "success")
         return redirect(
             session.pop(
                 "redirect-after-login",

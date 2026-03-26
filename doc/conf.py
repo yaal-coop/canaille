@@ -131,6 +131,7 @@ html_theme_options = {
             "url": "https://hosted.weblate.org/projects/canaille/canaille",
         },
     ],
+    "show_ai_links": False,
 }
 html_context = {
     "source_type": "gitlab",

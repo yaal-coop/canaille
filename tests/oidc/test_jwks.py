@@ -10,7 +10,6 @@ from pydantic import ValidationError
 from canaille import create_app
 from canaille.app import models
 from canaille.oidc.configuration import OIDCSettings
-from canaille.oidc.jose import make_default_okp_jwk
 from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
 from canaille.oidc.provider import get_jwt_config
@@ -57,43 +56,6 @@ nJu1vashTRdIRA==
                 }
             ]
         }
-
-
-def test_deterministic_jwk_generation_with_seed():
-    """Test that the same seed always generates the same JWK."""
-    test_seed = "test-seed-123"
-
-    jwk1 = make_default_okp_jwk(test_seed).as_dict()
-    jwk2 = make_default_okp_jwk(test_seed).as_dict()
-    jwk3 = make_default_okp_jwk(test_seed).as_dict()
-
-    assert jwk1 == jwk2
-    assert jwk2 == jwk3
-    assert jwk1 == jwk3
-
-    assert "kid" in jwk1
-    assert "kty" in jwk1
-    assert jwk1["kty"] == "OKP"
-    assert jwk1["crv"] == "Ed25519"
-
-    jwk4 = make_default_okp_jwk("different-seed-456").as_dict()
-
-    assert jwk1 != jwk4
-
-    jwk5 = make_default_okp_jwk("different-seed-456").as_dict()
-    assert jwk4 == jwk5
-
-
-def test_random_jwk_generation_without_seed():
-    """Test that without seed, JWKs are randomly generated."""
-    jwk1 = make_default_okp_jwk(None).as_dict()
-    jwk2 = make_default_okp_jwk(None).as_dict()
-
-    assert jwk1 != jwk2
-
-    assert "kty" in jwk1
-    assert jwk1["kty"] == "OKP"
-    assert jwk1["crv"] == "Ed25519"
 
 
 def test_jwks_endpoint(testclient):
@@ -197,6 +159,25 @@ def test_missing_active_jwks_warning(configuration, caplog):
 
     with app.app_context():
         assert len(server_jwks(False).keys) == 2
+
+
+def test_get_jwt_config_uses_client_algorithm(testclient, client, backend):
+    """Test that get_jwt_config uses the client's id_token_signed_response_alg rather than deriving the algorithm from the key via Strategy.SECURITY.
+
+    An RSA key with Strategy.SECURITY would yield RS512, but when the client
+    requests RS256, the signed token must use RS256.
+    """
+    rsa_key = jwk.generate_key("RSA", 2048)
+    rsa_key.ensure_kid()
+
+    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [rsa_key.as_dict()]
+
+    backend.update(client, id_token_signed_response_alg="RS256")
+    backend.save(client)
+
+    config = get_jwt_config(client=client)
+    assert config["alg"] == "RS256"
+    assert config["kid"] == rsa_key.kid
 
 
 def test_get_jwt_config_fallback_to_first_key(testclient):

@@ -165,7 +165,7 @@ def create_app(config=None):
     app = canaille_app(config=config)
     try:
         populate(app)
-    except:
+    except Exception:
         app.logger.exception("Something happen during the app initialization")
 
     return app

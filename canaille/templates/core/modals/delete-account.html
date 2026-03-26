@@ -5,7 +5,7 @@
         <form method="post" action="{{ request.url }}">
             <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
             <div class="ui icon header">
-                <i class="user minus icon"></i>
+                <i class="trash icon"></i>
                 {% trans %}Account deletion{% endtrans %}
             </div>
             <div class="content">
@@ -24,7 +24,7 @@
             <div class="ui center aligned container">
                 <div class="ui stackable buttons">
                     <a class="ui cancel button" href="{{ request.url }}">{% trans %}Cancel{% endtrans %}</a>
-                    <button name="action" value="delete" class="ui red approve button">{% trans %}Delete{% endtrans %}</button>
+                    <button name="action" value="delete-execute" class="ui red approve button">{% trans %}Delete{% endtrans %}</button>
                 </div>
             </div>
         </form>

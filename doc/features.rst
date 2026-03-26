@@ -68,7 +68,7 @@ Group membership can be use as :attr:`ACL Filter <canaille.core.configuration.AC
 Group management can be enable with a :attr:`dedicated user permission <canaille.core.configuration.Permission.MANAGE_ALL_GROUPS>`.
 
 .. important::
-   Due to limitations in the :ref:`LDAP backend <howtos/databases:LDAP>`, groups must have at least one member.
+   Due to limitations in the :ref:`LDAP backend <howtos/database/ldap:LDAP>`, groups must have at least one member.
    Thus it is not possible to remove the last user of a group without removing the group.
 
 .. _feature_user_authentication:
@@ -206,6 +206,8 @@ Two options are supported : "TOTP" for time one-time passcode, and "HOTP" for HM
 In case of lost token, TOTP/HOTP authentication can be reset by users with :attr:`user management permission <canaille.core.configuration.Permission.MANAGE_USERS>`.
 If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured and the :attr:`email one-time passcode feature <canaille.core.configuration.CoreSettings.EMAIL_OTP>` is enabled, then users will need to authenticate themselves via a one-time passcode sent to their primary email address.
 If a :class:`smpp server <canaille.core.configuration.SMPPSettings>` is configured and the :attr:`sms one-time passcode feature <canaille.core.configuration.CoreSettings.SMS_OTP>` is enabled, then users will need to authenticate themselves via a one-time passcode sent to their primary phone number.
+If the :attr:`FIDO2 feature <canaille.core.configuration.CoreSettings.AUTHENTICATION_FACTORS>` includes ``fido2``, then users can authenticate using security keys (USB keys, biometric devices, etc.) via the WebAuthn standard.
+Users can register multiple security keys from their profile settings, and the number of keys per user can be limited with :attr:`~canaille.core.configuration.CoreSettings.FIDO_MAX_CREDENTIALS`.
 
 .. _feature_intruder_lockout:
 
@@ -338,8 +340,8 @@ There are also tools to :ref:`fill your database <cli_populate>` with random obj
 Databases
 =========
 
-Canaille can handle data from the most :ref:`common SQL databases <howtos/databases:SQL>` such as PostgreSQL or SQLite, as well as :ref:`OpenLDAP <howtos/databases:LDAP>`.
-It also comes with a no-dependency :ref:`in-memory database <howtos/databases:Memory>` that can be used in unit tests suites.
+Canaille can handle data from the most :ref:`common SQL databases <howtos/database/sql:SQL>` such as PostgreSQL or SQLite, as well as :ref:`OpenLDAP <howtos/database/ldap:LDAP>`.
+It also comes with a no-dependency :ref:`in-memory database <howtos/database/memory:Memory>` that can be used in unit tests suites.
 
 .. _feature_logging:
 
@@ -372,7 +374,7 @@ Development and testing tool
 Unit-testing tool
 =================
 
-Thanks to its lightweight :ref:`in-memory database <howtos/databases:Memory>` and its curated :ref:`dependency list <package_extras>`, Canaille can be used in the unit test suite of your application, so you can check how it behaves against a real world OpenID Connect server. If you work with python you might want to check :doc:`pytest-iam:index`.
+Thanks to its lightweight :ref:`in-memory database <howtos/database/memory:Memory>` and its curated :ref:`dependency list <package_extras>`, Canaille can be used in the unit test suite of your application, so you can check how it behaves against a real world OpenID Connect server. If you work with python you might want to check :doc:`pytest-iam:index`.
 
 Development server
 ==================

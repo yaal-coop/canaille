@@ -3,8 +3,6 @@
 import base64
 import secrets
 
-from captcha.audio import AudioCaptcha
-from captcha.image import ImageCaptcha
 from flask import current_app
 from flask import g
 from flask import session
@@ -41,6 +39,8 @@ def should_show_captcha_on_login(user=None):
 
 def generate_captcha():
     """Generate a CAPTCHA (image + audio) and return data."""
+    from captcha.image import ImageCaptcha
+
     length = current_app.config["CANAILLE"]["CAPTCHA_LENGTH"]
 
     text = "".join(secrets.choice(CAPTCHA_CHARS) for _ in range(length))
@@ -59,6 +59,8 @@ def generate_captcha():
 
 def generate_audio_captcha(text) -> bytes:
     """Generate audio CAPTCHA for given text."""
+    from captcha.audio import AudioCaptcha
+
     audio = AudioCaptcha()
     audio_data = audio.generate(text)
     return bytes(audio_data)

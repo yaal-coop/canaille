@@ -58,6 +58,9 @@ class MemoryBackend(Backend):
     def has_account_lockability(self) -> bool:
         return True
 
+    def has_otp_support(self) -> bool:
+        return True
+
     def check_user_password(self, user, password):
         if current_app.features.has_intruder_lockout:
             if current_lockout_delay := user.get_intruder_lockout_delay():
@@ -224,8 +227,8 @@ class MemoryBackend(Backend):
             mirror_attribute_index = self.attribute_index(
                 model, mirror_attribute
             ).setdefault(instance.id, set())
-            for subinstance_id in self.index(instance.__class__)[instance.id].get(
-                attribute, []
+            for subinstance_id in listify(
+                self.index(instance.__class__)[instance.id].get(attribute, [])
             ):
                 # remove the current object from the subinstance state
                 subinstance_state = self.index(model)[subinstance_id]

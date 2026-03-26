@@ -19,7 +19,7 @@ def test_visitor_logout(testclient, user):
     res = res.follow(status=200)
     assert (
         "success",
-        "You have been disconnected. See you next time user",
+        "You have been disconnected. See you next time user.",
     ) not in res.flashes
 
     with testclient.session_transaction() as session:
@@ -201,7 +201,10 @@ def test_logout_nonexistent_user_via_url(testclient, user, backend):
 
     res = testclient.get("/logout/nonexistent")
     assert res.status_code == 302
-    assert ("error", "The session could not be closed.") in res.flashes
+    assert (
+        "error",
+        "This session couldn't be closed. Please try again.",
+    ) in res.flashes
 
     with testclient.session_transaction() as sess:
         sessions = sess.get(USER_SESSION, [])

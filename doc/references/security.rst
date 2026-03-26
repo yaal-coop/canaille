@@ -29,7 +29,7 @@ The French security agency (ANSSI) describe a `list of security recommendations 
      - ✅
    * - R2
      - Favor the use of strong authentication methods. Use cryptographic mechanisms compliant with `RGS <https://cyber.gouv.fr/le-referentiel-general-de-securite-rgs>`__ and its annexes.
-     - Canaille implements :ref:`TOTP <feature_mfa>` which uses strong cryptographic mechanisms. :issue:`WebAuthn support is planned<296>`.
+     - Canaille implements :ref:`TOTP <feature_mfa>` and :ref:`FIDO2/WebAuthn <feature_mfa>` which use strong cryptographic mechanisms.
      - ✅
    * - R3
      - Conduct a risk analysis. Perform risk analysis to determine appropriate authentication methods based on security needs.
@@ -171,24 +171,24 @@ The French security agency (ANSSI) describe a `list of security recommendations 
      - ⬜
    * - R39
      - Use a possession factor integrating a qualified security component. Favor components that have received ANSSI security approval.
-     - :issue:`WebAuthn support is planned <296>` but not yet implemented.
-     - ❌
+     - :ref:`FIDO2/WebAuthn <feature_mfa>` supports hardware security keys with integrated security components (e.g., YubiKey, Titan).
+     - ✅
    * - R39-
      - Use a possession factor integrating a security component. Alternative: use at minimum an integrated security component.
-     - :issue:`WebAuthn support is planned <296>` but not yet implemented.
-     - ❌
+     - :ref:`FIDO2/WebAuthn <feature_mfa>` supports both hardware keys and platform authenticators with security components.
+     - ✅
    * - R39--
      - Use a possession factor even without security component. As last resort, use additional protection measures (encryption, access restrictions).
      - :ref:`TOTP <feature_mfa>` can work with software authenticators as a possession factor via :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`.
      - ✅
    * - R40
      - Do not use an inherent factor as sole authentication factor. Avoid biometrics alone for authentication.
-     - Canaille does not implement biometric authentication. :issue:`WebAuthn support is planned <296>`.
-     - ❌
+     - :ref:`FIDO2/WebAuthn <feature_mfa>` can use biometric authenticators (TouchID, FaceID, Windows Hello) combined with cryptographic proof-of-possession.
+     - ✅
    * - R41
      - Use an inherent factor only associated with a strong factor. In multi-factor, accompany biometrics with a cryptographic factor compliant with `RGS <https://cyber.gouv.fr/le-referentiel-general-de-securite-rgs>`__.
-     - Biometric authentication via :issue:`WebAuthn support is planned <296>` but not yet implemented.
-     - ❌
+     - :ref:`FIDO2/WebAuthn <feature_mfa>` implements cryptographic challenge-response, satisfying this requirement when biometric user verification is enabled.
+     - ✅
    * - R42
      - Favor in-person meeting when registering an inherent factor. Perform face-to-face identity verification for biometric enrollment.
      - This is an organizational enrollment procedure responsibility.

@@ -16,6 +16,7 @@ def test_generate_user_claims(user, foo_group):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "picture": mock.ANY,
         "address": {
             "formatted": "1234, some street, 6789 some city, some state",
             "locality": "some city",
@@ -69,6 +70,7 @@ def test_get_userinfo_jwt(testclient, token, user, client, backend, server_jwk):
         "preferred_username": "Johnny",
         "website": "https://john.test",
         "locale": "en",
+        "picture": mock.ANY,
         "updated_at": mock.ANY,
         "iss": "http://canaille.test",
         "aud": client.client_id,
@@ -114,6 +116,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "picture": mock.ANY,
         "updated_at": user.last_modified.timestamp(),
     }
 
@@ -131,6 +134,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "picture": mock.ANY,
         "email": "john@doe.test",
         "updated_at": user.last_modified.timestamp(),
     }
@@ -149,6 +153,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "picture": mock.ANY,
         "address": {
             "formatted": "1234, some street, 6789 some city, some state",
             "locality": "some city",
@@ -173,6 +178,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "picture": mock.ANY,
         "phone_number": "555-000-000",
         "updated_at": user.last_modified.timestamp(),
     }
@@ -191,6 +197,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "preferred_username": "Johnny",
         "locale": "en",
         "website": "https://john.test",
+        "picture": mock.ANY,
         "groups": ["foo"],
         "updated_at": user.last_modified.timestamp(),
     }
@@ -219,6 +226,7 @@ def test_generate_user_standard_claims_with_default_config(testclient, backend, 
         "locale": "fr",
         "phone_number": "555-000-000",
         "website": "https://john.test",
+        "picture": mock.ANY,
         "updated_at": mock.ANY,
     }
 

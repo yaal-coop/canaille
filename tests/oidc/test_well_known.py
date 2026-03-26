@@ -66,7 +66,9 @@ def test_oauth_authorization_server(testclient):
             "Ed25519",
             "Ed448",
         ],
-        "ui_locales_supported": g.available_language_codes,
+        "ui_locales_supported": [
+            code.replace("_", "-") for code in g.available_language_codes
+        ],
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
         "authorization_response_iss_parameter_supported": True,
     }
@@ -191,7 +193,9 @@ def test_openid_configuration(testclient):
             "Ed25519",
             "Ed448",
         ],
-        "ui_locales_supported": g.available_language_codes,
+        "ui_locales_supported": [
+            code.replace("_", "-") for code in g.available_language_codes
+        ],
         "userinfo_endpoint": "http://canaille.test/oauth/userinfo",
         "prompt_values_supported": ["none", "login", "consent", "select_account"],
         "authorization_response_iss_parameter_supported": True,

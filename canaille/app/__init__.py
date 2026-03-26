@@ -1,4 +1,5 @@
 import base64
+import binascii
 import hashlib
 import hmac
 import json
@@ -17,7 +18,10 @@ def obj_to_b64(obj):
 
 
 def b64_to_obj(string):
-    return json.loads(base64.b64decode(string.encode("utf-8")).decode("utf-8"))
+    try:
+        return json.loads(base64.b64decode(string.encode("utf-8")).decode("utf-8"))
+    except (binascii.Error, UnicodeDecodeError, json.JSONDecodeError):
+        return None
 
 
 def build_hash(*args):

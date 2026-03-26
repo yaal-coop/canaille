@@ -16,6 +16,6 @@ build:
       - pip install uv
       - uv export --group doc --no-hashes --output-file requirements.txt
     post_install:
-      - pip install .[captcha,front,oidc,otp,sms,server]
+      - pip install .[captcha,front,fido,oidc,otp,sms,server]
       - pip install --requirement requirements.txt
       - playwright install firefox

@@ -1,0 +1,131 @@
+{#
+.. screenshot:: |canaille|/profile/user/settings
+   :context: user
+   :align: right
+   :width: 275px
+
+   The user profile settings edition page.
+
+The profile settings template.
+
+Displays the user settings edition form.
+
+:param edited_user: The user that the form will edit.
+:type edited_user: :class:`~canaille.core.models.User`
+:param form: The user profile edition form. Dynamically built according to the user :attr:`~canaille.core.configuration.ACLSettings.READ` and :attr:`~canaille.core.configuration.ACLSettings.WRITE` permissions. The available fields are those appearing in *READ* and *WRITE*, those only appearing in *READ* are read-only.
+:type form: :class:`~flask_wtf.FlaskForm`
+:param self_deletion: Whether the editor is allowed to delete the account of the edited user.
+:type self_deletion: :class:`bool`
+#}
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {% if user.user_name == edited_user.user_name %}
+        {%- trans %}My profile{% endtrans -%}
+    {% else %}
+        {%- trans %}User profile edition{% endtrans -%}
+    {% endif %}
+{%- endblock -%}
+
+{% block submenu %}
+    <a class="item" href="{{ url_for('core.account.profile_edition', edited_user=edited_user) }}">
+        <i class="id card icon"></i>
+        {% trans %}Personal information{% endtrans %}
+    </a>
+    <a class="active item" href="{{ url_for('core.account.profile_settings', edited_user=edited_user) }}">
+        <i class="tools icon"></i>
+        {% trans %}Account settings{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('core.account.auth.profile_auth', edited_user=edited_user) }}">
+        <i class="shield alternate icon"></i>
+        {% trans %}Authentication{% endtrans %}
+    </a>
+{% endblock %}
+
+{% macro render_field(field, noindicator=false) %}
+    {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
+    {% if edited_user.user_name == user.user_name or lock_indicator or noindicator %}
+        {{ fui.render_field(field, **kwargs) }}
+    {% elif field.name in edited_user.writable_fields %}
+        {{ fui.render_field(field, **kwargs) }}
+    {% elif field.name in edited_user.readable_fields %}
+        {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
+    {% else %}
+        {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
+    {% endif %}
+{% endmacro %}
+
+{% block content %}
+    <div class="ui clearing segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Account settings{% endtrans %}
+            </div>
+            <div class="sub header" title="{{ edited_user.created|datetimeformat }}">
+                {% trans creation_datetime=edited_user.created|dateformat %}Created on {{ creation_datetime }}{% endtrans %}
+            </div>
+        </h2>
+
+        {% call fui.render_form(form, class_="profile-form info warning") %}
+
+            {% if "user_name" in form %}
+                {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
+            {% endif %}
+
+            {% if features.has_account_lockability and "lock_date" in form and not edited_user.locked %}
+                {% block lock_date_field scoped %}{{ render_field(form.lock_date) }}{% endblock %}
+            {% endif %}
+
+            {% if "groups" in form %}
+                {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
+            {% endif %}
+
+            {% if features.has_account_lockability and edited_user.locked and user.can_manage_users %}
+                <div class="ui message warning visible">
+                    <button type="submit" name="action" value="unlock" class="ui right floated button">
+                        {% trans %}Unlock{% endtrans %}
+                    </button>
+                    <div class="header">
+                        {% trans %}This user account is locked{% endtrans %}
+                    </div>
+                    <p>
+                        {% trans %}The user won't be able to connect until their account is unlocked.{% endtrans %}
+                    </p>
+                </div>
+            {% endif %}
+
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    {% if features.has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="lock-confirm" id="lock" formnovalidate>
+                            {% trans %}Lock the account{% endtrans %}
+                        </button>
+                    {% endif %}
+
+                    {% if user.can_manage_users or self_deletion %}
+                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete-confirm" id="delete" formnovalidate>
+                            {% if user.user_name != edited_user.user_name %}
+                                {{ _("Delete the user") }}
+                            {% else %}
+                                {{ _("Delete my account") }}
+                            {% endif %}
+                        </button>
+                    {% endif %}
+
+                    {% if user.can_impersonate_users and user.identifier != edited_user.identifier and not edited_user.locked %}
+                        <a href="{{ url_for('core.account.impersonate', puppet=edited_user) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate" hx-boost="false">
+                            {{ _("Impersonate") }}
+                        </a>
+                    {% endif %}
+
+                    <button type="submit" class="ui right floated primary button" name="action" value="edit-settings" id="edit-settings">
+                        {{ _("Edit") }}
+                    </button>
+
+                </div>
+            </div>
+
+        {% endcall %}
+    </div>
+{% endblock %}

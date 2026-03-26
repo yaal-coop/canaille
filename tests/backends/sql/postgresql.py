@@ -37,6 +37,7 @@ def postgresql_template_dump(tmp_path_factory, postgresql_proc):
     uri = f"postgresql://{proc_info.user}@{proc_info.host}:{proc_info.port}/{template_dbname}"
 
     template_config = {
+        "SECRET_KEY": "template-secret-key",
         "CANAILLE": {
             "DATABASE": "sql",
         },

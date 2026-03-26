@@ -27,7 +27,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
         res.form["password"] = "incorrect horse"
         res = res.form.submit(status=200)
 
-        assert ("error", "Login failed, please check your information") in res.flashes
+        assert ("error", "Login failed. Please check your information.") in res.flashes
         assert (
             "canaille",
             logging.SECURITY,
@@ -79,7 +79,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, user, caplog):
         res.form["password"] = "incorrect horse"
         res = res.form.submit(status=200)
 
-        assert ("error", "Login failed, please check your information") in res.flashes
+        assert ("error", "Login failed. Please check your information.") in res.flashes
         assert (
             "canaille",
             logging.SECURITY,
@@ -104,7 +104,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, user, caplog):
         res.form["password"] = "incorrect horse"
         res = res.form.submit(status=200)
 
-        assert ("error", "Login failed, please check your information") in res.flashes
+        assert ("error", "Login failed. Please check your information.") in res.flashes
         assert (
             "canaille",
             logging.SECURITY,

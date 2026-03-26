@@ -209,11 +209,8 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     font-size: 8em;
     margin-bottom: 15px;
 }
-.profile-form label img{
-    cursor: pointer;
-}
-
-.profile-form label i{
+.photo-content,
+.photo-placeholder {
     cursor: pointer;
 }
 

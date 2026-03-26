@@ -26,9 +26,13 @@ Display a QR-code and the OTP secret.
             <i class="id card icon"></i>
             {% trans %}Personal information{% endtrans %}
         </a>
-        <a class="active item" href="{{ url_for('core.account.profile_settings', edited_user=user) }}">
+        <a class="item" href="{{ url_for('core.account.profile_settings', edited_user=user) }}">
             <i class="tools icon"></i>
             {% trans %}Account settings{% endtrans %}
+        </a>
+        <a class="active item" href="{{ url_for('core.account.auth.profile_auth', edited_user=user) }}">
+            <i class="shield alternate icon"></i>
+            {% trans %}Authentication{% endtrans %}
         </a>
     {% endif %}
 {% endblock %}
@@ -42,7 +46,7 @@ Display a QR-code and the OTP secret.
 
     {% call fui.render_form(form, hx_boost="false") %}
         <div class="ui attached clearing segment">
-            {{ login_field.render_field(form.otp, class="autofocus") }}
+            {{ login_field.render_field(form.otp, autofocus=true) }}
         </div>
 
         <div class="ui attached clearing segment">
@@ -84,7 +88,7 @@ Display a QR-code and the OTP secret.
 
                 <div class="ui attached clearing segment">
                     {% call fui.render_form(form, hx_boost="false") %}
-                        {{ login_field.render_field(form.otp, class="autofocus") }}
+                        {{ login_field.render_field(form.otp, autofocus=true) }}
 
                         <div class="ui clearing container">
                             <div class="ui right floated stackable buttons">

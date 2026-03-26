@@ -46,6 +46,10 @@ Displays a user profile edition form.
         <i class="tools icon"></i>
         {% trans %}Account settings{% endtrans %}
     </a>
+    <a class="item" href="{{ url_for('core.account.auth.profile_auth', edited_user=edited_user) }}">
+        <i class="shield alternate icon"></i>
+        {% trans %}Authentication{% endtrans %}
+    </a>
 {% endblock %}
 
 {% block content %}

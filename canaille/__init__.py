@@ -55,9 +55,11 @@ def create_app(
         setup_flask(app)
 
         if app.features.has_oidc:  # pragma: no branch
+            from .oidc.cors import setup_cors
             from .oidc.provider import setup_oauth
 
             setup_oauth(app)
+            setup_cors(app)
 
         if app.features.has_scim_client:
             from .scim.client import setup_scim_client

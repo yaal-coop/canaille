@@ -1,23 +1,55 @@
-[0.x.x] - Unreleased
+[0.2.3] - 2026-03-24
+--------------------
+
+Fixed
+^^^^^
+- SCIM server no longer crashes with a 500 error when querying or patching users that have a profile photo.
+- SCIM server no longer returns an ``invalidSyntax`` error when a user has an empty ``profile_url``.
+
+[0.2.2] - 2025-03-20
+--------------------
+
+Fixed
+^^^^^
+- ``ui_locales_supported`` in OIDC well-known now uses BCP 47 language tags (hyphens) instead of POSIX locale codes (underscores).
+
+[0.2.1] - 2025-02-25
+--------------------
+
+Fixed
+^^^^^
+- Fix alg selection on JWT emission.
+
+[0.2.0] - 2025-02-25
 --------------------
 
 Added
 ^^^^^
+- CORS support for OIDC and SCIM endpoints. :issue:`332`
 - OIDC ``amr`` claim support. :issue:`302`
 - Server-side sessions.
 - Captcha protection. :issue:`211` :pr:`310`
 - Support for Python 3.14. :pr:`313`
 - Integration test suite. :issue:`320`
 - Requests are redirected to ``SERVER_NAME`` when the HTTP Host header does not match.
+- WebAuthn authentication factor implementation. :issue:`296`
 
 Fixed
 ^^^^^
+- CSP violation caused by Fomantic-UI inline styles.
+- LDAP: OTP feature is now disabled when the OTP module is not loaded in OpenLDAP.
+- LDAP: ``PostReadControl`` only requests attributes that exist in the LDAP schema.
 - Password reset no longer bypasses MFA.
 - Usernames don't appear in the photos URLs.
 - Include missing Babel data in the pyinstaller binary. :issue:`318`
 - ID token signing now selects a key compatible with the client's ``id_token_signed_response_alg``.
 - OIDC discovery signing algorithm claims are now dynamically computed from server keys. :issue:`323`
 - Explicitly make RSA keys mandatory.
+- When the scope parameter is omitted from authorization requests, the client's configured scope is now used as the default value.
+- Password field autofocus. :issue:`325`
+- Broken photo upload. :issue:`327`
+- Disable HTMX boosting for redirections after redirections. :issue:`334`
+- Fix HTMX resetting inputs :issue:`335`
 
 [0.1.0] - 2025-11-13
 --------------------

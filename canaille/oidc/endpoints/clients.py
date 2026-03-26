@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from flask import Blueprint
 from flask import abort
+from flask import current_app
 from flask import flash
 from flask import redirect
 from flask import request
@@ -96,6 +97,7 @@ def add(user):
     Backend.instance.save(client)
     client.audience = [client]
     Backend.instance.save(client)
+    current_app.logger.security(f"Created client {client.client_id} by {user.id}")
     flash(
         _("The client has been created."),
         "success",
@@ -111,15 +113,15 @@ def edit(user, client):
         return render_template("oidc/modals/delete-client.html", client=client)
 
     if request.form and request.form.get("action") == "delete":
-        return client_delete(client)
+        return client_delete(user, client)
 
     if request.form and request.form.get("action") == "new-access-token":
-        return client_new_token(client)
+        return client_new_token(user, client)
 
-    return client_edit(client)
+    return client_edit(user, client)
 
 
-def client_edit(client):
+def client_edit(user, client):
     data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     if data["scope"]:
         data["scope"] = " ".join(data["scope"])
@@ -196,6 +198,7 @@ def client_edit(client):
         require_signed_request_object=form["require_signed_request_object"].data,
     )
     Backend.instance.save(client)
+    current_app.logger.security(f"Edited client {client.client_id} by {user.id}")
     flash(
         _("The client has been edited."),
         "success",
@@ -203,7 +206,8 @@ def client_edit(client):
     return redirect(url_for("oidc.clients.edit", client=client))
 
 
-def client_delete(client):
+def client_delete(user, client):
+    current_app.logger.security(f"Deleted client {client.client_id} by {user.id}")
     flash(
         _("The client has been deleted."),
         "success",
@@ -212,9 +216,11 @@ def client_delete(client):
     return redirect(url_for("oidc.clients.index"))
 
 
-def client_new_token(client):
+def client_new_token(user, client):
     flash(
-        _(f"A token have been created for the client {client.client_name}"),
+        _("A token has been created for the client {client_name}.").format(
+            client_name=client.client_name
+        ),
         "success",
     )
     now = datetime.datetime.now(datetime.timezone.utc)
@@ -229,4 +235,7 @@ def client_new_token(client):
         audience=client.audience,
     )
     Backend.instance.save(token)
+    current_app.logger.security(
+        f"Created token for client {client.client_id} by {user.id}"
+    )
     return redirect(url_for("oidc.tokens.view", token=token))

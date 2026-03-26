@@ -275,7 +275,7 @@ def test_client_new_token(testclient, logged_admin, backend, client):
     res = res.forms["clienteditform"].submit(name="action", value="new-access-token")
     assert (
         "success",
-        "A token have been created for the client Some client",
+        "A token has been created for the client Some client.",
     ) in res.flashes
 
     token = backend.get(models.Token, client=client)

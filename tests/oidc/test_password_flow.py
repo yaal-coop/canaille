@@ -8,6 +8,45 @@ from canaille.app import models
 from . import client_credentials
 
 
+def test_missing_scope_uses_client_default(testclient, user, client, backend):
+    """Per RFC 6749 Section 3.3, if scope is omitted, use client's default scope."""
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="password",
+            username="user",
+            password="correct horse battery staple",
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = backend.get(models.Token, access_token=access_token)
+    assert set(token.scope) == set(client.scope)
+
+
+def test_missing_scope_with_no_client_default(testclient, user, client, backend):
+    """If client has no default scope and scope is omitted, return empty scope."""
+    client.scope = []
+    backend.save(client)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="password",
+            username="user",
+            password="correct horse battery staple",
+        ),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+
+    access_token = res.json["access_token"]
+    token = backend.get(models.Token, access_token=access_token)
+    assert token.scope == []
+
+
 def test_password_flow_basic(testclient, user, client, backend):
     res = testclient.post(
         "/oauth/token",

@@ -68,13 +68,22 @@ class Client(BaseClient, ClientMixin):
     def get_client_id(self):
         return self.client_id
 
-    def get_allowed_scope(self, scope: str) -> str:
-        allowed_scope = [
-            scope_piece
-            for scope_piece in (self.scope or scope.split())
-            if scope_piece in scope
-        ]
-        return util.list_to_scope(allowed_scope)
+    def get_allowed_scope(self, scope: str | None) -> str:
+        """Return the allowed scope for a token request.
+
+        Per RFC 6749 Section 3.3, if the client omits the scope parameter,
+        the server should use a pre-defined default (client's scope).
+        If client has no maximum scope defined, any requested scope is allowed.
+        """
+        if not scope:
+            return util.list_to_scope(self.scope) if self.scope else ""
+
+        if not self.scope:
+            return scope
+
+        allowed = set(self.scope)
+        requested = scope.split()
+        return util.list_to_scope([s for s in requested if s in allowed])
 
     def check_redirect_uri(self, redirect_uri: str) -> bool:
         return redirect_uri in self.redirect_uris

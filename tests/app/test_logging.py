@@ -55,10 +55,10 @@ def test_file_log_config(configuration, backend, tmp_path, user):
             ).serialize()
         ]
 
-    res = testclient.get("/profile/user/settings")
+    res = testclient.get("/profile/user/auth/password")
     res.form["password1"] = "new-password"
     res.form["password2"] = "new-password"
-    res = res.form.submit(name="action", value="edit-settings")
+    res = res.form.submit(name="action", value="edit-password")
 
     with open(log_path) as fd:
         log_content = fd.read()

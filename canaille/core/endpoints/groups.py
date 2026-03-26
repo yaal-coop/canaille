@@ -1,4 +1,3 @@
-import binascii
 import datetime
 
 from flask import Blueprint
@@ -14,6 +13,7 @@ from flask import url_for
 from canaille.app import b64_to_obj
 from canaille.app import models
 from canaille.app.flask import render_htmx_template
+from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import TableForm
@@ -73,7 +73,13 @@ def create_group(user):
 
     if request.form:
         if not form.validate():
-            flash(_("Group creation failed."), "error")
+            flash(
+                _(
+                    "The group couldn't be created. "
+                    "Please check the form and try again."
+                ),
+                "error",
+            )
         else:
             group = models.Group()
             group.members = [user]
@@ -83,7 +89,7 @@ def create_group(user):
             Backend.instance.save(group)
             flash(
                 _(
-                    "The group %(group)s has been successfully created",
+                    "The group %(group)s has been successfully created.",
                     group=group.display_name,
                 ),
                 "success",
@@ -109,6 +115,7 @@ def group(user, group):
         request.method == "GET"
         or request.form.get("action") == "edit"
         or request.form.get("page")
+        or request_is_partial()
     ):
         return edit_group(group)
 
@@ -154,7 +161,7 @@ def edit_group(group):
 
     if (
         request.form
-        and request.form.get("action") == "edit"
+        and (request.form.get("action") == "edit" or request_is_partial())
         and not request.form.get("page")
     ):
         if form.validate():
@@ -169,7 +176,13 @@ def edit_group(group):
             )
             return redirect(url_for("core.groups.group", group=group))
         else:
-            flash(_("Group edition failed."), "error")
+            flash(
+                _(
+                    "Your changes couldn't be saved. "
+                    "Please check the form and try again."
+                ),
+                "error",
+            )
 
     return render_htmx_template(
         "core/group.html",
@@ -220,7 +233,7 @@ def delete_member(group):
 def delete_group(group):
     flash(
         _(
-            "The group %(group)s has been successfully deleted",
+            "The group %(group)s has been successfully deleted.",
             group=group.display_name,
         ),
         "success",
@@ -265,7 +278,11 @@ def unset_owner(user, group):
     form = UnsetGroupOwnerForm(request.form or None)
     form.group = group
 
-    if not user.can("manage_all_groups") and form.user.data is not None and form.user.data != user:
+    if (
+        not user.can("manage_all_groups")
+        and form.user.data is not None
+        and form.user.data != user
+    ):
         abort(403)
 
     if not form.validate():
@@ -374,11 +391,11 @@ def invite_to_group(user, group):
 @bp.route("/join/<data>/<hash>", methods=["GET", "POST"])
 def join_group(data, hash):
     """Handle group invitation link validation and add user to group."""
-    try:
-        payload = GroupInvitationPayload(*b64_to_obj(data))
-    except (binascii.Error, TypeError):
+    data_obj = b64_to_obj(data)
+    if data_obj is None:
         flash(_("The invitation link that brought you here was invalid."), "error")
         return redirect(url_for("core.account.index"))
+    payload = GroupInvitationPayload(*data_obj)
 
     if not (group := Backend.instance.get(models.Group, id=payload.group_id)):
         flash(_("The group you were invited to no longer exists."), "error")

@@ -1,0 +1,142 @@
+{#
+The FIDO2/WebAuthn authentication factor template.
+
+Displays the passkeys management.
+
+:param edited_user: The user being edited.
+:type edited_user: :class:`~canaille.core.models.User`
+#}
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {% if user.user_name == edited_user.user_name %}
+        {%- trans %}My profile{% endtrans -%}
+    {% else %}
+        {%- trans %}User profile edition{% endtrans -%}
+    {% endif %}
+{%- endblock -%}
+
+{% block submenu %}
+    <a class="item" href="{{ url_for('core.account.profile_edition', edited_user=edited_user) }}">
+        <i class="id card icon"></i>
+        {% trans %}Personal information{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('core.account.profile_settings', edited_user=edited_user) }}">
+        <i class="tools icon"></i>
+        {% trans %}Account settings{% endtrans %}
+    </a>
+    <a class="active item" href="{{ url_for('core.account.auth.profile_auth', edited_user=edited_user) }}">
+        <i class="shield alternate icon"></i>
+        {% trans %}Authentication{% endtrans %}
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="ui clearing segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans %}Passkeys{% endtrans %}
+            </div>
+        </h2>
+
+        <form method="post" class="ui form info">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+            {% if edited_user.webauthn_credentials %}
+                <div class="ui top attached info message">
+                    <div class="header">
+                        {% trans count=edited_user.webauthn_credentials|length %}
+                            You have {{ count }} passkey configured.
+                            {% pluralize %}
+                            You have {{ count }} passkeys configured.
+                        {% endtrans %}
+                    </div>
+                    <p>
+                        {% trans %}
+                            Passkeys can be used for authentication.
+                        {% endtrans %}
+                        {% if edited_user.webauthn_credentials|length < 2 %}
+                            {% trans %}
+                                As they are unrecoverable in case of loss,
+                                it is generally recommended to register at least one additional backup key.
+                            {% endtrans %}
+                        {% endif %}
+                    </p>
+                </div>
+
+                <table class="ui bottom attached celled table">
+                    <thead>
+                        <tr>
+                            <th>{% trans %}Name{% endtrans %}</th>
+                            <th>{% trans %}Registered{% endtrans %}</th>
+                            <th>{% trans %}Last used{% endtrans %}</th>
+                            <th>{% trans %}Actions{% endtrans %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for credential in edited_user.webauthn_credentials %}
+                            <tr>
+                                <td>
+                                    <div class="ui action input" style="width: 100%;">
+                                        <input type="text" name="credential_name_{{ credential.id }}" value="{{ credential.name or _('My passkey') }}" maxlength="255">
+                                        <button type="submit" class="ui icon button" name="fido2-rename-credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Rename{% endtrans %}">
+                                            <i class="edit icon"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>{{ credential.created_at|datetimeformat }}</td>
+                                <td>
+                                    {% if credential.last_used_at %}
+                                        {{ credential.last_used_at|datetimeformat }}
+                                    {% else %}
+                                        <em>{% trans %}Never{% endtrans %}</em>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="submit" class="ui basic negative icon button" name="fido2-confirm-credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Delete{% endtrans %}">
+                                        <i class="trash icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="ui right aligned container">
+                    <div class="ui stackable buttons">
+                        {% if edited_user.webauthn_credentials|length < config.CANAILLE.FIDO_MAX_CREDENTIALS %}
+                            <button type="submit" class="ui primary button" name="action" value="fido2-setup" id="setup-fido2" formnovalidate>
+                                <i class="plus icon"></i>
+                                {% trans %}Add another key{% endtrans %}
+                            </button>
+                        {% else %}
+                            <div class="ui disabled button" title="{% trans max=config.CANAILLE.FIDO_MAX_CREDENTIALS %}Maximum limit reached ({{ max }}){% endtrans %}">
+                                <i class="plus icon"></i>
+                                {% trans %}Add another key{% endtrans %}
+                            </div>
+                        {% endif %}
+                        <button type="submit" class="ui basic negative button confirm" name="action" value="fido2-reset-confirm" id="reset-fido2-all" formnovalidate>
+                            {% trans %}Remove all keys{% endtrans %}
+                        </button>
+                    </div>
+                </div>
+
+            {% else %}
+                <div class="ui info message">
+                    {% trans %}
+                        You have no passkey configured.
+                        Click on the following button to register your passkey.
+                    {% endtrans %}
+                </div>
+                <div class="ui right aligned container">
+                    <div class="ui stackable buttons">
+                        <button type="submit" class="ui right floated primary button" name="action" value="fido2-setup" id="setup-fido2" formnovalidate>
+                            {% trans %}Set-up{% endtrans %}
+                        </button>
+                    </div>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

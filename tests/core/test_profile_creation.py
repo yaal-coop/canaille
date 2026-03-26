@@ -59,8 +59,8 @@ def test_user_creation_edition_and_deletion(
 
     # User have been deleted.
     res = testclient.get("/profile/george/settings", status=200)
-    res = res.form.submit(name="action", value="confirm-delete", status=200)
-    res = res.form.submit(name="action", value="delete", status=302)
+    res = res.form.submit(name="action", value="delete-confirm", status=200)
+    res = res.form.submit(name="action", value="delete-execute", status=302)
     res = res.follow(status=200)
     assert backend.get(models.User, user_name="george") is None
     res.mustcontain(no="george")
@@ -110,7 +110,10 @@ def test_user_creation_form_validation_failed(
 
     res = testclient.get("/profile", status=200)
     res = res.form.submit(name="action", value="create-profile")
-    assert ("error", "User account creation failed.") in res.flashes
+    assert (
+        "error",
+        "The account couldn't be created. Please check the form and try again.",
+    ) in res.flashes
     assert backend.get(models.User, user_name="george") is None
 
 
@@ -123,7 +126,10 @@ def test_username_already_taken(
     res.form["family_name"] = "foo"
     res.form["emails-0"] = "any@thing.test"
     res = res.form.submit(name="action", value="create-profile")
-    assert ("error", "User account creation failed.") in res.flashes
+    assert (
+        "error",
+        "The account couldn't be created. Please check the form and try again.",
+    ) in res.flashes
     res.mustcontain("The user name 'user' already exists")
 
 
@@ -134,7 +140,10 @@ def test_email_already_taken(testclient, logged_moderator, user, foo_group, bar_
     res.form["family_name"] = "foo"
     res.form["emails-0"] = "john@doe.test"
     res = res.form.submit(name="action", value="create-profile")
-    assert ("error", "User account creation failed.") in res.flashes
+    assert (
+        "error",
+        "The account couldn't be created. Please check the form and try again.",
+    ) in res.flashes
     res.mustcontain("The email 'john@doe.test' is already used")
 
 

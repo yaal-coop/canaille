@@ -24,6 +24,7 @@ def create_doc_app(sphinx_app):
         conf = dict(tomlkit.load(fd))
     conf["CANAILLE"]["DATABASE"] = "memory"
     conf["CANAILLE"]["SECRET_KEY"] = "doc"
+    conf.pop("SERVER_NAME", None)
     conf["CANAILLE"]["SMTP"] = {"HOST": "localhost"}
     conf["CANAILLE"]["LANGUAGE"] = sphinx_app.config["language"]
     conf["CANAILLE"]["LOGGING"] = {

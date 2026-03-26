@@ -16,6 +16,7 @@ from authlib.oauth2 import rfc7662
 from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
+from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc.core.grants.util import generate_id_token
@@ -42,7 +43,7 @@ from .jose import server_jwks
 from .userinfo import UserInfo
 from .userinfo import generate_user_claims
 
-AUTHORIZATION_CODE_LIFETIME = 84400
+AUTHORIZATION_CODE_LIFETIME = 300
 JWT_JTI_CACHE_LIFETIME = 3600
 
 AMR_MAPPING = {
@@ -50,6 +51,7 @@ AMR_MAPPING = {
     "otp": ["otp"],
     "sms": ["sms", "mca"],
     "email": ["mca"],
+    "fido2": ["hwk"],
 }
 
 
@@ -100,16 +102,16 @@ def get_issuer():
     return request.url_root
 
 
-def get_jwt_config(grant=None):
+def get_jwt_config(grant=None, client=None):
     jwks = server_jwks(include_inactive=False)
 
     jwk = None
-    if (grant and hasattr(grant, "request") and grant.request.client) and (
-        alg := grant.request.client.id_token_signed_response_alg
-    ):
+    alg = None
+    if client and (alg := client.id_token_signed_response_alg):
         jwk = jwks.pick_random_key(alg)
 
     if jwk is None:
+        alg = None
         jwk = jwks.pick_random_key("RS256")
 
     if jwk is None:
@@ -119,7 +121,7 @@ def get_jwt_config(grant=None):
         "key": jwk.as_dict(),
         "iss": get_issuer(),
         "kid": jwk.kid,
-        "alg": get_alg_for_key(jwk),
+        "alg": alg or get_alg_for_key(jwk),
     }
     return payload
 
@@ -200,14 +202,8 @@ class OpenIDCode(oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self, grant=None):
-        # Hotfix until fixed upstream:
-        # client.id_token_signed_response_alg should be used when defined,
-        # this can only happen if 'alg' is not set
-        # https://github.com/authlib/authlib/issues/806
-        result = get_jwt_config(grant)
-        del result["alg"]
-        return result
+    def get_jwt_config(self, grant=None, client=None):
+        return get_jwt_config(grant, client)
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
@@ -281,14 +277,8 @@ class OpenIDImplicitGrant(oidc_core.OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self, grant=None):
-        # Hotfix until fixed upstream:
-        # client.id_token_signed_response_alg should be used when defined,
-        # this can only happen if 'alg' is not set
-        # https://github.com/authlib/authlib/issues/806
-        result = get_jwt_config(grant)
-        del result["alg"]
-        return result
+    def get_jwt_config(self, grant=None, client=None):
+        return get_jwt_config(grant, client)
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
@@ -305,14 +295,8 @@ class OpenIDHybridGrant(oidc_core.OpenIDHybridGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self, grant=None):
-        # Hotfix until fixed upstream:
-        # client.id_token_signed_response_alg should be used when defined,
-        # this can only happen if 'alg' is not set
-        # https://github.com/authlib/authlib/issues/806
-        result = get_jwt_config(grant)
-        del result["alg"]
-        return result
+    def get_jwt_config(self, grant=None, client=None):
+        return get_jwt_config(grant, client)
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
@@ -328,19 +312,48 @@ def query_client(client_id):
 
 def save_token(token, request):
     now = datetime.datetime.now(datetime.timezone.utc)
+    scope = token.get("scope", "").split() if token.get("scope") else []
     t = models.Token(
         token_id=gen_salt(48),
         type=token["token_type"],
         access_token=token["access_token"],
         issue_date=now,
         lifetime=token["expires_in"],
-        scope=token["scope"].split(" "),
+        scope=scope,
         client=request.client,
         refresh_token=token.get("refresh_token"),
         subject=request.user,
         audience=request.client.audience,
     )
     Backend.instance.save(t)
+
+
+class BearerTokenGenerator(rfc6750.BearerTokenGenerator):
+    """Custom token generator that handles missing scope parameter.
+
+    Hotfix for https://github.com/authlib/authlib/pull/847
+    Per RFC 6749 Section 3.3, if the client omits the scope parameter,
+    the server should use the client's default scope.
+    """
+
+    @staticmethod
+    def get_allowed_scope(client, scope):
+        scope = client.get_allowed_scope(scope)
+        if scope is None:  # pragma: no cover
+            raise InvalidScopeError()
+        return scope
+
+
+class CanailleAuthorizationServer(AuthorizationServer):
+    """Custom AuthorizationServer that uses our BearerTokenGenerator."""
+
+    def create_bearer_token_generator(self, config):
+        access_token_generator = super().create_bearer_token_generator(config)
+        return BearerTokenGenerator(
+            access_token_generator.access_token_generator,
+            access_token_generator.refresh_token_generator,
+            access_token_generator.expires_generator,
+        )
 
 
 class BearerTokenValidator(rfc6750.BearerTokenValidator):
@@ -647,7 +660,7 @@ class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
         return client.client_metadata.get("require_signed_request_object", False)
 
 
-authorization = AuthorizationServer()
+authorization = CanailleAuthorizationServer()
 require_oauth = ResourceProtector()
 
 
@@ -663,7 +676,7 @@ def generate_access_token(client, grant_type, user, scope):
         "token": {},
         "user_info": UserInfo(generate_user_claims(user)).filter(scope),
         "aud": audience,
-        **get_jwt_config(grant_type),
+        **get_jwt_config(grant_type, client),
     }
     kwargs["exp"] = bearer_token_generator._get_expires_in(client, grant_type)
     return generate_id_token(**kwargs)

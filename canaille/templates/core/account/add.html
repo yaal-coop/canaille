@@ -58,7 +58,7 @@ It is used in the registration page, and in the manual account creation page ava
             </div>
         </h2>
 
-        {% call fui.render_form(form, class_="profile-form info") %}
+        {% call fui.render_form(form, class_="profile-form info", hx_boost="false") %}
             <h4 class="ui dividing header">{% trans %}Personal information{% endtrans %}</h4>
 
             {% if "photo" in form %}

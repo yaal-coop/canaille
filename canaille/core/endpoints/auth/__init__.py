@@ -25,6 +25,7 @@ from canaille.core.auth import redirect_to_next_auth_step
 
 from ..forms import LoginForm
 from . import email
+from . import fido
 from . import otp
 from . import password
 from . import sms
@@ -34,6 +35,7 @@ bp.register_blueprint(password.bp)
 bp.register_blueprint(email.bp)
 bp.register_blueprint(sms.bp)
 bp.register_blueprint(otp.bp)
+bp.register_blueprint(fido.bp)
 
 
 @bp.context_processor
@@ -109,7 +111,7 @@ def login(username=None):
 
     if not form.validate():
         logout_user()
-        flash(_("Login failed, please check your information"), "error")
+        flash(_("Login failed. Please check your information."), "error")
         return render_template(
             "core/login.html", form=form, login_history=get_login_history()
         )
@@ -145,7 +147,7 @@ def logout(username=None):
                 "success",
             )
         else:
-            flash(_("The session could not be closed."), "error")
+            flash(_("This session couldn't be closed. Please try again."), "error")
         return redirect(url_for("core.auth.login"))
     else:
         if g.session and g.session.user:

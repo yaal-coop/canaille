@@ -94,6 +94,11 @@ def login_user(user, remember: bool = True) -> None:
     except KeyError:
         session[USER_SESSION] = [obj.serialize()]
 
+    # Prevent session fixation: rotate the session ID on login.
+    # Only available with server-side sessions (Flask-Session).
+    if hasattr(current_app.session_interface, "regenerate"):
+        current_app.session_interface.regenerate(session)
+
     session.permanent = remember
     if remember:
         add_to_login_history(user.user_name)
