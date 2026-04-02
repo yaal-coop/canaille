@@ -51,7 +51,7 @@ class RootSettings(BaseSettings):
     - :doc:`Flask <flask:config>`
     - :doc:`Flask-WTF <flask-wtf:config>`
     - :doc:`Flask-Babel <flask-babel:index>`
-    - :doc:`Authlib <authlib:flask/2/authorization-server>`
+    - :doc:`Authlib <authlib:oauth2/authorization-server/flask/authorization-server>`
 
     .. code-block:: toml
         :caption: config.toml
