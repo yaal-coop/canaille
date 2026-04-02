@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - SCIM ``attributes`` and ``excludedAttributes`` query parameter support.
+- SCIM ``POST /.search`` endpoint.
 
 [0.2.3] - 2026-03-24
 --------------------

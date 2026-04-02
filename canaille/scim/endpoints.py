@@ -235,6 +235,35 @@ def query_service_provider_config():
     return spc.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE)
 
 
+@bp.route("/.search", methods=["POST"])
+@csrf.exempt
+@require_oauth()
+def search():
+    req = SearchRequest.model_validate(request.json)
+    users = list(
+        Backend.instance.query(models.User)[req.start_index_0 : req.stop_index_0]
+    )
+    groups = list(
+        Backend.instance.query(models.Group)[req.start_index_0 : req.stop_index_0]
+    )
+    scim_users = [user_from_canaille_to_scim_server(user) for user in users]
+    scim_groups = [group_from_canaille_to_scim_server(group) for group in groups]
+    resources = scim_users + scim_groups
+    total = len(resources)
+    list_response = ListResponse[User[EnterpriseUser] | Group](
+        start_index=req.start_index,
+        items_per_page=req.count,
+        total_results=total,
+        resources=resources,
+    )
+    payload = list_response.model_dump(
+        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
+    )
+    return payload
+
+
 @bp.route("/Users", methods=["POST"])
 @csrf.exempt
 @require_oauth()
