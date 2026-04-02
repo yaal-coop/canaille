@@ -29,7 +29,7 @@ def group_from_canaille_to_scim_client(group, group_class, scim_client):
     User = scim_client.get_resource_model("User")
     for member in group.members:
         req = SearchRequest(filter=f'externalId eq "{member.id}"')
-        response = scim_client.query(User, search_request=req)
+        response = scim_client.query(User, query_parameters=req)
         if response.resources:
             distant_members.append(response.resources[0])
         else:
@@ -111,7 +111,7 @@ def execute_scim_user_action(client_id, user_id, method):
     User = scim.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user_id}"')
-    response = scim.query(User, search_request=req)
+    response = scim.query(User, query_parameters=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     if method == "delete" and distant_scim_user:
@@ -152,7 +152,7 @@ def execute_scim_group_action(scim, group, client_name, method):
     Group = scim.get_resource_model("Group")
 
     req = SearchRequest(filter=f'externalId eq "{group.id}"')
-    response = scim.query(Group, search_request=req)
+    response = scim.query(Group, query_parameters=req)
     scim_group = response.resources[0] if response.resources else None
 
     if method == "delete" and scim_group:
