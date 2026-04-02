@@ -1,3 +1,10 @@
+[unreleased]
+------------
+
+Added
+^^^^^
+- SCIM ``attributes`` and ``excludedAttributes`` query parameter support.
+
 [0.2.3] - 2026-03-24
 --------------------
 

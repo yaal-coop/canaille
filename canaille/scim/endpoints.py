@@ -18,6 +18,7 @@ from scim2_models import Error
 from scim2_models import ListResponse
 from scim2_models import PatchOp
 from scim2_models import ResourceType
+from scim2_models import ResponseParameters
 from scim2_models import Schema
 from scim2_models import SearchRequest
 from werkzeug.exceptions import HTTPException
@@ -116,6 +117,8 @@ def query_users():
     )
     payload = list_response.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
     )
     return payload
 
@@ -124,9 +127,12 @@ def query_users():
 @csrf.exempt
 @require_oauth()
 def query_user(user):
+    req = ResponseParameters.model_validate(request.args.to_dict())
     scim_user = user_from_canaille_to_scim_server(user)
     return scim_user.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
     )
 
 
@@ -148,6 +154,8 @@ def query_groups():
     )
     payload = list_response.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
     )
     return payload
 
@@ -156,9 +164,12 @@ def query_groups():
 @csrf.exempt
 @require_oauth()
 def query_group(group):
+    req = ResponseParameters.model_validate(request.args.to_dict())
     scim_group = group_from_canaille_to_scim_server(group)
     return scim_group.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
     )
 
 

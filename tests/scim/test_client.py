@@ -44,7 +44,7 @@ def test_scim_client_group_save_and_delete(
     User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_trusted_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, query_parameters=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     response = scim_client_for_trusted_client.query(Group)
@@ -75,7 +75,7 @@ def test_scim_client_group_save_unable_to_retrieve_member_via_scim(
     User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_trusted_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, query_parameters=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     response = scim_client_for_trusted_client.query(Group)
@@ -113,11 +113,11 @@ def test_scim_client_change_user_groups_also_updates_group_members(
     User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_trusted_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, query_parameters=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     req = SearchRequest(filter=f'externalId eq "{logged_admin.id}"')
-    response = scim_client_for_trusted_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, query_parameters=req)
     distant_scim_admin = response.resources[0] if response.resources else None
 
     user.groups = user.groups + [bar_group]
@@ -160,11 +160,11 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     User = scim_client_for_trusted_client.get_resource_model("User")
 
     req = SearchRequest(filter=f'externalId eq "{user.id}"')
-    response = scim_client_for_trusted_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, query_parameters=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     req = SearchRequest(filter=f'externalId eq "{admin.id}"')
-    response = scim_client_for_trusted_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, query_parameters=req)
     distant_scim_admin = response.resources[0] if response.resources else None
 
     response = scim_client_for_trusted_client.query(Group)
@@ -188,7 +188,7 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     backend.save(alice)
 
     req = SearchRequest(filter=f'externalId eq "{alice.id}"')
-    response = scim_client_for_trusted_client.query(User, search_request=req)
+    response = scim_client_for_trusted_client.query(User, query_parameters=req)
     distant_scim_alice = response.resources[0] if response.resources else None
 
     response = scim_client_for_trusted_client.query(Group)
