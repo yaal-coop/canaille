@@ -6,6 +6,8 @@ Added
 - SCIM ``attributes`` and ``excludedAttributes`` query parameter support.
 - SCIM ``POST /.search`` endpoint.
 - SCIM ETags support. :pr:`335`
+- Allow access to SCIM endpoints with admin access tokens. :pr:`336`
+- SCIM ``/Me`` endpoint. :pr:`336`
 
 [0.2.3] - 2026-03-24
 --------------------

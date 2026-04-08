@@ -38,7 +38,8 @@ Configuration
 
 To allow clients to access the SCIM API, the client must have the :ref:`client_credentials <grant_types>` grant type configured.
 This allows clients to ask an authentication token on their own behalf and use this token to perform queries.
-Currently, user tokens are not supported.
+User tokens are also supported: users with appropriate :class:`permissions <canaille.core.configuration.Permission>` can access SCIM endpoints,
+and the :rfc:`/Me <7644#section-3.11>` endpoint allows authenticated users to manage their own resource.
 
 Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>`
 configuration parameter must be enabled.

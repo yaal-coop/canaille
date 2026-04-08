@@ -38,8 +38,10 @@ def test_authentication_failure(app):
     assert error.status == 401
 
 
-def test_authentication_with_an_user_token(app, backend, oidc_client, user):
-    """Test authentication with an user token."""
+def test_authentication_with_an_user_token_without_permission(
+    app, backend, oidc_client, user
+):
+    """Test that a user token without MANAGE_USERS permission is rejected on /Users."""
     scim_token = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
@@ -72,8 +74,7 @@ def test_authentication_with_an_user_token(app, backend, oidc_client, user):
     User = scim_client.get_resource_model("User")
     error = scim_client.query(User, raise_scim_errors=False)
     assert isinstance(error, Error)
-    assert not error.scim_type
-    assert error.status == 401
+    assert error.status == 403
 
 
 def test_missing_field(app, backend, scim_client):
