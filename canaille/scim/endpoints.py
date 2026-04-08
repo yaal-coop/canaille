@@ -1,4 +1,5 @@
 import json
+from functools import wraps
 from http import HTTPStatus
 
 from authlib.integrations.flask_oauth2 import ResourceProtector
@@ -26,6 +27,7 @@ from werkzeug.exceptions import PreconditionFailed
 from canaille.app import models
 from canaille.app.flask import csrf
 from canaille.backends import Backend
+from canaille.core.configuration import Permission
 
 from .casting import group_from_canaille_to_scim_server
 from .casting import group_from_scim_to_canaille
@@ -44,13 +46,30 @@ bp = Blueprint("scim", __name__, url_prefix="/scim/v2")
 
 class SCIMBearerTokenValidator(BearerTokenValidator):
     def authenticate_token(self, token_string: str):
-        token = Backend.instance.get(models.Token, access_token=token_string)
-        # At the moment, only client tokens are allowed, and not user tokens
-        return token if token and not token.subject else None
+        return Backend.instance.get(models.Token, access_token=token_string)
 
 
 require_oauth = ResourceProtector()
 require_oauth.register_token_validator(SCIMBearerTokenValidator())
+
+
+def require_permission(permission):
+    """Check that user tokens have the required Canaille permission.
+
+    Client tokens (without subject) bypass this check.
+    """
+
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if current_token.subject and not current_token.subject.can(permission):
+                err = Error(detail="Insufficient permissions", status=403)
+                return err.model_dump(), 403
+            return f(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 @bp.after_request
@@ -131,6 +150,7 @@ def parse_search_request(request) -> SearchRequest:
 @bp.route("/Users", methods=["GET"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_USERS)
 def query_users():
     req = parse_search_request(request)
     users = list(
@@ -155,6 +175,7 @@ def query_users():
 @bp.route("/Users/<user:user>", methods=["GET"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_USERS)
 def query_user(user):
     req = ResponseParameters.model_validate(request.args.to_dict())
     scim_user = user_from_canaille_to_scim_server(user)
@@ -168,6 +189,7 @@ def query_user(user):
 @bp.route("/Groups", methods=["GET"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_ALL_GROUPS)
 def query_groups():
     req = parse_search_request(request)
     groups = list(
@@ -192,6 +214,7 @@ def query_groups():
 @bp.route("/Groups/<group:group>", methods=["GET"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_ALL_GROUPS)
 def query_group(group):
     req = ResponseParameters.model_validate(request.args.to_dict())
     scim_group = group_from_canaille_to_scim_server(group)
@@ -267,6 +290,7 @@ def query_service_provider_config():
 @bp.route("/.search", methods=["POST"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_USERS)
 def search():
     req = SearchRequest.model_validate(request.json)
     users = list(
@@ -296,6 +320,7 @@ def search():
 @bp.route("/Users", methods=["POST"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_USERS)
 def create_user():
     req = ResponseParameters.model_validate(request.args.to_dict())
     request_user = User[EnterpriseUser].model_validate(
@@ -320,6 +345,7 @@ def create_user():
 @bp.route("/Groups", methods=["POST"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_ALL_GROUPS)
 def create_group():
     req = ResponseParameters.model_validate(request.args.to_dict())
     request_group = Group.model_validate(
@@ -344,6 +370,7 @@ def create_group():
 @bp.route("/Users/<user:user>", methods=["PUT"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_USERS)
 def replace_user(user):
     req = ResponseParameters.model_validate(request.args.to_dict())
     original_scim_user = user_from_canaille_to_scim_server(user)
@@ -368,6 +395,7 @@ def replace_user(user):
 @bp.route("/Groups/<group:group>", methods=["PUT"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_ALL_GROUPS)
 def replace_group(group):
     req = ResponseParameters.model_validate(request.args.to_dict())
     original_scim_group = group_from_canaille_to_scim_server(group)
@@ -392,6 +420,7 @@ def replace_group(group):
 @bp.route("/Users/<user:user>", methods=["PATCH"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_USERS)
 def patch_user(user):
     req = ResponseParameters.model_validate(request.args.to_dict())
     scim_user = user_from_canaille_to_scim_server(user)
@@ -418,6 +447,7 @@ def patch_user(user):
 @bp.route("/Groups/<group:group>", methods=["PATCH"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_ALL_GROUPS)
 def patch_group(group):
     req = ResponseParameters.model_validate(request.args.to_dict())
     scim_group = group_from_canaille_to_scim_server(group)
@@ -444,6 +474,7 @@ def patch_group(group):
 @bp.route("/Users/<user:user>", methods=["DELETE"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_USERS)
 def delete_user(user):
     current_app.logger.security(
         f"SCIM deleted user {user.id} by client {current_token.client.client_id}"
@@ -455,6 +486,7 @@ def delete_user(user):
 @bp.route("/Groups/<group:group>", methods=["DELETE"])
 @csrf.exempt
 @require_oauth()
+@require_permission(Permission.MANAGE_ALL_GROUPS)
 def delete_group(group):
     current_app.logger.security(
         f"SCIM deleted group {group.id} by client {current_token.client.client_id}"
