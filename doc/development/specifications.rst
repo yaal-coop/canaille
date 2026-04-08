@@ -60,8 +60,6 @@ Canaille provides a basic SCIM server implementation.
 - 🟠 `RFC7643: System for Cross-domain Identity Management: Core Schema <https://www.rfc-editor.org/rfc/rfc7642>`_
 - 🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://www.rfc-editor.org/rfc/rfc7642>`_
 
-Client-side implementation (i.e. broadcasting changes on users and groups among clients) and advanced features will be implemented in the future.
-
 What's implemented
 ~~~~~~~~~~~~~~~~~~
 
