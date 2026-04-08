@@ -68,9 +68,9 @@ What's implemented
 Endpoints:
 
 - /Users (GET, POST)
-- /Users/<user_id> (GET, PUT, DELETE)
+- /Users/<user_id> (GET, PUT, PATCH, DELETE)
 - /Groups (GET, POST)
-- /Groups/<user_id> (GET, PUT, DELETE)
+- /Groups/<group_id> (GET, PUT, PATCH, DELETE)
 - /ServiceProviderConfig (GET)
 - /Schemas (GET)
 - /Schemas/<schema_id> (GET)
@@ -80,6 +80,8 @@ Endpoints:
 Features:
 
 - :rfc:`pagination <7644#section-3.4.2.4>`
+- :rfc:`ETags <7644#section-3.14>`
+- :rfc:`attributes selection <7644#section-3.4.2.5>`
 
 .. _scim_unimplemented:
 
@@ -96,5 +98,3 @@ Features
 
 - :rfc:`filtering <7644#section-3.4.2.2>`
 - :rfc:`sorting <7644#section-3.4.2.3>`
-- :rfc:`attributes selection <7644#section-3.4.2.5>`
-- :rfc:`ETags <7644#section-3.14>`
