@@ -76,6 +76,7 @@ Endpoints:
 - /Schemas/<schema_id> (GET)
 - /ResourceTypes (GET)
 - /ResourceTypes/<resource_type_id> (GET)
+- :rfc:`/.search <7644#section-3.4.3>` (POST)
 
 Features:
 
@@ -92,7 +93,6 @@ Endpoints:
 
 - :rfc:`/Me <7644#section-3.11>` (GET, POST, PUT, PATCH, DELETE)
 - :rfc:`/Bulk <7644#section-3.11>` (POST)
-- :rfc:`/.search <7644#section-3.4.3>` (POST)
 
 Features
 
