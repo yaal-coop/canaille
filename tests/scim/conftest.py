@@ -14,6 +14,14 @@ def configuration(configuration):
     return configuration
 
 
+def _scim_headers(app, token):
+    return {
+        "Authorization": f"Bearer {token.access_token}",
+        "Host": app.config["SERVER_NAME"],
+        "Content-Type": "application/scim+json",
+    }
+
+
 @pytest.fixture
 def oidc_client(testclient, backend):
     from werkzeug.security import gen_salt
@@ -52,6 +60,28 @@ def oidc_token(testclient, oidc_client, backend):
     t = models.Token(
         token_id=gen_salt(48),
         access_token=gen_salt(48),
+        audience=[oidc_client],
+        client=oidc_client,
+        refresh_token=gen_salt(48),
+        scope=["openid", "profile"],
+        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        lifetime=3600,
+    )
+    backend.save(t)
+    yield t
+    backend.delete(t)
+
+
+@pytest.fixture
+def user_token(testclient, oidc_client, user, backend):
+    from werkzeug.security import gen_salt
+
+    from canaille.app import models
+
+    t = models.Token(
+        token_id=gen_salt(48),
+        access_token=gen_salt(48),
+        subject=user,
         audience=[oidc_client],
         client=oidc_client,
         refresh_token=gen_salt(48),

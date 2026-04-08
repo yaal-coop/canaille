@@ -75,6 +75,7 @@ Endpoints:
 - /ResourceTypes (GET)
 - /ResourceTypes/<resource_type_id> (GET)
 - :rfc:`/.search <7644#section-3.4.3>` (POST)
+- :rfc:`/Me <7644#section-3.11>` (GET, PUT, PATCH, DELETE)
 
 Features:
 
@@ -89,7 +90,6 @@ What is not implemented yet
 
 Endpoints:
 
-- :rfc:`/Me <7644#section-3.11>` (GET, POST, PUT, PATCH, DELETE)
 - :rfc:`/Bulk <7644#section-3.11>` (POST)
 
 Features

@@ -94,7 +94,9 @@ def check_etag():
     """Verify ``If-Match`` on write operations."""
     if request.method not in ("PUT", "PATCH", "DELETE"):
         return
-    arg = next(iter(request.view_args.values()))
+    arg = next(iter(request.view_args.values()), None)
+    if not arg:
+        return
     if_match = request.headers.get("If-Match")
     if not if_match:
         return
@@ -147,29 +149,121 @@ def parse_search_request(request) -> SearchRequest:
     return req
 
 
+def _query_resources(canaille_model, scim_type, to_scim):
+    req = parse_search_request(request)
+    resources = list(
+        Backend.instance.query(canaille_model)[req.start_index_0 : req.stop_index_0]
+    )
+    total = len(resources)
+    scim_resources = [to_scim(r) for r in resources]
+    list_response = ListResponse[scim_type](
+        start_index=req.start_index,
+        items_per_page=req.count,
+        total_results=total,
+        resources=scim_resources,
+    )
+    return list_response.model_dump(
+        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
+    )
+
+
+def _query_resource(resource, to_scim):
+    req = ResponseParameters.model_validate(request.args.to_dict())
+    scim_resource = to_scim(resource)
+    return scim_resource.model_dump(
+        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
+    )
+
+
+def _create_resource(scim_type, canaille_model, to_scim, from_scim):
+    req = ResponseParameters.model_validate(request.args.to_dict())
+    scim_resource = scim_type.model_validate(
+        request.json, scim_ctx=Context.RESOURCE_CREATION_REQUEST
+    )
+    resource = from_scim(scim_resource, canaille_model())
+    Backend.instance.save(resource)
+    resource_name = canaille_model.__name__.lower()
+    current_app.logger.security(
+        f"SCIM created {resource_name} {resource.id} by client {current_token.client.client_id}"
+    )
+    response_resource = to_scim(resource)
+    return (
+        response_resource.model_dump(
+            scim_ctx=Context.RESOURCE_CREATION_RESPONSE,
+            attributes=req.attributes,
+            excluded_attributes=req.excluded_attributes,
+        ),
+        HTTPStatus.CREATED,
+    )
+
+
+def _replace_resource(resource, scim_type, to_scim, from_scim):
+    req = ResponseParameters.model_validate(request.args.to_dict())
+    original = to_scim(resource)
+    scim_resource = scim_type.model_validate(
+        request.json,
+        scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
+    )
+    scim_resource.replace(original)
+    updated = from_scim(scim_resource, resource)
+    Backend.instance.save(updated)
+    resource_name = type(resource).__name__.lower()
+    current_app.logger.security(
+        f"SCIM replaced {resource_name} {updated.id} by client {current_token.client.client_id}"
+    )
+    response = to_scim(updated)
+    return response.model_dump(
+        scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
+    )
+
+
+def _patch_resource(resource, scim_type, to_scim, from_scim):
+    req = ResponseParameters.model_validate(request.args.to_dict())
+    scim_resource = to_scim(resource)
+    patch_op = PatchOp[scim_type].model_validate(
+        request.json, scim_ctx=Context.RESOURCE_PATCH_REQUEST
+    )
+    modified = patch_op.patch(scim_resource)
+
+    if modified:
+        updated = from_scim(scim_resource, resource)
+        Backend.instance.save(updated)
+        resource_name = type(resource).__name__.lower()
+        current_app.logger.security(
+            f"SCIM patched {resource_name} {updated.id} by client {current_token.client.client_id}"
+        )
+        scim_resource = to_scim(updated)
+
+    return scim_resource.model_dump(
+        scim_ctx=Context.RESOURCE_PATCH_RESPONSE,
+        attributes=req.attributes,
+        excluded_attributes=req.excluded_attributes,
+    )
+
+
+def _delete_resource(resource):
+    resource_name = type(resource).__name__.lower()
+    current_app.logger.security(
+        f"SCIM deleted {resource_name} {resource.id} by client {current_token.client.client_id}"
+    )
+    Backend.instance.delete(resource)
+    return "", HTTPStatus.NO_CONTENT
+
+
 @bp.route("/Users", methods=["GET"])
 @csrf.exempt
 @require_oauth()
 @require_permission(Permission.MANAGE_USERS)
 def query_users():
-    req = parse_search_request(request)
-    users = list(
-        Backend.instance.query(models.User)[req.start_index_0 : req.stop_index_0]
+    return _query_resources(
+        models.User, User[EnterpriseUser], user_from_canaille_to_scim_server
     )
-    total = len(users)
-    scim_users = [user_from_canaille_to_scim_server(user) for user in users]
-    list_response = ListResponse[User[EnterpriseUser]](
-        start_index=req.start_index,
-        items_per_page=req.count,
-        total_results=total,
-        resources=scim_users,
-    )
-    payload = list_response.model_dump(
-        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
-    )
-    return payload
 
 
 @bp.route("/Users/<user:user>", methods=["GET"])
@@ -177,13 +271,7 @@ def query_users():
 @require_oauth()
 @require_permission(Permission.MANAGE_USERS)
 def query_user(user):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    scim_user = user_from_canaille_to_scim_server(user)
-    return scim_user.model_dump(
-        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
-    )
+    return _query_resource(user, user_from_canaille_to_scim_server)
 
 
 @bp.route("/Groups", methods=["GET"])
@@ -191,24 +279,7 @@ def query_user(user):
 @require_oauth()
 @require_permission(Permission.MANAGE_ALL_GROUPS)
 def query_groups():
-    req = parse_search_request(request)
-    groups = list(
-        Backend.instance.query(models.group)[req.start_index_0 : req.stop_index_0]
-    )
-    total = len(groups)
-    scim_groups = [group_from_canaille_to_scim_server(group) for group in groups]
-    list_response = ListResponse[Group](
-        start_index=req.start_index,
-        items_per_page=req.count,
-        total_results=total,
-        resources=scim_groups,
-    )
-    payload = list_response.model_dump(
-        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
-    )
-    return payload
+    return _query_resources(models.Group, Group, group_from_canaille_to_scim_server)
 
 
 @bp.route("/Groups/<group:group>", methods=["GET"])
@@ -216,13 +287,7 @@ def query_groups():
 @require_oauth()
 @require_permission(Permission.MANAGE_ALL_GROUPS)
 def query_group(group):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    scim_group = group_from_canaille_to_scim_server(group)
-    return scim_group.model_dump(
-        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
-    )
+    return _query_resource(group, group_from_canaille_to_scim_server)
 
 
 @bp.route("/Schemas", methods=["GET"])
@@ -322,23 +387,11 @@ def search():
 @require_oauth()
 @require_permission(Permission.MANAGE_USERS)
 def create_user():
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    request_user = User[EnterpriseUser].model_validate(
-        request.json, scim_ctx=Context.RESOURCE_CREATION_REQUEST
-    )
-    user = user_from_scim_to_canaille(request_user, models.User())
-    Backend.instance.save(user)
-    current_app.logger.security(
-        f"SCIM created user {user.id} by client {current_token.client.client_id}"
-    )
-    response_user = user_from_canaille_to_scim_server(user)
-    return (
-        response_user.model_dump(
-            scim_ctx=Context.RESOURCE_CREATION_RESPONSE,
-            attributes=req.attributes,
-            excluded_attributes=req.excluded_attributes,
-        ),
-        HTTPStatus.CREATED,
+    return _create_resource(
+        User[EnterpriseUser],
+        models.User,
+        user_from_canaille_to_scim_server,
+        user_from_scim_to_canaille,
     )
 
 
@@ -347,23 +400,11 @@ def create_user():
 @require_oauth()
 @require_permission(Permission.MANAGE_ALL_GROUPS)
 def create_group():
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    request_group = Group.model_validate(
-        request.json, scim_ctx=Context.RESOURCE_CREATION_REQUEST
-    )
-    group = group_from_scim_to_canaille(request_group, models.Group())
-    Backend.instance.save(group)
-    current_app.logger.security(
-        f"SCIM created group {group.id} by client {current_token.client.client_id}"
-    )
-    response_group = group_from_canaille_to_scim_server(group)
-    return (
-        response_group.model_dump(
-            scim_ctx=Context.RESOURCE_CREATION_RESPONSE,
-            attributes=req.attributes,
-            excluded_attributes=req.excluded_attributes,
-        ),
-        HTTPStatus.CREATED,
+    return _create_resource(
+        Group,
+        models.Group,
+        group_from_canaille_to_scim_server,
+        group_from_scim_to_canaille,
     )
 
 
@@ -372,23 +413,11 @@ def create_group():
 @require_oauth()
 @require_permission(Permission.MANAGE_USERS)
 def replace_user(user):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    original_scim_user = user_from_canaille_to_scim_server(user)
-    request_scim_user = User[EnterpriseUser].model_validate(
-        request.json,
-        scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
-    )
-    request_scim_user.replace(original_scim_user)
-    updated_user = user_from_scim_to_canaille(request_scim_user, user)
-    Backend.instance.save(updated_user)
-    current_app.logger.security(
-        f"SCIM replaced user {updated_user.id} by client {current_token.client.client_id}"
-    )
-    response_scim_user = user_from_canaille_to_scim_server(updated_user)
-    return response_scim_user.model_dump(
-        scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+    return _replace_resource(
+        user,
+        User[EnterpriseUser],
+        user_from_canaille_to_scim_server,
+        user_from_scim_to_canaille,
     )
 
 
@@ -397,23 +426,11 @@ def replace_user(user):
 @require_oauth()
 @require_permission(Permission.MANAGE_ALL_GROUPS)
 def replace_group(group):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    original_scim_group = group_from_canaille_to_scim_server(group)
-    request_scim_group = Group.model_validate(
-        request.json,
-        scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
-    )
-    request_scim_group.replace(original_scim_group)
-    updated_group = group_from_scim_to_canaille(request_scim_group, group)
-    Backend.instance.save(updated_group)
-    current_app.logger.security(
-        f"SCIM replaced group {updated_group.id} by client {current_token.client.client_id}"
-    )
-    response_group = group_from_canaille_to_scim_server(updated_group)
-    return response_group.model_dump(
-        scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+    return _replace_resource(
+        group,
+        Group,
+        group_from_canaille_to_scim_server,
+        group_from_scim_to_canaille,
     )
 
 
@@ -422,25 +439,11 @@ def replace_group(group):
 @require_oauth()
 @require_permission(Permission.MANAGE_USERS)
 def patch_user(user):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    scim_user = user_from_canaille_to_scim_server(user)
-    patch_op = PatchOp[User[EnterpriseUser]].model_validate(
-        request.json, scim_ctx=Context.RESOURCE_PATCH_REQUEST
-    )
-    modified = patch_op.patch(scim_user)
-
-    if modified:
-        updated_user = user_from_scim_to_canaille(scim_user, user)
-        Backend.instance.save(updated_user)
-        current_app.logger.security(
-            f"SCIM patched user {updated_user.id} by client {current_token.client.client_id}"
-        )
-        scim_user = user_from_canaille_to_scim_server(updated_user)
-
-    return scim_user.model_dump(
-        scim_ctx=Context.RESOURCE_PATCH_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+    return _patch_resource(
+        user,
+        User[EnterpriseUser],
+        user_from_canaille_to_scim_server,
+        user_from_scim_to_canaille,
     )
 
 
@@ -449,25 +452,11 @@ def patch_user(user):
 @require_oauth()
 @require_permission(Permission.MANAGE_ALL_GROUPS)
 def patch_group(group):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    scim_group = group_from_canaille_to_scim_server(group)
-    patch_op = PatchOp[Group].model_validate(
-        request.json, scim_ctx=Context.RESOURCE_PATCH_REQUEST
-    )
-    modified = patch_op.patch(scim_group)
-
-    if modified:
-        updated_group = group_from_scim_to_canaille(scim_group, group)
-        Backend.instance.save(updated_group)
-        current_app.logger.security(
-            f"SCIM patched group {updated_group.id} by client {current_token.client.client_id}"
-        )
-        scim_group = group_from_canaille_to_scim_server(updated_group)
-
-    return scim_group.model_dump(
-        scim_ctx=Context.RESOURCE_PATCH_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+    return _patch_resource(
+        group,
+        Group,
+        group_from_canaille_to_scim_server,
+        group_from_scim_to_canaille,
     )
 
 
@@ -476,11 +465,7 @@ def patch_group(group):
 @require_oauth()
 @require_permission(Permission.MANAGE_USERS)
 def delete_user(user):
-    current_app.logger.security(
-        f"SCIM deleted user {user.id} by client {current_token.client.client_id}"
-    )
-    Backend.instance.delete(user)
-    return "", HTTPStatus.NO_CONTENT
+    return _delete_resource(user)
 
 
 @bp.route("/Groups/<group:group>", methods=["DELETE"])
@@ -488,8 +473,53 @@ def delete_user(user):
 @require_oauth()
 @require_permission(Permission.MANAGE_ALL_GROUPS)
 def delete_group(group):
-    current_app.logger.security(
-        f"SCIM deleted group {group.id} by client {current_token.client.client_id}"
+    return _delete_resource(group)
+
+
+def _resolve_me():
+    """Resolve the authenticated user from the token subject."""
+    user = current_token.subject
+    if not user:
+        abort(404)
+    return user
+
+
+@bp.route("/Me", methods=["GET"])
+@csrf.exempt
+@require_oauth()
+def query_me():
+    return _query_resource(_resolve_me(), user_from_canaille_to_scim_server)
+
+
+@bp.route("/Me", methods=["PUT"])
+@csrf.exempt
+@require_oauth()
+@require_permission(Permission.EDIT_SELF)
+def replace_me():
+    return _replace_resource(
+        _resolve_me(),
+        User[EnterpriseUser],
+        user_from_canaille_to_scim_server,
+        user_from_scim_to_canaille,
     )
-    Backend.instance.delete(group)
-    return "", HTTPStatus.NO_CONTENT
+
+
+@bp.route("/Me", methods=["PATCH"])
+@csrf.exempt
+@require_oauth()
+@require_permission(Permission.EDIT_SELF)
+def patch_me():
+    return _patch_resource(
+        _resolve_me(),
+        User[EnterpriseUser],
+        user_from_canaille_to_scim_server,
+        user_from_scim_to_canaille,
+    )
+
+
+@bp.route("/Me", methods=["DELETE"])
+@csrf.exempt
+@require_oauth()
+@require_permission(Permission.DELETE_ACCOUNT)
+def delete_me():
+    return _delete_resource(_resolve_me())
