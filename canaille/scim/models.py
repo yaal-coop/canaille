@@ -237,7 +237,7 @@ def get_service_provider_config():
         change_password=ChangePassword(supported=True),
         filter=Filter(supported=False, max_results=0),
         sort=Sort(supported=False),
-        etag=ETag(supported=False),
+        etag=ETag(supported=True),
         authentication_schemes=[
             AuthenticationScheme(
                 name="OAuth Bearer Token",

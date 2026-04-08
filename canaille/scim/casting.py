@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 
 from flask import url_for
 from scim2_models import Meta
@@ -11,6 +12,13 @@ from canaille.scim.models import Group
 from canaille.scim.models import User
 
 
+def make_etag(model):
+    """Compute a weak ETag from a model's identity and modification time."""
+    raw = f"{model.id}:{model.last_modified}"
+    digest = hashlib.sha256(raw.encode()).hexdigest()[:16]
+    return f'W/"{digest}"'
+
+
 def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
     scim_user_class = user_class if user_class != User else User[EnterpriseUser]
     scim_user = scim_user_class(
@@ -19,6 +27,7 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
             created=user.created,
             last_modified=user.last_modified,
             location=url_for("scim.query_user", user=user, _external=True),
+            version=make_etag(user),
         ),
         user_name=user.user_name,
         preferred_language=user.preferred_language,
@@ -157,6 +166,7 @@ def group_from_canaille_to_scim(group, group_class):
             created=group.created,
             last_modified=group.last_modified,
             location=url_for("scim.query_group", group=group, _external=True),
+            version=make_etag(group),
         ),
         display_name=group.display_name,
     )

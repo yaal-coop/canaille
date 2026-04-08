@@ -5,6 +5,7 @@ Added
 ^^^^^
 - SCIM ``attributes`` and ``excludedAttributes`` query parameter support.
 - SCIM ``POST /.search`` endpoint.
+- SCIM ETags support. :pr:`335`
 
 [0.2.3] - 2026-03-24
 --------------------
