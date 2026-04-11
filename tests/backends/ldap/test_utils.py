@@ -9,6 +9,7 @@ from canaille.app.configuration import CheckResult
 from canaille.app.configuration import ConfigurationException
 from canaille.app.configuration import settings_factory
 from canaille.backends.ldap.backend import LDAPBackend
+from canaille.backends.ldap.engine import InsufficientAccessError
 from canaille.backends.ldap.ldapobject import LDAPObject
 from canaille.backends.ldap.utils import Syntax
 from canaille.backends.ldap.utils import ldap_to_python
@@ -232,7 +233,7 @@ def test_ldap_cannot_create_users(testclient, configuration, backend):
     config_dict = config_obj.model_dump()
 
     def fake_init(*args, **kwarg):
-        raise ldap.INSUFFICIENT_ACCESS
+        raise InsufficientAccessError
 
     with mock.patch.object(User, "__init__", fake_init):
         assert LDAPBackend.check_network_config(config_dict) == CheckResult(
@@ -249,7 +250,7 @@ def test_ldap_cannot_manage_own_groups(testclient, configuration, backend):
     config_dict = config_obj.model_dump()
 
     def fake_init(*args, **kwarg):
-        raise ldap.INSUFFICIENT_ACCESS
+        raise InsufficientAccessError
 
     with mock.patch.object(Group, "__init__", fake_init):
         assert LDAPBackend.check_network_config(config_dict) == CheckResult(

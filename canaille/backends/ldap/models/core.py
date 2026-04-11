@@ -1,6 +1,5 @@
 from typing import ClassVar
 
-import ldap.filter
 from blinker import signal
 
 import canaille.core.models
@@ -56,8 +55,7 @@ class User(canaille.core.models.User, LDAPObject):
 
     def match_filter(self, filter):
         if isinstance(filter, str):
-            with LDAPBackend.instance.connection() as conn:
-                return self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter)
+            return self.dn and LDAPBackend.instance.engine.match_filter(self.dn, filter)
 
         return super().match_filter(filter)
 

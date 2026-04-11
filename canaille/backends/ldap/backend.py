@@ -4,15 +4,7 @@ import os
 import uuid
 from contextlib import contextmanager
 
-import ldap.modlist
-import ldif
 from flask import current_app
-from ldap.controls import DecodeControlTuples
-from ldap.controls.ppolicy import PasswordPolicyControl
-from ldap.controls.ppolicy import PasswordPolicyError
-from ldap.controls.readentry import PostReadControl
-from ldappool import ConnectionManager
-from ldappool import StateConnector
 
 from canaille.app import models
 from canaille.app.configuration import CheckResult
@@ -25,57 +17,12 @@ from canaille.backends import get_lockout_delay_message
 from canaille.backends import is_meaningful_value
 from canaille.backends.models import Model
 
-from .filter import build_attribute_filter
-from .filter import build_class_filter
-from .filter import build_fuzzy_filter
-from .filter import build_search_filter
-from .filter import resolve_base_dn
+from .engine import AuthenticationError
+from .engine import Engine
+from .engine import InsufficientAccessError
+from .engine import OperationalError
+from .engine import PasswordStatus
 from .utils import listify
-from .utils import python_attrs_to_ldap
-
-
-def _make_connector_cls(network_timeout):
-    """Create a StateConnector subclass that sets OPT_NETWORK_TIMEOUT."""
-
-    class _Connector(StateConnector):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.set_option(ldap.OPT_NETWORK_TIMEOUT, network_timeout)
-
-    return _Connector
-
-
-@contextmanager
-def ldap_connection(config):
-    conn = ldap.initialize(config["CANAILLE_LDAP"]["URI"])
-    conn.set_option(ldap.OPT_NETWORK_TIMEOUT, config["CANAILLE_LDAP"]["TIMEOUT"])
-    conn.simple_bind_s(
-        config["CANAILLE_LDAP"]["BIND_DN"], config["CANAILLE_LDAP"]["BIND_PW"]
-    )
-
-    try:
-        yield conn
-    finally:
-        conn.unbind_s()
-
-
-def install_schema(config, schema_path):
-    from canaille.app.installation import InstallationException
-
-    with open(schema_path) as fd:
-        parser = ldif.LDIFRecordList(fd)
-        parser.parse()
-
-    try:
-        with ldap_connection(config) as conn:
-            for dn, entry in parser.all_records:
-                add_modlist = ldap.modlist.addModlist(entry)
-                conn.add_s(dn, add_modlist)
-
-    except ldap.INSUFFICIENT_ACCESS as exc:
-        raise InstallationException(
-            f"The user '{config['CANAILLE_LDAP']['BIND_DN']}' has insufficient permissions to install LDAP schemas."
-        ) from exc
 
 
 class LDAPModelEncoder(ModelEncoder):
@@ -107,21 +54,20 @@ class LDAPModelEncoder(ModelEncoder):
 
 class LDAPBackend(Backend):
     json_encoder = LDAPModelEncoder
-    pool = None
 
     def __init__(self, config):
         super().__init__(config)
         ldap_config = self.config["CANAILLE_LDAP"]
-        LDAPBackend.pool = ConnectionManager(
+        self.engine = Engine(
             uri=ldap_config["URI"],
-            bind=ldap_config["BIND_DN"],
-            passwd=ldap_config["BIND_PW"],
-            size=ldap_config["POOL_SIZE"],
-            max_lifetime=ldap_config["POOL_MAX_LIFETIME"],
-            retry_max=ldap_config["POOL_RETRY_MAX"],
-            retry_delay=ldap_config["POOL_RETRY_DELAY"],
+            bind_dn=ldap_config["BIND_DN"],
+            bind_pw=ldap_config["BIND_PW"],
+            root_dn=ldap_config["ROOT_DN"],
+            pool_size=ldap_config["POOL_SIZE"],
+            pool_max_lifetime=ldap_config["POOL_MAX_LIFETIME"],
+            pool_retry_max=ldap_config["POOL_RETRY_MAX"],
+            pool_retry_delay=ldap_config["POOL_RETRY_DELAY"],
             timeout=ldap_config["TIMEOUT"],
-            connector_cls=_make_connector_cls(ldap_config["TIMEOUT"]),
         )
 
     def init_app(self, app, init_backend=None):
@@ -140,97 +86,109 @@ class LDAPBackend(Backend):
 
     @classmethod
     def setup_schemas(cls, config):
+        from canaille.app.installation import InstallationException
+
         from .ldapobject import LDAPObject
 
         with cls(config).session():
             if "oauthClient" not in LDAPObject.ldap_object_classes(force=True):
-                install_schema(
-                    config,
-                    os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
-                )
+                try:
+                    Backend.instance.engine.install_schema(
+                        os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
+                    )
+                except InsufficientAccessError as exc:
+                    raise InstallationException(
+                        f"The user '{config['CANAILLE_LDAP']['BIND_DN']}' has insufficient permissions to install LDAP schemas."
+                    ) from exc
 
     @contextmanager
     def connection(self):
         """Get a connection from the pool."""
-        try:
-            with self.pool.connection() as conn:
-                yield conn
-        except ldap.SERVER_DOWN as exc:
-            message = _("Could not connect to the LDAP server '{uri}'").format(
-                uri=self.config["CANAILLE_LDAP"]["URI"]
-            )
-            logging.error(message)
-            raise ConfigurationException(message) from exc
-        except ldap.INVALID_CREDENTIALS as exc:
-            message = _("LDAP authentication failed with user '{user}'").format(
-                user=self.config["CANAILLE_LDAP"]["BIND_DN"]
-            )
-            logging.error(message)
-            raise ConfigurationException(message) from exc
+        with self.engine.connection() as conn:
+            yield conn
 
     @classmethod
     def check_network_config(cls, config):
         from canaille.app import models
 
-        with cls(config).session():
-            try:
-                user = models.User(
-                    formatted_name=f"canaille_{uuid.uuid4()}",
-                    family_name=f"canaille_{uuid.uuid4()}",
-                    user_name=f"canaille_{uuid.uuid4()}",
-                    emails=f"canaille_{uuid.uuid4()}@mydomain.example",
-                    password="correct horse battery staple",
-                )
-                Backend.instance.save(user)
-                Backend.instance.delete(user)
+        previous_instance = Backend._instance
+        try:
+            with cls(config).session():
+                try:
+                    user = models.User(
+                        formatted_name=f"canaille_{uuid.uuid4()}",
+                        family_name=f"canaille_{uuid.uuid4()}",
+                        user_name=f"canaille_{uuid.uuid4()}",
+                        emails=f"canaille_{uuid.uuid4()}@mydomain.example",
+                        password="correct horse battery staple",
+                    )
+                    Backend.instance.save(user)
+                    Backend.instance.delete(user)
 
-            except ldap.INSUFFICIENT_ACCESS:
-                return CheckResult(
-                    message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
-                    f"users at '{config['CANAILLE_LDAP']['USER_BASE']}'",
-                    success=False,
-                )
+                except InsufficientAccessError:
+                    return CheckResult(
+                        message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                        f"users at '{config['CANAILLE_LDAP']['USER_BASE']}'",
+                        success=False,
+                    )
 
-            try:
-                models.Group.ldap_object_classes()
+                try:
+                    models.Group.ldap_object_classes()
 
-                user = models.User(
-                    cn=f"canaille_{uuid.uuid4()}",
-                    family_name=f"canaille_{uuid.uuid4()}",
-                    user_name=f"canaille_{uuid.uuid4()}",
-                    emails=f"canaille_{uuid.uuid4()}@mydomain.example",
-                    password="correct horse battery staple",
-                )
-                Backend.instance.save(user)
+                    user = models.User(
+                        cn=f"canaille_{uuid.uuid4()}",
+                        family_name=f"canaille_{uuid.uuid4()}",
+                        user_name=f"canaille_{uuid.uuid4()}",
+                        emails=f"canaille_{uuid.uuid4()}@mydomain.example",
+                        password="correct horse battery staple",
+                    )
+                    Backend.instance.save(user)
 
-                group = models.Group(
-                    display_name=f"canaille_{uuid.uuid4()}",
-                    members=[user],
-                )
-                Backend.instance.save(group)
-                Backend.instance.delete(group)
+                    group = models.Group(
+                        display_name=f"canaille_{uuid.uuid4()}",
+                        members=[user],
+                    )
+                    Backend.instance.save(group)
+                    Backend.instance.delete(group)
 
-            except ldap.INSUFFICIENT_ACCESS:
-                return CheckResult(
-                    message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
-                    f"groups at '{config['CANAILLE_LDAP']['GROUP_BASE']}'",
-                    success=False,
-                )
+                except InsufficientAccessError:
+                    return CheckResult(
+                        message=f"LDAP user '{config['CANAILLE_LDAP']['BIND_DN']}' cannot create "
+                        f"groups at '{config['CANAILLE_LDAP']['GROUP_BASE']}'",
+                        success=False,
+                    )
 
-            finally:
-                Backend.instance.delete(user)
+                finally:
+                    Backend.instance.delete(user)
 
-        return CheckResult(
-            message="The connection to the LDAP server and permissions of the bind DN are correct",
-            success=True,
-        )
+            return CheckResult(
+                message="The connection to the LDAP server and permissions of the bind DN are correct",
+                success=True,
+            )
+
+        except OperationalError as exc:
+            message = _("Could not connect to the LDAP server '{uri}'").format(
+                uri=config["CANAILLE_LDAP"]["URI"]
+            )
+            logging.error(message)
+            raise ConfigurationException(message) from exc
+
+        except AuthenticationError as exc:
+            message = _("LDAP authentication failed with user '{user}'").format(
+                user=config["CANAILLE_LDAP"]["BIND_DN"]
+            )
+            logging.error(message)
+            raise ConfigurationException(message) from exc
+
+        finally:
+            Backend._instance = previous_instance
 
     def has_account_lockability(self) -> bool:
         from .ldapobject import LDAPObject
 
         try:
             return "pwdEndTime" in LDAPObject.ldap_object_attributes()
-        except ldap.SERVER_DOWN:  # pragma: no cover
+        except OperationalError:  # pragma: no cover
             return False
 
     def has_otp_support(self) -> bool:
@@ -238,7 +196,7 @@ class LDAPBackend(Backend):
 
         try:
             return "oathSecret" in LDAPObject.ldap_object_attributes()
-        except ldap.SERVER_DOWN:  # pragma: no cover
+        except OperationalError:  # pragma: no cover
             return False
 
     def check_user_password(self, user, password):
@@ -247,86 +205,26 @@ class LDAPBackend(Backend):
                 self.save(user)
                 return (False, get_lockout_delay_message(current_lockout_delay))
 
-        conn = ldap.initialize(current_app.config["CANAILLE_LDAP"]["URI"])
+        status = self.engine.check_password(user.dn, password)
 
-        conn.set_option(
-            ldap.OPT_NETWORK_TIMEOUT,
-            current_app.config["CANAILLE_LDAP"]["TIMEOUT"],
-        )
-
-        message = None
-        try:
-            res = conn.simple_bind_s(
-                user.dn, password, serverctrls=[PasswordPolicyControl()]
-            )
-            controls = res[3]
-            result = True
-        except ldap.INVALID_CREDENTIALS as exc:
-            controls = DecodeControlTuples(exc.args[0]["ctrls"])
-            result = False
-        finally:
-            conn.unbind_s()
-
-        for control in controls:
-
-            def gettext(x):
-                return x
-
-            if (
-                control.controlType == PasswordPolicyControl.controlType
-                and control.error == PasswordPolicyError.namedValues["accountLocked"]
-            ):
-                message = gettext("Your account has been locked.")
-            elif (
-                control.controlType == PasswordPolicyControl.controlType
-                and control.error == PasswordPolicyError.namedValues["changeAfterReset"]
-            ):
-                message = gettext("You should change your password.")
-
-        return result, message
+        result = status in (PasswordStatus.SUCCESS, PasswordStatus.PASSWORD_MUST_CHANGE)
+        messages = {
+            PasswordStatus.ACCOUNT_LOCKED: "Your account has been locked.",
+            PasswordStatus.PASSWORD_MUST_CHANGE: "You should change your password.",
+        }
+        return result, messages.get(status)
 
     def set_user_password(self, user, password) -> None:
-        with self.connection() as conn:
-            conn.passwd_s(
-                user.dn,
-                None,
-                password.encode("utf-8"),
-            )
+        self.engine.set_password(user.dn, password)
 
-    def do_query(self, model, dn=None, filter=None, *args, **kwargs):
-        from .ldapobjectquery import LDAPObjectQuery
-
-        base = resolve_base_dn(model, dn)
-        ldapfilter = build_search_filter(
-            build_class_filter(model.ldap_object_class),
-            build_attribute_filter(model, **kwargs),
-            filter or "",
-        )
-        try:
-            with self.connection() as conn:
-                result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter, ["+", "*"])
-        except ldap.NO_SUCH_OBJECT:
-            result = []
-        return LDAPObjectQuery(model, result)
+    def do_query(self, model, *args, **kwargs):
+        return self.engine.query(model, *args, **kwargs)
 
     def fuzzy(self, model, query, attributes=None, **kwargs):
-        attributes = attributes or model.may() + model.must()
-        ldap_attributes = [model.python_attribute_to_ldap(name) for name in attributes]
-        filter = build_fuzzy_filter(query, ldap_attributes)
-        return self.query(model, filter=filter, **kwargs)
+        return self.engine.fuzzy(model, query, attributes, **kwargs)
 
     def get(self, model, identifier=None, /, **kwargs):
-        try:
-            return self.query(model, identifier, **kwargs)[0]
-        except (IndexError, ldap.NO_SUCH_OBJECT):
-            if identifier and model.base:
-                return (
-                    self.get(model, **{model.identifier_attribute: identifier})
-                    or self.get(model, id=identifier)
-                    or None
-                )
-
-            return None
+        return self.engine.get(model, identifier, **kwargs)
 
     def do_restore(self, payload):
         # Canaille exports uuids but LDAP uuids are read-only
@@ -405,85 +303,13 @@ class LDAPBackend(Backend):
         return {attr: replace_attr(attr, value) for attr, value in state.items()}
 
     def do_save(self, instance) -> None:
-        from .ldapobject import LDAPObject
-
-        current_object_classes = instance.get_ldap_attribute("objectClass") or []
-        instance.set_ldap_attribute(
-            "objectClass",
-            list(set(instance.ldap_object_class) | set(current_object_classes)),
-        )
-
-        # PostReadControl allows to read the updated object attributes on creation/edition
-        available_attrs = LDAPObject.ldap_object_attributes()
-        attributes = ["objectClass"] + [
-            instance.python_attribute_to_ldap(name)
-            for name in instance.attributes
-            if instance.attribute_map
-            and name in instance.attribute_map
-            and instance.python_attribute_to_ldap(name) in available_attrs
-        ]
-        read_post_control = PostReadControl(criticality=True, attrList=attributes)
-
-        # Object already exists in the LDAP database
-        if instance.exists:
-            deletions = [
-                name
-                for name, value in instance._dirty.items()
-                if (
-                    not is_meaningful_value(value)
-                    or (
-                        isinstance(value, list)
-                        and len(value) == 1
-                        and not is_meaningful_value(value[0])
-                    )
-                )
-                and name in instance._stored
-            ]
-            changes = {
-                name: value
-                for name, value in instance._dirty.items()
-                if name not in deletions and instance._stored.get(name) != value
-            }
-            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
-            modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
-                (ldap.MOD_REPLACE, name, values)
-                for name, values in formatted_changes.items()
-            ]
-            with self.connection() as conn:
-                _, _, _, [result] = conn.modify_ext_s(
-                    instance.dn, modlist, serverctrls=[read_post_control]
-                )
-
-        # Object does not exist yet in the LDAP database
-        else:
-            changes = {
-                name: value
-                for name, value in {**instance._stored, **instance._dirty}.items()
-                if value and is_meaningful_value(value[0])
-            }
-            formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
-            modlist = [(name, values) for name, values in formatted_changes.items()]
-            with self.connection() as conn:
-                _, _, _, [result] = conn.add_ext_s(
-                    instance.dn, modlist, serverctrls=[read_post_control]
-                )
-
-        instance.exists = True
-        instance._stored = {**result.entry, **instance._dirty}
-        instance._dirty = {}
+        self.engine.save(instance)
 
     def do_delete(self, instance) -> None:
-        try:
-            with self.connection() as conn:
-                conn.delete_s(instance.dn)
-        except ldap.NO_SUCH_OBJECT:
-            pass
+        self.engine.delete(instance)
 
     def do_reload(self, instance) -> None:
-        with self.connection() as conn:
-            result = conn.search_s(instance.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
-        instance._dirty = {}
-        instance._stored = result[0][1]
+        self.engine.reload(instance)
 
 
 def setup_ldap_models(config):
