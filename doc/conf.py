@@ -87,6 +87,7 @@ intersphinx_mapping = {
     "passlib": ("https://passlib.readthedocs.io/en/stable", None),
     "pydantic": ("https://docs.pydantic.dev/latest", None),
     "pytest-iam": ("https://pytest-iam.readthedocs.io/en/latest/", None),
+    "sqlalchemy": ("https://docs.sqlalchemy.org/en/20", None),
     "wtforms": ("https://wtforms.readthedocs.io", None),
     "scim2-cli": ("https://scim2-cli.readthedocs.io/en/latest", None),
 }
