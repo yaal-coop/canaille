@@ -164,7 +164,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
     @classmethod
     def install(cls) -> None:
-        conn = LDAPBackend.instance.connection
         cls.ldap_object_classes()
         cls.ldap_object_attributes()
 
@@ -174,13 +173,14 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
             dn = f"{organizationalUnit}{acc},{cls.root_dn}"
             acc = f",{organizationalUnit}"
             try:
-                conn.add_s(
-                    dn,
-                    [
-                        ("objectClass", [b"organizationalUnit"]),
-                        ("ou", [v.encode("utf-8")]),
-                    ],
-                )
+                with LDAPBackend.instance.connection() as conn:
+                    conn.add_s(
+                        dn,
+                        [
+                            ("objectClass", [b"organizationalUnit"]),
+                            ("ou", [v.encode("utf-8")]),
+                        ],
+                    )
             except ldap.ALREADY_EXISTS:
                 pass
 
@@ -189,11 +189,10 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         if cls._object_class_by_name and not force:
             return cls._object_class_by_name
 
-        conn = LDAPBackend.instance.connection
-
-        res = conn.search_s(
-            "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
-        )
+        with LDAPBackend.instance.connection() as conn:
+            res = conn.search_s(
+                "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
+            )
         subschema_entry = res[0]
         subschema_subentry = ldap.cidict.cidict(subschema_entry[1])
         subschema = ldap.schema.SubSchema(subschema_subentry)
@@ -211,11 +210,10 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         if cls._attribute_type_by_name and not force:
             return cls._attribute_type_by_name
 
-        conn = LDAPBackend.instance.connection
-
-        res = conn.search_s(
-            "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
-        )
+        with LDAPBackend.instance.connection() as conn:
+            res = conn.search_s(
+                "cn=subschema", ldap.SCOPE_BASE, "(objectclass=*)", ["*", "+"]
+            )
         subschema_entry = res[0]
         subschema_subentry = ldap.cidict.cidict(subschema_entry[1])
         subschema = ldap.schema.SubSchema(subschema_subentry)

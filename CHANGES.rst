@@ -3,7 +3,8 @@
 
 Added
 ^^^^^
-- Add SQL database configuration parameters.
+- SQL database configuration parameters.
+- Pooled LDAP connection support.
 
 [0.2.4] - 2026-04-08
 --------------------

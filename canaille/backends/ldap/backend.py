@@ -11,6 +11,8 @@ from ldap.controls import DecodeControlTuples
 from ldap.controls.ppolicy import PasswordPolicyControl
 from ldap.controls.ppolicy import PasswordPolicyError
 from ldap.controls.readentry import PostReadControl
+from ldappool import ConnectionManager
+from ldappool import StateConnector
 
 from canaille.app import models
 from canaille.app.configuration import CheckResult
@@ -25,6 +27,17 @@ from canaille.backends.models import Model
 
 from .utils import listify
 from .utils import python_attrs_to_ldap
+
+
+def _make_connector_cls(network_timeout):
+    """Create a StateConnector subclass that sets OPT_NETWORK_TIMEOUT."""
+
+    class _Connector(StateConnector):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.set_option(ldap.OPT_NETWORK_TIMEOUT, network_timeout)
+
+    return _Connector
 
 
 @contextmanager
@@ -89,10 +102,22 @@ class LDAPModelEncoder(ModelEncoder):
 
 class LDAPBackend(Backend):
     json_encoder = LDAPModelEncoder
+    pool = None
 
     def __init__(self, config):
         super().__init__(config)
-        self._connection = None
+        ldap_config = self.config["CANAILLE_LDAP"]
+        LDAPBackend.pool = ConnectionManager(
+            uri=ldap_config["URI"],
+            bind=ldap_config["BIND_DN"],
+            passwd=ldap_config["BIND_PW"],
+            size=ldap_config["POOL_SIZE"],
+            max_lifetime=ldap_config["POOL_MAX_LIFETIME"],
+            retry_max=ldap_config["POOL_RETRY_MAX"],
+            retry_delay=ldap_config["POOL_RETRY_DELAY"],
+            timeout=ldap_config["TIMEOUT"],
+            connector_cls=_make_connector_cls(ldap_config["TIMEOUT"]),
+        )
 
     def init_app(self, app, init_backend=None):
         super().init_app(app, init_backend)
@@ -119,42 +144,24 @@ class LDAPBackend(Backend):
                     os.path.dirname(__file__) + "/schemas/oauth2-openldap.ldif",
                 )
 
-    @property
+    @contextmanager
     def connection(self):
-        if self._connection:
-            return self._connection
-
+        """Get a connection from the pool."""
         try:
-            self._connection = ldap.initialize(self.config["CANAILLE_LDAP"]["URI"])
-            self._connection.set_option(
-                ldap.OPT_NETWORK_TIMEOUT,
-                self.config["CANAILLE_LDAP"]["TIMEOUT"],
-            )
-            self._connection.simple_bind_s(
-                self.config["CANAILLE_LDAP"]["BIND_DN"],
-                self.config["CANAILLE_LDAP"]["BIND_PW"],
-            )
-
+            with self.pool.connection() as conn:
+                yield conn
         except ldap.SERVER_DOWN as exc:
             message = _("Could not connect to the LDAP server '{uri}'").format(
                 uri=self.config["CANAILLE_LDAP"]["URI"]
             )
             logging.error(message)
             raise ConfigurationException(message) from exc
-
         except ldap.INVALID_CREDENTIALS as exc:
             message = _("LDAP authentication failed with user '{user}'").format(
                 user=self.config["CANAILLE_LDAP"]["BIND_DN"]
             )
             logging.error(message)
             raise ConfigurationException(message) from exc
-
-        return self._connection
-
-    def teardown(self) -> None:
-        if self._connection:  # pragma: no branch
-            self._connection.unbind_s()
-            self._connection = None
 
     @classmethod
     def check_network_config(cls, config):
@@ -274,12 +281,12 @@ class LDAPBackend(Backend):
         return result, message
 
     def set_user_password(self, user, password) -> None:
-        conn = self.connection
-        conn.passwd_s(
-            user.dn,
-            None,
-            password.encode("utf-8"),
-        )
+        with self.connection() as conn:
+            conn.passwd_s(
+                user.dn,
+                None,
+                password.encode("utf-8"),
+            )
 
     def do_query(self, model, dn=None, filter=None, *args, **kwargs):
         from .ldapobjectquery import LDAPObjectQuery
@@ -325,9 +332,10 @@ class LDAPBackend(Backend):
         ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
         base = base or f"{model.base},{model.root_dn}"
         try:
-            result = self.connection.search_s(
-                base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"]
-            )
+            with self.connection() as conn:
+                result = conn.search_s(
+                    base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"]
+                )
         except ldap.NO_SUCH_OBJECT:
             result = []
         return LDAPObjectQuery(model, result)
@@ -475,9 +483,10 @@ class LDAPBackend(Backend):
                 (ldap.MOD_REPLACE, name, values)
                 for name, values in formatted_changes.items()
             ]
-            _, _, _, [result] = self.connection.modify_ext_s(
-                instance.dn, modlist, serverctrls=[read_post_control]
-            )
+            with self.connection() as conn:
+                _, _, _, [result] = conn.modify_ext_s(
+                    instance.dn, modlist, serverctrls=[read_post_control]
+                )
 
         # Object does not exist yet in the LDAP database
         else:
@@ -488,9 +497,10 @@ class LDAPBackend(Backend):
             }
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             modlist = [(name, values) for name, values in formatted_changes.items()]
-            _, _, _, [result] = self.connection.add_ext_s(
-                instance.dn, modlist, serverctrls=[read_post_control]
-            )
+            with self.connection() as conn:
+                _, _, _, [result] = conn.add_ext_s(
+                    instance.dn, modlist, serverctrls=[read_post_control]
+                )
 
         instance.exists = True
         instance.state = {**result.entry, **instance.changes}
@@ -498,14 +508,14 @@ class LDAPBackend(Backend):
 
     def do_delete(self, instance) -> None:
         try:
-            self.connection.delete_s(instance.dn)
+            with self.connection() as conn:
+                conn.delete_s(instance.dn)
         except ldap.NO_SUCH_OBJECT:
             pass
 
     def do_reload(self, instance) -> None:
-        result = self.connection.search_s(
-            instance.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"]
-        )
+        with self.connection() as conn:
+            result = conn.search_s(instance.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
         instance.changes = {}
         instance.state = result[0][1]
 

@@ -579,6 +579,28 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # The attribute to use to identify a group.
 # GROUP_NAME_ATTRIBUTE = "cn"
 
+# The number of connections to keep in the pool.
+#
+# See the size parameter of ldappool.ConnectionManager.
+# POOL_SIZE = 10
+
+# Maximum lifetime of a connection in seconds.
+#
+# Connections older than this are automatically closed and replaced. Set to 0 to
+# disable lifetime-based recycling. See the max_lifetime parameter of
+# ldappool.ConnectionManager.
+# POOL_MAX_LIFETIME = 600
+
+# Number of retry attempts when a connection fails.
+#
+# See the retry_max parameter of ldappool.ConnectionManager.
+# POOL_RETRY_MAX = 3
+
+# Delay in seconds between connection retry attempts.
+#
+# See the retry_delay parameter of ldappool.ConnectionManager.
+# POOL_RETRY_DELAY = 0.1
+
 [CANAILLE_OIDC]
 # Whether the Single Sign-On feature and the OpenID Connect API is enabled.
 # ENABLE_OIDC = true
