@@ -1,3 +1,10 @@
+[0.2.5] - Unreleased
+--------------------
+
+Added
+^^^^^
+- Add SQL database configuration parameters.
+
 [0.2.4] - 2026-04-08
 --------------------
 

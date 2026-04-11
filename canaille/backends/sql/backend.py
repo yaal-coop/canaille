@@ -10,10 +10,12 @@ from sqlalchemy import create_engine
 from sqlalchemy import or_
 from sqlalchemy import select
 from sqlalchemy import text
+from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import QueuePool
 from sqlalchemy.types import JSON as JSONType
 from sqlalchemy_utils import Password
 
@@ -51,9 +53,21 @@ class SQLBackend(Backend):
 
     def __init__(self, config):
         super().__init__(config)
-        SQLBackend.engine = create_engine(
-            self.config["CANAILLE_SQL"]["DATABASE_URI"], echo=False, future=True
+        sql_config = self.config["CANAILLE_SQL"]
+        database_uri = sql_config["DATABASE_URI"]
+        url = make_url(database_uri)
+        engine_kwargs = dict(
+            echo=False,
+            future=True,
+            pool_recycle=sql_config["POOL_RECYCLE"],
+            pool_pre_ping=sql_config["POOL_PRE_PING"],
         )
+        # SingletonThreadPool/StaticPool (used by in-memory SQLite)
+        # do not support pool_size/max_overflow
+        if url.get_dialect().get_pool_class(url) is QueuePool:
+            engine_kwargs["pool_size"] = sql_config["POOL_SIZE"]
+            engine_kwargs["max_overflow"] = sql_config["POOL_MAX_OVERFLOW"]
+        SQLBackend.engine = create_engine(url, **engine_kwargs)
         SQLBackend.session_factory = sessionmaker(bind=SQLBackend.engine)
         SQLBackend.db_session = scoped_session(SQLBackend.session_factory)
         SQLBackend.alembic = Alembic(

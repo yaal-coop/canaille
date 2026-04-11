@@ -47,6 +47,40 @@ class SQLSettings(BaseModel):
         PASSWORD_HASH_PARAMS = { "pbkdf2_sha512__rounds" = 100000 }
     """
 
+    POOL_SIZE: int = 5
+    """The number of connections to keep persistently in the pool.
+
+    Set to ``0`` to indicate no size limit (not recommended in production).
+    See the ``pool_size`` parameter of :func:`sqlalchemy.create_engine`.
+    """
+
+    POOL_MAX_OVERFLOW: int = 10
+    """The number of connections to allow in overflow beyond :attr:`POOL_SIZE`.
+
+    When all persistent connections are in use, additional connections will be created
+    up to this limit. Set to ``-1`` to indicate no overflow limit.
+    See the ``max_overflow`` parameter of :func:`sqlalchemy.create_engine`.
+    """
+
+    POOL_RECYCLE: int = -1
+    """Number of seconds after which a connection is automatically recycled.
+
+    Useful to prevent the database server from closing idle connections.
+    For example, MySQL/MariaDB closes idle connections after ``wait_timeout`` (default 8 hours).
+    Set this to a value below the server's timeout (e.g. ``3600`` for one hour).
+    ``-1`` disables recycling.
+    See the ``pool_recycle`` parameter of :func:`sqlalchemy.create_engine`.
+    """
+
+    POOL_PRE_PING: bool = False
+    """Whether to test connections for liveness upon each checkout.
+
+    When enabled, a ``SELECT 1`` is emitted before each connection use
+    to detect stale connections (e.g. after a database restart).
+    The overhead is negligible compared to the cost of failed requests.
+    See the ``pool_pre_ping`` parameter of :func:`sqlalchemy.create_engine`.
+    """
+
     AUTO_MIGRATE: bool = True
     """Whether to automatically apply database migrations.
 
