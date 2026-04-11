@@ -52,3 +52,29 @@ class LDAPSettings(BaseModel):
 
     GROUP_NAME_ATTRIBUTE: str = "cn"
     """The attribute to use to identify a group."""
+
+    POOL_SIZE: int = 10
+    """The number of connections to keep in the pool.
+
+    See the ``size`` parameter of :class:`ldappool.ConnectionManager`.
+    """
+
+    POOL_MAX_LIFETIME: int = 600
+    """Maximum lifetime of a connection in seconds.
+
+    Connections older than this are automatically closed and replaced.
+    Set to ``0`` to disable lifetime-based recycling.
+    See the ``max_lifetime`` parameter of :class:`ldappool.ConnectionManager`.
+    """
+
+    POOL_RETRY_MAX: int = 3
+    """Number of retry attempts when a connection fails.
+
+    See the ``retry_max`` parameter of :class:`ldappool.ConnectionManager`.
+    """
+
+    POOL_RETRY_DELAY: float = 0.1
+    """Delay in seconds between connection retry attempts.
+
+    See the ``retry_delay`` parameter of :class:`ldappool.ConnectionManager`.
+    """

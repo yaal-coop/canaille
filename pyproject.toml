@@ -205,6 +205,9 @@ devserver = [
 release = [
     "pyinstaller>=6.11.1",
 ]
+ldap = [
+    "ldappool>=3.0.0",
+]
 
 [project.scripts]
 canaille = "canaille.commands:cli"

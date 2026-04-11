@@ -56,8 +56,8 @@ class User(canaille.core.models.User, LDAPObject):
 
     def match_filter(self, filter):
         if isinstance(filter, str):
-            conn = LDAPBackend.instance.connection
-            return self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter)
+            with LDAPBackend.instance.connection() as conn:
+                return self.dn and conn.search_s(self.dn, ldap.SCOPE_SUBTREE, filter)
 
         return super().match_filter(filter)
 
