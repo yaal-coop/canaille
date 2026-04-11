@@ -462,7 +462,7 @@ class LDAPBackend(Backend):
         if instance.exists:
             deletions = [
                 name
-                for name, value in instance.changes.items()
+                for name, value in instance._dirty.items()
                 if (
                     not is_meaningful_value(value)
                     or (
@@ -471,12 +471,12 @@ class LDAPBackend(Backend):
                         and not is_meaningful_value(value[0])
                     )
                 )
-                and name in instance.state
+                and name in instance._stored
             ]
             changes = {
                 name: value
-                for name, value in instance.changes.items()
-                if name not in deletions and instance.state.get(name) != value
+                for name, value in instance._dirty.items()
+                if name not in deletions and instance._stored.get(name) != value
             }
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
             modlist = [(ldap.MOD_DELETE, name, None) for name in deletions] + [
@@ -492,7 +492,7 @@ class LDAPBackend(Backend):
         else:
             changes = {
                 name: value
-                for name, value in {**instance.state, **instance.changes}.items()
+                for name, value in {**instance._stored, **instance._dirty}.items()
                 if value and is_meaningful_value(value[0])
             }
             formatted_changes = python_attrs_to_ldap(changes, null_allowed=False)
@@ -503,8 +503,8 @@ class LDAPBackend(Backend):
                 )
 
         instance.exists = True
-        instance.state = {**result.entry, **instance.changes}
-        instance.changes = {}
+        instance._stored = {**result.entry, **instance._dirty}
+        instance._dirty = {}
 
     def do_delete(self, instance) -> None:
         try:
@@ -516,8 +516,8 @@ class LDAPBackend(Backend):
     def do_reload(self, instance) -> None:
         with self.connection() as conn:
             result = conn.search_s(instance.dn, ldap.SCOPE_SUBTREE, None, ["+", "*"])
-        instance.changes = {}
-        instance.state = result[0][1]
+        instance._dirty = {}
+        instance._stored = result[0][1]
 
 
 def setup_ldap_models(config):

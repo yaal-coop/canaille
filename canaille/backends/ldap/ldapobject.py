@@ -42,8 +42,8 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     ldap_object_class = None
 
     def __init__(self, dn=None, **kwargs):
-        self.state = {}
-        self.changes = {}
+        self._stored = {}
+        self._dirty = {}
         self.exists = False
 
         for name, value in kwargs.items():
@@ -83,27 +83,27 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         self.set_ldap_attribute(ldap_name, value)
 
     def get_ldap_attribute(self, name, lookup_changes=True, lookup_state=True):
-        if name in self.changes and lookup_changes:
-            return self.changes[name]
+        if name in self._dirty and lookup_changes:
+            return self._dirty[name]
 
-        if not self.state.get(name) or not lookup_state:
+        if not self._stored.get(name) or not lookup_state:
             return None
 
         # Lazy conversion from ldap format to python format
-        if any(isinstance(value, bytes) for value in self.state[name]):
+        if any(isinstance(value, bytes) for value in self._stored[name]):
             syntax = attribute_ldap_syntax(name)
-            self.state[name] = [
-                ldap_to_python(value, syntax) for value in self.state[name]
+            self._stored[name] = [
+                ldap_to_python(value, syntax) for value in self._stored[name]
             ]
 
-        return self.state.get(name)
+        return self._stored.get(name)
 
     def set_ldap_attribute(self, name, value) -> None:
         if name not in self.ldap_object_attributes():
             return
 
         value = listify(value)
-        self.changes[name] = value
+        self._dirty[name] = value
 
     @property
     def rdn_value(self):

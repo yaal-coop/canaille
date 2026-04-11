@@ -35,7 +35,7 @@ class LDAPObjectQuery:
     def decorate(self, args):
         klass = self.guess_class(self.klass, args["objectClass"])
         obj = klass()
-        obj.state = args
+        obj._stored = args
         obj.exists = True
         return obj
 

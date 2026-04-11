@@ -64,7 +64,7 @@ class User(canaille.core.models.User, LDAPObject):
     @classmethod
     def before_save(cls, self, data):
         data["group_attr"] = self.python_attribute_to_ldap("groups")
-        if data["group_attr"] not in self.changes:
+        if data["group_attr"] not in self._dirty:
             return
 
         # The LDAP attribute memberOf cannot directly be edited,
@@ -78,7 +78,7 @@ class User(canaille.core.models.User, LDAPObject):
         )
         data["to_add"] = set(data["new_groups"]) - set(data["old_groups"])
         data["to_del"] = set(data["old_groups"]) - set(data["new_groups"])
-        del self.changes[data["group_attr"]]
+        del self._dirty[data["group_attr"]]
 
     @classmethod
     def after_save(cls, self, data):
@@ -96,7 +96,7 @@ class User(canaille.core.models.User, LDAPObject):
             LDAPBackend.instance.save(group)
 
         if "new_groups" in data:
-            self.state[data["group_attr"]] = data["new_groups"]
+            self._stored[data["group_attr"]] = data["new_groups"]
 
 
 class Group(canaille.core.models.Group, LDAPObject):
