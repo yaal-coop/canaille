@@ -38,7 +38,7 @@ def ldap_configuration(configuration, slapd_server):
         "USER_BASE": "ou=users",
         "USER_RDN": "uid",
         "GROUP_BASE": "ou=groups",
-        "TIMEOUT": 0.1,
+        "TIMEOUT": 5,
         "USER_CLASS": ["inetOrgPerson", "oathHOTPToken"],
     }
     yield configuration

@@ -44,13 +44,9 @@ class MemoryModel(BackendModel):
         return value
 
     def __eq__(self, other):
-        if other is None:
+        if not isinstance(other, self.__class__):
             return False
-
-        if not isinstance(other, MemoryModel):
-            return self == Backend.instance.get(self.__class__, id=other)
-
-        return self._state == other._state
+        return self.id is not None and self.id == other.id
 
     def __hash__(self) -> int:
         return hash(self.id)

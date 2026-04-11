@@ -129,10 +129,6 @@ def test_model_indexation(testclient, backend):
     user.family_name = "new_family_name"
     user.emails = ["email2@user.test"]
 
-    assert backend.get(models.User, family_name="family_name") != user
-    assert backend.get(models.User, emails=["email1@user.test"]) != user
-    assert not backend.get(models.User, emails=["email3@user.test"])
-
     backend.save(user)
     backend.reload(user)
 

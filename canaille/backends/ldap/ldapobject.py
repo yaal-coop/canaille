@@ -11,7 +11,6 @@ from .utils import attribute_ldap_syntax
 from .utils import cardinalize_attribute
 from .utils import ldap_to_python
 from .utils import listify
-from .utils import python_attrs_to_ldap
 
 
 class LDAPObjectMetaclass(type):
@@ -59,34 +58,9 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         )
 
     def __eq__(self, other):
-        ldap_attributes = self.may() + self.must()
-
-        if not (
-            isinstance(other, self.__class__)
-            and self.may() == other.may()
-            and self.must() == other.must()
-            and all(
-                self.has_ldap_attribute(attr) == other.has_ldap_attribute(attr)
-                for attr in ldap_attributes
-            )
-        ):
+        if not isinstance(other, self.__class__):
             return False
-
-        self_attributes = python_attrs_to_ldap(
-            {
-                attr: self.get_ldap_attribute(attr)
-                for attr in ldap_attributes
-                if self.has_ldap_attribute(attr)
-            }
-        )
-        other_attributes = python_attrs_to_ldap(
-            {
-                attr: other.get_ldap_attribute(attr)
-                for attr in ldap_attributes
-                if other.has_ldap_attribute(attr)
-            }
-        )
-        return self_attributes == other_attributes
+        return self.id is not None and self.id == other.id
 
     def __hash__(self) -> int:
         return hash(self.id)
@@ -107,11 +81,6 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
         ldap_name = self.python_attribute_to_ldap(name)
         self.set_ldap_attribute(ldap_name, value)
-
-    def has_ldap_attribute(self, name) -> bool:
-        return name in self.ldap_object_attributes() and (
-            name in self.changes or name in self.state
-        )
 
     def get_ldap_attribute(self, name, lookup_changes=True, lookup_state=True):
         if name in self.changes and lookup_changes:
