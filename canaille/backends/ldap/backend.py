@@ -25,6 +25,11 @@ from canaille.backends import get_lockout_delay_message
 from canaille.backends import is_meaningful_value
 from canaille.backends.models import Model
 
+from .filter import build_attribute_filter
+from .filter import build_class_filter
+from .filter import build_fuzzy_filter
+from .filter import build_search_filter
+from .filter import resolve_base_dn
 from .utils import listify
 from .utils import python_attrs_to_ldap
 
@@ -291,62 +296,23 @@ class LDAPBackend(Backend):
     def do_query(self, model, dn=None, filter=None, *args, **kwargs):
         from .ldapobjectquery import LDAPObjectQuery
 
-        base = dn
-        if dn is None:
-            base = f"{model.base},{model.root_dn}"
-        elif "=" not in base:
-            base = ldap.dn.escape_dn_chars(base)
-            base = f"{model.rdn_attribute}={base},{model.base},{model.root_dn}"
-
-        class_filter = (
-            "".join([f"(objectClass={oc})" for oc in model.ldap_object_class])
-            if model.ldap_object_class
-            else ""
+        base = resolve_base_dn(model, dn)
+        ldapfilter = build_search_filter(
+            build_class_filter(model.ldap_object_class),
+            build_attribute_filter(model, **kwargs),
+            filter or "",
         )
-        if class_filter:
-            class_filter = f"(|{class_filter})"
-
-        arg_filter = ""
-        ldap_args = python_attrs_to_ldap(
-            {
-                model.python_attribute_to_ldap(name): values
-                for name, values in kwargs.items()
-                if values is not None
-            },
-            encode=False,
-        )
-        for key, value in ldap_args.items():
-            if len(value) == 1:
-                escaped_value = ldap.filter.escape_filter_chars(value[0])
-                arg_filter += f"({key}={escaped_value})"
-
-            else:
-                values = [ldap.filter.escape_filter_chars(v) for v in value]
-                arg_filter += (
-                    "(|" + "".join([f"({key}={value})" for value in values]) + ")"
-                )
-
-        if not filter:
-            filter = ""
-
-        ldapfilter = f"(&{class_filter}{arg_filter}{filter})"
-        base = base or f"{model.base},{model.root_dn}"
         try:
             with self.connection() as conn:
-                result = conn.search_s(
-                    base, ldap.SCOPE_SUBTREE, ldapfilter or None, ["+", "*"]
-                )
+                result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter, ["+", "*"])
         except ldap.NO_SUCH_OBJECT:
             result = []
         return LDAPObjectQuery(model, result)
 
     def fuzzy(self, model, query, attributes=None, **kwargs):
-        query = ldap.filter.escape_filter_chars(query)
         attributes = attributes or model.may() + model.must()
-        attributes = [model.python_attribute_to_ldap(name) for name in attributes]
-        filter = (
-            "(|" + "".join(f"({attribute}=*{query}*)" for attribute in attributes) + ")"
-        )
+        ldap_attributes = [model.python_attribute_to_ldap(name) for name in attributes]
+        filter = build_fuzzy_filter(query, ldap_attributes)
         return self.query(model, filter=filter, **kwargs)
 
     def get(self, model, identifier=None, /, **kwargs):
