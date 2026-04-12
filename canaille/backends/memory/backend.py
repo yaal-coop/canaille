@@ -94,6 +94,12 @@ class MemoryBackend(Backend):
 
         self.save(user)
 
+    def get_persisted_value(self, instance, attribute):
+        if not instance.id:
+            return []
+        stored = self.get(type(instance), instance.id)
+        return getattr(stored, attribute, []) if stored else []
+
     def do_query(self, model, *args, **kwargs):
         # if there is no filter, return all models
         if not kwargs:

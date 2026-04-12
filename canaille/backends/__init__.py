@@ -140,11 +140,7 @@ class Backend:
 
         >>> backend.query(User, first_name=["George", "Jane"])
         """
-        model_name = model.__name__.lower()
-        instances = self.do_query(model, *args, **kwargs)
-        for instance in instances:
-            signal(f"after_{model_name}_query").send(instance)
-        return instances
+        return self.do_query(model, *args, **kwargs)
 
     def do_query(self, model, *args, **kwargs):
         raise NotImplementedError()
@@ -235,6 +231,10 @@ class Backend:
         signal("after_restore").send(objects, data=data)
 
     def do_restore(self, objects) -> None:
+        raise NotImplementedError()
+
+    def get_persisted_value(self, instance, attribute):
+        """Return the last-saved value of an attribute, ignoring in-memory mutations."""
         raise NotImplementedError()
 
     def update(self, instance, **kwargs) -> None:

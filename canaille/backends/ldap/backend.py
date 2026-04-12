@@ -217,6 +217,12 @@ class LDAPBackend(Backend):
     def set_user_password(self, user, password) -> None:
         self.engine.set_password(user.dn, password)
 
+    def get_persisted_value(self, instance, attribute):
+        if not instance.id:
+            return []
+        stored = self.get(type(instance), instance.id)
+        return getattr(stored, attribute, []) if stored else []
+
     def do_query(self, model, *args, **kwargs):
         return self.engine.query(model, *args, **kwargs)
 

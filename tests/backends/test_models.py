@@ -154,6 +154,16 @@ def test_count(testclient, user, backend):
     assert backend.count(models.User, family_name="nonexistent_xyz") == 0
 
 
+def test_get_persisted_value(testclient, user, backend):
+    """Test that get_persisted_value returns the stored value ignoring in-memory changes."""
+    assert backend.get_persisted_value(user, "family_name") == user.family_name
+    assert backend.get_persisted_value(user, "employee_number") == user.employee_number
+    original_name = user.family_name
+    user.family_name = "mutated"
+    assert backend.get_persisted_value(user, "family_name") == original_name
+    user.family_name = original_name
+
+
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):
     """Test that fuzzy search works with single-valued attributes."""
     backend.reload(user)

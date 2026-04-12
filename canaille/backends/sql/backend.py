@@ -1,5 +1,5 @@
 import datetime
-import inspect
+from inspect import isclass
 from pathlib import Path
 
 from flask import current_app
@@ -8,6 +8,7 @@ from sqlalchemy import MetaData
 from sqlalchemy import String
 from sqlalchemy import create_engine
 from sqlalchemy import func
+from sqlalchemy import inspect
 from sqlalchemy import or_
 from sqlalchemy import select
 from sqlalchemy import text
@@ -191,6 +192,24 @@ class SQLBackend(Backend):
 
         return self.db_session.execute(select(model).filter(filter)).scalars().all()
 
+    def get_persisted_value(self, instance, attribute):
+        """Return the committed value from the DB, bypassing the identity map."""
+        if not instance.id:
+            return []
+        state = inspect(instance)
+        # association_proxy attributes are not tracked by SQLAlchemy history,
+        # so we look at the underlying relationship (_<attr>_association)
+        assoc_attr = f"_{attribute}_association"
+        if assoc_attr in state.attrs:
+            history = state.attrs[assoc_attr].history
+            committed_assocs = list(history.unchanged) + list(history.deleted)
+            return [getattr(assoc, attribute[:-1]) for assoc in committed_assocs]
+        # Scalar/column attributes: read committed value from history
+        history = state.attrs[attribute].history
+        if history.deleted:
+            return history.deleted[0]
+        return getattr(instance, attribute)
+
     def get(self, model, identifier=None, /, **kwargs):
         if identifier:
             return (
@@ -239,7 +258,7 @@ class SQLBackend(Backend):
     def filter_state(cls, model, state, keep_non_model_and_required_attrs):
         def filter_attribute(attr):
             type_, _ = model.get_model_annotations(attr)
-            is_non_model = not inspect.isclass(type_) or not issubclass(type_, Model)
+            is_non_model = not isclass(type_) or not issubclass(type_, Model)
             is_required = model.is_attr_required(attr)
             is_writable = not model.is_attr_readonly(attr)
             valid = (

@@ -205,8 +205,9 @@ def get_clients_to_notify(user):
     return list(consented_clients) + list(trusted_clients)
 
 
-def after_user_query(user):
-    user.old_groups = user.groups.copy()
+def before_user_save(user, data):
+    """Snapshot the user's groups before saving so we can detect changes."""
+    data["old_groups_scim"] = Backend.instance.get_persisted_value(user, "groups")
 
 
 def after_user_save(user, data):
@@ -217,12 +218,10 @@ def after_user_save(user, data):
     """
     propagate_user_scim_modification(user, method="save")
 
-    old_groups = getattr(user, "old_groups", [])
+    old_groups = data.get("old_groups_scim", [])
     for group in set(old_groups) ^ set(user.groups):
         Backend.instance.reload(group)
         propagate_group_scim_modification(group, "save")
-
-    user.old_groups = user.groups.copy()
 
 
 def before_user_delete(user, data):
@@ -245,7 +244,7 @@ def before_group_delete(group, data):
 
 def setup_scim_client():
     teardown_scim_client()
-    signal("after_user_query").connect(after_user_query)
+    signal("before_user_save").connect(before_user_save)
     signal("after_user_save").connect(after_user_save)
     signal("before_user_delete").connect(before_user_delete)
     signal("after_user_delete").connect(after_user_delete)
@@ -254,7 +253,7 @@ def setup_scim_client():
 
 
 def teardown_scim_client():
-    signal("after_user_query").disconnect(after_user_query)
+    signal("before_user_save").disconnect(before_user_save)
     signal("after_user_save").disconnect(after_user_save)
     signal("before_user_delete").disconnect(before_user_delete)
     signal("after_user_delete").disconnect(after_user_delete)
