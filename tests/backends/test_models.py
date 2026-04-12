@@ -147,6 +147,13 @@ def test_model_indexation(testclient, backend):
     assert not backend.get(models.User, emails=["email3@user.test"])
 
 
+def test_count(testclient, user, backend):
+    """Test that count returns the number of matching entries."""
+    assert backend.count(models.User) >= 1
+    assert backend.count(models.User, family_name=user.family_name) == 1
+    assert backend.count(models.User, family_name="nonexistent_xyz") == 0
+
+
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):
     """Test that fuzzy search works with single-valued attributes."""
     backend.reload(user)

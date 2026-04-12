@@ -151,10 +151,10 @@ def parse_search_request(request) -> SearchRequest:
 
 def _query_resources(canaille_model, scim_type, to_scim):
     req = parse_search_request(request)
+    total = Backend.instance.count(canaille_model)
     resources = list(
         Backend.instance.query(canaille_model)[req.start_index_0 : req.stop_index_0]
     )
-    total = len(resources)
     scim_resources = [to_scim(r) for r in resources]
     list_response = ListResponse[scim_type](
         start_index=req.start_index,
@@ -358,6 +358,7 @@ def query_service_provider_config():
 @require_permission(Permission.MANAGE_USERS)
 def search():
     req = SearchRequest.model_validate(request.json)
+    total = Backend.instance.count(models.User) + Backend.instance.count(models.Group)
     users = list(
         Backend.instance.query(models.User)[req.start_index_0 : req.stop_index_0]
     )
@@ -367,7 +368,6 @@ def search():
     scim_users = [user_from_canaille_to_scim_server(user) for user in users]
     scim_groups = [group_from_canaille_to_scim_server(group) for group in groups]
     resources = scim_users + scim_groups
-    total = len(resources)
     list_response = ListResponse[User[EnterpriseUser] | Group](
         start_index=req.start_index,
         items_per_page=req.count,

@@ -149,6 +149,13 @@ class Backend:
     def do_query(self, model, *args, **kwargs):
         raise NotImplementedError()
 
+    def count(self, model, *args, **kwargs):
+        """Return the number of instances matching the query without loading them."""
+        return self.do_count(model, *args, **kwargs)
+
+    def do_count(self, model, *args, **kwargs):
+        raise NotImplementedError()
+
     def fuzzy(self, model, query, attributes=None, **kwargs):
         """Work like :meth:`~canaille.backends.Backend.query` but attribute values loosely be matched."""
         raise NotImplementedError()

@@ -286,6 +286,21 @@ class Engine:
             result = []
         return LDAPObjectQuery(model, result)
 
+    def count(self, model, dn=None, filter=None, **kwargs):
+        """Count entries matching the given model and filters without loading attributes."""
+        base = resolve_base_dn(model, dn)
+        ldapfilter = build_search_filter(
+            build_class_filter(model.ldap_object_class),
+            build_attribute_filter(model, **kwargs),
+            filter or "",
+        )
+        try:
+            with self.connection() as conn:
+                result = conn.search_s(base, ldap.SCOPE_SUBTREE, ldapfilter, ["1.1"])
+        except NoSuchObjectError:
+            result = []
+        return len(result)
+
     def get(self, model, identifier=None, /, **kwargs):
         """Return a single entry matching the criteria, or ``None``."""
         try:

@@ -119,6 +119,11 @@ class MemoryBackend(Backend):
 
         return instances
 
+    def do_count(self, model, *args, **kwargs):
+        if not kwargs:
+            return len(self.index(model))
+        return len(self.do_query(model, *args, **kwargs))
+
     def fuzzy(self, model, query, attributes=None, **kwargs):
         attributes = attributes or model.attributes
         instances = self.query(model, **kwargs)

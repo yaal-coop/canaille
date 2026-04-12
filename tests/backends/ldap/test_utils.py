@@ -257,3 +257,13 @@ def test_ldap_cannot_manage_own_groups(testclient, configuration, backend):
             success=False,
             message="LDAP user 'cn=Manager,dc=example,dc=org' cannot create groups at 'ou=groups'",
         )
+
+
+def test_count_no_such_base(app, backend):
+    """Test that count returns 0 when the base DN does not exist."""
+    old_base = models.Group.base
+    models.Group.base = "ou=nonexistent"
+    try:
+        assert backend.count(models.Group) == 0
+    finally:
+        models.Group.base = old_base

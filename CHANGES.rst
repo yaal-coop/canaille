@@ -5,6 +5,11 @@ Added
 ^^^^^
 - SQL database configuration parameters.
 - Pooled LDAP connection support.
+- ``Backend.count()`` method for efficient entry counting.
+
+Fixed
+^^^^^
+- SCIM ``totalResults`` now returns the total number of matching entries instead of the page size.
 
 [0.2.4] - 2026-04-08
 --------------------

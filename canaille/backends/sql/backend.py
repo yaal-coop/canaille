@@ -7,6 +7,7 @@ from flask_alembic import Alembic
 from sqlalchemy import MetaData
 from sqlalchemy import String
 from sqlalchemy import create_engine
+from sqlalchemy import func
 from sqlalchemy import or_
 from sqlalchemy import select
 from sqlalchemy import text
@@ -161,6 +162,15 @@ class SQLBackend(Backend):
             .scalars()
             .all()
         )
+
+    def do_count(self, model, *args, **kwargs):
+        filter = [
+            model.attribute_filter(attribute_name, expected_value)
+            for attribute_name, expected_value in kwargs.items()
+        ]
+        return SQLBackend.instance.db_session.execute(
+            select(func.count()).select_from(model).filter(*filter)
+        ).scalar()
 
     def fuzzy(self, model, query, attributes=None, **kwargs):
         attributes = attributes or model.attributes

@@ -220,6 +220,9 @@ class LDAPBackend(Backend):
     def do_query(self, model, *args, **kwargs):
         return self.engine.query(model, *args, **kwargs)
 
+    def do_count(self, model, *args, **kwargs):
+        return self.engine.count(model, *args, **kwargs)
+
     def fuzzy(self, model, query, attributes=None, **kwargs):
         return self.engine.fuzzy(model, query, attributes, **kwargs)
 
