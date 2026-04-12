@@ -72,6 +72,7 @@ scim = [
 ldap = [
     "ldappool >= 3.0.0",
     "python-ldap >= 3.4.4",
+    "six >= 1.17.0", # needed by ldappool
 ]
 
 sentry = [
