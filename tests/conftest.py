@@ -276,6 +276,9 @@ def app(configuration, backend, jinja_cache_directory):
     with app.test_request_context():
         yield app
 
+    from canaille.scim.client import teardown_scim_client
+
+    teardown_scim_client()
     models.MODELS.clear()
 
 

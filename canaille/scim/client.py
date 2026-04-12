@@ -244,9 +244,19 @@ def before_group_delete(group, data):
 
 
 def setup_scim_client():
+    teardown_scim_client()
     signal("after_user_query").connect(after_user_query)
     signal("after_user_save").connect(after_user_save)
     signal("before_user_delete").connect(before_user_delete)
     signal("after_user_delete").connect(after_user_delete)
     signal("after_group_save").connect(after_group_save)
     signal("before_group_delete").connect(before_group_delete)
+
+
+def teardown_scim_client():
+    signal("after_user_query").disconnect(after_user_query)
+    signal("after_user_save").disconnect(after_user_save)
+    signal("before_user_delete").disconnect(before_user_delete)
+    signal("after_user_delete").disconnect(after_user_delete)
+    signal("after_group_save").disconnect(after_group_save)
+    signal("before_group_delete").disconnect(before_group_delete)
