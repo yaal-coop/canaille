@@ -70,6 +70,7 @@ scim = [
 ]
 
 ldap = [
+    "ldappool >= 3.0.0",
     "python-ldap >= 3.4.4",
 ]
 
@@ -204,9 +205,6 @@ devserver = [
 ]
 release = [
     "pyinstaller>=6.11.1",
-]
-ldap = [
-    "ldappool>=3.0.0",
 ]
 
 [project.scripts]

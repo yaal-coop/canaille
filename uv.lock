@@ -258,6 +258,7 @@ front = [
     { name = "zxcvbn-rs-py" },
 ]
 ldap = [
+    { name = "ldappool" },
     { name = "python-ldap" },
 ]
 mysql = [
@@ -373,9 +374,6 @@ doc = [
     { name = "sphinxcontrib-screenshot" },
     { name = "tomlkit" },
 ]
-ldap = [
-    { name = "ldappool" },
-]
 release = [
     { name = "pyinstaller" },
 ]
@@ -410,6 +408,7 @@ requires-dist = [
     { name = "isodate", marker = "extra == 'front'", specifier = ">=0.7.2" },
     { name = "isodate", marker = "extra == 'server'", specifier = ">=0.7.2" },
     { name = "joserfc", marker = "extra == 'oidc'", specifier = ">=1.6.0" },
+    { name = "ldappool", marker = "extra == 'ldap'", specifier = ">=3.0.0" },
     { name = "otpauth", marker = "extra == 'otp'", specifier = ">=2.2.1" },
     { name = "passlib", marker = "extra == 'mysql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
@@ -496,7 +495,6 @@ doc = [
     { name = "sphinxcontrib-screenshot", specifier = ">=0.2.0" },
     { name = "tomlkit", specifier = ">=0.13.2" },
 ]
-ldap = [{ name = "ldappool", specifier = ">=3.0.0" }]
 release = [{ name = "pyinstaller", specifier = ">=6.11.1" }]
 
 [[package]]
