@@ -1,5 +1,7 @@
 import logging
 import smtplib
+import urllib.error
+import urllib.request
 import warnings
 from unittest import mock
 
@@ -7,6 +9,8 @@ import pytest
 from flask_webtest import TestApp
 
 from canaille import create_app
+from canaille.app.mails import _read_local_logo
+from canaille.app.mails import _resolve_theme_static_file
 from canaille.app.mails import type_from_filename
 
 
@@ -171,16 +175,20 @@ def test_mail_with_default_no_logo(testclient, logged_admin, smtpd, caplog):
     assert "cid" not in html_content
 
 
-def test_mail_with_default_logo(testclient, logged_admin, smtpd, httpserver, caplog):
-    """Test that emails include the default logo as an embedded image."""
+def test_mail_with_default_logo(testclient, logged_admin, smtpd, caplog):
+    """Test that emails include the default logo as an embedded image.
+
+    The default ``LOGO`` points to a file served by Flask's static route.
+    The logo is fetched via the in-process WSGI stack, so no HTTP loopback
+    occurs.
+    """
     logo_path = "/static/img/canaille-head.webp"
     with open(f"canaille/{logo_path}", "rb") as fd:
         raw_logo = fd.read()
 
-    httpserver.expect_request(logo_path).respond_with_data(raw_logo)
     assert len(smtpd.messages) == 0
 
-    res = testclient.get(f"http://{httpserver.host}:{httpserver.port}/admin/mail")
+    res = testclient.get("/admin/mail")
     res.form["email"] = "test@test.test"
     res = res.form.submit()
 
@@ -308,3 +316,151 @@ def test_type_from_filename():
     """Test that type_from_filename correctly determines MIME types from file extensions."""
     assert type_from_filename("index.html") == ("text", "html")
     assert type_from_filename("unknown") == ("application", "octet-stream")
+
+
+def test_mail_local_logo_does_not_http_loopback(
+    testclient, logged_admin, smtpd, monkeypatch
+):
+    """Regression test for #340 (hang with SMTP + EagerBroker).
+
+    With :class:`EagerBroker` (the default when ``BROKER_URL`` is unset), mail
+    actors run synchronously in the request thread. Fetching the logo through
+    an HTTP loopback to the Canaille server would deadlock a single-threaded
+    server. Local logo URLs must therefore be resolved in-process without any
+    network call.
+    """
+
+    def forbidden_urlopen(*args, **kwargs):  # pragma: no cover
+        raise AssertionError("urlopen must not be called for local LOGO URLs")
+
+    monkeypatch.setattr(urllib.request, "urlopen", forbidden_urlopen)
+
+    res = testclient.get("/admin/mail")
+    res.form["email"] = "test@test.test"
+    res.form.submit()
+
+    assert len(smtpd.messages) == 1
+    html_message = smtpd.messages[0].get_payload()[1]
+    raw_payload = html_message.get_payload()[1].get_payload(decode=True)
+    with open("canaille/static/img/canaille-head.webp", "rb") as fd:
+        assert raw_payload == fd.read()
+
+
+def test_mail_external_logo_uses_timeout(
+    testclient, logged_admin, smtpd, httpserver, monkeypatch
+):
+    """Test that external logo fetches use a timeout.
+
+    A slow or unreachable third-party host must not stall mail delivery.
+    """
+    captured = {}
+    original_urlopen = urllib.request.urlopen
+
+    def tracking_urlopen(url, *args, **kwargs):
+        captured["timeout"] = kwargs.get("timeout")
+        return original_urlopen(url, *args, **kwargs)
+
+    monkeypatch.setattr(urllib.request, "urlopen", tracking_urlopen)
+
+    logo_path = "/static/img/canaille-head.webp"
+    with open(f"canaille/{logo_path}", "rb") as fd:
+        raw_logo = fd.read()
+
+    httpserver.expect_request(logo_path).respond_with_data(raw_logo)
+    testclient.app.config["CANAILLE"]["LOGO"] = (
+        f"http://{httpserver.host}:{httpserver.port}{logo_path}"
+    )
+
+    res = testclient.get("/admin/mail")
+    res.form["email"] = "test@test.test"
+    res.form.submit()
+
+    assert captured.get("timeout") is not None and captured["timeout"] > 0
+
+
+def test_mail_with_missing_local_logo(testclient, logged_admin, smtpd):
+    """Test mail delivery when the local logo file is missing.
+
+    A ``LOGO`` pointing at a non-existent local path sends the mail without
+    an embedded image and without raising.
+    """
+    testclient.app.config["CANAILLE"]["LOGO"] = "/static/img/does-not-exist.webp"
+
+    res = testclient.get("/admin/mail")
+    res.form["email"] = "test@test.test"
+    res.form.submit()
+
+    assert len(smtpd.messages) == 1
+    html_message = smtpd.messages[0].get_payload()[1]
+    html_content = html_message.get_payload(decode=True).decode()
+    assert "cid" not in html_content
+
+
+def test_mail_with_unreachable_external_logo(
+    testclient, logged_admin, smtpd, monkeypatch
+):
+    """An unreachable HTTP logo URL does not break mail delivery.
+
+    The :func:`urllib.request.urlopen` call raises :class:`URLError` which
+    ``_fetch_external_logo`` must swallow.
+    """
+
+    def raising_urlopen(*args, **kwargs):
+        raise urllib.error.URLError("unreachable")
+
+    monkeypatch.setattr(urllib.request, "urlopen", raising_urlopen)
+    testclient.app.config["CANAILLE"]["LOGO"] = "http://unreachable.invalid/logo.png"
+
+    res = testclient.get("/admin/mail")
+    res.form["email"] = "test@test.test"
+    res.form.submit()
+
+    assert len(smtpd.messages) == 1
+    html_message = smtpd.messages[0].get_payload()[1]
+    html_content = html_message.get_payload(decode=True).decode()
+    assert "cid" not in html_content
+
+
+def test_resolve_theme_static_file_edge_cases(configuration, backend, tmp_path):
+    """Test theme static resolution edge cases.
+
+    Returns ``None`` for malformed URLs, unknown themes, and missing files.
+    """
+    theme_dir = tmp_path / "mytheme"
+    (theme_dir / "static").mkdir(parents=True)
+    (theme_dir / "static" / "logo.png").write_bytes(b"x")
+
+    configuration["CANAILLE"]["THEME"] = str(theme_dir)
+    app = create_app(configuration, backend=backend)
+
+    with app.app_context():
+        # URL without a filename part
+        assert _resolve_theme_static_file("/_theme/mytheme/") is None
+        # URL without a theme name part
+        assert _resolve_theme_static_file("/_theme//logo.png") is None
+        # Theme that is not registered
+        assert _resolve_theme_static_file("/_theme/unknown/logo.png") is None
+        # Known theme but missing file
+        assert _resolve_theme_static_file("/_theme/mytheme/missing.png") is None
+
+
+def test_resolve_theme_static_file(configuration, backend, tmp_path):
+    """Test that theme logos resolve to a file on disk.
+
+    Logos referenced by a ``flask_themer`` theme static path must be
+    resolvable without any HTTP loopback.
+    """
+    theme_dir = tmp_path / "mytheme"
+    (theme_dir / "static").mkdir(parents=True)
+    logo_bytes = b"\x89PNG\r\n\x1a\nfake-theme-logo"
+    (theme_dir / "static" / "logo.png").write_bytes(logo_bytes)
+
+    configuration["CANAILLE"]["THEME"] = str(theme_dir)
+    configuration["CANAILLE"]["LOGO"] = "/_theme/mytheme/logo.png"
+
+    app = create_app(configuration, backend=backend)
+
+    with app.app_context():
+        content = _read_local_logo("/_theme/mytheme/logo.png")
+
+    assert content == logo_bytes

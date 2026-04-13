@@ -10,6 +10,10 @@ Added
 Fixed
 ^^^^^
 - SCIM ``totalResults`` now returns the total number of matching entries instead of the page size.
+- Logo embedded in emails is now read from disk for application-local URLs
+  instead of being fetched through an HTTP loopback. Fixes a hang when
+  sending mail with the default ``EagerBroker`` on a single-threaded server
+  :issue:`340`
 
 [0.2.4] - 2026-04-08
 --------------------
