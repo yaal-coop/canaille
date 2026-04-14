@@ -23,7 +23,7 @@ class LDAPSettings(BaseModel):
     BIND_PW: str = "admin"
     """The LDAP bind password."""
 
-    TIMEOUT: float = 0.0
+    TIMEOUT: float = -1
     """The LDAP connection timeout."""
 
     USER_BASE: str = Field(..., examples=["ou=users,dc=example,dc=org"])

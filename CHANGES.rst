@@ -1,3 +1,10 @@
+[0.2.7] - 2026-04-14
+--------------------
+
+Fixed
+^^^^^
+- LDAP default timeout. A default timeout of 0 would fail if server don't instantly respond.
+
 [0.2.6] - 2026-04-14
 --------------------
 

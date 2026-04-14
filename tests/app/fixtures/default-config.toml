@@ -550,7 +550,7 @@ PASSWORD_HASH_PARAMS = {}
 # BIND_PW = "admin"
 
 # The LDAP connection timeout.
-# TIMEOUT = 0.0
+# TIMEOUT = -1
 
 # The LDAP node under which users will be looked for and saved.
 #
