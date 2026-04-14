@@ -670,7 +670,7 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 # ADDRESS = "{% if user.formatted_address %}{{ user.formatted_address }}{% endif %}"
 
-# PICTURE = "{% if user.photo %}{{ user | photo_url }}{% endif %}"
+# PICTURE = "{% if user.photo %}{{ user | photo_url(external=True) }}{% endif %}"
 
 # WEBSITE = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
 

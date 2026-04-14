@@ -1,3 +1,10 @@
+[0.2.6] - Unreleased
+--------------------
+
+Fixed
+^^^^^
+- OIDC ``picture`` and SCIM ``photos`` claims now return absolute URLs.
+
 [0.2.5] - 2026-04-13
 --------------------
 

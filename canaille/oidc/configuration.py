@@ -34,7 +34,9 @@ class UserInfoMappingSettings(BaseModel):
     ADDRESS: str | None = (
         "{% if user.formatted_address %}{{ user.formatted_address }}{% endif %}"
     )
-    PICTURE: str | None = "{% if user.photo %}{{ user | photo_url }}{% endif %}"
+    PICTURE: str | None = (
+        "{% if user.photo %}{{ user | photo_url(external=True) }}{% endif %}"
+    )
     WEBSITE: str | None = "{% if user.profile_url %}{{ user.profile_url }}{% endif %}"
     UPDATED_AT: str | None = (
         "{% if user.last_modified %}{{ user.last_modified.timestamp() }}{% endif %}"

@@ -902,9 +902,13 @@ def impersonate(user, puppet):
 
 
 @bp.app_template_filter()
-def photo_url(user):
+def photo_url(user, external=False):
     serializer = URLSafeSerializer(current_app.config["SECRET_KEY"], salt="photo")
-    return url_for("core.account.photo", token=serializer.dumps(user.identifier))
+    return url_for(
+        "core.account.photo",
+        token=serializer.dumps(user.identifier),
+        _external=external,
+    )
 
 
 @bp.route("/photo/<token>")

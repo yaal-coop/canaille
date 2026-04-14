@@ -75,7 +75,7 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
         else None,
         photos=[
             user_class.Photos(
-                value=photo_url(user),
+                value=photo_url(user, external=True),
             )
         ]
         if user.photo
