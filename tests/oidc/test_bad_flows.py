@@ -5,7 +5,7 @@ def test_incomplete_requests(testclient, logged_user, client):
         params=dict(
             response_type="code",
         ),
-        status=400,
+        status=404,
     )
 
 
@@ -17,5 +17,5 @@ def test_bad_client(testclient, logged_user, client):
             response_type="code",
             clienrt_id="nope",
         ),
-        status=400,
+        status=404,
     )

@@ -17,7 +17,7 @@ def test_missing_client_id(testclient, logged_user, client, trusted_client, back
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=400,
+        status=404,
     )
     assert "Missing 'client_id' parameter." in str(res.html)
 
@@ -35,7 +35,7 @@ def test_invalid_client(
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=400,
+        status=404,
     )
     res.mustcontain("The client does not exist on this server.")
 
