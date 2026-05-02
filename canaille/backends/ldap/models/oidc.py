@@ -52,6 +52,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "request_object_encryption_enc": "oauthRequestObjectEncryptionEnc",
         "request_uris": "oauthRequestURI",
         "require_signed_request_object": "oauthRequireSignedRequestObject",
+        "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
     }
 
     attribute_map: ClassVar[dict[str, str] | None] = {
@@ -59,8 +60,6 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "created": "createTimestamp",
         "last_modified": "modifyTimestamp",
         "trusted": "oauthPreconsent",
-        # post_logout_redirect_uris is not yet supported by authlib
-        "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
         "audience": "oauthAudience",
         **client_info_attributes_map,
         **client_metadata_attributes_map,

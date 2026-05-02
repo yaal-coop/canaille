@@ -30,7 +30,7 @@ Used during OIDC RP-initiated logout, when an user confirmation is needed.
         <br>
 
         <div class="ui center aligned container">
-            {% call fui.render_form(form) %}
+            {% call fui.render_form(form, hx_boost="false") %}
                 <div class="ui stackable buttons">
                     <button name="answer" type="submit" class="ui button" value="stay" id="stay">
                         {% trans %}Stay logged{% endtrans %}

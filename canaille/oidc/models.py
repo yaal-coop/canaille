@@ -59,6 +59,7 @@ class Client(BaseClient, ClientMixin):
         "request_object_encryption_enc",
         "request_uris",
         "require_signed_request_object",
+        "post_logout_redirect_uris",
     ]
 
     def __init__(self, *args, **kwargs):
