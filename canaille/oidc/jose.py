@@ -41,7 +41,7 @@ def has_rsa_key(keys):
     """Check if at least one RSA key is present in the key list."""
     for key in keys:
         key_obj = jwk.import_key(key)
-        if key_obj.as_dict().get("kty") == "RSA":
+        if key_obj.key_type == "RSA":
             return True
     return False
 

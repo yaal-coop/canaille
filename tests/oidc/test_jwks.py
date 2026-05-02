@@ -189,6 +189,6 @@ def test_get_jwt_config_fallback_to_first_key(testclient):
 
     config = get_jwt_config(None)
 
-    assert config["key"]["kty"] == "OKP"
+    assert config["key"].key_type == "OKP"
     assert config["alg"] == "EdDSA"
     assert config["kid"] == okp_key.kid

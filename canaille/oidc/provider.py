@@ -102,9 +102,9 @@ def get_issuer():
     return request.url_root
 
 
-def get_jwt_config(grant=None, client=None):
+def _get_signing_key(client):
+    """Select the signing key and algorithm for the given client."""
     jwks = server_jwks(include_inactive=False)
-
     jwk = None
     alg = None
     if client and (alg := client.id_token_signed_response_alg):
@@ -117,13 +117,13 @@ def get_jwt_config(grant=None, client=None):
     if jwk is None:
         jwk = jwks.keys[0]
 
-    payload = {
-        "key": jwk.as_dict(),
-        "iss": get_issuer(),
-        "kid": jwk.kid,
-        "alg": alg or get_alg_for_key(jwk),
-    }
-    return payload
+    return jwk, alg or get_alg_for_key(jwk)
+
+
+def get_jwt_config(client):
+    """Return JWT signing config dict for use with generate_id_token."""
+    jwk, alg = _get_signing_key(client)
+    return {"key": jwk, "iss": get_issuer(), "kid": jwk.kid, "alg": alg}
 
 
 def save_authorization_code(code, request):
@@ -156,6 +156,9 @@ def save_authorization_code(code, request):
 
 
 class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
+    def get_audiences(self):
+        return [url_for("oidc.endpoints.issue_token", _external=True)]
+
     def validate_jti(self, claims, jti):
         """Indicate whether the jti was used before."""
         key = "jti:{}-{}".format(claims["sub"], jti)
@@ -164,12 +167,12 @@ class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
         cache.set(key, 1, timeout=JWT_JTI_CACHE_LIFETIME)
         return True
 
-    def resolve_client_public_key(self, client, headers):
+    def resolve_client_public_key(self, client):
         jwk = get_client_jwks(client)
         if not jwk:
             raise InvalidClientError(description="No matching JWK")
 
-        return jwk.as_dict()
+        return jwk
 
 
 class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
@@ -198,19 +201,37 @@ class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
             return authorization_code.subject
 
 
-class OpenIDCode(oidc_core.OpenIDCode):
+class OIDCGrantMixin:
+    """Shared implementation of the new authlib 1.7 JWT config API for OIDC grants."""
+
+    def resolve_client_private_key(self, client):
+        jwk, _ = _get_signing_key(client)
+        return jwk
+
+    def get_client_algorithm(self, client):
+        _, alg = _get_signing_key(client)
+        return alg
+
+    def get_client_claims(self, client):
+        return {
+            "iss": get_issuer(),
+            "aud": [aud.client_id for aud in client.audience],
+        }
+
+    def get_encode_header(self, client):
+        jwk, alg = _get_signing_key(client)
+        header = {"alg": alg}
+        if jwk.kid:
+            header["kid"] = jwk.kid
+        return header
+
+
+class OpenIDCode(OIDCGrantMixin, oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self, grant=None, client=None):
-        return get_jwt_config(grant, client)
-
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
-
-    def get_audiences(self, request):
-        client = request.client
-        return [aud.client_id for aud in client.audience]
 
 
 class PasswordGrant(rfc6749.ResourceOwnerPasswordCredentialsGrant):
@@ -260,9 +281,11 @@ class JWTBearerGrant(rfc7523.JWTBearerGrant):
     def resolve_issuer_client(self, issuer):
         return Backend.instance.get(models.Client, client_id=issuer)
 
-    def resolve_client_key(self, client, headers, payload):
-        jwk = server_jwks().keys[0]
-        return jwk.as_dict()
+    def resolve_client_public_key(self, client):
+        return server_jwks().keys[0]
+
+    def get_audiences(self):
+        return [url_for("oidc.endpoints.issue_token", _external=True)]
 
     def authenticate_user(self, subject: str):
         return get_user_from_login(subject)
@@ -273,37 +296,23 @@ class JWTBearerGrant(rfc7523.JWTBearerGrant):
         return has_permission
 
 
-class OpenIDImplicitGrant(oidc_core.OpenIDImplicitGrant):
+class OpenIDImplicitGrant(OIDCGrantMixin, oidc_core.OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
-
-    def get_jwt_config(self, grant=None, client=None):
-        return get_jwt_config(grant, client)
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
 
-    def get_audiences(self, request):
-        client = request.client
-        return [aud.client_id for aud in client.audience]
 
-
-class OpenIDHybridGrant(oidc_core.OpenIDHybridGrant):
+class OpenIDHybridGrant(OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
 
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def get_jwt_config(self, grant=None, client=None):
-        return get_jwt_config(grant, client)
-
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
-
-    def get_audiences(self, request):
-        client = request.client
-        return [aud.client_id for aud in client.audience]
 
 
 def query_client(client_id):
@@ -461,7 +470,7 @@ class ClientManagementMixin:
         return result
 
     def resolve_public_key(self, request):
-        return server_jwks().keys[0].as_dict(private=False)
+        return server_jwks().keys[0]
 
     def client_convert_data(self, **kwargs):
         if "client_id_issued_at" in kwargs:
@@ -636,7 +645,7 @@ class UserInfoEndpoint(oidc_core.UserInfoEndpoint):
         return UserInfo(generate_user_claims(user)).filter(scope)
 
     def resolve_private_key(self):
-        return server_jwks(include_inactive=False).as_dict()
+        return server_jwks(include_inactive=False)
 
 
 class IssuerParameter(rfc9207.IssuerParameter):
@@ -646,7 +655,7 @@ class IssuerParameter(rfc9207.IssuerParameter):
 
 class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
     def resolve_client_public_key(self, client):
-        return get_client_jwks(client).as_dict()
+        return get_client_jwks(client)
 
     def get_request_object(self, request_uri: str):
         return httpx.get(request_uri).text
@@ -671,15 +680,18 @@ def generate_access_token(client, grant_type, user, scope):
         return gen_salt(48)
 
     audience = [client.client_id for client in client.audience]
+    jwk, alg = _get_signing_key(client)
     bearer_token_generator = authorization._token_generators["default"]
-    kwargs = {
-        "token": {},
-        "user_info": UserInfo(generate_user_claims(user)).filter(scope),
-        "aud": audience,
-        **get_jwt_config(grant_type, client),
-    }
-    kwargs["exp"] = bearer_token_generator._get_expires_in(client, grant_type)
-    return generate_id_token(**kwargs)
+    return generate_id_token(
+        token={},
+        user_info=UserInfo(generate_user_claims(user)).filter(scope),
+        aud=audience,
+        key=jwk,
+        iss=get_issuer(),
+        kid=jwk.kid,
+        alg=alg,
+        exp=bearer_token_generator._get_expires_in(client, grant_type),
+    )
 
 
 def setup_oauth(app):
@@ -731,7 +743,7 @@ def setup_oauth(app):
         else:
             authorization.register_client_auth_method(
                 JWTClientAuth.CLIENT_AUTH_METHOD,
-                JWTClientAuth(url_for("oidc.endpoints.issue_token", _external=True)),
+                JWTClientAuth(),
             )
 
     require_oauth.register_token_validator(BearerTokenValidator())
