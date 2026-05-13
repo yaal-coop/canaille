@@ -4,6 +4,7 @@
 Added
 ^^^^^
 - OIDC RP-Initiated Logout support. :issue:`157`
+- HTMX page loading indicator displayed during in-flight requests.
 
 [0.2.7] - 2026-04-14
 --------------------
