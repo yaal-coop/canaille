@@ -270,7 +270,7 @@ def test_no_jwt_no_logout(testclient, backend, logged_user, client):
 
 def test_jwt_not_issued_here(testclient, backend, logged_user, client, user):
     jwt_config = get_jwt_config(None)
-    jwt_config["key"] = RSAKey.generate_key(2048, auto_kid=True).as_bytes()
+    jwt_config["key"] = RSAKey.generate_key(2048, auto_kid=True)
     foreign_id_token = generate_id_token(
         {},
         UserInfo(generate_user_claims(user)).filter(client.scope),
