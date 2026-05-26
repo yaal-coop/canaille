@@ -362,7 +362,7 @@ def registration(data=None, hash=None):
         form["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[
-                (group, group.display_name)
+                wtforms.SelectChoice(value=group, label=group.display_name)
                 for group in Backend.instance.query(models.Group)
             ],
             coerce=IDToModel("Group"),

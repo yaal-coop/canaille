@@ -148,11 +148,13 @@ class FirstLoginForm(Form):
 
 def available_language_choices():
     languages = [
-        (lang_code, native_language_name_from_code(lang_code))
+        wtforms.SelectChoice(
+            value=lang_code, label=native_language_name_from_code(lang_code)
+        )
         for lang_code in g.available_language_codes
     ]
-    languages.sort()
-    return [("auto", _("Automatic"))] + languages
+    languages.sort(key=lambda choice: (choice.value, choice.label))
+    return [wtforms.SelectChoice(value="auto", label=_("Automatic"))] + languages
 
 
 PROFILE_FORM_FIELDS = dict(
@@ -325,10 +327,10 @@ PROFILE_FORM_FIELDS = dict(
         default=[],
         choices=lambda: sorted(
             [
-                (group, group.display_name)
+                wtforms.SelectChoice(value=group, label=group.display_name)
                 for group in Backend.instance.query(models.Group)
             ],
-            key=lambda group: group[0].id,
+            key=lambda choice: choice.value.id,
         ),
         render_kw={"placeholder": _("users, admins …")},
         coerce=IDToModel("Group"),
@@ -490,7 +492,7 @@ class InvitationForm(Form):
     groups = wtforms.SelectMultipleField(
         _("Groups"),
         choices=lambda: [
-            (group, group.display_name)
+            wtforms.SelectChoice(value=group, label=group.display_name)
             for group in Backend.instance.query(models.Group)
         ],
         render_kw={},

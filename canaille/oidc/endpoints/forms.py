@@ -38,7 +38,8 @@ def is_jwks(form, field):
 
 def _client_audiences():
     return [
-        (client, client.client_name) for client in Backend.instance.query(models.Client)
+        wtforms.SelectChoice(value=client, label=client.client_name)
+        for client in Backend.instance.query(models.Client)
     ]
 
 
@@ -49,10 +50,10 @@ def _get_algorithm_choices(metadata_key, include_empty=True):
 
     choices = []
     if include_empty:
-        choices.append(("", _("None")))
+        choices.append(wtforms.SelectChoice(value="", label=_("None")))
 
     for alg in algorithms:
-        choices.append((alg, alg))
+        choices.append(wtforms.SelectChoice(value=alg, label=alg))
 
     return choices
 
@@ -133,15 +134,15 @@ class ClientEditForm(ClientAddForm):
     grant_types = wtforms.SelectMultipleField(
         _("Grant types"),
         validators=[wtforms.validators.DataRequired()],
-        choices=[
-            ("password", "password"),
-            ("authorization_code", "authorization_code"),
-            ("implicit", "implicit"),
-            ("hybrid", "hybrid"),
-            ("refresh_token", "refresh_token"),
-            ("client_credentials", "client_credentials"),
-            ("urn:ietf:params:oauth:grant-type:jwt-bearer", "jwt-bearer"),
-        ],
+        choices={
+            "password": "password",
+            "authorization_code": "authorization_code",
+            "implicit": "implicit",
+            "hybrid": "hybrid",
+            "refresh_token": "refresh_token",
+            "client_credentials": "client_credentials",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer": "jwt-bearer",
+        },
         default=["authorization_code", "refresh_token"],
         description=_("Grant types that the client can use at the token endpoint."),
     )
@@ -157,7 +158,7 @@ class ClientEditForm(ClientAddForm):
     response_types = wtforms.SelectMultipleField(
         _("Response types"),
         validators=[wtforms.validators.DataRequired()],
-        choices=[("code", "code"), ("token", "token"), ("id_token", "id_token")],
+        choices={"code": "code", "token": "token", "id_token": "id_token"},
         default=["code"],
         description=_(
             "Response types that the client can use at the authorization endpoint."
@@ -167,13 +168,13 @@ class ClientEditForm(ClientAddForm):
     token_endpoint_auth_method = wtforms.SelectField(
         _("Token endpoint authentication method"),
         validators=[wtforms.validators.DataRequired()],
-        choices=[
-            ("client_secret_basic", "client_secret_basic"),
-            ("client_secret_post", "client_secret_post"),
-            ("client_secret_jwt", "client_secret_jwt"),
-            ("private_key_jwt", "private_key_jwt"),
-            ("none", "none"),
-        ],
+        choices={
+            "client_secret_basic": "client_secret_basic",
+            "client_secret_post": "client_secret_post",
+            "client_secret_jwt": "client_secret_jwt",
+            "private_key_jwt": "private_key_jwt",
+            "none": "none",
+        },
         default="client_secret_basic",
         description=_(
             "Authentication method that the client will use at the token endpoint."
@@ -281,9 +282,9 @@ class ClientEditForm(ClientAddForm):
         _("Subject type"),
         validators=[wtforms.validators.Optional()],
         choices=[
-            ("", _("None")),
-            ("public", "public"),
-            ("pairwise", "pairwise"),
+            wtforms.SelectChoice(value="", label=_("None")),
+            wtforms.SelectChoice(value="public", label="public"),
+            wtforms.SelectChoice(value="pairwise", label="pairwise"),
         ],
         description=_(
             "Subject identifier type requested for responses to this client. Valid types include pairwise and public."
@@ -293,10 +294,7 @@ class ClientEditForm(ClientAddForm):
     application_type = wtforms.SelectField(
         _("Application type"),
         validators=[wtforms.validators.Optional()],
-        choices=[
-            ("web", "web"),
-            ("native", "native"),
-        ],
+        choices={"web": "web", "native": "native"},
         default="web",
         description=_(
             "Kind of the application. Web clients must use https redirect URIs. Native clients can use custom URI schemes or http loopback URLs."
