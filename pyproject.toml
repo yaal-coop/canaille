@@ -51,7 +51,6 @@ front = [
     "flask-talisman>=1.1.0",
     "flask-themer >= 2.0.0",
     "isodate>=0.7.2",
-    "pycountry >= 23.12.7",
     "pytz >= 2022.7",
     "tomlkit>=0.13.2",
     "zxcvbn-rs-py >= 0.3.0",

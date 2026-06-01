@@ -163,18 +163,11 @@ def timezone_selector():
 
 def native_language_name_from_code(code):
     try:
-        from gettext import translation
-
-        import pycountry
+        import babel
     except ImportError:
         return code
 
-    language = pycountry.languages.get(alpha_2=code[:2])
-    if code == DEFAULT_LANGUAGE_CODE:
-        return language.name
-
-    translation = translation("iso639-3", pycountry.LOCALES_DIR, languages=[code])
-    return translation.gettext(language.name)
+    return babel.Locale.parse(code).get_display_name()
 
 
 def available_language_codes():

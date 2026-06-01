@@ -37,15 +37,6 @@ def filter_babel_catalogs(item):
     return code == "root" or code in codes
 
 
-def filter_pycountry_catalogs(item):
-    dest, _, _ = item
-    if not re.match(r"pycountry/locales/\w+/LC_MESSAGES/.+\.mo", dest):
-        return True
-
-    code = dest.split("/")[2].split("_")[0]
-    return code in codes
-
-
 def filter_map_files(item):
     dest, _, _ = item
     return not dest.endswith(".map")
@@ -101,7 +92,6 @@ pyz = PYZ(a.pure)
 
 a.datas = list(filter(filter_wtforms_catalogs, a.datas))
 a.datas = list(filter(filter_babel_catalogs, a.datas))
-a.datas = list(filter(filter_pycountry_catalogs, a.datas))
 a.datas = list(filter(filter_faker_providers, a.datas))
 a.datas = list(filter(filter_map_files, a.datas))
 

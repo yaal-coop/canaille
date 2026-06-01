@@ -253,7 +253,6 @@ front = [
     { name = "flask-talisman" },
     { name = "flask-themer" },
     { name = "isodate" },
-    { name = "pycountry" },
     { name = "pytz" },
     { name = "tomlkit" },
     { name = "zxcvbn-rs-py" },
@@ -417,7 +416,6 @@ requires-dist = [
     { name = "passlib", marker = "extra == 'postgresql'", specifier = ">=1.7.4" },
     { name = "passlib", marker = "extra == 'sqlite'", specifier = ">=1.7.4" },
     { name = "pillow", marker = "extra == 'otp'", specifier = ">=11.0.0" },
-    { name = "pycountry", marker = "extra == 'front'", specifier = ">=23.12.7" },
     { name = "pydanclick", marker = "extra == 'server'", specifier = ">=0.5.0" },
     { name = "pydantic-settings", specifier = ">=2.8.0" },
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.4" },
@@ -1064,7 +1062,7 @@ name = "exceptiongroup"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.12'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/50/79/66800aadf48771f6b62f7eb014e352e5d06856655206165d775e675a02c9/exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219", size = 30371, upload-time = "2025-11-21T23:01:54.787Z" }
 wheels = [
@@ -2606,15 +2604,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pycountry"
-version = "26.2.16"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/de/1d/061b9e7a48b85cfd69f33c33d2ef784a531c359399ad764243399673c8f5/pycountry-26.2.16.tar.gz", hash = "sha256:5b6027d453fcd6060112b951dd010f01f168b51b4bf8a1f1fc8c95c8d94a0801", size = 7711342, upload-time = "2026-02-17T03:42:52.367Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/9c/42/7703bd45b62fecd44cd7d3495423097e2f7d28bc2e99e7c1af68892ab157/pycountry-26.2.16-py3-none-any.whl", hash = "sha256:115c4baf7cceaa30f59a4694d79483c9167dbce7a9de4d3d571c5f3ea77c305a", size = 8044600, upload-time = "2026-02-17T03:42:49.777Z" },
-]
-
-[[package]]
 name = "pycparser"
 version = "3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3865,8 +3854,8 @@ name = "taskgroup"
 version = "0.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "exceptiongroup", marker = "python_full_version < '3.12'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.12'" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f0/8d/e218e0160cc1b692e6e0e5ba34e8865dbb171efeb5fc9a704544b3020605/taskgroup-0.2.2.tar.gz", hash = "sha256:078483ac3e78f2e3f973e2edbf6941374fbea81b9c5d0a96f51d297717f4752d", size = 11504, upload-time = "2025-01-03T09:24:13.761Z" }
 wheels = [
