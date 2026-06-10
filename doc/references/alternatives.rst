@@ -277,7 +277,7 @@ Here is the support for the most common authentication methods.
       - `✅ <../features.html#multi-factor-authentication>`__
       - `✅ <../features.html#multi-factor-authentication>`__
       - `✅ <../features.html#multi-factor-authentication>`__
-      - ❌
+      - `✅ <../features.html#multi-factor-authentication>`__
     * - `Auth0 <https://auth0.com>`_
       - `✅ <https://auth0.com/docs/authenticate/login/auth0-universal-login>`__
       - `✅ <https://auth0.com/docs/secure/multi-factor-authentication/authenticate-using-ropg-flow-with-mfa/enroll-and-challenge-otp-authenticators>`__
