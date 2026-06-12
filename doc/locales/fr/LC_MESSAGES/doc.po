@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-21 00:13+0100\n"
-"PO-Revision-Date: 2026-01-30 18:01+0000\n"
-"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
+"PO-Revision-Date: 2026-06-13 11:01+0000\n"
+"Last-Translator: Steve Jiekak <devaureshy@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: ../development/changelog.rst:2 41ffeccba4e9433f9ccb055196625b58
@@ -114,18 +114,16 @@ msgid "Support for Python 3.14. :pr:`313`"
 msgstr "Support de Python 3.13. :pr:`186`"
 
 #: ../../CHANGES.rst:10 4240551989364c8ab60969b90dc64d77
-#, fuzzy
-#| msgid "Introspection access bugfix. :issue:`63` :pr:`10`"
 msgid "Integration test suite. :issue:`320`"
-msgstr ""
-"Correction de l’accès au point de terminaison d’introspection "
-"OIDC. :issue:`63`:pr:`10`"
+msgstr "Set de Test d'integration . :issue:`63`:pr:`10`"
 
 #: ../../CHANGES.rst:11 f15195c506db4de184d5602adfb2b8f2
 msgid ""
 "Requests are redirected to ``SERVER_NAME`` when the HTTP Host header does "
 "not match."
 msgstr ""
+"Les requètes sont redigirées vers ``SERVER_NAME`` lorsque l'entête HTTP POST "
+"ne correspond pas."
 
 #: ../../CHANGES.rst:12 f0a2e6222d4b4161999664a6bf7661cb
 #, fuzzy
@@ -199,6 +197,8 @@ msgid ""
 "LDAP: OTP feature is now disabled when the OTP module is not loaded in "
 "OpenLDAP."
 msgstr ""
+"LDAP : La fonctionnalité OTP est maintenant desactivée lorsque le module OTP "
+"n'est pas chargé dans OpenLDAP."
 
 #: ../../CHANGES.rst:17 7e53d70585cd4579a21ab3c747c5a70a
 msgid ""
