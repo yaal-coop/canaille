@@ -188,7 +188,7 @@ jobs:
         run: |
           export TZ=UTC
           uv sync --group doc --all-extras
-          uv run playwright install --with-deps firefox
+          uv run playwright install --with-deps chromium
           uv run sphinx-build doc build/sphinx/html --fail-on-warning
 
   # ============================================================

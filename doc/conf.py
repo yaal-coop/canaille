@@ -215,7 +215,7 @@ screenshot_contexts = {
     "user": "doc.doc_app:user_login",
     "james": "doc.doc_app:james_login",
 }
-screenshot_default_browser = "firefox"
+screenshot_default_browser = "chromium"
 screenshot_default_viewport_width = 770
 screenshot_default_viewport_height = 1
 screenshot_default_full_page = True
