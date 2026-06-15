@@ -4,11 +4,33 @@ import os
 import re
 from pathlib import Path
 import importlib.resources
+import babel.localedata
 from canaille.app.i18n import available_language_codes
+from canaille.app.i18n import native_language_name_from_code
 from canaille import create_app
 
-with create_app().app_context():
-    codes = {code.split("_")[0] for code in available_language_codes()}
+# Babel loads locale-data files transitively: a locale inherits from its parents
+# and macrolanguage (e.g. nb_NO -> nb -> no -> root). A naive prefix filter drops
+# these inherited files and makes get_display_name() and date/number formatting
+# crash at runtime in the bundled binary. Trace the actual loads to keep exactly
+# the locale-data files Babel needs.
+babel_locale_data = {"root"}
+_orig_babel_load = babel.localedata.load
+
+
+def _tracking_babel_load(name, *args, **kwargs):
+    babel_locale_data.add(str(name))
+    return _orig_babel_load(name, *args, **kwargs)
+
+
+babel.localedata.load = _tracking_babel_load
+try:
+    with create_app().app_context():
+        codes = {code.split("_")[0] for code in available_language_codes()}
+        for code in available_language_codes():
+            native_language_name_from_code(code)
+finally:
+    babel.localedata.load = _orig_babel_load
 
 with importlib.resources.path('wtforms', 'locale') as locale_path:
     wtforms_locale = str(locale_path)
@@ -33,8 +55,7 @@ def filter_babel_catalogs(item):
     if not re.match(r"babel/locale-data/\w+\.dat", dest):
         return True
 
-    code = Path(dest).stem.split("_")[0]
-    return code == "root" or code in codes
+    return Path(dest).stem in babel_locale_data
 
 
 def filter_map_files(item):
