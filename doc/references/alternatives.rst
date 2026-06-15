@@ -207,7 +207,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://pocket-id.org/docs>`__
       - ❎
       - ❎
-      - ❌
+      - `🟠 <https://pocket-id.org/docs/configuration/scim>`__
       - `✅ <https://pocket-id.org/docs/configuration/ldap>`__
       - ✅
     * - `SimpleIdServer <https://simpleidserver.com>`_
