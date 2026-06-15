@@ -170,7 +170,7 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
 
     def is_expired(self):
         return self.issue_date + datetime.timedelta(
-            seconds=int(self.lifetime)
+            seconds=int(self.lifetime or 0)
         ) < datetime.datetime.now(datetime.timezone.utc)
 
     def get_auth_time(self) -> float | None:
@@ -186,7 +186,7 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
 class Token(BaseToken, TokenMixin):
     @property
     def expire_date(self):
-        return self.issue_date + datetime.timedelta(seconds=self.lifetime)
+        return self.issue_date + datetime.timedelta(seconds=self.lifetime or 0)
 
     @property
     def revoked(self):
@@ -199,7 +199,7 @@ class Token(BaseToken, TokenMixin):
         return self.issue_date.timestamp()
 
     def get_expires_at(self) -> float:
-        return self.get_issued_at() + self.lifetime
+        return self.get_issued_at() + (self.lifetime or 0)
 
     def is_refresh_token_active(self):
         if self.revokation_date:
@@ -209,7 +209,7 @@ class Token(BaseToken, TokenMixin):
 
     def is_expired(self):
         return self.issue_date + datetime.timedelta(
-            seconds=int(self.lifetime)
+            seconds=int(self.lifetime or 0)
         ) < datetime.datetime.now(datetime.timezone.utc)
 
     def is_revoked(self):

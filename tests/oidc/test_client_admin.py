@@ -204,6 +204,7 @@ def test_client_delete(testclient, logged_admin, backend):
         client=client,
         subject=logged_admin,
         issue_date=datetime.datetime.now(datetime.timezone.utc),
+        lifetime=3600,
     )
     backend.save(token)
     consent = models.Consent(
@@ -211,7 +212,10 @@ def test_client_delete(testclient, logged_admin, backend):
     )
     backend.save(consent)
     authorization_code = models.AuthorizationCode(
-        authorization_code_id="id", client=client, subject=logged_admin
+        authorization_code_id="id",
+        client=client,
+        subject=logged_admin,
+        lifetime=300,
     )
     backend.save(authorization_code)
 

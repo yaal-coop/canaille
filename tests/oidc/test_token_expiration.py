@@ -1,7 +1,9 @@
+import datetime
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 from joserfc import jwt
+from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.oidc.jose import registry
@@ -136,3 +138,41 @@ def test_token_custom_expiration_date(
     consents = backend.query(models.Consent, client=client, subject=logged_user)
     for consent in consents:
         backend.delete(consent)
+
+
+def test_expiry_checks_tolerate_missing_lifetime(testclient, client, user, backend):
+    """Tokens and codes without a recorded lifetime are treated as expired."""
+    now = datetime.datetime.now(datetime.timezone.utc)
+
+    token = models.Token(
+        token_id=gen_salt(48),
+        access_token=gen_salt(48),
+        audience=[client],
+        client=client,
+        subject=user,
+        refresh_token=gen_salt(48),
+        scope=["openid", "profile"],
+        issue_date=now,
+    )
+    backend.save(token)
+    assert token.lifetime is None
+    assert token.is_expired() is True
+    assert token.expire_date == token.issue_date
+    assert token.get_expires_at() == token.get_issued_at()
+    backend.delete(token)
+
+    code = models.AuthorizationCode(
+        authorization_code_id=gen_salt(48),
+        code=gen_salt(48),
+        client=client,
+        subject=user,
+        redirect_uri="https://client.test/redirect1",
+        response_type="code",
+        scope=["openid", "profile"],
+        nonce="nonce",
+        issue_date=now,
+    )
+    backend.save(code)
+    assert code.lifetime is None
+    assert code.is_expired() is True
+    backend.delete(code)
