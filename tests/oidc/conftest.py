@@ -53,8 +53,8 @@ def okp_jwk():
 @pytest.fixture
 def configuration(configuration, server_jwk, old_server_jwk):
     configuration["CANAILLE_OIDC"] = {
-        "ACTIVE_JWKS": [server_jwk.as_dict()],
-        "INACTIVE_JWKS": [old_server_jwk.as_dict()],
+        "ACTIVE_JWKS": [server_jwk.as_dict(private=True)],
+        "INACTIVE_JWKS": [old_server_jwk.as_dict(private=True)],
         "TRUSTED_DOMAINS": [".localhost", "127.0.0.1", ".trusted.test"],
     }
     configuration["CANAILLE"]["LOGGING"]["loggers"]["authlib"] = {

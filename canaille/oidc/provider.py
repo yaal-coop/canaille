@@ -749,8 +749,8 @@ def setup_oauth(app):
             )
 
         oidc_config["ACTIVE_JWKS"] = [
-            make_default_okp_jwk(app.config.get("SECRET_KEY")).as_dict(),
-            make_default_rsa_jwk().as_dict(),
+            make_default_okp_jwk(app.config.get("SECRET_KEY")).as_dict(private=True),
+            make_default_rsa_jwk().as_dict(private=True),
         ]
 
     # hacky, but needed for tests as somehow the same 'authorization' object is used

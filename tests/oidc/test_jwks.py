@@ -40,7 +40,7 @@ nJu1vashTRdIRA==
 
     app = create_app(configuration)
     with app.app_context():
-        assert server_jwks(False).as_dict() == {
+        assert server_jwks(False).as_dict(private=True) == {
             "keys": [
                 {
                     "n": "usp9PItslbu7_sBBSLrwo5UzXm-RXDrTUB9VMiH9YBFgofw3ELXXLuQGMHESVQERMYWdK9xWWi5sEU7P-E_IogyH9CJJsdjbipRjGFxtqir_Fmu6kjuE5Wv6y-oX15tdFJS7Tj5gfJLHYzNNu8vqWRSmT18RCSjojKhA9nbLNZk",
@@ -88,8 +88,8 @@ def test_id_token_signing_uses_key_matching_client_algorithm(
     ec_key.ensure_kid()
 
     testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [
-        rsa_key.as_dict(),
-        ec_key.as_dict(),
+        rsa_key.as_dict(private=True),
+        ec_key.as_dict(private=True),
     ]
 
     backend.update(client, id_token_signed_response_alg="ES256")
@@ -139,7 +139,7 @@ def test_missing_rsa_key_error():
     with pytest.raises(
         ValidationError, match="OIDC specification requires RS256 support"
     ):
-        OIDCSettings(ACTIVE_JWKS=[ec_key.as_dict()])
+        OIDCSettings(ACTIVE_JWKS=[ec_key.as_dict(private=True)])
 
 
 def test_missing_active_jwks_warning(configuration, caplog):
@@ -170,7 +170,9 @@ def test_get_jwt_config_uses_client_algorithm(testclient, client, backend):
     rsa_key = jwk.generate_key("RSA", 2048)
     rsa_key.ensure_kid()
 
-    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [rsa_key.as_dict()]
+    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [
+        rsa_key.as_dict(private=True)
+    ]
 
     backend.update(client, id_token_signed_response_alg="RS256")
     backend.save(client)
@@ -185,7 +187,9 @@ def test_get_jwt_config_fallback_to_first_key(testclient):
     okp_key = jwk.generate_key("OKP", "Ed25519")
     okp_key.ensure_kid()
 
-    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [okp_key.as_dict()]
+    testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [
+        okp_key.as_dict(private=True)
+    ]
 
     config = get_jwt_config(None)
 

@@ -250,8 +250,8 @@ def test_signing_alg_with_ec_p256_key(testclient, server_jwk, ec_jwk):
     Note: OIDC Discovery spec requires RS256, so we include an RSA key too.
     """
     testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [
-        ec_jwk.as_dict(),
-        server_jwk.as_dict(),
+        ec_jwk.as_dict(private=True),
+        server_jwk.as_dict(private=True),
     ]
 
     res = testclient.get("/.well-known/openid-configuration", status=200).json
@@ -266,8 +266,8 @@ def test_signing_alg_with_ed25519_key(testclient, server_jwk, okp_jwk):
     Note: OIDC Discovery spec requires RS256, so we include an RSA key too.
     """
     testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [
-        okp_jwk.as_dict(),
-        server_jwk.as_dict(),
+        okp_jwk.as_dict(private=True),
+        server_jwk.as_dict(private=True),
     ]
 
     res = testclient.get("/.well-known/openid-configuration", status=200).json
@@ -279,9 +279,9 @@ def test_signing_alg_with_ed25519_key(testclient, server_jwk, okp_jwk):
 def test_signing_alg_with_multiple_keys(testclient, server_jwk, ec_jwk, okp_jwk):
     """Test that multiple keys combine their algorithms without duplicates."""
     testclient.app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"] = [
-        server_jwk.as_dict(),
-        ec_jwk.as_dict(),
-        okp_jwk.as_dict(),
+        server_jwk.as_dict(private=True),
+        ec_jwk.as_dict(private=True),
+        okp_jwk.as_dict(private=True),
     ]
 
     res = testclient.get("/.well-known/openid-configuration", status=200).json

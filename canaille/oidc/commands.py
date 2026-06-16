@@ -52,10 +52,10 @@ class OutputFormat(enum.Enum):
 def _print_key(key, output_format: OutputFormat):
     """Print key with the selected output format."""
     if output_format == OutputFormat.JSON:
-        click.echo(json.dumps(key.as_dict()))
+        click.echo(json.dumps(key.as_dict(private=True)))
     else:
         key_as_table = tomlkit.inline_table()
-        key_as_table.update(key.as_dict())
+        key_as_table.update(key.as_dict(private=True))
         click.echo(key_as_table.as_string())
 
 
