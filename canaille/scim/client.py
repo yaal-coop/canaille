@@ -78,7 +78,7 @@ def get_or_create_token(client):
 
 def initiate_scim_client(client):
     """Set up the scim2-client object that will perform the SCIM2 requests."""
-    if not client:  # pragma: no cover
+    if not client or not client.client_uri:  # pragma: no cover
         return None
 
     access_token = get_or_create_token(client).access_token
