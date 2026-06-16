@@ -22,11 +22,8 @@ from authlib.oidc import registration as oidc_registration
 from authlib.oidc import rpinitiated
 from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
-from flask import flash
 from flask import g
-from flask import redirect
 from flask import request
-from flask import session
 from flask import url_for
 from joserfc import jwt
 from joserfc.errors import JoseError
@@ -34,7 +31,6 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.app.flask import cache
-from canaille.app.i18n import gettext as _
 from canaille.app.session import logout_user
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
@@ -227,10 +223,7 @@ class OIDCGrantMixin:
 
     def get_encode_header(self, client):
         jwk, alg = _get_signing_key(client)
-        header = {"alg": alg}
-        if jwk.kid:
-            header["kid"] = jwk.kid
-        return header
+        return {"alg": alg, "kid": jwk.kid}
 
 
 class OpenIDCode(OIDCGrantMixin, oidc_core.OpenIDCode):
@@ -650,32 +643,11 @@ class UserInfoEndpoint(oidc_core.UserInfoEndpoint):
 
 
 class EndSessionEndpoint(rpinitiated.EndSessionEndpoint):
-    def get_client_by_id(self, client_id):
-        return Backend.instance.get(models.Client, client_id=client_id)
-
     def get_server_jwks(self):
         return server_jwks(include_inactive=True)
 
-    def get_server_registry(self):
-        return registry
-
     def end_session(self, end_session_request):
-        session.pop("logout_confirmation", None)
         logout_user()
-
-    def create_end_session_response(self, request):
-        flash(_("You have been disconnected"), "success")
-        response = redirect(url_for("core.account.index"))
-        return (response.status_code, response.get_data(as_text=True), response.headers)
-
-    def was_confirmation_given(self):
-        return session.get("logout_confirmation", False)
-
-    def is_confirmation_needed(self, request, redirect_uri, client, logout_hint):
-        user = g.session and g.session.user
-        if not user:
-            return False
-        return logout_hint and logout_hint != user.user_name
 
     def is_post_logout_redirect_uri_legitimate(
         self,
