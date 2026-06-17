@@ -19,7 +19,29 @@ Dynamic client registration
 ===========================
 
 The easiest way to register a client is to let the client register itself.
-You can either provide a registration token to the client by adding it to the :attr:`~canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_TOKENS` configuration parameter, or enable registration for all clients without token by enabling :attr:`~canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN`.
+
+By default, dynamic client registration requires a JWT registration token.
+Generate one with the :ref:`canaille jwt registration <cli_jwt>` command:
+
+.. code-block:: console
+
+   canaille jwt registration
+
+Then pass this token to the registration endpoint as a bearer token:
+
+.. code-block:: console
+
+   curl \
+      --request POST \
+      --header "Authorization: Bearer $REGISTRATION_TOKEN" \
+      --header "Content-Type: application/json" \
+      --data '{"redirect_uris": ["https://client.example/callback"], "client_name": "Example client"}' \
+      https://auth.example.test/oauth/register
+
+The command generates a token with the ``client:register`` scope.
+Canaille must have a configured :attr:`~canaille.oidc.configuration.OIDCSettings.ACTIVE_JWKS` and ``SERVER_NAME`` so the token can be signed and issued for the right server.
+
+For test environments where authenticated registration is not needed, enable :attr:`~canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN` to allow clients to register without a token.
 
 Manual client registration
 ==========================
