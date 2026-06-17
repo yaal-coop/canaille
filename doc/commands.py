@@ -10,6 +10,7 @@ from canaille.backends.commands import get_factory
 from canaille.backends.commands import set_factory
 from canaille.core.models import Group
 from canaille.core.models import User
+from canaille.core.models import WebAuthnCredential
 from canaille.oidc.basemodels import AuthorizationCode
 from canaille.oidc.basemodels import Client
 from canaille.oidc.basemodels import Consent
@@ -17,6 +18,7 @@ from canaille.oidc.basemodels import Token
 
 MODELS = {
     "user": User,
+    "webauthncredential": WebAuthnCredential,
     "group": Group,
     "client": Client,
     "authorizationcode": AuthorizationCode,

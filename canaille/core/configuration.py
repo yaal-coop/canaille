@@ -396,7 +396,7 @@ class CoreSettings(BaseModel):
     """
 
     OTP_METHOD: OTPMethod = OTPMethod.TOTP
-    """The OTP method to use if ``OTP`` is set in :attr:`~canaille.core.confirmation.CoreSettings.AUTHENTICATION_FACTORS`.
+    """The OTP method to use if ``otp`` is set in :attr:`~canaille.core.configuration.CoreSettings.AUTHENTICATION_FACTORS`.
     If set to ``TOTP``, the application will use time-based one-time passcodes,
     If set to ``HOTP``, the application will use HMAC-based one-time passcodes."""
 

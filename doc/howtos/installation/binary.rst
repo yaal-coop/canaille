@@ -10,7 +10,7 @@ This is generally the recommended method to use Canaille in production.
 .. code-block:: console
    :substitutions:
 
-   $ wget https://github.com/yaal-coop/canaille/releases/download/|version|/canaille -o canaille
+   $ wget https://github.com/yaal-coop/canaille/releases/download/|version|/canaille -O canaille
    $ chmod +x canaille
 
 .. note::

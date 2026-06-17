@@ -23,6 +23,12 @@ For the sake of readability, it is omitted in the following examples.
    :prog: canaille run
    :nested: full
 
+.. _cli_db:
+
+.. click:: flask_alembic.cli:cli
+   :prog: canaille db
+   :nested: full
+
 .. _cli_jwk:
 
 .. click:: canaille.oidc.commands:jwk
@@ -93,6 +99,12 @@ For the sake of readability, it is omitted in the following examples.
 
 .. click:: canaille.backends.commands:reset_otp
    :prog: canaille reset-otp
+   :nested: full
+
+.. _cli_periodiq:
+
+.. click:: flask_dramatiq:periodiq
+   :prog: canaille periodiq
    :nested: full
 
 .. _cli_worker:

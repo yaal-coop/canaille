@@ -33,4 +33,4 @@ For instance, if you want to migrate from a LDAP database to a SQL database, you
     :caption: Migrating data from a LDAP directory to a SQL database
 
     $ env CANAILLE_CONFIG=sql-config.toml canaille install
-    $ env CANAILLE_CONFIG=ldap -config.toml canaille dump | env CANAILLE_CONFIG=sql-config.toml canaille restore
+    $ env CANAILLE_CONFIG=ldap-config.toml canaille dump | env CANAILLE_CONFIG=sql-config.toml canaille restore

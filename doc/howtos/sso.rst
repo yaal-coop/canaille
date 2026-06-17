@@ -53,7 +53,7 @@ Manual client registration
 
    The client addition page.
 
-Users with the right :attr:`~ canaille.core.configuration.Permission.MANAGE_OIDC` permission can manage OIDC clients through the web interface.
+Users with the right :attr:`~canaille.core.configuration.Permission.MANAGE_OIDC` permission can manage OIDC clients through the web interface.
 
 Here are some details about the fields in the client edition and registration form:
 

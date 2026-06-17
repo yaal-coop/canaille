@@ -579,8 +579,8 @@ Added
   configuration setting. :issue:`173`
 - Multi-factor authentication, controlled by the
   :attr:`~canaille.core.configuration.CoreSettings.OTP_METHOD`,
-  :attr:`~canaille.core.configuration.CoreSettings.EMAIL_OTP`,
-  :attr:`~canaille.core.configuration.CoreSettings.SMS_OTP` configuration settings.
+  ``EMAIL_OTP``,
+  ``SMS_OTP`` configuration settings.
   :issue:`47`
 - Password compromission check, controlled by the
   :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_COMPROMISSION_CHECK` and
