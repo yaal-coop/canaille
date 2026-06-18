@@ -10,7 +10,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
 
 .. list-table::
     :header-rows: 1
-    :widths: 25 10 15 8 10 8 8 8 8 8 8
+    :widths: 25 10 15 8 10 8 8 8 8 8 8 8
 
     * - Software
       - FLOSS
@@ -23,6 +23,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - SCIM
       - LDAP
       - SQL
+      - Forward-auth
     * - Canaille
       - ✅
       - `Python <https://www.python.org/>`_
@@ -34,6 +35,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - 🟠
       - ✅
       - ✅
+      - ❎
     * - `Auth0 <https://auth0.com>`_
       - ❌
       - ❔
@@ -42,9 +44,10 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://auth0.com/docs/authenticate/protocols/openid-connect-protocol>`__
       - ☑️
       - ❎
-      - `✅ <https://auth0.com/docs/authenticate/protocols/scim>`__
+      - `🟠 <https://auth0.com/docs/authenticate/protocols/scim/configure-inbound-scim>`__
       - `✅ <https://auth0.com/docs/authenticate/identity-providers/enterprise-identity-providers/active-directory-ldap>`__
-      - ❔
+      - ❎
+      - ❎
     * - `Authelia <https://authelia.com>`_
       - ✅
       - `Go <https://golang.org/>`_
@@ -56,6 +59,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `❌ <https://github.com/authelia/authelia/issues/7668>`__
       - `✅ <https://www.authelia.com/configuration/first-factor/ldap/>`__
       - `✅ <https://www.authelia.com/configuration/storage/postgres/>`__
+      - `✅ <https://www.authelia.com/overview/prologue/introduction/>`__
     * - `Authentic2 <https://dev.entrouvert.org/projects/authentic>`_
       - ✅
       - `Python <https://www.python.org/>`_
@@ -67,8 +71,9 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❌
       - ✅
       - `✅ <https://authentic2.readthedocs.io/en/latest/installation.html#database>`__
+      - ❎
     * - `Authentik <https://goauthentik.io>`_
-      - ✅
+      - `🟠 <https://github.com/goauthentik/authentik/blob/main/LICENSE>`__
       - `Python <https://www.python.org/>`_
       - `440k <https://openhub.net/p/authentik/analyses/latest/languages_summary>`_
       - ~800MB (Docker)
@@ -78,6 +83,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/scim/>`__
       - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/ldap/>`__
       - `✅ <https://docs.goauthentik.io/core/architecture>`__
+      - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/proxy/forward_auth/>`__
     * - `Authgear <https://authgear.com>`_
       - ✅
       - `Go <https://golang.org/>`_
@@ -89,6 +95,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❌
       - `✅ <https://www.authgear.com/post/ldap-explained-a-comprehensive-guide-with-authgear-integration>`__
       - ✅
+      - `✅ <https://github.com/authgear/authgear-server/blob/main/docs/specs/api-resolver.md>`__
     * - `CAS <https://apereo.github.io/cas>`_
       - ✅
       - `Java <https://www.java.com/>`_
@@ -97,20 +104,22 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
       - ☑️
       - ☑️
-      - ✅
+      - `🟠 <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/integration/SCIM-Provisioning.md>`__
       - `✅ <https://apereo.github.io/cas/development/authentication/LDAP-Authentication.html>`__
-      - ❌
+      - `✅ <https://github.com/apereo/cas/tree/master/support/cas-server-support-jdbc-authentication>`__
+      - `🟠 <https://github.com/apereo/mod_auth_cas>`__
     * - `Connect2id <https://connect2id.com>`_
       - ❌
       - ❔
       - ❔
       - ~80MB (JAR)
       - `✅ <https://connect2id.com/products/server/docs/api/authorization>`__
-      - ☑️
+      - ❎
       - ❎
       - ❌
       - ✅
       - ✅
+      - ❎
     * - `FusionAuth <https://fusionauth.io>`_
       - ❌
       - `Java <https://www.java.com/>`_
@@ -119,9 +128,10 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://fusionauth.io/docs/v1/tech/oauth/>`__
       - `☑️ <https://fusionauth.io/docs/v1/tech/samlv2/>`__
       - ❎
-      - `✅ <https://fusionauth.io/docs/lifecycle/migrate-users/scim/>`__
+      - `🟠 <https://fusionauth.io/docs/apis/scim/>`__
       - `✅ <https://fusionauth.io/docs/lifecycle/migrate-users/connectors/ldap-connector>`__
       - `✅ <https://fusionauth.io/docs/get-started/download-and-install/database>`__
+      - ❎
     * - `Gluu <https://gluu.org>`_
       - ✅
       - `Java <https://www.java.com/>`_
@@ -129,21 +139,23 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ~2GB (Container)
       - `✅ <https://gluu.org/docs/gluu-server/4.0/admin-guide/openid-connect/>`__
       - ☑️
-      - ☑️
+      - `🟠 <https://gluu.org/docs/gluu-server/4.1/admin-guide/cas/>`__
       - `✅ <https://gluu.org/docs/gluu-server/4.1/user-management/scim2/>`__
       - `✅ <https://gluu.org/docs/gluu-server/4.0/reference/schema/>`__
       - ✅
+      - ❎
     * - `Hydra + Kratos <https://ory.sh>`_
-      - ✅
+      - `🟠 <https://github.com/ory/hydra/blob/master/LICENSE>`__
       - `Go <https://golang.org/>`_
       - `119k <https://openhub.net/p/ory-hydra/analyses/latest/languages_summary>`_
       - ~40MB (2 binaries)
       - `✅ <https://www.ory.sh/docs/hydra/concepts/openid-connect-oidc>`__
-      - ☑️
+      - `🟠 <https://changelog.ory.com/announcements/native-saml-and-saml-organizations>`__
       - ❎
-      - `❌ <https://github.com/ory/hydra/issues/320>`__
-      - `✅ <https://www.ory.sh/docs/kratos/>`__
+      - `🟠 <https://www.ory.com/docs/kratos/manage-identities/scim>`__
+      - ❌
       - `✅ <https://www.ory.sh/docs/hydra/self-hosted/dependencies-environment>`__
+      - ❎
     * - `Kanidm <https://kanidm.com>`_
       - ✅
       - `Rust <https://www.rust-lang.org/>`_
@@ -154,7 +166,8 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❎
       - `🟠 <https://kanidm.github.io/kanidm/stable/supported_features.html>`__
       - `✅ <https://kanidm.github.io/kanidm/stable/integrations/ldap.html>`__
-      - `✅ <https://kanidm.github.io/kanidm/stable/database_maintenance.html>`__
+      - ❎
+      - ❎
     * - `Keycloak <https://keycloak.org>`_
       - ✅
       - `Java <https://www.java.com/>`_
@@ -162,10 +175,11 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ~250MB (JAR)
       - `✅ <https://www.keycloak.org/securing-apps/oidc-layers>`__
       - ☑️
-      - ☑️
-      - `✅ <https://github.com/Captain-P-Goldfish/scim-for-keycloak>`__
+      - `🟠 <https://github.com/jacekkow/keycloak-protocol-cas>`__
+      - `🟠 <https://www.keycloak.org/2026/04/scim-as-experimental-feature>`__
       - `✅ <https://www.keycloak.org/docs/latest/server_admin/index.html>`__
       - `✅ <https://www.keycloak.org/server/db>`__
+      - ❎
     * - `LemonLDAP <https://lemonldap-ng.org>`_
       - ✅
       - `Perl <https://www.perl.org/>`_
@@ -177,6 +191,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `❌ <https://gitlab.ow2.org/lemonldap-ng/lemonldap-ng/-/issues/526>`__
       - `✅ <https://lemonldap-ng.org/documentation/2.0/authldap.html>`__
       - `✅ <https://lemonldap-ng.org/documentation/2.0/sqlconfbackend.html>`__
+      - `✅ <https://lemonldap-ng.org/documentation/latest/ssoaas>`__
     * - `Logto <https://logto.io>`_
       - ✅
       - `TypeScript <https://www.typescriptlang.org/>`_
@@ -188,6 +203,7 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❌
       - `❌ <https://github.com/logto-io/logto/issues/1588>`__
       - ✅
+      - ❎
     * - `Okta <https://okta.com>`_
       - ❌
       - ❔
@@ -198,7 +214,8 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ❎
       - `✅ <https://developer.okta.com/docs/concepts/scim/>`__
       - `✅ <https://help.okta.com/en-us/content/topics/directory/ldap-interface-main.htm>`__
-      - `✅ <https://help.okta.com/oag/en-us/content/topics/access-gateway/task-add-db-datastore.htm>`__
+      - ❔
+      - ❎
     * - `Pocket ID <https://pocket-id.org>`_
       - `✅ <https://github.com/pocket-id/pocket-id/blob/main/LICENSE>`__
       - `Go <https://golang.org/>`_
@@ -207,31 +224,34 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://pocket-id.org/docs>`__
       - ❎
       - ❎
-      - `🟠 <https://pocket-id.org/docs/configuration/scim>`__
+      - `✅ <https://pocket-id.org/docs/configuration/scim>`__
       - `✅ <https://pocket-id.org/docs/configuration/ldap>`__
       - ✅
+      - ❎
     * - `SimpleIdServer <https://simpleidserver.com>`_
       - ✅
       - `C# <https://docs.microsoft.com/en-us/dotnet/csharp/>`_
       - 829k
       - ~120MB (.NET)
       - `✅ <https://simpleidserver.com/docs/iam/openid/>`__
-      - ❎
+      - `✅ <https://simpleidserver.com/docs/next/idserver/protocols/saml/>`__
       - ❎
       - `✅ <https://simpleidserver.com/docs/scim/quickstart/>`__
-      - ❌
+      - `✅ <https://github.com/simpleidserver/SimpleIdServer/tree/master/src/IdServer/SimpleIdServer.IdServer.Provisioning.LDAP>`__
       - `✅ <https://simpleidserver.com/docs/6.0.0/idserver/persistence/entityframework/>`__
+      - ❎
     * - `SuperTokens <https://supertokens.com>`_
-      - ✅
+      - `🟠 <https://github.com/supertokens/supertokens-core/blob/master/ee/LICENSE.md>`__
       - `Java <https://www.java.com/>`_
       - 451k
       - ~100MB (JAR)
-      - `✅ <https://supertokens.com/docs/authentication/social/custom-providers>`__
-      - `☑️ <https://supertokens.com/docs/thirdparty/common-customizations/saml/saml-login>`__
+      - `🟠 <https://github.com/supertokens/supertokens-core/issues/582>`__
+      - ❌
       - ❎
-      - ✅
+      - ❌
       - ❌
       - `✅ <https://supertokens.com/docs/deployment/self-host-supertokens>`__
+      - ❎
     * - `WSO2 <https://wso2.com/identity-server/>`_
       - ✅
       - `Java <https://www.java.com/>`_
@@ -239,10 +259,11 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - ~500MB (ZIP)
       - `✅ <https://is.docs.wso2.com/en/6.0.0/references/concepts/authentication/intro-oidc/>`__
       - ☑️
-      - ❎
+      - `🟠 <https://github.com/wso2-extensions/identity-inbound-auth-cas>`__
       - `✅ <https://is.docs.wso2.com/en/6.0.0/apis/scim2-rest-apis/>`__
       - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/users/user-stores/primary-user-store/configure-a-read-write-ldap-user-store/>`__
       - `✅ <https://is.docs.wso2.com/en/7.0.0/deploy/configure/databases/>`__
+      - ❎
     * - `Zitadel <https://zitadel.com>`_
       - ✅
       - `Go <https://golang.org/>`_
@@ -251,9 +272,10 @@ Canaille voluntarily only implements the OpenID Connect protocol to keep its cod
       - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc>`__
       - ☑️
       - ❎
-      - `✅ <https://zitadel.com/docs/apis/scim2>`__
-      - ❌
+      - `🟠 <https://zitadel.com/docs/apis/scim2>`__
+      - `✅ <https://zitadel.com/docs/guides/integrate/identity-providers/ldap>`__
       - `✅ <https://zitadel.com/docs/self-hosting/manage/database>`__
+      - ❌
 
 Authentication Methods
 ----------------------
@@ -281,7 +303,7 @@ Here is the support for the most common authentication methods.
     * - `Auth0 <https://auth0.com>`_
       - `✅ <https://auth0.com/docs/authenticate/login/auth0-universal-login>`__
       - `✅ <https://auth0.com/docs/secure/multi-factor-authentication/authenticate-using-ropg-flow-with-mfa/enroll-and-challenge-otp-authenticators>`__
-      - `✅ <https://auth0.com/blog/what-is-a-one-time-password-otp/>`__
+      - ❌
       - `✅ <https://auth0.com/docs/authenticate/passwordless>`__
       - `✅ <https://auth0.com/docs/authenticate/passwordless>`__
       - `✅ <https://auth0.com/docs/secure/multi-factor-authentication>`__
@@ -290,14 +312,14 @@ Here is the support for the most common authentication methods.
       - `✅ <https://www.authelia.com/configuration/second-factor/time-based-one-time-password/>`__
       - ❌
       - ❌
-      - 🟠
+      - ❌
       - `✅ <https://www.authelia.com/overview/authentication/security-key/>`__
     * - `Authentic2 <https://dev.entrouvert.org/projects/authentic>`_
       - `✅ <https://authentic2.readthedocs.io/en/latest/overview.html#authentication>`__
+      - ❌
+      - ❌
       - ✅
-      - ✅
-      - ✅
-      - ✅
+      - `🟠 <https://git.entrouvert.org/entrouvert/authentic/raw/branch/main/src/authentic2/apps/authenticators/models.py>`__
       - ❌
     * - `Authentik <https://goauthentik.io>`_
       - ✅
@@ -316,22 +338,22 @@ Here is the support for the most common authentication methods.
     * - `CAS <https://apereo.github.io/cas>`_
       - ✅
       - `✅ <https://apereo.github.io/cas/development/mfa/Configuring-Multifactor-Authentication.html>`__
-      - `✅ <https://apereo.github.io/cas/development/mfa/Configuring-Multifactor-Authentication.html>`__
+      - ❌
       - `✅ <https://apereo.github.io/cas/development/authentication/Passwordless-Authentication.html>`__
       - `✅ <https://apereo.github.io/cas/development/authentication/Passwordless-Authentication.html>`__
       - `✅ <https://apereo.github.io/cas/development/mfa/Configuring-Multifactor-Authentication.html>`__
     * - `Connect2id <https://connect2id.com>`_
       - `🟠 <https://connect2id.com/products/server/user-authentication>`__
-      - 🟠
-      - 🟠
-      - 🟠
-      - 🟠
-      - 🟠
+      - ❔
+      - ❔
+      - ❔
+      - ❔
+      - ❔
     * - `FusionAuth <https://fusionauth.io>`_
       - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/>`__
       - `✅ <https://fusionauth.io/articles/security/time-based-one-time-passwords-totp>`__
       - ❌
-      - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/multi-factor-authentication>`__
+      - `🟠 <https://fusionauth.io/docs/lifecycle/authenticate-users/multi-factor-authentication>`__
       - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/multi-factor-authentication>`__
       - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/multi-factor-authentication>`__
     * - `Gluu <https://gluu.org>`_
@@ -339,7 +361,7 @@ Here is the support for the most common authentication methods.
       - `✅ <https://gluu.org/docs/gluu-server/4.1/authn-guide/otp/>`__
       - `✅ <https://gluu.org/docs/gluu-server/4.1/authn-guide/otp/>`__
       - `✅ <https://gluu.org/docs/gluu-server/3.1.1/authn-guide/sms-otp/>`__
-      - ✅
+      - `🟠 <https://gluu.org/docs/gluu-server/4.1/authn-guide/>`__
       - `✅ <https://gluu.org/docs/gluu-server/4.1/authn-guide/fido2/>`__
     * - `Hydra + Kratos <https://ory.sh>`_
       - `✅ <https://www.ory.sh/docs/kratos/>`__
@@ -359,14 +381,14 @@ Here is the support for the most common authentication methods.
       - ✅
       - ✅
       - ✅
-      - `🟠 <https://medium.com/@shreyasmk.mathur/mastering-multi-factor-authentication-in-keycloak-sms-email-and-totp-setup-guide-957305b92be1>`__
-      - `🟠 <https://medium.com/@mesutpiskin/two-factor-authentication-via-email-in-keycloak-custom-auth-spi-935bbb3952a8>`__
+      - ❌
+      - ❌
       - ✅
     * - `LemonLDAP <https://lemonldap-ng.org>`_
       - `✅ <https://lemonldap-ng.org/documentation/2.0/secondfactor.html>`__
       - `✅ <https://lemonldap-ng.org/documentation/2.0/totp2f.html>`__
       - `❌ <https://lemonldap-ng.org/documentation/2.0/totp2f.html>`__
-      - `✅ <https://lemonldap-ng.org/documentation/2.0/external2f.html>`__
+      - `🟠 <https://lemonldap-ng.org/documentation/2.0/external2f.html>`__
       - `✅ <https://lemonldap-ng.org/documentation/2.0/secondfactor.html>`__
       - `✅ <https://lemonldap-ng.org/documentation/2.0/webauthn2f.html>`__
     * - `Logto <https://logto.io>`_
@@ -388,7 +410,7 @@ Here is the support for the most common authentication methods.
       - ❌
       - ❌
       - ❌
-      - ❌
+      - `✅ <https://github.com/pocket-id/pocket-id/blob/main/backend/internal/service/jwt_service.go>`__
       - `✅ <https://pocket-id.org/docs>`__
     * - `SimpleIdServer <https://simpleidserver.com>`_
       - `✅ <https://simpleidserver.com/docs/idserver/quickstart/createidserverwithui/>`__
@@ -407,7 +429,7 @@ Here is the support for the most common authentication methods.
     * - `WSO2 <https://wso2.com/identity-server/>`_
       - ✅
       - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/authentication/mfa/add-totp-login/>`__
-      - ❌
+      - ❔
       - `✅ <https://is.docs.wso2.com/en/6.0.0/guides/mfa/2fa-sms-otp/>`__
       - `✅ <https://is.docs.wso2.com/en/6.0.0/guides/mfa/2fa-totp/>`__
       - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/authentication/mfa/>`__
@@ -415,7 +437,7 @@ Here is the support for the most common authentication methods.
       - ✅
       - `✅ <https://zitadel.com/docs/guides/integrate/login-ui/mfa>`__
       - ❌
-      - `🟠 <https://zitadel.com/blog/authentication-methods>`__
+      - `✅ <https://zitadel.com/docs/reference/api/user/zitadel.user.v2.UserService.AddOTPSMS>`__
       - `✅ <https://zitadel.com/docs/guides/integrate/login-ui/mfa>`__
       - `✅ <https://zitadel.com/docs/concepts/features/passkeys>`__
 
@@ -457,38 +479,38 @@ OAuth2/OIDC Specifications Compatibility
     * - `Auth0 <https://auth0.com>`_
       - `✅ <https://auth0.com/docs/secure/tokens/access-tokens/revoke-access-tokens>`__
       - `✅ <https://auth0.com/docs/get-started/applications/dynamic-client-registration>`__
-      - ❌
+      - ❔
       - `✅ <https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-pkce>`__
       - ❌
       - ✅
       - `✅ <https://auth0.com/docs/get-started/authentication-and-authorization-flow/device-authorization-flow>`__
-      - ❌
+      - `🟠 <https://auth0.com/docs/authenticate/custom-token-exchange>`__
       - `✅ <https://auth0.com/docs/get-started/applications/machine-to-machine-applications/certificate-credentials>`__
       - `✅ <https://auth0.com/docs/secure/attack-protection/request-object>`__
       - `✅ <https://auth0.com/docs/get-started/authentication-and-authorization-flow/pushed-authorization-requests>`__
       - `✅ <https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow/authorization-code-flow-with-rar>`__
-      - ❌
+      - `✅ <https://auth0.com/docs/secure/sender-constraining/demonstrating-proof-of-possession-dpop>`__
     * - `Authelia <https://authelia.com>`_
       - `✅ <https://www.authelia.com/integration/openid-connect/introduction/#support-chart>`__
-      - ❌
-      - ❌
+      - `🟠 <https://www.authelia.com/roadmap/active/openid-connect-1.0-provider/>`__
+      - `🟠 <https://www.authelia.com/roadmap/active/openid-connect-1.0-provider/>`__
       - `✅ <https://www.authelia.com/integration/openid-connect/introduction/#support-chart>`__
       - `✅ <https://www.authelia.com/integration/openid-connect/introduction/#support-chart>`__
       - `✅ <https://www.authelia.com/integration/openid-connect/introduction/#support-chart>`__
       - `✅ <https://www.authelia.com/integration/openid-connect/introduction/#support-chart>`__
       - ❌
       - ❌
-      - `🟠 <https://www.authelia.com/integration/openid-connect/introduction/#support-chart>`__
+      - `✅ <https://www.authelia.com/integration/openid-connect/introduction/>`__
       - `✅ <https://www.authelia.com/integration/openid-connect/introduction/#support-chart>`__
       - ❌
       - ❌
     * - `Authentic2 <https://dev.entrouvert.org/projects/authentic>`_
       - ✅
-      - ✅
+      - ❌
       - ❌
       - ✅
-      - ✅
-      - ✅
+      - ❌
+      - `🟠 <https://git.entrouvert.org/entrouvert/authentic/raw/branch/main/src/authentic2_idp_oidc/views.py>`__
       - ❌
       - ❌
       - ❌
@@ -498,7 +520,7 @@ OAuth2/OIDC Specifications Compatibility
       - ❌
     * - `Authentik <https://goauthentik.io>`_
       - ✅
-      - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2/>`__
+      - ❌
       - ❌
       - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2/>`__
       - ✅
@@ -512,32 +534,32 @@ OAuth2/OIDC Specifications Compatibility
       - ❌
     * - `Authgear <https://authgear.com>`_
       - ✅
-      - ✅
-      - ✅
-      - ✅
+      - ❌
       - ❌
       - ✅
       - ❌
+      - ✅
       - ❌
       - ❌
       - ❌
       - ❌
       - ❌
       - ❌
+      - `✅ <https://github.com/authgear/authgear-server/blob/main/pkg/lib/oauth/dpop.go>`__
     * - `CAS <https://apereo.github.io/cas>`_
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
-      - ❌
+      - `✅ <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/authentication/OIDC-Authentication-Dynamic-Registration.md>`__
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
+      - `✅ <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/authentication/OAuth-ProtocolFlow-DeviceAuthorization.md>`__
+      - `✅ <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/authentication/OAuth-ProtocolFlow-TokenExchange.md>`__
+      - `✅ <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/authentication/OIDC-Authentication-AccessToken-AuthMethods.md>`__
+      - `✅ <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/authentication/OIDC-Authentication-PAR.md>`__
+      - `✅ <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/authentication/OIDC-Authentication-PAR.md>`__
       - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication-DPoP.html>`__
     * - `Connect2id <https://connect2id.com>`_
       - `✅ <https://connect2id.com/products/server/docs>`__
       - `✅ <https://connect2id.com/products/server/docs>`__
@@ -550,14 +572,14 @@ OAuth2/OIDC Specifications Compatibility
       - `✅ <https://connect2id.com/products/server/docs>`__
       - `✅ <https://connect2id.com/products/server/docs>`__
       - `✅ <https://connect2id.com/products/server/docs>`__
-      - ❌
+      - `✅ <https://connect2id.com/blog/connect2id-server-14-4>`__
       - `✅ <https://connect2id.com/products/server/docs>`__
     * - `FusionAuth <https://fusionauth.io>`_
       - ❌
       - ❌
       - ❌
       - `✅ <https://fusionauth.io/docs/v1/tech/oauth/>`__
-      - ❌
+      - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/oauth/endpoints>`__
       - `✅ <https://fusionauth.io/docs/v1/tech/oauth/>`__
       - `✅ <https://fusionauth.io/docs/v1/tech/oauth/>`__
       - ❌
@@ -565,7 +587,7 @@ OAuth2/OIDC Specifications Compatibility
       - ❌
       - ❌
       - ❌
-      - ❌
+      - `✅ <https://fusionauth.io/blog/announcing-fusionauth-1-63>`__
     * - `Gluu <https://gluu.org>`_
       - ✅
       - ✅
@@ -573,36 +595,36 @@ OAuth2/OIDC Specifications Compatibility
       - `✅ <https://gluu.org/docs/gluu-server/4.0/admin-guide/openid-connect/>`__
       - `✅ <https://gluu.org/docs/gluu-server/4.1/admin-guide/openid-connect/>`__
       - `✅ <https://gluu.org/docs/gluu-server/4.0/admin-guide/openid-connect/>`__
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/oauth-features/token-exchange/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/endpoints/configuration/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/>`__
+      - `✅ <https://docs.jans.io/v1.1.4/admin/auth-server/oauth-features/dpop/>`__
     * - `Hydra + Kratos <https://ory.sh>`_
       - `✅ <https://www.ory.sh/docs/hydra/guides/token-revocation>`__
-      - ❌
-      - ❌
+      - `✅ <https://github.com/ory/hydra>`__
+      - `✅ <https://github.com/ory/hydra>`__
       - `✅ <https://www.ory.sh/docs/hydra/concepts/oauth2#proof-key-for-code-exchange-pkce>`__
       - `✅ <https://www.ory.sh/docs/hydra/guides/token-introspection>`__
       - `✅ <https://www.ory.sh/docs/hydra/reference/api>`__
       - `✅ <https://www.ory.sh/docs/hydra/guides/device-authorization-grant>`__
       - ❌
-      - `✅ <https://www.ory.sh/docs/hydra/guides/oauth2-client-authentication#jwt-client-authentication>`__
+      - ❌
       - ❌
       - ❌
       - ❌
       - ❌
     * - `Kanidm <https://kanidm.com>`_
       - ✅
-      - ✅
+      - ❌
       - ❌
       - `✅ <https://kanidm.github.io/kanidm/master/integrations/oauth2.html>`__
-      - ❌
+      - `✅ <https://kanidm.github.io/kanidm/stable/supported_features.html>`__
       - `✅ <https://kanidm.github.io/kanidm/master/integrations/oauth2.html>`__
       - ❌
-      - ❌
+      - `✅ <https://kanidm.github.io/kanidm/stable/supported_features.html>`__
       - ❌
       - ❌
       - ❌
@@ -616,12 +638,12 @@ OAuth2/OIDC Specifications Compatibility
       - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
       - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
       - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
-      - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
+      - `🟠 <https://www.keycloak.org/securing-apps/specifications>`__
       - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
       - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
       - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
       - ❌
-      - `🟠 <https://www.keycloak.org/securing-apps/specifications>`__
+      - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
     * - `LemonLDAP <https://lemonldap-ng.org>`_
       - ✅
       - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
@@ -630,42 +652,42 @@ OAuth2/OIDC Specifications Compatibility
       - ✅
       - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
       - ❌
+      - `✅ <https://lemonldap-ng.org/documentation/2.0/oidctokenexchange.html>`__
       - ❌
-      - ❌
-      - ❌
+      - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
       - ❌
       - ❌
       - ❌
     * - `Logto <https://logto.io>`_
       - ✅
-      - `✅ <https://docs.logto.io/integrations/vanilla-js/>`__
+      - ❌
       - ❌
       - `✅ <https://docs.logto.io/docs/recipes/protect-your-api/>`__
       - ✅
       - `✅ <https://docs.logto.io/docs/recipes/protect-your-api/>`__
+      - `✅ <https://auth.logto.io/oidc/.well-known/openid-configuration>`__
+      - `✅ <https://auth.logto.io/oidc/.well-known/openid-configuration>`__
       - ❌
       - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://auth.logto.io/oidc/.well-known/openid-configuration>`__
       - ❌
       - ❌
     * - `Okta <https://okta.com>`_
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/#revoke>`__
-      - ❌
-      - ❌
+      - `✅ <https://developer.okta.com/docs/reference/api/oauth-clients/>`__
+      - `🟠 <https://developer.okta.com/docs/reference/api/oauth-clients/>`__
       - `✅ <https://developer.okta.com/docs/guides/implement-grant-type/authcodepkce/main/>`__
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/#introspect>`__
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/#well-known-openid-configuration>`__
       - `✅ <https://developer.okta.com/docs/guides/device-authorization-grant/main/>`__
       - `✅ <https://developer.okta.com/docs/guides/token-exchange/main/>`__
-      - ❌
-      - `✅ <https://developer.okta.com/docs/reference/api/oidc/>`__
-      - `✅ <https://developer.okta.com/docs/reference/api/oidc/>`__
-      - `✅ <https://developer.okta.com/docs/reference/api/oidc/>`__
+      - `✅ <https://developer.okta.com/docs/guides/dpop/nonoktaresourceserver/main/>`__
+      - `🟠 <https://devforum.okta.com/t/signed-request-object/12609>`__
+      - `🟠 <https://developer.okta.com/docs/guides/idv-integration/main/>`__
+      - `🟠 <https://developer.okta.com/blog/2020/04/09/whats-new-with-oauth-and-oidc>`__
       - `✅ <https://developer.okta.com/docs/guides/dpop/main/>`__
     * - `Pocket ID <https://pocket-id.org>`_
-      - ❔
+      - ❌
       - ❌
       - ❌
       - `✅ <https://github.com/pocket-id/pocket-id/issues/7>`__
@@ -675,30 +697,30 @@ OAuth2/OIDC Specifications Compatibility
       - ❌
       - ❌
       - ❌
-      - ❌
+      - `✅ <https://github.com/pocket-id/pocket-id/blob/main/backend/internal/controller/oidc_controller.go>`__
       - ❌
       - ❌
     * - `SimpleIdServer <https://simpleidserver.com>`_
       - ✅
       - ✅
-      - ❌
+      - `✅ <https://github.com/simpleidserver/SimpleIdServer/blob/master/src/IdServer/SimpleIdServer.IdServer/Api/Register/RegistrationController.cs>`__
       - `✅ <https://simpleidserver.com/documentation/simpleidserver/configuration/clients>`__
       - ✅
       - `✅ <https://simpleidserver.com/documentation/simpleidserver/configuration/clients>`__
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://github.com/simpleidserver/SimpleIdServer/tree/master/src/IdServer/SimpleIdServer.IdServer>`__
     * - `SuperTokens <https://supertokens.com>`_
-      - ✅
-      - `✅ <https://supertokens.com/docs/authentication/social/custom-providers>`__
+      - `🟠 <https://github.com/supertokens/supertokens-core/blob/master/src/main/java/io/supertokens/webserver/api/oauth/RevokeOAuthTokenAPI.java>`__
       - ❌
-      - `✅ <https://supertokens.com/docs/thirdpartyemailpassword/common-customizations/core/api-keys>`__
-      - ✅
-      - `✅ <https://supertokens.com/docs/authentication/social/custom-providers>`__
+      - ❌
+      - `🟠 <https://github.com/supertokens/supertokens-core/issues/582>`__
+      - `🟠 <https://supertokens.com/docs/authentication/unified-login/oauth2-basics>`__
+      - `🟠 <https://github.com/supertokens/supertokens-core/issues/582>`__
       - ❌
       - ❌
       - ❌
@@ -709,28 +731,28 @@ OAuth2/OIDC Specifications Compatibility
     * - `WSO2 <https://wso2.com/identity-server/>`_
       - `✅ <https://is.docs.wso2.com/en/7.0.0/apis/oauth2-token-revocation-endpoint/>`__
       - `✅ <https://is.docs.wso2.com/en/6.0.0/references/concepts/authentication/intro-oidc/>`__
-      - ❌
+      - `✅ <https://is.docs.wso2.com/en/latest/guides/access-delegation/oauth-dynamic-client-registration/>`__
       - `✅ <https://is.docs.wso2.com/en/6.0.0/references/concepts/authentication/intro-oidc/>`__
       - `✅ <https://is.docs.wso2.com/en/7.0.0/apis/oauth2-token-introspection-endpoint/>`__
       - `✅ <https://is.docs.wso2.com/en/6.0.0/references/concepts/authentication/intro-oidc/>`__
       - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/access-delegation/device-flow/>`__
-      - ❌
+      - `✅ <https://is.docs.wso2.com/en/latest/guides/authentication/configure-token-exchange/>`__
       - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/access-delegation/oauth-mtls/>`__
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://is.docs.wso2.com/en/latest/references/app-settings/oidc-settings-for-app/>`__
+      - `✅ <https://is.docs.wso2.com/en/latest/guides/authentication/oidc/implement-login-with-par/>`__
+      - `✅ <https://is.docs.wso2.com/en/next/guides/authorization/rich-authorization-requests/>`__
+      - `✅ <https://is.docs.wso2.com/en/next/references/token-binding/dpop/>`__
     * - `Zitadel <https://zitadel.com>`_
       - `✅ <https://zitadel.com/docs/apis/openidoauth/endpoints#revoke-token>`__
-      - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc>`__
+      - ❌
       - ❌
       - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc>`__
       - `✅ <https://zitadel.com/docs/apis/openidoauth/endpoints#introspect-token>`__
       - `✅ <https://zitadel.com/docs/apis/openidoauth/endpoints>`__
+      - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc/device-authorization>`__
+      - `✅ <https://zitadel.com/docs/guides/integrate/token-exchange>`__
       - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `🟠 <https://zitadel.cloud/.well-known/openid-configuration>`__
       - ❌
       - ❌
       - ❌
@@ -768,14 +790,14 @@ OpenID Connect Advanced Features
       - `✅ <https://auth0.com/docs/get-started/applications/application-types>`__
       - `✅ <https://auth0.com/docs/authenticate/login/logout/log-users-out-of-auth0>`__
       - ❌
-      - ❌
+      - `🟠 <https://auth0.com/docs/authenticate/login/logout/log-users-out-of-saml-idps>`__
       - `✅ <https://auth0.com/docs/authenticate/login/logout/back-channel-logout>`__
-      - ❌
-      - ❌
+      - `✅ <https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-initiated-backchannel-authentication-flow>`__
+      - `🟠 <https://community.auth0.com/t/use-of-screen-hint-signup-with-universal-login-and-social-connections-only/111609>`__
       - ❌
     * - `Authelia <https://authelia.com>`_
-      - ❌
-      - `✅ <https://www.authelia.com/configuration/identity-providers/openid-connect/provider/>`__
+      - `✅ <https://www.authelia.com/roadmap/active/openid-connect-1.0-provider/>`__
+      - `🟠 <https://www.authelia.com/roadmap/active/openid-connect-1.0-provider/>`__
       - ❌
       - ❌
       - ❌
@@ -784,29 +806,29 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
     * - `Authentic2 <https://dev.entrouvert.org/projects/authentic>`_
+      - `✅ <https://git.entrouvert.org/entrouvert/authentic/raw/branch/main/src/authentic2_idp_oidc/views.py>`__
       - ❌
-      - ✅
+      - `✅ <https://git.entrouvert.org/entrouvert/authentic/raw/branch/main/src/authentic2_idp_oidc/views.py>`__
       - ❌
-      - ❌
-      - ❌
+      - `✅ <https://git.entrouvert.org/entrouvert/authentic/raw/branch/main/src/authentic2_idp_oidc/views.py>`__
       - ❌
       - ❌
       - ❌
       - ❌
     * - `Authentik <https://goauthentik.io>`_
+      - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2/>`__
       - ❌
       - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2/>`__
       - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2/frontchannel_and_backchannel_logout/>`__
+      - `✅ <https://docs.goauthentik.io/add-secure-apps/providers/oauth2/frontchannel_and_backchannel_logout/>`__
       - ❌
       - ❌
       - ❌
     * - `Authgear <https://authgear.com>`_
+      - `✅ <https://github.com/authgear/authgear-server/blob/main/pkg/auth/handler/oauth/metadata.go>`__
       - ❌
-      - ✅
-      - ❌
+      - `✅ <https://accounts.portal.authgear.com/.well-known/openid-configuration>`__
       - ❌
       - ❌
       - ❌
@@ -814,13 +836,13 @@ OpenID Connect Advanced Features
       - ❌
       - ❌
     * - `CAS <https://apereo.github.io/cas>`_
-      - ❌
+      - `✅ <https://github.com/apereo/cas/blob/master/docs/cas-server-documentation/authentication/OIDC-Authentication-Discovery.md>`__
       - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication.html>`__
+      - `✅ <https://github.com/apereo/cas/blob/master/support/cas-server-support-oidc-core/src/main/java/org/apereo/cas/oidc/OidcConstants.java>`__
       - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication-Logout.html>`__
+      - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication-Logout.html>`__
+      - `✅ <https://apereo.github.io/cas/development/authentication/OIDC-Authentication-CIBA.html>`__
       - ❌
       - 🟠
     * - `Connect2id <https://connect2id.com>`_
@@ -831,14 +853,14 @@ OpenID Connect Advanced Features
       - `✅ <https://connect2id.com/products/server/docs/guides/logout>`__
       - `✅ <https://connect2id.com/products/server/docs/guides/logout>`__
       - `✅ <https://connect2id.com/products/server/docs/guides/ciba>`__
-      - ❌
+      - `✅ <https://connect2id.com/products/server/docs/datasheet>`__
       - `✅ <https://connect2id.com/products/server/docs/guides/openid-federation-setup>`__
     * - `FusionAuth <https://fusionauth.io>`_
+      - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/oauth/endpoints>`__
       - ❌
-      - `✅ <https://fusionauth.io/docs/v1/tech/oauth/>`__
+      - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/logout-session-management>`__
       - ❌
-      - ❌
-      - ❌
+      - `✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/logout-session-management>`__
       - ❌
       - ❌
       - ❌
@@ -846,26 +868,26 @@ OpenID Connect Advanced Features
     * - `Gluu <https://gluu.org>`_
       - ✅
       - ✅
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/endpoints/end-session/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/openid-features/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/openid-features/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/openid-features/>`__
+      - `✅ <https://docs.jans.io/head/janssen-server/auth-server/>`__
       - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - 🟠
     * - `Hydra + Kratos <https://ory.sh>`_
       - `✅ <https://www.ory.sh/docs/hydra/guides/oauth2-clients#dynamic-client-registration>`__
       - `✅ <https://www.ory.sh/docs/hydra/guides/logout>`__
+      - `✅ <https://www.ory.sh/hydra/docs/concepts/logout/>`__
       - ❌
+      - `✅ <https://github.com/ory/hydra>`__
+      - `✅ <https://github.com/ory/hydra>`__
       - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://github.com/ory/hydra/issues/1929>`__
       - ❌
     * - `Kanidm <https://kanidm.com>`_
+      - `✅ <https://kanidm.github.io/kanidm/stable/supported_features.html>`__
       - ❌
-      - ✅
       - ❌
       - ❌
       - ❌
@@ -880,63 +902,63 @@ OpenID Connect Advanced Features
       - `✅ <https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-logout>`__
       - `✅ <https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-logout>`__
       - `✅ <https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc-logout>`__
-      - ❌
-      - ❌
-      - `✅ <https://github.com/eosc-kc/keycloak-oidc-federation>`__
+      - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
+      - `✅ <https://www.keycloak.org/securing-apps/specifications>`__
+      - `🟠 <https://github.com/keycloak/keycloak/discussions/31027>`__
     * - `LemonLDAP <https://lemonldap-ng.org>`_
-      - ❌
+      - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
+      - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
+      - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
+      - `✅ <https://lemonldap-ng.org/documentation/2.0/openidconnectservice.html>`__
+      - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
       - `✅ <https://lemonldap-ng.org/documentation/2.0/idpopenidconnect.html>`__
       - ❌
       - ❌
       - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
     * - `Logto <https://logto.io>`_
+      - `✅ <https://auth.logto.io/oidc/.well-known/openid-configuration>`__
       - ❌
-      - ✅
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://docs.logto.io/end-user-flows/sign-out>`__
       - ❌
       - ❌
+      - `✅ <https://auth.logto.io/oidc/.well-known/openid-configuration>`__
       - ❌
+      - `🟠 <https://docs.logto.io/end-user-flows/authentication-parameters/first-screen>`__
       - ❌
     * - `Okta <https://okta.com>`_
       - `✅ <https://developer.okta.com/docs/reference/api/apps/#add-oauth-2-0-client-application>`__
       - `✅ <https://developer.okta.com/docs/reference/api/oidc/#logout>`__
+      - `✅ <https://developer.okta.com/docs/guides/single-logout/openidconnect/main/>`__
+      - `🟠 <https://developer.okta.com/docs/guides/single-logout/openidconnect/main/>`__
+      - `✅ <https://help.okta.com/en-us/content/topics/apps/apps_single_logout.htm>`__
       - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://developer.okta.com/docs/guides/configure-ciba/main/>`__
       - ❌
       - ❌
     * - `Pocket ID <https://pocket-id.org>`_
+      - `✅ <https://github.com/pocket-id/pocket-id/blob/main/backend/internal/controller/well_known_controller.go>`__
+      - ❌
+      - `✅ <https://github.com/pocket-id/pocket-id/blob/main/backend/internal/service/oidc_service.go>`__
       - ❌
       - ❌
       - ❌
       - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `🟠 <https://pocket-id.org/docs>`__
       - ❌
     * - `SimpleIdServer <https://simpleidserver.com>`_
       - ✅
       - ✅
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.1/openidconnect/>`__
+      - `✅ <https://simpleidserver.com/docs/4.0.3/fapi/ciba/>`__
+      - `✅ <https://simpleidserver.com/docs/tutorial/overview/>`__
       - `✅ <https://simpleidserver.com/docs/tutorial/openidfederation/>`__
     * - `SuperTokens <https://supertokens.com>`_
+      - `🟠 <https://github.com/supertokens/supertokens-core/issues/582>`__
       - ❌
-      - `✅ <https://supertokens.com/docs/authentication/social/custom-providers>`__
-      - ❌
+      - `🟠 <https://github.com/supertokens/supertokens-core/blob/master/src/main/java/io/supertokens/webserver/api/oauth/OAuthLogoutAPI.java>`__
       - ❌
       - ❌
       - ❌
@@ -946,20 +968,20 @@ OpenID Connect Advanced Features
     * - `WSO2 <https://wso2.com/identity-server/>`_
       - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/applications/register-oidc-web-app/>`__
       - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/authentication/oidc/add-logout/>`__
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://is.docs.wso2.com/en/6.0.0/guides/login/slo-for-oidc/>`__
+      - `✅ <https://is.docs.wso2.com/en/6.1.0/references/concepts/authentication/session-management/>`__
+      - `✅ <https://is.docs.wso2.com/en/7.0.0/guides/authentication/oidc/add-logout/>`__
+      - `✅ <https://is.docs.wso2.com/en/6.0.0/guides/login/oidc-backchannel-logout/>`__
+      - `✅ <https://is.docs.wso2.com/en/latest/references/grant-types/>`__
+      - ❔
+      - ❔
     * - `Zitadel <https://zitadel.com>`_
+      - `✅ <https://zitadel.cloud/.well-known/openid-configuration>`__
       - ❌
-      - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc>`__
-      - ❌
-      - ❌
-      - ❌
+      - `✅ <https://zitadel.com/docs/guides/integrate/login/oidc/logout>`__
       - ❌
       - ❌
+      - `✅ <https://zitadel.com/docs/guides/integrate/back-channel-logout>`__
       - ❌
+      - `✅ <https://zitadel.com/docs/guides/integrate/login-ui/oidc-standard>`__
       - ❌
