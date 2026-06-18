@@ -15,6 +15,8 @@ Discovery endpoints
 
 The OAuth2 discovery endpoint is located at ``/.well-known/oauth-authorization-server`` and the OpenID Connect discovery endpoint is located at ``/.well-known/openid-configuration``.
 
+These endpoints return a JSON *discovery document* that lists every other endpoint (authorization, token, userinfo, JWKS…) along with the server capabilities, so that compliant clients can configure themselves automatically from the issuer URL alone.
+
 Dynamic client registration
 ===========================
 
@@ -110,21 +112,8 @@ Grant types that the client can use at the token endpoint.
 Scope
 -----
 
-Kind of information that the client can request about users.
-
-- **openid** is needed for the client to be able to access the *UserInfo* endpoint.
-- **profile** gives access to users :attr:`~canaille.core.models.User.name`,
-  :attr:`family names <canaille.core.models.User.family_name>`,
-  :attr:`given names <canaille.core.models.User.given_name>`,
-  :attr:`display names <canaille.core.models.User.display_name>`,
-  :attr:`photos <canaille.core.models.User.photo>`,
-  :attr:`profile URLs <canaille.core.models.User.profile_url>`,
-  :attr:`preferred languages <canaille.core.models.User.preferred_language>` and
-  :attr:`last update dates <canaille.backends.models.Model.last_modified>`.
-- **email** gives access to users :attr:`email addresses <canaille.core.models.User.emails>`.
-- **groups** gives access to users :attr:`~canaille.core.models.User.groups`.
-- **address** gives access to users :attr:`addresses <canaille.core.models.User.formatted_address>`.
-- **phone** gives access to users :attr:`phone numbers <canaille.core.models.User.phone_numbers>`.
+Kinds of information the client can request about users.
+See `Claims returned to applications`_ for the available scopes and the claims each one provides.
 
 Response types
 --------------
@@ -192,6 +181,85 @@ Trusted
 -------
 
 Whether the clients needs to display consent dialogs.
+
+Configuring the client application
+==================================
+
+Once the client is registered, configure the application itself.
+Most OIDC clients only need three things:
+
+- the **Issuer URL**: your Canaille base URL (e.g. ``https://auth.example.org``).
+  Clients that support discovery fetch every endpoint from the `Discovery endpoints`_ automatically;
+- the **Client ID** and **Client Secret** obtained during registration;
+- the **scopes** the application should request (see `Scope`_).
+
+Applications that do not support discovery must be configured with each endpoint manually; you can read their values from the discovery document (see `Discovery endpoints`_).
+
+Claims returned to applications
+===============================
+
+The `Scope`_ requested by a client controls which claims Canaille returns in the ID token and at the userinfo endpoint.
+Request scopes explicitly: ``groups``, ``address`` and ``phone`` are **not** included in ``profile``.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 85
+
+   * - Scope
+     - Claims returned
+   * - ``openid``
+     - ``sub`` (always present, the user identifier)
+   * - ``profile``
+     - ``name``, ``given_name``, ``family_name``, ``preferred_username``, ``picture``, ``website``, ``locale``, ``updated_at``
+   * - ``email``
+     - ``email``
+   * - ``phone``
+     - ``phone_number``
+   * - ``address``
+     - ``address`` — a JSON object (``formatted``, ``street_address``, ``locality``, ``region``, ``postal_code``)
+   * - ``groups``
+     - ``groups`` — a JSON array of the user's group names. This scope is a Canaille extension, not part of the OpenID Connect core.
+
+Mapping groups and roles
+========================
+
+OpenID Connect does not standardize roles or groups, so this is usually the trickiest part of an integration.
+
+Request the ``groups`` scope: Canaille then adds a ``groups`` claim to both the ID token and the userinfo response, containing the list of the user's group :attr:`display names <canaille.core.models.Group.display_name>`, for instance:
+
+.. code-block:: json
+
+   {
+     "sub": "alice",
+     "groups": ["admins", "staff"]
+   }
+
+Map this claim to your application's roles or permissions.
+Every application does this differently (an attribute path, a role-mapping table, an allowed-groups list…): look for *"OIDC group mapping"* or *"role mapping"* in your application's documentation.
+
+Customizing the claims
+======================
+
+Claims are produced from `Jinja <https://jinja.palletsprojects.com>`_ templates, configurable in the :class:`~canaille.oidc.configuration.UserInfoMappingSettings` section (``CANAILLE_OIDC.USERINFO_MAPPING``).
+A ``user`` variable is available in each template.
+
+If an application expects a claim under a different value, adapt the mapping.
+For example, to expose the email address as ``preferred_username`` instead of the display name:
+
+.. code-block:: toml
+
+   [CANAILLE_OIDC.USERINFO_MAPPING]
+   PREFERRED_USERNAME = "{{ user.preferred_email }}"
+
+Common integration pitfalls
+===========================
+
+- **Redirect URIs must match exactly.** Scheme, host, port and path must be identical to what the application sends, including or excluding a trailing slash.
+- **Prefer Authorization Code with PKCE.** The supported ``code_challenge_methods`` are advertised in the discovery document (`Discovery endpoints`_); use ``S256`` when the client offers a choice.
+- **Match the token endpoint authentication method.** The method configured on the client (see `Token endpoint authentication method`_) must match what the application sends. A mismatch is a frequent cause of ``invalid_client`` errors.
+- **A nonce is required by default.** Canaille enables :attr:`~canaille.oidc.configuration.OIDCSettings.REQUIRE_NONCE`. If a client does not send a ``nonce``, either fix the client or disable this option.
+- **The issuer must match the public URL.** Behind a reverse proxy, set ``SERVER_NAME`` and forward the appropriate headers, otherwise the ``issuer`` advertised in the discovery document (`Discovery endpoints`_) and in the issued tokens will not match what clients expect. See :doc:`deployment`.
+- **The consent screen can be skipped** for clients matching a :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS` entry or marked `Trusted`_.
 
 Server key management
 =====================
