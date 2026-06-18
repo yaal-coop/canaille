@@ -1,3 +1,6 @@
+import datetime
+from typing import Literal
+
 from pydantic import model_validator
 
 from canaille.app.configuration import BaseModel
@@ -106,6 +109,39 @@ class OIDCSettings(BaseModel):
     """"Attribute mapping used to build an OIDC UserInfo object.
 
     UserInfo is used to fill the id_token and the userinfo endpoint."""
+
+    DEVICE_CODE_LIFETIME: datetime.timedelta = datetime.timedelta(minutes=30)
+    """The validity period of the ``device_code`` and ``user_code`` issued by the
+    :rfc:`Device Authorization Grant <8628>` endpoint.
+
+    Should be provided in ISO8601 duration format (e.g., "PT30M" for 30 minutes)."""
+
+    DEVICE_CODE_POLLING_INTERVAL: datetime.timedelta = datetime.timedelta(seconds=5)
+    """The minimum delay a device client should wait between two polling requests to
+    the token endpoint during the :rfc:`Device Authorization Grant <8628>`.
+
+    Should be provided in ISO8601 duration format (e.g., "PT5S" for 5 seconds)."""
+
+    DEVICE_USER_CODE_TYPE: Literal["string", "digital"] = "string"
+    """The kind of ``user_code`` generated for the
+    :rfc:`Device Authorization Grant <8628>`.
+
+    ``string`` produces codes like ``WDJB-MJHT`` (letters), while ``digital``
+    produces codes like ``019-450-730`` (digits only)."""
+
+    @model_validator(mode="after")
+    def validate_device_code_durations(self):
+        if self.DEVICE_CODE_POLLING_INTERVAL < datetime.timedelta(seconds=1):
+            raise ValueError(
+                "DEVICE_CODE_POLLING_INTERVAL must be at least one second."
+            )
+
+        if self.DEVICE_CODE_LIFETIME <= self.DEVICE_CODE_POLLING_INTERVAL:
+            raise ValueError(
+                "DEVICE_CODE_LIFETIME must be longer than DEVICE_CODE_POLLING_INTERVAL."
+            )
+
+        return self
 
     @model_validator(mode="after")
     def validate_rsa_key_present(self):

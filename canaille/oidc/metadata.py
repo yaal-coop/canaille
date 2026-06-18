@@ -46,6 +46,9 @@ def oauth_authorization_server():
         "registration_endpoint": url_for(
             "oidc.endpoints.client_registration", _external=True
         ),
+        "device_authorization_endpoint": url_for(
+            "oidc.endpoints.device_authorization", _external=True
+        ),
         "scopes_supported": [
             "openid",
             "profile",
@@ -69,6 +72,7 @@ def oauth_authorization_server():
             "password",
             "client_credentials",
             "refresh_token",
+            "urn:ietf:params:oauth:grant-type:device_code",
         ],
         "ui_locales_supported": [
             code.replace("_", "-") for code in g.available_language_codes

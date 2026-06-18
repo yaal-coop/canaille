@@ -87,6 +87,7 @@ class LDAPBackend(Backend):
                 models.AuthorizationCode.install()
                 models.Client.install()
                 models.Consent.install()
+                models.DeviceCode.install()
 
     @classmethod
     def setup_schemas(cls, config):

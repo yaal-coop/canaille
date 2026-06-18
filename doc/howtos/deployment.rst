@@ -162,7 +162,7 @@ Recurrent jobs
 ==============
 
 You might want to clean up your database to avoid it growing too much. You can regularly delete
-expired tokens and authorization codes with:
+expired tokens, authorization codes and device codes with:
 
 .. code-block:: console
 

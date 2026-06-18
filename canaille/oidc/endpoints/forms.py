@@ -1,6 +1,7 @@
 import json
 
 import wtforms
+from flask import current_app
 from joserfc.jwk import KeySet
 from wtforms_htmx_components import ComboboxMultiField
 
@@ -30,6 +31,26 @@ class AuthorizeForm(Form):
 
 class LogoutForm(Form):
     answer = wtforms.ButtonField()
+
+
+class DeviceForm(Form):
+    """User code entry form for the RFC 8628 device verification endpoint."""
+
+    user_code = wtforms.StringField(
+        _("Code"),
+        validators=[wtforms.validators.DataRequired()],
+        render_kw={"autocomplete": "off", "autofocus": True},
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        user_code_type = current_app.config["CANAILLE_OIDC"]["DEVICE_USER_CODE_TYPE"]
+        self.user_code.render_kw = {
+            **self.user_code.render_kw,
+            "placeholder": "019-450-730"
+            if user_code_type == "digital"
+            else "WDJB-MJHT",
+        }
 
 
 def is_jwks(form, field):
@@ -375,6 +396,7 @@ class ClientEditForm(ClientAddForm):
             "refresh_token": "refresh_token",
             "client_credentials": "client_credentials",
             "urn:ietf:params:oauth:grant-type:jwt-bearer": "jwt-bearer",
+            "urn:ietf:params:oauth:grant-type:device_code": "device_code",
         },
         default=["authorization_code", "refresh_token"],
         description=_("Grant types that the client can use at the token endpoint."),

@@ -309,6 +309,39 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     )
 
 
+class DeviceCode(canaille.oidc.models.DeviceCode, Base, SqlAlchemyModel):
+    __tablename__ = "device_code"
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
+    )
+    created: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    last_modified: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+
+    device_code_id: Mapped[str] = mapped_column(String(255), nullable=True)
+    device_code: Mapped[str] = mapped_column(String(255), nullable=True, unique=True)
+    user_code: Mapped[str] = mapped_column(String(255), nullable=True, index=True)
+    client_id: Mapped[str] = mapped_column(ForeignKey("client.id", ondelete="CASCADE"))
+    client: Mapped["Client"] = relationship()
+    subject_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+    )
+    subject: Mapped["User"] = relationship()
+    scope: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
+    status: Mapped[str] = mapped_column(String(20), nullable=True)
+    issue_date: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+    lifetime: Mapped[int] = mapped_column(Integer, nullable=True)
+    last_polled: Mapped[datetime.datetime] = mapped_column(
+        TZDateTime(timezone=True), nullable=True
+    )
+
+
 class Consent(canaille.oidc.models.Consent, Base, SqlAlchemyModel):
     __tablename__ = "consent"
 

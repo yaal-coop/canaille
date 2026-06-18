@@ -116,6 +116,27 @@ class Token(canaille.oidc.models.Token, LDAPObject):
     }
 
 
+class DeviceCode(canaille.oidc.models.DeviceCode, LDAPObject):
+    ldap_object_class = ["oauthDeviceCode"]
+    base = "ou=devices,ou=oauth"
+    rdn_attribute = "oauthDeviceCodeID"
+    attribute_map: ClassVar[dict[str, str] | None] = {
+        "id": "entryUUID",
+        "created": "createTimestamp",
+        "last_modified": "modifyTimestamp",
+        "device_code_id": "oauthDeviceCodeID",
+        "device_code": "oauthDeviceCode",
+        "user_code": "oauthUserCode",
+        "client": "oauthClient",
+        "subject": "oauthSubject",
+        "scope": "oauthScope",
+        "status": "oauthDeviceCodeStatus",
+        "issue_date": "oauthIssueDate",
+        "lifetime": "oauthDeviceCodeLifetime",
+        "last_polled": "oauthLastPolled",
+    }
+
+
 class Consent(canaille.oidc.models.Consent, LDAPObject):
     ldap_object_class = ["oauthConsent"]
     base = "ou=consents,ou=oauth"

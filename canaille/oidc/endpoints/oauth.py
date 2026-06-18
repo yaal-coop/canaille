@@ -6,6 +6,7 @@ from authlib.common.urls import add_params_to_uri
 from authlib.oauth2 import OAuth2Error
 from authlib.oauth2.rfc6749.errors import InvalidRequestError
 from authlib.oauth2.rfc6749.errors import UnsupportedResponseTypeError
+from authlib.oauth2.rfc8628 import DEVICE_CODE_GRANT_TYPE
 from authlib.oidc.core.errors import ConsentRequiredError
 from flask import Blueprint
 from flask import abort
@@ -41,6 +42,7 @@ from ..userinfo import generate_user_claims
 from ..utils import SCOPE_DETAILS
 from ..utils import unique_scopes
 from .forms import AuthorizeForm
+from .forms import DeviceForm
 from .well_known import openid_configuration
 
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
@@ -302,28 +304,27 @@ def is_consent_needed(grant, redirect_url) -> bool:
     return True
 
 
-def create_or_update_consent(grant, user, now):
+def create_or_update_consent(client, user, scope, now):
     consents = Backend.instance.query(
         models.Consent,
-        client=grant.client,
+        client=client,
         subject=user,
     )
     consent = consents[0] if consents else None
 
-    requested_scopes = grant.request.payload.scope or ""
-    allowed_scopes = unique_scopes(grant.client.get_allowed_scope(requested_scopes))
+    allowed_scopes = unique_scopes(client.get_allowed_scope(scope))
 
     if consent:
         if consent.revoked:
             consent.restore()
         consent.issue_date = now
-        consent.scope = grant.client.get_allowed_scope(
+        consent.scope = client.get_allowed_scope(
             " ".join(set(allowed_scopes + consents[0].scope))
         ).split(" ")
     else:
         consent = models.Consent(
             consent_id=str(uuid.uuid4()),
-            client=grant.client,
+            client=client,
             subject=user,
             scope=allowed_scopes,
             issue_date=now,
@@ -421,7 +422,9 @@ def authorize_consent(redirect_url, now, params):
 
     if form.answer.data == "accept":
         grant_user = user
-        create_or_update_consent(grant, grant_user, now)
+        create_or_update_consent(
+            grant.client, grant_user, grant.request.payload.scope or "", now
+        )
 
     response = authorization.create_authorization_response(
         grant=grant, grant_user=grant_user
@@ -453,6 +456,133 @@ def issue_token():
             )
 
     return response
+
+
+@bp.route("/device_authorization", methods=["POST"])
+@csrf.exempt
+def device_authorization():
+    """Issue a device code and user code for a device authorization request (RFC 8628)."""
+    current_app.logger.debug(
+        "device authorization endpoint request: POST: %s",
+        request.form.to_dict(flat=False),
+    )
+    return authorization.create_endpoint_response("device_authorization")
+
+
+def normalize_user_code(raw: str) -> str:
+    """Normalize a user-submitted user_code.
+
+    Per RFC 8628 section 6.1, the server strips punctuation it added for
+    readability, uppercases the input and re-groups it with dashes so that the
+    dashes are optional for the user.
+    """
+    user_code_type = current_app.config["CANAILLE_OIDC"]["DEVICE_USER_CODE_TYPE"]
+    cleaned = "".join(char for char in raw.upper() if char.isalnum())
+    size = 3 if user_code_type == "digital" else 4
+    groups = [cleaned[i : i + size] for i in range(0, len(cleaned), size)]
+    return "-".join(groups)
+
+
+def get_active_device_code(raw_user_code: str):
+    """Return a pending, non-expired device code matching the given user code.
+
+    The client must still be allowed to use the device authorization grant.
+    """
+    canonical = normalize_user_code(raw_user_code)
+    codes = Backend.instance.query(models.DeviceCode, user_code=canonical)
+    return next(
+        (
+            code
+            for code in codes
+            if code.status == "pending"
+            and not code.is_expired()
+            and code.client.check_grant_type(DEVICE_CODE_GRANT_TYPE)
+        ),
+        None,
+    )
+
+
+@bp.route("/device", methods=["GET", "POST"])
+def device():
+    """Device verification page (RFC 8628).
+
+    The user enters (or confirms) the ``user_code`` displayed on the device,
+    then approves or denies the authorization request.
+    """
+    now = datetime.datetime.now(tz=datetime.UTC)
+    user = g.session and g.session.user
+    if not user:
+        session["redirect-after-login"] = request.url
+        return redirect(url_for("core.auth.login"))
+
+    if not user.can_use_oidc:
+        abort(
+            403,
+            "The user does not have the permission to achieve OIDC authentication.",
+        )
+
+    if request.method == "POST" and "answer" in request.form:
+        if request.form["answer"] not in ("accept", "deny"):
+            abort(400, "Unknown consent answer.")
+
+        device_code = get_active_device_code(request.form.get("user_code", ""))
+        if device_code is None:
+            flash(_("The user code is invalid or has expired."), "error")
+            return render_template("oidc/device.html", form=DeviceForm(), menu=False)
+
+        if not device_code.client.is_usable_by(user):
+            abort(403, "The user cannot use this client.")
+
+        device_code.subject = user
+        granted = request.form["answer"] == "accept"
+        device_code.status = "authorized" if granted else "denied"
+        Backend.instance.save(device_code)
+        if granted:
+            create_or_update_consent(
+                device_code.client, user, " ".join(device_code.scope), now
+            )
+        current_app.logger.security(
+            f"Device authorization {'granted' if granted else 'denied'} "
+            f"by {user.user_name} for client {device_code.client.client_name}"
+        )
+        return render_template(
+            "oidc/device.html",
+            form=DeviceForm(),
+            menu=False,
+            confirmed=True,
+            granted=granted,
+            client=device_code.client,
+        )
+
+    form = DeviceForm(
+        request.form or None,
+        data={"user_code": request.args.get("user_code", "")},
+    )
+
+    if not form.validate_on_submit() and not request.args.get("user_code"):
+        return render_template("oidc/device.html", form=form, menu=False)
+
+    device_code = get_active_device_code(form.user_code.data)
+    if device_code is None:
+        flash(_("The user code is invalid or has expired."), "error")
+        return render_template("oidc/device.html", form=form, menu=False)
+
+    if not device_code.client.is_usable_by(user):
+        abort(403, "The user cannot use this client.")
+
+    return render_template(
+        "oidc/device.html",
+        form=form,
+        menu=False,
+        user=user,
+        device_code=device_code,
+        client=device_code.client,
+        scope_details=SCOPE_DETAILS,
+        ignored_scopes=["openid"],
+        effective_scope=device_code.client.get_allowed_scope(
+            " ".join(device_code.scope)
+        ),
+    )
 
 
 @bp.route("/introspect", methods=["POST"])

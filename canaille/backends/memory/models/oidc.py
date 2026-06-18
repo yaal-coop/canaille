@@ -15,5 +15,9 @@ class Token(canaille.oidc.models.Token, MemoryModel):
     pass
 
 
+class DeviceCode(canaille.oidc.models.DeviceCode, MemoryModel):
+    pass
+
+
 class Consent(canaille.oidc.models.Consent, MemoryModel):
     pass
