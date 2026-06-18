@@ -18,7 +18,10 @@
 
 **Canaille** is a French word meaning *rascal*. It is roughly pronounced **Can I?**,
 as in *Can I access your data?* Canaille is a lightweight identity and authorization management software.
-It aims to be very light, simple to install and simple to maintain. Its main features are :
+It aims to be very light, simple to install and simple to maintain.
+It is **self-hosted** and **free and open source**: your users' identity data stays on your own infrastructure, and every feature lives in the MIT-licensed core — no paywalled edition, no proprietary add-on.
+
+Its main features are :
 
 .. grid:: 1 1 2 3
     :gutter: 2
@@ -56,7 +59,7 @@ It aims to be very light, simple to install and simple to maintain. Its main fea
         :link-type: ref
         :link: feature_databases
 
-        PostgreSQL, SQLite and OpenLDAP support
+        PostgreSQL, SQLite and OpenLDAP support
 
     .. grid-item-card:: :iconify:`mdi:palette` Customization
         :link-type: ref
