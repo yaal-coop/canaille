@@ -196,7 +196,7 @@ JAVASCRIPT = false
 #     AUTHENTICATION_FACTORS = ["password", "otp"]
 # AUTHENTICATION_FACTORS = ["password"]
 
-# The OTP method to use if OTP is set in AUTHENTICATION_FACTORS. If set to TOTP,
+# The OTP method to use if otp is set in AUTHENTICATION_FACTORS. If set to TOTP,
 # the application will use time-based one-time passcodes, If set to HOTP, the
 # application will use HMAC-based one-time passcodes.
 # OTP_METHOD = "TOTP"
