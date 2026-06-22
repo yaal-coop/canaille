@@ -4,8 +4,10 @@ from flask.cli import with_appcontext
 from canaille.app.commands import with_backendcontext
 
 try:
+    import faker  # noqa: F401
+
     HAS_FAKER = True
-except ImportError:
+except ImportError:  # pragma: no cover
     HAS_FAKER = False
 
 

@@ -62,15 +62,6 @@ def filter_map_files(item):
     dest, _, _ = item
     return not dest.endswith(".map")
 
-
-def filter_faker_providers(item):
-    dest, _, _ = item
-    if not re.match(r"faker/providers/\w+/\w+", dest):
-        return True
-
-    code = dest.split("/")[3].split("_")[0]
-    return code in codes
-
 a = Analysis(
     ['canaille/commands.py'],
     pathex=[],
@@ -105,7 +96,7 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    excludes=["faker"],
     noarchive=False,
     optimize=1,
 )
@@ -113,7 +104,6 @@ pyz = PYZ(a.pure)
 
 a.datas = list(filter(filter_wtforms_catalogs, a.datas))
 a.datas = list(filter(filter_babel_catalogs, a.datas))
-a.datas = list(filter(filter_faker_providers, a.datas))
 a.datas = list(filter(filter_map_files, a.datas))
 
 # Use PYINSTALLER_ONEDIR=1 for faster builds (e.g. in integration tests)
