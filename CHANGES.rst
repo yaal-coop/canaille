@@ -4,6 +4,7 @@
 Fixed
 ^^^^^
 - CLI commands now report unknown model names with a clean error instead of crashing.
+- ``dump``/``restore`` round-trip now preserves binary attributes such as user photos.
 
 [0.3.0] - 2026-06-19
 --------------------

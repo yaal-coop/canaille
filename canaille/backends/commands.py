@@ -73,6 +73,9 @@ def click_type(attribute_type):
     if attribute_type is bool:
         return click.BOOL
 
+    if attribute_type is bytes:
+        return str.encode
+
     return attribute_type
 
 

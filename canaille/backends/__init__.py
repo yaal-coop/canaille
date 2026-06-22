@@ -225,10 +225,33 @@ class Backend:
 
     def restore(self, objects) -> None:
         """Insert a group of objects in the database."""
+        self.decode_binary_attributes(objects)
         data = {}
         signal("before_restore").send(objects, data=data)
         self.do_restore(objects)
         signal("after_restore").send(objects, data=data)
+
+    @staticmethod
+    def decode_binary_attributes(objects) -> None:
+        """Decode base64-encoded strings back into bytes for binary attributes.
+
+        The JSON encoder serializes bytes as base64 strings; restore must convert
+        them back, using the model annotations as the source of truth so every
+        backend gets actual bytes.
+        """
+        from canaille.app.models import MODELS
+        from canaille.backends.models import get_root_type
+
+        for model_name, states in objects.items():
+            model = MODELS[model_name]
+            for state in states:
+                for attr, value in state.items():
+                    if not isinstance(value, str) or attr not in model.attributes:
+                        continue
+
+                    root_type, _ = get_root_type(model.attributes[attr])
+                    if root_type is bytes:
+                        state[attr] = base64.b64decode(value)
 
     def do_restore(self, objects) -> None:
         raise NotImplementedError()

@@ -199,10 +199,11 @@ class User(Model):
     region: str | None = None
     """The state or region component."""
 
-    photo: str | None = None
-    """A URI that is a uniform resource locator (as defined in Section 1.1.3 of
-    [RFC3986]) that points to a resource location representing the user's
-    image.
+    photo: bytes | None = None
+    """The binary content of an image representing the user.
+
+    SCIM defines this attribute as a URI pointing to the image, but Canaille
+    stores the image content itself.
 
     The resource MUST be a file (e.g.,
     a GIF, JPEG, or PNG image file) rather than a web page containing
