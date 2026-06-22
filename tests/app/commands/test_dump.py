@@ -57,6 +57,13 @@ def test_dump_stdout(cli_runner, backend, user, foo_group):
     ]
 
 
+def test_dump_unknown_model(cli_runner, backend):
+    """An unknown model name yields a clean error instead of a KeyError."""
+    res = cli_runner.invoke(cli, ["dump", "foobar"], catch_exceptions=False)
+    assert res.exit_code == 1, res.stderr
+    assert "Unknown model: foobar" in res.stderr
+
+
 def test_dump_stdout_explicit_model(cli_runner, backend, user, foo_group):
     """Test the full database dump command for a single model."""
     res = cli_runner.invoke(cli, ["dump", "user"], catch_exceptions=False)

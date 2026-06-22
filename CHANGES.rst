@@ -1,3 +1,10 @@
+[unreleased]
+------------
+
+Fixed
+^^^^^
+- CLI commands now report unknown model names with a clean error instead of crashing.
+
 [0.3.0] - 2026-06-19
 --------------------
 

@@ -76,3 +76,12 @@ def test_restore_stdin_invalid_input(cli_runner, backend):
     """Test the restore command with an invalid input."""
     res = cli_runner.invoke(cli, ["restore"], input="invalid")
     assert res.exit_code == 1, res.stdout
+
+
+def test_restore_unknown_model(cli_runner, backend):
+    """An unknown model name in the payload yields a clean error instead of a KeyError."""
+    res = cli_runner.invoke(
+        cli, ["restore"], input=json.dumps({"foobar": []}), catch_exceptions=False
+    )
+    assert res.exit_code == 1, res.stdout
+    assert "Unknown model: foobar" in res.stderr

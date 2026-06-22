@@ -32,6 +32,13 @@ def test_get_list_models(cli_runner, backend, user):
         assert model in res.stderr
 
 
+def test_get_unknown_model(cli_runner, backend):
+    """An unknown model name yields Click's 'No such command' error instead of crashing."""
+    res = cli_runner.invoke(cli, ["get", "users"], catch_exceptions=False)
+    assert res.exit_code == 2, res.stderr
+    assert "No such command 'users'" in res.stderr
+
+
 def test_get(cli_runner, backend, user):
     """Nominal case test for model get command."""
     res = cli_runner.invoke(cli, ["get", "user"], catch_exceptions=False)

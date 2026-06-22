@@ -32,6 +32,8 @@ class ModelCommand(AppGroup):
     @with_appcontext
     def get_command(self, ctx, cmd_name):
         model = MODELS.get(cmd_name)
+        if model is None:
+            return None
         return self.factory(model)
 
 
@@ -89,6 +91,16 @@ def register(cli) -> None:
     cli.add_command(restore)
 
 
+def check_models(names) -> None:
+    """Raise a CLI error if any name is not a known model."""
+    invalid = [name for name in names if name not in MODELS]
+    if invalid:
+        available = ", ".join(sorted(MODELS))
+        raise click.ClickException(
+            f"Unknown model: {', '.join(invalid)}. Available models: {available}."
+        )
+
+
 @click.command()
 @click.argument("model", required=False, nargs=-1)
 @with_appcontext
@@ -98,6 +110,7 @@ def dump(model: list[str] | None):
 
     If no argument is passed, all model instances are dumped.
     """
+    check_models(model)
     payload = Backend.instance.dump(model)
     output = json.dumps(payload, cls=Backend.instance.json_encoder)
     click.echo(output)
@@ -127,6 +140,7 @@ def restore(ctx):
         message = f"Invalid JSON input.\n{exc}"
         raise click.ClickException(message) from exc
 
+    check_models(payload)
     Backend.instance.restore(payload)
 
 
