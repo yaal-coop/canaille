@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2026-03-15 09:09+0000\n"
+"PO-Revision-Date: 2026-06-25 18:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
 "kab/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 "Generated-By: Babel 2.16.0\n"
 
 #: canaille/app/flask.py:52
@@ -113,7 +113,7 @@ msgstr ""
 
 #: canaille/core/auth.py:267
 msgid "John Doe"
-msgstr ""
+msgstr "Winna n At Winatan"
 
 #: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:161
 #: canaille/core/endpoints/forms.py:473
@@ -122,7 +122,7 @@ msgstr ""
 
 #: canaille/core/auth.py:269
 msgid "john.doe@example.com"
-msgstr ""
+msgstr "john.doe@example.com"
 
 #: canaille/core/auth.py:276
 msgid " or "
@@ -151,8 +151,7 @@ msgid "You have been invited to create an account on {website_name}"
 msgstr ""
 
 #: canaille/core/mails.py:170
-#, fuzzy, python-brace-format
-#| msgid "Confirm your address email on {website_name}"
+#, python-brace-format
 msgid "Confirm your email address on {website_name}"
 msgstr "Sentem tansa n imayl-ik·im deg {website_name}"
 
@@ -265,17 +264,15 @@ msgstr "Aseqdac"
 
 #: canaille/core/endpoints/forms.py:50
 msgid "Remember me"
-msgstr ""
+msgstr "Cfu fell-i"
 
 #: canaille/core/endpoints/forms.py:54
 msgid "If unchecked, the session will close when the browser is closed"
 msgstr ""
 
 #: canaille/core/endpoints/forms.py:65
-#, fuzzy
-#| msgid "Source code"
 msgid "Security code"
-msgstr "Tangalt taɣbalutt"
+msgstr "Tangalt n tɣellist"
 
 #: canaille/core/endpoints/forms.py:68
 msgid "Enter the security code displayed above"
@@ -294,10 +291,8 @@ msgid "Code"
 msgstr "Tangalt"
 
 #: canaille/core/endpoints/forms.py:111 canaille/core/endpoints/forms.py:540
-#, fuzzy
-#| msgid "1234"
 msgid "123456"
-msgstr "1234"
+msgstr "123456"
 
 #: canaille/core/endpoints/forms.py:133 canaille/core/endpoints/forms.py:282
 msgid "Password confirmation"
@@ -338,7 +333,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:173
 msgid "Given name"
-msgstr ""
+msgstr "Isem i d-yettunefken"
 
 #: canaille/core/endpoints/forms.py:175
 msgid "John"
@@ -354,7 +349,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:190
 msgid "Display Name"
-msgstr ""
+msgstr "Isem n uskan"
 
 #: canaille/core/endpoints/forms.py:193
 msgid "Johnny"
@@ -400,7 +395,7 @@ msgstr "Tangalt n lbuṣṭa"
 
 #: canaille/core/endpoints/forms.py:249
 msgid "Locality"
-msgstr ""
+msgstr "Tamnaḍt"
 
 #: canaille/core/endpoints/forms.py:251
 msgid "Gotham City"
@@ -449,8 +444,6 @@ msgid "Website"
 msgstr "Asmel web"
 
 #: canaille/core/endpoints/forms.py:314
-#, fuzzy
-#| msgid "https://mywebsite.tld"
 msgid "https://mywebsite.example"
 msgstr "https://asmel-inu.tld"
 
@@ -500,7 +493,7 @@ msgstr ""
 
 #: canaille/core/endpoints/forms.py:518
 msgid "New email address"
-msgstr ""
+msgstr "Tansa imayl tamaynut"
 
 #: canaille/core/endpoints/forms.py:534
 msgid "Passcode"
@@ -626,8 +619,6 @@ msgid "The email confirmation link that brought you here has expired."
 msgstr ""
 
 #: canaille/core/endpoints/account/__init__.py:480
-#, fuzzy
-#| msgid "Your email address have been confirmed."
 msgid "This email address has already been confirmed."
 msgstr "Tansa-inek·inem n imayl tettwawekked-d."
 
@@ -636,8 +627,6 @@ msgid "This email address is already associated with another account."
 msgstr ""
 
 #: canaille/core/endpoints/account/__init__.py:494
-#, fuzzy
-#| msgid "Your email address have been confirmed."
 msgid "Your email address has been confirmed."
 msgstr "Tansa-inek·inem n imayl tettwawekked-d."
 
@@ -709,7 +698,7 @@ msgstr ""
 
 #: canaille/core/endpoints/account/auth/fido2.py:51
 msgid "Name cannot be empty."
-msgstr ""
+msgstr "Isem ur yezmir ara ad yili d ilem."
 
 #: canaille/core/endpoints/account/auth/fido2.py:61
 #, fuzzy
@@ -966,7 +955,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:52 canaille/oidc/endpoints/forms.py:333
 msgid "None"
-msgstr ""
+msgstr "Ula yiwen"
 
 #: canaille/oidc/endpoints/forms.py:68 canaille/oidc/endpoints/forms.py:122
 msgid ""
@@ -976,7 +965,7 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:74 canaille/oidc/endpoints/forms.py:128
 msgid "Contacts"
-msgstr ""
+msgstr "Inermisen"
 
 #: canaille/oidc/endpoints/forms.py:81 canaille/oidc/endpoints/forms.py:135
 msgid "Those are the email addresses of people responsible for the client."
@@ -1274,7 +1263,7 @@ msgstr ""
 
 #: canaille/templates/base.html:48
 msgid "Network error"
-msgstr ""
+msgstr "Tuccḍa deg uẓeṭṭa"
 
 #: canaille/templates/base.html:51
 #, python-format
@@ -1322,10 +1311,8 @@ msgstr "Senser tuqqna"
 #: canaille/templates/core/auth/fido-setup.html:46
 #: canaille/templates/core/auth/fido.html:39
 #: canaille/templates/core/auth/setup-otp.html:57
-#, fuzzy
-#| msgid "Create an account"
 msgid "Switch account"
-msgstr "Snulfu-d amiḍan"
+msgstr "Beddel amiḍan"
 
 #: canaille/templates/base.html:172
 #: canaille/templates/core/auth/password.html:35
@@ -1339,15 +1326,15 @@ msgstr "Ɣef Canaille"
 
 #: canaille/templates/error.html:29
 msgid "Bad request"
-msgstr ""
+msgstr "Yir tuttra"
 
 #: canaille/templates/error.html:31
 msgid "Unauthorized"
-msgstr ""
+msgstr "Ur yettusireg ara"
 
 #: canaille/templates/error.html:33
 msgid "Page not found"
-msgstr ""
+msgstr "Asebter ur yettwaf ara"
 
 #: canaille/templates/error.html:35
 msgid "Technical problem"
@@ -1427,10 +1414,8 @@ msgstr "Kkes agraw"
 
 #: canaille/templates/core/group.html:79
 #: canaille/templates/core/invite_group_member.html:33
-#, fuzzy
-#| msgid "Invite"
 msgid "Invite Members"
-msgstr "Snubeg"
+msgstr "Snubeg iɛeggalen"
 
 #: canaille/templates/core/group.html:84
 msgid "Create group"
@@ -1447,7 +1432,7 @@ msgstr "Ẓreg"
 
 #: canaille/templates/core/group.html:98
 msgid "Group members"
-msgstr ""
+msgstr "Iɛeggalen n ugraw"
 
 #: canaille/templates/core/invite.html:20
 #: canaille/templates/core/invite.html:112
@@ -1613,17 +1598,15 @@ msgstr "Tettuḍ awal n uɛeddi"
 #: canaille/templates/core/auth/forgotten-password-code.html:59
 #: canaille/templates/core/join.html:70
 msgid "Submit"
-msgstr ""
+msgstr "Azen"
 
 #: canaille/templates/core/login.html:25
-#, fuzzy
-#| msgid "Create an account"
 msgid "Choose an account"
-msgstr "Snulfu-d amiḍan"
+msgstr "Fren amiḍan"
 
 #: canaille/templates/core/login.html:40
 msgid "Logged in"
-msgstr ""
+msgstr "Taqqneḍ"
 
 #: canaille/templates/core/login.html:54
 msgid "Remove from account list"
@@ -1634,10 +1617,8 @@ msgid "Or"
 msgstr ""
 
 #: canaille/templates/core/login.html:85
-#, fuzzy
-#| msgid "Create an account"
 msgid "Use another account"
-msgstr "Snulfu-d amiḍan"
+msgstr "Seqdec amiḍan nniḍen"
 
 #: canaille/templates/core/auth/forgotten-password-code.html:55
 #: canaille/templates/core/auth/forgotten-password.html:56
@@ -1725,10 +1706,8 @@ msgstr ""
 #: canaille/templates/core/account/settings.html:42
 #: canaille/templates/core/auth/fido-setup.html:31
 #: canaille/templates/core/auth/setup-otp.html:35
-#, fuzzy
-#| msgid "Password confirmation"
 msgid "Authentication"
-msgstr "Sentem awal n uɛeddi"
+msgstr "Asesteb"
 
 #: canaille/templates/core/account/edit.html:68
 msgid "Edit your personal information"
@@ -1764,7 +1743,7 @@ msgstr ""
 #: canaille/templates/core/account/settings.html:87
 #: canaille/templates/core/partial/profile_settings_password.html:69
 msgid "Unlock"
-msgstr ""
+msgstr "Serreḥ"
 
 #: canaille/templates/core/account/settings.html:90
 #: canaille/templates/core/partial/profile_settings_password.html:72
@@ -1786,7 +1765,7 @@ msgstr ""
 
 #: canaille/templates/core/account/settings.html:111
 msgid "Delete my account"
-msgstr ""
+msgstr "Kkes amiḍan-iw"
 
 #: canaille/templates/core/account/settings.html:118
 msgid "Impersonate"
@@ -1795,8 +1774,6 @@ msgstr ""
 #: canaille/templates/core/account/auth/fido2.html:39
 #: canaille/templates/core/account/auth/index.html:88
 #: canaille/templates/core/partials/profile_settings_fido.html:10
-#, fuzzy
-#| msgid "Passcode"
 msgid "Passkeys"
 msgstr "Awal n uɛeddi"
 
@@ -1828,7 +1805,7 @@ msgstr ""
 #: canaille/templates/core/account/auth/fido2.html:73
 #: canaille/templates/core/partials/profile_settings_fido.html:41
 msgid "Last used"
-msgstr ""
+msgstr "Aseqdec aneggaru"
 
 #: canaille/templates/core/account/auth/fido2.html:74
 #: canaille/templates/core/partial/group-members.html:16
@@ -1839,15 +1816,13 @@ msgstr "Tigawin"
 
 #: canaille/templates/core/account/auth/fido2.html:83
 #: canaille/templates/core/partials/profile_settings_fido.html:51
-#, fuzzy
-#| msgid "Username"
 msgid "Rename"
-msgstr "Isem n useqdac"
+msgstr "Snifel isem"
 
 #: canaille/templates/core/account/auth/fido2.html:93
 #: canaille/templates/core/partials/profile_settings_fido.html:61
 msgid "Never"
-msgstr ""
+msgstr "Werǧin"
 
 #: canaille/templates/core/account/auth/fido2.html:97
 #: canaille/templates/core/modals/delete-account.html:27
@@ -1886,7 +1861,7 @@ msgstr ""
 #: canaille/templates/core/partial/profile_settings_otp.html:35
 #: canaille/templates/core/partials/profile_settings_fido.html:104
 msgid "Set-up"
-msgstr ""
+msgstr "Sebded"
 
 #: canaille/templates/core/account/auth/index.html:43
 msgid "Configured"
@@ -1921,7 +1896,7 @@ msgstr ""
 #: canaille/templates/core/account/auth/otp.html:56
 #: canaille/templates/core/partial/profile_settings_otp.html:19
 msgid "Reset"
-msgstr ""
+msgstr "Wennez"
 
 #: canaille/templates/core/account/auth/password.html:48
 #: canaille/templates/core/partial/profile_settings_password.html:9
@@ -1979,7 +1954,7 @@ msgstr ""
 #: canaille/templates/core/mails/reset.html:19
 #: canaille/templates/core/partial/profile_settings_password.html:58
 msgid "Password reset"
-msgstr ""
+msgstr "Awennez n wawal n uɛeddi"
 
 #: canaille/templates/core/account/auth/password.html:94
 #: canaille/templates/core/partial/profile_settings_password.html:60
@@ -2036,7 +2011,7 @@ msgstr "Sentem awal n uɛeddi"
 #: canaille/templates/core/auth/fido-setup.html:51
 #: canaille/templates/core/auth/fido-setup.html:81
 msgid "Register"
-msgstr ""
+msgstr "Jerred"
 
 #: canaille/templates/core/auth/fido.html:15
 #, fuzzy
@@ -2056,7 +2031,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/fido.html:44
 msgid "Authenticate"
-msgstr ""
+msgstr "Sesteb"
 
 #: canaille/templates/core/auth/firstlogin.html:27
 msgid "First login"
@@ -2172,7 +2147,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/fido_errors.html:60
 msgid "An unknown error occurred."
-msgstr ""
+msgstr "Yeḍra-d unezri arussin."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
 #, fuzzy
@@ -2289,10 +2264,8 @@ msgstr "Imaylen"
 #: canaille/templates/oidc/client_list.html:36
 #: canaille/templates/oidc/token_list.html:26
 #: canaille/templates/oidc/token_view.html:30
-#, fuzzy
-#| msgid "Actions"
 msgid "Applications"
-msgstr "Tigawin"
+msgstr "Isnasen"
 
 #: canaille/templates/core/mails/admin.html:20
 #: canaille/templates/oidc/client_add.html:34
@@ -2338,7 +2311,7 @@ msgstr ""
 #: canaille/templates/core/mails/admin.html:113
 #: canaille/templates/core/mails/email-confirmation.txt:1
 msgid "Email verification"
-msgstr ""
+msgstr "Asenqed n imayl"
 
 #: canaille/templates/core/mails/admin.html:125
 msgid "Invitation"
@@ -2348,7 +2321,7 @@ msgstr "Tinnubga"
 #: canaille/templates/core/mails/registration.html:19
 #: canaille/templates/core/mails/registration.txt:1
 msgid "Registration"
-msgstr ""
+msgstr "Ajerred"
 
 #: canaille/templates/core/mails/admin.html:150
 #: canaille/templates/core/mails/compromised_password_check_failure.html:19
@@ -2587,7 +2560,7 @@ msgstr ""
 
 #: canaille/templates/core/mails/registration.html:38
 msgid "Continue account creation"
-msgstr ""
+msgstr "Kemmel asnulfu n umiḍan"
 
 #: canaille/templates/core/mails/registration.txt:3
 #, python-format
@@ -2607,10 +2580,8 @@ msgstr ""
 
 #: canaille/templates/core/mails/reset.html:30
 #: canaille/templates/core/mails/reset.txt:5
-#, fuzzy
-#| msgid "Source code"
 msgid "Your code"
-msgstr "Tangalt taɣbalutt"
+msgstr "Tangalt-ik taɣbalut"
 
 #: canaille/templates/core/mails/reset.html:43
 #, python-format
@@ -2623,7 +2594,7 @@ msgstr ""
 
 #: canaille/templates/core/mails/reset.html:54
 msgid "Reset password"
-msgstr ""
+msgstr "Wennez awal n uɛeddi"
 
 #: canaille/templates/core/mails/test.html:27
 #: canaille/templates/core/mails/test.txt:3
@@ -2686,7 +2657,7 @@ msgstr ""
 #: canaille/templates/core/modals/reset-fido.html:28
 #: canaille/templates/core/modals/reset-otp.html:28
 msgid "Confirm"
-msgstr ""
+msgstr "Sentem"
 
 #: canaille/templates/core/modals/delete-group.html:9
 msgid "Group deletion"
@@ -2700,10 +2671,8 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/core/modals/leave-group.html:9
-#, fuzzy
-#| msgid "Create group"
 msgid "Leave group"
-msgstr "Snulfu-d agraw"
+msgstr "Ffeɣ seg ugraw"
 
 #: canaille/templates/core/modals/leave-group.html:13
 #, python-format
@@ -2715,7 +2684,7 @@ msgstr ""
 #: canaille/templates/core/modals/leave-group.html:25
 #: canaille/templates/core/partial/groups.html:41
 msgid "Leave"
-msgstr ""
+msgstr "Ffeɣ"
 
 #: canaille/templates/core/modals/lock-account.html:9
 msgid "Account locking"
@@ -2753,7 +2722,7 @@ msgstr ""
 #: canaille/templates/core/partial/group-members.html:71
 #: canaille/templates/core/partial/group-members.html:76
 msgid "Remove"
-msgstr ""
+msgstr "Kkes"
 
 #: canaille/templates/core/modals/reset-fido.html:9
 msgid "Passkey reset"
@@ -2802,10 +2771,8 @@ msgid "This account is locked"
 msgstr ""
 
 #: canaille/templates/core/partial/group-members.html:46
-#, fuzzy
-#| msgid "Group creation"
 msgid "Group owner"
-msgstr "Agraw anaynut"
+msgstr "Bab n wegraw"
 
 #: canaille/templates/core/partial/group-members.html:75
 msgid "Groups must have at least one member"
@@ -2864,7 +2831,7 @@ msgstr ""
 
 #: canaille/templates/macro/form.html:101
 msgid "This field is required"
-msgstr ""
+msgstr "Urti-a ilaq"
 
 #: canaille/templates/macro/form.html:119
 msgid "Remove this field"
@@ -2903,8 +2870,7 @@ msgid "Re-authenticate for %(client)s"
 msgstr ""
 
 #: canaille/templates/oidc/auth.html:39
-#, fuzzy, python-format
-#| msgid "Sign in at %(website)s"
+#, python-format
 msgid "Sign in to %(client)s"
 msgstr "Qqen ɣer %(client)s"
 
@@ -2925,17 +2891,15 @@ msgid ""
 msgstr "Teqqneḍ yakan, ur tezmireḍ ad d-tesnulfuḍ amiḍan."
 
 #: canaille/templates/oidc/auth.html:80
-#, fuzzy
-#| msgid "Policy"
 msgid "Privacy policy"
-msgstr "Tasertit n tbaḍnit"
+msgstr "Tasertit tabaḍnit"
 
 #: canaille/templates/oidc/auth.html:88
 #: canaille/templates/oidc/authorize.html:74
 #: canaille/templates/oidc/consent_list.html:107
 #: canaille/templates/oidc/trusted_list.html:105
 msgid "Terms of service"
-msgstr ""
+msgstr "Tiwtilin n taffa"
 
 #: canaille/templates/oidc/authorize.html:29
 #, python-format
@@ -2974,15 +2938,15 @@ msgstr "Asnas %(application_name)s yessutur anekcum ɣer:"
 
 #: canaille/templates/oidc/authorize.html:88
 msgid "Deny"
-msgstr ""
+msgstr "Agwi"
 
 #: canaille/templates/oidc/authorize.html:91
 msgid "Switch user"
-msgstr ""
+msgstr "Beddel aseqdac"
 
 #: canaille/templates/oidc/authorize.html:94
 msgid "Accept"
-msgstr ""
+msgstr "Qbel"
 
 #: canaille/templates/oidc/client_add.html:20
 #: canaille/templates/oidc/client_add.html:66
@@ -3008,7 +2972,7 @@ msgstr ""
 #: canaille/templates/oidc/client_add.html:53
 #: canaille/templates/oidc/client_edit.html:55
 msgid "Renew"
-msgstr ""
+msgstr "Ales-as"
 
 #: canaille/templates/oidc/client_add.html:73
 msgid "Create"
@@ -3036,7 +3000,7 @@ msgstr ""
 
 #: canaille/templates/oidc/client_edit.html:71
 msgid "Trusted"
-msgstr ""
+msgstr "Yettwaflas"
 
 #: canaille/templates/oidc/client_edit.html:79
 msgid "ID"
@@ -3135,15 +3099,13 @@ msgstr "Talqayt n tiddest"
 
 #: canaille/templates/oidc/partial/token_list.html:6
 #: canaille/templates/oidc/token_view.html:48
-#, fuzzy
-#| msgid "Actions"
 msgid "Application"
-msgstr "Tigawin"
+msgstr "Asnas"
 
 #: canaille/templates/oidc/partial/token_list.html:7
 #: canaille/templates/oidc/token_view.html:56
 msgid "Subject"
-msgstr ""
+msgstr "Asentel"
 
 #: canaille/templates/oidc/token_view.html:80
 msgid "Audience"
@@ -3155,7 +3117,7 @@ msgstr ""
 
 #: canaille/templates/oidc/token_view.html:98
 msgid "Expiration date"
-msgstr ""
+msgstr "Azemz n ufati"
 
 #: canaille/templates/oidc/token_view.html:103
 msgid "This token has expired."
@@ -3231,7 +3193,7 @@ msgstr "URL"
 #: canaille/templates/oidc/partial/client_list.html:8
 #: canaille/templates/oidc/partial/token_list.html:8
 msgid "Created"
-msgstr ""
+msgstr "Yettwarna"
 
 #: canaille/templates/oidc/partial/client_list.html:17
 msgid "Application logo"
