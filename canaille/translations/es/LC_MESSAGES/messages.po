@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2026-01-30 18:01+0000\n"
-"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
+"PO-Revision-Date: 2026-06-29 18:01+0000\n"
+"Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
 "Language: es\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:52
 msgid "Your password has expired, please choose a new password."
-msgstr ""
+msgstr "Ha caducado su contraseña, por favor elija una contraseña nueva."
 
 #: canaille/app/flask.py:76
 msgid "No SMTP server has been configured"
@@ -32,7 +32,7 @@ msgstr "No se ha configurado un servidor SMTP"
 #: canaille/app/flask.py:238
 #, python-format
 msgid "This request should be sent to %(server_name)s"
-msgstr ""
+msgstr "Esta solicitud sería enviada a %(server_name)s"
 
 #: canaille/app/forms.py:30
 msgid "This is not a valid URL"
@@ -79,19 +79,15 @@ msgstr ""
 "contacta con los administradores."
 
 #: canaille/app/mails_sending_conditions.py:39
-#, fuzzy
-#| msgid ""
-#| "An error occurred while communicating the incident to the administrators. "
-#| "Please update your password as soon as possible. If this still happens, "
-#| "please contact the administrators."
 msgid ""
 "We are sending an email to your administrator about the failure of the "
 "password compromise investigation.Please update your password as soon as "
 "possible. If this still happens, please contact the administrators."
 msgstr ""
-"Se produjo un error al comunicar el incidente a los administradores. Por "
-"favor, actualiza tu contraseña lo antes posible. Si esto sigue ocurriendo, "
-"por favor contacta con los administradores."
+"Estamos enviando un correo-e a su administrador acerca del fallo de la "
+"investigación del compromiso con la contraseña. Actualiza tu contraseña lo "
+"antes posible. Si esto sigue sucediendo, por favor contacta con los "
+"administradores."
 
 #: canaille/backends/ldap/backend.py:139
 #, python-brace-format
@@ -112,11 +108,9 @@ msgid "You should change your password."
 msgstr "Deberías cambiar tu contraseña."
 
 #: canaille/core/auth.py:34 canaille/core/endpoints/auth/otp.py:86
-#, fuzzy
-#| msgid "Cannot remember the login you attempted to sign in with"
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr ""
-"No se puede recordar el nombre de usuario con el que intentó iniciar sesión"
+"No se puede recordar el nombre de usuario con el que intentó iniciar sesión."
 
 #: canaille/core/auth.py:218 canaille/core/endpoints/account/__init__.py:893
 #, python-format
@@ -126,6 +120,7 @@ msgstr "Acceso correcto. Bienvenido/a %(user)s"
 #: canaille/core/auth.py:233
 msgid "An error happened during your authentication process. Please try again."
 msgstr ""
+"Ha sucedido un error durante el proceso de autenticación. Inténtelo de nuevo."
 
 #: canaille/core/auth.py:267
 msgid "John Doe"
@@ -182,16 +177,14 @@ msgid "Compromised password check failure on {website_name}"
 msgstr "Fallo de comprobación de contraseña comprometida en {website_name}"
 
 #: canaille/core/mails.py:271
-#, fuzzy, python-brace-format
-#| msgid "One-time password authentication on {website_name}"
+#, python-brace-format
 msgid "One-time passcode authentication on {website_name}"
-msgstr "Contraseña de un solo uso en {website_name}"
+msgstr "Autenticación de código de acceso de solo uno en {website_name}"
 
 #: canaille/core/mails.py:303
-#, fuzzy, python-brace-format
-#| msgid "Invitation on {website_name}"
+#, python-brace-format
 msgid "Invitation to join {group_name} on {website_name}"
-msgstr "Invitación a {website_name}"
+msgstr "Invitación para unirse a {group_name} en {website_name}"
 
 #: canaille/core/validators.py:17
 #, python-brace-format
@@ -232,18 +225,18 @@ msgstr ""
 "usuario."
 
 #: canaille/core/validators.py:81
-#, fuzzy
-#| msgid "Remove this email address"
 msgid "No user found with this email address."
-msgstr "Eliminar esta dirección de correo electrónico"
+msgstr "Ningún usuario encontrado con esta dirección de correo electrónico."
 
 #: canaille/core/validators.py:93
 msgid "A user with this email address is already a member of this group."
 msgstr ""
+"Un usuario con esta dirección de correo electrónico ya es un miembro de este "
+"grupo."
 
 #: canaille/core/validators.py:101
 msgid "Invalid security code"
-msgstr ""
+msgstr "Código de seguridad no válido"
 
 #: canaille/core/endpoints/admin.py:23
 #: canaille/templates/core/partial/users.html:15
@@ -260,7 +253,7 @@ msgstr "pepita.perez@ejemplo.com"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "Sending test mail. Please check the recipient mail box."
-msgstr ""
+msgstr "Se ha enviado un correo de prueba. Compruebe el buzón del correo."
 
 #: canaille/core/endpoints/admin.py:190
 #, python-brace-format
@@ -273,10 +266,10 @@ msgid "Email confirmation on {website_name}"
 msgstr "Confirmación por correo electrónico en {website_name}"
 
 #: canaille/core/endpoints/admin.py:355
-#, fuzzy, python-brace-format
-#| msgid "One-time password authentication on {website_name}"
+#, python-brace-format
 msgid "Passcode authentication on {website_name}"
-msgstr "Contraseña de un solo uso en {website_name}"
+msgstr ""
+"Autenticación del código de un solo uso para el acceso en {website_name}"
 
 #: canaille/core/endpoints/forms.py:39 canaille/core/endpoints/forms.py:93
 #: canaille/templates/core/partial/group-members.html:9
@@ -286,21 +279,19 @@ msgstr "Usuario"
 
 #: canaille/core/endpoints/forms.py:50
 msgid "Remember me"
-msgstr ""
+msgstr "Recordarme"
 
 #: canaille/core/endpoints/forms.py:54
 msgid "If unchecked, the session will close when the browser is closed"
-msgstr ""
+msgstr "Si no está marcado, la sesión se cerrará cuando se cierre el explorador"
 
 #: canaille/core/endpoints/forms.py:65
-#, fuzzy
-#| msgid "Source code"
 msgid "Security code"
-msgstr "Código fuente"
+msgstr "Código de seguridad"
 
 #: canaille/core/endpoints/forms.py:68
 msgid "Enter the security code displayed above"
-msgstr ""
+msgstr "Introduzca el código de seguridad exhibido anteriormente"
 
 #: canaille/core/endpoints/forms.py:78 canaille/core/endpoints/forms.py:120
 #: canaille/core/endpoints/forms.py:269
@@ -470,10 +461,8 @@ msgid "Website"
 msgstr "Sitio web"
 
 #: canaille/core/endpoints/forms.py:314
-#, fuzzy
-#| msgid "https://mywebsite.tld"
 msgid "https://mywebsite.example"
-msgstr "https://mywebsite.tld"
+msgstr "https://mywebsite.example"
 
 #: canaille/core/endpoints/forms.py:319
 msgid "Preferred language"
@@ -524,26 +513,22 @@ msgid "New email address"
 msgstr "Nueva dirección de correo electrónico"
 
 #: canaille/core/endpoints/forms.py:534
-#, fuzzy
-#| msgid "Password"
 msgid "Passcode"
-msgstr "Contraseña"
+msgstr "Código de acceso"
 
 #: canaille/core/endpoints/groups.py:51 canaille/core/endpoints/groups.py:233
 msgid "You are not a member of this group."
-msgstr ""
+msgstr "No eres un miembro de este grupo."
 
 #: canaille/core/endpoints/groups.py:77
-#, fuzzy
-#| msgid "The client has not been edited. Please check your information."
 msgid "The group couldn't be created. Please check the form and try again."
-msgstr "El cliente no ha sido editado. Comprueba tu información."
+msgstr ""
+"El grupo no pudo ser creado. Compruebe el formulario e intente de nuevo."
 
 #: canaille/core/endpoints/groups.py:91
-#, fuzzy, python-format
-#| msgid "The group %(group)s has been successfully created"
+#, python-format
 msgid "The group %(group)s has been successfully created."
-msgstr "El grupo %(group)s se ha creado correctamente"
+msgstr "El grupo %(group)s ha sido creado correctamente."
 
 #: canaille/core/endpoints/groups.py:159
 #, python-format
@@ -554,10 +539,10 @@ msgstr "El grupo %(group)s ha sido modificado correctamente."
 #: canaille/core/endpoints/account/__init__.py:859
 #: canaille/core/endpoints/account/auth/password.py:54
 #: canaille/core/endpoints/groups.py:168
-#, fuzzy
-#| msgid "The client has not been added. Please check your information."
 msgid "Your changes couldn't be saved. Please check the form and try again."
-msgstr "El cliente no ha sido añadido. Comprueba tu información."
+msgstr ""
+"Tus cambios no pudieron ser guardados. Comprueba el formulario e inténtalo "
+"de nuevo."
 
 #: canaille/core/endpoints/groups.py:202
 #, python-format
@@ -565,21 +550,19 @@ msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "%(user_name)s ha sido eliminado del grupo %(group_name)s"
 
 #: canaille/core/endpoints/groups.py:219
-#, fuzzy, python-format
-#| msgid "The group %(group)s has been successfully deleted"
+#, python-format
 msgid "The group %(group)s has been successfully deleted."
-msgstr "El grupo %(group)s ha sido eliminado correctamente"
+msgstr "El grupo %(group)s ha sido eliminado correctamente."
 
 #: canaille/core/endpoints/groups.py:243
 #, python-format
 msgid "You have left %(group)s."
-msgstr ""
+msgstr "Has abandonado el %(group)s."
 
 #: canaille/core/endpoints/groups.py:290
-#, fuzzy, python-format
-#| msgid "This invitation link has been sent to %(email)s"
+#, python-format
 msgid "An invitation email has been sent to %(email)s."
-msgstr "El enlace de invitación ha sido enviado a %(email)s"
+msgstr "Ha sido enviado un correo electrónico de invitación a %(email)s."
 
 #: canaille/core/endpoints/account/__init__.py:465
 #: canaille/core/endpoints/groups.py:310 canaille/core/endpoints/groups.py:320
@@ -588,10 +571,8 @@ msgid "The invitation link that brought you here was invalid."
 msgstr "El enlace de invitación con el que has accedido no es válido."
 
 #: canaille/core/endpoints/groups.py:314
-#, fuzzy
-#| msgid "The user you are trying to remove does not exist."
 msgid "The group you were invited to no longer exists."
-msgstr "El usuario que intenta eliminar no existe."
+msgstr "El grupo fue invitado para no existir por más tiempo."
 
 #: canaille/core/endpoints/groups.py:326
 #, python-format
@@ -599,29 +580,26 @@ msgid ""
 "You have been invited to join the group '%(group)s'. Please log in to accept "
 "the invitation."
 msgstr ""
+"Has sido invitado para unirse al grupo '%(group)s'. Acceda para aceptar la "
+"invitación."
 
 #: canaille/core/endpoints/groups.py:335
-#, fuzzy
-#| msgid "This invitation link has been sent to %(email)s"
 msgid "This invitation was not sent to you."
-msgstr "El enlace de invitación ha sido enviado a %(email)s"
+msgstr "Esta invitación no fue enviada para ti."
 
 #: canaille/core/endpoints/groups.py:339
-#, fuzzy
-#| msgid "The registration link that brought you here has expired."
 msgid "The invitation link that brought you here has expired."
-msgstr "El enlace de registro que te trajo aquí ha caducado."
+msgstr "El enlace de invitación que te trajo aquí ha caducado."
 
 #: canaille/core/endpoints/groups.py:348
 #, python-format
 msgid "You are already a member of %(group)s."
-msgstr ""
+msgstr "Ya eres un miembro de %(group)s."
 
 #: canaille/core/endpoints/groups.py:359
-#, fuzzy, python-format
-#| msgid "You have been successfully logged out."
+#, python-format
 msgid "You have successfully joined %(group)s!"
-msgstr "La sesión se ha cerrado correctamente."
+msgstr "Te has unido correctamente a %(group)s."
 
 #: canaille/core/endpoints/account/__init__.py:123
 #: canaille/core/endpoints/account/__init__.py:149
@@ -646,10 +624,9 @@ msgid "You are already logged in, you cannot create an account."
 msgstr "Ya has iniciado sesión, no puedes crear una cuenta."
 
 #: canaille/core/endpoints/account/__init__.py:429
-#, fuzzy
-#| msgid "The client has not been edited. Please check your information."
 msgid "Your account couldn't be created. Please check the form and try again."
-msgstr "El cliente no ha sido editado. Comprueba tu información."
+msgstr ""
+"Tu cuenta no pudo ser creada. Comprueba el formulario e inténtelo de nuevo."
 
 #: canaille/core/endpoints/account/__init__.py:436
 msgid "Your account has been created successfully."
@@ -669,34 +646,25 @@ msgstr ""
 "caducado."
 
 #: canaille/core/endpoints/account/__init__.py:480
-#, fuzzy
-#| msgid "This address email have already been confirmed."
 msgid "This email address has already been confirmed."
 msgstr "Esta dirección de correo electrónico ya ha sido confirmada."
 
 #: canaille/core/endpoints/account/__init__.py:487
-#, fuzzy
-#| msgid "This address email is already associated with another account."
 msgid "This email address is already associated with another account."
 msgstr "Esta dirección de correo electrónico ya está asociada a otra cuenta."
 
 #: canaille/core/endpoints/account/__init__.py:494
-#, fuzzy
-#| msgid "Your email address have been confirmed."
 msgid "Your email address has been confirmed."
 msgstr "Tu dirección de correo electrónico ha sido confirmada."
 
 #: canaille/core/endpoints/account/__init__.py:518
-#, fuzzy
-#| msgid "The client has not been edited. Please check your information."
 msgid "The account couldn't be created. Please check the form and try again."
-msgstr "El cliente no ha sido editado. Comprueba tu información."
+msgstr ""
+"La cuenta no pudo ser editada. Comprueba el formulario e inténtelo de nuevo."
 
 #: canaille/core/endpoints/account/__init__.py:529
-#, fuzzy
-#| msgid "User account creation succeed."
 msgid "User account creation succeeded."
-msgstr "Cuenta creada correctamente."
+msgstr "Creación de cuenta del usuario lograda."
 
 #: canaille/core/endpoints/account/__init__.py:646
 #: canaille/core/endpoints/account/__init__.py:871
@@ -704,39 +672,31 @@ msgid "Profile updated successfully."
 msgstr "Perfil actualizado correctamente."
 
 #: canaille/core/endpoints/account/__init__.py:653
-#, fuzzy
-#| msgid "The client has not been added. Please check your information."
 msgid "This email couldn't be added. Please check the format and try again."
-msgstr "El cliente no ha sido añadido. Comprueba tu información."
+msgstr ""
+"Este correo electrónico no pudo ser añadido. Compruebe el formato e "
+"inténtelo de nuevo."
 
 #: canaille/core/endpoints/account/__init__.py:676
-#, fuzzy
-#| msgid ""
-#| "An email has been sent to the email address. Please check your inbox and "
-#| "click on the verification link it contains"
 msgid ""
 "Sending an email to this email address. Please check your inbox and click on "
 "the verification link it contains"
 msgstr ""
-"Se ha enviado un correo electrónico a la dirección de correo electrónico. "
-"Por favor, comprueba tu bandeja de entrada y haz clic en el enlace de "
-"verificación que contiene"
+"Envíe un correo electrónico a esta dirección de correo-e. Compruebe su "
+"bandeja de entrada y pulse en el enlace de verificación que contiene"
 
 #: canaille/core/endpoints/account/__init__.py:686
-#, fuzzy
-#| msgid "Delete the client"
 msgid "This email couldn't be removed."
-msgstr "Eliminar el cliente"
+msgstr "Este correo electrónico no pudo ser eliminado."
 
 #: canaille/core/endpoints/account/__init__.py:690
 msgid "This email couldn't be removed. You must keep at least one."
 msgstr ""
+"Este correo electrónico no pudo ser eliminado. Debe conservar al menos uno."
 
 #: canaille/core/endpoints/account/__init__.py:696
-#, fuzzy
-#| msgid "The email have been successfully deleted."
 msgid "The email has been successfully deleted."
-msgstr "El correo electrónico se ha eliminado correctamente."
+msgstr "El correo electrónico ha sido eliminado correctamente."
 
 #: canaille/core/endpoints/account/__init__.py:771
 #, python-format
@@ -744,16 +704,12 @@ msgid "The user %(user)s has been successfully deleted"
 msgstr "El usuario %(user)s ha sido eliminado correctamente"
 
 #: canaille/core/endpoints/account/__init__.py:788
-#, fuzzy
-#| msgid "The account has been locked"
 msgid "The account has been locked."
-msgstr "La cuenta ha sido bloqueada"
+msgstr "La cuenta ha sido bloqueada."
 
 #: canaille/core/endpoints/account/__init__.py:794
-#, fuzzy
-#| msgid "The account has been unlocked"
 msgid "The account has been unlocked."
-msgstr "La cuenta ha sido desbloqueada"
+msgstr "La cuenta ha sido desbloqueada."
 
 #: canaille/core/endpoints/account/__init__.py:889
 msgid "Locked users cannot be impersonated."
@@ -761,108 +717,81 @@ msgstr "Los usuarios bloqueados no pueden ser suplantados."
 
 #: canaille/core/endpoints/account/__init__.py:941
 #: canaille/core/endpoints/auth/password.py:258
-#, fuzzy
-#| msgid "Your password has been updated successfully"
 msgid "Your password has been updated successfully."
-msgstr "Tu contraseña se ha actualizado correctamente"
+msgstr "Tu contraseña ha sido actualizada correctamente."
 
 #: canaille/core/endpoints/account/auth/fido2.py:37
 #: canaille/core/endpoints/account/auth/fido2.py:56
 #: canaille/core/endpoints/account/auth/fido2.py:83
 #: canaille/core/endpoints/account/auth/fido2.py:94
-#, fuzzy
-#| msgid "Page not found"
 msgid "Credential not found."
-msgstr "Página no encontrada"
+msgstr "Credencial no encontrada."
 
 #: canaille/core/endpoints/account/auth/fido2.py:51
 msgid "Name cannot be empty."
-msgstr ""
+msgstr "El nombre no puede estar vacío."
 
 #: canaille/core/endpoints/account/auth/fido2.py:61
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The passkey has been renamed."
-msgstr "El acceso ha sido revocado"
+msgstr "La clave de acceso ha sido renombrada."
 
 #: canaille/core/endpoints/account/auth/fido2.py:72
-#, fuzzy
-#| msgid "Your email address have been confirmed."
 msgid "All passkeys have been removed."
-msgstr "Tu dirección de correo electrónico ha sido confirmada."
+msgstr "Todas las claves de acceso han sido revocada."
 
 #: canaille/core/endpoints/account/auth/fido2.py:89
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The passkey has been removed."
-msgstr "El acceso ha sido revocado"
+msgstr "La clave de acceso ha sido revocada."
 
 #: canaille/core/endpoints/account/auth/otp.py:58
-#, fuzzy
-#| msgid "One-time password authentication has been reset"
 msgid "Authenticator application passcode authentication has been reset."
-msgstr "Se ha restablecido la autenticación de contraseña de un solo uso"
+msgstr ""
+"El autenticador de la aplicación de la autenticación de un solo uso ha sido "
+"restablecida."
 
 #: canaille/core/endpoints/account/auth/password.py:68
-#, fuzzy
-#| msgid "Profile updated successfully."
 msgid "Password updated successfully."
-msgstr "Perfil actualizado correctamente."
+msgstr "Contraseña actualizada correctamente."
 
 #: canaille/core/endpoints/account/auth/password.py:91
-#, fuzzy
-#| msgid ""
-#| "A password initialization link has been sent at the user email address. "
-#| "It should be received within a few minutes."
 msgid ""
 "Sending password initialization link at the user email address. It should be "
 "received within a few minutes."
 msgstr ""
-"Se ha enviado un enlace de inicialización de la contraseña a la dirección de "
-"correo electrónico del usuario. Deberías recibirlo en unos minutos."
+"Enlace de inicialización de envío de contraseña en la dirección del correo-e "
+"del usuario. Sería recibida en unos pocos minutos."
 
 #: canaille/core/endpoints/account/auth/password.py:101
-#, fuzzy
-#| msgid ""
-#| "A password reset link has been sent at the user email address. It should "
-#| "be received within a few minutes."
 msgid ""
 "Sending password reset link to the user email address. It should be received "
 "within a few minutes."
 msgstr ""
 "Se ha enviado un enlace de restablecimiento de la contraseña a la dirección "
-"del correo electrónico del usuario. Deberías recibirlo en unos minutos."
+"del correo-e del usuario. Sería recibida en unos minutos."
 
 #: canaille/core/endpoints/auth/__init__.py:82
 #, python-brace-format
 msgid "You switched to {user_name} session."
-msgstr ""
+msgstr "Intercambiado a la sesión {user_name}."
 
 #: canaille/core/endpoints/auth/__init__.py:114
 #: canaille/core/endpoints/auth/password.py:87
 #: canaille/core/endpoints/auth/password.py:99
-#, fuzzy
-#| msgid "Login failed, please check your information"
 msgid "Login failed. Please check your information."
-msgstr "Falló el inicio de sesión, comprueba tus credenciales"
+msgstr "Inicio de sesión incorrecto. Compruebe sus credenciales."
 
 #: canaille/core/endpoints/auth/__init__.py:144
-#, fuzzy, python-brace-format
-#| msgid "You have been disconnected"
+#, python-brace-format
 msgid "You have been disconnected from {user_name} account."
-msgstr "Has sido desconectado"
+msgstr "Has sido desconectado desde la cuenta {user_name}."
 
 #: canaille/core/endpoints/auth/__init__.py:150
-#, fuzzy
-#| msgid "Delete the client"
 msgid "This session couldn't be closed. Please try again."
-msgstr "Eliminar el cliente"
+msgstr "Esta sesión no pudo ser cerrada. Inténtelo de nuevo."
 
 #: canaille/core/endpoints/auth/__init__.py:155
-#, fuzzy
-#| msgid "Your email address have been confirmed."
 msgid "All sessions have been closed."
-msgstr "Tu dirección de correo electrónico ha sido confirmada."
+msgstr "Se han cerrado todas las sesiones."
 
 #: canaille/core/endpoints/auth/email.py:62
 #: canaille/core/endpoints/auth/otp.py:46
@@ -870,13 +799,11 @@ msgstr "Tu dirección de correo electrónico ha sido confirmada."
 #: canaille/core/endpoints/auth/otp.py:121
 #: canaille/core/endpoints/auth/sms.py:62
 msgid "The passcode you entered is invalid. Please try again."
-msgstr ""
+msgstr "El código de acceso que introdujo no es válido. Inténtelo de nuevo."
 
 #: canaille/core/endpoints/auth/email.py:97
-#, fuzzy
-#| msgid "Email verification"
 msgid "Sending new verification code."
-msgstr "Verificación del correo electrónico"
+msgstr "Enviando código nuevo de verificación."
 
 #: canaille/core/endpoints/auth/fido.py:210
 #, python-brace-format
@@ -884,36 +811,30 @@ msgid ""
 "Maximum number of passkeys reached ({max}). Please remove one before adding "
 "another."
 msgstr ""
+"Se ha alcanzado el número máximo de claves de acceso ({max}). Elimine uno "
+"antes de añadir otro."
 
 #: canaille/core/endpoints/auth/fido.py:332
 #: canaille/templates/core/account/auth/fido2.html:82
 #: canaille/templates/core/partials/profile_settings_fido.html:50
 msgid "My passkey"
-msgstr ""
+msgstr "Mi clave de acceso"
 
 #: canaille/core/endpoints/auth/fido.py:341
-#, fuzzy
-#| msgid "The token has successfully been revoked."
 msgid "Passkey successfully registered."
-msgstr "El token ha sido revocado correctamente."
+msgstr "Clave de acceso registrada correctamente."
 
 #: canaille/core/endpoints/auth/otp.py:139
-#, fuzzy
-#| msgid "One-time password authentication reset"
 msgid "Authenticator application correctly configured."
-msgstr "Restablecer la autenticación de contraseña de un solo uso"
+msgstr "Autenticador de aplicación configurado correctamente."
 
 #: canaille/core/endpoints/auth/password.py:127
-#, fuzzy
-#| msgid ""
-#| "A password initialization link has been sent at the user email address. "
-#| "It should be received within a few minutes."
 msgid ""
 "Sending password initialization link at your email address. It should be "
 "received within a few minutes."
 msgstr ""
-"Se ha enviado un enlace de inicialización de la contraseña a la dirección de "
-"correo electrónico del usuario. Deberías recibirlo en unos minutos."
+"Enviando enlace de inicialización de la contraseña en su dirección de correo-"
+"e. Sería recibida en unos pocos minutos."
 
 #: canaille/core/endpoints/auth/password.py:148
 msgid "Could not send the password reset link."
@@ -921,34 +842,24 @@ msgstr ""
 "No se pudo enviar el correo electrónico para restablecer de contraseña."
 
 #: canaille/core/endpoints/auth/password.py:150
-#, fuzzy
-#| msgid "Could not send the password reset email"
 msgid "Could not send the password reset code."
-msgstr "No se pudo enviar el correo electrónico para restablecer la contraseña"
+msgstr "No se pudo enviar el código para restablecer contraseña."
 
 #: canaille/core/endpoints/auth/password.py:156
-#, fuzzy
-#| msgid ""
-#| "A password reset link has been sent at the user email address. It should "
-#| "be received within a few minutes."
 msgid ""
 "Sending password reset link to your email address. You should receive it "
 "within a few minutes."
 msgstr ""
-"Se ha enviado un enlace de restablecimiento de la contraseña a la dirección "
-"del correo electrónico del usuario. Deberías recibirlo en unos minutos."
+"Se ha enviado un enlace de restablecimiento de contraseña a la dirección del "
+"correo-e del usuario. La recibiría en unos minutos."
 
 #: canaille/core/endpoints/auth/password.py:161
-#, fuzzy
-#| msgid ""
-#| "A password reset link has been sent at your email address. You should "
-#| "receive it within a few minutes."
 msgid ""
 "Sending password reset code to your email address. You should receive it "
 "within a few minutes."
 msgstr ""
-"Se ha enviado un enlace para restablecer la contraseña a tu correo "
-"electrónico. Deberías recibirlo en unos minutos."
+"Se ha enviado un enlace para restablecer la contraseña a tu correo-e. "
+"Deberías recibirlo en unos minutos."
 
 #: canaille/core/endpoints/auth/password.py:173
 #, python-format
@@ -960,19 +871,14 @@ msgstr ""
 "posible enviarle un correo electrónico para que restablezca su contraseña."
 
 #: canaille/core/endpoints/auth/password.py:207
-#, fuzzy, python-format
-#| msgid ""
-#| "The user '%(user)s' does not have permissions to update their password. "
-#| "We cannot send a password reset email."
+#, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
-msgstr ""
-"El usuario '%(user)s' no tiene permiso para actualizar su contraseña. No es "
-"posible enviarle un correo electrónico para que restablezca su contraseña."
+msgstr "El usuario '%(user)s' no tiene permiso para actualizar su contraseña. "
 
 #: canaille/core/endpoints/auth/password.py:220
 msgid "This code is invalid or has expired. Please request a new one."
-msgstr ""
+msgstr "Este código no es válido o ha vencido. Solicite uno nuevo."
 
 #: canaille/core/endpoints/auth/password.py:239
 msgid "The password reset link that brought you here was invalid."
@@ -980,17 +886,13 @@ msgstr ""
 "El enlace para restablecer la contraseña que le ha traído aquí no es válido."
 
 #: canaille/core/endpoints/auth/password.py:244
-#, fuzzy
-#| msgid "The password reset link that brought you here was invalid."
 msgid "The password reset code that brought you here was invalid."
 msgstr ""
-"El enlace para restablecer la contraseña que le ha traído aquí no es válido."
+"El código de restablecimiento de contraseña que trajo aquí no era válido."
 
 #: canaille/core/endpoints/auth/sms.py:97
-#, fuzzy
-#| msgid "Email verification"
 msgid "The new verification code has been sent."
-msgstr "Verificación del correo electrónico"
+msgstr "Ha sido enviado el código de verificación nuevo."
 
 #: canaille/oidc/utils.py:6
 msgid "Info about yourself, such as your name."
@@ -1014,7 +916,7 @@ msgstr "Grupos a los que perteneces."
 
 #: canaille/oidc/endpoints/clients.py:51
 msgid "A new registration token has been generated."
-msgstr ""
+msgstr "Ha sido generado un vale de registro nuevo."
 
 #: canaille/oidc/endpoints/clients.py:69
 msgid "The client has not been added. Please check your information."
@@ -1025,10 +927,8 @@ msgid "The client has been created."
 msgstr "El cliente ha sido creado."
 
 #: canaille/oidc/endpoints/clients.py:133
-#, fuzzy
-#| msgid "The client has been created."
 msgid "A new management token has been generated."
-msgstr "El cliente ha sido creado."
+msgstr "Ha sido generado un vale de gestión nuevo."
 
 #: canaille/oidc/endpoints/clients.py:153
 msgid "The client has not been edited. Please check your information."
@@ -1045,67 +945,53 @@ msgstr "El cliente ha sido eliminado."
 #: canaille/oidc/endpoints/clients.py:217
 #, python-brace-format
 msgid "A token has been created for the client {client_name}."
-msgstr ""
+msgstr "Ha sido creado un vale para el cliente {client_name}."
 
 #: canaille/oidc/endpoints/consents.py:75
 #: canaille/oidc/endpoints/consents.py:113
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "This access couldn't be revoked."
-msgstr "El acceso ha sido revocado"
+msgstr "Este acceso no pudo ser revocado."
 
 #: canaille/oidc/endpoints/consents.py:78
-#, fuzzy
-#| msgid "The access is already revoked"
 msgid "This access is already revoked."
-msgstr "El acceso ya está revocado"
+msgstr "Este acceso ya está revocado."
 
 #: canaille/oidc/endpoints/consents.py:85
 #: canaille/oidc/endpoints/consents.py:128
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "The access has been revoked."
-msgstr "El acceso ha sido revocado"
+msgstr "El acceso ha sido revocado."
 
 #: canaille/oidc/endpoints/consents.py:94
-#, fuzzy
-#| msgid "The access has been restored"
 msgid "This access couldn't be restored."
-msgstr "Se ha restablecido el acceso"
+msgstr "Este acceso no pudo ser restaurado."
 
 #: canaille/oidc/endpoints/consents.py:97
-#, fuzzy
-#| msgid "The access has been revoked"
 msgid "This access hasn't been revoked."
-msgstr "El acceso ha sido revocado"
+msgstr "Este acceso no ha sido revocado."
 
 #: canaille/oidc/endpoints/consents.py:104
-#, fuzzy
-#| msgid "The access has been restored"
 msgid "The access has been restored."
-msgstr "Se ha restablecido el acceso"
+msgstr "El acceso ha sido restablecido."
 
 #: canaille/oidc/endpoints/forms.py:30
-#, fuzzy
-#| msgid "This is not a valid URL"
 msgid "This value is not a valid JSON string."
-msgstr "No es una dirección URL válida"
+msgstr "Este valor no es una cadena JSON válida."
 
 #: canaille/oidc/endpoints/forms.py:36
-#, fuzzy
-#| msgid "This is not a valid URL"
 msgid "This value is not a valid JWK."
-msgstr "No es una dirección URL válida"
+msgstr "Este valor no es un JWK válido."
 
 #: canaille/oidc/endpoints/forms.py:52 canaille/oidc/endpoints/forms.py:333
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: canaille/oidc/endpoints/forms.py:68 canaille/oidc/endpoints/forms.py:122
 msgid ""
 "This is the name that will be displayed on the web interface, and notably on "
 "the consent page."
 msgstr ""
+"Esto es el nombre que será exhibido en el interfaz de web, y notablemente en "
+"la página de consentimiento."
 
 #: canaille/oidc/endpoints/forms.py:74 canaille/oidc/endpoints/forms.py:128
 msgid "Contacts"
@@ -1114,6 +1000,8 @@ msgstr "Contactos"
 #: canaille/oidc/endpoints/forms.py:81 canaille/oidc/endpoints/forms.py:135
 msgid "Those are the email addresses of people responsible for the client."
 msgstr ""
+"Esas son las direcciones de correo electrónico de las personas responsables "
+"del cliente."
 
 #: canaille/oidc/endpoints/forms.py:86 canaille/oidc/endpoints/forms.py:140
 msgid "URI"
@@ -1122,32 +1010,38 @@ msgstr "URI"
 #: canaille/oidc/endpoints/forms.py:93 canaille/oidc/endpoints/forms.py:147
 msgid "URL string of a web page providing information about the client."
 msgstr ""
+"Cadena URL de una página web que proporciona información sobre el cliente."
 
 #: canaille/oidc/endpoints/forms.py:99 canaille/oidc/endpoints/forms.py:153
 msgid "Redirect URIs"
-msgstr "URIs de redirección"
+msgstr "Las URI de redirección"
 
 #: canaille/oidc/endpoints/forms.py:109 canaille/oidc/endpoints/forms.py:163
 msgid ""
 "URIs for use in redirect-based flows such as the authorization code and "
 "implicit flows."
 msgstr ""
+"Las URI para su uso en flujos basados en redirecciones, como el código de "
+"autorización y los flujos implícitos."
 
 #: canaille/oidc/endpoints/forms.py:168
 msgid "Post logout redirect URIs"
-msgstr "URIs de redirección tras cerrar sesión"
+msgstr "Las URI de redirección tras cerrar sesión"
 
 #: canaille/oidc/endpoints/forms.py:178
 msgid "URIs that the client may redirect users to after logging them out."
 msgstr ""
+"Las URI que el cliente puede redireccionar a usuarios para después de salir "
+"de la sesión."
 
 #: canaille/oidc/endpoints/forms.py:183
 msgid "Grant types"
-msgstr "Tipos de acceso"
+msgstr "Tipos de concesión"
 
 #: canaille/oidc/endpoints/forms.py:195
 msgid "Grant types that the client can use at the token endpoint."
 msgstr ""
+"Tipos de concesión que el cliente puede utilizar en el punto final del vale."
 
 #: canaille/oidc/endpoints/forms.py:199
 #: canaille/templates/oidc/token_view.html:70
@@ -1157,6 +1051,7 @@ msgstr "Ámbito"
 #: canaille/oidc/endpoints/forms.py:203
 msgid "Kind of information that the client can request about users."
 msgstr ""
+"Familia de información que el cliente puede solicitar acerca de usuarios."
 
 #: canaille/oidc/endpoints/forms.py:207
 msgid "Response types"
@@ -1165,25 +1060,28 @@ msgstr "Tipos de respuesta"
 #: canaille/oidc/endpoints/forms.py:212
 msgid "Response types that the client can use at the authorization endpoint."
 msgstr ""
+"Tipos de respuesta que el cliente puede utilizar en el punto final de "
+"autorización."
 
 #: canaille/oidc/endpoints/forms.py:217
-#, fuzzy
-#| msgid "Token Endpoint Auth Method"
 msgid "Token endpoint authentication method"
-msgstr "Método de autenticación para el endpoint del token"
+msgstr "Método de autenticación para el punto final del vale"
 
 #: canaille/oidc/endpoints/forms.py:228
 msgid "Authentication method that the client will use at the token endpoint."
 msgstr ""
+"Método de autenticación que el cliente utilizará en el punto final del vale."
 
 #: canaille/oidc/endpoints/forms.py:233
 msgid "Token audiences"
-msgstr "Audiencias del token"
+msgstr "Audiencias del vale"
 
 #: canaille/oidc/endpoints/forms.py:239
 msgid ""
 "The other clients that are intended to use the tokens emitted by this client."
 msgstr ""
+"Los otros clientes que son intentados para utilizar los vales emitidos por "
+"este cliente."
 
 #: canaille/oidc/endpoints/forms.py:244
 msgid "Logo URI"
@@ -1191,7 +1089,7 @@ msgstr "URI del logo"
 
 #: canaille/oidc/endpoints/forms.py:250
 msgid "An URL for the logo of this client."
-msgstr ""
+msgstr "Una URL para el logotipo de este cliente."
 
 #: canaille/oidc/endpoints/forms.py:254
 msgid "Terms of service URI"
@@ -1199,15 +1097,15 @@ msgstr "URI de los términos de servicio"
 
 #: canaille/oidc/endpoints/forms.py:260
 msgid "URL to the terms of service of the client."
-msgstr ""
+msgstr "URL para los términos de servicio del cliente."
 
 #: canaille/oidc/endpoints/forms.py:264
 msgid "Policy URI"
-msgstr "URI de la política"
+msgstr "Directiva URI"
 
 #: canaille/oidc/endpoints/forms.py:270
 msgid "URL to the privacy policy of the client."
-msgstr ""
+msgstr "URL para la directiva de privacidad del cliente."
 
 #: canaille/oidc/endpoints/forms.py:274
 msgid "Software ID"
@@ -1218,38 +1116,36 @@ msgid ""
 "Unique identifier for this client, that should be stable in time and common "
 "for all identity providers."
 msgstr ""
+"Identificador único para este cliente, que sería estable en tiempo y usual "
+"para todos los proveedores de identidad."
 
 #: canaille/oidc/endpoints/forms.py:283
 msgid "Software Version"
 msgstr "Versión del software"
 
 #: canaille/oidc/endpoints/forms.py:286
-#, fuzzy
-#| msgid "Delete the client"
 msgid "The version of the client."
-msgstr "Eliminar el cliente"
+msgstr "La versión del cliente."
 
 #: canaille/oidc/endpoints/forms.py:290
 msgid "JSON Web Keys"
-msgstr ""
+msgstr "Claves Web de JSON"
 
 #: canaille/oidc/endpoints/forms.py:293
 msgid "The public JSON Web Keys of the client."
-msgstr ""
+msgstr "Las claves web JSON públicas del cliente."
 
 #: canaille/oidc/endpoints/forms.py:297
 msgid "JSON Web Keys URI"
-msgstr ""
+msgstr "URI de Claves Web JSON"
 
 #: canaille/oidc/endpoints/forms.py:303
 msgid "The URI that points to the public JSON Web Keys of the client."
-msgstr ""
+msgstr "La URL que apunta a las Claves Web JSON públicas del cliente."
 
 #: canaille/oidc/endpoints/forms.py:307
-#, fuzzy
-#| msgid "Token Endpoint Auth Method"
 msgid "Token endpoint authentication signing algorithm"
-msgstr "Método de autenticación para el endpoint del token"
+msgstr "Algoritmo de firma de autenticación en vale en punto final"
 
 #: canaille/oidc/endpoints/forms.py:313
 msgid ""
@@ -1257,10 +1153,13 @@ msgid ""
 "client at the token endpoint for the private_key_jwt and client_secret_jwt "
 "authentication methods."
 msgstr ""
+"Algoritmo JWS que debe ser utilizado para firmar el JWT utilizado para "
+"autenticar el cliente en el punto final del vale para los métodos de "
+"autenticación private_key_jwt y client_secret_jwt."
 
 #: canaille/oidc/endpoints/forms.py:318
 msgid "Sector identifier URI"
-msgstr ""
+msgstr "URI identificador de sector"
 
 #: canaille/oidc/endpoints/forms.py:325
 msgid ""
@@ -1268,34 +1167,38 @@ msgid ""
 "identifiers by the OP. The URL references a file with a single JSON array of "
 "redirect_uri values."
 msgstr ""
+"URI utilizando el esquema https para ser utilizado en cálculo "
+"identificadores de seudónimo por el OP. La URL referencia un archivo con un "
+"vector JSON de valores redirect_uri."
 
 #: canaille/oidc/endpoints/forms.py:330
-#, fuzzy
-#| msgid "Subject"
 msgid "Subject type"
-msgstr "Sujeto"
+msgstr "Tipo de asunto"
 
 #: canaille/oidc/endpoints/forms.py:338
 msgid ""
 "Subject identifier type requested for responses to this client. Valid types "
 "include pairwise and public."
 msgstr ""
+"Se ha solicitando un tipo de identificador del sujeto para respuestas a este "
+"cliente. Los tipos válidos incluyen por pares y público."
 
 #: canaille/oidc/endpoints/forms.py:343
-#, fuzzy
-#| msgid "Actions"
 msgid "Application type"
-msgstr "Acciones"
+msgstr "Tipo de aplicación"
 
 #: canaille/oidc/endpoints/forms.py:351
 msgid ""
 "Kind of the application. Web clients must use https redirect URIs. Native "
 "clients can use custom URI schemes or http loopback URLs."
 msgstr ""
+"Familia de la aplicación. El cliente de web debe utilizar las URI de "
+"redirección https. Los clientes nativos pueden utilizar esquemas URI "
+"personales o las URL de bucle http."
 
 #: canaille/oidc/endpoints/forms.py:356
 msgid "ID Token signed response algorithm"
-msgstr ""
+msgstr "Vale del ID firmó algoritmo de respuesta"
 
 #: canaille/oidc/endpoints/forms.py:363
 msgid ""
@@ -1303,10 +1206,14 @@ msgid ""
 "value 'none' must not be used unless the client uses only response types "
 "that return no ID Token from the authorization endpoint."
 msgstr ""
+"Se requiere el algoritmo JWS para firmar el vale de identificación de "
+"incidencia a este cliente. El valor 'none' no debe utilizarse a menos que el "
+"cliente utilice únicamente tipos de respuesta que no devuelvan ningún vale "
+"de identificación desde el punto final de autorización."
 
 #: canaille/oidc/endpoints/forms.py:368
 msgid "UserInfo signed response algorithm"
-msgstr ""
+msgstr "Algoritmo de respuesta firmada de UserInfo"
 
 #: canaille/oidc/endpoints/forms.py:372
 msgid ""
@@ -1315,10 +1222,15 @@ msgid ""
 "UserInfo response will return the claims as a UTF-8 encoded JSON object "
 "using the application/json content-type."
 msgstr ""
+"Se requiere el algoritmo JWS para firmar las respuestas UserInfo. Si se "
+"especifica, la respuesta se serializará en formato JWT y se firmará mediante "
+"JWS. Si se omite, la respuesta UserInfo devolverá las declaraciones como un "
+"objeto JSON codificado en UTF-8 utilizando el tipo de contenido application/"
+"json."
 
 #: canaille/oidc/endpoints/forms.py:377
 msgid "Default maximum authentication age"
-msgstr ""
+msgstr "Espera máxima de autenticación predeterminada"
 
 #: canaille/oidc/endpoints/forms.py:381
 msgid ""
@@ -1327,20 +1239,26 @@ msgid ""
 "than the specified number of seconds. The max_age request parameter "
 "overrides this default value."
 msgstr ""
+"Espera máxima de autenticación predeterminada en segundos. Indica que el "
+"usuario final debe estar autenticado activamente si su autenticación "
+"anterior superó el número de segundos especificado. El parámetro de "
+"solicitud max_age anula este valor predeterminado."
 
 #: canaille/oidc/endpoints/forms.py:386
 msgid "Require auth_time claim"
-msgstr ""
+msgstr "Requerir reclamación auth_time"
 
 #: canaille/oidc/endpoints/forms.py:389
 msgid ""
 "Boolean value specifying whether the auth_time claim in the ID Token is "
 "required. It is required when the value is true."
 msgstr ""
+"Valor booleano que especifica si la reclamación auth_time en el vale de ID "
+"es obligatoria. Es obligatoria cuando el valor es verdadero."
 
 #: canaille/oidc/endpoints/forms.py:395
 msgid "Default ACR values"
-msgstr ""
+msgstr "Valores ACR por defecto"
 
 #: canaille/oidc/endpoints/forms.py:402
 msgid ""
@@ -1349,22 +1267,30 @@ msgid ""
 "to use for processing requests from this client, with the values appearing "
 "in order of preference."
 msgstr ""
+"Valores de referencia de clase contextual de autenticación por defecto. "
+"Matriz de cadenas que especifica los valores ACR predeterminados que se le "
+"solicita al OP que utilice para procesar las solicitudes de este cliente, "
+"con los valores apareciendo en orden de preferencia."
 
 #: canaille/oidc/endpoints/forms.py:407
 msgid "Initiate login URI"
-msgstr ""
+msgstr "Iniciar URI de acceso"
 
 #: canaille/oidc/endpoints/forms.py:414
 msgid ""
 "URI using the https scheme that a third party can use to initiate a login by "
 "the RP. The URI must accept requests via both GET and POST."
 msgstr ""
+"URI utilizando esquema https que una parte de terceros utilice para "
+"inicializar un acceso por el RP. La URI debe aceptar solicitudes por medio "
+"de GET y POST."
 
 #: canaille/oidc/endpoints/forms.py:419
 msgid "Request object signing algorithm"
-msgstr ""
+msgstr "Algoritmo firmante de objeto de solicitud"
 
 #: canaille/oidc/endpoints/forms.py:425
+#, fuzzy
 msgid ""
 "JWS algorithm that must be used for signing request objects sent to the OP. "
 "All request objects from this client must be rejected if not signed with "
@@ -1372,12 +1298,16 @@ msgid ""
 "passed by value (using the request parameter) and when it is passed by "
 "reference (using the request_uri parameter)."
 msgstr ""
+"Algoritmo JWS que debe ser utilizado para firmar objetos de solicitud "
+"enviados al OP. Todos los objetos de solicitud de este cliente deben ser "
+"rechazados si no firmados con este algoritmo. Este algoritmo debe ser "
+"utilizado tanto cuando el objeto de solicitud se transmite por valor "
+"(utilizando el parámetro de solicitud) como cuando se transmite por "
+"referencia (utilizando el parámetro request_uri)."
 
 #: canaille/oidc/endpoints/forms.py:431
-#, fuzzy
-#| msgid "Redirect URIs"
 msgid "Request URIs"
-msgstr "URIs de redirección"
+msgstr "Solicitud de las URI"
 
 #: canaille/oidc/endpoints/forms.py:443
 msgid ""
@@ -1389,29 +1319,28 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:448
 msgid "Require signed request object"
-msgstr ""
+msgstr "Requiere objeto de solicitud firmado"
 
 #: canaille/oidc/endpoints/forms.py:451
 msgid ""
 "Indicates whether authorization request needs to be protected as a request "
 "object and provided through either request or request_uri parameter."
 msgstr ""
+"Indica si la solicitud de autorización necesita ser protegida como un objeto "
+"de solicitud y proporcionado a través de cualquier solicitud o parámetro "
+"request_uri."
 
 #: canaille/oidc/endpoints/oauth.py:548
-#, fuzzy
-#| msgid "You have been disconnected"
 msgid "You have been disconnected."
-msgstr "Has sido desconectado"
+msgstr "Has sido desconectado."
 
 #: canaille/oidc/endpoints/oauth.py:566
-#, fuzzy
-#| msgid "You have not been disconnected"
 msgid "You have not been disconnected."
-msgstr "No has sido desconectado"
+msgstr "No has sido desconectado."
 
 #: canaille/oidc/endpoints/tokens.py:49
 msgid "The token has successfully been revoked."
-msgstr "El token ha sido revocado correctamente."
+msgstr "El vale ha sido revocado correctamente."
 
 #: canaille/templates/base.html:30
 msgid "Authorization interface"
@@ -1419,7 +1348,7 @@ msgstr "Interfaz de autorizaciones"
 
 #: canaille/templates/base.html:48
 msgid "Network error"
-msgstr ""
+msgstr "Error de red"
 
 #: canaille/templates/base.html:51
 #, python-format
@@ -1427,6 +1356,8 @@ msgid ""
 "%(website_name)s could not be reached. Are you sure to be connected to the "
 "internet?"
 msgstr ""
+"%(website_name)s no pudo ser alcanzado. ¿Está seguro que está conectado a "
+"Internet?"
 
 #: canaille/templates/base.html:65
 #, python-format
@@ -1435,10 +1366,13 @@ msgid ""
 "<br> Have a look at your server logs and at the <a "
 "href=\"%(documentation_url)s\">documentation</a> for more details."
 msgstr ""
+"Tu instancia Canaille no está configurado completamente y no está preparado "
+"para producción.<br> Mire en sus bitácoras del servidor y en la <a href=\"%"
+"(documentation_url)s\">documentación</a> para más detalles."
 
 #: canaille/templates/base.html:76
 msgid "Skip main menu"
-msgstr ""
+msgstr "Omitir menú principal"
 
 #: canaille/templates/base.html:89
 msgid "Profile"
@@ -1467,10 +1401,8 @@ msgstr "Cerrar sesión"
 #: canaille/templates/core/auth/fido-setup.html:46
 #: canaille/templates/core/auth/fido.html:39
 #: canaille/templates/core/auth/setup-otp.html:57
-#, fuzzy
-#| msgid "Lock the account"
 msgid "Switch account"
-msgstr "Bloquear la cuenta"
+msgstr "Intercambiar cuenta"
 
 #: canaille/templates/base.html:172
 #: canaille/templates/core/auth/password.html:35
@@ -1575,10 +1507,8 @@ msgstr "Eliminar grupo"
 
 #: canaille/templates/core/group.html:79
 #: canaille/templates/core/invite_group_member.html:33
-#, fuzzy
-#| msgid "Invite a user"
 msgid "Invite Members"
-msgstr "Invitar a un usuario"
+msgstr "Invitar Miembros"
 
 #: canaille/templates/core/group.html:84
 msgid "Create group"
@@ -1628,17 +1558,16 @@ msgstr ""
 "quieres invitar:"
 
 #: canaille/templates/core/invite.html:69
-#, fuzzy, python-format
-#| msgid "This invitation link has been sent to %(email)s"
+#, python-format
 msgid "This invitation link has been sent to %(email)s."
-msgstr "El enlace de invitación ha sido enviado a %(email)s"
+msgstr "El enlace de invitación ha sido enviado a %(email)s."
 
 #: canaille/templates/core/invite.html:70
 msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "there:"
 msgstr ""
-"Si necesitas proporcionar este enlace por un medio distinto al correo "
+"Si necesitas proporcionar este enlace por otra manera que el correo "
 "electrónico, puedes copiarlo aquí:"
 
 #: canaille/templates/core/invite.html:77
@@ -1646,8 +1575,8 @@ msgstr ""
 msgid ""
 "This invitation link could not be sent to %(email)s due to technical issues."
 msgstr ""
-"Este enlace de invitación no se pudo enviar a %(email)s debido a un problema "
-"técnico."
+"Este enlace de invitación no se pudo enviar a %(email)s debido a una "
+"incidencias técnicas."
 
 #: canaille/templates/core/invite.html:78
 msgid ""
@@ -1697,21 +1626,15 @@ msgstr "Enviar invitación"
 #: canaille/templates/core/invite_group_member.html:79
 #, python-format
 msgid "Invite members to %(group_name)s"
-msgstr ""
+msgstr "Invitar miembros a %(group_name)s"
 
 #: canaille/templates/core/invite_group_member.html:29
 #: canaille/templates/core/invite_group_member.html:65
 #: canaille/templates/core/invite_group_member.html:98
-#, fuzzy
-#| msgid "Groups"
 msgid "View Group"
-msgstr "Grupos"
+msgstr "Ver Grupo"
 
 #: canaille/templates/core/invite_group_member.html:49
-#, fuzzy
-#| msgid ""
-#| "If you need to provide this link by other ways than email, you can copy "
-#| "it there:"
 msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "here:"
@@ -1720,22 +1643,16 @@ msgstr ""
 "electrónico, puedes copiarlo aquí:"
 
 #: canaille/templates/core/invite_group_member.html:68
-#, fuzzy
-#| msgid "Invite another user"
 msgid "Invite another member"
-msgstr "Invitar a otro usuario"
+msgstr "Invitar a otro miembro"
 
 #: canaille/templates/core/invite_group_member.html:84
-#, fuzzy
-#| msgid ""
-#| "After this form is sent, the recipient your indicated will receive an "
-#| "email containing an account creation link."
 msgid ""
 "After this form is sent, the recipient will receive an email containing a "
 "link to join this group."
 msgstr ""
-"Una vez que se envíe este formulario, el destinatario que has indicado "
-"recibirá un correo electrónico con un enlace para crear una cuenta."
+"Una vez que se envíe este formulario, el destinatario recibirá un correo "
+"electrónico conteniendo un enlace para unirse a este grupo."
 
 #: canaille/templates/core/account/add.html:21
 #: canaille/templates/core/account/add.html:54
@@ -1747,7 +1664,7 @@ msgstr "Crear usuario"
 #: canaille/templates/core/account/add.html:57
 #: canaille/templates/core/join.html:39
 msgid "Create a new user account"
-msgstr "Crear una nueva cuenta"
+msgstr "Crear una nueva cuenta de usuario"
 
 #: canaille/templates/core/join.html:45
 msgid ""
@@ -1780,31 +1697,27 @@ msgstr "He olvidado mi contraseña"
 #: canaille/templates/core/auth/forgotten-password-code.html:59
 #: canaille/templates/core/join.html:70
 msgid "Submit"
-msgstr "Enviar"
+msgstr "Entregar"
 
 #: canaille/templates/core/login.html:25
-#, fuzzy
-#| msgid "Create an account"
 msgid "Choose an account"
-msgstr "Crear una cuenta"
+msgstr "Elija una cuenta"
 
 #: canaille/templates/core/login.html:40
 msgid "Logged in"
-msgstr ""
+msgstr "Sesión iniciada"
 
 #: canaille/templates/core/login.html:54
 msgid "Remove from account list"
-msgstr ""
+msgstr "Retira desde listado de cuenta"
 
 #: canaille/templates/core/login.html:79
 msgid "Or"
-msgstr ""
+msgstr "O"
 
 #: canaille/templates/core/login.html:85
-#, fuzzy
-#| msgid "Lock the account"
 msgid "Use another account"
-msgstr "Bloquear la cuenta"
+msgstr "Utilice otra cuenta"
 
 #: canaille/templates/core/auth/forgotten-password-code.html:55
 #: canaille/templates/core/auth/forgotten-password.html:56
@@ -1896,9 +1809,8 @@ msgstr "Editar perfil de usuario"
 #: canaille/templates/core/account/settings.html:42
 #: canaille/templates/core/auth/fido-setup.html:31
 #: canaille/templates/core/auth/setup-otp.html:35
-#, fuzzy
 msgid "Authentication"
-msgstr "Configurar autenticación multifactor."
+msgstr "Autenticación"
 
 #: canaille/templates/core/account/edit.html:68
 msgid "Edit your personal information"
@@ -1980,24 +1892,23 @@ msgstr[1] ""
 
 #: canaille/templates/core/account/auth/fido2.html:56
 #: canaille/templates/core/partials/profile_settings_fido.html:24
-#, fuzzy
-#| msgid "Set up multi-factor authentication."
 msgid "Passkeys can be used for authentication."
-msgstr "Configurar autenticación multifactor."
+msgstr "Claves de permiso pueden ser utilizadas para autenticación."
 
 #: canaille/templates/core/account/auth/fido2.html:60
 #: canaille/templates/core/partials/profile_settings_fido.html:28
+#, fuzzy
 msgid ""
 "As they are unrecoverable in case of loss, it is generally recommended to "
 "register at least one additional backup key."
 msgstr ""
+"Como no se pueden recuperar en caso de pérdida, generalmente se recomienda "
+"registrar al menos una clave de respaldo adicional."
 
 #: canaille/templates/core/account/auth/fido2.html:72
 #: canaille/templates/core/partials/profile_settings_fido.html:40
-#, fuzzy
-#| msgid "Registration"
 msgid "Registered"
-msgstr "Registro"
+msgstr "Registrado"
 
 #: canaille/templates/core/account/auth/fido2.html:73
 #: canaille/templates/core/partials/profile_settings_fido.html:41
@@ -2021,7 +1932,7 @@ msgstr "Nombre de usuario"
 #: canaille/templates/core/account/auth/fido2.html:93
 #: canaille/templates/core/partials/profile_settings_fido.html:61
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 #: canaille/templates/core/account/auth/fido2.html:97
 #: canaille/templates/core/modals/delete-account.html:27
@@ -2035,23 +1946,19 @@ msgstr "Eliminar"
 #: canaille/templates/core/account/auth/fido2.html:116
 #: canaille/templates/core/partials/profile_settings_fido.html:79
 #: canaille/templates/core/partials/profile_settings_fido.html:84
-#, fuzzy
-#| msgid "Add another field"
 msgid "Add another key"
-msgstr "Agregar otro campo"
+msgstr "Añadir otra clave"
 
 #: canaille/templates/core/account/auth/fido2.html:114
 #: canaille/templates/core/partials/profile_settings_fido.html:82
 #, python-format
 msgid "Maximum limit reached (%(max)s)"
-msgstr ""
+msgstr "Límite máximo alcanzado (%(max)s)"
 
 #: canaille/templates/core/account/auth/fido2.html:120
 #: canaille/templates/core/partials/profile_settings_fido.html:88
-#, fuzzy
-#| msgid "Remove this email address"
 msgid "Remove all keys"
-msgstr "Eliminar esta dirección de correo electrónico"
+msgstr "Eliminar todas las claves"
 
 #: canaille/templates/core/account/auth/fido2.html:127
 #: canaille/templates/core/partials/profile_settings_fido.html:96
@@ -2059,36 +1966,32 @@ msgid ""
 "You have no passkey configured. Click on the following button to register "
 "your passkey."
 msgstr ""
+"No tienes ninguna contraseña configurada. Pulse en el botón siguiente para "
+"registrar su contraseña."
 
 #: canaille/templates/core/account/auth/fido2.html:135
 #: canaille/templates/core/partial/profile_settings_otp.html:35
 #: canaille/templates/core/partials/profile_settings_fido.html:104
 msgid "Set-up"
-msgstr ""
+msgstr "Configuración"
 
 #: canaille/templates/core/account/auth/index.html:43
-#, fuzzy
-#| msgid "Confirm"
 msgid "Configured"
-msgstr "Confirmar"
+msgstr "Configurado"
 
 #: canaille/templates/core/account/auth/index.html:48
 msgid "Not configured"
-msgstr ""
+msgstr "No configurado"
 
 #: canaille/templates/core/account/auth/index.html:64
-#, fuzzy
-#| msgid "Token Endpoint Auth Method"
 msgid "Manage your authentication methods"
-msgstr "Método de autenticación para el endpoint del token"
+msgstr "Gestione su método de autenticación"
 
 #: canaille/templates/core/account/auth/index.html:79
 #: canaille/templates/core/account/auth/otp.html:39
 #: canaille/templates/core/partial/profile_settings_otp.html:3
-#, fuzzy
-#| msgid "Pre-authorized applications"
 msgid "Authenticator application"
-msgstr "Solicitudes previamente autorizadas"
+msgstr "Aplicación de autenticador"
 
 #: canaille/templates/core/account/auth/otp.html:47
 #: canaille/templates/core/partial/profile_settings_otp.html:10
@@ -2097,11 +2000,15 @@ msgid ""
 "application anymore, you can reset its configuration. After this, you will "
 "be able to set up a new authenticator application configuration."
 msgstr ""
+"Has configurado una aplicación de autenticador. Si no puedes acceder más a "
+"esta aplicación, se puede restablecer su configuración. Tras esto, serás "
+"capaz de establecer un autenticador nuevo en la configuración de la "
+"aplicación."
 
 #: canaille/templates/core/account/auth/otp.html:56
 #: canaille/templates/core/partial/profile_settings_otp.html:19
 msgid "Reset"
-msgstr ""
+msgstr "Restablecer"
 
 #: canaille/templates/core/account/auth/password.html:48
 #: canaille/templates/core/partial/profile_settings_password.html:9
@@ -2312,28 +2219,20 @@ msgid "Send"
 msgstr "Enviar"
 
 #: canaille/templates/core/auth/otp.html:16
-#, fuzzy
-#| msgid "One-time password authentication."
 msgid "One-time passcode authentication."
-msgstr "Autenticación de contraseña de un solo uso."
+msgstr "Autenticación de código de acceso de un solo uso."
 
 #: canaille/templates/core/auth/otp.html:24
-#, fuzzy
-#| msgid "Pre-authorized applications"
 msgid "Open your authenticator application"
-msgstr "Solicitudes previamente autorizadas"
+msgstr "Abra su aplicación de autenticador"
 
 #: canaille/templates/core/auth/otp.html:26
-#, fuzzy
-#| msgid ""
-#| "Please enter the one-time password below at %(site_name)s to complete "
-#| "your authentication."
 msgid ""
 "Generate a one-time passcode with your authenticator application and fill it "
 "in the form below."
 msgstr ""
-"Por favor, introduzca la contraseña de un solo uso que se indica a "
-"continuación en %(site_name)s para completar tu autenticación."
+"Genere un código de acceso de una vez con su aplicación de autenticador y "
+"complételo en el formulario a continuación."
 
 #: canaille/templates/core/auth/password.html:12
 msgid "Please enter your password for this account."
@@ -3404,7 +3303,7 @@ msgstr "Clave"
 
 #: canaille/templates/oidc/client_edit.html:99
 msgid "Issued at"
-msgstr "Emitido en"
+msgstr "Incidente en"
 
 #: canaille/templates/oidc/client_edit.html:116
 #, fuzzy
@@ -3509,7 +3408,7 @@ msgstr "Audiencia"
 
 #: canaille/templates/oidc/token_view.html:94
 msgid "Issue date"
-msgstr "Fecha de emisión"
+msgstr "Fecha de incidencia"
 
 #: canaille/templates/oidc/token_view.html:98
 msgid "Expiration date"
