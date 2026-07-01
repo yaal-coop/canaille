@@ -16,6 +16,11 @@ SCOPE_DETAILS = {
 }
 
 
+def unique_scopes(scope):
+    """Split a space-separated scope string into an ordered list of unique scopes."""
+    return list(dict.fromkeys(scope.split())) if scope else []
+
+
 def is_trusted_domain(domain):
     if not domain:
         return False

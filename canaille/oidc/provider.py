@@ -45,6 +45,7 @@ from .jose import registry
 from .jose import server_jwks
 from .userinfo import UserInfo
 from .userinfo import generate_user_claims
+from .utils import unique_scopes
 
 AUTHORIZATION_CODE_LIFETIME = 300
 JWT_JTI_CACHE_LIFETIME = 3600
@@ -145,7 +146,7 @@ def save_authorization_code(code, request):
         subject=request.user,
         client=request.client,
         redirect_uri=request.payload.redirect_uri or request.client.redirect_uris[0],
-        scope=scope.split(" "),
+        scope=unique_scopes(scope),
         nonce=nonce,
         issue_date=now,
         lifetime=AUTHORIZATION_CODE_LIFETIME,
@@ -321,7 +322,7 @@ def query_client(client_id):
 
 def save_token(token, request):
     now = datetime.datetime.now(datetime.timezone.utc)
-    scope = token.get("scope", "").split() if token.get("scope") else []
+    scope = unique_scopes(token.get("scope"))
     t = models.Token(
         token_id=gen_salt(48),
         type=token["token_type"],

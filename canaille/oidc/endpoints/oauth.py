@@ -36,6 +36,7 @@ from ..provider import RevocationEndpoint
 from ..provider import UserInfoEndpoint
 from ..provider import authorization
 from ..utils import SCOPE_DETAILS
+from ..utils import unique_scopes
 from .forms import AuthorizeForm
 from .well_known import openid_configuration
 
@@ -247,7 +248,7 @@ def is_consent_needed(grant, redirect_url) -> bool:
         return False
 
     requested_scopes = request.values.get("scope", "")
-    allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
+    allowed_scopes = unique_scopes(grant.client.get_allowed_scope(requested_scopes))
     if consent and all(scope in set(consent.scope) for scope in allowed_scopes):
         return False
 
@@ -263,7 +264,7 @@ def create_or_update_consent(grant, user, now):
     consent = consents[0] if consents else None
 
     requested_scopes = request.values.get("scope", "")
-    allowed_scopes = grant.client.get_allowed_scope(requested_scopes).split(" ")
+    allowed_scopes = unique_scopes(grant.client.get_allowed_scope(requested_scopes))
 
     if consent:
         if consent.revoked:

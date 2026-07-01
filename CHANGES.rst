@@ -1,3 +1,10 @@
+[Unreleased]
+------------
+
+Fixed
+^^^^^
+- Duplicate scope values in a request are now deduplicated instead of making token/authorization code storage fail (e.g. on the LDAP backend).
+
 [0.3.2] - 2026-07-01
 --------------------
 

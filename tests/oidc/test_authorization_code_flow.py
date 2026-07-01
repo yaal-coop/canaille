@@ -212,6 +212,36 @@ def test_nominal_case_post(
         backend.delete(consent)
 
 
+def test_duplicate_scope_is_deduplicated(
+    testclient, logged_user, client, trusted_client, backend
+):
+    """A client may request a scope with duplicate values (e.g. 'openid ... openid').
+
+    Canaille must deduplicate it instead of failing when storing the scope
+    (LDAP multi-valued attributes reject duplicate values).
+    """
+    res = testclient.post(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid openid profile email profile",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=200,
+    )
+    res = res.form.submit(name="answer", value="accept", status=302)
+
+    code = parse_qs(urlsplit(res.location).query)["code"][0]
+    authcode = backend.get(models.AuthorizationCode, code=code)
+    assert set(authcode.scope) == {"openid", "profile", "email"}
+    assert len(authcode.scope) == 3  # no duplicate stored
+
+    for consent in backend.query(models.Consent, client=client, subject=logged_user):
+        backend.delete(consent)
+
+
 def test_redirect_uri(testclient, logged_user, client, trusted_client, backend):
     """Test that authorization flow works with alternate redirect URIs."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
