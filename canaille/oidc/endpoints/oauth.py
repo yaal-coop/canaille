@@ -54,6 +54,7 @@ def http_error_handler(error):
 
 @bp.errorhandler(Exception)
 def internal_error_handler(error):
+    current_app.logger.exception(error)
     return {
         "error": "internal_server_error",
         "error_description": str(error),

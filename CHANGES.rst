@@ -1,3 +1,10 @@
+[Unreleased]
+------------
+
+Fixed
+^^^^^
+- Unexpected errors on the OIDC endpoints are now logged instead of being silently swallowed, so they are reported to error monitoring such as Sentry.
+
 [0.3.1] - 2026-06-22
 --------------------
 

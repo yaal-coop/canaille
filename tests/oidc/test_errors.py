@@ -1,3 +1,6 @@
+import logging
+
+
 def test_json_oauth_errors(testclient):
     """Checks that HTTP errors on the oauth endpoints are in the JSON format."""
     res = testclient.get("/oauth/invalid", status=404)
@@ -67,3 +70,25 @@ def test_invalid_redirect_uri(testclient, logged_user, client, backend):
     assert "Redirect URI https://invalid.test is not supported by client." in str(
         res.html
     )
+
+
+def test_internal_server_error_is_logged(testclient, caplog, monkeypatch):
+    """Unexpected OAuth endpoint errors are logged instead of being swallowed."""
+    from canaille.oidc.endpoints import oauth
+
+    def boom(*args, **kwargs):
+        raise Exception("boom")
+
+    monkeypatch.setattr(oauth.authorization, "create_token_response", boom)
+
+    res = testclient.post(
+        "/oauth/token",
+        params={"grant_type": "client_credentials"},
+        status=500,
+        expect_errors=True,
+    )
+    assert res.json == {
+        "error": "internal_server_error",
+        "error_description": "boom",
+    }
+    assert ("canaille", logging.ERROR, "boom") in caplog.record_tuples
