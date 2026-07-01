@@ -143,6 +143,7 @@ html_context = {
     "languages": [
         ("English", "/en/latest/%s.html"),
         ("Français", "/fr/latest/%s.html"),
+        ("தமிழ்", "/ta/latest/%s.html"),
     ],
 }
 
