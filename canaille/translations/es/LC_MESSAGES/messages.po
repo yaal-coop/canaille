@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2026-06-29 18:01+0000\n"
+"PO-Revision-Date: 2026-07-03 21:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.7.dev0\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:52
@@ -599,7 +599,7 @@ msgstr "Ya eres un miembro de %(group)s."
 #: canaille/core/endpoints/groups.py:359
 #, python-format
 msgid "You have successfully joined %(group)s!"
-msgstr "Te has unido correctamente a %(group)s."
+msgstr "¡Te has unido correctamente a %(group)s!"
 
 #: canaille/core/endpoints/account/__init__.py:123
 #: canaille/core/endpoints/account/__init__.py:149
@@ -1290,7 +1290,6 @@ msgid "Request object signing algorithm"
 msgstr "Algoritmo firmante de objeto de solicitud"
 
 #: canaille/oidc/endpoints/forms.py:425
-#, fuzzy
 msgid ""
 "JWS algorithm that must be used for signing request objects sent to the OP. "
 "All request objects from this client must be rejected if not signed with "
@@ -1298,12 +1297,12 @@ msgid ""
 "passed by value (using the request parameter) and when it is passed by "
 "reference (using the request_uri parameter)."
 msgstr ""
-"Algoritmo JWS que debe ser utilizado para firmar objetos de solicitud "
+"El algoritmo JWS que debe ser utilizado para firmar objetos de solicitud "
 "enviados al OP. Todos los objetos de solicitud de este cliente deben ser "
-"rechazados si no firmados con este algoritmo. Este algoritmo debe ser "
-"utilizado tanto cuando el objeto de solicitud se transmite por valor "
-"(utilizando el parámetro de solicitud) como cuando se transmite por "
-"referencia (utilizando el parámetro request_uri)."
+"rechazados si no están firmados con este algoritmo. Este algoritmo debe ser "
+"utilizado tanto cuando el objeto de solicitud está concedido por valor "
+"(utilizando el parámetro de solicitud) y cuando se transmite por referencia "
+"(utilizando el parámetro request_uri)."
 
 #: canaille/oidc/endpoints/forms.py:431
 msgid "Request URIs"
@@ -1887,8 +1886,8 @@ msgstr "Restablecer contraseña"
 #, python-format
 msgid "You have %(count)s passkey configured."
 msgid_plural "You have %(count)s passkeys configured."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tiene configurada %(count)s clave de acceso."
+msgstr[1] "Tiene configuradas %(count)s claves de acceso."
 
 #: canaille/templates/core/account/auth/fido2.html:56
 #: canaille/templates/core/partials/profile_settings_fido.html:24
@@ -1913,7 +1912,7 @@ msgstr "Registrado"
 #: canaille/templates/core/account/auth/fido2.html:73
 #: canaille/templates/core/partials/profile_settings_fido.html:41
 msgid "Last used"
-msgstr ""
+msgstr "Última utilizada"
 
 #: canaille/templates/core/account/auth/fido2.html:74
 #: canaille/templates/core/partial/group-members.html:16
@@ -1924,10 +1923,8 @@ msgstr "Acciones"
 
 #: canaille/templates/core/account/auth/fido2.html:83
 #: canaille/templates/core/partials/profile_settings_fido.html:51
-#, fuzzy
-#| msgid "Username"
 msgid "Rename"
-msgstr "Nombre de usuario"
+msgstr "Renombrar"
 
 #: canaille/templates/core/account/auth/fido2.html:93
 #: canaille/templates/core/partials/profile_settings_fido.html:61
@@ -2102,14 +2099,12 @@ msgid "Manage your information and your authorizations"
 msgstr "Gestionar tu información y tus autorizaciones"
 
 #: canaille/templates/core/auth/email.html:16
-#, fuzzy
-#| msgid "Email verification"
 msgid "Email verification code."
-msgstr "Verificación del correo electrónico"
+msgstr "Código verificante por correo-e."
 
 #: canaille/templates/core/auth/email.html:24
 msgid "Check your mailbox"
-msgstr ""
+msgstr "Compruebe su buzón"
 
 #: canaille/templates/core/auth/email.html:26
 msgid ""
@@ -2117,6 +2112,9 @@ msgid ""
 "been sent to your mail address. Please fill the code in the following form "
 "to continue."
 msgstr ""
+"Si la cuenta que ingresaste ya existe, se te ha enviado un correo-e con un "
+"código de verificación. Ingresa el código en el siguiente formulario para "
+"continuar."
 
 #: canaille/templates/core/auth/email.html:42
 #: canaille/templates/core/auth/sms.html:42
@@ -2136,36 +2134,34 @@ msgstr "Comprobar"
 
 #: canaille/templates/core/auth/fido-setup.html:37
 #: canaille/templates/core/auth/fido-setup.html:66
-#, fuzzy
-#| msgid "Password reset"
 msgid "Passkey registration"
-msgstr "Restablecer contraseña"
+msgstr "Registro de clave de acceso"
 
 #: canaille/templates/core/auth/fido-setup.html:51
 #: canaille/templates/core/auth/fido-setup.html:81
-#, fuzzy
-#| msgid "Registration"
 msgid "Register"
 msgstr "Registro"
 
 #: canaille/templates/core/auth/fido.html:15
-#, fuzzy
 msgid "Passkey authentication"
-msgstr "Configurar autenticación multifactor."
+msgstr "Autenticación de clave de acceso"
 
 #: canaille/templates/core/auth/fido.html:23
 msgid "Use your passkey"
-msgstr ""
+msgstr "Utilice su clave de acceso"
 
 #: canaille/templates/core/auth/fido.html:25
 msgid ""
 "Insert your passkey or use your device biometric authentication, then press "
 "the button below, and finally authenticate with your passkey."
 msgstr ""
+"Introduzca su clave de acceso o emplee su autenticación del dispositivo "
+"biométrico, después pulse el botón debajo, y finalmente autentique son su "
+"clave de acceso."
 
 #: canaille/templates/core/auth/fido.html:44
 msgid "Authenticate"
-msgstr ""
+msgstr "Autenticar"
 
 #: canaille/templates/core/auth/firstlogin.html:27
 msgid "First login"
@@ -2193,6 +2189,8 @@ msgstr "Enviar email de inicialización"
 #: canaille/templates/core/auth/forgotten-password-code.html:39
 msgid "Please enter the reset password code you received via email."
 msgstr ""
+"Introduzca el código de contraseña de restablecimiento que recibió por "
+"correo-e."
 
 #: canaille/templates/core/auth/forgotten-password.html:38
 #, fuzzy
@@ -2239,24 +2237,20 @@ msgid "Please enter your password for this account."
 msgstr "Introduce la contraseña para esta cuenta."
 
 #: canaille/templates/core/auth/setup-otp.html:41
-#, fuzzy
-#| msgid "Pre-authorized applications"
 msgid "Authenticator application set-up."
-msgstr "Solicitudes previamente autorizadas"
+msgstr "Configuración de aplicación autenticadora."
 
 #: canaille/templates/core/auth/setup-otp.html:80
 msgid "Set up multi-factor authentication."
 msgstr "Configurar autenticación multifactor."
 
 #: canaille/templates/core/auth/sms.html:16
-#, fuzzy
-#| msgid "Email verification"
 msgid "SMS verification code."
-msgstr "Verificación del correo electrónico"
+msgstr "Verificación de código por SMS."
 
 #: canaille/templates/core/auth/sms.html:24
 msgid "Check your messages"
-msgstr ""
+msgstr "Compruebe sus mensajes"
 
 #: canaille/templates/core/auth/sms.html:26
 msgid ""
@@ -2264,66 +2258,72 @@ msgid ""
 "been sent to your phone number. Please fill the code in the following form "
 "to continue."
 msgstr ""
+"Si existe el inicio de sesión rellenado, ha sido enviando un SMS que "
+"contiene un código de verificación a su número telefónico. Rellene el código "
+"dentro del formulario seguido para continuar."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:18
 msgid ""
 "Please click the button below first, then touch your passkey when prompted."
 msgstr ""
+"Primero pulse el botón a continuación, a continuación toque su clave de "
+"acceso cuando se le solicite."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:25
 msgid "Failed to parse the passkey options."
-msgstr ""
+msgstr "Incorrecto al interpretar las opciones de la clave de acceso."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:32
 msgid "The operation was cancelled or timed out."
-msgstr ""
+msgstr "La operación fue cancelada o vencida."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:39
-#, fuzzy
-#| msgid "The access is already revoked"
 msgid "This passkey is already registered."
-msgstr "El acceso ya está revocado"
+msgstr "Esta clave de acceso ya está registrada."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:46
 msgid "Your browser does not support passkeys."
-msgstr ""
+msgstr "Su explorador no admite claves de acceso."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
 msgid "Security error. Make sure you are using HTTPS."
-msgstr ""
+msgstr "Error de seguridad. Asegúrese que utiliza HTTPS."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:60
 msgid "An unknown error occurred."
-msgstr ""
+msgstr "Ha ocurrido un error desconocido."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:12
-#, fuzzy
 msgid "Set up passkey authentication"
-msgstr "Configurar autenticación multifactor."
+msgstr "Configurar autenticación de clave de acceso"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:14
 msgid "Follow these steps to register your passkey:"
-msgstr ""
+msgstr "Siga estos pasos para registrar su llave de paso:"
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:16
 msgid ""
 "Insert your passkey (YubiKey, USB key, etc.) or prepare your biometric "
 "device (fingerprint, face recognition)."
 msgstr ""
+"Inserte su llave de paso (YubiKey, clave USB, etc.) o prepare su dispositivo "
+"biométrico (huellas, reconocimiento de rostro)."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:17
 msgid "Optionally, choose a name for the key."
-msgstr ""
+msgstr "Opcionalmente, elija un nombre para la llave."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:18
 msgid "Click the \"Register\" button below."
-msgstr ""
+msgstr "Pulse el botón «Registrar» a continuación."
 
 #: canaille/templates/core/auth/partials/fido_setup_content.html:19
 msgid ""
 "Follow your device's prompts: touch your passkey or use your biometric "
 "authentication."
 msgstr ""
+"Siga sus indicaciones del dispositivo: toque su llave de paso o utilice su "
+"autenticación biométrica."
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:3
 #, fuzzy
@@ -2337,22 +2337,28 @@ msgid ""
 "You need to install an authenticator application to generate one-time "
 "passcodes for %(website_name)s."
 msgstr ""
+"Necesita instalar una aplicación de autenticación para generar códigos de "
+"paso de únicos para %(website_name)s."
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:6
 msgid ""
 "Then, configure the authenticator application with one of the following "
 "methods:"
 msgstr ""
+"A continuación, configure la aplicación del autenticador con uno de los "
+"métodos siguientes:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:14
 msgid "1 - Automatic configuration"
-msgstr ""
+msgstr "1 - Configuración automática"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:17
 msgid ""
 "If the authenticator application is installed on the device that you are "
 "currently using, you can configure it by clicking on this button:"
 msgstr ""
+"Si está instalada la aplicación de autenticador en el dispositivo que tiene "
+"actualmente en uso, puede configurarlo pulsando en este botón:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:24
 #, fuzzy
@@ -2362,7 +2368,7 @@ msgstr "Solicitudes previamente autorizadas"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:32
 msgid "2 - QR Code scanning"
-msgstr ""
+msgstr "2 - Escanea el código QR"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:35
 msgid ""
@@ -2370,40 +2376,42 @@ msgid ""
 "installed on another device, please open it and use it to scan the following "
 "qrcode:"
 msgstr ""
+"Si el botón anterior no funcionó o si su aplicación de autenticación está "
+"instalado sobre otro dispositivo, ábralo y utilícelo para escanerar el "
+"qrcode siguiente:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:40
-#, fuzzy
-#| msgid "Refresh token"
 msgid "Secret token"
-msgstr "Token de refresco"
+msgstr "Vale secreto"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:48
-#, fuzzy
-#| msgid "Refresh token"
 msgid "3 - Secret token"
-msgstr "Token de refresco"
+msgstr "3 - Vale secreto"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:51
 msgid ""
 "If your device cannot scan images, you can configure your authenticator "
 "application by manually copying this secret token:"
 msgstr ""
+"Si su dispositivo no puede escanear imágenes, pude configurar su aplicación "
+"de autenticación manualmente copiando este vale secreto:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:60
 msgid "Copy secret"
-msgstr ""
+msgstr "Copia secreta"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:70
-#, fuzzy
-#| msgid "Password confirmation"
 msgid "Passcode confirmation"
-msgstr "Confirmación de contraseña"
+msgstr "Confirmación del código de acceso"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:72
 msgid ""
 "Once your authenticator application is correctly configured, you need to "
 "generate a one-time passcode and fill it in the form below."
 msgstr ""
+"Una vez que la aplicación del autenticador está configurada correctamente, "
+"necesita generar un código de acceso de una vez y rellenarla en el "
+"formulario a continuación."
 
 #: canaille/templates/core/mails/admin.html:5
 #: canaille/templates/core/mails/admin.html:11
@@ -2418,10 +2426,8 @@ msgstr "Correos electrónicos"
 #: canaille/templates/oidc/client_list.html:36
 #: canaille/templates/oidc/token_list.html:26
 #: canaille/templates/oidc/token_view.html:30
-#, fuzzy
-#| msgid "Actions"
 msgid "Applications"
-msgstr "Acciones"
+msgstr "Aplicaciones"
 
 #: canaille/templates/core/mails/admin.html:20
 #: canaille/templates/oidc/client_add.html:34
@@ -2490,10 +2496,8 @@ msgid "Compromised password check failure"
 msgstr "Fallo de comprobación de contraseña comprometida"
 
 #: canaille/templates/core/mails/admin.html:163
-#, fuzzy
-#| msgid "Email one-time password"
 msgid "Email one-time passcode"
-msgstr "Contraseña de un solo uso por correo electrónico"
+msgstr "Código de acceso de una sola vez por correo-e"
 
 #: canaille/templates/core/mails/compromised_password_check_failure.html:28
 #, python-format
@@ -2625,51 +2629,37 @@ msgstr "Enlace de verificación"
 
 #: canaille/templates/core/mails/email_otp.html:19
 #: canaille/templates/core/mails/email_otp.txt:1
-#, fuzzy
-#| msgid "One-time password authentication"
 msgid "One-time passcode authentication"
-msgstr "Autenticación de contraseña de un solo uso"
+msgstr "Autenticación de código de acceso de un solo uso"
 
 #: canaille/templates/core/mails/email_otp.html:27
-#, fuzzy, python-format
-#| msgid ""
-#| "Someone, probably you, asked for a one-time password at %(site_name)s. If "
-#| "you did not ask for this email, please ignore it. If you did, please "
-#| "enter the one-time password below at %(site_name)s to complete your "
-#| "authentication."
+#, python-format
 msgid ""
 "Someone, probably you, asked for a one-time passcode at %(site_name)s. If "
 "you did not ask for this email, please ignore it. If you did, please enter "
 "the one-time passcode below at %(site_name)s to complete your authentication."
 msgstr ""
-"Alguien, probablemente tu, pidió una contraseña de un solo uso en "
-"%(site_name)s. Si no has pedido este correo electrónico, por favor, "
-"ignóralo. Si lo hiciste, por favor ingresa la contraseña de uso único a "
+"Alguien, probablemente tu, pidió un código de acceso de un solo uso en %"
+"(site_name)s. Si no has pedido este correo electrónico, por favor, ignóralo. "
+"Si lo hiciste, por favor ingresa el código de acceso de uso único a "
 "continuación en %(site_name)s para completar tu autenticación."
 
 #: canaille/templates/core/mails/email_otp.html:30
-#, fuzzy
-#| msgid "Your one-time password"
 msgid "Your one-time passcode"
-msgstr "Tu contraseña de un solo uso"
+msgstr "Tu código de acceso de un solo uso"
 
 #: canaille/templates/core/mails/email_otp.txt:3
-#, fuzzy, python-format
-#| msgid ""
-#| "Please enter the one-time password below at %(site_name)s to complete "
-#| "your authentication."
+#, python-format
 msgid ""
 "Please enter the one-time passcode below at %(site_name)s to complete your "
 "authentication."
 msgstr ""
-"Por favor, introduzca la contraseña de un solo uso que se indica a "
-"continuación en %(site_name)s para completar tu autenticación."
+"Por favor, introduzca el código de acceso de un solo uso a continuación en %"
+"(site_name)s para completar tu autenticación."
 
 #: canaille/templates/core/mails/email_otp.txt:5
-#, fuzzy
-#| msgid "One-time password"
 msgid "One-time passcode"
-msgstr "Contraseña de un solo uso"
+msgstr "Código de acceso de un solo uso"
 
 #: canaille/templates/core/mails/firstlogin.html:27
 #, python-format
@@ -2704,10 +2694,8 @@ msgstr ""
 
 #: canaille/templates/core/mails/group_invitation.html:19
 #: canaille/templates/core/mails/group_invitation.txt:1
-#, fuzzy
-#| msgid "Invitation"
 msgid "Group Invitation"
-msgstr "Invitación"
+msgstr "Invitación de grupo"
 
 #: canaille/templates/core/mails/group_invitation.html:27
 #, python-format
@@ -2716,13 +2704,14 @@ msgid ""
 "%(site_name)s. To accept this invitation, click on the \"Join Group\" button "
 "below."
 msgstr ""
+"%(inviter_name)s le ha invitado a unirse al grupo «%(group_name)s» en %"
+"(site_name)s. Para aceptar esta invitación, pulse sobre el botón «Unirse a "
+"Grupo» a continuación."
 
 #: canaille/templates/core/mails/group_invitation.html:38
 #: canaille/templates/core/mails/group_invitation.txt:7
-#, fuzzy
-#| msgid "Groups"
 msgid "Join Group"
-msgstr "Grupos"
+msgstr "Unirse a grupo"
 
 #: canaille/templates/core/mails/group_invitation.txt:3
 #, python-format
@@ -2730,10 +2719,12 @@ msgid ""
 "%(inviter_name)s has invited you to join the group \"%(group_name)s\" on "
 "%(site_name)s."
 msgstr ""
+"%(inviter_name)s le ha invitado para unirse al grupo %(group_name)s» en %"
+"(site_name)s."
 
 #: canaille/templates/core/mails/group_invitation.txt:5
 msgid "To accept this invitation, click on the link below:"
-msgstr ""
+msgstr "Para aceptar esta invitación, pulse en el enlace a continuación:"
 
 #: canaille/templates/core/mails/invitation.html:19
 #: canaille/templates/core/mails/invitation.txt:1
@@ -2790,28 +2781,21 @@ msgstr ""
 
 #: canaille/templates/core/mails/reset.html:27
 #: canaille/templates/core/mails/reset.txt:4
-#, fuzzy, python-format
-#| msgid ""
-#| "Someone, probably you, asked for a password reinitialization link at "
-#| "%(site_name)s. If you did not asked for this email, please ignore it. If "
-#| "you need to reset your password, please click on the link below and "
-#| "follow the instructions."
+#, python-format
 msgid ""
 "Someone, probably you, asked for a password reinitialization at "
 "%(site_name)s. If you did not ask for this email, please ignore it. If you "
 "need to reset your password, please enter the code below at %(site_name)s."
 msgstr ""
-"Alguien, probablemente tú, solicitó un enlace para la reinicialización de la "
-"contraseña en %(site_name)s. Si no has solicitado este correo electrónico, "
-"por favor ignóralo. Si necesitas restablecer tu contraseña, haz clic en el "
-"siguiente enlace y sigue las instrucciones."
+"Alguien, probablemente tú, solicitó la reinicialización de la contraseña en %"
+"(site_name)s. Si no has solicitado este correo-e, ignóralo. Si necesitas "
+"restablecer tu contraseña, introduzca el código a continuación en %"
+"(site_name)s."
 
 #: canaille/templates/core/mails/reset.html:30
 #: canaille/templates/core/mails/reset.txt:5
-#, fuzzy
-#| msgid "Source code"
 msgid "Your code"
-msgstr "Código fuente"
+msgstr "Su código"
 
 #: canaille/templates/core/mails/reset.html:43
 #, python-format
@@ -2875,29 +2859,21 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: canaille/templates/core/modals/delete-credential.html:10
-#, fuzzy
-#| msgid "Delete the client"
 msgid "Delete passkey"
-msgstr "Eliminar el cliente"
+msgstr "Eliminar clave de acceso"
 
 #: canaille/templates/core/modals/delete-credential.html:15
 #, python-format
 msgid "Are you sure you want to delete the passkey \"%(name)s\"?"
-msgstr ""
+msgstr "¿Está seguro que desea borrar la clave de acceso «%(name)s»?"
 
 #: canaille/templates/core/modals/delete-credential.html:19
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to revoke this token? This action is unrevokable."
 msgid "Are you sure you want to delete this passkey?"
-msgstr ""
-"¿Estás seguro de que deseas revocar este token? Esta acción es irrevocable."
+msgstr "¿Seguro que deseas eliminar esta clave de paso?"
 
 #: canaille/templates/core/modals/delete-credential.html:25
-#, fuzzy
-#| msgid "This field cannot be edited"
 msgid "This action cannot be undone."
-msgstr "Este campo no se puede editar"
+msgstr "Esta acción no puede ser deshecha."
 
 #: canaille/templates/core/modals/delete-credential.html:32
 #: canaille/templates/core/modals/reset-fido.html:28
@@ -2919,27 +2895,22 @@ msgstr ""
 "acción es irrevocable y se eliminarán todos los datos sobre este grupo."
 
 #: canaille/templates/core/modals/leave-group.html:9
-#, fuzzy
-#| msgid "Create group"
 msgid "Leave group"
-msgstr "Crear grupo"
+msgstr "Abandonar grupo"
 
 #: canaille/templates/core/modals/leave-group.html:13
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to delete the group \"%(group_name)s\"? This action "
-#| "is unrevokable and all the data about this group will be removed."
+#, python-format
 msgid ""
 "Are you sure you want to leave the group \"%(group_name)s\"? You will no "
 "longer have access to this group unless you are invited again."
 msgstr ""
-"¿Estás seguro de que deseas eliminar el grupo \"%(group_name)s\"? Esta "
-"acción es irrevocable y se eliminarán todos los datos sobre este grupo."
+"¿Seguro que deseas abandonar el grupo «%(group_name)s»? No tendrá acceso por "
+"más tiempo en este grupo a menos que vuelva a ser invitado otra vez."
 
 #: canaille/templates/core/modals/leave-group.html:25
 #: canaille/templates/core/partial/groups.html:41
 msgid "Leave"
-msgstr ""
+msgstr "Abandonar"
 
 #: canaille/templates/core/modals/lock-account.html:9
 msgid "Account locking"
@@ -2986,51 +2957,45 @@ msgid "Remove"
 msgstr "Quitar"
 
 #: canaille/templates/core/modals/reset-fido.html:9
-#, fuzzy
-#| msgid "Password reset"
 msgid "Passkey reset"
-msgstr "Restablecer contraseña"
+msgstr "Restablecer clave de acceso"
 
 #: canaille/templates/core/modals/reset-fido.html:14
-#, fuzzy, python-format
-#| msgid "One-time password authentication reset"
+#, python-format
 msgid "Are you sure you want to remove the passkey for %(user_name)s?"
-msgstr "Restablecer la autenticación de contraseña de un solo uso"
+msgstr "¿Seguro que desea retirar la clave de paso para %(user_name)s?"
 
 #: canaille/templates/core/modals/reset-fido.html:18
-#, fuzzy
-#| msgid "One-time password authentication reset"
 msgid "Are you sure you want to remove your passkey?"
-msgstr "Restablecer la autenticación de contraseña de un solo uso"
+msgstr "¿Seguro que desea quitar su clave de acceso?"
 
 #: canaille/templates/core/modals/reset-otp.html:9
-#, fuzzy
-#| msgid "One-time password authentication reset"
 msgid "One-time passcode authentication reset"
-msgstr "Restablecer la autenticación de contraseña de un solo uso"
+msgstr "Restablecer autenticación de código de acceso de un solo uso"
 
 #: canaille/templates/core/modals/reset-otp.html:14
-#, fuzzy, python-format
-#| msgid "One-time password authentication reset"
+#, python-format
 msgid ""
 "Are you sure you want to reset the authenticator application configuration "
 "for %(user_name)s?"
-msgstr "Restablecer la autenticación de contraseña de un solo uso"
+msgstr ""
+"¿Seguro que desea restablecer la configuración de la aplicación del "
+"autenticador para %(user_name)s?"
 
 #: canaille/templates/core/modals/reset-otp.html:18
-#, fuzzy
-#| msgid "One-time password authentication reset"
 msgid ""
 "Are you sure you want to reset your authenticator application configuration?"
-msgstr "Restablecer la autenticación de contraseña de un solo uso"
+msgstr ""
+"¿Seguro que desea restablecer su configuración de aplicación del "
+"autenticador?"
 
 #: canaille/templates/core/partial/captcha_field.html:30
 msgid "Listen to the audio security code"
-msgstr ""
+msgstr "Listado para el código de seguridad de sonido"
 
 #: canaille/templates/core/partial/captcha_field.html:38
 msgid "Refresh the security code"
-msgstr ""
+msgstr "Refresca el código de seguridad"
 
 #: canaille/templates/core/partial/emails_field.html:9
 msgid "Send a verification email to validate this address."
@@ -3043,10 +3008,8 @@ msgid "This account is locked"
 msgstr "Esta cuenta está bloqueada"
 
 #: canaille/templates/core/partial/group-members.html:46
-#, fuzzy
-#| msgid "Group edition"
 msgid "Group owner"
-msgstr "Editar grupo"
+msgstr "Propietario del grupo"
 
 #: canaille/templates/core/partial/group-members.html:75
 msgid "Groups must have at least one member"
@@ -3087,20 +3050,21 @@ msgid ""
 "button and follow the instructions to get your authenticator application "
 "configured."
 msgstr ""
+"No tiene configurada la aplicación de autenticación. Pulse en el botón "
+"siguiente y siga las instrucciones para obtener su aplicación de "
+"autenticador configurada."
 
 #: canaille/templates/core/sms/sms_otp.txt:1
-#, fuzzy, python-format
-#| msgid ""
-#| "Here is the one-time password you requested for %(website_name)s: %(otp)s"
+#, python-format
 msgid ""
 "Here is the one-time passcode you requested for %(website_name)s: %(otp)s"
 msgstr ""
-"Aquí está la contraseña de un solo uso que solicitó para %(website_name)s: "
-"%(otp)s"
+"Aquí está el código de acceso de un solo uso solicitado para %(website_name)"
+"s: %(otp)s"
 
 #: canaille/templates/macro/form.html:87 canaille/templates/macro/form.html:88
 msgid "Toggle password visibility"
-msgstr ""
+msgstr "Conmuta la visibilidad de la contraseña"
 
 #: canaille/templates/macro/form.html:97
 #: canaille/templates/oidc/client_edit.html:102
@@ -3143,38 +3107,36 @@ msgstr[0] "%(nb_items_formatted)s elemento"
 msgstr[1] "%(nb_items_formatted)s elementos"
 
 #: canaille/templates/oidc/auth.html:37
-#, fuzzy, python-format
-#| msgid "Pre-authorized applications"
+#, python-format
 msgid "Re-authenticate for %(client)s"
-msgstr "Solicitudes previamente autorizadas"
+msgstr "Re‐autenticar para %(client)s"
 
 #: canaille/templates/oidc/auth.html:39
-#, fuzzy, python-format
-#| msgid "Sign in at %(website)s"
+#, python-format
 msgid "Sign in to %(client)s"
-msgstr "Iniciar sesión en %(client)s"
+msgstr "Iniciar sesión a %(client)s"
 
 #: canaille/templates/oidc/auth.html:54
-#, fuzzy, python-format
-#| msgid "The application %(client_name)s wants to disconnect your account."
+#, python-format
 msgid ""
 "The application %(client_name)s requires that you sign in to your "
 "%(website_name)s account."
-msgstr "La aplicación %(client_name)s quiere desconectar tu cuenta."
+msgstr ""
+"La aplicación %(client_name)s requiere que inicie sesión en su cuenta de %"
+"(website_name)s."
 
 #: canaille/templates/oidc/auth.html:64
-#, fuzzy, python-format
-#| msgid "You are already logged in, you cannot create an account."
+#, python-format
 msgid ""
 "You are already logged in, but %(client_name)s is requesting identity "
 "confirmation."
-msgstr "Ya has iniciado sesión, no puedes crear una cuenta."
+msgstr ""
+"Ya has iniciado sesión, pero %(client_name)s está solicitando confirmación "
+"de identidad."
 
 #: canaille/templates/oidc/auth.html:80
-#, fuzzy
-#| msgid "Policy"
 msgid "Privacy policy"
-msgstr "Política"
+msgstr "Normativa de privacidad"
 
 #: canaille/templates/oidc/auth.html:88
 #: canaille/templates/oidc/authorize.html:74
@@ -3189,11 +3151,10 @@ msgid "The application %(name)s is requesting access to:"
 msgstr "La aplicación %(name)s está solicitando acceso a:"
 
 #: canaille/templates/oidc/authorize.html:34
-#, fuzzy, python-format
-#| msgid "The application %(client_name)s wants to disconnect your account."
+#, python-format
 msgid ""
 "The application %(application_name)s does not allow user authentication."
-msgstr "La aplicación %(application_name)s quiere desconectar tu cuenta."
+msgstr "La aplicación %(application_name)s no concede autenticación al usuario."
 
 #: canaille/templates/oidc/authorize.html:39
 #: canaille/templates/oidc/authorize.html:81
@@ -3202,10 +3163,9 @@ msgid "You are logged in as %(name)s"
 msgstr "Ha iniciado sesión como %(name)s"
 
 #: canaille/templates/oidc/authorize.html:61
-#, fuzzy, python-format
-#| msgid "The application %(name)s is requesting access to:"
+#, python-format
 msgid "Read %(application_name)s's privacy policy :"
-msgstr "La aplicación %(application_name)s está solicitando acceso a:"
+msgstr "Lea la normativa de privacidad de %(application_name)s:"
 
 #: canaille/templates/oidc/authorize.html:65
 #: canaille/templates/oidc/consent_list.html:99
@@ -3214,10 +3174,9 @@ msgid "Policy"
 msgstr "Política"
 
 #: canaille/templates/oidc/authorize.html:70
-#, fuzzy, python-format
-#| msgid "The application %(name)s is requesting access to:"
+#, python-format
 msgid "Read %(application_name)s's terms of service :"
-msgstr "La aplicación %(application_name)s está solicitando acceso a:"
+msgstr "Lea los términos del servicio en %(application_name)s:"
 
 #: canaille/templates/oidc/authorize.html:88
 msgid "Deny"
@@ -3234,32 +3193,30 @@ msgstr "Aceptar"
 #: canaille/templates/oidc/client_add.html:20
 #: canaille/templates/oidc/client_add.html:66
 #: canaille/templates/oidc/client_list.html:43
-#, fuzzy
-#| msgid "Add a client"
 msgid "Add an application"
-msgstr "Añadir un cliente"
+msgstr "Añadir una aplicación"
 
 #: canaille/templates/oidc/client_add.html:42
-#, fuzzy
-#| msgid "Registration"
 msgid "Registration token"
-msgstr "Registro"
+msgstr "Vale de registro"
 
 #: canaille/templates/oidc/client_add.html:45
 msgid ""
 "This token can be used to register a new application through the OAuth 2.0 "
 "Dynamic Client Registration Protocol."
 msgstr ""
+"Este vale puede ser utilizado para registrar una aplicación nueva a través "
+"del Protocolo de Registrado de Cliente Dinámico OAuth 2.0."
 
 #: canaille/templates/oidc/client_add.html:46
 #: canaille/templates/oidc/client_edit.html:48
 msgid "Read more…"
-msgstr ""
+msgstr "Leer más…"
 
 #: canaille/templates/oidc/client_add.html:53
 #: canaille/templates/oidc/client_edit.html:55
 msgid "Renew"
-msgstr ""
+msgstr "Renovar"
 
 #: canaille/templates/oidc/client_add.html:73
 msgid "Create"
@@ -3267,31 +3224,31 @@ msgstr "Crear"
 
 #: canaille/templates/oidc/client_edit.html:22
 #: canaille/templates/oidc/client_edit.html:67
-#, fuzzy
-#| msgid "Edit a client"
 msgid "Edit an application"
-msgstr "Editar un cliente"
+msgstr "Edita una aplicación"
 
 #: canaille/templates/oidc/client_edit.html:44
-#, fuzzy
-#| msgid "Refresh token"
 msgid "Management token"
-msgstr "Token de refresco"
+msgstr "Vale de gestión"
 
 #: canaille/templates/oidc/client_edit.html:47
 msgid ""
 "This token can be used to edit the application details through the OAuth 2.0 "
 "Dynamic Client Registration Management Protocol."
 msgstr ""
+"Este vale puede ser utilizado para editar los detalles de la aplicación a "
+"través del Protocolo de Gestión de Registro Cliente Dinámico OAuth 2.0."
 
 #: canaille/templates/oidc/client_edit.html:69
 msgid ""
 "The domain of this application is trusted and thus it bypasses user consent"
 msgstr ""
+"El dominio de esta aplicación está confiada y por tanto sortea el "
+"consentimiento del usuario"
 
 #: canaille/templates/oidc/client_edit.html:71
 msgid "Trusted"
-msgstr ""
+msgstr "Confiado"
 
 #: canaille/templates/oidc/client_edit.html:79
 msgid "ID"
@@ -3306,10 +3263,8 @@ msgid "Issued at"
 msgstr "Incidente en"
 
 #: canaille/templates/oidc/client_edit.html:116
-#, fuzzy
-#| msgid "Access token"
 msgid "New access token"
-msgstr "Token de acceso"
+msgstr "Nuevo vale de acceso"
 
 #: canaille/templates/oidc/client_edit.html:119
 msgid "Delete the client"
@@ -3392,10 +3347,8 @@ msgstr "Detalles del token"
 
 #: canaille/templates/oidc/partial/token_list.html:6
 #: canaille/templates/oidc/token_view.html:48
-#, fuzzy
-#| msgid "Actions"
 msgid "Application"
-msgstr "Acciones"
+msgstr "Aplicación"
 
 #: canaille/templates/oidc/partial/token_list.html:7
 #: canaille/templates/oidc/token_view.html:56
@@ -3455,10 +3408,8 @@ msgstr ""
 
 #: canaille/templates/oidc/trusted_list.html:65
 #: canaille/templates/oidc/trusted_list.html:70
-#, fuzzy
-#| msgid "Pre-authorized applications"
 msgid "Trusted application"
-msgstr "Solicitudes previamente autorizadas"
+msgstr "Aplicación confiada"
 
 #: canaille/templates/oidc/modals/delete-client.html:9
 msgid "Client deletion"
@@ -3497,13 +3448,11 @@ msgstr "Creado"
 
 #: canaille/templates/oidc/partial/client_list.html:17
 msgid "Application logo"
-msgstr ""
+msgstr "Logotipo de aplicación"
 
 #: canaille/templates/oidc/partial/client_list.html:26
-#, fuzzy
-#| msgid "This account is locked"
 msgid "This application is trusted"
-msgstr "Esta cuenta está bloqueada"
+msgstr "Esta aplicación está confiada"
 
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
