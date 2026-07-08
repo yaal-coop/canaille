@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2026-07-03 21:01+0000\n"
+"PO-Revision-Date: 2026-07-09 12:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
 "canaille/es/>\n"
@@ -324,7 +324,7 @@ msgstr "Automático"
 
 #: canaille/core/endpoints/forms.py:160
 msgid "Username"
-msgstr "Nombre de usuario"
+msgstr "Id de usuario"
 
 #: canaille/core/endpoints/forms.py:164 canaille/core/endpoints/forms.py:387
 #: canaille/core/endpoints/forms.py:403 canaille/oidc/endpoints/forms.py:64
@@ -1464,7 +1464,7 @@ msgstr "Código fuente"
 
 #: canaille/templates/core/group.html:24 canaille/templates/core/group.html:46
 msgid "Group creation"
-msgstr "Crear grupo"
+msgstr "Creación de grupo"
 
 #: canaille/templates/core/group.html:26 canaille/templates/core/group.html:48
 msgid "Group edition"
@@ -1876,10 +1876,8 @@ msgstr "Suplantar"
 #: canaille/templates/core/account/auth/fido2.html:39
 #: canaille/templates/core/account/auth/index.html:88
 #: canaille/templates/core/partials/profile_settings_fido.html:10
-#, fuzzy
-#| msgid "Password reset"
 msgid "Passkeys"
-msgstr "Restablecer contraseña"
+msgstr "Clave de acceso"
 
 #: canaille/templates/core/account/auth/fido2.html:49
 #: canaille/templates/core/partials/profile_settings_fido.html:17
@@ -1896,7 +1894,6 @@ msgstr "Claves de permiso pueden ser utilizadas para autenticación."
 
 #: canaille/templates/core/account/auth/fido2.html:60
 #: canaille/templates/core/partials/profile_settings_fido.html:28
-#, fuzzy
 msgid ""
 "As they are unrecoverable in case of loss, it is generally recommended to "
 "register at least one additional backup key."
@@ -2009,22 +2006,16 @@ msgstr "Restablecer"
 
 #: canaille/templates/core/account/auth/password.html:48
 #: canaille/templates/core/partial/profile_settings_password.html:9
-#, fuzzy
-#| msgid ""
-#| "You can change your password here by typing it once it each fields below. "
-#| "The more a password is long, the more it is strong. A good password is a "
-#| "long password that you will remember, not a complicated password that "
-#| "your use for all your accounts."
 msgid ""
 "You can change your password here by typing it once in each field below. The "
 "longer the password, the stronger it is. A good password is a long password "
 "that you will remember, not a complicated password that your use for all "
 "your accounts."
 msgstr ""
-"Puedes cambiar tu contraseña aquí escribiéndola una vez en cada uno de los "
-"campos a continuación. Cuanto más larga es una contraseña, más fuerte es. "
-"Una buena contraseña es una contraseña larga que puedas recordar, no una "
-"contraseña complicada que utilices para todas tus cuentas."
+"Puedes cambiar tu contraseña aquí tecleándola una vez en cada campo debajo. "
+"La contraseña más larga, más fuerte es. Una buena contraseña es una "
+"contraseña larga que puedas recordar, no una contraseña complicada que "
+"utilices para todas tus cuentas."
 
 #: canaille/templates/core/account/auth/password.html:68
 #: canaille/templates/core/account/auth/password.html:89
@@ -2118,10 +2109,8 @@ msgstr ""
 
 #: canaille/templates/core/auth/email.html:42
 #: canaille/templates/core/auth/sms.html:42
-#, fuzzy
-#| msgid "Add another field"
 msgid "Send another code"
-msgstr "Agregar otro campo"
+msgstr "Envía otro código"
 
 #: canaille/templates/core/auth/email.html:45
 #: canaille/templates/core/auth/otp.html:36
@@ -2193,11 +2182,6 @@ msgstr ""
 "correo-e."
 
 #: canaille/templates/core/auth/forgotten-password.html:38
-#, fuzzy
-#| msgid ""
-#| "After this form is sent, if the email address or the login you provided "
-#| "exists, you will receive an email containing a link that will allow you "
-#| "to reset your password."
 msgid ""
 "After this form is sent, if the email address or the login you provided "
 "exists, you will receive an email containing a link or code that will allow "
@@ -2205,7 +2189,8 @@ msgid ""
 msgstr ""
 "Una vez que se envíe este formulario, si la dirección de correo electrónico "
 "o nombre de usuario que has proporcionado existe, recibirás un correo "
-"electrónico con un enlace que te permitirá restablecer la contraseña."
+"electrónico con un enlace o código que te permitirá restablecer la "
+"contraseña."
 
 #: canaille/templates/core/auth/forgotten-password.html:61
 msgid "Send again"
@@ -2326,10 +2311,8 @@ msgstr ""
 "autenticación biométrica."
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:3
-#, fuzzy
-#| msgid "One-time password authentication reset"
 msgid "Authenticator application configuration"
-msgstr "Restablecer la autenticación de contraseña de un solo uso"
+msgstr "Autenticador para configuración de aplicación"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:5
 #, python-format
@@ -2361,10 +2344,8 @@ msgstr ""
 "actualmente en uso, puede configurarlo pulsando en este botón:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:24
-#, fuzzy
-#| msgid "Pre-authorized applications"
 msgid "Open authenticator application"
-msgstr "Solicitudes previamente autorizadas"
+msgstr "Abre la aplicación del autenticador"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:32
 msgid "2 - QR Code scanning"
@@ -2438,7 +2419,7 @@ msgstr "Aplicaciones"
 #: canaille/templates/oidc/token_list.html:38
 #: canaille/templates/oidc/token_view.html:34
 msgid "Tokens"
-msgstr "Tokens"
+msgstr "Vales"
 
 #: canaille/templates/core/mails/admin.html:29
 msgid "Mail sending test"
@@ -2487,7 +2468,7 @@ msgstr "Invitación"
 #: canaille/templates/core/mails/registration.html:19
 #: canaille/templates/core/mails/registration.txt:1
 msgid "Registration"
-msgstr "Registro"
+msgstr "Registrado"
 
 #: canaille/templates/core/mails/admin.html:150
 #: canaille/templates/core/mails/compromised_password_check_failure.html:19
