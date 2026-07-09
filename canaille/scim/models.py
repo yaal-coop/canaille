@@ -4,6 +4,7 @@ from typing import Any
 from typing import ClassVar
 from typing import Union
 
+from flask import current_app
 from flask import url_for
 from pydantic import EmailStr
 from pydantic import Field
@@ -20,6 +21,7 @@ from scim2_models import External
 from scim2_models import Filter
 from scim2_models import Meta
 from scim2_models import Mutability
+from scim2_models import Pagination
 from scim2_models import Patch
 from scim2_models import Reference
 from scim2_models import Required
@@ -248,6 +250,14 @@ def get_service_provider_config():
                 primary=True,
             ),
         ],
+        pagination=Pagination(
+            index=True,
+            cursor=True,
+            default_pagination_method="index",
+            default_page_size=current_app.config["CANAILLE_SCIM"]["DEFAULT_PAGE_SIZE"],
+            max_page_size=current_app.config["CANAILLE_SCIM"]["MAX_PAGE_SIZE"],
+            cursor_timeout=current_app.config["CANAILLE_SCIM"]["CURSOR_TIMEOUT"],
+        ),
     )
 
 

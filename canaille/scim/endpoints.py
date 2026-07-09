@@ -134,30 +134,50 @@ def scim_error_handler(error):
 
 def parse_search_request(request) -> SearchRequest:
     """Create a SearchRequest object from the request arguments."""
-    max_nb_items_per_page = 1000
     count = (
-        min(request.args["count"], max_nb_items_per_page)
+        min(int(request.args["count"]), current_app.config["CANAILLE_SCIM"]["MAX_PAGE_SIZE"])
         if request.args.get("count")
-        else None
+        else current_app.config["CANAILLE_SCIM"]["DEFAULT_PAGE_SIZE"]
     )
     req = SearchRequest(
         attributes=request.args.get("attributes"),
         excluded_attributes=request.args.get("excludedAttributes"),
         start_index=request.args.get("startIndex"),
+        cursor=request.args.get("cursor"),
         count=count,
     )
     return req
 
-
 def _query_resources(canaille_model, scim_type, to_scim):
     req = parse_search_request(request)
     total = Backend.instance.count(canaille_model)
-    resources = list(
-        Backend.instance.query(canaille_model)[req.start_index_0 : req.stop_index_0]
-    )
+    total_resources = list(Backend.instance.query(canaille_model))
+    prev_cursor = None
+    next_cursor = None
+    if req.cursor is not None:
+        if req.cursor == "":
+            start_index = 0
+            prev_cursor = None
+        else:
+            prev_resource = Backend.instance.get(canaille_model, req.cursor)
+            start_index = total_resources.index(prev_resource)
+            prev_cursor = req.cursor
+        
+        stop_index = start_index + req.count
+        resources = total_resources[start_index:stop_index+1]
+
+        if stop_index < total:
+            next_resource = resources.pop()
+            next_cursor = next_resource.id
+        else:
+            next_cursor = None
+    else:
+        resources = total_resources[req.start_index_0 : req.stop_index_0]
     scim_resources = [to_scim(r) for r in resources]
     list_response = ListResponse[scim_type](
         start_index=req.start_index,
+        prev_cursor=prev_cursor or None,
+        next_cursor=next_cursor or None,
         items_per_page=req.count,
         total_results=total,
         resources=scim_resources,
