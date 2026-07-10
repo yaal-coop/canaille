@@ -13,6 +13,8 @@ from flask import abort
 from flask import current_app
 from flask import request
 from pydantic import ValidationError
+from scim2_models import BulkOperation
+from scim2_models import BulkRequest
 from scim2_models import Context
 from scim2_models import Error
 from scim2_models import ListResponse
@@ -179,10 +181,19 @@ def _query_resource(resource, to_scim):
     )
 
 
-def _create_resource(scim_type, canaille_model, to_scim, from_scim):
+def _create_resource(scim_type, canaille_model, to_scim, from_scim, data=None):
     req = ResponseParameters.model_validate(request.args.to_dict())
+    payload = (
+        request.json
+        if data is None
+        else data.model_dump(
+            scim_ctx=Context.RESOURCE_CREATION_REQUEST,
+            attributes=req.attributes,
+            excluded_attributes=req.excluded_attributes,
+        )
+    )
     scim_resource = scim_type.model_validate(
-        request.json, scim_ctx=Context.RESOURCE_CREATION_REQUEST
+        payload, scim_ctx=Context.RESOURCE_CREATION_REQUEST
     )
     resource = from_scim(scim_resource, canaille_model())
     Backend.instance.save(resource)
@@ -380,6 +391,25 @@ def search():
         excluded_attributes=req.excluded_attributes,
     )
     return payload
+
+
+@bp.route("/Bulk", methods=["POST"])
+@csrf.exempt
+@require_oauth()
+@require_permission(Permission.MANAGE_USERS)
+def bulk():
+    req = BulkRequest.model_validate(request.json)
+    for operation in req.operations:
+        if operation.method == BulkOperation.Method.post:
+            if operation.path == "/Users":
+                result = _create_resource(
+                    User[EnterpriseUser],
+                    models.User,
+                    user_from_canaille_to_scim_server,
+                    user_from_scim_to_canaille,
+                    data=operation.data,
+                )
+    return req.model_dump(scim_ctx=Context.RESOURCE_CREATION_RESPONSE)
 
 
 @bp.route("/Users", methods=["POST"])
