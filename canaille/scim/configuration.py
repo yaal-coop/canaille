@@ -13,3 +13,9 @@ class SCIMSettings(BaseModel):
     """Whether the state of :class:`~canaille.core.models.User` and :class:`~canaille.core.models.Group` are broadcasted to clients using the SCIM protocol.
 
     When enabled, any creation, edition or deletion of a client or a group will be replicated on clients that implement the SCIM protocol."""
+
+    BULK_MAX_OPERATIONS: int = 100
+    """Maximum number of operations allowed in a bulk request."""
+
+    BULK_MAX_PAYLOAD_SIZE: int = 1048576
+    """Maximum payload size (in bytes) allowed in a bulk request."""

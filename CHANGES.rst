@@ -7,6 +7,7 @@ Added
 - Uploaded photos are decoded and re-encoded, so their metadata, such as the GPS
   coordinates of smartphone photos, are stripped. They are downscaled to 1024x1024
   and cannot weigh more than 5MB.
+- Support for SCIM bulk operations.
 
 Changed
 ^^^^^^^

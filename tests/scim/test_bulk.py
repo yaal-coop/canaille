@@ -1,0 +1,1144 @@
+from unittest import mock
+
+from scim2_models import BulkOperation
+from scim2_models import BulkRequest
+from scim2_models import Error
+from scim2_models import PatchOp
+from scim2_models import PatchOperation
+
+from canaille.app import models
+
+
+def test_bulk_operation_create_user(backend, scim_client):
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is None
+
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Jones", "family_name": "Jones"},
+                    active=True,
+                ),
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/Alice"
+    assert response.operations[0].status == 201
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    assert alice.user_name == "Alice"
+
+    backend.delete(alice)
+
+
+def test_bulk_operation_create_group(backend, scim_client, user):
+    groupe = backend.get(models.Group, display_name="Le Groupe")
+    assert groupe is None
+
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="qwerty",
+                data=Group(
+                    display_name="Le Groupe",
+                    members=[
+                        Group.Members(
+                            value=user.user_name, ref=f"Users/{user.user_name}"
+                        )
+                    ],
+                ),
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert (
+        response.operations[0].location
+        == "http://canaille.test/scim/v2/Groups/Le Groupe"
+    )
+    assert response.operations[0].status == 201
+
+    groupe = backend.get(models.Group, display_name="Le Groupe")
+    assert groupe is not None
+    assert groupe.display_name == "Le Groupe"
+    assert groupe.members == [user]
+
+    backend.delete(groupe)
+
+
+def test_bulk_operation_create_user_validation_error(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(user_name="Alice"),  # user is missing required fields
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location is None
+
+
+def test_bulk_operation_create_group_validation_error(scim_client):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="qwerty",
+                data=Group(members=[]),  # group is missing display name
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location is None
+
+
+def test_bulk_operation_create_user_database_error(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Jones", "family_name": "Jones"},
+                    active=True,
+                ),
+            ),
+        ]
+    )
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+    assert response.operations[0].status == 500
+    assert response.operations[0].location is None
+
+
+def test_bulk_operation_create_group_database_error(scim_client):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="qwerty",
+                data=Group(
+                    display_name="Le Groupe",
+                    members=[],
+                ),
+            ),
+        ]
+    )
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+    assert response.operations[0].status == 500
+    assert response.operations[0].location is None
+
+
+def test_bulk_operation_replace_user(backend, scim_client, user):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    user_scim = scim_client.query(User, "user")
+    assert user_scim.display_name == "Johnny"
+
+    user_scim.display_name = "Changed"
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Users/user",
+                data=user_scim,
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 200
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+    backend.reload(user)
+    assert user.display_name == "Changed"
+
+
+def test_bulk_operation_replace_user_not_found(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Users/invalid",
+                data=User(
+                    user_name="invalid",
+                ),
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 404
+    assert response.operations[0].response["detail"] == "User not found"
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Users/invalid"
+    )
+
+
+def test_bulk_operation_replace_user_validation_error(scim_client, user):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    user_scim = scim_client.query(User, "user")
+    user_scim.active = None  # user is now missing required field
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(method="PUT", path="/Users/user", data=user_scim),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+
+def test_bulk_operation_replace_user_database_error(scim_client, user):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    user_scim = scim_client.query(User, "user")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(method="PUT", path="/Users/user", data=user_scim),
+        ]
+    )
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+
+def test_bulk_operation_replace_group(backend, scim_client, foo_group, user, admin):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+
+    group_scim = scim_client.query(Group, "foo")
+
+    assert group_scim.members[0].value == "user"
+
+    group_scim.members = [
+        {"value": "admin", "ref": "User/admin"},
+    ]
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Groups/foo",
+                data=group_scim,
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 200
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+    backend.reload(foo_group)
+    assert foo_group.members == [admin]
+
+
+def test_bulk_operation_replace_group_not_found(scim_client):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Groups/invalid",
+                data=Group(
+                    display_name="invalid",
+                ),
+            )
+        ]
+    )
+
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 404
+    assert response.operations[0].response["detail"] == "Group not found"
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Groups/invalid"
+    )
+
+
+def test_bulk_operation_replace_group_validation_error(scim_client, foo_group):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    group_scim = scim_client.query(Group, "foo")
+    group_scim.members = None  # group is now missing required field
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(method="PUT", path="/Groups/foo", data=group_scim),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+
+def test_bulk_operation_replace_group_database_error(scim_client, foo_group):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    group_scim = scim_client.query(Group, "foo")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(method="PUT", path="/Groups/foo", data=group_scim),
+        ]
+    )
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+
+def test_bulk_operation_modify_user(backend, scim_client, user):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    user_scim = scim_client.query(User, "user")
+    assert user_scim.display_name == "Johnny"
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_, path="displayName", value="Updated Display Name"
+    )
+    patch_op = PatchOp[User](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Users/user",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 200
+
+    backend.reload(user)
+    assert user.display_name == "Updated Display Name"
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+
+def test_bulk_operation_modify_user_not_found(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_, path="displayName", value="Updated Display Name"
+    )
+    patch_op = PatchOp[User](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Users/invalid",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Users/invalid"
+    )
+
+
+def test_bulk_operation_modify_user_validation_error(scim_client, user):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    # operations shouldn't be none
+    patch_op = PatchOp[User](operations=None)
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Users/user",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+
+def test_bulk_operation_modify_user_database_error(scim_client, user):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_, path="displayName", value="Updated Display Name"
+    )
+    patch_op = PatchOp[User](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Users/user",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+
+def test_bulk_operation_modify_group(backend, scim_client, foo_group, admin):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+
+    group_scim = scim_client.query(Group, "foo")
+    assert group_scim.members[0].value == "user"
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_,
+        path="members",
+        value=[{"value": "admin", "ref": "Users/admin"}],
+    )
+    patch_op = PatchOp[Group](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Groups/foo",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 200
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+    backend.reload(foo_group)
+    assert foo_group.members == [admin]
+
+
+def test_bulk_operation_modify_group_not_found(scim_client, admin):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_,
+        path="members",
+        value=[{"value": "admin", "ref": "Users/admin"}],
+    )
+    patch_op = PatchOp[Group](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Groups/invalid",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Groups/invalid"
+    )
+
+
+def test_bulk_operation_modify_group_validation_error(scim_client, foo_group):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+
+    # operations shouldn't be none
+    patch_op = PatchOp[Group](operations=None)
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Groups/foo",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+
+def test_bulk_operation_modify_group_database_error(scim_client, foo_group, admin):
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_,
+        path="members",
+        value=[{"value": "admin", "ref": "Users/admin"}],
+    )
+    patch_op = PatchOp[Group](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PATCH",
+                path="/Groups/foo",
+                data=patch_op,
+            ),
+        ]
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+
+def test_bulk_operation_delete_user(backend, scim_client, user):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Users/user",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 204
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+    user = backend.get(models.User, user_name="user")
+    assert user is None
+
+
+def test_bulk_operation_delete_user_not_found(scim_client):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Users/invalid",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Users/invalid"
+    )
+
+
+def test_bulk_operation_delete_user_database_error(scim_client, user):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Users/user",
+            ),
+        ]
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.delete",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+
+def test_bulk_operation_delete_group(backend, scim_client, foo_group):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Groups/foo",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 204
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+    foo_group = backend.get(models.Group, display_name="foo")
+    assert foo_group is None
+
+
+def test_bulk_operation_delete_group_not_found(scim_client):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Groups/invalid",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Groups/invalid"
+    )
+
+
+def test_bulk_operation_delete_group_database_error(scim_client, foo_group):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Groups/foo",
+            ),
+        ]
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.delete",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+
+def test_bulk_operation_stop_after_fail_on_errors_number_reached(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    request = BulkRequest(
+        fail_on_errors=2,
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="firstuser",
+                    name={"formatted": "First User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwertyu",
+                data=User(
+                    user_name="seconduser",
+                    name={"formatted": "Second User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwertyui",
+                data=User(
+                    user_name="thirduser",
+                    name={"formatted": "Third User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert len(response.operations) == 2
+    assert response.operations[0].status == 500
+    assert response.operations[0].bulk_id == "qwerty"
+    assert response.operations[1].status == 500
+    assert response.operations[1].bulk_id == "qwertyu"
+
+
+def test_bulk_too_many_operations(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty1",
+                data=User(
+                    user_name="firstuser",
+                    name={"formatted": "First User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty2",
+                data=User(
+                    user_name="seconduser",
+                    name={"formatted": "Second User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty3",
+                data=User(
+                    user_name="thirduser",
+                    name={"formatted": "Third User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty4",
+                data=User(
+                    user_name="fourthuser",
+                    name={"formatted": "Fourth User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty5",
+                data=User(
+                    user_name="fifthuser",
+                    name={"formatted": "Fifth User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty6",
+                data=User(
+                    user_name="sixthuser",
+                    name={"formatted": "Sixth User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    error = scim_client.bulk(request, raise_scim_errors=False)
+    assert isinstance(error, Error)
+    assert error.status == 413
+    assert (
+        error.detail == "The number of bulk operations exceeds the maxOperations (5)."
+    )
+
+
+def test_bulk_request_payload_too_large(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty1" * 1000,
+                data=User(
+                    user_name="firstuser",
+                    name={"formatted": "First User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    error = scim_client.bulk(request, raise_scim_errors=False)
+    assert isinstance(error, Error)
+    assert error.status == 413
+    assert (
+        error.detail
+        == "The size of the bulk operation exceeds the maxPayloadSize (5000)."
+    )
+
+
+def test_create_group_with_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    response = scim_client.bulk(request)
+    assert response.operations[0].bulk_id == "ytrewq"
+    assert (
+        response.operations[0].location
+        == "http://canaille.test/scim/v2/Groups/Tour Guides"
+    )
+    assert response.operations[1].bulk_id == "qwerty"
+    assert response.operations[1].location == "http://canaille.test/scim/v2/Users/Alice"
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is not None
+    assert tour_guides.members == [alice]
+
+    backend.delete(tour_guides)
+    backend.delete(alice)
+
+
+def test_replace_group_with_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Groups/Tour Guides",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty", ref="Users/Bob")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Bob",
+                    name={"formatted": "Bob Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    bob = backend.get(models.User, user_name="Bob")
+    assert bob is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is not None
+    assert tour_guides.members == [bob]
+
+    backend.delete(tour_guides)
+    backend.delete(alice)
+    backend.delete(bob)
+
+
+def test_replace_group_with_invalid_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Groups/Tour Guides",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:invalid", ref="Users/Bob")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Bob",
+                    name={"formatted": "Bob Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 400
+    assert (
+        response.operations[0].location
+        == "http://canaille.test/scim/v2/Groups/Tour Guides"
+    )
+
+    alice = backend.get(models.User, user_name="Alice")
+    bob = backend.get(models.User, user_name="Bob")
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+
+    backend.delete(tour_guides)
+    backend.delete(alice)
+    backend.delete(bob)
+
+
+def test_modify_group_with_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_,
+        path="members",
+        value=[Group.Members(value="bulkId:qwerty", ref="Users/Bob")],
+    )
+    patch_op = PatchOp[Group](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(method="PATCH", path="/Groups/Tour Guides", data=patch_op),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Bob",
+                    name={"formatted": "Bob Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    bob = backend.get(models.User, user_name="Bob")
+    assert bob is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is not None
+    assert tour_guides.members == [bob]
+
+    backend.delete(tour_guides)
+    backend.delete(alice)
+    backend.delete(bob)
+
+
+def test_create_group_with_invalid_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:invalid", ref="Users/Alice")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location is None
+    assert response.operations[0].response["detail"] == "Could not find bulkId: invalid"
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is None
+
+    backend.delete(alice)
