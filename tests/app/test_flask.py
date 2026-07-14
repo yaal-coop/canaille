@@ -32,6 +32,20 @@ def test_no_redirect_without_server_name(testclient):
     assert res.status_int == 200
 
 
+def test_redirect_to_server_name_neutralizes_crlf_in_path(testclient):
+    """A CRLF injection attempt in the path is neutralized instead of raising.
+
+    Without iri_to_uri the reconstructed URL keeps the raw newline characters,
+    which Werkzeug refuses to put in the Location header, resulting in a 500.
+    """
+    testclient.app.config["SERVER_NAME"] = "canaille.test"
+
+    res = testclient.get("/.env%0d%0a", headers={"Host": "localhost"}, status=302)
+    assert res.location == "http://canaille.test/.env"
+    assert "\r" not in res.location
+    assert "\n" not in res.location
+
+
 def test_non_get_with_wrong_host_returns_400(testclient):
     """Non-GET requests with wrong host return 400 instead of redirect."""
     testclient.app.config["SERVER_NAME"] = "canaille.test"

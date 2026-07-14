@@ -19,6 +19,7 @@ from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import BaseConverter
+from werkzeug.urls import iri_to_uri
 
 from canaille.app.i18n import gettext as _
 from canaille.app.session import _set_login_history_cookie
@@ -244,7 +245,7 @@ def setup_flask(app) -> None:
         if request.query_string:
             url += "?" + request.query_string.decode()
 
-        return redirect(url)
+        return redirect(iri_to_uri(url))
 
     @app.before_request
     def session_setup() -> None:
