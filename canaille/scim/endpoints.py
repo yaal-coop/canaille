@@ -15,6 +15,7 @@ from flask import request
 from pydantic import ValidationError
 from scim2_models import BulkOperation
 from scim2_models import BulkRequest
+from scim2_models import BulkResponse
 from scim2_models import Context
 from scim2_models import Error
 from scim2_models import ListResponse
@@ -183,15 +184,7 @@ def _query_resource(resource, to_scim):
 
 def _create_resource(scim_type, canaille_model, to_scim, from_scim, data=None):
     req = ResponseParameters.model_validate(request.args.to_dict())
-    payload = (
-        request.json
-        if data is None
-        else data.model_dump(
-            scim_ctx=Context.RESOURCE_CREATION_REQUEST,
-            attributes=req.attributes,
-            excluded_attributes=req.excluded_attributes,
-        )
-    )
+    payload = request.json if data is None else data
     scim_resource = scim_type.model_validate(
         payload, scim_ctx=Context.RESOURCE_CREATION_REQUEST
     )
@@ -409,7 +402,13 @@ def bulk():
                     user_from_scim_to_canaille,
                     data=operation.data,
                 )
-    return req.model_dump(scim_ctx=Context.RESOURCE_CREATION_RESPONSE)
+            operation.data = result[0]
+            operation.status = result[1]
+            operation.location = result[0]["meta"]["location"]
+    rep = BulkResponse(
+        operations=req.operations,
+    )
+    return (rep.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE), HTTPStatus.OK)
 
 
 @bp.route("/Users", methods=["POST"])
