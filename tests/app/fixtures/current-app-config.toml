@@ -779,6 +779,22 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # replicated on clients that implement the SCIM protocol.
 # ENABLE_CLIENT = false
 
+# Positive integer value specifying the default number of results returned in a
+# page when a count is not specified in the query.
+# DEFAULT_PAGE_SIZE = 20
+
+# Positive integer specifying the maximum number of results returned in a page
+# regardless of what is specified for the count in a query. The maximum number of
+# results returned may be further restricted by other criteria.
+# MAX_PAGE_SIZE = 100
+
+# Positive integer specifying the minimum number of seconds that a cursor is valid
+# between page requests. Clients waiting too long between cursor pagination
+# requests may receive an invalid cursor error response. No value being specified
+# may mean that there is no cursor timeout or that the cursor timeout is not a
+# static duration.
+# CURSOR_TIMEOUT = 600
+
 [CANAILLE_HYPERCORN]
 # The access log format.
 # ACCESS_LOG_FORMAT =
