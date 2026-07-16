@@ -166,7 +166,7 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
     assert params["error_description"] == ["prompt 'create' value is not supported"]
 
 
-def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
+def test_prompt_create_not_logged(testclient, trusted_client, smtpd, backend):
     """If prompt=create and user is not logged in, then display the registration form.
 
     Check that the user is correctly redirected to the client page after
@@ -226,6 +226,10 @@ def test_prompt_create_not_logged(testclient, trusted_client, smtpd):
     # Return to the client
     res = res.follow()
     assert res.location.startswith(trusted_client.redirect_uris[0])
+
+    user = backend.get(models.User, user_name="newuser")
+    assert user
+    backend.delete(user)
 
 
 def test_prompt_login_logged(testclient, logged_user, client, backend):
