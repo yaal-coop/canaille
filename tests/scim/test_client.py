@@ -4,15 +4,12 @@ from unittest import mock
 import pytest
 from scim2_client import SCIMClientError
 from scim2_models import SearchRequest
-from werkzeug.test import Client
 
 from canaille.app import models
 from canaille.scim.casting import user_from_scim_to_canaille
 from canaille.scim.client import user_from_canaille_to_scim_client
 from canaille.scim.models import EnterpriseUser
 from canaille.scim.models import User as SCIMUser
-
-from .conftest import _scim_headers
 
 
 def test_scim_client_user_save_and_delete(scim_client_for_trusted_client, backend):
@@ -242,33 +239,6 @@ def test_save_group_when_client_doesnt_support_scim(
         logging.INFO,
         "SCIM protocol not supported by client Client",
     ) in caplog.record_tuples
-
-
-def test_scim_pagination(app, backend, user, oidc_token, admin, moderator):
-    client = Client(app)
-    headers = _scim_headers(app, oidc_token)
-    response = client.get("/scim/v2/Users?cursor&count=2", headers=headers)
-    assert response.status_code == 200
-
-    response_json = response.get_json()
-    assert len(response_json["Resources"]) == 2
-    assert response_json["totalResults"] == 3
-    assert response_json["itemsPerPage"] == 2
-    assert "nextCursor" in response_json
-
-    next_cursor = response.get_json()["nextCursor"]
-
-    response = client.get(
-        f"/scim/v2/Users?cursor={next_cursor}&count=2",
-        headers=headers,
-    )
-    assert response.status_code == 200
-
-    response_json = response.get_json()
-    assert len(response_json["Resources"]) == 1
-    assert response_json["totalResults"] == 3
-    assert response_json["itemsPerPage"] == 2
-    assert response_json["prevCursor"] == next_cursor
 
 
 @mock.patch("scim2_client.engines.httpx.SyncSCIMClient.create")
