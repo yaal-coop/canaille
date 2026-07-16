@@ -9,7 +9,7 @@ from canaille.app import models
 Op = PatchOperation.Op
 
 
-def test_bulk(app, backend, scim_client):
+def test_bulk_operation_create_user(backend, scim_client):
     alice = backend.get(models.User, user_name="Alice")
     assert alice is None
 
@@ -38,7 +38,7 @@ def test_bulk(app, backend, scim_client):
     backend.delete(alice)
 
 
-def test_bulk_groups(app, backend, scim_client, user):
+def test_bulk_operation_create_group(backend, scim_client, user):
     groupe = backend.get(models.Group, display_name="Le Groupe")
     assert groupe is None
 
@@ -66,7 +66,7 @@ def test_bulk_groups(app, backend, scim_client, user):
     backend.delete(groupe)
 
 
-def test_bulk_operation_post_validation_error(app, backend, scim_client):
+def test_bulk_operation_post_validation_error(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
     request = BulkRequest(
@@ -83,7 +83,7 @@ def test_bulk_operation_post_validation_error(app, backend, scim_client):
     assert response.operations[0].status == 400
 
 
-def test_bulk_operation_post_database_error(app, backend, scim_client):
+def test_bulk_operation_post_database_error(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
     request = BulkRequest(
@@ -106,3 +106,28 @@ def test_bulk_operation_post_database_error(app, backend, scim_client):
     ):
         response = scim_client.bulk(request)
     assert response.operations[0].status == 500
+
+
+def test_bulk_operation_replace_user(backend, scim_client, user):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    user_scim = scim_client.query(User, "user")
+    assert user_scim.display_name == "Johnny"
+
+    user_scim.display_name = "Changed"
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Users/user",
+                data=user_scim,
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 200
+
+    backend.reload(user)
+    assert user.display_name == "Changed"

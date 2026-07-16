@@ -205,11 +205,12 @@ def _create_resource(scim_type, canaille_model, to_scim, from_scim, data=None):
     )
 
 
-def _replace_resource(resource, scim_type, to_scim, from_scim):
+def _replace_resource(resource, scim_type, to_scim, from_scim, data=None):
     req = ResponseParameters.model_validate(request.args.to_dict())
     original = to_scim(resource)
+    payload = request.json if data is None else data
     scim_resource = scim_type.model_validate(
-        request.json,
+        payload,
         scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
     )
     scim_resource.replace(original)
@@ -393,8 +394,8 @@ def search():
 def bulk():
     req = BulkRequest.model_validate(request.json)
     for operation in req.operations:
-        try:
-            if operation.method == BulkOperation.Method.post:
+        if operation.method == BulkOperation.Method.post:
+            try:
                 if operation.path == "/Users":
                     result = _create_resource(
                         User[EnterpriseUser],
@@ -411,17 +412,52 @@ def bulk():
                         group_from_scim_to_canaille,
                         data=operation.data,
                     )
-            operation.data = result[0]
-            operation.status = result[1]
-            operation.location = result[0]["meta"]["location"]
-        except ValidationError as error:
-            operation.status = HTTPStatus.BAD_REQUEST
-            operation.response = scim_error_handler(error)[0]
-        except Exception as error:
-            operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-            operation.response = Error(
-                detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-            ).model_dump()
+                operation.data = result[0]
+                operation.status = result[1]
+            except ValidationError as error:
+                operation.status = HTTPStatus.BAD_REQUEST
+                operation.response = scim_error_handler(error)[0]
+            except Exception as error:
+                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
+                operation.response = Error(
+                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
+                ).model_dump()
+        elif operation.method == BulkOperation.Method.put:
+            if operation.path == "/Users":
+                user = Backend.instance.get(
+                    models.User, user_name=operation.data["user_name"]
+                )
+                if user:
+                    result = _replace_resource(
+                        user,
+                        User[EnterpriseUser],
+                        user_from_canaille_to_scim_server,
+                        user_from_scim_to_canaille,
+                        data=operation.data,
+                    )
+                else:
+                    operation.status = HTTPStatus.NOT_FOUND
+                    operation.response = Error(
+                        detail="User not found", status=HTTPStatus.NOT_FOUND
+                    ).model_dump()
+            elif operation.path == "/Groups":
+                group = Backend.instance.get(
+                    models.Group, display_name=operation.data["display_name"]
+                )
+                if group:
+                    result = _replace_resource(
+                        group,
+                        Group,
+                        group_from_canaille_to_scim_server,
+                        group_from_scim_to_canaille,
+                        data=operation.data,
+                    )
+                else:
+                    operation.status = HTTPStatus.NOT_FOUND
+                    operation.response = Error(
+                        detail="Group not found", status=HTTPStatus.NOT_FOUND
+                    ).model_dump()
+        operation.location = result[0]["meta"]["location"]
 
     rep = BulkResponse(
         operations=req.operations,
