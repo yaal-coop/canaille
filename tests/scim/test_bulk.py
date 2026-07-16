@@ -29,7 +29,7 @@ def test_bulk(app, backend, scim_client):
             ),
         ]
     )
-    response = scim_client.bulk(request)
+    scim_client.bulk(request)
 
     alice = backend.get(models.User, user_name="Alice")
     assert alice is not None
@@ -38,29 +38,32 @@ def test_bulk(app, backend, scim_client):
     backend.delete(alice)
 
 
-# def test_bulk_groups(app, backend, scim_client):
-#     alice = backend.get(models.User, user_name="Alice")
-#     assert alice is None
+def test_bulk_groups(app, backend, scim_client, user):
+    groupe = backend.get(models.Group, display_name="Le Groupe")
+    assert groupe is None
 
-#     scim_client.discover()
-#     Group = scim_client.get_resource_model("Group")
-#     request = BulkRequest(
-#         operations=[
-#             BulkOperation(
-#                 method="POST",
-#                 path="/Groups",
-#                 bulk_id="qwerty",
-#                 data=Group(display_name="Le Groupe"),
-#             ),
-#         ]
-#     )
-#     response = scim_client.bulk(request)
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
 
-#     # alice = backend.get(models.User, user_name="Alice")
-#     # assert alice is not None
-#     # assert alice.user_name == "Alice"
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="qwerty",
+                data=Group(
+                    display_name="Le Groupe",
+                    members=[{"value": user.id, "ref": "Users/example"}],
+                ),
+            ),
+        ]
+    )
+    scim_client.bulk(request)
+    groupe = backend.get(models.Group, display_name="Le Groupe")
+    assert groupe is not None
+    assert groupe.display_name == "Le Groupe"
 
-#     # backend.delete(alice)
+    backend.delete(groupe)
 
 
 def test_bulk_operation_post_validation_error(app, backend, scim_client):

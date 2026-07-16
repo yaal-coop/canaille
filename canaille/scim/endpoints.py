@@ -403,6 +403,14 @@ def bulk():
                         user_from_scim_to_canaille,
                         data=operation.data,
                     )
+                elif operation.path == "/Groups":
+                    result = _create_resource(
+                        Group,
+                        models.Group,
+                        group_from_canaille_to_scim_server,
+                        group_from_scim_to_canaille,
+                        data=operation.data,
+                    )
             operation.data = result[0]
             operation.status = result[1]
             operation.location = result[0]["meta"]["location"]
