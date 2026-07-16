@@ -1,3 +1,5 @@
+from unittest import mock
+
 from scim2_models import BulkOperation
 from scim2_models import BulkRequest
 from scim2_models import PatchOperation
@@ -59,3 +61,45 @@ def test_bulk(app, backend, scim_client):
 #     # assert alice.user_name == "Alice"
 
 #     # backend.delete(alice)
+
+
+def test_bulk_operation_post_validation_error(app, backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(user_name="Alice"),
+            ),
+        ]
+    )
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+
+
+def test_bulk_operation_post_database_error(app, backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Jones", "family_name": "Jones"},
+                    active=True,
+                ),
+            ),
+        ]
+    )
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+    assert response.operations[0].status == 500

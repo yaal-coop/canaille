@@ -393,18 +393,28 @@ def search():
 def bulk():
     req = BulkRequest.model_validate(request.json)
     for operation in req.operations:
-        if operation.method == BulkOperation.Method.post:
-            if operation.path == "/Users":
-                result = _create_resource(
-                    User[EnterpriseUser],
-                    models.User,
-                    user_from_canaille_to_scim_server,
-                    user_from_scim_to_canaille,
-                    data=operation.data,
-                )
+        try:
+            if operation.method == BulkOperation.Method.post:
+                if operation.path == "/Users":
+                    result = _create_resource(
+                        User[EnterpriseUser],
+                        models.User,
+                        user_from_canaille_to_scim_server,
+                        user_from_scim_to_canaille,
+                        data=operation.data,
+                    )
             operation.data = result[0]
             operation.status = result[1]
             operation.location = result[0]["meta"]["location"]
+        except ValidationError as error:
+            operation.status = HTTPStatus.BAD_REQUEST
+            operation.response = scim_error_handler(error)[0]
+        except Exception as error:
+            operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
+            operation.response = Error(
+                detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
+            ).model_dump()
+
     rep = BulkResponse(
         operations=req.operations,
     )
