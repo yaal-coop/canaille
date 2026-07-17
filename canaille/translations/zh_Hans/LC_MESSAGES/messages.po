@@ -8,8 +8,9 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2026-05-31 15:01+0000\n"
-"Last-Translator: keru zeng <2417640630@qq.com>\n"
+"PO-Revision-Date: 2026-07-18 17:01+0000\n"
+"Last-Translator: reducedradius "
+"<137701630+flytothehighest@users.noreply.github.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/canaille/canaille/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.6.dev0\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 "Generated-By: Babel 2.17.0\n"
 
 #: canaille/app/flask.py:52
@@ -35,11 +36,11 @@ msgstr ""
 
 #: canaille/app/forms.py:30
 msgid "This is not a valid URL"
-msgstr ""
+msgstr "这不是有效的URL"
 
 #: canaille/app/forms.py:37 canaille/app/forms.py:38
 msgid "This value is a duplicate"
-msgstr ""
+msgstr "该值出现重复"
 
 #: canaille/app/forms.py:50
 msgid "Not a valid phone number"
