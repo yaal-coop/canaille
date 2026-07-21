@@ -7,8 +7,6 @@ from scim2_models import PatchOperation
 
 from canaille.app import models
 
-Op = PatchOperation.Op
-
 
 def test_bulk_operation_create_user(backend, scim_client):
     alice = backend.get(models.User, user_name="Alice")
