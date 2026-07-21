@@ -262,6 +262,10 @@ def _delete_resource(resource):
     return "", HTTPStatus.NO_CONTENT
 
 
+def get_resource_location_from_path(path):
+    return f"{request.url_root}scim/v2{path}"
+
+
 @bp.route("/Users", methods=["GET"])
 @csrf.exempt
 @require_oauth()
@@ -395,8 +399,8 @@ def search():
 def bulk():
     req = BulkRequest.model_validate(request.json)
     for operation in req.operations:
-        if operation.method == BulkOperation.Method.post:
-            try:
+        try:
+            if operation.method == BulkOperation.Method.post:
                 if operation.path == "/Users":
                     result = _create_resource(
                         User[EnterpriseUser],
@@ -416,16 +420,7 @@ def bulk():
                 operation.data = result[0]
                 operation.status = result[1]
                 operation.location = result[0]["meta"]["location"]
-            except ValidationError as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = scim_error_handler(error)[0]
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-        elif operation.method == BulkOperation.Method.put:
-            try:
+            elif operation.method == BulkOperation.Method.put:
                 if operation.path.startswith("/Users"):
                     user = Backend.instance.get(
                         models.User, user_name=operation.data["userName"]
@@ -445,7 +440,9 @@ def bulk():
                         operation.response = Error(
                             detail="User not found", status=HTTPStatus.NOT_FOUND
                         ).model_dump()
-                        operation.location = operation.path
+                        operation.location = get_resource_location_from_path(
+                            operation.path
+                        )
                 elif operation.path.startswith("/Groups"):
                     group = Backend.instance.get(
                         models.Group, display_name=operation.data["displayName"]
@@ -465,19 +462,10 @@ def bulk():
                         operation.response = Error(
                             detail="Group not found", status=HTTPStatus.NOT_FOUND
                         ).model_dump()
-                        operation.location = operation.path
-            except ValidationError as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = scim_error_handler(error)[0]
-                operation.location = operation.path
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                operation.location = operation.path
-        elif operation.method == BulkOperation.Method.patch:
-            try:
+                        operation.location = get_resource_location_from_path(
+                            operation.path
+                        )
+            elif operation.method == BulkOperation.Method.patch:
                 if operation.path.startswith("/Users"):
                     id = operation.path.split("/")[-1]
                     user = Backend.instance.get(models.User, user_name=id)
@@ -496,7 +484,9 @@ def bulk():
                         operation.response = Error(
                             detail="User not found", status=HTTPStatus.NOT_FOUND
                         ).model_dump()
-                        operation.location = operation.path
+                        operation.location = get_resource_location_from_path(
+                            operation.path
+                        )
                 elif operation.path.startswith("/Groups"):
                     id = operation.path.split("/")[-1]
                     group = Backend.instance.get(models.Group, display_name=id)
@@ -515,18 +505,51 @@ def bulk():
                         operation.response = Error(
                             detail="Group not found", status=HTTPStatus.NOT_FOUND
                         ).model_dump()
-                        operation.location = operation.path
-            except ValidationError as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = scim_error_handler(error)[0]
-                operation.location = operation.path
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                operation.location = operation.path
-
+                        operation.location = get_resource_location_from_path(
+                            operation.path
+                        )
+            elif operation.method == BulkOperation.Method.delete:
+                if operation.path.startswith("/Users"):
+                    id = operation.path.split("/")[-1]
+                    user = Backend.instance.get(models.User, user_name=id)
+                    if user:
+                        result = _delete_resource(user)
+                        operation.status = result[1]
+                    else:
+                        operation.status = HTTPStatus.NOT_FOUND
+                        operation.response = Error(
+                            detail="User not found", status=HTTPStatus.NOT_FOUND
+                        ).model_dump()
+                elif operation.path.startswith("/Groups"):
+                    id = operation.path.split("/")[-1]
+                    group = Backend.instance.get(models.Group, display_name=id)
+                    if group:
+                        result = _delete_resource(group)
+                        operation.status = result[1]
+                    else:
+                        operation.status = HTTPStatus.NOT_FOUND
+                        operation.response = Error(
+                            detail="Group not found", status=HTTPStatus.NOT_FOUND
+                        ).model_dump()
+                operation.location = get_resource_location_from_path(operation.path)
+        except ValidationError as error:
+            operation.status = HTTPStatus.BAD_REQUEST
+            operation.response = scim_error_handler(error)[0]
+            operation.location = (
+                get_resource_location_from_path(operation.path)
+                if not operation.method == BulkOperation.Method.post
+                else None
+            )
+        except Exception as error:
+            operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
+            operation.response = Error(
+                detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
+            ).model_dump()
+            operation.location = (
+                get_resource_location_from_path(operation.path)
+                if not operation.method == BulkOperation.Method.post
+                else None
+            )
     rep = BulkResponse(
         operations=req.operations,
     )

@@ -90,6 +90,7 @@ def test_bulk_operation_post_validation_error(scim_client):
     )
     response = scim_client.bulk(request)
     assert response.operations[0].status == 400
+    assert response.operations[0].location is None
 
 
 def test_bulk_operation_post_database_error(scim_client):
@@ -115,6 +116,7 @@ def test_bulk_operation_post_database_error(scim_client):
     ):
         response = scim_client.bulk(request)
     assert response.operations[0].status == 500
+    assert response.operations[0].location is None
 
 
 def test_bulk_operation_replace_user(backend, scim_client, user):
@@ -161,6 +163,9 @@ def test_bulk_operation_replace_user_not_found(scim_client):
     response = scim_client.bulk(request)
     assert response.operations[0].status == 404
     assert response.operations[0].response["detail"] == "User not found"
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Users/invalid"
+    )
 
 
 def test_bulk_operation_replace_user_validation_error(scim_client, user):
@@ -176,6 +181,7 @@ def test_bulk_operation_replace_user_validation_error(scim_client, user):
     )
     response = scim_client.bulk(request)
     assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
 
 
 def test_bulk_operation_replace_user_database_error(scim_client, user):
@@ -194,6 +200,7 @@ def test_bulk_operation_replace_user_database_error(scim_client, user):
     ):
         response = scim_client.bulk(request)
     assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
 
 
 def test_bulk_operation_replace_group(backend, scim_client, foo_group, user, admin):
@@ -244,6 +251,9 @@ def test_bulk_operation_replace_group_not_found(scim_client):
     response = scim_client.bulk(request)
     assert response.operations[0].status == 404
     assert response.operations[0].response["detail"] == "Group not found"
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Groups/invalid"
+    )
 
 
 def test_bulk_operation_replace_group_validation_error(scim_client, foo_group):
@@ -259,6 +269,7 @@ def test_bulk_operation_replace_group_validation_error(scim_client, foo_group):
     )
     response = scim_client.bulk(request)
     assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
 
 
 def test_bulk_operation_replace_group_database_error(scim_client, foo_group):
@@ -268,7 +279,7 @@ def test_bulk_operation_replace_group_database_error(scim_client, foo_group):
 
     request = BulkRequest(
         operations=[
-            BulkOperation(method="PUT", path="/Groups/group", data=group_scim),
+            BulkOperation(method="PUT", path="/Groups/foo", data=group_scim),
         ]
     )
     with mock.patch(
@@ -277,6 +288,7 @@ def test_bulk_operation_replace_group_database_error(scim_client, foo_group):
     ):
         response = scim_client.bulk(request)
     assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
 
 
 def test_bulk_operation_modify_user(backend, scim_client, user):
@@ -307,6 +319,7 @@ def test_bulk_operation_modify_user(backend, scim_client, user):
 
     backend.reload(user)
     assert user.display_name == "Updated Display Name"
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
 
 
 def test_bulk_operation_modify_user_not_found(scim_client):
@@ -331,6 +344,9 @@ def test_bulk_operation_modify_user_not_found(scim_client):
     response = scim_client.bulk(request)
 
     assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Users/invalid"
+    )
 
 
 def test_bulk_operation_modify_user_validation_error(scim_client, user):
@@ -352,6 +368,7 @@ def test_bulk_operation_modify_user_validation_error(scim_client, user):
 
     response = scim_client.bulk(request)
     assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
 
 
 def test_bulk_operation_modify_user_database_error(scim_client, user):
@@ -380,6 +397,7 @@ def test_bulk_operation_modify_user_database_error(scim_client, user):
         response = scim_client.bulk(request)
 
     assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
 
 
 def test_bulk_operation_modify_group(backend, scim_client, foo_group, admin):
@@ -409,6 +427,7 @@ def test_bulk_operation_modify_group(backend, scim_client, foo_group, admin):
     response = scim_client.bulk(request)
 
     assert response.operations[0].status == 200
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
     backend.reload(foo_group)
     assert foo_group.members == [admin]
 
@@ -437,6 +456,9 @@ def test_bulk_operation_modify_group_not_found(scim_client, admin):
     response = scim_client.bulk(request)
 
     assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Groups/invalid"
+    )
 
 
 def test_bulk_operation_modify_group_validation_error(scim_client, foo_group):
@@ -458,6 +480,7 @@ def test_bulk_operation_modify_group_validation_error(scim_client, foo_group):
 
     response = scim_client.bulk(request)
     assert response.operations[0].status == 400
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
 
 
 def test_bulk_operation_modify_group_database_error(scim_client, foo_group, admin):
@@ -488,3 +511,130 @@ def test_bulk_operation_modify_group_database_error(scim_client, foo_group, admi
         response = scim_client.bulk(request)
 
     assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+
+def test_bulk_operation_delete_user(backend, scim_client, user):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Users/user",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 204
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+    user = backend.get(models.User, user_name="user")
+    assert user is None
+
+
+def test_bulk_operation_delete_user_not_found(scim_client):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Users/invalid",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Users/invalid"
+    )
+
+
+def test_bulk_operation_delete_user_database_error(scim_client, user):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Users/user",
+            ),
+        ]
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.delete",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/user"
+
+
+def test_bulk_operation_delete_group(backend, scim_client, foo_group):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Groups/foo",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 204
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+    foo_group = backend.get(models.Group, display_name="foo")
+    assert foo_group is None
+
+
+def test_bulk_operation_delete_group_not_found(scim_client):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Groups/invalid",
+            ),
+        ]
+    )
+
+    response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 404
+    assert (
+        response.operations[0].location == "http://canaille.test/scim/v2/Groups/invalid"
+    )
+
+
+def test_bulk_operation_delete_group_database_error(scim_client, foo_group):
+    scim_client.discover()
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="DELETE",
+                path="/Groups/foo",
+            ),
+        ]
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.delete",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert response.operations[0].status == 500
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
