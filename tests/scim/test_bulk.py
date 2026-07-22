@@ -2,6 +2,7 @@ from unittest import mock
 
 from scim2_models import BulkOperation
 from scim2_models import BulkRequest
+from scim2_models import Error
 from scim2_models import PatchOp
 from scim2_models import PatchOperation
 
@@ -689,3 +690,108 @@ def test_bulk_operation_stop_after_fail_on_errors_number_reached(scim_client):
     assert response.operations[0].bulk_id == "qwerty"
     assert response.operations[1].status == 500
     assert response.operations[1].bulk_id == "qwertyu"
+
+
+def test_bulk_too_many_operations(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty1",
+                data=User(
+                    user_name="firstuser",
+                    name={"formatted": "First User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty2",
+                data=User(
+                    user_name="seconduser",
+                    name={"formatted": "Second User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty3",
+                data=User(
+                    user_name="thirduser",
+                    name={"formatted": "Third User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty4",
+                data=User(
+                    user_name="fourthuser",
+                    name={"formatted": "Fourth User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty5",
+                data=User(
+                    user_name="fifthuser",
+                    name={"formatted": "Fifth User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty6",
+                data=User(
+                    user_name="sixthuser",
+                    name={"formatted": "Sixth User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    error = scim_client.bulk(request, raise_scim_errors=False)
+    assert isinstance(error, Error)
+    assert error.status == 413
+    assert (
+        error.detail == "The number of bulk operations exceeds the maxOperations (5)."
+    )
+
+
+def test_bulk_request_payload_too_large(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty1" * 1000,
+                data=User(
+                    user_name="firstuser",
+                    name={"formatted": "First User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    error = scim_client.bulk(request, raise_scim_errors=False)
+    assert isinstance(error, Error)
+    assert error.status == 413
+    assert (
+        error.detail
+        == "The size of the bulk operation exceeds the maxPayloadSize (5000)."
+    )

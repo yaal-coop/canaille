@@ -61,6 +61,19 @@ configuration parameter must be enabled.
    [CANAILLE_SCIM]
    ENABLE_CLIENT = true
 
+The Canaille SCIM server supports :rfc:`bulk operations <7644#section-3.7>`.
+The following configuration parameters can be specified regarding bulk operations:
+
+.. code-block:: toml
+
+   ...
+   [CANAILLE_SCIM]
+   # Maximum number of operations allowed in a bulk request
+   BULK_MAX_OPERATIONS = 100
+   # Maximum payload size (in bytes) allowed in a bulk request
+   BULK_MAX_PAYLOAD_SIZE = 1048576
+
+
 Implementation details
 ======================
 

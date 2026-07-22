@@ -397,7 +397,29 @@ def search():
 @require_oauth()
 @require_permission(Permission.MANAGE_USERS)
 def bulk():
+    if (
+        int(request.headers.get("Content-Length"))
+        > current_app.config["CANAILLE_SCIM"]["BULK_MAX_PAYLOAD_SIZE"]
+    ):
+        return (
+            Error(
+                detail=f"The size of the bulk operation exceeds the maxPayloadSize ({current_app.config['CANAILLE_SCIM']['BULK_MAX_PAYLOAD_SIZE']}).",
+                status=HTTPStatus.CONTENT_TOO_LARGE,
+            ).model_dump(),
+            HTTPStatus.CONTENT_TOO_LARGE,
+        )
+
     req = BulkRequest.model_validate(request.json)
+
+    if len(req.operations) > current_app.config["CANAILLE_SCIM"]["BULK_MAX_OPERATIONS"]:
+        return (
+            Error(
+                detail=f"The number of bulk operations exceeds the maxOperations ({current_app.config['CANAILLE_SCIM']['BULK_MAX_OPERATIONS']}).",
+                status=HTTPStatus.CONTENT_TOO_LARGE,
+            ).model_dump(),
+            HTTPStatus.CONTENT_TOO_LARGE,
+        )
+
     error_count = 0
     processed_operations = []
     for operation in req.operations:

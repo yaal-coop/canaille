@@ -4,6 +4,7 @@ from typing import Any
 from typing import ClassVar
 from typing import Union
 
+from flask import current_app
 from flask import url_for
 from pydantic import EmailStr
 from pydantic import Field
@@ -233,7 +234,13 @@ def get_service_provider_config():
         ),
         documentation_uri=DOCUMENTATION_URL,
         patch=Patch(supported=True),
-        bulk=Bulk(supported=False, max_operations=0, max_payload_size=0),
+        bulk=Bulk(
+            supported=True,
+            max_operations=current_app.config["CANAILLE_SCIM"]["BULK_MAX_OPERATIONS"],
+            max_payload_size=current_app.config["CANAILLE_SCIM"][
+                "BULK_MAX_PAYLOAD_SIZE"
+            ],
+        ),
         change_password=ChangePassword(supported=True),
         filter=Filter(supported=False, max_results=0),
         sort=Sort(supported=False),
