@@ -121,7 +121,7 @@ def okp(crv: str, output_format: OutputFormat):
     _print_key(key, output_format)
 
 
-@jwk.command()
+@jwk.command(context_settings={"ignore_unknown_options": True})
 @click.argument("kid", required=False)
 @click.option(
     "--format",

@@ -219,6 +219,18 @@ def test_export_symmetric_kid(cli_runner, app):
     assert "symmetric" in res.output
 
 
+def test_export_kid_starting_with_dash(cli_runner, app):
+    """A KID starting with '-' is not mistaken for a command line option."""
+    key = jwk.generate_key("RSA", 1024)
+    key_dict = key.as_dict(private=True)
+    key_dict["kid"] = "-dash-kid"
+    app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"].append(key_dict)
+
+    res = cli_runner.invoke(cli, ["jwk", "export", "-dash-kid"], catch_exceptions=False)
+    assert res.exit_code == 0, res.output
+    assert json.loads(res.stdout)["kid"] == "-dash-kid"
+
+
 def test_export_matches_signing_key(cli_runner, app):
     """The exported (kid, alg) match what the provider actually signs with."""
     res = cli_runner.invoke(cli, ["jwk", "export"], catch_exceptions=False)
