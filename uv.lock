@@ -254,7 +254,6 @@ front = [
     { name = "flask-themer" },
     { name = "isodate" },
     { name = "pytz" },
-    { name = "tomlkit" },
     { name = "zxcvbn-rs-py" },
 ]
 ldap = [
@@ -272,6 +271,7 @@ mysql = [
 oidc = [
     { name = "authlib" },
     { name = "joserfc" },
+    { name = "tomlkit" },
 ]
 otp = [
     { name = "otpauth" },
@@ -436,7 +436,7 @@ requires-dist = [
     { name = "sqlalchemy-utils", marker = "extra == 'mysql'", specifier = ">=0.41.1" },
     { name = "sqlalchemy-utils", marker = "extra == 'postgresql'", specifier = ">=0.41.1" },
     { name = "sqlalchemy-utils", marker = "extra == 'sqlite'", specifier = ">=0.41.1" },
-    { name = "tomlkit", marker = "extra == 'front'", specifier = ">=0.13.2" },
+    { name = "tomlkit", marker = "extra == 'oidc'", specifier = ">=0.13.2" },
     { name = "tomlkit", marker = "extra == 'server'", specifier = ">=0.13.2" },
     { name = "webauthn", marker = "extra == 'fido'", specifier = ">=2.7.0" },
     { name = "wtforms", specifier = ">=3.3.0b2" },

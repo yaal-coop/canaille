@@ -52,13 +52,13 @@ front = [
     "flask-themer >= 2.0.0",
     "isodate>=0.7.2",
     "pytz >= 2022.7",
-    "tomlkit>=0.13.2",
     "zxcvbn-rs-py >= 0.3.0",
 ]
 
 oidc = [
     "authlib >= 1.7.0",
     "joserfc >= 1.6.0",
+    "tomlkit>=0.13.2",
 ]
 
 scim = [

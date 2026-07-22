@@ -1,3 +1,10 @@
+[0.3.4] - Unreleased
+--------------------
+
+Fixed
+^^^^^
+- move tomlkit dependency from the front to the oidc extra
+
 [0.3.3] - 2026-07-01
 --------------------
 
