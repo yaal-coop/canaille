@@ -636,3 +636,56 @@ def test_bulk_operation_delete_group_database_error(scim_client, foo_group):
 
     assert response.operations[0].status == 500
     assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
+
+
+def test_bulk_operation_stop_after_fail_on_errors_number_reached(scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+
+    request = BulkRequest(
+        fail_on_errors=2,
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="firstuser",
+                    name={"formatted": "First User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwertyu",
+                data=User(
+                    user_name="seconduser",
+                    name={"formatted": "Second User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwertyui",
+                data=User(
+                    user_name="thirduser",
+                    name={"formatted": "Third User", "family_name": "User"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = scim_client.bulk(request)
+
+    assert len(response.operations) == 2
+    assert response.operations[0].status == 500
+    assert response.operations[0].bulk_id == "qwerty"
+    assert response.operations[1].status == 500
+    assert response.operations[1].bulk_id == "qwertyu"

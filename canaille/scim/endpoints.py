@@ -398,6 +398,8 @@ def search():
 @require_permission(Permission.MANAGE_USERS)
 def bulk():
     req = BulkRequest.model_validate(request.json)
+    error_count = 0
+    processed_operations = []
     for operation in req.operations:
         try:
             if operation.method == BulkOperation.Method.post:
@@ -443,6 +445,7 @@ def bulk():
                         operation.location = get_resource_location_from_path(
                             operation.path
                         )
+                        error_count += 1
                 elif operation.path.startswith("/Groups"):
                     group = Backend.instance.get(
                         models.Group, display_name=operation.data["displayName"]
@@ -465,6 +468,7 @@ def bulk():
                         operation.location = get_resource_location_from_path(
                             operation.path
                         )
+                        error_count += 1
             elif operation.method == BulkOperation.Method.patch:
                 if operation.path.startswith("/Users"):
                     id = operation.path.split("/")[-1]
@@ -487,6 +491,7 @@ def bulk():
                         operation.location = get_resource_location_from_path(
                             operation.path
                         )
+                        error_count += 1
                 elif operation.path.startswith("/Groups"):
                     id = operation.path.split("/")[-1]
                     group = Backend.instance.get(models.Group, display_name=id)
@@ -508,6 +513,7 @@ def bulk():
                         operation.location = get_resource_location_from_path(
                             operation.path
                         )
+                        error_count += 1
             elif operation.method == BulkOperation.Method.delete:
                 if operation.path.startswith("/Users"):
                     id = operation.path.split("/")[-1]
@@ -520,6 +526,7 @@ def bulk():
                         operation.response = Error(
                             detail="User not found", status=HTTPStatus.NOT_FOUND
                         ).model_dump()
+                        error_count += 1
                 elif operation.path.startswith("/Groups"):
                     id = operation.path.split("/")[-1]
                     group = Backend.instance.get(models.Group, display_name=id)
@@ -531,6 +538,7 @@ def bulk():
                         operation.response = Error(
                             detail="Group not found", status=HTTPStatus.NOT_FOUND
                         ).model_dump()
+                        error_count += 1
                 operation.location = get_resource_location_from_path(operation.path)
         except ValidationError as error:
             operation.status = HTTPStatus.BAD_REQUEST
@@ -540,6 +548,7 @@ def bulk():
                 if not operation.method == BulkOperation.Method.post
                 else None
             )
+            error_count += 1
         except Exception as error:
             operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
             operation.response = Error(
@@ -550,9 +559,12 @@ def bulk():
                 if not operation.method == BulkOperation.Method.post
                 else None
             )
-    rep = BulkResponse(
-        operations=req.operations,
-    )
+            error_count += 1
+        processed_operations.append(operation)
+        if req.fail_on_errors and error_count >= req.fail_on_errors:
+            break
+
+    rep = BulkResponse(operations=processed_operations)
     return (rep.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE), HTTPStatus.OK)
 
 
