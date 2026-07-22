@@ -1,6 +1,10 @@
 [0.3.4] - Unreleased
 --------------------
 
+Added
+^^^^^
+- ``canaille jwk export`` command to export the public part of the server signing keys, as JSON metadata or as PEM, for external JWT validators that verify tokens locally.
+
 Fixed
 ^^^^^
 - move tomlkit dependency from the front to the oidc extra

@@ -38,8 +38,8 @@ def with_backendcontext(func):
 def install(ctx):
     """Installs canaille elements from the configuration.
 
-    For instance, depending on the configuration, this can generate OIDC
-    keys or install LDAP schemas.
+    For instance, depending on the configuration and the backend, this can
+    install the LDAP schemas or initialize the SQL database.
     """
     from canaille.app.installation import install
 
