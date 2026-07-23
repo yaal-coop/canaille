@@ -55,7 +55,7 @@ def test_bulk_operation_create_group(backend, scim_client, user):
                 bulk_id="qwerty",
                 data=Group(
                     display_name="Le Groupe",
-                    members=[{"value": user.id, "ref": "Users/example"}],
+                    members=[Group.Members(value=user.user_name)],
                 ),
             ),
         ]
@@ -70,6 +70,7 @@ def test_bulk_operation_create_group(backend, scim_client, user):
     groupe = backend.get(models.Group, display_name="Le Groupe")
     assert groupe is not None
     assert groupe.display_name == "Le Groupe"
+    assert groupe.members == [user]
 
     backend.delete(groupe)
 
@@ -795,3 +796,51 @@ def test_bulk_request_payload_too_large(scim_client):
         error.detail
         == "The size of the bulk operation exceeds the maxPayloadSize (5000)."
     )
+
+
+def test_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty")],
+                ),
+            ),
+        ],
+    )
+
+    response = scim_client.bulk(request)
+    assert response.operations[0].bulk_id == "qwerty"
+    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/Alice"
+    assert response.operations[1].bulk_id == "ytrewq"
+    assert (
+        response.operations[1].location
+        == "http://canaille.test/scim/v2/Groups/Tour Guides"
+    )
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is not None
+    assert tour_guides.members == [alice]
+
+    backend.delete(alice)
+    backend.delete(tour_guides)
