@@ -807,21 +807,21 @@ def test_bulk_id(backend, scim_client):
         operations=[
             BulkOperation(
                 method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
                 path="/Users",
                 bulk_id="qwerty",
                 data=User(
                     user_name="Alice",
                     name={"formatted": "Alice Example", "family_name": "Example"},
                     active=True,
-                ),
-            ),
-            BulkOperation(
-                method="POST",
-                path="/Groups",
-                bulk_id="ytrewq",
-                data=Group(
-                    display_name="Tour Guides",
-                    members=[Group.Members(value="bulkId:qwerty")],
                 ),
             ),
         ],
@@ -842,5 +842,5 @@ def test_bulk_id(backend, scim_client):
     assert tour_guides is not None
     assert tour_guides.members == [alice]
 
-    backend.delete(alice)
     backend.delete(tour_guides)
+    backend.delete(alice)
