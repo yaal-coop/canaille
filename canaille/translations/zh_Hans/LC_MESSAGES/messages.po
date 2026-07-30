@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-01-09 13:20+0100\n"
-"PO-Revision-Date: 2026-07-18 17:01+0000\n"
+"PO-Revision-Date: 2026-07-31 07:01+0000\n"
 "Last-Translator: reducedradius "
 "<137701630+flytothehighest@users.noreply.github.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
@@ -44,7 +44,7 @@ msgstr "该值出现重复"
 
 #: canaille/app/forms.py:50
 msgid "Not a valid phone number"
-msgstr ""
+msgstr "不是有效的手机号"
 
 #: canaille/app/forms.py:59
 #, python-brace-format
