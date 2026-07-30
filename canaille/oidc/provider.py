@@ -479,9 +479,14 @@ class ClientManagementMixin:
                 kwargs["client_id_issued_at"], datetime.timezone.utc
             )
 
+        # RFC7591 uses 0 to tell that the secret never expires, and not the epoch.
         if "client_secret_expires_at" in kwargs:
-            kwargs["client_secret_expires_at"] = datetime.datetime.fromtimestamp(
-                kwargs["client_secret_expires_at"], datetime.timezone.utc
+            kwargs["client_secret_expires_at"] = (
+                datetime.datetime.fromtimestamp(
+                    kwargs["client_secret_expires_at"], datetime.timezone.utc
+                )
+                if kwargs["client_secret_expires_at"]
+                else None
             )
 
         if "jwks" in kwargs:

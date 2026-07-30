@@ -485,7 +485,6 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
             "https://client.test/request_objects_1",
             "https://client.test/request_objects_2",
         ],
-        "client_secret_expires_at": 0,
         "scope": "openid",
         "require_signed_request_object": True,
     }
@@ -498,6 +497,7 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
         "client_id": client_id,
         "client_secret": created_client.client_secret,
         "client_id_issued_at": mock.ANY,
+        "client_secret_expires_at": 0,
         "registration_access_token": mock.ANY,
         "registration_client_uri": f"http://canaille.test/oauth/register/{client_id}",
         **payload,
@@ -507,13 +507,11 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
     for key, payload_value in payload.items():
         client_value = getattr(client, key)
 
-        if isinstance(client_value, datetime):
-            client_value = client_value.timestamp()
-
         if key == "scope":
             client_value = " ".join(client_value)
 
         assert client_value == payload_value
+    assert client.client_secret_expires_at is None
     backend.delete(client)
 
 
@@ -674,6 +672,24 @@ def test_client_registration_with_existing_client_id(testclient, backend, client
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
     assert res.json["error"] == "access_denied"
+
+
+def test_client_registration_secret_never_expires(testclient, backend):
+    """A 0 client_secret_expires_at means the secret never expires, not the epoch."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "My Example Client",
+    }
+
+    res = testclient.post_json("/oauth/register", payload, status=201)
+
+    assert res.json["client_secret_expires_at"] == 0
+    client = backend.get(models.Client, client_id=res.json["client_id"])
+    assert client.client_secret_expires_at is None
+
+    backend.delete(client)
 
 
 def test_client_registration_internal_error_returns_json(testclient, backend):
