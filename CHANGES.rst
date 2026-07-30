@@ -1,3 +1,10 @@
+[0.3.5] - Unreleased
+--------------------
+
+Fixed
+^^^^^
+- Server signing keys are imported once instead of at every use, which made pages and endpoints reading them slow with large RSA keys.
+
 [0.3.4] - 2026-07-22
 --------------------
 

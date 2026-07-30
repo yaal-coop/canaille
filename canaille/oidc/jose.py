@@ -51,18 +51,31 @@ def get_alg_for_key(key):
     return registry.guess_algorithm(key, registry.Strategy.SECURITY).name
 
 
+def import_server_key(key):
+    """Import a key from the server configuration, and cache the result.
+
+    Importing a private RSA key makes the cryptography library check the key
+    primes, which takes hundreds of milliseconds for a 4096 bits key, so the
+    imported keys are memoized for the lifetime of the application.
+    """
+    cache = current_app.extensions.setdefault("canaille_oidc_server_keys", {})
+    cache_key = (
+        key if isinstance(key, str) else json.dumps(key, sort_keys=True, default=str)
+    )
+    if cache_key not in cache:
+        key_obj = jwk.import_key(key)
+        key_obj.ensure_kid()
+        cache[cache_key] = key_obj
+
+    return cache[cache_key]
+
+
 def server_jwks(include_inactive=True):
     keys = list(current_app.config["CANAILLE_OIDC"]["ACTIVE_JWKS"])
     if include_inactive and current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"]:
         keys += list(current_app.config["CANAILLE_OIDC"]["INACTIVE_JWKS"])
 
-    key_objs = []
-    for key in keys:
-        key_objs.append(jwk.import_key(key))
-
-    for obj in key_objs:
-        obj.ensure_kid()
-    return jwk.KeySet(key_objs)
+    return jwk.KeySet([import_server_key(key) for key in keys])
 
 
 def supported_signing_algorithms():

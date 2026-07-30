@@ -11,7 +11,8 @@ from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
-from canaille.oidc.metadata import openid_configuration
+from canaille.oidc.jose import supported_signing_algorithms
+from canaille.oidc.jose import supported_verification_algorithms
 
 
 class AuthorizeForm(Form):
@@ -43,11 +44,8 @@ def _client_audiences():
     ]
 
 
-def _get_algorithm_choices(metadata_key, include_empty=True):
-    """Extract algorithm choices from metadata."""
-    metadata = openid_configuration()
-    algorithms = metadata.get(metadata_key) or []
-
+def _get_algorithm_choices(algorithms, include_empty=True):
+    """Build the choices for a JWS algorithm field."""
     choices = []
     if include_empty:
         choices.append(wtforms.SelectChoice(value="", label=_("None")))
@@ -259,7 +257,7 @@ class ClientEditForm(ClientAddForm):
         _("Token endpoint authentication signing algorithm"),
         validators=[wtforms.validators.Optional()],
         choices=lambda: _get_algorithm_choices(
-            "token_endpoint_auth_signing_alg_values_supported"
+            supported_verification_algorithms(excluded=["none"])
         ),
         description=_(
             "JWS algorithm that must be used for signing the JWT used to authenticate the client at the token endpoint for the private_key_jwt and client_secret_jwt authentication methods."
@@ -305,7 +303,7 @@ class ClientEditForm(ClientAddForm):
         _("ID Token signed response algorithm"),
         validators=[wtforms.validators.Optional()],
         choices=lambda: _get_algorithm_choices(
-            "id_token_signing_alg_values_supported", include_empty=False
+            supported_signing_algorithms(), include_empty=False
         ),
         default="RS256",
         description=_(
@@ -316,7 +314,7 @@ class ClientEditForm(ClientAddForm):
     userinfo_signed_response_alg = wtforms.SelectField(
         _("UserInfo signed response algorithm"),
         validators=[wtforms.validators.Optional()],
-        choices=lambda: _get_algorithm_choices("userinfo_signing_alg_values_supported"),
+        choices=lambda: _get_algorithm_choices(supported_signing_algorithms()),
         description=_(
             "JWS algorithm required for signing UserInfo responses. If specified, the response will be JWT serialized and signed using JWS. If omitted, the UserInfo response will return the claims as a UTF-8 encoded JSON object using the application/json content-type."
         ),
@@ -367,9 +365,7 @@ class ClientEditForm(ClientAddForm):
     request_object_signing_alg = wtforms.SelectField(
         _("Request object signing algorithm"),
         validators=[wtforms.validators.Optional()],
-        choices=lambda: _get_algorithm_choices(
-            "request_object_signing_alg_values_supported"
-        ),
+        choices=lambda: _get_algorithm_choices(supported_verification_algorithms()),
         description=_(
             "JWS algorithm that must be used for signing request objects sent to the OP. All request objects from this client must be rejected if not signed with this algorithm. This algorithm must be used both when the request object is passed by value (using the request parameter) and when it is passed by reference (using the request_uri parameter)."
         ),
