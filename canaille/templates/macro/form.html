@@ -179,9 +179,11 @@ del_button=false
 
 {%- endmacro %}
 
-{% macro render_fields(form) %}
+{% macro render_fields(form, exclude=[]) %}
     {% for field in form %}
-        {{ render_field(field) }}
+        {% if field.name not in exclude %}
+            {{ render_field(field) }}
+        {% endif %}
     {% endfor %}
 {% endmacro %}
 

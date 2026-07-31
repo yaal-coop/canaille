@@ -1,6 +1,11 @@
 [0.3.6] - Unreleased
 --------------------
 
+Added
+^^^^^
+- Client secret expiration dates are displayed and editable in the client administration page. Clients cannot authenticate with an expired secret anymore.
+- Client secrets can be renewed from the client administration page.
+
 Fixed
 ^^^^^
 - Dynamically registered clients had their ``client_secret_expires_at`` set to 1970-01-01 instead of being left empty.

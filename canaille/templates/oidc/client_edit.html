@@ -71,6 +71,12 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
                     {% trans %}Trusted{% endtrans %}
                 </span>
             {% endif %}
+            {% if client.secret_expired %}
+                <span class="ui red label" title="{% trans %}This application cannot authenticate anymore until its secret is renewed{% endtrans %}">
+                    <i class="exclamation triangle icon"></i>
+                    {% trans %}Expired secret{% endtrans %}
+                </span>
+            {% endif %}
         </h2>
 
         <div class="ui form">
@@ -80,16 +86,6 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
                     <div class="ui fluid action input">
                         <input type="text" value="{{ client.client_id }}" readonly class="copy-text" id="client-id" data-copy="client-id" name="client_id">
                         <button type="button" class="ui primary right labeled icon button copy-button" data-copy="client-id">
-                            <i class="copy icon"></i>
-                            {% trans %}Copy{% endtrans %}
-                        </button>
-                    </div>
-                </div>
-                <div class="field">
-                    <label>{% trans %}Secret{% endtrans %}</label>
-                    <div class="ui fluid action input">
-                        <input type="text" value="{{ client.client_secret }}" readonly class="copy-text" id="client-secret" data-copy="client-secret" name="client_secret">
-                        <button type="button" class="ui primary right labeled icon button copy-button" data-copy="client-secret">
                             <i class="copy icon"></i>
                             {% trans %}Copy{% endtrans %}
                         </button>
@@ -108,7 +104,22 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
         </div>
 
         {% call fui.render_form(form) %}
-            {{ fui.render_fields(form) }}
+            <div class="field">
+                <label>{% trans %}Secret{% endtrans %}</label>
+                <div class="ui fluid action input">
+                    <input type="text" value="{{ client.client_secret }}" readonly class="copy-text" id="client-secret" data-copy="client-secret">
+                    <button type="submit" class="ui teal right labeled icon button" name="action" value="new-client-secret" id="new-client-secret" formnovalidate>
+                        <i class="redo icon"></i>
+                        {% trans %}Renew{% endtrans %}
+                    </button>
+                    <button type="button" class="ui primary right labeled icon button copy-button" data-copy="client-secret">
+                        <i class="copy icon"></i>
+                        {% trans %}Copy{% endtrans %}
+                    </button>
+                </div>
+            </div>
+            {{ fui.render_field(form.client_secret_expires_at) }}
+            {{ fui.render_fields(form, exclude=["client_secret_expires_at"]) }}
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">

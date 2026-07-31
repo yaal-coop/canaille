@@ -25,6 +25,9 @@
                     {% if client.trusted %}
                         <i class="small teal shield alternate icon" title="{% trans %}This application is trusted{% endtrans %}"></i>
                     {% endif %}
+                    {% if client.secret_expired %}
+                        <i class="small red exclamation triangle icon" title="{% trans %}The secret of this application has expired{% endtrans %}"></i>
+                    {% endif %}
                 </td>
                 <td>
                     {% if client.client_uri %}
