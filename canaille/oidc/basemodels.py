@@ -71,6 +71,19 @@ class Client(Model):
     expiration.
     """
 
+    @property
+    def secret_expired(self) -> bool:
+        """Whether the client secret has expired.
+
+        Clients with an expired secret cannot authenticate anymore with the
+        ``client_secret_basic`` and ``client_secret_post`` methods.
+        """
+        return (
+            self.client_secret_expires_at is not None
+            and self.client_secret_expires_at
+            < datetime.datetime.now(datetime.timezone.utc)
+        )
+
     redirect_uris: list[str] = []
     """Array of redirection URI strings for use in redirect-based flows such as
     the authorization code and implicit flows.

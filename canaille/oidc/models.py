@@ -6,6 +6,7 @@ from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
 from authlib.oidc.core import AuthorizationCodeMixin
 from blinker import signal
+from flask import current_app
 
 from canaille.app import models
 from canaille.backends import Backend
@@ -90,6 +91,13 @@ class Client(BaseClient, ClientMixin):
         return redirect_uri in self.redirect_uris
 
     def check_client_secret(self, client_secret: str) -> bool:
+        if self.secret_expired:
+            current_app.logger.security(
+                f"Client {self.client_id} authentication attempt with a secret "
+                f"expired since {self.client_secret_expires_at}"
+            )
+            return False
+
         return client_secret == self.client_secret
 
     def check_endpoint_auth_method(self, method, endpoint):

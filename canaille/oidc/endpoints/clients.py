@@ -118,6 +118,9 @@ def edit(user, client):
     if request.form and request.form.get("action") == "new-access-token":
         return client_new_token(user, client)
 
+    if request.form and request.form.get("action") == "new-client-secret":
+        return client_new_secret(user, client)
+
     return client_edit(user, client)
 
 
@@ -169,6 +172,7 @@ def client_edit(user, client):
         contacts=form["contacts"].data,
         client_uri=form["client_uri"].data,
         redirect_uris=form["redirect_uris"].data,
+        client_secret_expires_at=form["client_secret_expires_at"].data,
         post_logout_redirect_uris=form["post_logout_redirect_uris"].data,
         grant_types=form["grant_types"].data,
         scope=form["scope"].data.split(" "),
@@ -214,6 +218,23 @@ def client_delete(user, client):
     )
     Backend.instance.delete(client)
     return redirect(url_for("oidc.clients.index"))
+
+
+def client_new_secret(user, client):
+    Backend.instance.update(
+        client,
+        client_secret=gen_salt(48),
+        client_secret_expires_at=None,
+    )
+    Backend.instance.save(client)
+    current_app.logger.security(
+        f"Renewed the secret of client {client.client_id} by {user.id}"
+    )
+    flash(
+        _("The client secret has been renewed. The new secret does not expire."),
+        "success",
+    )
+    return redirect(url_for("oidc.clients.edit", client=client))
 
 
 def client_new_token(user, client):

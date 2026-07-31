@@ -4,6 +4,7 @@ import wtforms
 from joserfc.jwk import KeySet
 
 from canaille.app import models
+from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
 from canaille.app.forms import email_validator
@@ -112,6 +113,20 @@ class ClientAddForm(Form):
 
 class ClientEditForm(ClientAddForm):
     """Complete form for editing a client with all metadata fields."""
+
+    client_secret_expires_at = DateTimeUTCField(
+        _("Secret expiration"),
+        validators=[wtforms.validators.Optional()],
+        format=[
+            "%Y-%m-%d %H:%M",
+            "%Y-%m-%dT%H:%M",
+            "%Y-%m-%d %H:%M:%S",
+            "%Y-%m-%dT%H:%M:%S",
+        ],
+        description=_(
+            "Date after which the client secret cannot be used to authenticate anymore. Leave this empty so the secret never expires."
+        ),
+    )
 
     post_logout_redirect_uris = wtforms.FieldList(
         wtforms.URLField(
