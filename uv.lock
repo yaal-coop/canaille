@@ -389,8 +389,7 @@ doc = [
     { name = "sphinx-iconify" },
     { name = "sphinx-intl" },
     { name = "sphinx-issues" },
-    { name = "sphinx-substitution-extensions", version = "2026.1.12", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "sphinx-substitution-extensions", version = "2026.8.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "sphinx-substitution-extensions" },
     { name = "sphinxcontrib-screenshot", version = "1.2.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "sphinxcontrib-screenshot", version = "2.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "tomlkit" },
@@ -512,7 +511,7 @@ doc = [
     { name = "sphinx-iconify", specifier = ">=0.1.0" },
     { name = "sphinx-intl", specifier = ">=2.3.0" },
     { name = "sphinx-issues", specifier = ">=5.0.0" },
-    { name = "sphinx-substitution-extensions", specifier = ">=2024.2.25" },
+    { name = "sphinx-substitution-extensions", specifier = ">=2024.2.25,<2026.8" },
     { name = "sphinxcontrib-screenshot", specifier = ">=0.2.0" },
     { name = "tomlkit", specifier = ">=0.13.2" },
 ]
@@ -3662,39 +3661,19 @@ wheels = [
 name = "sphinx-substitution-extensions"
 version = "2026.1.12"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version < '3.11'",
-]
 dependencies = [
     { name = "beartype" },
-    { name = "docutils", version = "0.21.2", source = { registry = "https://pypi.org/simple" } },
-    { name = "myst-parser", version = "4.0.1", source = { registry = "https://pypi.org/simple" } },
-    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" } },
+    { name = "docutils", version = "0.21.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "myst-parser", version = "4.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "myst-parser", version = "5.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ca/3e/a82aa5fed0d06161a89dc2f6971b160f837cad44f196c467fc6b2132acaa/sphinx_substitution_extensions-2026.1.12.tar.gz", hash = "sha256:25e0c6c40fbf9e1df593883da946879044a3bf8d85652c8c58f354a53575d736", size = 31676, upload-time = "2026-01-12T06:19:35.324Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9b/5e/9caa7167d2ef2b60326765150d64513be1b61b1864ad58a92683578b2776/sphinx_substitution_extensions-2026.1.12-py2.py3-none-any.whl", hash = "sha256:9152beb4f0f5cab52057681b376a473fa6b997defc85d4ac154dd12b13a3e987", size = 8766, upload-time = "2026-01-12T06:19:33.541Z" },
-]
-
-[[package]]
-name = "sphinx-substitution-extensions"
-version = "2026.8.2"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version >= '3.13'",
-    "python_full_version == '3.12.*'",
-    "python_full_version == '3.11.*'",
-]
-dependencies = [
-    { name = "beartype" },
-    { name = "docutils", version = "0.22.4", source = { registry = "https://pypi.org/simple" } },
-    { name = "myst-parser", version = "5.1.0", source = { registry = "https://pypi.org/simple" } },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/81/e8/acfb6f8da7cab19601f354d2c6b6f529e4924b5278afeda51b847db8239e/sphinx_substitution_extensions-2026.8.2.tar.gz", hash = "sha256:76af56133c7e84392582cbfcad633768b760ddea3b4a80168fe48061d3cd3195", size = 41053, upload-time = "2026-08-02T07:17:17.58Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/74/eb/cf6c1e5244e7b6dc62482e0c026f1042fdf15dedb8b8256e25b54fa34c28/sphinx_substitution_extensions-2026.8.2-py3-none-any.whl", hash = "sha256:0ca67b78c9ce301e0942eee5f524a95e0c051523a33d2ea0988a4fc3471f816f", size = 11266, upload-time = "2026-08-02T07:17:16.13Z" },
 ]
 
 [[package]]
