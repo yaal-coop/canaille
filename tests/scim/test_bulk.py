@@ -828,13 +828,13 @@ def test_bulk_id(backend, scim_client):
     )
 
     response = scim_client.bulk(request)
-    assert response.operations[0].bulk_id == "qwerty"
-    assert response.operations[0].location == "http://canaille.test/scim/v2/Users/Alice"
-    assert response.operations[1].bulk_id == "ytrewq"
+    assert response.operations[0].bulk_id == "ytrewq"
     assert (
-        response.operations[1].location
+        response.operations[0].location
         == "http://canaille.test/scim/v2/Groups/Tour Guides"
     )
+    assert response.operations[1].bulk_id == "qwerty"
+    assert response.operations[1].location == "http://canaille.test/scim/v2/Users/Alice"
 
     alice = backend.get(models.User, user_name="Alice")
     assert alice is not None

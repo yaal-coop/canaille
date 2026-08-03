@@ -272,9 +272,9 @@ def replace_bulk_ids(group_members, processed_operations):
             bulk_id = member["value"].split(":")[1]
             real_id = next(
                 (
-                    op.data.get("userName")
+                    op[0].data.get("userName")
                     for op in processed_operations
-                    if op.bulk_id == bulk_id
+                    if op[0].bulk_id == bulk_id
                 ),
                 None,
             )
@@ -439,22 +439,47 @@ def bulk():
     error_count = 0
     processed_operations = []
 
-    # do operations on users first so that groups can be populated with the newly created users
-    for operation in req.operations:
-        if operation.path.startswith("/Users"):
+    # create users
+    for index, operation in enumerate(req.operations):
+        if req.fail_on_errors and error_count >= req.fail_on_errors:
+            break
+        if (
+            operation.path.startswith("/Users")
+            and operation.method == BulkOperation.Method.post
+        ):
             try:
-                if operation.method == BulkOperation.Method.post:
-                    result = _create_resource(
-                        User[EnterpriseUser],
-                        models.User,
-                        user_from_canaille_to_scim_server,
-                        user_from_scim_to_canaille,
-                        data=operation.data,
-                    )
-                    operation.data = result[0]
-                    operation.status = result[1]
-                    operation.location = result[0]["meta"]["location"]
-                elif operation.method == BulkOperation.Method.put:
+                result = _create_resource(
+                    User[EnterpriseUser],
+                    models.User,
+                    user_from_canaille_to_scim_server,
+                    user_from_scim_to_canaille,
+                    data=operation.data,
+                )
+                operation.data = result[0]
+                operation.status = result[1]
+                operation.location = result[0]["meta"]["location"]
+            except ValidationError as error:
+                operation.status = HTTPStatus.BAD_REQUEST
+                operation.response = scim_error_handler(error)[0]
+                error_count += 1
+            except Exception as error:
+                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
+                operation.response = Error(
+                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
+                ).model_dump()
+                error_count += 1
+            processed_operations.append((operation, index))
+
+    # modify users
+    for index, operation in enumerate(req.operations):
+        if req.fail_on_errors and error_count >= req.fail_on_errors:
+            break
+        if operation.path.startswith("/Users") and operation.method in [
+            BulkOperation.Method.put,
+            BulkOperation.Method.patch,
+        ]:
+            try:
+                if operation.method == BulkOperation.Method.put:
                     user = Backend.instance.get(
                         models.User, user_name=operation.data["userName"]
                     )
@@ -499,63 +524,63 @@ def bulk():
                             operation.path
                         )
                         error_count += 1
-                elif operation.method == BulkOperation.Method.delete:
-                    id = operation.path.split("/")[-1]
-                    user = Backend.instance.get(models.User, user_name=id)
-                    if user:
-                        result = _delete_resource(user)
-                        operation.status = result[1]
-                    else:
-                        operation.status = HTTPStatus.NOT_FOUND
-                        operation.response = Error(
-                            detail="User not found", status=HTTPStatus.NOT_FOUND
-                        ).model_dump()
-                        error_count += 1
-                    operation.location = get_resource_location_from_path(operation.path)
             except ValidationError as error:
                 operation.status = HTTPStatus.BAD_REQUEST
                 operation.response = scim_error_handler(error)[0]
-                operation.location = (
-                    get_resource_location_from_path(operation.path)
-                    if not operation.method == BulkOperation.Method.post
-                    else None
+                error_count += 1
+                operation.location = get_resource_location_from_path(operation.path)
+            except Exception as error:
+                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
+                operation.response = Error(
+                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
+                ).model_dump()
+                error_count += 1
+                operation.location = get_resource_location_from_path(operation.path)
+            processed_operations.append((operation, index))
+
+    # create groups
+    for index, operation in enumerate(req.operations):
+        if req.fail_on_errors and error_count >= req.fail_on_errors:
+            break
+        if (
+            operation.path.startswith("/Groups")
+            and operation.method == BulkOperation.Method.post
+        ):
+            try:
+                if operation.data.get("members"):
+                    replace_bulk_ids(operation.data["members"], processed_operations)
+                result = _create_resource(
+                    Group,
+                    models.Group,
+                    group_from_canaille_to_scim_server,
+                    group_from_scim_to_canaille,
+                    data=operation.data,
                 )
+                operation.data = result[0]
+                operation.status = result[1]
+                operation.location = result[0]["meta"]["location"]
+            except ValidationError as error:
+                operation.status = HTTPStatus.BAD_REQUEST
+                operation.response = scim_error_handler(error)[0]
                 error_count += 1
             except Exception as error:
                 operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
                 operation.response = Error(
                     detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
                 ).model_dump()
-                operation.location = (
-                    get_resource_location_from_path(operation.path)
-                    if not operation.method == BulkOperation.Method.post
-                    else None
-                )
                 error_count += 1
-            processed_operations.append(operation)
-            if req.fail_on_errors and error_count >= req.fail_on_errors:
-                break
+            processed_operations.append((operation, index))
 
-    # then do operations on groups
-    for operation in req.operations:
-        if operation.path.startswith("/Groups"):
+    # modify groups
+    for index, operation in enumerate(req.operations):
+        if req.fail_on_errors and error_count >= req.fail_on_errors:
+            break
+        if operation.path.startswith("/Groups") and operation.method in [
+            BulkOperation.Method.put,
+            BulkOperation.Method.patch,
+        ]:
             try:
-                if operation.method == BulkOperation.Method.post:
-                    if operation.data.get("members"):
-                        replace_bulk_ids(
-                            operation.data["members"], processed_operations
-                        )
-                    result = _create_resource(
-                        Group,
-                        models.Group,
-                        group_from_canaille_to_scim_server,
-                        group_from_scim_to_canaille,
-                        data=operation.data,
-                    )
-                    operation.data = result[0]
-                    operation.status = result[1]
-                    operation.location = result[0]["meta"]["location"]
-                elif operation.method == BulkOperation.Method.put:
+                if operation.method == BulkOperation.Method.put:
                     group = Backend.instance.get(
                         models.Group, display_name=operation.data["displayName"]
                     )
@@ -610,43 +635,95 @@ def bulk():
                             operation.path
                         )
                         error_count += 1
-                elif operation.method == BulkOperation.Method.delete:
-                    id = operation.path.split("/")[-1]
-                    group = Backend.instance.get(models.Group, display_name=id)
-                    if group:
-                        result = _delete_resource(group)
-                        operation.status = result[1]
-                    else:
-                        operation.status = HTTPStatus.NOT_FOUND
-                        operation.response = Error(
-                            detail="Group not found", status=HTTPStatus.NOT_FOUND
-                        ).model_dump()
-                        error_count += 1
-                    operation.location = get_resource_location_from_path(operation.path)
             except ValidationError as error:
                 operation.status = HTTPStatus.BAD_REQUEST
                 operation.response = scim_error_handler(error)[0]
-                operation.location = (
-                    get_resource_location_from_path(operation.path)
-                    if not operation.method == BulkOperation.Method.post
-                    else None
-                )
+                operation.location = get_resource_location_from_path(operation.path)
                 error_count += 1
             except Exception as error:
                 operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
                 operation.response = Error(
                     detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
                 ).model_dump()
-                operation.location = (
-                    get_resource_location_from_path(operation.path)
-                    if not operation.method == BulkOperation.Method.post
-                    else None
-                )
+                operation.location = get_resource_location_from_path(operation.path)
                 error_count += 1
-            processed_operations.append(operation)
-            if req.fail_on_errors and error_count >= req.fail_on_errors:
-                break
+            processed_operations.append((operation, index))
 
+    # delete groups
+    for index, operation in enumerate(req.operations):
+        if req.fail_on_errors and error_count >= req.fail_on_errors:
+            break
+        if (
+            operation.path.startswith("/Groups")
+            and operation.method == BulkOperation.Method.delete
+        ):
+            try:
+                id = operation.path.split("/")[-1]
+                group = Backend.instance.get(models.Group, display_name=id)
+                if group:
+                    result = _delete_resource(group)
+                    operation.status = result[1]
+                    operation.location = get_resource_location_from_path(operation.path)
+                else:
+                    operation.status = HTTPStatus.NOT_FOUND
+                    operation.response = Error(
+                        detail="Group not found", status=HTTPStatus.NOT_FOUND
+                    ).model_dump()
+                    operation.location = get_resource_location_from_path(operation.path)
+                    error_count += 1
+            except ValidationError as error:
+                operation.status = HTTPStatus.BAD_REQUEST
+                operation.response = scim_error_handler(error)[0]
+                operation.location = get_resource_location_from_path(operation.path)
+                error_count += 1
+            except Exception as error:
+                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
+                operation.response = Error(
+                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
+                ).model_dump()
+                operation.location = get_resource_location_from_path(operation.path)
+                error_count += 1
+
+            processed_operations.append((operation, index))
+
+    # delete users
+    for index, operation in enumerate(req.operations):
+        if req.fail_on_errors and error_count >= req.fail_on_errors:
+            break
+        if (
+            operation.path.startswith("/Users")
+            and operation.method == BulkOperation.Method.delete
+        ):
+            try:
+                id = operation.path.split("/")[-1]
+                user = Backend.instance.get(models.User, user_name=id)
+                if user:
+                    result = _delete_resource(user)
+                    operation.status = result[1]
+                    operation.location = get_resource_location_from_path(operation.path)
+                else:
+                    operation.status = HTTPStatus.NOT_FOUND
+                    operation.response = Error(
+                        detail="User not found", status=HTTPStatus.NOT_FOUND
+                    ).model_dump()
+                    operation.location = get_resource_location_from_path(operation.path)
+                    error_count += 1
+            except ValidationError as error:
+                operation.status = HTTPStatus.BAD_REQUEST
+                operation.response = scim_error_handler(error)[0]
+                operation.location = get_resource_location_from_path(operation.path)
+                error_count += 1
+            except Exception as error:
+                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
+                operation.response = Error(
+                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
+                ).model_dump()
+                operation.location = get_resource_location_from_path(operation.path)
+                error_count += 1
+            processed_operations.append((operation, index))
+
+    processed_operations.sort(key=lambda x: x[1])
+    processed_operations = list(map(lambda x: x[0], processed_operations))
     rep = BulkResponse(operations=processed_operations)
     return (rep.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE), HTTPStatus.OK)
 
