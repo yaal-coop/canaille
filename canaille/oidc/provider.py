@@ -606,7 +606,15 @@ class ClientConfigurationEndpoint(
         pass
 
     def check_permission(self, client, request):
-        return True
+        """Check the management token was issued for the client it targets.
+
+        Requests carry no claims only when dynamic client registration is open,
+        as no token is required at all in that case.
+        """
+        if not hasattr(request, "jwt_claims"):
+            return True
+
+        return request.jwt_claims.get("sub") == client.client_id
 
     def delete_client(self, client, request):
         current_app.logger.security(

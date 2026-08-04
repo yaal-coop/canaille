@@ -421,3 +421,53 @@ def test_management_with_wrong_scope(testclient, backend, client):
         f"/oauth/register/{client.client_id}", headers=headers, status=400
     )
     assert res.json["error"] == "access_denied"
+
+
+def test_management_token_of_another_client(
+    testclient, backend, client, trusted_client
+):
+    """Test that a management token cannot be used to access another client."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+    headers = {"Authorization": f"Bearer {token}"}
+    url = f"/oauth/register/{trusted_client.client_id}"
+
+    res = testclient.get(url, headers=headers, status=403)
+    assert res.json["error"] == "unauthorized_client"
+
+    res = testclient.put_json(
+        url,
+        {
+            "client_id": trusted_client.client_id,
+            "redirect_uris": ["https://evil.test/callback"],
+        },
+        headers=headers,
+        status=403,
+    )
+    assert res.json["error"] == "unauthorized_client"
+
+    with warnings.catch_warnings(record=True):
+        res = testclient.delete(url, headers=headers, status=403)
+    assert res.json["error"] == "unauthorized_client"
+
+    backend.reload(trusted_client)
+    assert trusted_client.redirect_uris == [
+        "https://client.trusted.test/redirect1",
+        "https://client.trusted.test/redirect2",
+    ]

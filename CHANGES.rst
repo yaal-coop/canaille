@@ -8,6 +8,7 @@ Added
 
 Fixed
 ^^^^^
+- :rfc:`RFC7592 <7592>` registration access tokens were not bound to the client they were issued for.
 - Dynamically registered clients had their ``client_secret_expires_at`` set to 1970-01-01 instead of being left empty.
 
 [0.3.5] - 2026-07-30
