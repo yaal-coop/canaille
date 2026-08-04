@@ -18,6 +18,7 @@ from scim2_models import BulkRequest
 from scim2_models import BulkResponse
 from scim2_models import Context
 from scim2_models import Error
+from scim2_models import InvalidValueException
 from scim2_models import ListResponse
 from scim2_models import PatchOp
 from scim2_models import ResourceType
@@ -272,14 +273,15 @@ def replace_bulk_ids(group_members, processed_operations):
             bulk_id = member["value"].split(":")[1]
             real_id = next(
                 (
-                    op[0].data.get("userName")
+                    op[0].data.get("id")
                     for op in processed_operations
                     if op[0].bulk_id == bulk_id
                 ),
                 None,
             )
-            if real_id:
-                member["value"] = real_id
+            if real_id is None:
+                raise InvalidValueException(detail=f"Could not find bulkId: {bulk_id}")
+            member["value"] = real_id
 
 
 @bp.route("/Users", methods=["GET"])
@@ -559,6 +561,12 @@ def bulk():
                 operation.data = result[0]
                 operation.status = result[1]
                 operation.location = result[0]["meta"]["location"]
+            except InvalidValueException as error:
+                operation.status = HTTPStatus.BAD_REQUEST
+                operation.response = Error(
+                    detail=str(error), status=HTTPStatus.BAD_REQUEST
+                ).model_dump()
+                error_count += 1
             except ValidationError as error:
                 operation.status = HTTPStatus.BAD_REQUEST
                 operation.response = scim_error_handler(error)[0]
@@ -635,6 +643,12 @@ def bulk():
                             operation.path
                         )
                         error_count += 1
+            except InvalidValueException as error:
+                operation.status = HTTPStatus.BAD_REQUEST
+                operation.response = Error(
+                    detail=str(error), status=HTTPStatus.BAD_REQUEST
+                ).model_dump()
+                error_count += 1
             except ValidationError as error:
                 operation.status = HTTPStatus.BAD_REQUEST
                 operation.response = scim_error_handler(error)[0]

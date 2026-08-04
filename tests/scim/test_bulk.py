@@ -982,3 +982,45 @@ def test_modify_group_with_bulk_id(backend, scim_client):
     backend.delete(tour_guides)
     backend.delete(alice)
     backend.delete(bob)
+
+
+def test_create_group_with_wrong_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:invalid")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    response = scim_client.bulk(request)
+    assert response.operations[0].status == 400
+    assert response.operations[0].location is None
+    assert response.operations[0].response["detail"] == "Could not find bulkId: invalid"
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is None
+
+    backend.delete(alice)
