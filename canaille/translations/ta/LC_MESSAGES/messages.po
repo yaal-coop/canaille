@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: contact@yaal.coop\n"
-"POT-Creation-Date: 2026-01-09 13:20+0100\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-08-04 16:54+0200\n"
 "PO-Revision-Date: 2026-06-24 15:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -20,15 +20,15 @@ msgstr ""
 "X-Generator: Weblate 2026.7.dev0\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: canaille/app/flask.py:52
+#: canaille/app/flask.py:53
 msgid "Your password has expired, please choose a new password."
 msgstr "உங்கள் கடவுச்சொல் காலாவதியானது, புதிய கடவுச்சொல்லைத் தேர்வு செய்யவும்."
 
-#: canaille/app/flask.py:76
+#: canaille/app/flask.py:77
 msgid "No SMTP server has been configured"
 msgstr "SMTP சேவையகம் எதுவும் கட்டமைக்கப்படவில்லை"
 
-#: canaille/app/flask.py:238
+#: canaille/app/flask.py:239
 #, python-format
 msgid "This request should be sent to %(server_name)s"
 msgstr "இந்தக் கோரிக்கை %(server_name)s க்கு அனுப்பப்பட வேண்டும்"
@@ -84,44 +84,35 @@ msgstr ""
 "உங்கள் கடவுச்சொல்லை விரைவில் புதுப்பிக்கவும். இது இன்னும் நடந்தால், நிர்வாகிகளைத் தொடர்பு "
 "கொள்ளவும்."
 
-#: canaille/backends/ldap/backend.py:139
+#: canaille/backends/ldap/backend.py:170
 #, python-brace-format
 msgid "Could not connect to the LDAP server '{uri}'"
 msgstr "LDAP சேவையகத்துடன் '{uri}' உடன் இணைக்க முடியவில்லை"
 
-#: canaille/backends/ldap/backend.py:146
+#: canaille/backends/ldap/backend.py:177
 #, python-brace-format
 msgid "LDAP authentication failed with user '{user}'"
 msgstr "LDAP ஏற்பு பயனருடன் '{user}' உடன் தோல்வியடைந்தது"
-
-#: canaille/backends/ldap/backend.py:267
-msgid "Your account has been locked."
-msgstr "உங்கள் கணக்கு பூட்டப்பட்டுள்ளது."
-
-#: canaille/backends/ldap/backend.py:272
-msgid "You should change your password."
-msgstr "உங்கள் கடவுச்சொல்லை மாற்ற வேண்டும்."
 
 #: canaille/core/auth.py:34 canaille/core/endpoints/auth/otp.py:86
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr "நீங்கள் உள்நுழைய முயற்சித்த உள்நுழைவு நினைவில் இல்லை."
 
-#: canaille/core/auth.py:218 canaille/core/endpoints/account/__init__.py:893
+#: canaille/core/auth.py:218 canaille/core/endpoints/account/__init__.py:819
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr "இணைப்பு வெற்றிகரமாக. வரவேற்பு %(user)s"
 
 #: canaille/core/auth.py:233
 msgid "An error happened during your authentication process. Please try again."
-msgstr ""
-"உங்கள் அங்கீகாரச் செயல்பாட்டின் போது பிழை ஏற்பட்டது. மீண்டும் முயற்சிக்கவும்."
+msgstr "உங்கள் அங்கீகாரச் செயல்பாட்டின் போது பிழை ஏற்பட்டது. மீண்டும் முயற்சிக்கவும்."
 
 #: canaille/core/auth.py:267
 msgid "John Doe"
 msgstr "சான் டோ"
 
-#: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:161
-#: canaille/core/endpoints/forms.py:473
+#: canaille/core/auth.py:268 canaille/core/endpoints/forms.py:163
+#: canaille/core/endpoints/forms.py:475
 msgid "jdoe"
 msgstr "jdoe"
 
@@ -224,8 +215,7 @@ msgstr "இந்த மின்னஞ்சல் முகவரியுட�
 
 #: canaille/core/validators.py:93
 msgid "A user with this email address is already a member of this group."
-msgstr ""
-"இந்த மின்னஞ்சல் முகவரியைக் கொண்ட பயனர் ஏற்கனவே இந்தக் குழுவில் உறுப்பினராக உள்ளார்."
+msgstr "இந்த மின்னஞ்சல் முகவரியைக் கொண்ட பயனர் ஏற்கனவே இந்தக் குழுவில் உறுப்பினராக உள்ளார்."
 
 #: canaille/core/validators.py:101
 msgid "Invalid security code"
@@ -237,10 +227,10 @@ msgid "Email"
 msgstr "மின்னஞ்சல்"
 
 #: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:42
-#: canaille/core/endpoints/forms.py:96 canaille/core/endpoints/forms.py:210
-#: canaille/core/endpoints/forms.py:437 canaille/core/endpoints/forms.py:452
-#: canaille/core/endpoints/forms.py:485 canaille/core/endpoints/forms.py:509
-#: canaille/core/endpoints/forms.py:525
+#: canaille/core/endpoints/forms.py:96 canaille/core/endpoints/forms.py:212
+#: canaille/core/endpoints/forms.py:439 canaille/core/endpoints/forms.py:454
+#: canaille/core/endpoints/forms.py:487 canaille/core/endpoints/forms.py:511
+#: canaille/core/endpoints/forms.py:527
 msgid "jane.doe@example.com"
 msgstr "jane.doe@example.com"
 
@@ -286,7 +276,7 @@ msgid "Enter the security code displayed above"
 msgstr "மேலே காட்டப்பட்டுள்ள பாதுகாப்புக் குறியீட்டை உள்ளிடவும்"
 
 #: canaille/core/endpoints/forms.py:78 canaille/core/endpoints/forms.py:120
-#: canaille/core/endpoints/forms.py:269
+#: canaille/core/endpoints/forms.py:271
 #: canaille/templates/core/account/auth/index.html:70
 #: canaille/templates/core/account/auth/password.html:42
 #: canaille/templates/core/partial/profile_settings_password.html:5
@@ -297,30 +287,29 @@ msgstr "கடவுச்சொல்"
 msgid "Code"
 msgstr "குறியீடு"
 
-#: canaille/core/endpoints/forms.py:111 canaille/core/endpoints/forms.py:540
+#: canaille/core/endpoints/forms.py:111 canaille/core/endpoints/forms.py:542
 msgid "123456"
 msgstr "123456"
 
-#: canaille/core/endpoints/forms.py:133 canaille/core/endpoints/forms.py:282
+#: canaille/core/endpoints/forms.py:133 canaille/core/endpoints/forms.py:284
 msgid "Password confirmation"
 msgstr "கடவுச்சொல் உறுதிப்படுத்தல்"
 
-#: canaille/core/endpoints/account/__init__.py:396
-#: canaille/core/endpoints/forms.py:136 canaille/core/endpoints/forms.py:285
+#: canaille/core/endpoints/account/__init__.py:395
+#: canaille/core/endpoints/forms.py:136 canaille/core/endpoints/forms.py:287
 msgid "Password and confirmation do not match."
 msgstr "கடவுச்சொல் மற்றும் உறுதிப்படுத்தல் பொருந்தவில்லை."
 
-#: canaille/core/endpoints/forms.py:155
+#: canaille/core/endpoints/forms.py:157
 msgid "Automatic"
 msgstr "தானியங்கி"
 
-#: canaille/core/endpoints/forms.py:160
+#: canaille/core/endpoints/forms.py:162
 msgid "Username"
 msgstr "பயனர்பெயர்"
 
-#: canaille/core/endpoints/forms.py:164 canaille/core/endpoints/forms.py:387
-#: canaille/core/endpoints/forms.py:403 canaille/oidc/endpoints/forms.py:64
-#: canaille/oidc/endpoints/forms.py:118
+#: canaille/core/endpoints/forms.py:166 canaille/core/endpoints/forms.py:389
+#: canaille/core/endpoints/forms.py:405 canaille/oidc/endpoints/forms.py:64
 #: canaille/templates/core/account/auth/fido2.html:71
 #: canaille/templates/core/partial/group-members.html:12
 #: canaille/templates/core/partial/groups.html:6
@@ -330,137 +319,137 @@ msgstr "பயனர்பெயர்"
 msgid "Name"
 msgstr "பெயர்"
 
-#: canaille/core/endpoints/forms.py:166
+#: canaille/core/endpoints/forms.py:168
 msgid "Title"
 msgstr "தலைப்பு"
 
-#: canaille/core/endpoints/forms.py:168
+#: canaille/core/endpoints/forms.py:170
 msgid "Vice president"
 msgstr "துணைத் தலைவர்"
 
-#: canaille/core/endpoints/forms.py:173
+#: canaille/core/endpoints/forms.py:175
 msgid "Given name"
 msgstr "கொடுக்கப்பட்ட பெயர்"
 
-#: canaille/core/endpoints/forms.py:175
+#: canaille/core/endpoints/forms.py:177
 msgid "John"
 msgstr "சான்"
 
-#: canaille/core/endpoints/forms.py:181
+#: canaille/core/endpoints/forms.py:183
 msgid "Family Name"
 msgstr "குடும்ப பெயர்"
 
-#: canaille/core/endpoints/forms.py:184
+#: canaille/core/endpoints/forms.py:186
 msgid "Doe"
 msgstr "டியோ"
 
-#: canaille/core/endpoints/forms.py:190
+#: canaille/core/endpoints/forms.py:192
 msgid "Display Name"
 msgstr "காட்சி பெயர்"
 
-#: canaille/core/endpoints/forms.py:193
+#: canaille/core/endpoints/forms.py:195
 msgid "Johnny"
 msgstr "சானி"
 
-#: canaille/core/endpoints/forms.py:200 canaille/core/endpoints/forms.py:515
+#: canaille/core/endpoints/forms.py:202 canaille/core/endpoints/forms.py:517
 #: canaille/templates/core/account/edit.html:199
 msgid "Email addresses"
 msgstr "மின்னஞ்சல் முகவரிகள்"
 
-#: canaille/core/endpoints/forms.py:207 canaille/core/endpoints/forms.py:506
+#: canaille/core/endpoints/forms.py:209 canaille/core/endpoints/forms.py:508
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr "தேவைப்பட்டால் கடவுச்சொல்லை மீட்டமைக்க இந்த மின்னஞ்சல் மீட்பு முகவரியாக பயன்படுத்தப்படும்"
 
-#: canaille/core/endpoints/forms.py:221
+#: canaille/core/endpoints/forms.py:223
 msgid "Phone numbers"
 msgstr "தொலைபேசி எண்கள்"
 
-#: canaille/core/endpoints/forms.py:222
+#: canaille/core/endpoints/forms.py:224
 msgid "555-000-555"
 msgstr "555-000-555"
 
-#: canaille/core/endpoints/forms.py:229
+#: canaille/core/endpoints/forms.py:231
 msgid "Address"
 msgstr "முகவரி"
 
-#: canaille/core/endpoints/forms.py:231
+#: canaille/core/endpoints/forms.py:233
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr "132, ஃபூபார் தெரு, கோதம் சிட்டி 12401, xx"
 
-#: canaille/core/endpoints/forms.py:235
+#: canaille/core/endpoints/forms.py:237
 msgid "Street"
 msgstr "தெரு"
 
-#: canaille/core/endpoints/forms.py:237
+#: canaille/core/endpoints/forms.py:239
 msgid "132, Foobar Street"
 msgstr "132, ஃபூபார் தெரு"
 
-#: canaille/core/endpoints/forms.py:242
+#: canaille/core/endpoints/forms.py:244
 msgid "Postal Code"
 msgstr "அஞ்சல் குறியீடு"
 
-#: canaille/core/endpoints/forms.py:249
+#: canaille/core/endpoints/forms.py:251
 msgid "Locality"
 msgstr "இடம்"
 
-#: canaille/core/endpoints/forms.py:251
+#: canaille/core/endpoints/forms.py:253
 msgid "Gotham City"
 msgstr "கோதம் சிட்டி"
 
-#: canaille/core/endpoints/forms.py:256
+#: canaille/core/endpoints/forms.py:258
 msgid "Region"
 msgstr "பகுதி"
 
-#: canaille/core/endpoints/forms.py:258
+#: canaille/core/endpoints/forms.py:260
 msgid "North Pole"
 msgstr "வட முனை"
 
-#: canaille/core/endpoints/forms.py:263
+#: canaille/core/endpoints/forms.py:265
 msgid "Photo"
 msgstr "புகைப்படம்"
 
-#: canaille/core/endpoints/forms.py:267
+#: canaille/core/endpoints/forms.py:269
 #: canaille/templates/core/account/add.html:75
 #: canaille/templates/core/account/edit.html:88
 msgid "Delete the photo"
 msgstr "புகைப்படத்தை நீக்கு"
 
-#: canaille/core/endpoints/forms.py:293
+#: canaille/core/endpoints/forms.py:295
 msgid "User number"
 msgstr "பயனர் எண்"
 
-#: canaille/core/endpoints/forms.py:295 canaille/core/endpoints/forms.py:301
+#: canaille/core/endpoints/forms.py:297 canaille/core/endpoints/forms.py:303
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:299
+#: canaille/core/endpoints/forms.py:301
 msgid "Department"
 msgstr "துறை"
 
-#: canaille/core/endpoints/forms.py:305
+#: canaille/core/endpoints/forms.py:307
 msgid "Organization"
 msgstr "அமைப்பு"
 
-#: canaille/core/endpoints/forms.py:307
+#: canaille/core/endpoints/forms.py:309
 msgid "Cogip LTD."
 msgstr "கோகிப் லிமிடெட்."
 
-#: canaille/core/endpoints/forms.py:312
+#: canaille/core/endpoints/forms.py:314
 msgid "Website"
 msgstr "வலைத்தளம்"
 
-#: canaille/core/endpoints/forms.py:314
+#: canaille/core/endpoints/forms.py:316
 msgid "https://mywebsite.example"
 msgstr "https://mywebsite.example"
 
-#: canaille/core/endpoints/forms.py:319
+#: canaille/core/endpoints/forms.py:321
 msgid "Preferred language"
 msgstr "விருப்பமான மொழி"
 
-#: canaille/core/endpoints/account/__init__.py:364
-#: canaille/core/endpoints/forms.py:324 canaille/core/endpoints/forms.py:491
-#: canaille/templates/base.html:110 canaille/templates/core/groups.html:18
+#: canaille/core/endpoints/account/__init__.py:363
+#: canaille/core/endpoints/forms.py:326 canaille/core/endpoints/forms.py:493
+#: canaille/templates/base.html:111 canaille/templates/core/groups.html:18
 #: canaille/templates/core/groups.html:36
 #: canaille/templates/core/invite_group_member.html:25
 #: canaille/templates/core/partial/group-members.html:15
@@ -468,199 +457,194 @@ msgstr "விருப்பமான மொழி"
 msgid "Groups"
 msgstr "குழுக்கள்"
 
-#: canaille/core/endpoints/forms.py:333
+#: canaille/core/endpoints/forms.py:335
 msgid "users, admins …"
 msgstr "பயனர்கள், நிர்வாகிகள்…"
 
-#: canaille/core/endpoints/forms.py:358
+#: canaille/core/endpoints/forms.py:360
 msgid "Account expiration"
 msgstr "கணக்கு காலாவதி"
 
-#: canaille/core/endpoints/forms.py:390
+#: canaille/core/endpoints/forms.py:392
 msgid "group"
 msgstr "குழு"
 
-#: canaille/core/endpoints/forms.py:394 canaille/core/endpoints/forms.py:413
+#: canaille/core/endpoints/forms.py:396 canaille/core/endpoints/forms.py:415
 #: canaille/templates/core/partial/groups.html:7
 msgid "Description"
 msgstr "விவரம்"
 
-#: canaille/core/endpoints/forms.py:429 canaille/core/endpoints/forms.py:446
-#: canaille/core/endpoints/forms.py:478
+#: canaille/core/endpoints/forms.py:431 canaille/core/endpoints/forms.py:448
+#: canaille/core/endpoints/forms.py:480
 msgid "Email address"
 msgstr "மின்னஞ்சல் முகவரி"
 
-#: canaille/core/endpoints/forms.py:472
+#: canaille/core/endpoints/forms.py:474
 msgid "User name"
 msgstr "பயனர் பெயர்"
 
-#: canaille/core/endpoints/forms.py:476
+#: canaille/core/endpoints/forms.py:478
 msgid "Username editable by the invitee"
 msgstr "அழைப்பாளரால் திருத்தக்கூடிய பயனர்பெயர்"
 
-#: canaille/core/endpoints/forms.py:518
+#: canaille/core/endpoints/forms.py:520
 msgid "New email address"
 msgstr "புதிய மின்னஞ்சல் முகவரி"
 
-#: canaille/core/endpoints/forms.py:534
+#: canaille/core/endpoints/forms.py:536
 msgid "Passcode"
 msgstr "கடவுக்குறியீடு"
 
-#: canaille/core/endpoints/groups.py:51 canaille/core/endpoints/groups.py:233
+#: canaille/core/endpoints/groups.py:50 canaille/core/endpoints/groups.py:232
 msgid "You are not a member of this group."
 msgstr "நீங்கள் இந்தக் குழுவில் உறுப்பினர் இல்லை."
 
-#: canaille/core/endpoints/groups.py:77
+#: canaille/core/endpoints/groups.py:76
 msgid "The group couldn't be created. Please check the form and try again."
-msgstr ""
-"குழுவை உருவாக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
+msgstr "குழுவை உருவாக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
 
-#: canaille/core/endpoints/groups.py:91
+#: canaille/core/endpoints/groups.py:90
 #, python-format
 msgid "The group %(group)s has been successfully created."
 msgstr "குழு %(group)s வெற்றிகரமாக உருவாக்கப்பட்டது."
 
-#: canaille/core/endpoints/groups.py:159
+#: canaille/core/endpoints/groups.py:158
 #, python-format
 msgid "The group %(group)s has been successfully edited."
 msgstr "குழு %(group)s வெற்றிகரமாக திருத்தப்பட்டுள்ளன."
 
-#: canaille/core/endpoints/account/__init__.py:617
-#: canaille/core/endpoints/account/__init__.py:859
+#: canaille/core/endpoints/account/__init__.py:616
+#: canaille/core/endpoints/account/__init__.py:887
 #: canaille/core/endpoints/account/auth/password.py:54
-#: canaille/core/endpoints/groups.py:168
+#: canaille/core/endpoints/groups.py:167
 msgid "Your changes couldn't be saved. Please check the form and try again."
-msgstr ""
-"உங்கள் மாற்றங்களைச் சேமிக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
+msgstr "உங்கள் மாற்றங்களைச் சேமிக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
 
-#: canaille/core/endpoints/groups.py:202
+#: canaille/core/endpoints/groups.py:201
 #, python-format
 msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "%(user_name)s குழுவிலிருந்து %(group_name)s அகற்றப்பட்டுள்ளன"
 
-#: canaille/core/endpoints/groups.py:219
+#: canaille/core/endpoints/groups.py:218
 #, python-format
 msgid "The group %(group)s has been successfully deleted."
 msgstr "குழு %(group)s வெற்றிகரமாக நீக்கப்பட்டது."
 
-#: canaille/core/endpoints/groups.py:243
+#: canaille/core/endpoints/groups.py:242
 #, python-format
 msgid "You have left %(group)s."
 msgstr "நீங்கள் %(group)s ஐ விட்டுவிட்டீர்கள்."
 
-#: canaille/core/endpoints/groups.py:290
+#: canaille/core/endpoints/groups.py:289
 #, python-format
 msgid "An invitation email has been sent to %(email)s."
 msgstr "%(மின்னஞ்சல்கள்.)க்கு அழைப்பு மின்னஞ்சல் அனுப்பப்பட்டது."
 
-#: canaille/core/endpoints/account/__init__.py:465
-#: canaille/core/endpoints/groups.py:310 canaille/core/endpoints/groups.py:320
-#: canaille/core/endpoints/groups.py:343
+#: canaille/core/endpoints/account/__init__.py:464
+#: canaille/core/endpoints/groups.py:308 canaille/core/endpoints/groups.py:319
+#: canaille/core/endpoints/groups.py:342
 msgid "The invitation link that brought you here was invalid."
 msgstr "உங்களை இங்கு கொண்டு வந்த அழைப்பிதழ் இணைப்பு தவறானது."
 
-#: canaille/core/endpoints/groups.py:314
+#: canaille/core/endpoints/groups.py:313
 msgid "The group you were invited to no longer exists."
 msgstr "நீங்கள் அழைக்கப்பட்ட குழு இப்போது இல்லை."
 
-#: canaille/core/endpoints/groups.py:326
+#: canaille/core/endpoints/groups.py:325
 #, python-format
 msgid ""
 "You have been invited to join the group '%(group)s'. Please log in to accept "
 "the invitation."
-msgstr ""
-"நீங்கள் '%(group)s' குழுவில் சேர அழைக்கப்பட்டுள்ளீர்கள். அழைப்பை ஏற்க உள்நுழையவும்."
+msgstr "நீங்கள் '%(group)s' குழுவில் சேர அழைக்கப்பட்டுள்ளீர்கள். அழைப்பை ஏற்க உள்நுழையவும்."
 
-#: canaille/core/endpoints/groups.py:335
+#: canaille/core/endpoints/groups.py:334
 msgid "This invitation was not sent to you."
 msgstr "இந்த அழைப்பு உங்களுக்கு அனுப்பப்படவில்லை."
 
-#: canaille/core/endpoints/groups.py:339
+#: canaille/core/endpoints/groups.py:338
 msgid "The invitation link that brought you here has expired."
 msgstr "உங்களை இங்கு அழைத்து வந்த அழைப்பிதழ் இணைப்பு காலாவதியானது."
 
-#: canaille/core/endpoints/groups.py:348
+#: canaille/core/endpoints/groups.py:347
 #, python-format
 msgid "You are already a member of %(group)s."
 msgstr "நீங்கள் ஏற்கனவே %(group)s இல் உறுப்பினராக உள்ளீர்கள்."
 
-#: canaille/core/endpoints/groups.py:359
+#: canaille/core/endpoints/groups.py:358
 #, python-format
 msgid "You have successfully joined %(group)s!"
 msgstr "நீங்கள் வெற்றிகரமாக %(group)s இல் சேர்ந்துள்ளீர்கள்!"
 
-#: canaille/core/endpoints/account/__init__.py:123
-#: canaille/core/endpoints/account/__init__.py:149
+#: canaille/core/endpoints/account/__init__.py:122
+#: canaille/core/endpoints/account/__init__.py:148
 msgid "You will receive soon an email to continue the registration process."
 msgstr "பதிவு செயல்முறையைத் தொடர விரைவில் ஒரு மின்னஞ்சலைப் பெறுவீர்கள்."
 
-#: canaille/core/endpoints/account/__init__.py:313
-#: canaille/core/endpoints/account/__init__.py:336
+#: canaille/core/endpoints/account/__init__.py:311
+#: canaille/core/endpoints/account/__init__.py:335
 msgid "The registration link that brought you here was invalid."
 msgstr "உங்களை இங்கு கொண்டு வந்த பதிவு இணைப்பு தவறானது."
 
-#: canaille/core/endpoints/account/__init__.py:320
+#: canaille/core/endpoints/account/__init__.py:319
 msgid "The registration link that brought you here has expired."
 msgstr "உங்களை இங்கு கொண்டு வந்த பதிவு இணைப்பு காலாவதியானது."
 
-#: canaille/core/endpoints/account/__init__.py:329
+#: canaille/core/endpoints/account/__init__.py:328
 msgid "Your account has already been created."
 msgstr "உங்கள் கணக்கு ஏற்கனவே உருவாக்கப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account/__init__.py:343
+#: canaille/core/endpoints/account/__init__.py:342
 msgid "You are already logged in, you cannot create an account."
 msgstr "நீங்கள் ஏற்கனவே உள்நுழைந்துள்ளீர்கள், நீங்கள் ஒரு கணக்கை உருவாக்க முடியாது."
 
-#: canaille/core/endpoints/account/__init__.py:429
+#: canaille/core/endpoints/account/__init__.py:428
 msgid "Your account couldn't be created. Please check the form and try again."
-msgstr ""
-"உங்கள் கணக்கை உருவாக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
+msgstr "உங்கள் கணக்கை உருவாக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
 
-#: canaille/core/endpoints/account/__init__.py:436
+#: canaille/core/endpoints/account/__init__.py:435
 msgid "Your account has been created successfully."
 msgstr "உங்கள் கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account/__init__.py:451
-#: canaille/core/endpoints/account/__init__.py:473
+#: canaille/core/endpoints/account/__init__.py:449
+#: canaille/core/endpoints/account/__init__.py:472
 msgid "The email confirmation link that brought you here is invalid."
 msgstr "உங்களை இங்கு கொண்டு வந்த மின்னஞ்சல் உறுதிப்படுத்தல் இணைப்பு தவறானது."
 
-#: canaille/core/endpoints/account/__init__.py:458
+#: canaille/core/endpoints/account/__init__.py:457
 msgid "The email confirmation link that brought you here has expired."
 msgstr "உங்களை இங்கு கொண்டு வந்த மின்னஞ்சல் உறுதிப்படுத்தல் இணைப்பு காலாவதியானது."
 
-#: canaille/core/endpoints/account/__init__.py:480
+#: canaille/core/endpoints/account/__init__.py:479
 msgid "This email address has already been confirmed."
 msgstr "இந்த மின்னஞ்சல் முகவரி ஏற்கனவே உறுதிப்படுத்தப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account/__init__.py:487
+#: canaille/core/endpoints/account/__init__.py:486
 msgid "This email address is already associated with another account."
 msgstr "இந்த மின்னஞ்சல் முகவரி ஏற்கனவே மற்றொரு கணக்குடன் இணைக்கப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account/__init__.py:494
+#: canaille/core/endpoints/account/__init__.py:493
 msgid "Your email address has been confirmed."
 msgstr "உங்கள் மின்னஞ்சல் முகவரி உறுதிப்படுத்தப்பட்டது."
 
-#: canaille/core/endpoints/account/__init__.py:518
+#: canaille/core/endpoints/account/__init__.py:517
 msgid "The account couldn't be created. Please check the form and try again."
-msgstr ""
-"கணக்கை உருவாக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
+msgstr "கணக்கை உருவாக்க முடியவில்லை. படிவத்தை சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
 
-#: canaille/core/endpoints/account/__init__.py:529
+#: canaille/core/endpoints/account/__init__.py:528
 msgid "User account creation succeeded."
 msgstr "பயனர் கணக்கு உருவாக்கம் வெற்றியடைந்தது."
 
-#: canaille/core/endpoints/account/__init__.py:646
-#: canaille/core/endpoints/account/__init__.py:871
+#: canaille/core/endpoints/account/__init__.py:645
+#: canaille/core/endpoints/account/__init__.py:899
 msgid "Profile updated successfully."
 msgstr "சுயவிவரம் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
 
-#: canaille/core/endpoints/account/__init__.py:653
+#: canaille/core/endpoints/account/__init__.py:652
 msgid "This email couldn't be added. Please check the format and try again."
 msgstr ""
 "இந்த மின்னஞ்சலைச் சேர்க்க முடியவில்லை. வடிவமைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
 
-#: canaille/core/endpoints/account/__init__.py:676
+#: canaille/core/endpoints/account/__init__.py:675
 msgid ""
 "Sending an email to this email address. Please check your inbox and click on "
 "the verification link it contains"
@@ -668,37 +652,36 @@ msgstr ""
 "இந்த மின்னஞ்சல் முகவரிக்கு மின்னஞ்சல் அனுப்புகிறது. உங்கள் இன்பாக்சைச் சரிபார்த்து, அதில் உள்ள "
 "சரிபார்ப்பு இணைப்பைக் சொடுக்கு செய்யவும்"
 
-#: canaille/core/endpoints/account/__init__.py:686
+#: canaille/core/endpoints/account/__init__.py:685
 msgid "This email couldn't be removed."
 msgstr "இந்த மின்னஞ்சலை அகற்ற முடியவில்லை."
 
-#: canaille/core/endpoints/account/__init__.py:690
+#: canaille/core/endpoints/account/__init__.py:689
 msgid "This email couldn't be removed. You must keep at least one."
-msgstr ""
-"இந்த மின்னஞ்சலை அகற்ற முடியவில்லை. நீங்கள் குறைந்தபட்சம் ஒன்றை வைத்திருக்க வேண்டும்."
+msgstr "இந்த மின்னஞ்சலை அகற்ற முடியவில்லை. நீங்கள் குறைந்தபட்சம் ஒன்றை வைத்திருக்க வேண்டும்."
 
-#: canaille/core/endpoints/account/__init__.py:696
+#: canaille/core/endpoints/account/__init__.py:695
 msgid "The email has been successfully deleted."
 msgstr "மின்னஞ்சல் வெற்றிகரமாக நீக்கப்பட்டது."
 
-#: canaille/core/endpoints/account/__init__.py:771
+#: canaille/core/endpoints/account/__init__.py:770
 #, python-format
 msgid "The user %(user)s has been successfully deleted"
 msgstr "பயனர் %(user)s வெற்றிகரமாக நீக்கப்பட்டன"
 
-#: canaille/core/endpoints/account/__init__.py:788
+#: canaille/core/endpoints/account/__init__.py:792
 msgid "The account has been locked."
 msgstr "கணக்கு பூட்டப்பட்டுள்ளது."
 
-#: canaille/core/endpoints/account/__init__.py:794
+#: canaille/core/endpoints/account/__init__.py:798
 msgid "The account has been unlocked."
 msgstr "கணக்கு திறக்கப்பட்டது."
 
-#: canaille/core/endpoints/account/__init__.py:889
+#: canaille/core/endpoints/account/__init__.py:809
 msgid "Locked users cannot be impersonated."
 msgstr "பூட்டப்பட்ட பயனர்களை ஆள்மாறாட்டம் செய்ய முடியாது."
 
-#: canaille/core/endpoints/account/__init__.py:941
+#: canaille/core/endpoints/account/__init__.py:959
 #: canaille/core/endpoints/auth/password.py:258
 msgid "Your password has been updated successfully."
 msgstr "உங்கள் கடவுச்சொல் வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
@@ -872,55 +855,59 @@ msgstr "உங்களை இங்கு அழைத்து வந்த �
 msgid "The new verification code has been sent."
 msgstr "புதிய சரிபார்ப்புக் குறியீடு அனுப்பப்பட்டுள்ளது."
 
-#: canaille/oidc/utils.py:6
+#: canaille/oidc/utils.py:10
 msgid "Info about yourself, such as your name."
 msgstr "உங்கள் பெயர் போன்ற உங்களைப் பற்றிய செய்தி."
 
-#: canaille/oidc/utils.py:8
+#: canaille/oidc/utils.py:12
 msgid "Your e-mail address."
 msgstr "உங்கள் மின்னஞ்சல் முகவரி."
 
-#: canaille/oidc/utils.py:9
+#: canaille/oidc/utils.py:13
 msgid "Your postal address."
 msgstr "உங்கள் அஞ்சல் முகவரி."
 
-#: canaille/oidc/utils.py:10
+#: canaille/oidc/utils.py:14
 msgid "Your phone number."
 msgstr "உங்கள் தொலைபேசி எண்."
 
-#: canaille/oidc/utils.py:11
+#: canaille/oidc/utils.py:15
 msgid "Groups you belong to."
 msgstr "நீங்கள் சேர்ந்த குழுக்கள்."
 
-#: canaille/oidc/endpoints/clients.py:51
+#: canaille/oidc/endpoints/clients.py:52
 msgid "A new registration token has been generated."
 msgstr "புதிய பதிவு கிள்ளாக்கு உருவாக்கப்பட்டுள்ளது."
 
-#: canaille/oidc/endpoints/clients.py:69
+#: canaille/oidc/endpoints/clients.py:70
 msgid "The client has not been added. Please check your information."
 msgstr "கிளையன்ட் சேர்க்கப்படவில்லை. உங்கள் தகவலை சரிபார்க்கவும்."
 
-#: canaille/oidc/endpoints/clients.py:100
+#: canaille/oidc/endpoints/clients.py:102
 msgid "The client has been created."
 msgstr "கிளையன்ட் உருவாக்கப்பட்டது."
 
-#: canaille/oidc/endpoints/clients.py:133
+#: canaille/oidc/endpoints/clients.py:138
 msgid "A new management token has been generated."
 msgstr "புதிய நிர்வாக கிள்ளாக்கு உருவாக்கப்பட்டுள்ளது."
 
-#: canaille/oidc/endpoints/clients.py:153
+#: canaille/oidc/endpoints/clients.py:158
 msgid "The client has not been edited. Please check your information."
 msgstr "கிளையன்ட் திருத்தப்படவில்லை. உங்கள் தகவலை சரிபார்க்கவும்."
 
-#: canaille/oidc/endpoints/clients.py:200
+#: canaille/oidc/endpoints/clients.py:207
 msgid "The client has been edited."
 msgstr "வாடிக்கையாளர் திருத்தப்பட்டார்."
 
-#: canaille/oidc/endpoints/clients.py:208
+#: canaille/oidc/endpoints/clients.py:216
 msgid "The client has been deleted."
 msgstr "வாடிக்கையாளர் நீக்கப்பட்டார்."
 
-#: canaille/oidc/endpoints/clients.py:217
+#: canaille/oidc/endpoints/clients.py:234
+msgid "The client secret has been renewed. The new secret does not expire."
+msgstr ""
+
+#: canaille/oidc/endpoints/clients.py:242
 #, python-brace-format
 msgid "A token has been created for the client {client_name}."
 msgstr "கிளையன்ட் {client_name} க்காக ஒரு கிள்ளாக்கு உருவாக்கப்பட்டது."
@@ -951,46 +938,45 @@ msgstr "இந்த அணுகல் ரத்து செய்யப்ப
 msgid "The access has been restored."
 msgstr "அணுகல் மீட்டமைக்கப்பட்டது."
 
-#: canaille/oidc/endpoints/forms.py:30
+#: canaille/oidc/endpoints/forms.py:32
 msgid "This value is not a valid JSON string."
 msgstr "இந்த மதிப்பு சரியான சாதொபொகு சரம் அல்ல."
 
-#: canaille/oidc/endpoints/forms.py:36
+#: canaille/oidc/endpoints/forms.py:38
 msgid "This value is not a valid JWK."
 msgstr "இந்த மதிப்பு சரியான JWK அல்ல."
 
-#: canaille/oidc/endpoints/forms.py:52 canaille/oidc/endpoints/forms.py:333
+#: canaille/oidc/endpoints/forms.py:52 canaille/oidc/endpoints/forms.py:298
 msgid "None"
 msgstr "எதுவுமில்லை"
 
-#: canaille/oidc/endpoints/forms.py:68 canaille/oidc/endpoints/forms.py:122
+#: canaille/oidc/endpoints/forms.py:68
 msgid ""
 "This is the name that will be displayed on the web interface, and notably on "
 "the consent page."
-msgstr ""
-"இது இணைய இடைமுகத்திலும், குறிப்பாக ஒப்புதல் பக்கத்தில் காட்டப்படும் பெயராகும்."
+msgstr "இது இணைய இடைமுகத்திலும், குறிப்பாக ஒப்புதல் பக்கத்தில் காட்டப்படும் பெயராகும்."
 
-#: canaille/oidc/endpoints/forms.py:74 canaille/oidc/endpoints/forms.py:128
+#: canaille/oidc/endpoints/forms.py:74
 msgid "Contacts"
 msgstr "தொடர்புகள்"
 
-#: canaille/oidc/endpoints/forms.py:81 canaille/oidc/endpoints/forms.py:135
+#: canaille/oidc/endpoints/forms.py:81
 msgid "Those are the email addresses of people responsible for the client."
 msgstr "வாடிக்கையாளருக்கு பொறுப்பான நபர்களின் மின்னஞ்சல் முகவரிகள் அவை."
 
-#: canaille/oidc/endpoints/forms.py:86 canaille/oidc/endpoints/forms.py:140
+#: canaille/oidc/endpoints/forms.py:86
 msgid "URI"
 msgstr "யூரி"
 
-#: canaille/oidc/endpoints/forms.py:93 canaille/oidc/endpoints/forms.py:147
+#: canaille/oidc/endpoints/forms.py:93
 msgid "URL string of a web page providing information about the client."
 msgstr "கிளையன்ட் பற்றிய தகவலை வழங்கும் வலைப்பக்கத்தின் முகவரி சரம்."
 
-#: canaille/oidc/endpoints/forms.py:99 canaille/oidc/endpoints/forms.py:153
+#: canaille/oidc/endpoints/forms.py:99
 msgid "Redirect URIs"
 msgstr "URIS ஐ திருப்பி விடுங்கள்"
 
-#: canaille/oidc/endpoints/forms.py:109 canaille/oidc/endpoints/forms.py:163
+#: canaille/oidc/endpoints/forms.py:109
 msgid ""
 "URIs for use in redirect-based flows such as the authorization code and "
 "implicit flows."
@@ -998,123 +984,133 @@ msgstr ""
 "அங்கீகாரக் குறியீடு மற்றும் மறைமுகமான ஓட்டங்கள் போன்ற வழிமாற்று அடிப்படையிலான ஓட்டங்களில் "
 "பயன்படுத்துவதற்கான URIகள்."
 
-#: canaille/oidc/endpoints/forms.py:168
+#: canaille/oidc/endpoints/forms.py:118
+#, fuzzy
+#| msgid "Account expiration"
+msgid "Secret expiration"
+msgstr "கணக்கு காலாவதி"
+
+#: canaille/oidc/endpoints/forms.py:127
+msgid ""
+"Date after which the client secret cannot be used to authenticate anymore. "
+"Leave this empty so the secret never expires."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:133
 msgid "Post logout redirect URIs"
 msgstr "இடுகையிடப்பட்ட யுஆர்ஐக்களைத் திருப்பி விடுங்கள்"
 
-#: canaille/oidc/endpoints/forms.py:178
+#: canaille/oidc/endpoints/forms.py:143
 msgid "URIs that the client may redirect users to after logging them out."
 msgstr "கிளையன்ட் பயனர்களை வெளியேற்றிய பிறகு திருப்பி அனுப்பும் URIகள்."
 
-#: canaille/oidc/endpoints/forms.py:183
+#: canaille/oidc/endpoints/forms.py:148
 msgid "Grant types"
 msgstr "வகைகளை வழங்கவும்"
 
-#: canaille/oidc/endpoints/forms.py:195
+#: canaille/oidc/endpoints/forms.py:160
 msgid "Grant types that the client can use at the token endpoint."
-msgstr ""
-"கிள்ளாக்கு இறுதிப் புள்ளியில் கிளையன்ட் பயன்படுத்தக்கூடிய வகைகளை வழங்கவும்."
+msgstr "கிள்ளாக்கு இறுதிப் புள்ளியில் கிளையன்ட் பயன்படுத்தக்கூடிய வகைகளை வழங்கவும்."
 
-#: canaille/oidc/endpoints/forms.py:199
+#: canaille/oidc/endpoints/forms.py:164
 #: canaille/templates/oidc/token_view.html:70
 msgid "Scope"
 msgstr "நோக்கம்"
 
-#: canaille/oidc/endpoints/forms.py:203
+#: canaille/oidc/endpoints/forms.py:168
 msgid "Kind of information that the client can request about users."
 msgstr "பயனர்களைப் பற்றி வாடிக்கையாளர் கோரக்கூடிய செய்தி வகை."
 
-#: canaille/oidc/endpoints/forms.py:207
+#: canaille/oidc/endpoints/forms.py:172
 msgid "Response types"
 msgstr "மறுமொழி வகைகள்"
 
-#: canaille/oidc/endpoints/forms.py:212
+#: canaille/oidc/endpoints/forms.py:177
 msgid "Response types that the client can use at the authorization endpoint."
 msgstr "கிளையன்ட் அங்கீகார முடிவுப் புள்ளியில் பயன்படுத்தக்கூடிய பதில் வகைகள்."
 
-#: canaille/oidc/endpoints/forms.py:217
+#: canaille/oidc/endpoints/forms.py:182
 msgid "Token endpoint authentication method"
 msgstr "கிள்ளாக்கு எண்ட்பாயிண்ட் அங்கீகார முறை"
 
-#: canaille/oidc/endpoints/forms.py:228
+#: canaille/oidc/endpoints/forms.py:193
 msgid "Authentication method that the client will use at the token endpoint."
 msgstr "கிள்ளாக்கு இறுதிப் புள்ளியில் கிளையன்ட் பயன்படுத்தும் அங்கீகார முறை."
 
-#: canaille/oidc/endpoints/forms.py:233
+#: canaille/oidc/endpoints/forms.py:198
 msgid "Token audiences"
 msgstr "கிள்ளாக்கு பார்வையாளர்கள்"
 
-#: canaille/oidc/endpoints/forms.py:239
+#: canaille/oidc/endpoints/forms.py:204
 msgid ""
 "The other clients that are intended to use the tokens emitted by this client."
-msgstr ""
-"இந்த வாங்கி வெளியிடும் டோக்கன்களைப் பயன்படுத்த விரும்பும் பிற வாடிக்கையாளர்கள்."
+msgstr "இந்த வாங்கி வெளியிடும் டோக்கன்களைப் பயன்படுத்த விரும்பும் பிற வாடிக்கையாளர்கள்."
 
-#: canaille/oidc/endpoints/forms.py:244
+#: canaille/oidc/endpoints/forms.py:209
 msgid "Logo URI"
 msgstr "லோகோ யூரி"
 
-#: canaille/oidc/endpoints/forms.py:250
+#: canaille/oidc/endpoints/forms.py:215
 msgid "An URL for the logo of this client."
 msgstr "இந்த கிளையண்டின் லோகோவுக்கான URL."
 
-#: canaille/oidc/endpoints/forms.py:254
+#: canaille/oidc/endpoints/forms.py:219
 msgid "Terms of service URI"
 msgstr "பணி விதிமுறைகள் யூரி"
 
-#: canaille/oidc/endpoints/forms.py:260
+#: canaille/oidc/endpoints/forms.py:225
 msgid "URL to the terms of service of the client."
 msgstr "கிளையண்டின் பணி விதிமுறைகளுக்கான URL."
 
-#: canaille/oidc/endpoints/forms.py:264
+#: canaille/oidc/endpoints/forms.py:229
 msgid "Policy URI"
 msgstr "கொள்கை யூரி"
 
-#: canaille/oidc/endpoints/forms.py:270
+#: canaille/oidc/endpoints/forms.py:235
 msgid "URL to the privacy policy of the client."
 msgstr "கிளையண்டின் தனியுரிமைக் கொள்கைக்கான URL."
 
-#: canaille/oidc/endpoints/forms.py:274
+#: canaille/oidc/endpoints/forms.py:239
 msgid "Software ID"
 msgstr "மென்பொருள் ஐடி"
 
-#: canaille/oidc/endpoints/forms.py:278
+#: canaille/oidc/endpoints/forms.py:243
 msgid ""
 "Unique identifier for this client, that should be stable in time and common "
 "for all identity providers."
 msgstr ""
-"இந்த கிளையண்டிற்கான தனிப்பட்ட அடையாளங்காட்டி, அது சரியான நேரத்தில் நிலையானதாகவும் அனைத்து "
-"அடையாள வழங்குநர்களுக்கும் பொதுவானதாகவும் இருக்க வேண்டும்."
+"இந்த கிளையண்டிற்கான தனிப்பட்ட அடையாளங்காட்டி, அது சரியான நேரத்தில் நிலையானதாகவும் "
+"அனைத்து அடையாள வழங்குநர்களுக்கும் பொதுவானதாகவும் இருக்க வேண்டும்."
 
-#: canaille/oidc/endpoints/forms.py:283
+#: canaille/oidc/endpoints/forms.py:248
 msgid "Software Version"
 msgstr "மென்பொருள் பதிப்பு"
 
-#: canaille/oidc/endpoints/forms.py:286
+#: canaille/oidc/endpoints/forms.py:251
 msgid "The version of the client."
 msgstr "கிளையண்டின் பதிப்பு."
 
-#: canaille/oidc/endpoints/forms.py:290
+#: canaille/oidc/endpoints/forms.py:255
 msgid "JSON Web Keys"
 msgstr "சாதொபொகு இணைய விசைகள்"
 
-#: canaille/oidc/endpoints/forms.py:293
+#: canaille/oidc/endpoints/forms.py:258
 msgid "The public JSON Web Keys of the client."
 msgstr "கிளையண்டின் பொது சாதொபொகு இணைய விசைகள்."
 
-#: canaille/oidc/endpoints/forms.py:297
+#: canaille/oidc/endpoints/forms.py:262
 msgid "JSON Web Keys URI"
 msgstr "சாதொபொகு இணைய விசைகள் யூரி"
 
-#: canaille/oidc/endpoints/forms.py:303
+#: canaille/oidc/endpoints/forms.py:268
 msgid "The URI that points to the public JSON Web Keys of the client."
 msgstr "கிளையண்டின் பொது சாதொபொகு இணைய விசைகளை சுட்டிக்காட்டும் URI."
 
-#: canaille/oidc/endpoints/forms.py:307
+#: canaille/oidc/endpoints/forms.py:272
 msgid "Token endpoint authentication signing algorithm"
 msgstr "கிள்ளாக்கு எண்ட்பாயிண்ட் அங்கீகரிப்பு கையொப்பமிடும் அல்காரிதம்"
 
-#: canaille/oidc/endpoints/forms.py:313
+#: canaille/oidc/endpoints/forms.py:278
 msgid ""
 "JWS algorithm that must be used for signing the JWT used to authenticate the "
 "client at the token endpoint for the private_key_jwt and client_secret_jwt "
@@ -1123,25 +1119,25 @@ msgstr ""
 "JWS அல்காரிதம் JWT இல் கையொப்பமிடுவதற்குப் பயன்படுத்தப்பட வேண்டும், இது கிள்ளாக்கு எண்ட் "
 "பாயிண்டில் க்ளையன்ட்டை அங்கீகரிக்கப் பயன்படுகிறது."
 
-#: canaille/oidc/endpoints/forms.py:318
+#: canaille/oidc/endpoints/forms.py:283
 msgid "Sector identifier URI"
 msgstr "துறை அடையாளங்காட்டி யூரி"
 
-#: canaille/oidc/endpoints/forms.py:325
+#: canaille/oidc/endpoints/forms.py:290
 msgid ""
 "URL using the https scheme to be used in calculating pseudonymous "
 "identifiers by the OP. The URL references a file with a single JSON array of "
 "redirect_uri values."
 msgstr ""
-"OP மூலம் புனைப்பெயர் அடையாளங்காட்டிகளைக் கணக்கிடுவதற்கு https திட்டத்தைப் பயன்படுத்தும் URL. "
-"redirect_uri மதிப்புகளின் ஒற்றை சாதொபொகு வரிசையைக் கொண்ட கோப்பை முகவரி "
+"OP மூலம் புனைப்பெயர் அடையாளங்காட்டிகளைக் கணக்கிடுவதற்கு https திட்டத்தைப் பயன்படுத்தும் "
+"URL. redirect_uri மதிப்புகளின் ஒற்றை சாதொபொகு வரிசையைக் கொண்ட கோப்பை முகவரி "
 "குறிப்பிடுகிறது."
 
-#: canaille/oidc/endpoints/forms.py:330
+#: canaille/oidc/endpoints/forms.py:295
 msgid "Subject type"
 msgstr "பொருள் வகை"
 
-#: canaille/oidc/endpoints/forms.py:338
+#: canaille/oidc/endpoints/forms.py:303
 msgid ""
 "Subject identifier type requested for responses to this client. Valid types "
 "include pairwise and public."
@@ -1149,11 +1145,11 @@ msgstr ""
 "இந்த கிளையண்டிற்கான பதில்களுக்கு பொருள் அடையாளங்காட்டி வகை கோரப்பட்டது. சரியான வகைகளில் "
 "சோடிவரிசை மற்றும் பொது ஆகியவை அடங்கும்."
 
-#: canaille/oidc/endpoints/forms.py:343
+#: canaille/oidc/endpoints/forms.py:308
 msgid "Application type"
 msgstr "விண்ணப்ப வகை"
 
-#: canaille/oidc/endpoints/forms.py:351
+#: canaille/oidc/endpoints/forms.py:313
 msgid ""
 "Kind of the application. Web clients must use https redirect URIs. Native "
 "clients can use custom URI schemes or http loopback URLs."
@@ -1161,25 +1157,25 @@ msgstr ""
 "விண்ணப்ப வகை. இணைய கிளையன்ட்கள் https வழிமாற்று URIகளைப் பயன்படுத்த வேண்டும். சொந்த "
 "வாடிக்கையாளர்கள் தனிப்பயன் யூரி திட்டங்கள் அல்லது http loopback URLகளைப் பயன்படுத்தலாம்."
 
-#: canaille/oidc/endpoints/forms.py:356
+#: canaille/oidc/endpoints/forms.py:318
 msgid "ID Token signed response algorithm"
 msgstr "அடையாளம் கிள்ளாக்கு கையொப்பமிடப்பட்ட மறுமொழி அல்காரிதம்"
 
-#: canaille/oidc/endpoints/forms.py:363
+#: canaille/oidc/endpoints/forms.py:325
 msgid ""
 "JWS algorithm required for signing the ID Token issued to this client. The "
 "value 'none' must not be used unless the client uses only response types "
 "that return no ID Token from the authorization endpoint."
 msgstr ""
-"இந்த வாடிக்கையாளருக்கு வழங்கப்பட்ட அடையாளம் டோக்கனில் கையொப்பமிட JWS அல்காரிதம் தேவை. அங்கீகார "
-"முடிவுப் புள்ளியில் இருந்து எந்த அடையாளம் டோக்கனையும் வழங்கும் பதில் வகைகளை மட்டுமே "
-"கிளையன்ட் பயன்படுத்தினால் ஒழிய, 'இல்லை' என்ற மதிப்பைப் பயன்படுத்தக்கூடாது."
+"இந்த வாடிக்கையாளருக்கு வழங்கப்பட்ட அடையாளம் டோக்கனில் கையொப்பமிட JWS அல்காரிதம் தேவை. "
+"அங்கீகார முடிவுப் புள்ளியில் இருந்து எந்த அடையாளம் டோக்கனையும் வழங்கும் பதில் வகைகளை "
+"மட்டுமே கிளையன்ட் பயன்படுத்தினால் ஒழிய, 'இல்லை' என்ற மதிப்பைப் பயன்படுத்தக்கூடாது."
 
-#: canaille/oidc/endpoints/forms.py:368
+#: canaille/oidc/endpoints/forms.py:330
 msgid "UserInfo signed response algorithm"
 msgstr "UserInfo கையொப்பமிடப்பட்ட மறுமொழி அல்காரிதம்"
 
-#: canaille/oidc/endpoints/forms.py:372
+#: canaille/oidc/endpoints/forms.py:334
 msgid ""
 "JWS algorithm required for signing UserInfo responses. If specified, the "
 "response will be JWT serialized and signed using JWS. If omitted, the "
@@ -1187,43 +1183,43 @@ msgid ""
 "using the application/json content-type."
 msgstr ""
 "UserInfo பதில்களில் கையொப்பமிட JWS அல்காரிதம் தேவை. குறிப்பிடப்பட்டால், பதில் JWT "
-"வரிசைப்படுத்தப்பட்டு JWS ஐப் பயன்படுத்தி கையொப்பமிடப்படும். தவிர்க்கப்பட்டால், UserInfo பதில் "
-"பயன்பாடு/json உள்ளடக்க வகையைப் பயன்படுத்தி UTF-8 குறியிடப்பட்ட சாதொபொகு பொருளாக "
+"வரிசைப்படுத்தப்பட்டு JWS ஐப் பயன்படுத்தி கையொப்பமிடப்படும். தவிர்க்கப்பட்டால், UserInfo "
+"பதில் பயன்பாடு/json உள்ளடக்க வகையைப் பயன்படுத்தி UTF-8 குறியிடப்பட்ட சாதொபொகு பொருளாக "
 "உரிமைகோரல்களை வழங்கும்."
 
-#: canaille/oidc/endpoints/forms.py:377
+#: canaille/oidc/endpoints/forms.py:339
 msgid "Default maximum authentication age"
 msgstr "இயல்புநிலை அதிகபட்ச அங்கீகார அகவை"
 
-#: canaille/oidc/endpoints/forms.py:381
+#: canaille/oidc/endpoints/forms.py:343
 msgid ""
 "Default maximum authentication age in seconds. Specifies that the end-user "
 "must be actively authenticated if the end-user was authenticated longer ago "
 "than the specified number of seconds. The max_age request parameter "
 "overrides this default value."
 msgstr ""
-"இயல்புநிலை அதிகபட்ச அங்கீகார அகவை நொடிகளில். குறிப்பிட்ட வினாடிகளின் எண்ணிக்கையை விட நீண்ட "
-"காலத்திற்கு முன்பே இறுதிப் பயனர் அங்கீகரிக்கப்பட்டிருந்தால், இறுதிப் பயனர் செயலில் "
+"இயல்புநிலை அதிகபட்ச அங்கீகார அகவை நொடிகளில். குறிப்பிட்ட வினாடிகளின் எண்ணிக்கையை விட "
+"நீண்ட காலத்திற்கு முன்பே இறுதிப் பயனர் அங்கீகரிக்கப்பட்டிருந்தால், இறுதிப் பயனர் செயலில் "
 "அங்கீகரிக்கப்பட வேண்டும் என்பதைக் குறிப்பிடுகிறது. max_age கோரிக்கை அளவுரு இந்த "
 "இயல்புநிலை மதிப்பை மீறுகிறது."
 
-#: canaille/oidc/endpoints/forms.py:386
+#: canaille/oidc/endpoints/forms.py:348
 msgid "Require auth_time claim"
 msgstr "auth_time கோரிக்கை தேவை"
 
-#: canaille/oidc/endpoints/forms.py:389
+#: canaille/oidc/endpoints/forms.py:351
 msgid ""
 "Boolean value specifying whether the auth_time claim in the ID Token is "
 "required. It is required when the value is true."
 msgstr ""
-"அடையாளம் டோக்கனில் உள்ள auth_time கோரிக்கை தேவையா என்பதைக் குறிப்பிடும் பூலியன் மதிப்பு. "
-"மதிப்பு உண்மையாக இருக்கும்போது இது தேவைப்படுகிறது."
+"அடையாளம் டோக்கனில் உள்ள auth_time கோரிக்கை தேவையா என்பதைக் குறிப்பிடும் பூலியன் "
+"மதிப்பு. மதிப்பு உண்மையாக இருக்கும்போது இது தேவைப்படுகிறது."
 
-#: canaille/oidc/endpoints/forms.py:395
+#: canaille/oidc/endpoints/forms.py:357
 msgid "Default ACR values"
 msgstr "இயல்புநிலை ACR மதிப்புகள்"
 
-#: canaille/oidc/endpoints/forms.py:402
+#: canaille/oidc/endpoints/forms.py:364
 msgid ""
 "Default requested Authentication Context Class Reference values. Array of "
 "strings that specifies the default acr values that the OP is being requested "
@@ -1234,11 +1230,11 @@ msgstr ""
 "கோரிக்கைகளைச் செயலாக்குவதற்கு OP கோரப்படும் இயல்புநிலை acr மதிப்புகளைக் குறிப்பிடும் "
 "சரங்களின் வரிசை, மதிப்புகள் விருப்ப வரிசையில் தோன்றும்."
 
-#: canaille/oidc/endpoints/forms.py:407
+#: canaille/oidc/endpoints/forms.py:369
 msgid "Initiate login URI"
 msgstr "யூரி உள்நுழைவைத் தொடங்கவும்"
 
-#: canaille/oidc/endpoints/forms.py:414
+#: canaille/oidc/endpoints/forms.py:376
 msgid ""
 "URI using the https scheme that a third party can use to initiate a login by "
 "the RP. The URI must accept requests via both GET and POST."
@@ -1246,11 +1242,11 @@ msgstr ""
 "RP மூலம் உள்நுழைவைத் தொடங்க மூன்றாம் தரப்பினர் பயன்படுத்தக்கூடிய https திட்டத்தைப் "
 "பயன்படுத்தும் URI. யூரி ஆனது GET மற்றும் POST ஆகிய இரண்டிலும் கோரிக்கைகளை ஏற்க வேண்டும்."
 
-#: canaille/oidc/endpoints/forms.py:419
+#: canaille/oidc/endpoints/forms.py:381
 msgid "Request object signing algorithm"
 msgstr "பொருள் கையொப்பமிடும் அல்காரிதம் கோரிக்கை"
 
-#: canaille/oidc/endpoints/forms.py:425
+#: canaille/oidc/endpoints/forms.py:385
 msgid ""
 "JWS algorithm that must be used for signing request objects sent to the OP. "
 "All request objects from this client must be rejected if not signed with "
@@ -1259,16 +1255,16 @@ msgid ""
 "reference (using the request_uri parameter)."
 msgstr ""
 "OP க்கு அனுப்பப்படும் கோரிக்கைப் பொருட்களில் கையொப்பமிடுவதற்குப் பயன்படுத்தப்பட வேண்டிய JWS "
-"அல்காரிதம். இந்த அல்காரிதத்துடன் கையொப்பமிடவில்லை என்றால், இந்த கிளையண்டின் அனைத்து கோரிக்கை "
-"பொருட்களும் நிராகரிக்கப்பட வேண்டும். This படிமுறை must be used both when the "
-"request பொருள் is passed by மதிப்பு (using the request parameter) and when it "
-"is passed by குறிப்பு (using the request_uri parameter)."
+"அல்காரிதம். இந்த அல்காரிதத்துடன் கையொப்பமிடவில்லை என்றால், இந்த கிளையண்டின் அனைத்து "
+"கோரிக்கை பொருட்களும் நிராகரிக்கப்பட வேண்டும். This படிமுறை must be used both when "
+"the request பொருள் is passed by மதிப்பு (using the request parameter) and when "
+"it is passed by குறிப்பு (using the request_uri parameter)."
 
-#: canaille/oidc/endpoints/forms.py:431
+#: canaille/oidc/endpoints/forms.py:391
 msgid "Request URIs"
 msgstr "URIகளை கோருங்கள்"
 
-#: canaille/oidc/endpoints/forms.py:443
+#: canaille/oidc/endpoints/forms.py:403
 msgid ""
 "Array of request_uri values that are pre-registered by the RP for use at the "
 "OP. These URLs must use the https scheme unless the target request object is "
@@ -1276,29 +1272,33 @@ msgid ""
 "of the files referenced by these URIs."
 msgstr ""
 "OP இல் பயன்படுத்த RP ஆல் முன் பதிவு செய்யப்பட்ட கோரிக்கை_uri மதிப்புகளின் வரிசை. OP ஆல் "
-"சரிபார்க்கக்கூடிய வகையில் இலக்கு கோரிக்கைப் பொருள் கையொப்பமிடப்படாவிட்டால், இந்த URLகள் https "
-"திட்டத்தைப் பயன்படுத்த வேண்டும். இந்த URIகளால் குறிப்பிடப்பட்ட கோப்புகளின் உள்ளடக்கங்களை "
-"சர்வர்கள் தேக்ககப்படுத்தலாம்."
+"சரிபார்க்கக்கூடிய வகையில் இலக்கு கோரிக்கைப் பொருள் கையொப்பமிடப்படாவிட்டால், இந்த URLகள் "
+"https திட்டத்தைப் பயன்படுத்த வேண்டும். இந்த URIகளால் குறிப்பிடப்பட்ட கோப்புகளின் "
+"உள்ளடக்கங்களை சர்வர்கள் தேக்ககப்படுத்தலாம்."
 
-#: canaille/oidc/endpoints/forms.py:448
+#: canaille/oidc/endpoints/forms.py:408
 msgid "Require signed request object"
 msgstr "கையொப்பமிடப்பட்ட கோரிக்கை பொருள் தேவை"
 
-#: canaille/oidc/endpoints/forms.py:451
+#: canaille/oidc/endpoints/forms.py:411
 msgid ""
 "Indicates whether authorization request needs to be protected as a request "
 "object and provided through either request or request_uri parameter."
 msgstr ""
-"அங்கீகாரக் கோரிக்கையானது கோரிக்கைப் பொருளாகப் பாதுகாக்கப்பட வேண்டுமா மற்றும் கோரிக்கை அல்லது "
-"request_uri அளவுரு மூலம் வழங்கப்பட வேண்டுமா என்பதைக் குறிக்கிறது."
+"அங்கீகாரக் கோரிக்கையானது கோரிக்கைப் பொருளாகப் பாதுகாக்கப்பட வேண்டுமா மற்றும் கோரிக்கை "
+"அல்லது request_uri அளவுரு மூலம் வழங்கப்பட வேண்டுமா என்பதைக் குறிக்கிறது."
 
-#: canaille/oidc/endpoints/oauth.py:548
-msgid "You have been disconnected."
-msgstr "நீங்கள் துண்டிக்கப்பட்டீர்கள்."
-
-#: canaille/oidc/endpoints/oauth.py:566
-msgid "You have not been disconnected."
+#: canaille/oidc/endpoints/oauth.py:479
+#, fuzzy
+#| msgid "You have not been disconnected."
+msgid "You have not been disconnected"
 msgstr "நீங்கள் துண்டிக்கப்படவில்லை."
+
+#: canaille/oidc/endpoints/oauth.py:488
+#, fuzzy
+#| msgid "You have been disconnected."
+msgid "You have been disconnected"
+msgstr "நீங்கள் துண்டிக்கப்பட்டீர்கள்."
 
 #: canaille/oidc/endpoints/tokens.py:49
 msgid "The token has successfully been revoked."
@@ -1308,11 +1308,11 @@ msgstr "கிள்ளாக்கு வெற்றிகரமாக ரத�
 msgid "Authorization interface"
 msgstr "அங்கீகார இடைமுகம்"
 
-#: canaille/templates/base.html:48
+#: canaille/templates/base.html:49
 msgid "Network error"
 msgstr "பிணையம் பிழை"
 
-#: canaille/templates/base.html:51
+#: canaille/templates/base.html:52
 #, python-format
 msgid ""
 "%(website_name)s could not be reached. Are you sure to be connected to the "
@@ -1320,57 +1320,57 @@ msgid ""
 msgstr ""
 "%(website_name)s ஐ அடைய முடியவில்லை. நீங்கள் நிச்சயமாக இணையத்துடன் இணைக்கப்பட்டுள்ளீர்களா?"
 
-#: canaille/templates/base.html:65
+#: canaille/templates/base.html:66
 #, python-format
 msgid ""
 "Your Canaille instance is not fully configured and not ready for production."
 "<br> Have a look at your server logs and at the <a "
 "href=\"%(documentation_url)s\">documentation</a> for more details."
 msgstr ""
-"உங்கள் Canaille நிகழ்வு முழுமையாக உள்ளமைக்கப்படவில்லை மற்றும் உற்பத்திக்குத் தயாராக "
-"இல்லை.<br> மேலும் விவரங்களுக்கு உங்கள் சர்வர் பதிவுகள் மற்றும் <a href=\"%"
-"(documentation_url)s\">ஆவணத்தை</a> பார்க்கவும்."
+"உங்கள் Canaille நிகழ்வு முழுமையாக உள்ளமைக்கப்படவில்லை மற்றும் உற்பத்திக்குத் தயாராக இல்லை."
+"<br> மேலும் விவரங்களுக்கு உங்கள் சர்வர் பதிவுகள் மற்றும் <a "
+"href=\"%(documentation_url)s\">ஆவணத்தை</a> பார்க்கவும்."
 
-#: canaille/templates/base.html:76
+#: canaille/templates/base.html:77
 msgid "Skip main menu"
 msgstr "முக்கிய மெனுவைத் தவிர்க்கவும்"
 
-#: canaille/templates/base.html:89
+#: canaille/templates/base.html:90
 msgid "Profile"
 msgstr "சுயவிவரம்"
 
-#: canaille/templates/base.html:96
+#: canaille/templates/base.html:97
 msgid "Consents"
 msgstr "ஒப்புதல்"
 
-#: canaille/templates/base.html:103 canaille/templates/core/users.html:18
+#: canaille/templates/base.html:104 canaille/templates/core/users.html:18
 #: canaille/templates/core/users.html:44
 msgid "Users"
 msgstr "பயனர்கள்"
 
-#: canaille/templates/base.html:116
+#: canaille/templates/base.html:117
 msgid "Admin"
 msgstr "நிர்வாகி"
 
-#: canaille/templates/base.html:127 canaille/templates/base.html:142
-#: canaille/templates/base.html:165 canaille/templates/core/login.html:48
+#: canaille/templates/base.html:128 canaille/templates/base.html:143
+#: canaille/templates/base.html:166 canaille/templates/core/login.html:48
 #: canaille/templates/oidc/logout.html:18
 msgid "Log out"
 msgstr "விடுபதிகை"
 
-#: canaille/templates/base.html:161 canaille/templates/core/auth/base.html:58
+#: canaille/templates/base.html:162 canaille/templates/core/auth/base.html:58
 #: canaille/templates/core/auth/fido-setup.html:46
 #: canaille/templates/core/auth/fido.html:39
 #: canaille/templates/core/auth/setup-otp.html:57
 msgid "Switch account"
 msgstr "கணக்கை மாற்றவும்"
 
-#: canaille/templates/base.html:172
+#: canaille/templates/base.html:173
 #: canaille/templates/core/auth/password.html:35
 msgid "Sign in"
 msgstr "விடுபதிகை"
 
-#: canaille/templates/base.html:197 canaille/templates/core/about.html:22
+#: canaille/templates/base.html:198 canaille/templates/core/about.html:22
 #: canaille/templates/core/about.html:33
 msgid "About Canaille"
 msgstr "கனேல் பற்றி"
@@ -1479,7 +1479,7 @@ msgstr "குழுவை உருவாக்கவும்"
 #: canaille/templates/core/account/settings.html:123
 #: canaille/templates/core/group.html:86
 #: canaille/templates/core/partial/profile_settings_password.html:86
-#: canaille/templates/oidc/client_edit.html:122
+#: canaille/templates/oidc/client_edit.html:133
 msgid "Edit"
 msgstr "தொகு"
 
@@ -1545,8 +1545,8 @@ msgstr ""
 #: canaille/templates/core/invite_group_member.html:56
 #: canaille/templates/oidc/client_add.html:57
 #: canaille/templates/oidc/client_edit.html:59
-#: canaille/templates/oidc/client_edit.html:84
-#: canaille/templates/oidc/client_edit.html:94
+#: canaille/templates/oidc/client_edit.html:90
+#: canaille/templates/oidc/client_edit.html:117
 #: canaille/templates/oidc/token_view.html:133
 #: canaille/templates/oidc/token_view.html:144
 msgid "Copy"
@@ -1824,6 +1824,7 @@ msgid "Delete my account"
 msgstr "எனது கணக்கை நீக்கு"
 
 #: canaille/templates/core/account/settings.html:118
+#: canaille/templates/core/modals/impersonate-user.html:21
 msgid "Impersonate"
 msgstr "ஆள்மாறாட்டம்"
 
@@ -1948,9 +1949,9 @@ msgid ""
 "application anymore, you can reset its configuration. After this, you will "
 "be able to set up a new authenticator application configuration."
 msgstr ""
-"நீங்கள் அங்கீகரிப்பு பயன்பாட்டை உள்ளமைத்துள்ளீர்கள். இந்த பயன்பாட்டை நீங்கள் இனி அணுக முடியாவிட்டால், "
-"அதன் உள்ளமைவை மீட்டமைக்கலாம். இதற்குப் பிறகு, நீங்கள் ஒரு புதிய அங்கீகரிப்பு பயன்பாட்டு "
-"உள்ளமைவை அமைக்க முடியும்."
+"நீங்கள் அங்கீகரிப்பு பயன்பாட்டை உள்ளமைத்துள்ளீர்கள். இந்த பயன்பாட்டை நீங்கள் இனி அணுக "
+"முடியாவிட்டால், அதன் உள்ளமைவை மீட்டமைக்கலாம். இதற்குப் பிறகு, நீங்கள் ஒரு புதிய அங்கீகரிப்பு "
+"பயன்பாட்டு உள்ளமைவை அமைக்க முடியும்."
 
 #: canaille/templates/core/account/auth/otp.html:56
 #: canaille/templates/core/partial/profile_settings_otp.html:19
@@ -1966,9 +1967,9 @@ msgid ""
 "your accounts."
 msgstr ""
 "கீழே உள்ள ஒவ்வொரு புலத்திலும் ஒரு முறை தட்டச்சு செய்வதன் மூலம் உங்கள் கடவுச்சொல்லை இங்கே "
-"மாற்றலாம். கடவுச்சொல் எவ்வளவு நீளமாக இருக்கிறதோ, அவ்வளவு வலிமையானது. நல்ல கடவுச்சொல் என்பது "
-"நீங்கள் நினைவில் வைத்திருக்கும் நீண்ட கடவுச்சொல், உங்கள் எல்லா கணக்குகளுக்கும் பயன்படுத்தும் "
-"சிக்கலான கடவுச்சொல் அல்ல."
+"மாற்றலாம். கடவுச்சொல் எவ்வளவு நீளமாக இருக்கிறதோ, அவ்வளவு வலிமையானது. நல்ல கடவுச்சொல் "
+"என்பது நீங்கள் நினைவில் வைத்திருக்கும் நீண்ட கடவுச்சொல், உங்கள் எல்லா கணக்குகளுக்கும் "
+"பயன்படுத்தும் சிக்கலான கடவுச்சொல் அல்ல."
 
 #: canaille/templates/core/account/auth/password.html:68
 #: canaille/templates/core/account/auth/password.html:89
@@ -2054,8 +2055,8 @@ msgid ""
 "been sent to your mail address. Please fill the code in the following form "
 "to continue."
 msgstr ""
-"நீங்கள் நிறைவு செய்த உள்நுழைவு இருந்தால், உங்கள் மின்னஞ்சல் முகவரிக்கு சரிபார்ப்புக் குறியீட்டைக் "
-"கொண்ட மின்னஞ்சல் அனுப்பப்படும். தொடர, பின்வரும் படிவத்தில் குறியீட்டை நிரப்பவும்."
+"நீங்கள் நிறைவு செய்த உள்நுழைவு இருந்தால், உங்கள் மின்னஞ்சல் முகவரிக்கு சரிபார்ப்புக் "
+"குறியீட்டைக் கொண்ட மின்னஞ்சல் அனுப்பப்படும். தொடர, பின்வரும் படிவத்தில் குறியீட்டை நிரப்பவும்."
 
 #: canaille/templates/core/auth/email.html:42
 #: canaille/templates/core/auth/sms.html:42
@@ -2095,8 +2096,8 @@ msgid ""
 "the button below, and finally authenticate with your passkey."
 msgstr ""
 "உங்கள் கடவுச் சாவியைச் செருகவும் அல்லது உங்கள் சாதனத்தின் பயோமெட்ரிக் அங்கீகாரத்தைப் "
-"பயன்படுத்தவும், பின்னர் கீழே உள்ள பொத்தானை அழுத்தவும், இறுதியாக உங்கள் கடவுச் சாவியைக் கொண்டு "
-"அங்கீகரிக்கவும்."
+"பயன்படுத்தவும், பின்னர் கீழே உள்ள பொத்தானை அழுத்தவும், இறுதியாக உங்கள் கடவுச் சாவியைக் "
+"கொண்டு அங்கீகரிக்கவும்."
 
 #: canaille/templates/core/auth/fido.html:44
 msgid "Authenticate"
@@ -2125,8 +2126,7 @@ msgstr "துவக்க மின்னஞ்சலை அனுப்பவ�
 
 #: canaille/templates/core/auth/forgotten-password-code.html:39
 msgid "Please enter the reset password code you received via email."
-msgstr ""
-"மின்னஞ்சல் மூலம் நீங்கள் பெற்ற மீட்டமை கடவுச்சொல் குறியீட்டை உள்ளிடவும்."
+msgstr "மின்னஞ்சல் மூலம் நீங்கள் பெற்ற மீட்டமை கடவுச்சொல் குறியீட்டை உள்ளிடவும்."
 
 #: canaille/templates/core/auth/forgotten-password.html:38
 msgid ""
@@ -2216,8 +2216,7 @@ msgstr "உங்கள் உலாவி கடவுச் சாவிகள
 
 #: canaille/templates/core/auth/partials/fido_errors.html:53
 msgid "Security error. Make sure you are using HTTPS."
-msgstr ""
-"பாதுகாப்பு பிழை. நீங்கள் HTTPS ஐப் பயன்படுத்துகிறீர்கள் என்பதை உறுதிப்படுத்தவும்."
+msgstr "பாதுகாப்பு பிழை. நீங்கள் HTTPS ஐப் பயன்படுத்துகிறீர்கள் என்பதை உறுதிப்படுத்தவும்."
 
 #: canaille/templates/core/auth/partials/fido_errors.html:60
 msgid "An unknown error occurred."
@@ -2265,15 +2264,14 @@ msgid ""
 "You need to install an authenticator application to generate one-time "
 "passcodes for %(website_name)s."
 msgstr ""
-"%(website_name)sான ஒரு முறை கடவுக்குறியீடுகளை உருவாக்க, அங்கீகரிப்பு பயன்பாட்டை நிறுவ "
-"வேண்டும்."
+"%(website_name)sான ஒரு முறை கடவுக்குறியீடுகளை உருவாக்க, அங்கீகரிப்பு பயன்பாட்டை "
+"நிறுவ வேண்டும்."
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:6
 msgid ""
 "Then, configure the authenticator application with one of the following "
 "methods:"
-msgstr ""
-"பின்னர், பின்வரும் முறைகளில் ஒன்றின் மூலம் அங்கீகார பயன்பாட்டை உள்ளமைக்கவும்:"
+msgstr "பின்னர், பின்வரும் முறைகளில் ஒன்றின் மூலம் அங்கீகார பயன்பாட்டை உள்ளமைக்கவும்:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:14
 msgid "1 - Automatic configuration"
@@ -2284,8 +2282,8 @@ msgid ""
 "If the authenticator application is installed on the device that you are "
 "currently using, you can configure it by clicking on this button:"
 msgstr ""
-"நீங்கள் தற்போது பயன்படுத்தும் சாதனத்தில் அங்கீகரிப்பு பயன்பாடு நிறுவப்பட்டிருந்தால், இந்த பொத்தானைக் "
-"சொடுக்கு செய்வதன் மூலம் அதை உள்ளமைக்கலாம்:"
+"நீங்கள் தற்போது பயன்படுத்தும் சாதனத்தில் அங்கீகரிப்பு பயன்பாடு நிறுவப்பட்டிருந்தால், இந்த "
+"பொத்தானைக் சொடுக்கு செய்வதன் மூலம் அதை உள்ளமைக்கலாம்:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:24
 msgid "Open authenticator application"
@@ -2301,8 +2299,8 @@ msgid ""
 "installed on another device, please open it and use it to scan the following "
 "qrcode:"
 msgstr ""
-"முந்தைய பொத்தான் வேலை செய்யவில்லை என்றால் அல்லது உங்கள் அங்கீகரிப்பு பயன்பாடு வேறொரு சாதனத்தில் "
-"நிறுவப்பட்டிருந்தால், தயவுசெய்து அதைத் திறந்து பின்வரும் qrcode ஐ வருடு செய்ய "
+"முந்தைய பொத்தான் வேலை செய்யவில்லை என்றால் அல்லது உங்கள் அங்கீகரிப்பு பயன்பாடு வேறொரு "
+"சாதனத்தில் நிறுவப்பட்டிருந்தால், தயவுசெய்து அதைத் திறந்து பின்வரும் qrcode ஐ வருடு செய்ய "
 "பயன்படுத்தவும்:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:40
@@ -2556,8 +2554,9 @@ msgid ""
 "the one-time passcode below at %(site_name)s to complete your authentication."
 msgstr ""
 "யாரோ, ஒருவேளை நீங்கள், %(site_name)s இல் ஒரு முறை கடவுக்குறியீட்டைக் கேட்டீர்கள். நீங்கள் "
-"இந்த மின்னஞ்சலைக் கேட்கவில்லை என்றால், தயவுசெய்து அதைப் புறக்கணிக்கவும். நீங்கள் செய்திருந்தால், "
-"உங்கள் அங்கீகாரத்தை முடிக்க, கீழே ஒருமுறை கடவுக்குறியீட்டை %(site_name)s இல் உள்ளிடவும்."
+"இந்த மின்னஞ்சலைக் கேட்கவில்லை என்றால், தயவுசெய்து அதைப் புறக்கணிக்கவும். நீங்கள் "
+"செய்திருந்தால், உங்கள் அங்கீகாரத்தை முடிக்க, கீழே ஒருமுறை கடவுக்குறியீட்டை %(site_name)s "
+"இல் உள்ளிடவும்."
 
 #: canaille/templates/core/mails/email_otp.html:30
 msgid "Your one-time passcode"
@@ -2698,9 +2697,9 @@ msgid ""
 "%(site_name)s. If you did not ask for this email, please ignore it. If you "
 "need to reset your password, please enter the code below at %(site_name)s."
 msgstr ""
-"யாரோ, ஒருவேளை நீங்கள், %(site_name)s இல் கடவுச்சொல்லை மறுதொடக்கம் செய்யக் கேட்டீர்கள். நீங்கள் "
-"இந்த மின்னஞ்சலைக் கேட்கவில்லை என்றால், தயவுசெய்து அதைப் புறக்கணிக்கவும். உங்கள் கடவுச்சொல்லை "
-"மீட்டமைக்க வேண்டுமானால், கீழே உள்ள குறியீட்டை %(site_name)s இல் உள்ளிடவும்."
+"யாரோ, ஒருவேளை நீங்கள், %(site_name)s இல் கடவுச்சொல்லை மறுதொடக்கம் செய்யக் கேட்டீர்கள். "
+"நீங்கள் இந்த மின்னஞ்சலைக் கேட்கவில்லை என்றால், தயவுசெய்து அதைப் புறக்கணிக்கவும். உங்கள் "
+"கடவுச்சொல்லை மீட்டமைக்க வேண்டுமானால், கீழே உள்ள குறியீட்டை %(site_name)s இல் உள்ளிடவும்."
 
 #: canaille/templates/core/mails/reset.html:30
 #: canaille/templates/core/mails/reset.txt:5
@@ -2758,6 +2757,7 @@ msgstr ""
 #: canaille/templates/core/modals/delete-account.html:26
 #: canaille/templates/core/modals/delete-credential.html:30
 #: canaille/templates/core/modals/delete-group.html:22
+#: canaille/templates/core/modals/impersonate-user.html:20
 #: canaille/templates/core/modals/leave-group.html:22
 #: canaille/templates/core/modals/lock-account.html:26
 #: canaille/templates/core/modals/remove-group-member.html:22
@@ -2803,6 +2803,20 @@ msgid ""
 msgstr ""
 "\"%(group_name)s\" குழுவை நீக்க விரும்புகிறீர்களா? இந்த நடவடிக்கை மறுபரிசீலனை செய்ய "
 "முடியாதது மற்றும் இந்த குழுவைப் பற்றிய அனைத்து தரவுகளும் அகற்றப்படும்."
+
+#: canaille/templates/core/modals/impersonate-user.html:9
+#, fuzzy
+#| msgid "Account expiration"
+msgid "Account impersonation"
+msgstr "கணக்கு காலாவதி"
+
+#: canaille/templates/core/modals/impersonate-user.html:13
+#, python-format
+msgid ""
+"Are you sure you want to open a session as %(user_name)s? Every action you "
+"will perform will be attributed to them. Log out to get back to your own "
+"session."
+msgstr ""
 
 #: canaille/templates/core/modals/leave-group.html:9
 msgid "Leave group"
@@ -2892,8 +2906,7 @@ msgstr ""
 #: canaille/templates/core/modals/reset-otp.html:18
 msgid ""
 "Are you sure you want to reset your authenticator application configuration?"
-msgstr ""
-"உங்கள் அங்கீகரிப்பு பயன்பாட்டு உள்ளமைவை நிச்சயமாக மீட்டமைக்க விரும்புகிறீர்களா?"
+msgstr "உங்கள் அங்கீகரிப்பு பயன்பாட்டு உள்ளமைவை நிச்சயமாக மீட்டமைக்க விரும்புகிறீர்களா?"
 
 #: canaille/templates/core/partial/captcha_field.html:30
 msgid "Listen to the audio security code"
@@ -2923,7 +2936,7 @@ msgstr "குழுக்களுக்கு குறைந்தது ஒ�
 #: canaille/templates/core/partial/group-members.html:90
 #: canaille/templates/core/partial/groups.html:55
 #: canaille/templates/core/partial/users.html:81
-#: canaille/templates/oidc/partial/client_list.html:48
+#: canaille/templates/oidc/partial/client_list.html:51
 #: canaille/templates/oidc/partial/token_list.html:45
 msgid "No item matches your request"
 msgstr "உங்கள் கோரிக்கையுடன் எந்த பொருளும் பொருந்தவில்லை"
@@ -2931,7 +2944,7 @@ msgstr "உங்கள் கோரிக்கையுடன் எந்த 
 #: canaille/templates/core/partial/group-members.html:92
 #: canaille/templates/core/partial/groups.html:57
 #: canaille/templates/core/partial/users.html:83
-#: canaille/templates/oidc/partial/client_list.html:50
+#: canaille/templates/oidc/partial/client_list.html:53
 #: canaille/templates/oidc/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
 msgstr "வெவ்வேறு அளவுகோல்களுடன் முயற்சி செய்யலாம்?"
@@ -2939,7 +2952,7 @@ msgstr "வெவ்வேறு அளவுகோல்களுடன் ம�
 #: canaille/templates/core/partial/group-members.html:95
 #: canaille/templates/core/partial/groups.html:60
 #: canaille/templates/core/partial/users.html:86
-#: canaille/templates/oidc/partial/client_list.html:53
+#: canaille/templates/oidc/partial/client_list.html:56
 #: canaille/templates/oidc/partial/token_list.html:50
 #: canaille/templates/oidc/trusted_list.html:120
 msgid "There is nothing here"
@@ -2964,28 +2977,28 @@ msgid ""
 "Here is the one-time passcode you requested for %(website_name)s: %(otp)s"
 msgstr "%(website_name)sு நீங்கள் கோரிய ஒருமுறை கடவுக்குறியீடு இதோ: %(otp)s"
 
-#: canaille/templates/macro/form.html:87 canaille/templates/macro/form.html:88
+#: canaille/templates/macro/form.html:90 canaille/templates/macro/form.html:91
 msgid "Toggle password visibility"
 msgstr "கடவுச்சொல் தெரிவுநிலையை நிலைமாற்று"
 
-#: canaille/templates/macro/form.html:97
-#: canaille/templates/oidc/client_edit.html:102
+#: canaille/templates/macro/form.html:100
+#: canaille/templates/oidc/client_edit.html:98
 msgid "This field is not editable"
 msgstr "இந்த புலம் திருத்தக்கூடியது அல்ல"
 
-#: canaille/templates/macro/form.html:101
+#: canaille/templates/macro/form.html:104
 msgid "This field is required"
 msgstr "இந்த புலம் தேவை"
 
-#: canaille/templates/macro/form.html:119
+#: canaille/templates/macro/form.html:122
 msgid "Remove this field"
 msgstr "இந்த புலத்தை அகற்று"
 
-#: canaille/templates/macro/form.html:132
+#: canaille/templates/macro/form.html:135
 msgid "Add another field"
 msgstr "மற்றொரு புலத்தைச் சேர்க்கவும்"
 
-#: canaille/templates/macro/form.html:162
+#: canaille/templates/macro/form.html:167
 msgid "Password strength"
 msgstr "கடவுச்சொல் வலிமை"
 
@@ -3023,8 +3036,7 @@ msgstr "%(client)s இல் உள்நுழையவும்"
 msgid ""
 "The application %(client_name)s requires that you sign in to your "
 "%(website_name)s account."
-msgstr ""
-"%(client_name)s பயன்பாட்டிற்கு உங்கள் %(website_name)sணக்கில் உள்நுழைய வேண்டும்."
+msgstr "%(client_name)s பயன்பாட்டிற்கு உங்கள் %(website_name)sணக்கில் உள்நுழைய வேண்டும்."
 
 #: canaille/templates/oidc/auth.html:64
 #, python-format
@@ -3116,6 +3128,7 @@ msgstr "மேலும் படிக்க…"
 
 #: canaille/templates/oidc/client_add.html:53
 #: canaille/templates/oidc/client_edit.html:55
+#: canaille/templates/oidc/client_edit.html:113
 msgid "Renew"
 msgstr "புதுப்பிக்கவும்"
 
@@ -3143,30 +3156,40 @@ msgstr ""
 #: canaille/templates/oidc/client_edit.html:69
 msgid ""
 "The domain of this application is trusted and thus it bypasses user consent"
-msgstr ""
-"இந்தப் பயன்பாட்டின் டொமைன் நம்பகமானது, எனவே இது பயனர் ஒப்புதலைப் புறக்கணிக்கிறது"
+msgstr "இந்தப் பயன்பாட்டின் டொமைன் நம்பகமானது, எனவே இது பயனர் ஒப்புதலைப் புறக்கணிக்கிறது"
 
 #: canaille/templates/oidc/client_edit.html:71
 msgid "Trusted"
 msgstr "நம்பகமானவர்"
 
-#: canaille/templates/oidc/client_edit.html:79
+#: canaille/templates/oidc/client_edit.html:75
+msgid ""
+"This application cannot authenticate anymore until its secret is renewed"
+msgstr ""
+
+#: canaille/templates/oidc/client_edit.html:77
+#, fuzzy
+#| msgid "Copy secret"
+msgid "Expired secret"
+msgstr "நகல் மறைபொருள்"
+
+#: canaille/templates/oidc/client_edit.html:85
 msgid "ID"
 msgstr "ஐடி"
 
-#: canaille/templates/oidc/client_edit.html:89
-msgid "Secret"
-msgstr "மறைபொருள்"
-
-#: canaille/templates/oidc/client_edit.html:99
+#: canaille/templates/oidc/client_edit.html:95
 msgid "Issued at"
 msgstr "வழங்கப்பட்டது"
 
-#: canaille/templates/oidc/client_edit.html:116
+#: canaille/templates/oidc/client_edit.html:108
+msgid "Secret"
+msgstr "மறைபொருள்"
+
+#: canaille/templates/oidc/client_edit.html:127
 msgid "New access token"
 msgstr "புதிய அணுகல் கிள்ளாக்கு"
 
-#: canaille/templates/oidc/client_edit.html:119
+#: canaille/templates/oidc/client_edit.html:130
 msgid "Delete the client"
 msgstr "கிளையண்டை நீக்கு"
 
@@ -3351,9 +3374,21 @@ msgstr "விண்ணப்ப அடையாளம்"
 msgid "This application is trusted"
 msgstr "இந்த பயன்பாடு நம்பகமானது"
 
+#: canaille/templates/oidc/partial/client_list.html:29
+#, fuzzy
+#| msgid "This application is trusted"
+msgid "The secret of this application has expired"
+msgstr "இந்த பயன்பாடு நம்பகமானது"
+
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
 msgstr "கிள்ளாக்கு"
+
+#~ msgid "Your account has been locked."
+#~ msgstr "உங்கள் கணக்கு பூட்டப்பட்டுள்ளது."
+
+#~ msgid "You should change your password."
+#~ msgstr "உங்கள் கடவுச்சொல்லை மாற்ற வேண்டும்."
 
 #~ msgid "User account creation failed."
 #~ msgstr "பயனர் கணக்கு உருவாக்கம் தோல்வியடைந்தது."
