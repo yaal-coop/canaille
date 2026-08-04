@@ -114,10 +114,6 @@ def test_delete_invalid_user(testclient, backend, logged_admin):
     )
 
 
-def test_impersonate_invalid_user(testclient, backend, logged_admin):
-    testclient.get("/impersonate/invalid", status=404)
-
-
 def test_impersonate_locked_user(testclient, backend, logged_admin, user):
     res = testclient.get("/profile/user/settings")
     res.mustcontain("Impersonate")
@@ -131,8 +127,45 @@ def test_impersonate_locked_user(testclient, backend, logged_admin, user):
     res = testclient.get("/profile/user/settings")
     res.mustcontain(no="Impersonate")
 
-    res = testclient.get("/impersonate/user", status=403)
+    res = testclient.post(
+        "/profile/user/settings",
+        {
+            "action": "impersonate-execute",
+            "csrf_token": res.form["csrf_token"].value,
+        },
+        status=403,
+    )
     res.mustcontain("Locked users cannot be impersonated.")
+
+
+def test_impersonate_without_permission(testclient, logged_moderator, user):
+    """Users who can manage users but cannot impersonate are rejected."""
+    res = testclient.get("/profile/user/settings")
+    res.mustcontain(no="Impersonate")
+
+    testclient.post(
+        "/profile/user/settings",
+        {
+            "action": "impersonate-execute",
+            "csrf_token": res.form["csrf_token"].value,
+        },
+        status=403,
+    )
+
+
+def test_impersonate_self(testclient, logged_admin):
+    """Impersonating one's own account is rejected."""
+    res = testclient.get("/profile/admin/settings")
+    res.mustcontain(no="Impersonate")
+
+    testclient.post(
+        "/profile/admin/settings",
+        {
+            "action": "impersonate-execute",
+            "csrf_token": res.form["csrf_token"].value,
+        },
+        status=403,
+    )
 
 
 def test_invalid_form_request(testclient, logged_admin):

@@ -242,7 +242,9 @@ def test_impersonated_users_not_in_login_history(testclient, logged_admin, user)
     with testclient.session_transaction() as sess:
         sess.pop(LOGIN_HISTORY, None)
 
-    testclient.get(f"/impersonate/{user.user_name}", status=302)
+    res = testclient.get(f"/profile/{user.user_name}/settings")
+    res = res.form.submit(name="action", value="impersonate-confirm")
+    res.form.submit(name="action", value="impersonate-execute", status=302)
 
     with testclient.session_transaction() as sess:
         login_history = sess.get(LOGIN_HISTORY, [])

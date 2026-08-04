@@ -58,8 +58,10 @@ def test_impersonate(testclient, logged_admin, user):
     res = testclient.get("/", status=302).follow(status=200).click("Account settings")
     assert "admin" == res.form["user_name"].value
 
+    res = testclient.get("/profile/user/settings")
+    res = res.form.submit(name="action", value="impersonate-confirm")
     res = (
-        testclient.get("/impersonate/user", status=302)
+        res.form.submit(name="action", value="impersonate-execute", status=302)
         .follow(status=302)
         .follow(status=200)
         .click("Account settings")

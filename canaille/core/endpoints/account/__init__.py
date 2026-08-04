@@ -801,6 +801,27 @@ def _handle_lock_actions(user, edited_user, action):
         return _handle_profile_settings_edit(user, edited_user)
 
 
+def _handle_impersonate_actions(user, edited_user, action):
+    if not user.can_impersonate_users or edited_user.id == user.id:
+        abort(403)
+
+    if edited_user.locked:
+        abort(403, _("Locked users cannot be impersonated."))
+
+    if action == "impersonate-confirm":
+        return render_template(
+            "core/modals/impersonate-user.html", edited_user=edited_user
+        )
+
+    login_user(edited_user, remember=False)
+    current_app.logger.security(f"User {user.id} impersonated {edited_user.id}")
+    flash(
+        _("Connection successful. Welcome %(user)s", user=edited_user.name),
+        "success",
+    )
+    return redirect(url_for("core.account.index"))
+
+
 @bp.route("/profile/<user:edited_user>/settings", methods=("GET", "POST"))
 @user_needed()
 def profile_settings(user, edited_user):
@@ -827,6 +848,9 @@ def profile_settings(user, edited_user):
         "unlock",
     ):
         return _handle_lock_actions(user, edited_user, action)
+
+    if action in ("impersonate-confirm", "impersonate-execute"):
+        return _handle_impersonate_actions(user, edited_user, action)
 
     abort(400, f"bad form action: {action}")
 
@@ -884,21 +908,6 @@ def _handle_profile_settings_edit(editor, edited_user):
         edited_user=edited_user,
         self_deletion=edited_user.can_delete_account,
     )
-
-
-@bp.route("/impersonate/<user:puppet>")
-@user_needed("impersonate_users")
-def impersonate(user, puppet):
-    if puppet.locked:
-        abort(403, _("Locked users cannot be impersonated."))
-
-    login_user(puppet, remember=False)
-    current_app.logger.security(f"User {user.id} impersonated {puppet.id}")
-    flash(
-        _("Connection successful. Welcome %(user)s", user=puppet.name),
-        "success",
-    )
-    return redirect(url_for("core.account.index"))
 
 
 @bp.app_template_filter()

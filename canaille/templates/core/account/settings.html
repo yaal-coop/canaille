@@ -114,9 +114,9 @@ Displays the user settings edition form.
                     {% endif %}
 
                     {% if user.can_impersonate_users and user.identifier != edited_user.identifier and not edited_user.locked %}
-                        <a href="{{ url_for('core.account.impersonate', puppet=edited_user) }}" class="ui right floated basic button" name="action" value="impersonate" id="impersonate" hx-boost="false">
+                        <button type="submit" class="ui right floated basic button confirm" name="action" value="impersonate-confirm" id="impersonate" formnovalidate>
                             {{ _("Impersonate") }}
-                        </a>
+                        </button>
                     {% endif %}
 
                     <button type="submit" class="ui right floated primary button" name="action" value="edit-settings" id="edit-settings">

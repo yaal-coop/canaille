@@ -1,0 +1,26 @@
+{% extends theme('base.html') %}
+
+{% block content %}
+    <div id="modal-impersonate" class="ui info message">
+        <form method="post" action="{{ request.url }}">
+            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            <div class="ui icon header">
+                <i class="mask icon"></i>
+                {% trans %}Account impersonation{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans user_name=(edited_user.formatted_name or edited_user.identifier) %}
+                        Are you sure you want to open a session as {{ user_name }}? Every action you will perform will be attributed to them. Log out to get back to your own session.
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a class="ui cancel button" href="{{ request.url }}">{% trans %}Cancel{% endtrans %}</a>
+                    <button type="submit" name="action" value="impersonate-execute" class="ui primary approve button">{% trans %}Impersonate{% endtrans %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

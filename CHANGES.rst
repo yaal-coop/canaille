@@ -1,3 +1,10 @@
+[0.3.7] - Unreleased
+--------------------
+
+Fixed
+^^^^^
+- User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
+
 [0.3.6] - 2026-08-04
 --------------------
 
