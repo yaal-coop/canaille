@@ -798,7 +798,7 @@ def test_bulk_request_payload_too_large(scim_client):
     )
 
 
-def test_bulk_id(backend, scim_client):
+def test_create_group_with_bulk_id(backend, scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
     Group = scim_client.get_resource_model("Group")
@@ -844,3 +844,141 @@ def test_bulk_id(backend, scim_client):
 
     backend.delete(tour_guides)
     backend.delete(alice)
+
+
+def test_replace_group_with_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="PUT",
+                path="/Groups/Tour Guides",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Bob",
+                    name={"formatted": "Bob Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    bob = backend.get(models.User, user_name="Bob")
+    assert bob is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is not None
+    assert tour_guides.members == [bob]
+
+    backend.delete(tour_guides)
+    backend.delete(alice)
+    backend.delete(bob)
+
+
+def test_modify_group_with_bulk_id(backend, scim_client):
+    scim_client.discover()
+    User = scim_client.get_resource_model("User")
+    Group = scim_client.get_resource_model("Group")
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(
+                method="POST",
+                path="/Groups",
+                bulk_id="ytrewq",
+                data=Group(
+                    display_name="Tour Guides",
+                    members=[Group.Members(value="bulkId:qwerty")],
+                ),
+            ),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Alice",
+                    name={"formatted": "Alice Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    operation = PatchOperation(
+        op=PatchOperation.Op.replace_,
+        path="members",
+        value=[Group.Members(value="bulkId:qwerty")],
+    )
+    patch_op = PatchOp[Group](operations=[operation])
+
+    request = BulkRequest(
+        operations=[
+            BulkOperation(method="PATCH", path="/Groups/Tour Guides", data=patch_op),
+            BulkOperation(
+                method="POST",
+                path="/Users",
+                bulk_id="qwerty",
+                data=User(
+                    user_name="Bob",
+                    name={"formatted": "Bob Example", "family_name": "Example"},
+                    active=True,
+                ),
+            ),
+        ],
+    )
+
+    scim_client.bulk(request)
+
+    alice = backend.get(models.User, user_name="Alice")
+    assert alice is not None
+    bob = backend.get(models.User, user_name="Bob")
+    assert bob is not None
+    tour_guides = backend.get(models.Group, display_name="Tour Guides")
+    assert tour_guides is not None
+    assert tour_guides.members == [bob]
+
+    backend.delete(tour_guides)
+    backend.delete(alice)
+    backend.delete(bob)
