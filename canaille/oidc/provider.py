@@ -25,8 +25,6 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
-from joserfc import jwt
-from joserfc.errors import JoseError
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -37,11 +35,11 @@ from canaille.core.auth import get_user_from_login
 from canaille.oidc.utils import is_trusted_domain
 
 from .jose import build_client_management_token
+from .jose import decode_server_token
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
 from .jose import make_default_okp_jwk
 from .jose import make_default_rsa_jwk
-from .jose import registry
 from .jose import server_jwks
 from .userinfo import UserInfo
 from .userinfo import generate_user_claims
@@ -448,14 +446,9 @@ class ClientManagementMixin:
         Stores the validated JWT claims in request.jwt_claims for later use.
         """
         if not (bearer_token := get_bearer_token(request)):
-            if current_app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"]:
-                return True
             return None
 
-        jwks = server_jwks(include_inactive=True)
-        try:
-            decoded = jwt.decode(bearer_token, jwks.keys[0], registry=registry)
-        except (JoseError, ValueError, KeyError):
+        if not (decoded := decode_server_token(bearer_token)):
             return None
 
         if not self._validate_jwt_claims(decoded.claims):
@@ -517,6 +510,20 @@ class ClientRegistrationEndpoint(
         "HS256",
         "EdDSA",
     ]
+
+    def authenticate_token(self, request):
+        """Allow client registration without a token when it is open.
+
+        This only applies to the registration endpoint: :rfc:`7592` requests
+        always need the registration access token issued to the client.
+        """
+        if (
+            not get_bearer_token(request)
+            and current_app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"]
+        ):
+            return True
+
+        return super().authenticate_token(request)
 
     def _validate_jwt_claims(self, claims):
         """Validate JWT claims for client registration.
@@ -606,7 +613,9 @@ class ClientConfigurationEndpoint(
         pass
 
     def check_permission(self, client, request):
-        return True
+        """Check the management token was issued for the client it targets."""
+        claims = getattr(request, "jwt_claims", {})
+        return claims.get("sub") == client.client_id
 
     def delete_client(self, client, request):
         current_app.logger.security(

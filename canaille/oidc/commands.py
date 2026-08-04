@@ -1,10 +1,13 @@
 import enum
 import json
+import re
+import uuid
 from datetime import timedelta
 
 import click
 import tomlkit
 from flask import current_app
+from flask import url_for
 from flask.cli import with_appcontext
 from joserfc.jwk import ECKey
 from joserfc.jwk import OctKey
@@ -207,44 +210,109 @@ def jwt():
     pass
 
 
-@jwt.command()
-@click.option("--lifetime", default=86400, type=int, help="Token lifetime in seconds")
-@with_appcontext
-def registration(lifetime: int):
-    """Generate a JWT token for dynamic client registration.
-
-    Creates a JWT token with an auto-generated client_id that can be used
-    to register a new OAuth2 client.
-    """
+def check_server_name():
     if not current_app.config["SERVER_NAME"]:
         raise click.ClickException(
             "You must define SERVER_NAME to issue tokens from the CLI"
         )
 
+
+def check_client_id(ctx, param, value):
+    """Refuse client identifiers that would not survive an URL path segment.
+
+    The :rfc:`7592` endpoint reads the client identifier back from the raw
+    request URI, so an identifier that gets percent-encoded would make the
+    client unmanageable.
+    """
+    if value is not None and not re.fullmatch(r"[A-Za-z0-9._~-]+", value):
+        raise click.BadParameter(
+            "Client identifiers can only contain unreserved URL characters: "
+            "letters, digits, '-', '.', '_' and '~'."
+        )
+
+    return value
+
+
+@jwt.command()
+@click.option(
+    "--client-id",
+    callback=check_client_id,
+    help="The identifier the client will be registered under",
+)
+@click.option("--lifetime", default=86400, type=int, help="Token lifetime in seconds")
+@click.option(
+    "--json", "as_json", is_flag=True, help="Output the token and its context as JSON"
+)
+@with_appcontext
+@with_backendcontext
+def registration(client_id: str | None, lifetime: int, as_json: bool):
+    """Generate a JWT token for dynamic client registration.
+
+    Creates a JWT token that can be used to register a new OAuth2 client.
+    The client is registered under ``--client-id``, or under a random
+    identifier when it is omitted.
+    """
+    check_server_name()
+
+    if client_id and Backend.instance.get(models.Client, client_id=client_id):
+        raise click.ClickException(f"Client {client_id} is already registered")
+
+    client_id = client_id or str(uuid.uuid4())
     token = build_client_management_token(
-        "client:register", timedelta(seconds=lifetime)
+        "client:register", timedelta(seconds=lifetime), client_id
     )
-    click.echo(token)
+
+    if not as_json:
+        click.echo(token)
+        return
+
+    payload = {
+        "client_id": client_id,
+        "initial_access_token": token,
+        "registration_endpoint": url_for(
+            "oidc.endpoints.client_registration", _external=True
+        ),
+    }
+    click.echo(json.dumps(payload, indent=2, sort_keys=True))
 
 
 @jwt.command()
 @click.argument("client-id", required=True)
 @click.option("--lifetime", default=86400, type=int, help="Token lifetime in seconds")
+@click.option(
+    "--json", "as_json", is_flag=True, help="Output the token and its context as JSON"
+)
 @with_appcontext
-def management(client_id: str, lifetime: int):
+@with_backendcontext
+def management(client_id: str, lifetime: int, as_json: bool):
     """Generate a JWT token for client management.
 
-    Creates a JWT token that can be used to manage an existing OAuth2 client.
+    Creates a JWT token that can be used to manage the existing OAuth2 client
+    CLIENT_ID.
     """
-    if not current_app.config["SERVER_NAME"]:
-        raise click.ClickException(
-            "You must define SERVER_NAME to issue tokens from the CLI"
-        )
+    check_server_name()
+
+    if not Backend.instance.get(models.Client, client_id=client_id):
+        raise click.ClickException(f"Client {client_id} is not registered")
 
     token = build_client_management_token(
         "client:manage", timedelta(seconds=lifetime), client_id
     )
-    click.echo(token)
+
+    if not as_json:
+        click.echo(token)
+        return
+
+    payload = {
+        "client_id": client_id,
+        "registration_access_token": token,
+        "registration_client_uri": url_for(
+            "oidc.endpoints.client_registration_management",
+            client_id=client_id,
+            _external=True,
+        ),
+    }
+    click.echo(json.dumps(payload, indent=2, sort_keys=True))
 
 
 def register(cli):

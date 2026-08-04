@@ -22,7 +22,7 @@ Dynamic client registration
 
 The easiest way to register a client is to let the client register itself.
 
-By default, dynamic client registration requires a JWT registration token.
+By default, dynamic client registration requires a JWT registration token, the :rfc:`initial access token <7591#section-1.2>` of :rfc:`RFC7591 <7591>`.
 Generate one with the :ref:`canaille jwt registration <cli_jwt>` command:
 
 .. code-block:: console
@@ -42,6 +42,44 @@ Then pass this token to the registration endpoint as a bearer token:
 
 The command generates a token with the ``client:register`` scope.
 Canaille must have a configured :attr:`~canaille.oidc.configuration.OIDCSettings.ACTIVE_JWKS` and ``SERVER_NAME`` so the token can be signed and issued for the right server.
+
+The token carries the identifier the client will be registered under.
+It is randomly generated, unless you pass the identifier of your choice:
+
+.. code-block:: console
+
+   canaille jwt registration --client-id my-client
+
+This way the ``client_id`` is known before the client registers itself.
+
+The ``--json`` option displays the identifier and the endpoint to send the token to, so they need not be read from the token itself:
+
+.. code-block:: console
+
+   canaille jwt registration --json
+
+.. code-block:: json
+
+   {
+     "client_id": "my-client",
+     "initial_access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9...",
+     "registration_endpoint": "https://auth.example.test/oauth/register"
+   }
+
+The registration response contains a different token, the :rfc:`registration access token <7591#section-3.2.1>`, that the client uses to read, update or delete its own registration on the :rfc:`RFC7592 <7592>` client configuration endpoint.
+:ref:`canaille jwt management <cli_jwt>` issues such a token for an existing client, and also accepts ``--json``:
+
+.. code-block:: console
+
+   canaille jwt management my-client --json
+
+.. code-block:: json
+
+   {
+     "client_id": "my-client",
+     "registration_access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9...",
+     "registration_client_uri": "https://auth.example.test/oauth/register/my-client"
+   }
 
 For test environments where authenticated registration is not needed, enable :attr:`~canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN` to allow clients to register without a token.
 

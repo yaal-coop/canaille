@@ -1,11 +1,13 @@
 import json
 import uuid
+import warnings
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 from unittest import mock
 
 from joserfc import jwt
+from joserfc.jwk import OctKey
 
 from canaille.app import models
 from canaille.oidc.jose import get_alg_for_key
@@ -545,6 +547,45 @@ def test_client_registration_with_expired_token(testclient, backend):
 
     res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
     assert res.json["error"] == "access_denied"
+
+
+def test_client_registration_with_unsigned_token(testclient, backend):
+    """Test that a token forged with the "none" algorithm is rejected."""
+    assert not testclient.app.config["CANAILLE_OIDC"].get(
+        "DYNAMIC_CLIENT_REGISTRATION_OPEN"
+    )
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    with warnings.catch_warnings(record=True):
+        token = jwt.encode(
+            {"alg": "none"},
+            jwt_payload,
+            OctKey.import_key("no key needed"),
+            registry=registry,
+        )
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Test Client",
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
+    assert not backend.get(models.Client, client_id=client_id)
 
 
 def test_client_registration_with_wrong_issuer(testclient, backend):

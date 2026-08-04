@@ -7,6 +7,7 @@ from datetime import timezone
 
 from joserfc import jwt
 from joserfc.jwk import KeySet
+from joserfc.jwk import OctKey
 
 from canaille.app import models
 from canaille.oidc.jose import get_alg_for_key
@@ -421,3 +422,172 @@ def test_management_with_wrong_scope(testclient, backend, client):
         f"/oauth/register/{client.client_id}", headers=headers, status=400
     )
     assert res.json["error"] == "access_denied"
+
+
+def test_management_with_unsigned_token(testclient, backend, client):
+    """Test that a token forged with the "none" algorithm is rejected."""
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    with warnings.catch_warnings(record=True):
+        token = jwt.encode(
+            {"alg": "none"},
+            jwt_payload,
+            OctKey.import_key("no key needed"),
+            registry=registry,
+        )
+
+    headers = {"Authorization": f"Bearer {token}"}
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}", headers=headers, status=400
+    )
+    assert res.json["error"] == "access_denied"
+
+
+def test_management_with_symmetric_signature(testclient, backend, client):
+    """Test that a token signed with an attacker-chosen symmetric key is rejected."""
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    token = jwt.encode(
+        {"alg": "HS256"},
+        jwt_payload,
+        OctKey.import_key("attacker chosen secret"),
+        registry=registry,
+    )
+
+    headers = {"Authorization": f"Bearer {token}"}
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}", headers=headers, status=400
+    )
+    assert res.json["error"] == "access_denied"
+
+
+def test_management_with_inactive_key(testclient, backend, client, old_server_jwk):
+    """Test that a token signed before a key rotation is still accepted."""
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    token = jwt.encode(
+        {"alg": get_alg_for_key(old_server_jwk)},
+        jwt_payload,
+        old_server_jwk,
+        registry=registry,
+    )
+
+    headers = {"Authorization": f"Bearer {token}"}
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}", headers=headers, status=200
+    )
+    assert res.json["client_id"] == client.client_id
+
+
+def test_management_token_of_another_client(
+    testclient, backend, client, trusted_client
+):
+    """Test that a management token cannot be used to access another client."""
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client.client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:manage",
+    }
+
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+    headers = {"Authorization": f"Bearer {token}"}
+    url = f"/oauth/register/{trusted_client.client_id}"
+
+    res = testclient.get(url, headers=headers, status=403)
+    assert res.json["error"] == "unauthorized_client"
+
+    res = testclient.put_json(
+        url,
+        {
+            "client_id": trusted_client.client_id,
+            "redirect_uris": ["https://evil.test/callback"],
+        },
+        headers=headers,
+        status=403,
+    )
+    assert res.json["error"] == "unauthorized_client"
+
+    with warnings.catch_warnings(record=True):
+        res = testclient.delete(url, headers=headers, status=403)
+    assert res.json["error"] == "unauthorized_client"
+
+    backend.reload(trusted_client)
+    assert trusted_client.redirect_uris == [
+        "https://client.trusted.test/redirect1",
+        "https://client.trusted.test/redirect2",
+    ]
+
+
+def test_management_without_token_when_registration_is_open(
+    testclient, backend, client
+):
+    """Test that open client registration does not open the management endpoint."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+    url = f"/oauth/register/{client.client_id}"
+
+    res = testclient.get(url, status=400)
+    assert res.json["error"] == "access_denied"
+
+    res = testclient.put_json(
+        url,
+        {
+            "client_id": client.client_id,
+            "redirect_uris": ["https://evil.test/callback"],
+        },
+        status=400,
+    )
+    assert res.json["error"] == "access_denied"
+
+    with warnings.catch_warnings(record=True):
+        res = testclient.delete(url, status=400)
+    assert res.json["error"] == "access_denied"
+
+    backend.reload(client)
+    assert client.redirect_uris == [
+        "https://client.test/redirect1",
+        "https://client.test/redirect2",
+    ]
