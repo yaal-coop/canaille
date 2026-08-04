@@ -25,8 +25,6 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
-from joserfc import jwt
-from joserfc.errors import JoseError
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -37,11 +35,11 @@ from canaille.core.auth import get_user_from_login
 from canaille.oidc.utils import is_trusted_domain
 
 from .jose import build_client_management_token
+from .jose import decode_server_token
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
 from .jose import make_default_okp_jwk
 from .jose import make_default_rsa_jwk
-from .jose import registry
 from .jose import server_jwks
 from .userinfo import UserInfo
 from .userinfo import generate_user_claims
@@ -452,10 +450,7 @@ class ClientManagementMixin:
                 return True
             return None
 
-        jwks = server_jwks(include_inactive=True)
-        try:
-            decoded = jwt.decode(bearer_token, jwks.keys[0], registry=registry)
-        except (JoseError, ValueError, KeyError):
+        if not (decoded := decode_server_token(bearer_token)):
             return None
 
         if not self._validate_jwt_claims(decoded.claims):

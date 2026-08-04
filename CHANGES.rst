@@ -9,6 +9,8 @@ Added
 Fixed
 ^^^^^
 - :rfc:`RFC7592 <7592>` registration access tokens were not bound to the client they were issued for.
+- Client registration and management tokens signed with the ``none`` algorithm were accepted, so anyone could forge one.
+- Client registration and management tokens signed with an inactive key are now accepted, so a key rotation does not invalidate the tokens issued before it.
 - Dynamically registered clients had their ``client_secret_expires_at`` set to 1970-01-01 instead of being left empty.
 
 [0.3.5] - 2026-07-30

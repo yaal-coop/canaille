@@ -9,6 +9,7 @@ from flask import current_app
 from joserfc import jwk
 from joserfc import jws
 from joserfc import jwt
+from joserfc.errors import JoseError
 from joserfc.jwk import OKPKey
 from joserfc.jwk import RSAKey
 
@@ -78,6 +79,11 @@ def server_jwks(include_inactive=True):
     return jwk.KeySet([import_server_key(key) for key in keys])
 
 
+def server_signing_key():
+    """Return the key the server signs its own tokens with."""
+    return server_jwks(include_inactive=False).keys[0]
+
+
 def supported_signing_algorithms():
     """Return the list of JWS algorithms the server can sign with.
 
@@ -133,10 +139,25 @@ def build_client_management_token(
     if lifetime:
         payload["exp"] = int((now + lifetime).timestamp())
 
-    jwks = server_jwks(include_inactive=False)
-    jwk_key = jwks.keys[0]
+    jwk_key = server_signing_key()
     alg = get_alg_for_key(jwk_key)
 
     token = jwt.encode({"alg": alg}, payload, jwk_key, registry=registry)
 
     return token
+
+
+def decode_server_token(token: str):
+    """Decode a JWT signed by this server, or return None."""
+    keys = server_jwks(include_inactive=True)
+    strict_registry = jws.JWSRegistry(
+        algorithms=[alg.name for alg in registry.filter_algorithms(keys)]
+    )
+
+    for key in keys.keys:
+        try:
+            return jwt.decode(token, key, registry=strict_registry)
+        except (JoseError, ValueError, KeyError):
+            continue
+
+    return None
