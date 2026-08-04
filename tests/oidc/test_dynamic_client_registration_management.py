@@ -560,3 +560,34 @@ def test_management_token_of_another_client(
         "https://client.trusted.test/redirect1",
         "https://client.trusted.test/redirect2",
     ]
+
+
+def test_management_without_token_when_registration_is_open(
+    testclient, backend, client
+):
+    """Test that open client registration does not open the management endpoint."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+    url = f"/oauth/register/{client.client_id}"
+
+    res = testclient.get(url, status=400)
+    assert res.json["error"] == "access_denied"
+
+    res = testclient.put_json(
+        url,
+        {
+            "client_id": client.client_id,
+            "redirect_uris": ["https://evil.test/callback"],
+        },
+        status=400,
+    )
+    assert res.json["error"] == "access_denied"
+
+    with warnings.catch_warnings(record=True):
+        res = testclient.delete(url, status=400)
+    assert res.json["error"] == "access_denied"
+
+    backend.reload(client)
+    assert client.redirect_uris == [
+        "https://client.test/redirect1",
+        "https://client.test/redirect2",
+    ]

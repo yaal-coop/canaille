@@ -446,8 +446,6 @@ class ClientManagementMixin:
         Stores the validated JWT claims in request.jwt_claims for later use.
         """
         if not (bearer_token := get_bearer_token(request)):
-            if current_app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"]:
-                return True
             return None
 
         if not (decoded := decode_server_token(bearer_token)):
@@ -512,6 +510,20 @@ class ClientRegistrationEndpoint(
         "HS256",
         "EdDSA",
     ]
+
+    def authenticate_token(self, request):
+        """Allow client registration without a token when it is open.
+
+        This only applies to the registration endpoint: :rfc:`7592` requests
+        always need the registration access token issued to the client.
+        """
+        if (
+            not get_bearer_token(request)
+            and current_app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"]
+        ):
+            return True
+
+        return super().authenticate_token(request)
 
     def _validate_jwt_claims(self, claims):
         """Validate JWT claims for client registration.
@@ -601,15 +613,9 @@ class ClientConfigurationEndpoint(
         pass
 
     def check_permission(self, client, request):
-        """Check the management token was issued for the client it targets.
-
-        Requests carry no claims only when dynamic client registration is open,
-        as no token is required at all in that case.
-        """
-        if not hasattr(request, "jwt_claims"):
-            return True
-
-        return request.jwt_claims.get("sub") == client.client_id
+        """Check the management token was issued for the client it targets."""
+        claims = getattr(request, "jwt_claims", {})
+        return claims.get("sub") == client.client_id
 
     def delete_client(self, client, request):
         current_app.logger.security(
