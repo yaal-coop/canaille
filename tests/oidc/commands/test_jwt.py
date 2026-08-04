@@ -1,3 +1,5 @@
+import json
+
 from joserfc import jwt
 
 from canaille.app import models
@@ -60,6 +62,101 @@ def test_generate_management(cli_runner, testclient, backend, client):
     )
 
     assert res.json["client_id"] == client.client_id
+
+
+def test_generate_registration_token_with_client_id(cli_runner, testclient, backend):
+    """A registration token can pin the identifier of the future client."""
+    res = cli_runner.invoke(cli, ["jwt", "registration", "--client-id", "my-client"])
+    assert res.exit_code == 0, res.output
+
+    token = res.stdout.strip()
+    jwks = server_jwks(include_inactive=False)
+    decoded = jwt.decode(
+        token,
+        jwks.keys[0],
+        registry=registry,
+    )
+
+    assert decoded.claims["sub"] == "my-client"
+
+    res = testclient.post_json(
+        "/oauth/register",
+        {
+            "redirect_uris": ["https://client.test/callback"],
+            "client_name": "Test Client",
+        },
+        headers={"Authorization": f"Bearer {token}"},
+        status=201,
+    )
+
+    assert res.json["client_id"] == "my-client"
+    backend.delete(backend.get(models.Client, client_id="my-client"))
+
+
+def test_generate_registration_token_with_registered_client_id(
+    cli_runner, testclient, backend, client
+):
+    """A registration token for an already registered client would be useless."""
+    res = cli_runner.invoke(
+        cli, ["jwt", "registration", "--client-id", client.client_id]
+    )
+    assert res.exit_code == 1
+    assert "already registered" in res.output
+
+
+def test_generate_registration_token_with_invalid_client_id(cli_runner, testclient):
+    """Identifiers that would be percent-encoded in an URL are refused."""
+    res = cli_runner.invoke(cli, ["jwt", "registration", "--client-id", "foo/bar"])
+    assert res.exit_code == 2
+    assert "unreserved URL characters" in res.output
+
+
+def test_generate_management_token_for_unregistered_client(cli_runner, testclient):
+    """A management token for an unknown client would be useless."""
+    res = cli_runner.invoke(cli, ["jwt", "management", "invalid"])
+    assert res.exit_code == 1
+    assert "not registered" in res.output
+
+
+def test_generate_registration_token_json(cli_runner, testclient, backend):
+    """The JSON output tells where to use the token, and for which client."""
+    res = cli_runner.invoke(cli, ["jwt", "registration", "--json"])
+    assert res.exit_code == 0, res.output
+
+    payload = json.loads(res.stdout)
+
+    # The registration endpoint is the one advertised by the discovery document.
+    metadata = testclient.get("/.well-known/oauth-authorization-server").json
+    assert payload["registration_endpoint"] == metadata["registration_endpoint"]
+
+    jwks = server_jwks(include_inactive=False)
+    decoded = jwt.decode(
+        payload["initial_access_token"],
+        jwks.keys[0],
+        registry=registry,
+    )
+    assert decoded.claims["sub"] == payload["client_id"]
+
+
+def test_generate_management_token_json(cli_runner, testclient, backend, client):
+    """The JSON output tells which URL the management token applies to."""
+    res = cli_runner.invoke(cli, ["jwt", "management", client.client_id, "--json"])
+    assert res.exit_code == 0, res.output
+
+    payload = json.loads(res.stdout)
+    assert payload["client_id"] == client.client_id
+    assert payload["registration_client_uri"].endswith(
+        f"/oauth/register/{client.client_id}"
+    )
+
+    res = testclient.get(
+        f"/oauth/register/{client.client_id}",
+        headers={"Authorization": f"Bearer {payload['registration_access_token']}"},
+        status=200,
+    )
+
+    # The management output is a subset of the RFC7592 response.
+    assert res.json["registration_client_uri"] == payload["registration_client_uri"]
 
 
 def test_generate_registration_token_custom_expiration(cli_runner, testclient, backend):

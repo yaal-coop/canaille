@@ -5,10 +5,13 @@ Added
 ^^^^^
 - Client secret expiration dates are displayed and editable in the client administration page. Clients cannot authenticate with an expired secret anymore.
 - Client secrets can be renewed from the client administration page.
+- ``canaille jwt registration`` has a ``--client-id`` option to choose the identifier of the client to register, so it is known before the client registers itself.
+- ``canaille jwt registration`` and ``canaille jwt management`` have a ``--json`` option that displays the client identifier and the endpoint to use along with the token.
 
 Fixed
 ^^^^^
 - :rfc:`RFC7592 <7592>` registration access tokens were not bound to the client they were issued for.
+- ``canaille jwt management`` issued tokens for unregistered clients, and ``canaille jwt registration`` for already registered ones, although the endpoints reject both.
 - Client registration and management tokens signed with the ``none`` algorithm were accepted, so anyone could forge one.
 - Client registration and management tokens signed with an inactive key are now accepted, so a key rotation does not invalidate the tokens issued before it.
 - ``DYNAMIC_CLIENT_REGISTRATION_OPEN`` also disabled the authentication of the :rfc:`RFC7592 <7592>` client management endpoint, which could then be used without any token. It now only covers the registration of new clients.
