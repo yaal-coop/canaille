@@ -4,7 +4,6 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 
-import httpx
 from flask import current_app
 from joserfc import jwk
 from joserfc import jws
@@ -14,6 +13,7 @@ from joserfc.jwk import OKPKey
 from joserfc.jwk import RSAKey
 
 from canaille.app.flask import cache
+from canaille.oidc.utils import fetch_document
 
 registry = jws.JWSRegistry(algorithms=list(jws.JWSRegistry.algorithms.keys()))
 
@@ -100,7 +100,7 @@ def get_client_jwks(client, kid=None):
 
     @cache.cached(timeout=50, key_prefix=f"jwks_{client.client_id}")
     def get_public_jwks():
-        return httpx.get(client.jwks_uri).json()
+        return json.loads(fetch_document(client.jwks_uri))
 
     if client.jwks_uri:
         raw_jwks = get_public_jwks()

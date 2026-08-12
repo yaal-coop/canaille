@@ -24,6 +24,9 @@ Fixed
   be served as images are now downloaded instead of being rendered.
 - Authorization requests carrying an unreachable or unparsable ``request_uri``
   answered with a HTTP 500 instead of an ``invalid_request_uri`` error.
+- Request objects and client key sets, downloaded at the ``request_uri`` and
+  ``jwks_uri`` addresses clients indicate, were read in memory without any size
+  limit. They are now bounded to 64kB.
 
 [0.3.6] - 2026-08-04
 --------------------

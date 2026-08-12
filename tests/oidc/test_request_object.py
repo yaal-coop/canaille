@@ -4,6 +4,8 @@ from urllib.parse import urlsplit
 import pytest
 from joserfc import jwt
 
+from canaille.oidc.utils import MAX_DOCUMENT_SIZE
+
 from . import client_credentials
 
 
@@ -59,6 +61,23 @@ def test_unreachable_request_object_uri(
     res = testclient.get(
         "/oauth/authorize",
         params=dict(client_id=trusted_client.client_id, request_uri=request_uri),
+        status=400,
+    )
+    res.mustcontain("The request_uri in the authorization request returns an error")
+
+
+def test_too_big_request_object(testclient, logged_user, trusted_client, httpserver):
+    """Request objects are bounded in size, as they are read in memory."""
+    httpserver.expect_request("/request_obj").respond_with_data(
+        "a" * (MAX_DOCUMENT_SIZE + 1)
+    )
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            client_id=trusted_client.client_id,
+            request_uri=f"http://{httpserver.host}:{httpserver.port}/request_obj",
+        ),
         status=400,
     )
     res.mustcontain("The request_uri in the authorization request returns an error")

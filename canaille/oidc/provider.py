@@ -2,7 +2,6 @@ import datetime
 import json
 import uuid
 
-import httpx
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.oauth2 import rfc6749
@@ -32,6 +31,7 @@ from canaille.app.flask import cache
 from canaille.app.session import logout_user
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
+from canaille.oidc.utils import fetch_document
 from canaille.oidc.utils import is_trusted_domain
 
 from .jose import build_client_management_token
@@ -691,7 +691,7 @@ class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
         exception must escape and turn into a HTTP 500.
         """
         try:
-            return httpx.get(request_uri).text
+            return fetch_document(request_uri)
         except Exception:
             current_app.logger.debug(
                 "could not download the request object at %s", request_uri
