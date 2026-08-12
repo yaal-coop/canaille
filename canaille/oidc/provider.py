@@ -684,7 +684,19 @@ class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
         return get_client_jwks(client)
 
     def get_request_object(self, request_uri: str):
-        return httpx.get(request_uri).text
+        """Download the request object at the URI passed in the authorization request.
+
+        Errors are turned into a ``None``, that authlib renders as an
+        ``invalid_request_uri`` error. The URI is unvalidated user input, so no
+        exception must escape and turn into a HTTP 500.
+        """
+        try:
+            return httpx.get(request_uri).text
+        except Exception:
+            current_app.logger.debug(
+                "could not download the request object at %s", request_uri
+            )
+            return None
 
     def get_server_metadata(self):
         from .metadata import openid_configuration

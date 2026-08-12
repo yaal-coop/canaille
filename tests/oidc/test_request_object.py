@@ -1,6 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 from joserfc import jwt
 
 from . import client_credentials
@@ -40,6 +41,27 @@ def test_request_object_query(testclient, logged_user, trusted_client, client_jw
 
     access_token = res.json["access_token"]
     assert access_token
+
+
+@pytest.mark.parametrize(
+    "request_uri",
+    [
+        "http://127.0.0.1:1/request_obj",
+        "file:///etc/passwd",
+        # unparsable URIs raise outside of the httpx exception hierarchy
+        "http://xn--/",
+    ],
+)
+def test_unreachable_request_object_uri(
+    testclient, logged_user, trusted_client, request_uri
+):
+    """Request objects that cannot be downloaded are a client error, not a server error."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(client_id=trusted_client.client_id, request_uri=request_uri),
+        status=400,
+    )
+    res.mustcontain("The request_uri in the authorization request returns an error")
 
 
 def test_request_object_uri_query(
