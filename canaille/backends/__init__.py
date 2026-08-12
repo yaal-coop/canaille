@@ -78,6 +78,10 @@ class Backend:
     json_encoder = ModelEncoder
     json_decode_hook = decode_hook
 
+    photo_formats = ("WEBP", "PNG", "JPEG")
+    """The image formats the backend can store, the first one being the format
+    photos are converted to when their own format is not supported."""
+
     def __init__(self, config) -> None:
         self.config = config
         Backend._instance = self

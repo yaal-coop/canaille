@@ -9,34 +9,25 @@ from canaille.app.i18n import available_language_codes
 from canaille.backends import Backend
 
 try:
+    import cairosvg
     import python_avatars as pa
 
-    HAS_PYTHON_AVATARS = True
+    HAS_AVATAR_GENERATION = True
 except ImportError:  # pragma: no cover
-    HAS_PYTHON_AVATARS = False
+    HAS_AVATAR_GENERATION = False
+
+AVATAR_SIZE = 256
 
 
 def generate_avatar():
-    """Generate a random avatar as SVG bytes.
-
-    Returns None for LDAP backend as it expects JPEG (jpegPhoto attribute).
-    """
-    if not HAS_PYTHON_AVATARS:  # pragma: no cover
+    """Generate a random avatar as PNG bytes."""
+    if not HAS_AVATAR_GENERATION:  # pragma: no cover
         return None
 
-    # LDAP backend expects JPEG in jpegPhoto attribute, not SVG
-    try:
-        if (
-            Backend.instance and Backend.instance.__class__.__name__ == "LDAPBackend"
-        ):  # pragma: no cover
-            return None
-    except (AttributeError, RuntimeError):  # pragma: no cover
-        # Backend.instance not yet initialized, skip LDAP check
-        pass
-
-    avatar = pa.Avatar.random()
-    svg_bytes = avatar.render().encode("utf-8")
-    return svg_bytes
+    svg = pa.Avatar.random().render().encode("utf-8")
+    return cairosvg.svg2png(
+        bytestring=svg, output_width=AVATAR_SIZE, output_height=AVATAR_SIZE
+    )
 
 
 def fake_users(nb=1):

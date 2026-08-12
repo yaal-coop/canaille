@@ -1,5 +1,8 @@
 import base64
+import io
 import json
+
+from PIL import Image
 
 from canaille.app import models
 from canaille.commands import cli
@@ -115,7 +118,40 @@ def test_restore_decodes_binary_photo(cli_runner, backend, jpeg_photo):
     user = backend.get(models.User, user_name="user")
     assert user is not None
     assert isinstance(user.photo, bytes)
-    assert user.photo == jpeg_photo
+    assert Image.open(io.BytesIO(user.photo)).format == "JPEG"
+
+    backend.delete(user)
+
+
+def test_restore_normalizes_photos(cli_runner, backend, png_photo):
+    """Dumps restored in another backend get their photos converted.
+
+    This is what migrating from a backend to another relies on, as for instance
+    the LDAP backend cannot store PNG photos.
+    """
+    payload = {
+        "user": [
+            {
+                "created": "2025-01-02T12:00:00+00:00",
+                "emails": ["john@doe.test"],
+                "family_name": "Doe",
+                "formatted_name": "John (johnny) Doe",
+                "id": "e52b36b5-6a94-4395-b3a8-0f72d9140bfa",
+                "last_modified": "2025-01-02T12:00:00+00:00",
+                "user_name": "user",
+                "photo": base64.b64encode(png_photo).decode("ascii"),
+            }
+        ]
+    }
+
+    res = cli_runner.invoke(
+        cli, ["restore"], input=json.dumps(payload), catch_exceptions=False
+    )
+    assert res.exit_code == 0, res.stderr
+
+    user = backend.get(models.User, user_name="user")
+    expected = "PNG" if "PNG" in backend.photo_formats else "JPEG"
+    assert Image.open(io.BytesIO(user.photo)).format == expected
 
     backend.delete(user)
 

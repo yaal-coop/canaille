@@ -29,6 +29,7 @@ def create_app(
     from .app.templating import setup_jinja
     from .app.templating import setup_themer
     from .backends import setup_backend
+    from .core.photo import setup_photo_normalization
 
     app = Flask(__name__)
     with app.app_context():
@@ -46,6 +47,7 @@ def create_app(
         setup_logging(app)
 
         backend = setup_backend(app, backend, init_backend)
+        setup_photo_normalization()
         setup_security(app)
         setup_flask_converters(app)
         setup_flask_blueprints(app)

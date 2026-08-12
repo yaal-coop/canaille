@@ -4,6 +4,7 @@ from flask import current_app
 from flask import g
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
+from flask_wtf.file import FileSize
 
 from canaille.app import models
 from canaille.app.forms import BaseForm
@@ -23,6 +24,7 @@ from canaille.app.i18n import native_language_name_from_code
 from canaille.backends import Backend
 from canaille.core.mails import RESET_CODE_LENGTH
 from canaille.core.models import OTP_DIGITS
+from canaille.core.photo import MAX_PHOTO_UPLOAD_SIZE
 from canaille.core.validators import captcha_validator
 from canaille.core.validators import email_has_user
 from canaille.core.validators import existing_group_member
@@ -32,6 +34,7 @@ from canaille.core.validators import unique_email
 from canaille.core.validators import unique_group
 from canaille.core.validators import unique_user_name
 from canaille.core.validators import user_not_in_group
+from canaille.core.validators import valid_photo
 
 
 class LoginForm(Form):
@@ -263,8 +266,12 @@ PROFILE_FORM_FIELDS = dict(
     ),
     photo=FileField(
         _("Photo"),
-        validators=[FileAllowed(["jpg", "jpeg"])],
-        render_kw={"accept": "image/jpg, image/jpeg"},
+        validators=[
+            FileAllowed(["jpg", "jpeg", "png", "webp"]),
+            FileSize(MAX_PHOTO_UPLOAD_SIZE),
+            valid_photo,
+        ],
+        render_kw={"accept": "image/jpeg, image/png, image/webp"},
     ),
     photo_delete=wtforms.BooleanField(_("Delete the photo")),
     password1=wtforms.PasswordField(

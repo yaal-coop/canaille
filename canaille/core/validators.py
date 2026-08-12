@@ -1,5 +1,6 @@
 import wtforms
 from flask import current_app
+from werkzeug.datastructures import FileStorage
 
 from canaille.app import models
 from canaille.app.i18n import gettext
@@ -7,6 +8,8 @@ from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 from canaille.core.captcha import verify_captcha
+from canaille.core.photo import InvalidPhotoError
+from canaille.core.photo import check_photo
 
 
 def unique_user_name(form, field):
@@ -92,6 +95,19 @@ def user_not_in_group(form, field):
         raise wtforms.ValidationError(
             _("A user with this email address is already a member of this group.")
         )
+
+
+def valid_photo(form, field):
+    """Validate that an uploaded photo is a readable image in a supported format."""
+    if not isinstance(field.data, FileStorage):
+        return
+
+    data = field.data.stream.read()
+    field.data.stream.seek(0)
+    try:
+        check_photo(data)
+    except InvalidPhotoError as exc:
+        raise wtforms.ValidationError(_("This file is not a supported image.")) from exc
 
 
 def captcha_validator(form, field):

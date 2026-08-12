@@ -1,7 +1,9 @@
+import io
 import logging
 
 import pytest
 from flask import g
+from PIL import Image
 from webtest import Upload
 
 from canaille.core.populate import fake_users
@@ -143,7 +145,7 @@ def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     assert logged_user.department == "1337"
     assert logged_user.title == "title"
     assert logged_user.organization == "organization"
-    assert logged_user.photo == jpeg_photo
+    assert Image.open(io.BytesIO(logged_user.photo)).format == "JPEG"
 
     logged_user.formatted_name = "John (johnny) Doe"
     logged_user.family_name = "Doe"

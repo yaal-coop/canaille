@@ -55,6 +55,10 @@ class LDAPModelEncoder(ModelEncoder):
 class LDAPBackend(Backend):
     json_encoder = LDAPModelEncoder
 
+    photo_formats = ("JPEG",)
+    """Photos are stored in the ``jpegPhoto`` attribute, which third-party
+    directory consumers can legitimately expect to hold JPEG data."""
+
     def __init__(self, config):
         super().__init__(config)
         ldap_config = self.config["CANAILLE_LDAP"]

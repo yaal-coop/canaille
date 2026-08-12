@@ -441,6 +441,35 @@ def jpeg_photo():
         return fd.read()
 
 
+def make_photo(format, size=(64, 64), mode="RGB", color=(255, 0, 0), **kwargs):
+    """Build in-memory image data for tests."""
+    import io
+
+    from PIL import Image
+
+    output = io.BytesIO()
+    Image.new(mode, size, color).save(output, format=format, **kwargs)
+    return output.getvalue()
+
+
+@pytest.fixture(scope="session")
+def png_photo():
+    return make_photo("PNG", mode="RGBA", color=(255, 0, 0, 128))
+
+
+@pytest.fixture(scope="session")
+def webp_photo():
+    return make_photo("WEBP")
+
+
+@pytest.fixture(scope="session")
+def svg_photo():
+    return (
+        b'<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)">'
+        b"<script>alert(document.domain)</script></svg>"
+    )
+
+
 @pytest.fixture(autouse=True)
 def smpp_client():
     client = mock.Mock()

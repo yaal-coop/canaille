@@ -1,9 +1,27 @@
 [0.3.7] - Unreleased
 --------------------
 
+Added
+^^^^^
+- Profile photos can be uploaded in the PNG and WEBP formats, in addition to JPEG.
+- Uploaded photos are decoded and re-encoded, so their metadata, such as the GPS
+  coordinates of smartphone photos, are stripped. They are downscaled to 1024x1024
+  and cannot weigh more than 5MB.
+
+Changed
+^^^^^^^
+- Photos need the ``front`` packaging extras, and are refused without it. This keeps
+  minimal installations, such as the one :doc:`pytest-iam:index` performs, free of
+  the Pillow dependency.
+- Photos are converted to JPEG on the LDAP backend, as they are stored in the
+  ``jpegPhoto`` attribute.
+
 Fixed
 ^^^^^
 - User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
+- Photo uploads were only validated on their file extension, so a SVG file renamed
+  with a ``.jpg`` extension was stored as-is and served inline. Photos that cannot
+  be served as images are now downloaded instead of being rendered.
 
 [0.3.6] - 2026-08-04
 --------------------

@@ -198,6 +198,9 @@ def beautify_html_resonses(app) -> None:
 
 def setup_flask(app) -> None:
     from canaille.app.templating import render_template
+    from canaille.core.photo import MAX_PHOTO_UPLOAD_SIZE
+
+    app.config.setdefault("MAX_CONTENT_LENGTH", MAX_PHOTO_UPLOAD_SIZE + 1024 * 1024)
 
     csrf.init_app(app)
     cache.init_app(app)

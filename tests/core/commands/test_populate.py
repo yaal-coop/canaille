@@ -1,4 +1,7 @@
+import io
+
 import pytest
+from PIL import Image
 
 from canaille.app import models
 from canaille.commands import cli
@@ -17,18 +20,14 @@ def test_populate_users(cli_runner, backend):
 
 
 def test_populate_users_with_avatars(testclient, backend):
-    """Test that users are created with avatars."""
-    if "ldap" in backend.__class__.__module__:
-        pytest.skip()
-
+    """Test that users are created with avatars in a format the backend supports."""
     users = fake_users(5)
     assert len(users) == 5
 
+    expected = "PNG" if "PNG" in backend.photo_formats else "JPEG"
     for user in users:
-        assert user.photo is not None
         assert isinstance(user.photo, bytes)
-        assert user.photo.startswith(b"<svg")
-        assert len(user.photo) > 1000
+        assert Image.open(io.BytesIO(user.photo)).format == expected
 
     for user in users:
         backend.delete(user)
