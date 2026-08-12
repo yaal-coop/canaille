@@ -6,7 +6,7 @@ from typing import List  # noqa: UP035
 
 from canaille.backends.models import Model
 from canaille.core.models import User
-from canaille.oidc.utils import is_trusted_domain
+from canaille.oidc.utils import is_trusted_client
 
 
 class Client(Model):
@@ -24,13 +24,12 @@ class Client(Model):
     def trusted(self) -> bool:
         """Trusted clients don't require to display the consent page to users.
 
-        A client is trusted if its client_uri domain matches one of the domains
-        listed in TRUSTED_DOMAINS configuration. Supports:
-        - Exact match: "example.com" matches "example.com"
-        - Subdomain match: "example.com" also matches "sub.example.com"
-        - Wildcard match: ".example.com" matches "example.com" and all its subdomains
+        A client is trusted when its :attr:`client_uri` **and** all its
+        :attr:`redirect_uris` match the domains listed in the
+        :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`
+        configuration parameter, that documents the supported patterns.
         """
-        return is_trusted_domain(self.client_uri)
+        return is_trusted_client(self.client_uri, self.redirect_uris)
 
     # keep 'List' instead of 'list' do not break py310 with the memory backend
     audience: List["Client"] = []  # noqa: UP006

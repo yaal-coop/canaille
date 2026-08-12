@@ -165,6 +165,7 @@ def test_trusted_client_appears_in_consent_list(
     res.mustcontain(no=client.client_name)
 
     client.client_uri = "https://client.trusted.test"
+    client.redirect_uris = ["https://client.trusted.test/redirect1"]
     backend.save(client)
 
     res = testclient.get("/consent/trusted-applications")
@@ -174,6 +175,7 @@ def test_trusted_client_appears_in_consent_list(
 def test_revoke_trusted_client(testclient, client, logged_user, token, backend):
     """Test that revoking a trusted client creates a revoked consent entry."""
     client.client_uri = "https://client.trusted.test"
+    client.redirect_uris = ["https://client.trusted.test/redirect1"]
     backend.save(client)
     assert not backend.get(models.Consent, client=client, subject=logged_user)
     assert not token.revoked
@@ -214,6 +216,7 @@ def test_revoke_trusted_client_with_manual_consent(
 ):
     """Test that revoking a trusted client with existing manual consent works correctly."""
     client.client_uri = "https://client.trusted.test"
+    client.redirect_uris = ["https://client.trusted.test/redirect1"]
     backend.save(client)
     res = testclient.get(f"/consent/revoke-trusted/{client.client_id}", status=302)
     res = res.follow()
@@ -225,6 +228,7 @@ def test_revoke_trusted_client_with_manual_revokation(
 ):
     """Test that revoking an already revoked trusted client displays an error."""
     client.client_uri = "https://client.trusted.test"
+    client.redirect_uris = ["https://client.trusted.test/redirect1"]
     backend.save(client)
     consent.revoke()
     backend.save(consent)

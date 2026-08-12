@@ -46,6 +46,28 @@ def test_trusted_domains_property(testclient, backend):
     assert not client_no_uri.trusted
 
 
+def test_trusted_domains_check_the_redirect_uris(testclient, backend):
+    """A trusted client_uri is not enough, as it is purely declarative.
+
+    The redirect URIs are the addresses authorization codes are actually sent to.
+    """
+    client = models.Client(
+        client_id="mixed-uris-client",
+        client_name="Mixed URIs Client",
+        client_uri="https://client.trusted.test",
+        redirect_uris=["https://client.trusted.test/redirect1"],
+    )
+    backend.save(client)
+    assert client.trusted
+
+    client.redirect_uris = [
+        "https://client.trusted.test/redirect1",
+        "https://evil.example.com/callback",
+    ]
+    backend.save(client)
+    assert not client.trusted
+
+
 def test_trusted_domains_consent_bypass(testclient, logged_user, backend):
     """Test that trusted clients bypass the consent page."""
     client = models.Client(

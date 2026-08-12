@@ -75,3 +75,15 @@ def is_trusted_domain(domain):
             return True
 
     return False
+
+
+def is_trusted_client(client_uri: str | None, redirect_uris: list[str] | None) -> bool:
+    """Whether a client with those URIs is trusted enough to skip the consent page.
+
+    The redirect URIs are checked in addition to the client URI, as the client
+    URI is a purely declarative value that is never fetched: trusting it alone
+    would let a client have authorization codes delivered to any address.
+    """
+    return is_trusted_domain(client_uri) and all(
+        is_trusted_domain(redirect_uri) for redirect_uri in redirect_uris or []
+    )

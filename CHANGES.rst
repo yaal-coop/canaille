@@ -27,6 +27,9 @@ Fixed
 - Request objects and client key sets, downloaded at the ``request_uri`` and
   ``jwks_uri`` addresses clients indicate, were read in memory without any size
   limit. They are now bounded to 64kB.
+- Trusted clients, which skip the user consent page, need both their
+  ``client_uri`` and their ``redirect_uris`` to match
+  :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`.
 
 [0.3.6] - 2026-08-04
 --------------------

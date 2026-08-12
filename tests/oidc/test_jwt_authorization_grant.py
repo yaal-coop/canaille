@@ -10,6 +10,7 @@ def test_nominal_case(testclient, logged_user, client, backend, server_jwk):
     """Test JWT grant for a client with consent."""
     now = time.time()
     client.client_uri = "https://client.trusted.test"
+    client.redirect_uris = ["https://client.trusted.test/redirect1"]
     backend.save(client)
 
     header = {"alg": "RS256"}

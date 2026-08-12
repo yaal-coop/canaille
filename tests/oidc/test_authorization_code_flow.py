@@ -293,6 +293,7 @@ def test_trusted_client(testclient, logged_user, client, trusted_client, backend
     assert not backend.query(models.Consent, client=client, subject=logged_user)
 
     client.client_uri = "https://client.trusted.test"
+    client.redirect_uris = ["https://client.trusted.test/redirect1"]
     backend.save(client)
 
     res = testclient.get(
@@ -302,7 +303,7 @@ def test_trusted_client(testclient, logged_user, client, trusted_client, backend
             client_id=client.client_id,
             scope="openid profile",
             nonce="somenonce",
-            redirect_uri="https://client.test/redirect1",
+            redirect_uri=client.redirect_uris[0],
         ),
         status=302,
     )

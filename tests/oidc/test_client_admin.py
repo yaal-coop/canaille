@@ -248,6 +248,12 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, b
 
     res = testclient.get("/admin/client/edit/" + client.client_id)
     res.forms["clienteditform"]["client_uri"] = "https://client.trusted.test"
+    res.forms["clienteditform"]["redirect_uris-0"] = (
+        "https://client.trusted.test/redirect1"
+    )
+    res.forms["clienteditform"]["redirect_uris-1"] = (
+        "https://client.trusted.test/redirect2"
+    )
     res = res.forms["clienteditform"].submit(name="action", value="edit")
 
     assert ("success", "The client has been edited.") in res.flashes
@@ -260,6 +266,26 @@ def test_client_edit_preauth(testclient, client, logged_admin, trusted_client, b
 
     assert ("success", "The client has been edited.") in res.flashes
     backend.reload(client)
+    assert not client.trusted
+
+
+def test_client_edit_preauth_needs_trusted_redirect_uris(
+    testclient, client, logged_admin, trusted_client, backend
+):
+    """A trusted client_uri is not enough: the redirect URIs are where codes are sent."""
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    res.forms["clienteditform"]["client_uri"] = "https://client.trusted.test"
+    res.forms["clienteditform"]["redirect_uris-0"] = (
+        "https://client.trusted.test/redirect1"
+    )
+    res = res.forms["clienteditform"].submit(name="action", value="edit")
+
+    assert ("success", "The client has been edited.") in res.flashes
+    backend.reload(client)
+    assert client.redirect_uris == [
+        "https://client.trusted.test/redirect1",
+        "https://client.test/redirect2",
+    ]
     assert not client.trusted
 
 
