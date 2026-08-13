@@ -1,3 +1,4 @@
+import datetime
 import json
 from functools import wraps
 from http import HTTPStatus
@@ -152,6 +153,7 @@ def _query_resources(canaille_model, scim_type, to_scim):
     req = parse_search_request(request)
     total = Backend.instance.count(canaille_model)
     total_resources = list(Backend.instance.query(canaille_model))
+    total_resources.sort(key=lambda x: (x.created, x.id))
     prev_cursor = None
     next_cursor = None
     if req.cursor is not None:
@@ -159,16 +161,27 @@ def _query_resources(canaille_model, scim_type, to_scim):
             start_index = 0
             prev_cursor = None
         else:
-            prev_resource = Backend.instance.get(canaille_model, req.cursor)
-            start_index = total_resources.index(prev_resource)
+            previous_created = datetime.datetime.strptime(
+                req.cursor.split("_")[0], "%Y%m%dT%H%M%S"
+            ).replace(tzinfo=datetime.timezone.utc)
+            previous_id = req.cursor.split("_")[1]
+            prev_resource = next(filter(
+                lambda x: (x.created, x.id) >= (previous_created, previous_id),
+                total_resources,
+            ), None)
+            if prev_resource is None:
+                start_index = total
+            else:
+                start_index = total_resources.index(prev_resource)
+
             prev_cursor = req.cursor
-        
+
         stop_index = start_index + req.count
         resources = total_resources[start_index:stop_index+1]
 
         if stop_index < total:
             next_resource = resources.pop()
-            next_cursor = next_resource.id
+            next_cursor = f"{next_resource.created.strftime('%Y%m%dT%H%M%S')}_{next_resource.id}"
         else:
             next_cursor = None
     else:
