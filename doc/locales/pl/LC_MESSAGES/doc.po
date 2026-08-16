@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.1.0\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-21 00:13+0100\n"
-"PO-Revision-Date: 2026-08-16 20:36+0000\n"
+"PO-Revision-Date: 2026-08-17 21:51+0000\n"
 "Last-Translator: Kamil Maciąg <kmaciag93@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/canaille/"
 "documentation/pl/>\n"
@@ -3418,10 +3418,10 @@ msgstr ""
 msgid "To test a specific build mode, use ``--build=dev`` (source), ``--build=package`` (wheel), ``--build=pyinstaller`` (binary), or ``--build=docker`` (container). You can also test a pre-built artifact: ``--build=pyinstaller:/path/to/binary`` or ``--build=docker:image:tag``."
 msgstr ""
 "Aby przetestować konkretny tryb budowania, użyj ``--build=dev`` (źródło), "
-"``--build=package`` (wheel), ``--build=pyinstaller`` (plik binarny) lub ``--"
-"build=docker`` (kontener). Możesz też przetestować wcześniej zbudowany "
-"artefakt: ``--build=pyinstaller:/ścieżka/do/pliku`` lub ``--"
-"build=docker:obraz:tag``."
+"``--build=package`` (pakiet wheel), ``--build=pyinstaller`` (plik binarny) "
+"lub ``--build=docker`` (kontener). Możesz też przetestować wcześniej "
+"zbudowany artefakt: ``--build=pyinstaller:/path/to/binary`` lub ``--"
+"build=docker:image:tag``."
 
 #: ../../CONTRIBUTING.rst:182
 #: 7d674fb84e064f56b1559acb875b4397
@@ -3570,7 +3570,7 @@ msgstr ""
 "Katalogi można zaktualizować za pomocą poniższego polecenia, jednak nie "
 "powinno to być konieczne, ponieważ Weblate automatycznie aktualizuje "
 "katalogi językowe po wykryciu nowych ciągów lub przetłumaczeniu "
-"istniejących. Wypchnięcia Weblate mają miejsce co 24 godziny."
+"istniejących. Weblate wysyła zmiany do repozytorium co 24 godziny."
 
 #: ../../canaille/translations/README.rst:36
 #: bd83b4de8b1f4bbdb9ae2b134acaecb6
@@ -4346,7 +4346,7 @@ msgid "If :attr:`email confirmation <canaille.core.configuration.CoreSettings.EM
 msgstr ""
 "Jeśli włączone jest również :attr:`potwierdzanie adresu e-mail "
 "<canaille.core.configuration.CoreSettings.EMAIL_CONFIRMATION>`, użytkownicy "
-"otrzymają link potwierdzający na swój adres e-mail, na którym będą musieli "
+"otrzymają na swój adres e-mail link potwierdzający, który będą musieli "
 "kliknąć, aby dokończyć rejestrację."
 
 #: ../features.rst:111
@@ -4390,7 +4390,7 @@ msgstr ""
 #: ../features.rst:129
 #: 0e7a1ab9700347dda699cf42665573ab
 msgid "Account locking"
-msgstr "Blokowanie kont"
+msgstr "Blokowanie konta"
 
 #: ../features.rst:131
 #: 551cd882cc804ec495deb3f3f4a7d512
@@ -4432,7 +4432,7 @@ msgstr ""
 #: ../features.rst:145
 #: 97c9807547f44ae5a901b444a11096fd
 msgid "Account deletion"
-msgstr "Usuwanie kont"
+msgstr "Usuwanie konta"
 
 #: ../features.rst:147
 #: 4dc65047b05d4f758c45c3cf1808d2d9
@@ -4485,7 +4485,7 @@ msgstr ""
 #: ../features.rst:169
 #: 852cb95b1584455e85e90390fdc0745d
 msgid "Password reset"
-msgstr "Resetowanie hasła przez administratora"
+msgstr "Resetowanie hasła"
 
 #: ../features.rst:171
 #: 3d11c5c1594341a5a31019e80ccb2d16
@@ -4501,7 +4501,7 @@ msgstr ""
 #: ../features.rst:177
 #: c06d3270f62a45f4b6a6107620743f44
 msgid "Password initialization"
-msgstr "Inicjalizacja hasła"
+msgstr "Ustawienie hasła"
 
 #: ../features.rst:184
 #: ../../<autotemplate>:1
@@ -4517,7 +4517,7 @@ msgstr "Strona pierwszego logowania."
 #: 6aeea107855d498b88ce825cc8433e84
 msgid "User :attr:`passwords <canaille.core.models.User.password>` are optional. If a :class:`mail server <canaille.core.configuration.SMTPSettings>` is configured, when users with no password attempt to sign in, they are invited to click a button that will send them a password initialization mail. The mail contains a link that leads to a form that allows users to choose a password."
 msgstr ""
-"Hasła użytkowników :attr:`<canaille.core.models.User.password>` są "
+":attr:`Hasła użytkowników <canaille.core.models.User.password>` są "
 "opcjonalne. Jeśli skonfigurowano :class:`serwer poczty "
 "<canaille.core.configuration.SMTPSettings>`, to gdy użytkownik bez hasła "
 "próbuje się zalogować, jest proszony o kliknięcie przycisku, który wyśle mu "
@@ -4846,7 +4846,7 @@ msgstr ""
 #: ../features.rst:349
 #: fa1054ab4a574b6a8e48072ecc553433
 msgid "Logging"
-msgstr "Logowanie"
+msgstr "Rejestrowanie zdarzeń"
 
 #: ../features.rst:351
 #: d248f4752c8a48eaa7dabe176849c1a3
@@ -6239,12 +6239,12 @@ msgstr ""
 #: ../howtos/sso.rst:66
 #: 5e1feacddc2b4a3b96a47537e926c068
 msgid "Grant types"
-msgstr "Typy przyznania"
+msgstr "Typy grantów"
 
 #: ../howtos/sso.rst:68
 #: 62633e857b914e6ba3976bed4235f83d
 msgid "Grant types that the client can use at the token endpoint."
-msgstr "Typy przyznania, których klient może używać w punkcie końcowym tokenów."
+msgstr "Typy grantów, których klient może używać w punkcie końcowym tokenu."
 
 #: ../howtos/sso.rst:70
 #: a741e13b7a2548aeb2bbd2143c10c1c1
@@ -6395,14 +6395,14 @@ msgstr ""
 #: ../howtos/sso.rst:111
 #: 27ff086214e8455f8ea896611a0a6da4
 msgid "Token endpoint authentication method"
-msgstr "Metoda uwierzytelniania w punkcie końcowym tokenów"
+msgstr "Metoda uwierzytelniania w punkcie końcowym tokenu"
 
 #: ../howtos/sso.rst:113
 #: 385a823828df4625bbb9c0644398ef82
 msgid "Authentication method that the client will use at the token endpoint."
 msgstr ""
 "Metoda uwierzytelniania, której klient będzie używać w punkcie końcowym "
-"tokenów."
+"tokenu."
 
 #: ../howtos/sso.rst:115
 #: 7ba83ebd1b9e46e8ab4841e19e2b8ea4
@@ -6480,7 +6480,7 @@ msgstr "Adres URL warunków korzystania z usługi klienta."
 #: ../howtos/sso.rst:140
 #: 4234baf101e84f0cb2affaab4b8cf8f6
 msgid "Policy URI"
-msgstr "URI zasad"
+msgstr "URI polityki prywatności"
 
 #: ../howtos/sso.rst:142
 #: 1fc23f58a8a84c02a08aa6474e58584a
@@ -6690,9 +6690,9 @@ msgstr "Interfejs internetowy wyświetla bezużyteczne komunikaty o błędach"
 msgid "Error messages including technical information are displayed when logged user has admin :class:`permissions <canaille.core.configuration.Permission>`, or the installation is in :attr:`~canaille.app.configuration.RootSettings.DEBUG` mode."
 msgstr ""
 "Komunikaty o błędach zawierające informacje techniczne są wyświetlane, gdy "
-"zalogowany użytkownik ma uprawnienia administratora "
-":class:`<canaille.core.configuration.Permission>` lub instalacja jest w "
-"trybie :attr:`~canaille.app.configuration.RootSettings.DEBUG`."
+"zalogowany użytkownik ma :class:`uprawnienia administratora "
+"<canaille.core.configuration.Permission>` lub instalacja działa w trybie "
+":attr:`~canaille.app.configuration.RootSettings.DEBUG`."
 
 #: ../howtos/troubleshooting.rst:11
 #: 56af01acdc1a479a92f60aaa0c72e670
@@ -9029,8 +9029,8 @@ msgstr "`❌ <https://www.authgear.com/post/what-is-totp>`__"
 #: 1c2438e567a64d50816b4d0c0a8c81c9
 msgid "`✅ <https://www.authgear.com/post/sms-otp-vulnerabilities-and-alternatives>`__"
 msgstr ""
-"`✅ <https://docs.authgear.com/get-started/multi-factor-authentication/setup-"
-"webauthn>`__"
+"`✅ <https://www.authgear.com/post/sms-otp-vulnerabilities-and-alternatives>"
+"`__"
 
 #: ../references/alternatives.rst:318
 #: ../references/alternatives.rst:319
@@ -9039,29 +9039,35 @@ msgstr ""
 #: f75456100b504d598199d014b442d17c
 #: 5c2073c0fdd343c280357d585fe04e04
 msgid "`✅ <https://apereo.github.io/cas/development/mfa/Configuring-Multifactor-Authentication.html>`__"
-msgstr "`✅ <https://docs.goauthentik.io/flow/stages/authenticator_stage/>`__"
+msgstr ""
+"`✅ <https://apereo.github.io/cas/development/mfa/Configuring-Multifactor-"
+"Authentication.html>`__"
 
 #: ../references/alternatives.rst:320
 #: ../references/alternatives.rst:321
 #: b04053a7e17b4e0090ad0aba637254d4
 #: d12127be04d1409eb57d574ac7150b42
 msgid "`✅ <https://apereo.github.io/cas/development/authentication/Passwordless-Authentication.html>`__"
-msgstr "`✅ <https://www.casbin.org/docs/watchers/>`__"
+msgstr ""
+"`✅ <https://apereo.github.io/cas/development/authentication/Passwordless-"
+"Authentication.html>`__"
 
 #: ../references/alternatives.rst:324
 #: 272bb5f1947243bab5cd6c50e5571a39
 msgid "`🟠 <https://connect2id.com/products/server/user-authentication>`__"
-msgstr "`✅ <https://www.descope.com/post/what-is-an-otp>`__"
+msgstr "`🟠 <https://connect2id.com/products/server/user-authentication>`__"
 
 #: ../references/alternatives.rst:331
 #: 426f8706eacb4c0fbed083dddaa11891
 msgid "`✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/>`__"
-msgstr "`✅ <https://www.descope.com/post/passkeys>`__"
+msgstr "`✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/>`__"
 
 #: ../references/alternatives.rst:332
 #: f6948e8cac09426cb8ec6266d23dcbf7
 msgid "`✅ <https://fusionauth.io/articles/security/time-based-one-time-passwords-totp>`__"
-msgstr "`✅ <https://docs.descope.com/guides/sms>`__"
+msgstr ""
+"`✅ <https://fusionauth.io/articles/security/time-based-one-time-passwords-"
+"totp>`__"
 
 #: ../references/alternatives.rst:334
 #: ../references/alternatives.rst:335
@@ -9070,27 +9076,26 @@ msgstr "`✅ <https://docs.descope.com/guides/sms>`__"
 #: 20391eabb97e4aa6b0c1ac4c4a8ae9f5
 #: 54c2b4a6c5a649aab98e7fa1a1a45b1f
 msgid "`✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/multi-factor-authentication>`__"
-msgstr "`✅ <https://docs.descope.com/guides/webauthn>`__"
+msgstr ""
+"`✅ <https://fusionauth.io/docs/lifecycle/authenticate-users/multi-factor-"
+"authentication>`__"
 
 #: ../references/alternatives.rst:339
 #: ../references/alternatives.rst:340
 #: d713e7f97cad44f591ae1039a265e033
 #: 1a9b35ada72348f5b6b542de5cc6fd8a
 msgid "`✅ <https://gluu.org/docs/gluu-server/4.1/authn-guide/otp/>`__"
-msgstr "`✅ <https://fusionauth.io/docs/v1/tech/identity-providers/oauth2/>`__"
+msgstr "`✅ <https://gluu.org/docs/gluu-server/4.1/authn-guide/otp/>`__"
 
 #: ../references/alternatives.rst:341
 #: b9cf302eab78441482d483f8a31281f4
 msgid "`✅ <https://gluu.org/docs/gluu-server/3.1.1/authn-guide/sms-otp/>`__"
-msgstr ""
-"`✅ <https://www.keycloak.org/docs/latest/server_admin/index.html#_identity-"
-"broker>`__"
+msgstr "`✅ <https://gluu.org/docs/gluu-server/3.1.1/authn-guide/sms-otp/>`__"
 
 #: ../references/alternatives.rst:343
 #: b18ea74e63724a61b23ad5a59a931e11
 msgid "`✅ <https://gluu.org/docs/gluu-server/4.1/authn-guide/fido2/>`__"
-msgstr ""
-"`✅ <https://www.keycloak.org/docs/latest/server_admin/index.html#_oidc>`__"
+msgstr "`✅ <https://gluu.org/docs/gluu-server/4.1/authn-guide/fido2/>`__"
 
 #: ../references/alternatives.rst:346
 #: bfb61b8c5097469ab02d3ae343930f83
@@ -12015,9 +12020,9 @@ msgstr ""
 "Możesz zdefiniować kontrolę dostępu określającą, co użytkownicy mogą robić w "
 "Canaille. Kontrola dostępu składa się z :attr:`FILTER` dopasowującego "
 "użytkowników, listy :attr:`PERMISSIONS`, które dopasowani użytkownicy będą "
-"mogli wykonywać, oraz pól, które użytkownicy będą mogli :attr:`CZYTAĆ` i "
-":attr:`ZAPISYWAĆ`. Użytkownicy dopasowujący kilka filtrów będą kumulować "
-"uprawnienia."
+"mogli wykonywać, oraz pól, które użytkownicy będą mogli :attr:`odczytywać "
+"<READ>` i :attr:`zapisywać <WRITE>`. Użytkownicy dopasowani przez kilka "
+"filtrów kumulują uprawnienia."
 
 #: ../../docstring of canaille.core.configuration.ACLSettings.FILTER:1
 #: 5e9b6a99d7fb407e92fb300660538172
@@ -13200,8 +13205,8 @@ msgstr "URI są kanonizowane zgodnie z sekcją 6.2 [RFC3986]."
 #: 6fbd9786a487447fb20b44485b7600e4
 msgid "The fields the user can read according to the :class:`configuration <canaille.core.configuration.ACLSettings>` configuration."
 msgstr ""
-"Pola, które użytkownik może odczytać zgodnie z konfiguracją "
-":class:`<canaille.core.configuration.ACLSettings>`."
+"Pola, które użytkownik może odczytywać zgodnie z :class:`konfiguracją "
+"<canaille.core.configuration.ACLSettings>`."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.User.readable_fields:3
 #: 47b9e355b9814890a42a5e478a52456f
@@ -13227,15 +13232,14 @@ msgstr ""
 msgid "The full street address component, which may include house number, street name, P.O."
 msgstr ""
 "Pełny składnik adresu ulicy, który może zawierać numer domu, nazwę ulicy, "
-"skrytkę pocztową (P.O. box) i wielowierszowe rozszerzone informacje "
-"adresowe. Ten atrybut MOŻE zawierać znaki nowej linii."
+"skrytkę pocztową (P.O."
 
 #: ../../docstring of canaille.core.models.User.street:4
 #: ef4049e6080b42e0a51af72a3a31ef6b
 msgid "box, and multi-line extended street address information.  This attribute MAY contain newlines."
 msgstr ""
-"skrytka pocztowa i wielowierszowe rozszerzone informacje adresowe. Ten "
-"atrybut MOŻE zawierać znaki nowej linii."
+"box) oraz wielowierszowe rozszerzone informacje adresowe. Ten atrybut MOŻE "
+"zawierać znaki nowej linii."
 
 #: ../../docstring of canaille.core.models.User.title:1
 #: f830151fd8294a04ba20591bb7c6472a
@@ -13271,8 +13275,8 @@ msgstr ""
 #: e67a8d3849db481c9a6f5b76197c11d9
 msgid "The fields the user can write according to the :class:`configuration <canaille.core.configuration.ACLSettings>`."
 msgstr ""
-"Pola, które użytkownik może zapisać zgodnie z konfiguracją "
-":class:`<canaille.core.configuration.ACLSettings>`."
+"Pola, które użytkownik może zapisywać zgodnie z :class:`konfiguracją "
+"<canaille.core.configuration.ACLSettings>`."
 
 #: ../../canaille/core/models.py:docstring of canaille.core.models.WebAuthnCredential:1
 #: 6df09c5ebb294935843abc3e95e2abce
@@ -14571,8 +14575,8 @@ msgstr "R15"
 #: 429e14c5af614519b7e95cc4d82e343a
 msgid "Define expiration delays for authentication factors. Set expiration dates to limit fraudulent use."
 msgstr ""
-"Zdefiniuj czasy wygaśnięcia czynników uwierzytelniania. Ustaw daty "
-"wygaśnięcia, aby ograniczyć użycie oszukańcze."
+"Określ okresy ważności czynników uwierzytelniania. Ustaw terminy "
+"wygaśnięcia, aby ograniczyć możliwość nadużyć."
 
 #: ../references/security.rst:86
 #: 5095ed9bbdba4a6b8d9fa5a64e431fdf
@@ -14742,15 +14746,14 @@ msgstr "R24"
 #: de72d0cb926846738e2e80a0b2c809bd
 msgid "Do not enforce expiration delays by default on non-sensitive accounts. Avoid automatic expiration for standard user accounts if passwords are robust."
 msgstr ""
-"Nie narzucaj okresowego wygasania haseł, chyba że istnieje szczególne "
-"zagrożenie wymagające takiego środka."
+"Nie wymuszaj domyślnie wygasania haseł dla kont niewymagających "
+"podwyższonego poziomu ochrony. Unikaj automatycznego wygasania haseł dla "
+"standardowych kont użytkowników, jeśli stosowane hasła są odpowiednio silne."
 
 #: ../references/security.rst:127
 #: 690b8f0fcc704a348c7bcc5e92f61973
 msgid "Canaille does not enforce password expiration by default."
-msgstr ""
-"Canaille nie włącza domyślnie wygasania haseł. Można to włączyć za pomocą "
-":attr:`~canaille.core.configuration.CoreSettings.PASSWORD_LIFETIME`."
+msgstr "Canaille domyślnie nie wymusza wygasania haseł."
 
 #: ../references/security.rst:129
 #: 0452e1fc451b4af796d579021543f350
@@ -14761,30 +14764,37 @@ msgstr "R25"
 #: 43f3c5ce57784ac3b09a496494377438
 msgid "Enforce expiration delays on privileged account passwords. Set expiration (1-3 years) for administrator accounts."
 msgstr ""
-"Blokuj ponowne użycie haseł. Przechowuj historię haseł, aby zapobiec "
-"ponownemu użyciu."
+"Wymuszaj okresowe wygasanie haseł kont uprzywilejowanych. Ustaw okres "
+"ważności haseł kont administratorów na 1–3 lata."
 
 #: ../references/security.rst:132
 #: 83673d5ec3c34eaca64f0871369abc86
 msgid "Password expiration :attr:`can be customized <canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH>` but Canaille does not differentiate password policies between regular and privileged accounts."
-msgstr "Canaille nie przechowuje historii haseł."
+msgstr ""
+"Wygasanie haseł :attr:`można dostosować "
+"<canaille.core.configuration.CoreSettings.MAX_PASSWORD_LENGTH>`, ale "
+"Canaille nie stosuje odrębnych zasad haseł dla kont zwykłych i "
+"uprzywilejowanych."
 
 #: ../references/security.rst:133
 #: ../references/security.rst:144
 #: 9f297a761f664bd9bb23f22d3e190e21
 #: 1240fe360ca44f7db896c538fe38fb57
 msgid "🟧"
-msgstr "R26"
+msgstr "🟧"
 
 #: ../references/security.rst:134
 #: e6264272f2bc4496bbe8c9c9bbc8997f
 msgid "R26"
-msgstr "Zachęcaj do używania menedżerów haseł."
+msgstr "R26"
 
 #: ../references/security.rst:135
 #: 7cecaa4f40e743c2b705f83988e2af07
 msgid "Immediately revoke passwords in case of suspected or confirmed compromise. Renew all affected passwords within a day in case of incident."
-msgstr "Jest to decyzja polityki organizacyjnej."
+msgstr ""
+"Natychmiast unieważniaj hasła w przypadku podejrzenia lub potwierdzenia "
+"naruszenia bezpieczeństwa. W razie incydentu odnów wszystkie hasła, których "
+"dotyczy problem, w ciągu jednego dnia."
 
 #: ../references/security.rst:137
 #: 8364667ddabe4196ad6c08d637bdb696
@@ -14842,8 +14852,8 @@ msgstr "R29"
 #: 9f18605f62554ec78b6349fcb222e3e7
 msgid "Use memory-hard password derivation function to store passwords. Use scrypt or Argon2 for password storage."
 msgstr ""
-"Używaj funkcji wyprowadzania klucza odpornej na pamięć do przechowywania "
-"haseł. Używaj scrypt lub Argon2 do przechowywania haseł."
+"Do przechowywania haseł używaj pamięciochłonnej funkcji wyprowadzania "
+"klucza. Do przechowywania haseł używaj scrypt lub Argon2."
 
 #: ../references/security.rst:151
 #: 62ff40e5199a492aa8370b0888ec3ea6
@@ -14861,8 +14871,8 @@ msgstr "R29-"
 #: cdf984ba06f24b66a4357679e2c4b2a4
 msgid "Use iterative password derivation function to store passwords. Alternative: use PBKDF2 if memory-hard functions are difficult to implement."
 msgstr ""
-"Używaj iteracyjnej funkcji wyprowadzania klucza do przechowywania haseł. "
-"Alternatywa: użyj PBKDF2, jeśli funkcje odporne na pamięć są trudne do "
+"Do przechowywania haseł używaj iteracyjnej funkcji wyprowadzania klucza. "
+"Alternatywnie użyj PBKDF2, jeśli funkcje pamięciochłonne są trudne do "
 "wdrożenia."
 
 #: ../references/security.rst:155
@@ -15010,8 +15020,8 @@ msgstr "R41"
 #: 3023e2f8f5684c73a33aff6c94ff33ca
 msgid "Use an inherent factor only associated with a strong factor. In multi-factor, accompany biometrics with a cryptographic factor compliant with `RGS <https://cyber.gouv.fr/le-referentiel-general-de-securite-rgs>`__."
 msgstr ""
-"Używaj czynnika wrodzonego tylko w połączeniu z silnym czynnikiem. W "
-"uwierzytelnianiu wieloskładnikowym towarzysz biometrii czynnikiem "
+"Używaj czynnika wrodzonego wyłącznie w połączeniu z silnym czynnikiem. W "
+"uwierzytelnianiu wieloskładnikowym łącz biometrię z czynnikiem "
 "kryptograficznym zgodnym z `RGS <https://cyber.gouv.fr/le-referentiel-"
 "general-de-securite-rgs>`__."
 
@@ -15039,7 +15049,7 @@ msgstr ""
 #: ../references/security.rst:194
 #: 06a97f95573f45a8aec22c1ed362220f
 msgid "This is an organizational enrollment procedure responsibility."
-msgstr "Jest to odpowiedzialność procedury rejestracji organizacji."
+msgstr "Za tę procedurę rejestracji odpowiada organizacja."
 
 #: ../references/templates.rst:2
 #: 0b0bc0732fae4b9a8bbf443d1b396d4c
@@ -15093,7 +15103,7 @@ msgstr "Funkcje włączone i dostępne w Canaille."
 #: ../../<autotemplate>:1
 #: fb2872b6b04c492b9eb8e7cb0fadbe98
 msgid "The user locale."
-msgstr "Lokalizacja (język) użytkownika."
+msgstr "Ustawienia języka i regionu użytkownika."
 
 #: ../../<autotemplate>:1
 #: 4aa77be5d8fc42a4b1636e516bdaf35f
@@ -15211,7 +15221,7 @@ msgstr "Rdzeń"
 #: 6622f069fd9146f594ce575c4565134c
 msgid "The core templates are displayed in the authentication and profile edition pages."
 msgstr ""
-"Podstawowe szablony są wyświetlane na stronach uwierzytelniania i edycji "
+"Szablony rdzenia są wyświetlane na stronach uwierzytelniania i edycji "
 "profilu."
 
 #: ../../<autotemplate>:1
@@ -15342,7 +15352,8 @@ msgstr "Strona logowania."
 #: ../../<autotemplate>:1
 #: acbe6186a9eb47b7a8e9c8cd14bbb13d
 msgid "This page displays a form to get the user identifier."
-msgstr "Wyświetla formularz logowania."
+msgstr ""
+"Ta strona wyświetla formularz służący do podania identyfikatora użytkownika."
 
 #: ../../<autotemplate>:1
 #: 815bc960136c46488349f72218fcb9a7
@@ -15357,39 +15368,56 @@ msgstr "Strona rejestracji użytkownika."
 #: ../../<autotemplate>:1
 #: 43aba36b96f743f185ba444f49232b3d
 msgid "This template displays an account creation form. It is used in the registration page, and in the manual account creation page available for users with *user management* permission."
-msgstr "Wyświetla formularz tworzenia konta."
+msgstr ""
+"Ten szablon wyświetla formularz tworzenia konta. Jest używany na stronie "
+"rejestracji oraz na stronie ręcznego tworzenia konta dostępnej dla "
+"użytkowników z uprawnieniem *zarządzania użytkownikami*."
 
 #: ../../<autotemplate>:1
 #: 671cc3e714d74c7b869ab625c4f18779
 msgid "The user creation form. Dynamically built according to the user :attr:`~canaille.core.configuration.ACLSettings.READ` and :attr:`~canaille.core.configuration.ACLSettings.WRITE` permissions. The available fields are those appearing in *READ* and *WRITE*, those only appearing in *READ* are read-only."
-msgstr "Formularz tworzenia konta użytkownika."
+msgstr ""
+"Formularz tworzenia użytkownika. Jest budowany dynamicznie zgodnie z "
+"uprawnieniami użytkownika "
+":attr:`~canaille.core.configuration.ACLSettings.READ` i "
+":attr:`~canaille.core.configuration.ACLSettings.WRITE`. Dostępne pola to te "
+"występujące w *READ* i *WRITE*; pola występujące tylko w *READ* są tylko do "
+"odczytu."
 
 #: ../../<autotemplate>:1
 #: f79eb8164652453ca79958156440f3d2
 msgid "The profile edition template."
-msgstr "Strona przypomnienia hasła."
+msgstr "Szablon edycji profilu."
 
 #: ../../<autotemplate>:1
 #: 4764140dc9594a9790e44501efdfb15b
 msgid "Displays a user profile edition form."
-msgstr "Wyświetla formularz odzyskiwania hasła."
+msgstr "Wyświetla formularz edycji profilu użytkownika."
 
 #: ../../<autotemplate>:1
 #: ba61d4448d7d484b9e4772ea040ea8d9
 #: c38ff6ba30044376aaf541ecbc4d3e1d
 msgid "The user that the form will edit."
-msgstr "Formularz przypomnienia hasła."
+msgstr "Użytkownik edytowany przez formularz."
 
 #: ../../<autotemplate>:1
 #: aeff8e677e1141dd947ec0c80a3f90fa
 #: 5569b5a576ac429fb94f2ba610fb7176
 msgid "The user profile edition form. Dynamically built according to the user :attr:`~canaille.core.configuration.ACLSettings.READ` and :attr:`~canaille.core.configuration.ACLSettings.WRITE` permissions. The available fields are those appearing in *READ* and *WRITE*, those only appearing in *READ* are read-only."
-msgstr "Strona resetowania hasła."
+msgstr ""
+"Formularz edycji profilu użytkownika. Jest budowany dynamicznie zgodnie z "
+"uprawnieniami użytkownika "
+":attr:`~canaille.core.configuration.ACLSettings.READ` i "
+":attr:`~canaille.core.configuration.ACLSettings.WRITE`. Dostępne pola to te "
+"występujące w *READ* i *WRITE*; pola występujące tylko w *READ* są tylko do "
+"odczytu."
 
 #: ../../<autotemplate>:1
 #: e88a995142e543a4be257ccdd406caa2
 msgid "An email edition form. Used when the :attr:`~canaille.app.features.Features.has_email_confirmation` feature is enabled."
-msgstr "Wyświetla formularz resetowania hasła."
+msgstr ""
+"Formularz edycji adresu e-mail. Używany, gdy włączona jest funkcja "
+":attr:`~canaille.app.features.Features.has_email_confirmation`."
 
 #: ../../<autotemplate>:1
 #: 3bfb5f73ba4944e88aacaf4dfd687edc
@@ -15603,9 +15631,9 @@ msgstr "Częściowy szablon pola CAPTCHA."
 #: 9edb2e36f3d2440eaf4a294e36dcfffb
 msgid "This macro renders a complete CAPTCHA field with: - Hidden token field - CAPTCHA image - Audio playback button - Refresh button - Input field for user response - Error messages"
 msgstr ""
-"Ta makra renderuje kompletne pole CAPTCHA zawierające: - Ukryte pole "
+"To makro renderuje kompletne pole CAPTCHA zawierające: - Ukryte pole "
 "tokenu - Obraz CAPTCHA - Przycisk odtwarzania audio - Przycisk odświeżania - "
-"Pole wprowadzania odpowiedzi użytkownika - Komunikaty o błędach"
+"Pole do wprowadzenia odpowiedzi użytkownika - Komunikaty o błędach"
 
 #: ../../<autotemplate>:1
 #: 9f70c8e1cd77478b8823954db34c867e
@@ -15738,8 +15766,9 @@ msgstr "Szablon żądania zgody."
 msgid "This templates is displayed to users accessing a new application that requests to access to personal information. It lists the personal information requested by the application, and offers the user to accept or decline."
 msgstr ""
 "Ten szablon jest wyświetlany użytkownikom uzyskującym dostęp do nowej "
-"aplikacji, która żąda dostępu do danych osobowych. Listuje dane osobowe "
-"wymagane przez aplikację i oferuje użytkownikowi akceptację lub odmowę."
+"aplikacji, która żąda dostępu do danych osobowych. Wyświetla listę danych "
+"osobowych żądanych przez aplikację i umożliwia użytkownikowi wyrażenie zgody "
+"lub jej odmowę."
 
 #: ../../<autotemplate>:1
 #: fb18c64e1f2e45aeb30287e436281862
@@ -15805,8 +15834,7 @@ msgstr "Lista aplikacji, na które wyrażono zgodę."
 #: 0e51f5a46e854ad586d66ae90365b533
 msgid "Display a list of clients for which users have given or revoked their consent."
 msgstr ""
-"Wyświetla listę klientów, na których użytkownicy wyrazili lub odwołali swoją "
-"zgodę."
+"Wyświetla listę klientów, którym użytkownicy udzielili zgody lub ją cofnęli."
 
 #: ../../<autotemplate>:1
 #: bcaca06eb8874d4da4c478f275a27826
@@ -15885,7 +15913,7 @@ msgstr "Wyświetla szczegóły tokena :class:`~canaille.oidc.basemodels.Token`."
 #: ../../<autotemplate>:1
 #: 587b806520db4f7da00cfd8a86432b80
 msgid "A token revokation form."
-msgstr "Formularz odwołania tokena."
+msgstr "Formularz unieważniania tokenu."
 
 #: ../../<autotemplate>:1
 #: 0db18e59e0cf4c1cb85478bc399f189f
@@ -15926,15 +15954,15 @@ msgstr "Pierwsze kroki"
 #: c3c4cbd5038449a98bd05e8e84c326cf
 msgid "This tutorial will guide you through your first steps with Canaille, from installation to testing your first OAuth authentication flow."
 msgstr ""
-"Ten poradnik przeprowadzi Cię przez pierwsze kroki z Canaille, od instalacji "
-"po przetestowanie pierwszego przepływu uwierzytelniania OAuth."
+"Ten samouczek przeprowadzi Cię przez pierwsze kroki z Canaille, od "
+"instalacji po przetestowanie pierwszego przepływu uwierzytelniania OAuth."
 
 #: ../tutorials/getting-started.rst:6
 #: ../tutorials/oidc-client.rst:7
 #: 1899399f8cd044569cd6ea85fef4639d
 #: 609783ca4a394d57bb32f75a25690927
 msgid "By the end of this tutorial, you will have:"
-msgstr "Po ukończeniu tego poradnika będziesz mieć:"
+msgstr "Po ukończeniu tego samouczka będziesz mieć:"
 
 #: ../tutorials/getting-started.rst:8
 #: 93d879b6e9a04fb3af6be2503a414474
@@ -16106,7 +16134,7 @@ msgstr ""
 #: b8585f6c22324da2b866ea0c856968f5
 msgid "For this tutorial, we use a simple password. In production, always use strong, unique passwords!"
 msgstr ""
-"Na potrzeby tego poradnika używamy prostego hasła. W środowisku produkcyjnym "
+"Na potrzeby tego samouczka używamy prostego hasła. W środowisku produkcyjnym "
 "zawsze używaj silnych, unikalnych haseł!"
 
 #: ../tutorials/getting-started.rst:287
@@ -16297,14 +16325,14 @@ msgstr "Świetnie! Masz teraz użytkowników zorganizowanych w grupę."
 #: ../tutorials/index.rst:2
 #: 3679347df1b44d849d5244e5c7dc7973
 msgid "Tutorials"
-msgstr "Poradniki"
+msgstr "Samouczki"
 
 #: ../tutorials/index.rst:4
 #: e7fad1ab98554dc884deceef51c82394
 msgid "Tutorials are learning-oriented lessons that help you understand Canaille through practical, step-by-step examples."
 msgstr ""
-"Poradniki to lekcje zorientowane na naukę, które pomagają zrozumieć Canaille "
-"poprzez praktyczne, krok po kroku przykłady."
+"Samouczki to lekcje nastawione na naukę, które pomagają zrozumieć Canaille "
+"dzięki praktycznym przykładom krok po kroku."
 
 #: ../tutorials/oidc-client.rst:2
 #: 2021e7cafd90494e911f440eb0c12253
@@ -16315,10 +16343,10 @@ msgstr "Podłącz aplikację kliencką"
 #: 8ecea6e3c32d4305b4b29af05c536987
 msgid "This tutorial will guide you through configuring Canaille as an OAuth2 / OpenID Connect (OIDC) provider by connecting a client application to it. The application will attempt to access users personal information, which users will need to explicitly authorize."
 msgstr ""
-"Ten poradnik przeprowadzi Cię przez konfigurację Canaille jako dostawcy "
-"OAuth2 / OpenID Connect (OIDC) przez podłączenie do niego aplikacji "
-"klienckiej. Aplikacja będzie próbować uzyskać dostęp do danych osobowych "
-"użytkowników, co użytkownicy będą musieli jawnie autoryzować."
+"Ten samouczek przeprowadzi Cię przez konfigurację Canaille jako dostawcy "
+"OAuth2 / OpenID Connect (OIDC) poprzez podłączenie aplikacji klienckiej. "
+"Aplikacja będzie próbowała uzyskać dostęp do danych osobowych użytkowników, "
+"na co użytkownicy będą musieli jawnie zezwolić."
 
 #: ../tutorials/oidc-client.rst:9
 #: 424b30e07d9848f39f5875120f822f5a
@@ -16348,7 +16376,7 @@ msgstr "Wymagania wstępne"
 #: ../tutorials/oidc-client.rst:17
 #: 1689129998e449d29ec36e180c6b524b
 msgid "Before starting this tutorial, you should have:"
-msgstr "Przed rozpoczęciem tego poradnika powinieneś mieć:"
+msgstr "Przed rozpoczęciem tego samouczka powinieneś mieć:"
 
 #: ../tutorials/oidc-client.rst:19
 #: 5da6cd6ce4f84244851532242911e091
@@ -16589,7 +16617,7 @@ msgstr ""
 msgid "Enter your Canaille credentials (e.g., ``admin`` / ``admin123`` if you followed the getting-started tutorial)"
 msgstr ""
 "Wprowadź swoje poświadczenia Canaille (np. ``admin`` / ``admin123``, jeśli "
-"postępowałeś zgodnie z poradnikiem pierwsze kroki)"
+"wykonałeś samouczek „Pierwsze kroki”)"
 
 #: ../tutorials/oidc-client.rst:227
 #: 399772fab11948bfbd77be60cfd63abe
@@ -16717,11 +16745,11 @@ msgstr "Lekki IAM do testów jednostkowych"
 #: 26fd9dac5b2d410bb60ebfcf0c27e00b
 msgid "You are :ref:`developing <feature_development>` an application relying on OAuth2 or OpenID Connect to authenticate the users. You don't want to mock the calls to the identity provider in your unit tests, but you want to :ref:`perform real OAuth2/OIDC requests <feature_testing>`, and test your application against different identity provider tunings."
 msgstr ""
-"Tworzysz :ref:`aplikację <feature_development>` polegającą na OAuth2 lub "
+"Tworzysz :ref:`aplikację <feature_development>`, która korzysta z OAuth2 lub "
 "OpenID Connect do uwierzytelniania użytkowników. Nie chcesz symulować "
 "wywołań do dostawcy tożsamości w testach jednostkowych, ale chcesz "
 ":ref:`wykonywać prawdziwe żądania OAuth2/OIDC <feature_testing>` i testować "
-"swoją aplikację względem różnych konfiguracji dostawcy tożsamości."
+"aplikację z różnymi konfiguracjami dostawcy tożsamości."
 
 #: ../usecases.rst:18
 #: d4c612d65e984ddb9beacff9bee7e88a
@@ -16732,10 +16760,10 @@ msgstr "Lekki IAM do programowania"
 #: d94bb28b8adc41daab7ac5432e0eab69
 msgid "You are :ref:`developing <feature_development>` an application relying on OAuth2 or OpenID Connect to authenticate the users. You need a :ref:`IAM server to develop <feature_development>` locally, but your old computer cannot bear launching a full Keycloak in a Docker container."
 msgstr ""
-"Tworzysz :ref:`aplikację <feature_development>` polegającą na OAuth2 lub "
+"Tworzysz :ref:`aplikację <feature_development>`, która korzysta z OAuth2 lub "
 "OpenID Connect do uwierzytelniania użytkowników. Potrzebujesz :ref:`serwera "
-"IAM do programowania <feature_development>` lokalnie, ale Twój stary "
-"komputer nie udźwignie uruchomienia pełnego Keycloaka w kontenerze Dockera."
+"IAM do lokalnego programowania <feature_development>`, ale Twój stary "
+"komputer nie jest w stanie uruchomić pełnego Keycloaka w kontenerze Dockera."
 
 #: ../usecases.rst:23
 #: c5dd631305f345bbb78ea44156e97732
@@ -16746,7 +16774,7 @@ msgstr "Lekki IAM do środowisk CI"
 #: 58fef4bfae0e4b3692d117251fffd943
 msgid "You are :ref:`developing <feature_development>` an application relying on OAuth2 or OpenID Connect to authenticate the users. You need a IAM server that could can populate with custom data, and integrate in your :ref:`continuous integration environment <feature_ci>`."
 msgstr ""
-"Tworzysz :ref:`aplikację <feature_development>` polegającą na OAuth2 lub "
+"Tworzysz :ref:`aplikację <feature_development>`, która korzysta z OAuth2 lub "
 "OpenID Connect do uwierzytelniania użytkowników. Potrzebujesz serwera IAM, "
 "który można wypełnić własnymi danymi i zintegrować ze swoim "
 ":ref:`środowiskiem ciągłej integracji <feature_ci>`."
