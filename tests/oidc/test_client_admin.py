@@ -1,7 +1,7 @@
-import pytest
 import datetime
 import json
 
+import pytest
 from joserfc.jwk import KeySet
 from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
