@@ -6,17 +6,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: canaille 0.1.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-21 00:13+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-08-16 08:36+0000\n"
+"Last-Translator: Kamil Maciąg <kmaciag93@gmail.com>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/canaille/"
+"documentation/pl/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 
 #: ../development/changelog.rst:2
 #: 41ffeccba4e9433f9ccb055196625b58
@@ -3079,7 +3081,7 @@ msgstr ""
 #: ff35e93d47264e159305d8c27f90c3ae
 #: e0c492b06ab94b8db6322a7965404677
 msgid "Documentation"
-msgstr ""
+msgstr "Dokumentacja"
 
 #: ../../CONTRIBUTING.rst:204
 #: 18fc8a49600d4f4c9233df3f1f0e94c1
@@ -3716,7 +3718,7 @@ msgstr ""
 #: 2c4a59427b924f648ecea3cb4ddf569f
 #: b8ca225304f546228ad2909534e716bf
 msgid "Group edition"
-msgstr ""
+msgstr "Edycja grupy"
 
 #: ../features.rst:63
 #: 3ae40c93b47042f996a4786e8edad17b
@@ -3819,7 +3821,7 @@ msgstr ""
 #: ../features.rst:129
 #: 0e7a1ab9700347dda699cf42665573ab
 msgid "Account locking"
-msgstr ""
+msgstr "Blokowanie konta"
 
 #: ../features.rst:131
 #: 551cd882cc804ec495deb3f3f4a7d512
@@ -3854,7 +3856,7 @@ msgstr ""
 #: ../features.rst:145
 #: 97c9807547f44ae5a901b444a11096fd
 msgid "Account deletion"
-msgstr ""
+msgstr "Usunięcie konta"
 
 #: ../features.rst:147
 #: 4dc65047b05d4f758c45c3cf1808d2d9
@@ -3893,7 +3895,7 @@ msgstr ""
 #: ../features.rst:169
 #: 852cb95b1584455e85e90390fdc0745d
 msgid "Password reset"
-msgstr ""
+msgstr "Resetowanie hasła"
 
 #: ../features.rst:171
 #: 3d11c5c1594341a5a31019e80ccb2d16
@@ -3903,7 +3905,7 @@ msgstr ""
 #: ../features.rst:177
 #: c06d3270f62a45f4b6a6107620743f44
 msgid "Password initialization"
-msgstr ""
+msgstr "Inicjalizacja hasła"
 
 #: ../features.rst:184
 #: ../../<autotemplate>:1
@@ -4202,7 +4204,7 @@ msgstr ""
 #: ../features.rst:363
 #: 70a9263517fa4cb98068b85b01fceebb
 msgid "Token revokation"
-msgstr ""
+msgstr "Unieważnienie tokenu"
 
 #: ../features.rst:364
 #: 3847bd4b37884892893978013b6fb9b2
@@ -5210,64 +5212,69 @@ msgstr ""
 #: ../howtos/sso.rst:39
 #: aa00d2fab4d3487c8696ca25758bcb66
 msgid "Name"
-msgstr ""
+msgstr "Imię i nazwisko"
 
 #: ../howtos/sso.rst:41
 #: 42fa88b9f20a49aaa1c709de145f5fba
 msgid "This is the name that will be displayed on the web interface, and notably on the consent page."
 msgstr ""
+"To nazwa wyświetlana w interfejsie internetowym, w szczególności na stronie "
+"zgody."
 
 #: ../howtos/sso.rst:44
 #: 619da6a3373e49a2adda075d2e4406ca
 msgid "Contacts"
-msgstr ""
+msgstr "Kontakty"
 
 #: ../howtos/sso.rst:46
 #: 3566f8b152034ff5815c5bf79c400c4c
 msgid "Those are the email addresses of people responsible for the client."
-msgstr ""
+msgstr "To adresy e-mail osób odpowiedzialnych za klienta."
 
 #: ../howtos/sso.rst:49
 #: 20b1078eeb3a4bb287fb60e23672f382
 msgid "URI"
-msgstr ""
+msgstr "URI"
 
 #: ../howtos/sso.rst:51
 #: ../../docstring of canaille.oidc.basemodels.Client.client_uri:1
 #: 28fab0808a0f445da4bde8e2f54341e2
 #: bba253d84c294aac9a984c844f2f9550
 msgid "URL string of a web page providing information about the client."
-msgstr ""
+msgstr "Adres URL strony internetowej zawierającej informacje o kliencie."
 
 #: ../howtos/sso.rst:54
 #: feb8a524171447609b1970db2f5632ae
 msgid "Redirect URIs"
-msgstr ""
+msgstr "Adresy URI przekierowania"
 
 #: ../howtos/sso.rst:56
 #: f3ab9c7167e44192bc5a2d7625383246
 msgid "URIs for use in redirect-based flows such as the authorization code and implicit flows."
 msgstr ""
+"Adresy URI używane w przepływach opartych na przekierowaniu, takich jak "
+"przepływ kodu autoryzacyjnego i przepływ niejawny."
 
 #: ../howtos/sso.rst:59
 #: b41c334628b14b44b6217ecded398469
 msgid "Post logout redirect URIs"
-msgstr ""
+msgstr "Adresy URI przekierowania po wylogowaniu"
 
 #: ../howtos/sso.rst:61
 #: 359d3e30b3144e19a97b0843f4de7495
 msgid "URIs that the client may redirect users to after logging them out."
 msgstr ""
+"Adresy URI, na które klient może przekierować użytkowników po wylogowaniu."
 
 #: ../howtos/sso.rst:66
 #: 5e1feacddc2b4a3b96a47537e926c068
 msgid "Grant types"
-msgstr ""
+msgstr "Typy przyznania"
 
 #: ../howtos/sso.rst:68
 #: 62633e857b914e6ba3976bed4235f83d
 msgid "Grant types that the client can use at the token endpoint."
-msgstr ""
+msgstr "Typy przyznania, których klient może używać w punkcie końcowym tokenów."
 
 #: ../howtos/sso.rst:70
 #: a741e13b7a2548aeb2bbd2143c10c1c1
@@ -5307,12 +5314,12 @@ msgstr ""
 #: ../howtos/sso.rst:84
 #: 2081e3ff9bff457292029f10d5ab6ad9
 msgid "Scope"
-msgstr ""
+msgstr "Zakres"
 
 #: ../howtos/sso.rst:86
 #: 42b6de93865e467b884f811e1388005f
 msgid "Kind of information that the client can request about users."
-msgstr ""
+msgstr "Rodzaj informacji o użytkownikach, o które klient może poprosić."
 
 #: ../howtos/sso.rst:88
 #: c73b2d6793a24fe7881eeeef1a5d3ebb
@@ -5347,12 +5354,13 @@ msgstr ""
 #: ../howtos/sso.rst:103
 #: 453fae5fedde442ba9538eb2d8570d72
 msgid "Response types"
-msgstr ""
+msgstr "Typy odpowiedzi"
 
 #: ../howtos/sso.rst:105
 #: b51044a826d34e2c8de63705a6615016
 msgid "Response types that the client can use at the authorization endpoint."
 msgstr ""
+"Typy odpowiedzi, których klient może używać w punkcie końcowym autoryzacji."
 
 #: ../howtos/sso.rst:107
 #: 4dfcbb526ccc49fc999eaa0eb9ad1338
@@ -5367,12 +5375,14 @@ msgstr ""
 #: ../howtos/sso.rst:111
 #: 27ff086214e8455f8ea896611a0a6da4
 msgid "Token endpoint authentication method"
-msgstr ""
+msgstr "Metoda uwierzytelniania w punkcie końcowym tokenów"
 
 #: ../howtos/sso.rst:113
 #: 385a823828df4625bbb9c0644398ef82
 msgid "Authentication method that the client will use at the token endpoint."
 msgstr ""
+"Metoda uwierzytelniania, której klient będzie używać w punkcie końcowym "
+"tokenów."
 
 #: ../howtos/sso.rst:115
 #: 7ba83ebd1b9e46e8ab4841e19e2b8ea4
@@ -5402,87 +5412,90 @@ msgstr ""
 #: ../howtos/sso.rst:125
 #: 7de37ec7356349ad811431ce2bcc3b82
 msgid "Audience"
-msgstr ""
+msgstr "Odbiorcy"
 
 #: ../howtos/sso.rst:127
 #: adf9e0d60f4b48d1bbdd3e662a8cab96
 msgid "The other clients that are intended to use the tokens emitted by this client."
 msgstr ""
+"Inni klienci, którzy mają używać tokenów wystawionych przez tego klienta."
 
 #: ../howtos/sso.rst:130
 #: 80c9eb15639041adab0eb9e4f7e26025
 msgid "Logo URI"
-msgstr ""
+msgstr "URI logo"
 
 #: ../howtos/sso.rst:132
 #: 0c82f32fef6a45c5ae7b8b4bcd20ebac
 msgid "An URL for the logo of this client."
-msgstr ""
+msgstr "Adres URL logo tego klienta."
 
 #: ../howtos/sso.rst:135
 #: a55a0965f5954fcd947180b1dbad4a6c
 msgid "Terms of service URI"
-msgstr ""
+msgstr "URI warunków korzystania z usługi"
 
 #: ../howtos/sso.rst:137
 #: 692ce546e5c740778d4976ff9cbecff3
 msgid "URL to the terms of service of the client."
-msgstr ""
+msgstr "Adres URL warunków korzystania z usługi klienta."
 
 #: ../howtos/sso.rst:140
 #: 4234baf101e84f0cb2affaab4b8cf8f6
 msgid "Policy URI"
-msgstr ""
+msgstr "URI zasad"
 
 #: ../howtos/sso.rst:142
 #: 1fc23f58a8a84c02a08aa6474e58584a
 msgid "URL to the privacy policy of the client."
-msgstr ""
+msgstr "Adres URL polityki prywatności klienta."
 
 #: ../howtos/sso.rst:145
 #: 83854f02ff5546bb9561a00270d43bc9
 msgid "Software ID"
-msgstr ""
+msgstr "Identyfikator oprogramowania"
 
 #: ../howtos/sso.rst:147
 #: 09df9983eef34cdc9d940a8fc934be34
 msgid "Unique identifier for this client, that should be stable in time and common for all identity providers."
 msgstr ""
+"Unikalny identyfikator tego klienta, który powinien być stabilny w czasie i "
+"wspólny dla wszystkich dostawców tożsamości."
 
 #: ../howtos/sso.rst:150
 #: d5e287fad91348d6a23cd1a6a41c87b8
 msgid "Software Version"
-msgstr ""
+msgstr "Wersja oprogramowania"
 
 #: ../howtos/sso.rst:152
 #: 02510bde271e411aad2dce06e6ea3b82
 msgid "The version of the client."
-msgstr ""
+msgstr "Wersja klienta."
 
 #: ../howtos/sso.rst:155
 #: 7a4a8c5ef03a471aa631d780c8820b4d
 msgid "JSON Web Keys"
-msgstr ""
+msgstr "Klucze JSON Web"
 
 #: ../howtos/sso.rst:157
 #: 6b61df75217944ab97eff506471a3304
 msgid "The public JSON Web Keys of the client."
-msgstr ""
+msgstr "Publiczne klucze JSON Web klienta."
 
 #: ../howtos/sso.rst:160
 #: c5679ef89a8e4e41b6c9db3efa3f8432
 msgid "JSON Web Keys URI"
-msgstr ""
+msgstr "URI kluczy JSON Web"
 
 #: ../howtos/sso.rst:162
 #: 05bf1b6a646046b495118ba05d1ab9b5
 msgid "The URI that points to the public JSON Web Keys of the client."
-msgstr ""
+msgstr "URI wskazujące publiczne klucze JSON Web klienta."
 
 #: ../howtos/sso.rst:165
 #: d43ba716199249b38e25a1ebda90c105
 msgid "Trusted"
-msgstr ""
+msgstr "Zaufana"
 
 #: ../howtos/sso.rst:167
 #: c5b9ba9f586f409999ba3871d0042080
@@ -7714,7 +7727,7 @@ msgstr ""
 #: ../references/alternatives.rst:268
 #: 5a2e550185c34bdf8c45311aff6b6815
 msgid "Password"
-msgstr ""
+msgstr "Hasło"
 
 #: ../references/alternatives.rst:269
 #: ad06382b061341b6a7aa1ce7d04ff11b
@@ -7734,7 +7747,7 @@ msgstr ""
 #: ../references/alternatives.rst:272
 #: 290da7b622ad4d70aa3ecd9422c5a321
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: ../references/alternatives.rst:273
 #: b4c97810ce1e4a8e81f35d8b9044b4cb
@@ -12095,7 +12108,7 @@ msgstr ""
 #: ../references/security.rst:22
 #: f252d33bd4004f7c8d4aa32f363fad0a
 msgid "ID"
-msgstr ""
+msgstr "Identyfikator"
 
 #: ../references/security.rst:23
 #: 08471012439e44b3a06830bc8845278d
