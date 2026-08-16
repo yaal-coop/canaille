@@ -122,7 +122,6 @@ class ClientEditForm(ClientAddForm):
             wtforms.SelectChoice(value="true", label=_("Require nonce")),
             wtforms.SelectChoice(value="false", label=_("Do not require nonce")),
         ],
-        coerce=lambda value: None if value == "" else value == "true",
         description=_(
             "Choose whether this client must send an OIDC nonce. A supplied nonce is validated even when it is not required."
         ),
