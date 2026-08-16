@@ -101,6 +101,7 @@ def test_client_add(testclient, logged_admin, backend):
     assert client.token_endpoint_auth_method == "client_secret_basic"
     assert client.application_type == "web"
     assert client.id_token_signed_response_alg == "RS256"
+    assert client.require_nonce is None
     assert client.audience == [client]
     assert not client.trusted
 
@@ -139,6 +140,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
         "scope": "openid profile",
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
+        "require_nonce": "false",
         "logo_uri": "https://foobar.test/logo.webp",
         "tos_uri": "https://foobar.test/tos",
         "policy_uri": "https://foobar.test/policy",
@@ -171,6 +173,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     assert client.scope == ["openid", "profile"]
     assert client.response_types == ["code", "token"]
     assert client.token_endpoint_auth_method == "none"
+    assert client.require_nonce is False
     assert client.logo_uri == "https://foobar.test/logo.webp"
     assert client.tos_uri == "https://foobar.test/tos"
     assert client.policy_uri == "https://foobar.test/policy"

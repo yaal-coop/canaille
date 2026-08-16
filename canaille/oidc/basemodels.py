@@ -20,6 +20,13 @@ class Client(Model):
 
     description: str | None = None
 
+    require_nonce: bool | None = None
+    """Whether this client requires an OIDC nonce.
+
+    ``None`` inherits the server-wide ``REQUIRE_NONCE`` setting. ``False``
+    disables only the requirement; a supplied nonce is still validated.
+    """
+
     @property
     def trusted(self) -> bool:
         """Trusted clients don't require to display the consent page to users.

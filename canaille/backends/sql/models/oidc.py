@@ -56,6 +56,7 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
     )
 
     description: Mapped[str] = mapped_column(Text, nullable=True)
+    require_nonce: Mapped[bool] = mapped_column(Boolean, nullable=True)
     post_logout_redirect_uris: Mapped[list[str]] = mapped_column(
         MutableJson, nullable=True
     )
