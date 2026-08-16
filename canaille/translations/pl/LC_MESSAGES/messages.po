@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-08-04 16:54+0200\n"
-"PO-Revision-Date: 2026-08-16 08:36+0000\n"
+"PO-Revision-Date: 2026-08-16 20:36+0000\n"
 "Last-Translator: Kamil Maciąg <kmaciag93@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/canaille/canaille/"
 "pl/>\n"
@@ -212,8 +212,8 @@ msgid ""
 "The group '{group}' cannot be removed, because it must have at least one "
 "user left."
 msgstr ""
-"Nie można usunąć grupy, ponieważ musi pozostać w niej co najmniej jeden "
-"użytkownik."
+"Nie można usunąć grupy „{group}”, ponieważ musi pozostać w niej co najmniej "
+"jeden użytkownik."
 
 #: canaille/core/validators.py:81
 msgid "No user found with this email address."
@@ -614,7 +614,8 @@ msgstr "Jesteś już zalogowany. Nie możesz utworzyć konta."
 
 #: canaille/core/endpoints/account/__init__.py:428
 msgid "Your account couldn't be created. Please check the form and try again."
-msgstr "Nie udało się utworzyć konta. Sprawdź formularz i spróbuj ponownie."
+msgstr ""
+"Nie udało się utworzyć Twojego konta. Sprawdź formularz i spróbuj ponownie."
 
 #: canaille/core/endpoints/account/__init__.py:435
 msgid "Your account has been created successfully."
@@ -668,7 +669,7 @@ msgid ""
 " on the verification link it contains"
 msgstr ""
 "Na ten adres e-mail wysyłamy wiadomość. Sprawdź skrzynkę odbiorczą i kliknij "
-"zawarty w niej link weryfikacyjny."
+"zawarty w niej link weryfikacyjny"
 
 #: canaille/core/endpoints/account/__init__.py:685
 msgid "This email couldn't be removed."
@@ -1388,7 +1389,7 @@ msgstr "Administrator"
 #: canaille/templates/base.html:166 canaille/templates/core/login.html:48
 #: canaille/templates/oidc/logout.html:18
 msgid "Log out"
-msgstr "Wyloguj"
+msgstr "Wyloguj się"
 
 #: canaille/templates/base.html:162 canaille/templates/core/auth/base.html:58
 #: canaille/templates/core/auth/fido-setup.html:46
@@ -1560,7 +1561,7 @@ msgid ""
 "it there:"
 msgstr ""
 "Jeśli musisz przekazać ten link w inny sposób niż pocztą elektroniczną, "
-"możesz go tutaj skopiować:"
+"możesz go tam skopiować:"
 
 #: canaille/templates/core/invite.html:77
 #, python-format
@@ -2066,7 +2067,7 @@ msgstr ""
 #: canaille/templates/core/mails/reset.html:19
 #: canaille/templates/core/partial/profile_settings_password.html:58
 msgid "Password reset"
-msgstr "Resetowanie hasła"
+msgstr "Resetowanie hasła przez administratora"
 
 #: canaille/templates/core/account/auth/password.html:94
 #: canaille/templates/core/partial/profile_settings_password.html:60
@@ -2199,7 +2200,7 @@ msgstr "Uwierzytelnianie za pomocą jednorazowego kodu."
 
 #: canaille/templates/core/auth/otp.html:24
 msgid "Open your authenticator application"
-msgstr "Otwórz aplikację uwierzytelniającą"
+msgstr "Otwórz swoją aplikację uwierzytelniającą"
 
 #: canaille/templates/core/auth/otp.html:26
 msgid ""
@@ -2793,7 +2794,7 @@ msgstr ""
 
 #: canaille/templates/core/modals/delete-account.html:9
 msgid "Account deletion"
-msgstr "Usunięcie konta"
+msgstr "Usuwanie kont"
 
 #: canaille/templates/core/modals/delete-account.html:14
 #, python-format
@@ -2897,7 +2898,7 @@ msgstr "Opuść"
 
 #: canaille/templates/core/modals/lock-account.html:9
 msgid "Account locking"
-msgstr "Blokowanie konta"
+msgstr "Blokowanie kont"
 
 #: canaille/templates/core/modals/lock-account.html:14
 #, python-format
@@ -3011,7 +3012,7 @@ msgstr "Żaden element nie pasuje do żądania"
 #: canaille/templates/oidc/partial/client_list.html:53
 #: canaille/templates/oidc/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
-msgstr "Spróbuj użyć innych kryteriów."
+msgstr "Spróbuj użyć innych kryteriów?"
 
 #: canaille/templates/core/partial/group-members.html:95
 #: canaille/templates/core/partial/groups.html:60
@@ -3325,7 +3326,7 @@ msgstr "Pozostań zalogowany"
 
 #: canaille/templates/oidc/logout.html:39
 msgid "Logout"
-msgstr "Wyloguj"
+msgstr "Wyloguj się"
 
 #: canaille/templates/oidc/token_view.html:20
 #: canaille/templates/oidc/token_view.html:41
