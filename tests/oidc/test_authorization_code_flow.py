@@ -1175,6 +1175,7 @@ def test_nominal_missing_scope(testclient, logged_user, client, backend):
     for consent in consents:
         backend.delete(consent)
 
+
 @pytest.mark.parametrize(
     ("global_value", "client_value", "expected"),
     [

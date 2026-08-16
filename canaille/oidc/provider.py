@@ -246,7 +246,8 @@ class OpenIDCode(OIDCGrantMixin, oidc_core.OpenIDCode):
 
     def validate_openid_authorization_request(self, grant, redirect_uri):
         validate_nonce(
-            grant.request, self.exists_nonce,
+            grant.request,
+            self.exists_nonce,
             required=require_nonce_for_request(grant.request),
         )
 
@@ -321,7 +322,9 @@ class OpenIDImplicitGrant(OIDCGrantMixin, oidc_core.OpenIDImplicitGrant):
         return exists_nonce(nonce, request)
 
     def validate_authorization_request(self):
-        redirect_uri = super(oidc_core.OpenIDImplicitGrant, self).validate_authorization_request()
+        redirect_uri = super(
+            oidc_core.OpenIDImplicitGrant, self
+        ).validate_authorization_request()
         if not is_openid_scope(self.request.payload.scope):
             raise InvalidScopeError(
                 "Missing 'openid' scope",
@@ -330,7 +333,8 @@ class OpenIDImplicitGrant(OIDCGrantMixin, oidc_core.OpenIDImplicitGrant):
             )
         try:
             validate_nonce(
-                self.request, self.exists_nonce,
+                self.request,
+                self.exists_nonce,
                 required=require_nonce_for_request(self.request),
             )
         except OAuth2Error as error:
@@ -348,7 +352,8 @@ class OpenIDHybridGrant(OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
         self.register_hook(
             "after_validate_authorization_request_payload",
             lambda grant, redirect_uri: validate_nonce(
-                grant.request, grant.exists_nonce,
+                grant.request,
+                grant.exists_nonce,
                 required=require_nonce_for_request(grant.request),
             ),
         )

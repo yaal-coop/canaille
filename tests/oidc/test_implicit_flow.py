@@ -1,6 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 from joserfc import jwt
 
 from canaille.app import models
@@ -195,3 +196,58 @@ def test_oidc_implicit_with_group(
 
     client.token_endpoint_auth_method = "client_secret_basic"
     backend.save(client)
+
+
+@pytest.mark.parametrize(
+    ("global_value", "client_value", "nonce", "expected_success"),
+    [
+        (True, None, None, False),
+        (True, False, None, True),
+        (False, True, None, False),
+        (False, False, "implicit-nonce", True),
+        (True, True, "implicit-nonce", True),
+    ],
+)
+def test_oidc_implicit_client_nonce_policy(
+    testclient,
+    logged_user,
+    client,
+    backend,
+    server_jwk,
+    global_value,
+    client_value,
+    nonce,
+    expected_success,
+):
+    client.require_nonce = client_value
+    client.grant_types = ["implicit"]
+    client.response_types = ["id_token", "token"]
+    client.token_endpoint_auth_method = "none"
+    backend.save(client)
+    testclient.app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"] = global_value
+
+    params = {
+        "response_type": "id_token token",
+        "client_id": client.client_id,
+        "scope": "openid profile",
+        "redirect_uri": client.redirect_uris[0],
+    }
+    if nonce is not None:
+        params["nonce"] = nonce
+
+    res = testclient.get("/oauth/authorize", params=params)
+    if not expected_success:
+        assert res.status_int == 302
+        assert "error=invalid_request" in res.location
+        return
+
+    assert res.status_int == 200, res.json
+    res = res.form.submit(name="answer", value="accept", status=302)
+    assert res.location.startswith(client.redirect_uris[0])
+    claims = jwt.decode(
+        parse_qs(urlsplit(res.location).fragment)["id_token"][0],
+        server_jwk,
+        registry=registry,
+    )
+    if nonce is not None:
+        assert claims.claims["nonce"] == nonce

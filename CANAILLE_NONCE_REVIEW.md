@@ -1,130 +1,117 @@
-# Canaille per-client OIDC nonce requirement — review report
+# Canaille per-client OIDC nonce requirement — validation report
 
-## Upstream baseline
+## Scope and repository state
 
-- Repository: `https://github.com/yaal-coop/canaille` (official GitHub mirror; upstream development repository is GitLab).
-- Branch: `main`.
-- Starting commit: `72f8c225333bda10ce0b487b5a0ef4920d6bea41`.
-- Working branch: `feat/oidc-per-client-nonce`.
+- Baseline: `72f8c225333bda10ce0b487b5a0ef4920d6bea41`
+- Branch: `feat/oidc-per-client-nonce`
+- Starting branch commit: `b5181db0bc7ccced17ffd84074b22f26677584f7`
+- Production Canaille was not modified.
+- No pull request, issue, or upstream push was created.
+- Authlib under test: `1.7.2`.
 
-## Existing implementation
+## Authlib nonce execution path
 
-The global setting is `CANAILLE_OIDC.REQUIRE_NONCE`, declared in `canaille/oidc/configuration.py` and passed to Authlib's `OpenIDCode` extension in `canaille/oidc/provider.py`. The authorization-code OIDC flow therefore used one server-wide boolean. Authlib's implicit and hybrid OIDC implementations also hard-coded nonce as required.
+Authlib 1.7.2 uses `authlib.oidc.core.grants.util.validate_nonce(request, exists_nonce, required=False)`. It reads `request.payload.data.get("nonce")`; a missing nonce raises `InvalidRequestError("Missing 'nonce' in request.")` only when `required` is true. A supplied nonce is always passed to `exists_nonce`; a replay raises `InvalidRequestError("Replay attack")` even when `required` is false.
 
-## Existing upstream research
+- **Authorization Code:** Canaille registers `OpenIDCode()` without a fixed `require_nonce`. Authlib invokes `OpenIDCode.__call__`, which registers `validate_openid_authorization_request` on `after_validate_authorization_request_payload`; Canaille's override calls `validate_nonce(..., required=require_nonce_for_request(grant.request))`. The hook runs from `validate_code_authorization_request` after client lookup, redirect validation, response-type authorization, and scope validation.
+- **Implicit:** Authlib's `OpenIDImplicitGrant.validate_authorization_request` calls the OAuth implicit validator, checks `openid`, and then hard-codes `validate_nonce(..., required=True)`. Canaille overrides this method, deliberately calls the parent OAuth validator via `super(oidc_core.OpenIDImplicitGrant, self)`, retains the OpenID scope check and redirect-fragment error behavior, and replaces only the nonce call with the per-client effective policy. ID-token generation copies the supplied request nonce into the ID token.
+- **Hybrid:** Authlib's `OpenIDHybridGrant.validate_authorization_request` installs a nonce hook with `required=True`, then calls `validate_code_authorization_request`; `create_granted_params` saves the authorization code before producing the implicit token/ID token, and passes the code to `process_implicit_token` for `c_hash`. Canaille retains this path through `validate_code_authorization_request` while installing an equivalent hook using the effective per-client policy. The saved code receives `request.payload.data.get("nonce")` through the existing Canaille save method, and the implicit ID token receives the nonce from the request.
 
-The GitHub API was checked for all issues and pull requests. The repository currently reports no open issues and one historical documentation PR. Searches of the repository and GitHub API found no existing per-client nonce implementation or active related change. The project directs feature discussion to the GitLab issue tracker and Matrix room (`CONTRIBUTING.rst`); no issue or discussion was created by this work.
+Thus, the three flows share Authlib's exact nonce validator and replay behavior, but require separate integration points because implicit and hybrid do not consume `OpenIDCode`'s extension hook.
 
-## Architecture
+## Authorization Code results
 
-The proposed implementation stores a nullable `Client.require_nonce`:
+Existing six-cell matrix passes on memory and SQLite: global true/false × client None/true/false. Missing nonce is rejected for effective true and accepted for effective false; `None` inherits the global setting. Existing GUI/persistence tests pass.
 
-- `None`: inherit `CANAILLE_OIDC.REQUIRE_NONCE`;
-- `True`: require nonce for that client;
-- `False`: do not require nonce for that client.
+## Implicit results
 
-The effective value is resolved from `request.client`, not from an untrusted request parameter. A supplied nonce remains subject to the existing Authlib replay validation even when the requirement is disabled.
+Added and passed five cases on memory:
 
-The GUI uses a three-option select field on the existing client edit form: server default, require nonce, and do not require nonce. Existing clients remain `NULL` after migration.
+- global true + inherit + missing nonce → rejection;
+- global true + client false + missing nonce → success;
+- global false + client true + missing nonce → rejection;
+- client false + nonce → success and nonce present in ID token;
+- client true + nonce → success.
 
-Alternatives rejected:
+Command: `uv run pytest -q --backend memory tests/oidc/test_implicit_flow.py::test_oidc_implicit_client_nonce_policy` — **5 passed**.
 
-- replacing the global setting — breaks deployments with mixed clients;
-- writing `True`/`False` during migration — changes existing semantics;
-- rejecting nonce when disabled — violates the requested meaning and OIDC interoperability;
-- request-parameter-controlled behavior — unsafe and not client-specific.
+## Hybrid results
 
-## Files changed
+Added and passed the analogous five cases using `response_type=code id_token token`. Tests verify missing-nonce rejection/success, authorization-code persistence (`authcode.nonce`), and nonce presence in the ID token when supplied.
 
-- `canaille/oidc/basemodels.py`: nullable per-client field and semantics.
-- `canaille/backends/sql/models/oidc.py`: SQL nullable Boolean column.
-- `canaille/backends/sql/migrations/1786000000_add_client_require_nonce.py`: additive migration; existing rows remain `NULL`.
-- `canaille/backends/ldap/models/oidc.py`: LDAP attribute mapping.
-- `canaille/backends/ldap/schemas/oauth2-openldap.schema`: LDAP attribute and optional object-class field.
-- `canaille/backends/ldap/schemas/oauth2-openldap.ldif`: generated LDAP schema equivalent.
-- `canaille/oidc/endpoints/forms.py`: translated GUI select field and help text.
-- `canaille/oidc/endpoints/clients.py`: form normalization and persistence.
-- `canaille/oidc/provider.py`: effective-value resolution in authorization-code, implicit, and hybrid OIDC paths.
-- `doc/howtos/sso.rst`: global default and override documentation.
-- `tests/oidc/test_authorization_code_flow.py`: six-cell global/override matrix.
-- `tests/oidc/test_client_admin.py`: default and GUI persistence assertions.
+Command: `uv run pytest -q --backend memory tests/oidc/test_hybrid_flow.py::test_oidc_hybrid_client_nonce_policy` — **5 passed**.
 
-## Data migration
+## Dynamic Client Registration decision
 
-SQL migration is additive and nullable. LDAP uses an optional attribute, so old entries without `oauthRequireNonce` deserialize as `None`. Memory backend receives the inherited base model field automatically. No existing client is assigned `True` or `False`.
+**require_nonce is intentionally NOT exposed through RFC7591/RFC7592.** It is an administrative Canaille security policy, not standard client metadata. The DCR regression test sends unsupported `require_nonce` metadata and verifies that the dynamically created client has `require_nonce is None` and that the response does not expose the field. No DCR implementation was added; an untrusted client cannot set or change this policy through standard registration or management metadata.
 
-## Tests
+Command: `uv run pytest -q --backend memory tests/oidc/test_dynamic_client_registration.py::test_client_registration_does_not_accept_require_nonce_metadata` — **1 passed**.
 
-Passed:
+## LDAP baseline comparison
+
+Commands:
 
 ```text
-ruff check canaille tests/oidc/test_authorization_code_flow.py tests/oidc/test_client_admin.py
-All checks passed!
+# Baseline
+cd /tmp/canaille-baseline
+uv sync --frozen
+uv run pytest -q --backend ldap tests/backends/ldap/test_models.py
 
-uv run pytest --backend memory tests/oidc/test_authorization_code_flow.py::test_nonce_required_in_oidc_requests tests/oidc/test_client_admin.py::test_client_add tests/oidc/test_client_admin.py::test_client_edit
-3 passed
-
-uv run pytest --backend memory tests/oidc/test_authorization_code_flow.py::test_client_nonce_requirement_override
-6 passed
-
-uv run pytest --backend sql:sqlite tests/oidc/test_client_admin.py::test_client_add tests/oidc/test_client_admin.py::test_client_edit tests/oidc/test_authorization_code_flow.py::test_client_nonce_requirement_override
-8 passed
+# Branch
+cd /home/user/canaille-nonce
+uv run pytest -q --backend ldap tests/backends/ldap/test_models.py
 ```
 
-LDAP test invocation was attempted, but the repository LDAP fixture failed before the relevant tests because the test environment did not provide a usable LDAP server/configuration (`TypeError: expected str, bytes or os.PathLike object, not NoneType`; subsequent parametrized LDAP fixture setup also exposed a pytest fixture-finalizer issue). This must be rerun in the project's supported LDAP environment before upstream submission.
+Both baseline and branch fail before the relevant model test can execute with the same environment/fixture error:
 
-The full test suite and coverage gate were not completed in this workspace. This is an explicit review blocker.
+```text
+TypeError: expected str, bytes or os.PathLike object, not NoneType
+  tests/backends/ldap/__init__.py:17
+  os.path.exists(os.path.join(self.SCHEMADIR, schema))
+```
 
-## Security review
+The branch's full tox run reaches the same failure in `tests/app/commands/test_config_check.py[ldap]`. This is an environment/LDAP fixture failure, not a demonstrated branch regression. The baseline initially also lacks `ldap` in its isolated environment until LDAP extras are synchronized; after synchronization, the fixture reaches the identical `SCHEMADIR=None` error. A supported LDAP/OpenLDAP environment was not available, so the full LDAP Client model lifecycle (None/True/False, save/reload/edit/inheritance) could not be executed.
 
-- Override is read from `request.client`, after normal client resolution.
-- No request parameter controls the setting.
-- `client_id` substitution still goes through the existing client lookup and redirect/client validation.
-- `True` forces nonce requirement even when the server default is false.
-- `False` only disables the missing-nonce rejection; supplied nonce values still use Authlib's existing replay check.
-- Dynamic registration does not expose this operational/admin-only setting through standard RFC metadata. The interaction with Canaille's management API should be decided during review before treating the patch as upstream-ready.
+## Migration review
 
-## Compatibility
+Migration `1786000000_add_client_require_nonce.py` is additive, has a nullable Boolean with no server default, preserves existing rows as NULL, and drops the column on downgrade. Model and migration agree on a nullable Boolean. SQLite migration tests pass, including downgrade-to-base/re-upgrade and data-survival coverage.
 
-The global `REQUIRE_NONCE` remains present and remains the fallback for all old and unset clients. The migration does not alter existing rows. The new field is backend-neutral in the common model, SQL, LDAP mapping, and memory backend.
+Command: `uv run pytest -q --backend sql:sqlite tests/backends/sql/test_alembic.py tests/oidc/test_client_admin.py tests/backends/test_models.py` — **34 passed**.
 
-## Git status
+The invariant is preserved: an existing client after migration has `require_nonce == None`, therefore it inherits the global setting exactly as before the upgrade.
 
-- Branch: `feat/oidc-per-client-nonce`.
-- No upstream PR, draft PR, issue, merge, or production Canaille change was made.
-- No fork push was performed: no authenticated user fork URL was available in the workspace (`https://github.com/Dragonk/canaille.git` was not found). The branch remains local.
+## Full suite
 
-## Suggested PR (not published)
+Official project command is `uv run pytest` (or `uv run tox`); tox uses all extras and runs `pytest --showlocals --full-trace tests`.
 
-### Title
+- `uv run pytest -q --backend memory` — collection stopped with **8 errors** due to unavailable optional packages in the non-all-extras environment: `webauthn`, `otpauth`, and `asgiref`.
+- `uv run tox -e py312 -- -x` — **1 error**, first failure is LDAP fixture `TypeError: expected str, bytes or os.PathLike object, not NoneType`; collection reported **4140 items**.
+- A full tox py312 run was started; it encountered the same LDAP fixture error across the parametrized suite and was stopped after confirming the environmental failure. No reliable complete passed/skipped/xfail count is claimed.
+- Maximum relevant OIDC/memory suite: `uv run pytest -q --backend memory tests/oidc/test_authorization_code_flow.py tests/oidc/test_implicit_flow.py tests/oidc/test_hybrid_flow.py tests/oidc/test_dynamic_client_registration.py tests/oidc/test_dynamic_client_registration_management.py tests/oidc/test_client_admin.py` — **97 passed, 2 warnings**.
 
-`feat: allow per-client OIDC nonce requirement overrides`
+No 100% coverage attempt was made; the new logical paths are covered directly.
 
-### Description
+## Final lint/type checks
 
-Add a nullable per-client nonce requirement that inherits the server-wide `CANAILLE_OIDC.REQUIRE_NONCE` setting by default. Administrators can require or not require a nonce for an individual client without weakening the policy for all other clients. A nonce supplied by a client remains validated when the requirement is disabled. SQL and LDAP persistence, administration UI, documentation, and OIDC flow tests are included.
+- `uv run tox -e style -- --show-diff-on-failure` — **passed** (uv-lock, ruff, ruff-format, file checks, DjHTML, codespell).
+- `uv run ruff check .` — **passed**.
+- `uv run ruff format --check .` — **passed**.
+- `uv run mypy canaille` — unavailable: `mypy` is not declared/installed in the project environment (`Failed to spawn: mypy`). No project type-checker command is configured in `pyproject.toml`.
 
-### Checklist
+## Self-review diff
 
-- [ ] Confirm upstream maintainer preference for the field name and whether it should be exposed via dynamic client management.
-- [ ] Run full test suite and 100% coverage.
-- [ ] Run SQL PostgreSQL/MySQL variants where supported.
-- [ ] Run LDAP tests in supported OpenLDAP environment.
-- [ ] Add/refresh translation catalogs according to project workflow.
-- [ ] Review implicit and hybrid flow behavior against Authlib version supported by upstream.
-- [ ] Confirm LDAP OID allocation/schema compatibility with maintainers.
-- [ ] Push branch to user's fork only after authenticated fork remote is supplied.
-- [ ] Open PR manually only after user approval and morning review.
+Reviewed with `git diff 72f8c225333bda10ce0b487b5a0ef4920d6bea41...HEAD` and the final working-tree diff. Effective-policy resolution uses explicit `override is None`, so `False` is not confused with inheritance. No request parameter controls the policy. No DCR metadata extension was introduced. The only remaining working-tree changes are test additions/formatting plus the existing implementation files touched by formatting; no production-instance or unrelated backend-specific behavior was added.
 
-## Open questions
+## Remaining blockers
 
-1. Should `require_nonce` be an administrative Canaille extension only, or should it be represented in the dynamic client registration management API?
-2. Should implicit and hybrid flows be covered by dedicated end-to-end tests in addition to the authorization-code matrix?
-3. Is the chosen LDAP OID namespace acceptable upstream?
-4. Should the GUI field be available on client creation, or only on edit as implemented here?
-5. Does upstream require generated translation catalogs in the same change?
-6. Full LDAP and full-suite/coverage runs remain to be completed in a supported environment.
+1. Full official suite cannot complete because the repository's LDAP fixture has `SCHEMADIR=None` in this environment; baseline reproduces the same error.
+2. `mypy` is not part of the repository's configured toolchain and is unavailable; no type-check result can be claimed.
+3. PostgreSQL/MySQL and supported external LDAP service runs were not available in this workspace.
 
-## Review warning
+These are validation-environment limitations, not a demonstrated nonce implementation failure. Manual review should inspect the Authlib hook override and LDAP schema/OID choices.
 
-This is a work-in-progress review branch, not a claim that the definition of done has been reached: the branch is local rather than safely pushed to a fork, and the complete project test/coverage matrix has not yet run. No PR was created.
+## Ready for manual review
+
+The nonce implementation and requested logical test matrix are ready for manual review, but the requested full-suite definition of done is not fully achievable in this environment because of the blockers above.
+
+NOT READY FOR MANUAL REVIEW
