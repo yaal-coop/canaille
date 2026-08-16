@@ -16,10 +16,14 @@ from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oauth2.rfc6749 import InvalidScopeError
+from authlib.oauth2.rfc6749 import OAuth2Error
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc import rpinitiated
+from authlib.oidc.core.grants.hybrid import validate_code_authorization_request
 from authlib.oidc.core.grants.util import generate_id_token
+from authlib.oidc.core.grants.util import is_openid_scope
+from authlib.oidc.core.grants.util import validate_nonce
 from flask import current_app
 from flask import g
 from flask import request
@@ -203,6 +207,17 @@ class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
             return authorization_code.subject
 
 
+def require_nonce_for_request(request):
+    """Resolve the nonce requirement for the client in an authorization request."""
+    client = request.client
+    override = client.require_nonce if client else None
+    return (
+        current_app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]
+        if override is None
+        else override
+    )
+
+
 class OIDCGrantMixin:
     """Shared implementation of the new authlib 1.7 JWT config API for OIDC grants."""
 
@@ -228,6 +243,12 @@ class OIDCGrantMixin:
 class OpenIDCode(OIDCGrantMixin, oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
+
+    def validate_openid_authorization_request(self, grant, redirect_uri):
+        validate_nonce(
+            grant.request, self.exists_nonce,
+            required=require_nonce_for_request(grant.request),
+        )
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
@@ -299,11 +320,47 @@ class OpenIDImplicitGrant(OIDCGrantMixin, oidc_core.OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
+    def validate_authorization_request(self):
+        redirect_uri = super(oidc_core.OpenIDImplicitGrant, self).validate_authorization_request()
+        if not is_openid_scope(self.request.payload.scope):
+            raise InvalidScopeError(
+                "Missing 'openid' scope",
+                redirect_uri=redirect_uri,
+                redirect_fragment=True,
+            )
+        try:
+            validate_nonce(
+                self.request, self.exists_nonce,
+                required=require_nonce_for_request(self.request),
+            )
+        except OAuth2Error as error:
+            error.redirect_uri = redirect_uri
+            error.redirect_fragment = True
+            raise error
+        return redirect_uri
+
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
 
 
 class OpenIDHybridGrant(OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
+    def validate_authorization_request(self):
+        self.register_hook(
+            "after_validate_authorization_request_payload",
+            lambda grant, redirect_uri: validate_nonce(
+                grant.request, grant.exists_nonce,
+                required=require_nonce_for_request(grant.request),
+            ),
+        )
+        redirect_uri = validate_code_authorization_request(self)
+        if not is_openid_scope(self.request.payload.scope):
+            raise InvalidScopeError(
+                "Missing 'openid' scope",
+                redirect_uri=redirect_uri,
+                redirect_fragment=True,
+            )
+        return redirect_uri
+
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
 
@@ -768,7 +825,7 @@ def setup_oauth(app):
     authorization.register_grant(
         AuthorizationCodeGrant,
         [
-            OpenIDCode(require_nonce=app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]),
+            OpenIDCode(),
             CodeChallenge(required=True),
         ],
     )

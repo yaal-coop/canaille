@@ -3,6 +3,7 @@ import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 import time_machine
 from authlib.oauth2.rfc7636 import create_s256_code_challenge
 from flask import g
@@ -1173,3 +1174,35 @@ def test_nominal_missing_scope(testclient, logged_user, client, backend):
 
     for consent in consents:
         backend.delete(consent)
+
+@pytest.mark.parametrize(
+    ("global_value", "client_value", "expected"),
+    [
+        (True, None, True),
+        (False, None, False),
+        (True, True, True),
+        (True, False, False),
+        (False, True, True),
+        (False, False, False),
+    ],
+)
+def test_client_nonce_requirement_override(
+    testclient, logged_user, client, backend, global_value, client_value, expected
+):
+    testclient.app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"] = global_value
+    client.require_nonce = client_value
+    backend.save(client)
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        status=302 if expected else 200,
+    )
+    if expected:
+        assert "invalid_request" in res.location
+    else:
+        assert res.status_int == 200
