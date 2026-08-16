@@ -204,7 +204,9 @@ def client_edit(user, client):
         request_uris=[v for v in form["request_uris"].data if v] or None,
         require_signed_request_object=form["require_signed_request_object"].data,
         require_nonce=(
-            None if form["require_nonce"].data == "" else form["require_nonce"].data == "true"
+            None
+            if form["require_nonce"].data == ""
+            else form["require_nonce"].data == "true"
         ),
     )
     Backend.instance.save(client)
