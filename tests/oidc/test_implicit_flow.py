@@ -202,8 +202,9 @@ def test_oidc_implicit_with_group(
     ("global_value", "client_value", "nonce", "expected_success"),
     [
         (True, None, None, False),
-        (True, False, None, True),
+        (True, False, None, False),
         (False, True, None, False),
+        (False, False, None, False),
         (False, False, "implicit-nonce", True),
         (True, True, "implicit-nonce", True),
     ],

@@ -100,8 +100,9 @@ def test_oidc_hybrid(
     ("global_value", "client_value", "nonce", "expected_success"),
     [
         (True, None, None, False),
-        (True, False, None, True),
+        (True, False, None, False),
         (False, True, None, False),
+        (False, False, None, False),
         (False, False, "hybrid-nonce", True),
         (True, True, "hybrid-nonce", True),
     ],

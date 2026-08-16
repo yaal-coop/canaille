@@ -1,3 +1,4 @@
+import pytest
 import datetime
 import json
 
@@ -129,7 +130,19 @@ def test_new_registration_token(testclient, logged_admin):
     assert new_token != old_token
 
 
-def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
+@pytest.mark.parametrize(
+    ("require_nonce", "expected_require_nonce"),
+    [("", None), ("true", True), ("false", False)],
+)
+def test_client_edit(
+    testclient,
+    client,
+    logged_admin,
+    trusted_client,
+    backend,
+    require_nonce,
+    expected_require_nonce,
+):
     res = testclient.get("/admin/client/edit/" + client.client_id)
     data = {
         "client_name": "foobar",
@@ -140,7 +153,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
         "scope": "openid profile",
         "response_types": ["code", "token"],
         "token_endpoint_auth_method": "none",
-        "require_nonce": "false",
+        "require_nonce": require_nonce,
         "logo_uri": "https://foobar.test/logo.webp",
         "tos_uri": "https://foobar.test/tos",
         "policy_uri": "https://foobar.test/policy",
@@ -173,7 +186,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     assert client.scope == ["openid", "profile"]
     assert client.response_types == ["code", "token"]
     assert client.token_endpoint_auth_method == "none"
-    assert client.require_nonce is False
+    assert client.require_nonce is expected_require_nonce
     assert client.logo_uri == "https://foobar.test/logo.webp"
     assert client.tos_uri == "https://foobar.test/tos"
     assert client.policy_uri == "https://foobar.test/policy"
