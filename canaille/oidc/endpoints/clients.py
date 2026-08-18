@@ -128,6 +128,9 @@ def client_edit(user, client):
     data = {attribute: getattr(client, attribute) for attribute in client.attributes}
     if data["scope"]:
         data["scope"] = " ".join(data["scope"])
+    data["require_nonce"] = (
+        "" if data["require_nonce"] is None else str(data["require_nonce"]).lower()
+    )
     form = ClientEditForm(request.form or None, data=data, client=client)
 
     management_token = build_client_management_token(
@@ -200,6 +203,11 @@ def client_edit(user, client):
         request_object_signing_alg=form["request_object_signing_alg"].data or None,
         request_uris=[v for v in form["request_uris"].data if v] or None,
         require_signed_request_object=form["require_signed_request_object"].data,
+        require_nonce=(
+            None
+            if form["require_nonce"].data == ""
+            else form["require_nonce"].data == "true"
+        ),
     )
     Backend.instance.save(client)
     current_app.logger.security(f"Edited client {client.client_id} by {user.id}")

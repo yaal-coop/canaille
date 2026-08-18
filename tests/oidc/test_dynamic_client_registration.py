@@ -751,3 +751,22 @@ def test_client_registration_internal_error_returns_json(testclient, backend):
     assert res.content_type == "application/json"
     assert res.json["error"] == "internal_server_error"
     assert "error_description" in res.json
+
+
+def test_client_registration_does_not_accept_require_nonce_metadata(
+    testclient, backend, client, user
+):
+    """require_nonce is admin policy, not RFC7591 client metadata."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "Metadata probe",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
+        "require_nonce": True,
+    }
+    res = testclient.post_json("/oauth/register", payload, status=201)
+    created_client = backend.get(models.Client, client_id=res.json["client_id"])
+    assert created_client.require_nonce is None
+    assert "require_nonce" not in res.json
+    backend.delete(created_client)

@@ -20,6 +20,7 @@ from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc import rpinitiated
 from authlib.oidc.core.grants.util import generate_id_token
+from authlib.oidc.core.grants.util import validate_nonce
 from flask import current_app
 from flask import g
 from flask import request
@@ -203,6 +204,17 @@ class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
             return authorization_code.subject
 
 
+def require_nonce_for_request(request):
+    """Resolve the nonce requirement for the client in an authorization request."""
+    client = request.client
+    override = client.require_nonce if client else None
+    return (
+        current_app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]
+        if override is None
+        else override
+    )
+
+
 class OIDCGrantMixin:
     """Shared implementation of the new authlib 1.7 JWT config API for OIDC grants."""
 
@@ -228,6 +240,13 @@ class OIDCGrantMixin:
 class OpenIDCode(OIDCGrantMixin, oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
+
+    def validate_openid_authorization_request(self, grant, redirect_uri):
+        validate_nonce(
+            grant.request,
+            self.exists_nonce,
+            required=require_nonce_for_request(grant.request),
+        )
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
@@ -768,7 +787,7 @@ def setup_oauth(app):
     authorization.register_grant(
         AuthorizationCodeGrant,
         [
-            OpenIDCode(require_nonce=app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]),
+            OpenIDCode(),
             CodeChallenge(required=True),
         ],
     )

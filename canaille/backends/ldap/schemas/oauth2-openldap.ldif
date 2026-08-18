@@ -523,12 +523,21 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.61 NAME 'oauthRequireSignedRequestObj
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.62 NAME 'oauthRequireNonce'
+        DESC 'Whether the client requires an OIDC nonce'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'Canaille' )
+
 olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
         STRUCTURAL
         MUST  oauthClientID
         MAY ( description $
+              oauthRequireNonce $
               oauthClientName $
               oauthClientContact $
               oauthClientURI $
