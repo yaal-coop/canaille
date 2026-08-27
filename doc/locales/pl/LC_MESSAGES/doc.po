@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: canaille 0.1.0\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-21 00:13+0100\n"
-"PO-Revision-Date: 2026-08-17 21:51+0000\n"
+"PO-Revision-Date: 2026-08-28 15:51+0000\n"
 "Last-Translator: Kamil Maciąg <kmaciag93@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/canaille/"
 "documentation/pl/>\n"
@@ -2461,7 +2461,7 @@ msgstr "Poprawka przycisku usuwania grupy. :pr:`80`"
 #: ../../CHANGES.rst:1052
 #: 3b6465090a5a4c468003857357681c1f
 msgid "Fixed post requests in oidc clients views. :pr:`81`"
-msgstr "Poprawka żądań POST w widokach klientów OIDC. :pr:`81`"
+msgstr "Naprawiono żądania POST w widokach klientów OIDC. :pr:`81`"
 
 #: ../../CHANGES.rst:1055
 #: 17c16952173e4ed6b997fc6c1b94a714
@@ -2492,7 +2492,7 @@ msgstr "Aktualizacja do Authlib 1.2. :pr:`78`"
 #: fb301e80ff724d7fa2e379f8cded9ee8
 msgid "Implemented :rfc:`RFC7592 <7592>` OAuth 2.0 Dynamic Client Registration Management Protocol. :pr:`79`"
 msgstr ""
-"Implementacja protokołu zarządzania dynamiczną rejestracją klientów OAuth "
+"Zaimplementowano protokół zarządzania dynamiczną rejestracją klientów OAuth "
 "2.0 :rfc:`RFC7592 <7592>`. :pr:`79`"
 
 #: ../../CHANGES.rst:1072
@@ -3767,20 +3767,21 @@ msgstr "OAuth2"
 #: ../development/specifications.rst:12
 #: 1fa42564841745d0bbca755c510c9aae
 msgid "✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_"
-msgstr "✅ `RFC6749: OAuth 2.0 Framework <https://tools.ietf.org/html/rfc6749>`_"
+msgstr "✅ `RFC6749: Struktura OAuth 2.0 <https://tools.ietf.org/html/rfc6749>`_"
 
 #: ../development/specifications.rst:13
 #: a1500b3b44454e159d60589a26a51a6a
 msgid "✅ `RFC6750: OAuth 2.0 Bearer Tokens <https://tools.ietf.org/html/rfc6750>`_"
 msgstr ""
-"✅ `RFC6750: OAuth 2.0 Bearer Tokens <https://tools.ietf.org/html/rfc6750>`_"
+"✅ `RFC6750: Tokeny okaziciela OAuth 2.0 <https://tools.ietf.org/html/"
+"rfc6750>`_"
 
 #: ../development/specifications.rst:14
 #: 0f0acc88346e4c1c822a897a735618fa
 msgid "✅ `RFC7009: OAuth 2.0 Token Revocation <https://tools.ietf.org/html/rfc7009>`_"
 msgstr ""
-"✅ `RFC7009: OAuth 2.0 Token Revocation <https://tools.ietf.org/html/rfc7009>"
-"`_"
+"✅ `RFC7009: Unieważnianie tokenów OAuth 2.0 <https://tools.ietf.org/html/"
+"rfc7009>`_"
 
 #: ../development/specifications.rst:15
 #: 7872a3c5a5f4475dae3193c138e148d6
@@ -3793,56 +3794,58 @@ msgstr ""
 #: e8d08e4776fa4e0bab4d735e8608f68e
 msgid "✅ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol <https://tools.ietf.org/html/rfc7591>`_"
 msgstr ""
-"✅ `RFC7591: OAuth 2.0 Dynamic Client Registration Protocol <https://"
+"✅ `RFC7591: Protokół dynamicznej rejestracji klientów OAuth 2.0 <https://"
 "tools.ietf.org/html/rfc7591>`_"
 
 #: ../development/specifications.rst:17
 #: 9852ec3d6b454ad6a3b5a93ceb0a40de
 msgid "✅ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol <https://tools.ietf.org/html/rfc7592>`_"
 msgstr ""
-"✅ `RFC7592: OAuth 2.0 Dynamic Client Registration Management Protocol "
+"✅ `RFC7592: Protokół zarządzania dynamiczną rejestracją klientów OAuth 2.0 "
 "<https://tools.ietf.org/html/rfc7592>`_"
 
 #: ../development/specifications.rst:18
 #: 865e79722d734931839805645b8b6884
 msgid "✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients <https://tools.ietf.org/html/rfc7636>`_"
 msgstr ""
-"✅ `RFC7636: Proof Key for Code Exchange by OAuth Public Clients <https://"
-"tools.ietf.org/html/rfc7636>`_"
+"✅ `RFC7636: Klucz dowodu na potrzeby wymiany kodu dla publicznych klientów "
+"OAuth <https://tools.ietf.org/html/rfc7636>`_"
 
 #: ../development/specifications.rst:19
 #: c4b676f6f75249d99aea025a760503e8
 msgid "✅ `RFC7662: OAuth 2.0 Token Introspection <https://tools.ietf.org/html/rfc7662>`_"
 msgstr ""
-"✅ `RFC7662: OAuth 2.0 Token Introspection <https://tools.ietf.org/html/"
+"✅ `RFC7662: Introspekcja tokenów OAuth 2.0 <https://tools.ietf.org/html/"
 "rfc7662>`_"
 
 #: ../development/specifications.rst:20
 #: 14c9c114fc784b209d610e9730fe4784
 msgid "✅ `RFC8414: OAuth 2.0 Authorization Server Metadata <https://tools.ietf.org/html/rfc8414>`_"
 msgstr ""
-"✅ `RFC8414: OAuth 2.0 Authorization Server Metadata <https://tools.ietf.org/"
+"✅ `RFC8414: Metadane serwera autoryzacji OAuth 2.0 <https://tools.ietf.org/"
 "html/rfc8414>`_"
 
 #: ../development/specifications.rst:21
 #: a77472aa9ffc4499910497cbb24f2917
 msgid "❌ `RFC8428: OAuth 2.0 Device Authorization Grant <https://tools.ietf.org/html/rfc8428>`_"
 msgstr ""
-"❌ `RFC8428: OAuth 2.0 Device Authorization Grant <https://tools.ietf.org/"
-"html/rfc8428>`_"
+"❌ `RFC8428: Przyznanie autoryzacji urządzenia OAuth 2.0 <https://"
+"tools.ietf.org/html/rfc8428>`_"
 
 #: ../development/specifications.rst:22
 #: 17a792adc9d341b9b00910f13fc253a2
 msgid "❌ `RFC8693: OAuth 2.0 Token Exchange <https://tools.ietf.org/html/rfc8693>`_"
 msgstr ""
-"❌ `RFC8693: OAuth 2.0 Token Exchange <https://tools.ietf.org/html/rfc8693>`_"
+"❌ `RFC8693: Wymiana tokenów OAuth 2.0 <https://tools.ietf.org/html/rfc8693>"
+"`_"
 
 #: ../development/specifications.rst:23
 #: bf1bd28ceb6b4e6285fc345ae12fdb2d
 msgid "❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_"
 msgstr ""
-"❌ `RFC8705: OAuth 2.0 Mutual-TLS Client Authentication and Certificate-"
-"Bound Access Tokens <https://tools.ietf.org/html/rfc8705>`_"
+"❌ `RFC8705: Uwierzytelnianie klienta OAuth 2.0 za pomocą wzajemnego TLS i "
+"tokeny dostępu powiązane z certyfikatem <https://tools.ietf.org/html/rfc8705>"
+"`_"
 
 #: ../development/specifications.rst:24
 #: 7c6a68a31e5844b8be2f0f6a050e803e
@@ -3890,15 +3893,15 @@ msgstr ""
 #: 043ee17fc8eb4e4db18c1071505cf23d
 msgid "❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html>`_"
 msgstr ""
-"❌ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2-"
+"❌ `OAuth2: wiele typów odpowiedzi <https://openid.net/specs/oauth-v2-"
 "multiple-response-types-1_0.html>`_"
 
 #: ../development/specifications.rst:31
 #: f9bf7ec1f0c64bf99b4051ae823a07a1
 msgid "❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html>`_"
 msgstr ""
-"❌ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-"
-"post-response-mode-1_0.html>`_"
+"❌ `Tryb odpowiedzi formularza POST OAuth2 <https://openid.net/specs/oauth-"
+"v2-form-post-response-mode-1_0.html>`_"
 
 #: ../development/specifications.rst:34
 #: ../features.rst:269
@@ -3947,44 +3950,44 @@ msgstr ""
 #: 7f22c6fd8f3548988fa6ce2534fec490
 msgid "❌ `OpenID Connect Session Management <https://openid.net/specs/openid-connect-session-1_0.html>`_"
 msgstr ""
-"❌ `OpenID Connect Session Management <https://openid.net/specs/openid-"
+"❌ `Zarządzanie sesją OpenID Connect <https://openid.net/specs/openid-"
 "connect-session-1_0.html>`_"
 
 #: ../development/specifications.rst:47
 #: d65ecb2e18ce422eb638847815403c59
 msgid "❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-connect-frontchannel-1_0.html>`_"
 msgstr ""
-"❌ `OpenID Connect Front Channel Logout <https://openid.net/specs/openid-"
-"connect-frontchannel-1_0.html>`_"
+"❌ `Wylogowanie OpenID Connect przez kanał przedni <https://openid.net/specs/"
+"openid-connect-frontchannel-1_0.html>`_"
 
 #: ../development/specifications.rst:48
 #: 78586d66696248c7a9c9a08e7a38198d
 msgid "❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-connect-backchannel-1_0.html>`_"
 msgstr ""
-"❌ `OpenID Connect Back Channel Logout <https://openid.net/specs/openid-"
-"connect-backchannel-1_0.html>`_"
+"❌ `Wylogowanie OpenID Connect przez kanał tylny <https://openid.net/specs/"
+"openid-connect-backchannel-1_0.html>`_"
 
 #: ../development/specifications.rst:49
 #: 9b16b6f154ce4f93b10db114b1f3245e
 msgid "❌ `OpenID Connect Back Channel Authentication Flow <https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html>`_"
 msgstr ""
-"❌ `OpenID Connect Back Channel Authentication Flow <https://openid.net/"
-"specs/openid-client-initiated-backchannel-authentication-core-1_0.html>`_"
+"❌ `Przepływ uwierzytelniania OpenID Connect inicjowany przez klienta przez "
+"kanał tylny <https://openid.net/specs/openid-client-initiated-backchannel-"
+"authentication-core-1_0.html>`_"
 
 #: ../development/specifications.rst:50
 #: a75ce117936047339e70c7462a93da85
 msgid "❌ `OpenID Connect Core Error Code unmet_authentication_requirements <https://openid.net/specs/openid-connect-unmet-authentication-requirements-1_0.html>`_"
 msgstr ""
-"❌ `OpenID Connect Core Error Code unmet_authentication_requirements "
-"<https://openid.net/specs/openid-connect-unmet-authentication-requirements-"
-"1_0.html>`_"
+"❌ `Kod błędu OpenID Connect Core unmet_authentication_requirements <https://"
+"openid.net/specs/openid-connect-unmet-authentication-requirements-1_0.html>`_"
 
 #: ../development/specifications.rst:51
 #: 1dfb85d24293464fa91153b1de3a15cb
 msgid "✅ `Initiating User Registration via OpenID Connect 1.0 <https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_"
 msgstr ""
-"✅ `Initiating User Registration via OpenID Connect 1.0 <https://openid.net/"
-"specs/openid-connect-prompt-create-1_0.html>`_"
+"✅ `Inicjowanie rejestracji użytkownika za pośrednictwem OpenID Connect 1.0 "
+"<https://openid.net/specs/openid-connect-prompt-create-1_0.html>`_"
 
 #: ../development/specifications.rst:52
 #: 72b71c07562e44b1a66ff5837b84fc28
