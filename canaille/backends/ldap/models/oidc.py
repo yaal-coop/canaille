@@ -53,6 +53,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "request_uris": "oauthRequestURI",
         "require_signed_request_object": "oauthRequireSignedRequestObject",
         "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
+        "require_nonce": "oauthRequireNonce",
     }
 
     attribute_map: ClassVar[dict[str, str] | None] = {

@@ -1,6 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 from joserfc import jwt
 
 from canaille.app import models
@@ -93,3 +94,63 @@ def test_oidc_hybrid(
         status=200,
     )
     assert res.json["name"] == "John (johnny) Doe"
+
+
+@pytest.mark.parametrize(
+    ("global_value", "client_value", "nonce", "expected_success"),
+    [
+        (True, None, None, False),
+        (True, False, None, False),
+        (False, True, None, False),
+        (False, False, None, False),
+        (False, False, "hybrid-nonce", True),
+        (True, True, "hybrid-nonce", True),
+    ],
+)
+def test_oidc_hybrid_client_nonce_policy(
+    testclient,
+    logged_user,
+    client,
+    backend,
+    server_jwk,
+    global_value,
+    client_value,
+    nonce,
+    expected_success,
+):
+    client.require_nonce = client_value
+    client.grant_types = ["authorization_code", "hybrid"]
+    client.response_types = ["code", "id_token", "token"]
+    client.token_endpoint_auth_method = "none"
+    backend.save(client)
+    testclient.app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"] = global_value
+
+    params = {
+        "response_type": "code id_token token",
+        "client_id": client.client_id,
+        "scope": "openid profile",
+        "redirect_uri": client.redirect_uris[0],
+    }
+    if nonce is not None:
+        params["nonce"] = nonce
+
+    res = testclient.get("/oauth/authorize", params=params)
+    if not expected_success:
+        assert res.status_int == 302
+        assert "error=invalid_request" in res.location
+        return
+
+    assert res.status_int == 200, res.json
+    res = res.form.submit(name="answer", value="accept", status=302)
+    assert res.location.startswith(client.redirect_uris[0])
+    params = parse_qs(urlsplit(res.location).fragment)
+    authcode = backend.get(models.AuthorizationCode, code=params["code"][0])
+    assert authcode is not None
+    assert authcode.nonce == nonce
+    claims = jwt.decode(
+        params["id_token"][0],
+        server_jwk,
+        registry=registry,
+    )
+    if nonce is not None:
+        assert claims.claims["nonce"] == nonce
