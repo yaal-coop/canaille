@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-08-04 16:54+0200\n"
-"PO-Revision-Date: 2026-01-30 18:02+0000\n"
-"Last-Translator: Nahil4 <nahil82466@gmail.com>\n"
+"PO-Revision-Date: 2026-09-02 09:51+0000\n"
+"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 2026.9.dev0\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:53
@@ -936,7 +936,7 @@ msgstr "Le client a été supprimé."
 
 #: canaille/oidc/endpoints/clients.py:234
 msgid "The client secret has been renewed. The new secret does not expire."
-msgstr ""
+msgstr "Le secret du client a été renouvelé. Le nouveau secret n’expirera pas."
 
 #: canaille/oidc/endpoints/clients.py:242
 #, python-brace-format
@@ -1018,16 +1018,16 @@ msgstr ""
 "redirections, tels le code d'autorisation ou le flux implicite."
 
 #: canaille/oidc/endpoints/forms.py:118
-#, fuzzy
-#| msgid "Account expiration"
 msgid "Secret expiration"
-msgstr "Expiration du compte"
+msgstr "Expiration du secret"
 
 #: canaille/oidc/endpoints/forms.py:127
 msgid ""
 "Date after which the client secret cannot be used to authenticate anymore. "
 "Leave this empty so the secret never expires."
 msgstr ""
+"La date après laquelle le secret du client ne pourra plus être utilisé pour "
+"l'authentifier. Laissez vide pour que le secret n’expire jamais."
 
 #: canaille/oidc/endpoints/forms.py:133
 msgid "Post logout redirect URIs"
@@ -1336,16 +1336,12 @@ msgstr ""
 "Request object et transmise via le paramètre request ou request_uri."
 
 #: canaille/oidc/endpoints/oauth.py:479
-#, fuzzy
-#| msgid "You have not been disconnected."
 msgid "You have not been disconnected"
-msgstr "Vous n'avez pas été déconnecté."
+msgstr "Vous n'avez pas été déconnecté"
 
 #: canaille/oidc/endpoints/oauth.py:488
-#, fuzzy
-#| msgid "You have been disconnected."
 msgid "You have been disconnected"
-msgstr "Vous avez été déconnecté·e."
+msgstr "Vous avez été déconnecté·e"
 
 #: canaille/oidc/endpoints/tokens.py:49
 msgid "The token has successfully been revoked."
@@ -2894,10 +2890,8 @@ msgstr ""
 "supprimées."
 
 #: canaille/templates/core/modals/impersonate-user.html:9
-#, fuzzy
-#| msgid "Account expiration"
 msgid "Account impersonation"
-msgstr "Expiration du compte"
+msgstr "Prise d’identité"
 
 #: canaille/templates/core/modals/impersonate-user.html:13
 #, python-format
@@ -2906,6 +2900,9 @@ msgid ""
 "will perform will be attributed to them. Log out to get back to your own "
 "session."
 msgstr ""
+"Êtes-vous sûrs de vouloir ouvrir une session en tant que %(user_name)s ? "
+"Chaque action que vous effectuerez sera attribuée à ce compte. Déconnectez-"
+"vous pour retourner sur votre session."
 
 #: canaille/templates/core/modals/leave-group.html:9
 msgid "Leave group"
@@ -3269,12 +3266,12 @@ msgstr "Application de confiance"
 msgid ""
 "This application cannot authenticate anymore until its secret is renewed"
 msgstr ""
+"Cette application ne peut plus s’authentifier tant que son secret n’est pas "
+"renouvelé"
 
 #: canaille/templates/oidc/client_edit.html:77
-#, fuzzy
-#| msgid "Copy secret"
 msgid "Expired secret"
-msgstr "Copier le secret"
+msgstr "Secret expiré"
 
 #: canaille/templates/oidc/client_edit.html:85
 msgid "ID"
@@ -3481,10 +3478,8 @@ msgid "This application is trusted"
 msgstr "Cette application est fiable"
 
 #: canaille/templates/oidc/partial/client_list.html:29
-#, fuzzy
-#| msgid "This application is trusted"
 msgid "The secret of this application has expired"
-msgstr "Cette application est fiable"
+msgstr "Le secret de cette application a expiré"
 
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
