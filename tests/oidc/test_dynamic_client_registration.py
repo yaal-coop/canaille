@@ -154,6 +154,51 @@ def test_client_registration_with_uri_fragments(testclient, backend, client, use
     }
 
 
+def test_client_registration_with_uri_userinfo(testclient, backend, client, user):
+    """Test that client registration rejects redirect URIs containing a userinfo part.
+
+    In ``https://client.example.test@attacker.test/cb`` the visible host is not
+    the host the browser is sent to.
+    """
+    jwks = server_jwks(include_inactive=False)
+    jwk_key = jwks.keys[0]
+    alg = get_alg_for_key(jwk_key)
+
+    client_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc)
+    exp = now + timedelta(hours=1)
+
+    jwt_payload = {
+        "iss": get_issuer(),
+        "sub": client_id,
+        "aud": get_issuer(),
+        "exp": int(exp.timestamp()),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "scope": "client:register",
+    }
+
+    token = jwt.encode({"alg": alg}, jwt_payload, jwk_key, registry=registry)
+
+    payload = {
+        "redirect_uris": [
+            "https://client.example.test@attacker.test/callback",
+        ],
+        "client_name": "My Example Client",
+        "token_endpoint_auth_method": "client_secret_basic",
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
+    }
+    headers = {"Authorization": f"Bearer {token}"}
+
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+
+    assert res.json == {
+        "error_description": "Invalid claim: 'redirect_uris'",
+        "error": "invalid_client_metadata",
+    }
+
+
 def test_client_registration_with_authentication_no_token(
     testclient, backend, client, user
 ):
@@ -750,4 +795,6 @@ def test_client_registration_internal_error_returns_json(testclient, backend):
 
     assert res.content_type == "application/json"
     assert res.json["error"] == "internal_server_error"
-    assert "error_description" in res.json
+    assert (
+        res.json["error_description"] == "The server encountered an unexpected error."
+    )

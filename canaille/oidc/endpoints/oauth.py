@@ -58,7 +58,7 @@ def internal_error_handler(error):
     current_app.logger.exception(error)
     return {
         "error": "internal_server_error",
-        "error_description": str(error),
+        "error_description": "The server encountered an unexpected error.",
     }, 500
 
 
