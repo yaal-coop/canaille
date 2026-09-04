@@ -1,4 +1,5 @@
 import logging
+import re
 from unittest import mock
 
 from flask import current_app
@@ -455,6 +456,104 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin, caplog):
     assert len(smtpd.messages) == 1
     assert smtpd.messages[0]["X-RcptTo"] == "john@doe.test"
 
+    backend.delete(u)
+
+
+def test_password_reset_email_multiple_emails_same_link(
+    smtpd, testclient, backend, logged_admin
+):
+    """Every reset mail sent from the admin settings must carry the same link."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test", "johnny@doe.test"],
+        password="correct horse battery staple",
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-reset-mail")
+
+    assert len(smtpd.messages) == 2
+    links = {
+        re.search(
+            r"https?://\S+/reset/\S+",
+            str(message.get_payload()[0]).replace("=\n", ""),
+        ).group(0)
+        for message in smtpd.messages
+    }
+    assert len(links) == 1
+
+    backend.delete(u)
+
+
+def test_password_initialization_mail_multiple_emails_same_link(
+    smtpd, testclient, backend, logged_admin
+):
+    """Every initialization mail sent from the admin settings must carry the same link."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test", "johnny@doe.test"],
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-initialization-mail")
+
+    assert len(smtpd.messages) == 2
+    links = {
+        re.search(
+            r"https?://\S+/reset/\S+",
+            str(message.get_payload()[0]).replace("=\n", ""),
+        ).group(0)
+        for message in smtpd.messages
+    }
+    assert len(links) == 1
+
+    backend.delete(u)
+
+
+def test_password_initialization_mail_without_email_address(
+    smtpd, testclient, backend, logged_admin
+):
+    """A user without any email address must not get a reset token generated."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-initialization-mail")
+
+    assert len(smtpd.messages) == 0
+    backend.reload(u)
+    assert u.one_time_password is None
+    backend.delete(u)
+
+
+def test_password_reset_mail_without_email_address(
+    smtpd, testclient, backend, logged_admin
+):
+    """A user without any email address must not get a reset secret generated."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        password="correct horse battery staple",
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-reset-mail")
+
+    assert len(smtpd.messages) == 0
+    backend.reload(u)
+    assert u.one_time_password is None
     backend.delete(u)
 
 

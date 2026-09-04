@@ -30,6 +30,9 @@ Fixed
 - Trusted clients, which skip the user consent page, need both their
   ``client_uri`` and their ``redirect_uris`` to match
   :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`.
+- Users with multiple email addresses now receive, on each address, a valid password reset code
+  (or link if :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` is enabled).
+  This applies to both the password initialization and the password reset flows.
 
 [0.3.6] - 2026-08-04
 --------------------
