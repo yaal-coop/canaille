@@ -39,37 +39,44 @@ def send_test_mail(email):
     )
 
 
-def send_password_reset_mail(user, mail):
+def generate_password_reset_url(user):
+    """Generate a single-use password reset URL for the user."""
+    token = user.generate_url_safe_token()
+    Backend.instance.save(user)
+    return url_for(
+        "core.auth.password.reset",
+        user=user,
+        token=token,
+        _external=True,
+    )
+
+
+def generate_password_reset_url_or_code(user):
+    """Generate a single-use password reset secret for the user.
+
+    A reset URL is generated when a trusted host is configured, and a reset
+    code otherwise.
+    """
+    if current_app.features.has_trusted_hosts:
+        return generate_password_reset_url(user), None
+
+    reset_code = user.generate_sms_or_mail_otp(length=RESET_CODE_LENGTH)
+    Backend.instance.save(user)
+    return None, reset_code
+
+
+def send_password_reset_mail(mail, reset_url, reset_code):
     base_url = url_for("core.account.index", _external=True)
-    server_name = current_app.config.get("SERVER_NAME")
     logo_cid, logo_filename, logo_raw = logo()
     subject = _("Password reset on {website_name}").format(
         website_name=current_app.config["CANAILLE"]["NAME"]
     )
-
-    reset_token = None
-    reset_url = None
-    reset_code = None
-    if current_app.features.has_trusted_hosts:
-        reset_token = user.generate_url_safe_token()
-        Backend.instance.save(user)
-        reset_url = url_for(
-            "core.auth.password.reset",
-            user=user,
-            token=reset_token,
-            _external=True,
-        )
-    else:
-        reset_code = user.generate_sms_or_mail_otp(length=RESET_CODE_LENGTH)
-        Backend.instance.save(user)
 
     text_body = render_template(
         "core/mails/reset.txt",
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
-        server_name=server_name,
-        reset_token=reset_token,
         reset_code=reset_code,
     )
     html_body = render_template(
@@ -77,8 +84,6 @@ def send_password_reset_mail(user, mail):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
-        server_name=server_name,
-        reset_token=reset_token,
         reset_code=reset_code,
         logo=f"cid:{logo_cid[1:-1]}" if logo_cid else None,
         title=subject,
@@ -93,16 +98,8 @@ def send_password_reset_mail(user, mail):
     )
 
 
-def send_password_initialization_mail(user, email):
+def send_password_initialization_mail(email, reset_url):
     base_url = url_for("core.account.index", _external=True)
-    reset_token = user.generate_url_safe_token()
-    Backend.instance.save(user)
-    reset_url = url_for(
-        "core.auth.password.reset",
-        user=user,
-        token=reset_token,
-        _external=True,
-    )
     logo_cid, logo_filename, logo_raw = logo()
 
     subject = _("Password initialization on {website_name}").format(

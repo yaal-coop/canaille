@@ -1,4 +1,5 @@
 import logging
+import re
 from unittest import mock
 
 from canaille.app import models
@@ -40,6 +41,52 @@ def test_user_without_password_first_login(testclient, backend, smtpd, caplog):
     assert len(smtpd.messages) == 2
     assert [message["X-RcptTo"] for message in smtpd.messages] == u.emails
     assert "Password initialization" in smtpd.messages[0].get("Subject")
+    backend.delete(u)
+
+
+def test_first_login_mails_share_the_same_link(testclient, backend, smtpd):
+    """All the initialization mails sent to a user must carry the same link."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test", "johhny@doe.test"],
+    )
+    backend.save(u)
+
+    res = testclient.get("/firstlogin/temp", status=200)
+    res.form.submit(name="action", value="sendmail")
+
+    assert len(smtpd.messages) == 2
+    links = {
+        re.search(
+            r"https?://\S+/reset/\S+",
+            str(message.get_payload()[0]).replace("=\n", ""),
+        ).group(0)
+        for message in smtpd.messages
+    }
+    assert len(links) == 1
+
+    path = "/reset/" + links.pop().split("/reset/", 1)[1]
+    testclient.get(path, status=200)
+    backend.delete(u)
+
+
+def test_first_login_without_email_address(testclient, backend, smtpd):
+    """A user without any email address must not get a reset token generated."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+    )
+    backend.save(u)
+
+    res = testclient.get("/firstlogin/temp", status=200)
+    res.form.submit(name="action", value="sendmail", status=200)
+
+    assert len(smtpd.messages) == 0
+    backend.reload(u)
+    assert u.one_time_password is None
     backend.delete(u)
 
 

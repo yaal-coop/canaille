@@ -20,6 +20,8 @@ from canaille.core.auth import get_user_from_login
 from canaille.core.auth import redirect_to_next_auth_step
 from canaille.core.captcha import should_show_captcha_on_login
 
+from ...mails import generate_password_reset_url
+from ...mails import generate_password_reset_url_or_code
 from ...mails import send_password_initialization_mail
 from ...mails import send_password_reset_mail
 from ..forms import FirstLoginForm
@@ -119,8 +121,10 @@ def firstlogin(user):
 
     form.validate()
 
-    for email in user.emails or []:
-        send_password_initialization_mail(user, email)
+    if user.emails:
+        reset_url = generate_password_reset_url(user)
+        for email in user.emails:
+            send_password_initialization_mail(email, reset_url)
 
     flash(
         _(
@@ -178,11 +182,13 @@ def forgotten():
         )
         return render_template("core/auth/forgotten-password.html", form=form)
 
-    for email in user.emails or []:
-        send_password_reset_mail(user, email)
-        current_app.logger.security(
-            f"Sending a reset password mail to {email} for {user.user_name}"
-        )
+    if user.emails:
+        reset_url, reset_code = generate_password_reset_url_or_code(user)
+        for email in user.emails:
+            send_password_reset_mail(email, reset_url, reset_code)
+            current_app.logger.security(
+                f"Sending a reset password mail to {email} for {user.user_name}"
+            )
 
     flash(sending_message, "info")
 
