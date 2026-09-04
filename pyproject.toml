@@ -266,7 +266,7 @@ exclude_lines = [
     "raise NotImplementedError",
     "except ImportError",
     "if app.debug",
-    "pass",
+    "^\\s*pass$",
     "if TYPE_CHECKING",
 ]
 
