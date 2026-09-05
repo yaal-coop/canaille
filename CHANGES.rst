@@ -33,6 +33,11 @@ Fixed
 - Users with multiple email addresses now receive, on each address, a valid password reset code
   (or link if :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` is enabled).
   This applies to both the password initialization and the password reset flows.
+- Password initialization mails always carried a link, even when
+  :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` was unset. Those links
+  could not be used at all, and were exposed to Host header spoofing the same way password
+  reset links were. Password initialization now sends a code when no trusted host is
+  configured, like password reset already did.
 
 [0.3.6] - 2026-08-04
 --------------------

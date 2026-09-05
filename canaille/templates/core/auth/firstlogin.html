@@ -31,12 +31,21 @@ This page is displayed to users who do not have set a password yet.
 
         {% call flask.messages(classes="attached") %}
             <div class="ui attached message">
-                {% trans %}
-                    It seems this is the first time you are logging here. In order to finalize your
-                    account configuration, you need to set a password to your account. We will send
-                    you an email containing a link that will allow you to set a password. Please click
-                    on the "Send the initialization email" button below to send the email.
-                {% endtrans %}
+                {% if features.has_trusted_hosts %}
+                    {% trans %}
+                        It seems this is the first time you are logging here. In order to finalize your
+                        account configuration, you need to set a password to your account. We will send
+                        you an email containing a link that will allow you to set a password. Please click
+                        on the "Send the initialization email" button below to send the email.
+                    {% endtrans %}
+                {% else %}
+                    {% trans %}
+                        It seems this is the first time you are logging here. In order to finalize your
+                        account configuration, you need to set a password to your account. We will send
+                        you an email containing a code that will allow you to set a password. Please click
+                        on the "Send the initialization email" button below to send the email.
+                    {% endtrans %}
+                {% endif %}
             </div>
         {% endcall %}
 
@@ -47,6 +56,9 @@ This page is displayed to users who do not have set a password yet.
                         <div class="ui stackable buttons">
 
                             <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("Login page") }}</a>
+                            {% if not features.has_trusted_hosts %}
+                                <a type="button" class="ui right floated button" href="{{ url_for('core.auth.password.firstlogin_code', user=user) }}">{{ _("I already have a code") }}</a>
+                            {% endif %}
                             <button type="submit" name="action" value="sendmail" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
                         </div>
                     </div>

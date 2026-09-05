@@ -89,6 +89,7 @@ def password_init_html(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
+        reset_code=None,
         logo=current_app.config["CANAILLE"]["LOGO"],
         title=_("Password initialization on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
@@ -112,6 +113,7 @@ def password_init_txt(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
+        reset_code=None,
     )
 
 

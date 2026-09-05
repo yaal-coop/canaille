@@ -12,7 +12,6 @@ from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.endpoints.forms import build_profile_form
-from canaille.core.mails import generate_password_reset_url
 from canaille.core.mails import generate_password_reset_url_or_code
 from canaille.core.mails import send_password_initialization_mail
 from canaille.core.mails import send_password_reset_mail
@@ -87,28 +86,46 @@ def _handle_password_mail(edited_user, action):
     """Handle password initialization and reset mail sending."""
     if action == "password-initialization-mail":
         if edited_user.emails:
-            reset_url = generate_password_reset_url(edited_user)
+            reset_url, reset_code = generate_password_reset_url_or_code(edited_user)
             for email in edited_user.emails:
-                send_password_initialization_mail(email, reset_url)
-        flash(
-            _(
-                "Sending password initialization link at the user email address. "
-                "It should be received within a few minutes."
-            ),
-            "info",
-        )
+                send_password_initialization_mail(email, reset_url, reset_code)
+        if current_app.features.has_trusted_hosts:
+            flash(
+                _(
+                    "Sending password initialization link at the user email address. "
+                    "It should be received within a few minutes."
+                ),
+                "info",
+            )
+        else:
+            flash(
+                _(
+                    "Sending password initialization code at the user email address. "
+                    "It should be received within a few minutes."
+                ),
+                "info",
+            )
     else:  # password-reset-mail
         if edited_user.emails:
             reset_url, reset_code = generate_password_reset_url_or_code(edited_user)
             for email in edited_user.emails:
                 send_password_reset_mail(email, reset_url, reset_code)
-        flash(
-            _(
-                "Sending password reset link to the user email address. "
-                "It should be received within a few minutes."
-            ),
-            "info",
-        )
+        if current_app.features.has_trusted_hosts:
+            flash(
+                _(
+                    "Sending password reset link to the user email address. "
+                    "It should be received within a few minutes."
+                ),
+                "info",
+            )
+        else:
+            flash(
+                _(
+                    "Sending password reset code to the user email address. "
+                    "It should be received within a few minutes."
+                ),
+                "info",
+            )
     return redirect(
         url_for(
             "core.account.auth.profile_auth_password",

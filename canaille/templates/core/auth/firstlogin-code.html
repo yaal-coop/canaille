@@ -1,0 +1,65 @@
+{#
+.. screenshot:: |canaille|/firstlogin/james/code
+   :context: james
+   :align: right
+   :width: 275px
+
+   The password initialization code page.
+
+First login code page.
+
+This page displays a form asking for the code sent to the email address of users who have not set a password yet.
+
+#}
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+{% import 'macro/flask.html' as flask %}
+{% import 'core/partial/login_field.html' as login_field %}
+
+{%- block title -%}
+    {%- trans -%}First login{%- endtrans -%}
+{%- endblock -%}
+
+{% block messages %}{% endblock %}
+
+{% block content %}
+    <div class="loginform">
+        {% block header %}
+            <h3 class="ui top attached header">
+                {% if logo_url %}
+                    <img class="ui image" src="{{ logo_url }}">
+                {% endif %}
+                <div class="content">
+                    {% trans %}First login{% endtrans %}
+                </div>
+            </h3>
+        {% endblock %}
+
+        {% call flask.messages(classes="attached") %}
+            <div class="ui attached message">
+                {% trans %}
+                    Please enter the password initialization code you received via email.
+                {% endtrans %}
+            </div>
+        {% endcall %}
+
+        <div class="ui attached clearing segment">
+            {% call fui.render_form(form) %}
+                {% block fields %}
+                    {{ login_field.render_field(form.code, autofocus=true) }}
+                {% endblock %}
+
+                {% block buttons %}
+                    <div class="ui right aligned container">
+                        <div class="ui stackable buttons">
+                            <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("Login page") }}</a>
+                            <button type="submit" class="ui right floated {% if request.method != "POST" or form.errors %}primary {% endif %}button">
+                                {{ _("Submit") }}
+                            </button>
+                        </div>
+                    </div>
+                {% endblock %}
+            {% endcall %}
+        </div>
+    </div>
+{% endblock %}

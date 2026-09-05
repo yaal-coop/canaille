@@ -20,7 +20,6 @@ from canaille.core.auth import get_user_from_login
 from canaille.core.auth import redirect_to_next_auth_step
 from canaille.core.captcha import should_show_captcha_on_login
 
-from ...mails import generate_password_reset_url
 from ...mails import generate_password_reset_url_or_code
 from ...mails import send_password_initialization_mail
 from ...mails import send_password_reset_mail
@@ -117,24 +116,51 @@ def firstlogin(user):
 
     form = FirstLoginForm(request.form or None)
     if not request.form:
-        return render_template("core/auth/firstlogin.html", form=form)
+        return render_template("core/auth/firstlogin.html", form=form, user=user)
 
     form.validate()
 
     if user.emails:
-        reset_url = generate_password_reset_url(user)
+        reset_url, reset_code = generate_password_reset_url_or_code(user)
         for email in user.emails:
-            send_password_initialization_mail(email, reset_url)
+            send_password_initialization_mail(email, reset_url, reset_code)
+
+    if current_app.features.has_trusted_hosts:
+        flash(
+            _(
+                "Sending password initialization link at your email address. "
+                "It should be received within a few minutes."
+            ),
+            "info",
+        )
+        return render_template("core/auth/firstlogin.html", form=form, user=user)
 
     flash(
         _(
-            "Sending password initialization link at your email address. "
+            "Sending password initialization code at your email address. "
             "It should be received within a few minutes."
         ),
         "info",
     )
+    return redirect(url_for(".firstlogin_code", user=user))
 
-    return render_template("core/auth/firstlogin.html", form=form)
+
+@bp.route("/firstlogin/<user:user>/code", methods=["GET", "POST"])
+def firstlogin_code(user):
+    if user.has_password() or current_app.features.has_trusted_hosts:
+        abort(404)
+
+    form = ForgottenPasswordCodeForm(request.form)
+    if not request.form:
+        return render_template("core/auth/firstlogin-code.html", form=form)
+
+    if not form.validate() or not user.is_email_or_sms_otp_valid(form.code.data):
+        flash(
+            _("This code is invalid or has expired. Please request a new one."), "error"
+        )
+        return render_template("core/auth/firstlogin-code.html", form=form)
+
+    return redirect(url_for(".reset", user=user, token=form.code.data))
 
 
 @bp.route("/reset", methods=["GET", "POST"])

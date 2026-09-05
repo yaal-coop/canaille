@@ -619,3 +619,51 @@ def test_password_change_without_any_password(testclient, logged_user, backend):
 
     backend.reload(logged_user)
     assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
+
+
+def test_password_initialization_mail_without_trusted_hosts(
+    smtpd, testclient, backend, logged_admin
+):
+    """Administrators send a code when no trusted host is configured."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test"],
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res = res.form.submit(name="action", value="password-initialization-mail")
+
+    assert (
+        "info",
+        "Sending password initialization code at the user email address. "
+        "It should be received within a few minutes.",
+    ) in res.flashes
+
+    backend.reload(u)
+    email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
+    assert u.one_time_password in email_content
+    backend.delete(u)
+
+
+def test_password_reset_mail_without_trusted_hosts(
+    smtpd, testclient, backend, logged_admin, user
+):
+    """Administrators send a code when no trusted host is configured."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+
+    res = testclient.get("/profile/user/auth/password", status=200)
+    res = res.form.submit(name="action", value="password-reset-mail")
+
+    assert (
+        "info",
+        "Sending password reset code to the user email address. "
+        "It should be received within a few minutes.",
+    ) in res.flashes
+
+    backend.reload(user)
+    email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
+    assert user.one_time_password in email_content
