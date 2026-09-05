@@ -17,6 +17,7 @@ from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import auth_step
 from canaille.core.auth import get_user_from_login
+from canaille.core.auth import needs_password_initialization
 from canaille.core.auth import redirect_to_next_auth_step
 from canaille.core.captcha import should_show_captcha_on_login
 
@@ -80,7 +81,7 @@ def password():
     if not request.form or form.handle_fieldlist_operation():
         return render_password_template(form)
 
-    if g.auth.user and not g.auth.user.has_password() and current_app.features.has_smtp:
+    if needs_password_initialization(g.auth.user):
         return redirect(url_for("core.auth.password.firstlogin", user=g.auth.user))
 
     if not form.validate() or not g.auth.user:
@@ -111,7 +112,10 @@ def password():
 
 @bp.route("/firstlogin/<user:user>", methods=("GET", "POST"))
 def firstlogin(user):
-    if user.has_password():
+    if (
+        user.has_password()
+        or not current_app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]
+    ):
         abort(404)
 
     form = FirstLoginForm(request.form or None)
@@ -147,7 +151,11 @@ def firstlogin(user):
 
 @bp.route("/firstlogin/<user:user>/code", methods=["GET", "POST"])
 def firstlogin_code(user):
-    if user.has_password() or current_app.features.has_trusted_hosts:
+    if (
+        user.has_password()
+        or not current_app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"]
+        or current_app.features.has_trusted_hosts
+    ):
         abort(404)
 
     form = ForgottenPasswordCodeForm(request.form)

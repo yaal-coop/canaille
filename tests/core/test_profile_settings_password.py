@@ -667,3 +667,23 @@ def test_password_reset_mail_without_trusted_hosts(
     backend.reload(user)
     email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
     assert user.one_time_password in email_content
+
+
+def test_password_mails_when_password_recovery_is_disabled(
+    smtpd, testclient, backend, logged_admin, user
+):
+    """Administrators cannot send password mails when password recovery is disabled."""
+    testclient.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"] = False
+
+    res = testclient.get("/profile/user/auth/password", status=200)
+    res.mustcontain(no="Send mail")
+
+    # the buttons are gone from the page, but the endpoint must refuse them too
+    for action in ("password-reset-mail", "password-initialization-mail"):
+        testclient.post(
+            "/profile/user/auth/password",
+            {"csrf_token": res.form["csrf_token"].value, "action": action},
+            status=404,
+        )
+
+    assert len(smtpd.messages) == 0

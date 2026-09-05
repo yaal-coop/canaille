@@ -38,6 +38,12 @@ Fixed
   could not be used at all, and were exposed to Host header spoofing the same way password
   reset links were. Password initialization now sends a code when no trusted host is
   configured, like password reset already did.
+- Password initialization was offered to users when
+  :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY` was disabled,
+  but led to an unreachable page. As both flows hand out a password over a secret sent by
+  mail, disabling password recovery now disables password initialization as well, instead
+  of leading users to a dead end. Administrators can still set passwords themselves from
+  the user profile.
 
 [0.3.6] - 2026-08-04
 --------------------

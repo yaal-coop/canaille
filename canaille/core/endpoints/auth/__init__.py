@@ -21,6 +21,7 @@ from canaille.app.templating import render_template
 from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import get_user_from_login
 from canaille.core.auth import login_placeholder
+from canaille.core.auth import needs_password_initialization
 from canaille.core.auth import redirect_to_next_auth_step
 
 from ..forms import LoginForm
@@ -89,7 +90,7 @@ def login(username=None):
 
     if username:
         user = get_user_from_login(username)
-        if user and not user.has_password() and current_app.features.has_smtp:
+        if needs_password_initialization(user):
             return redirect(url_for("core.auth.password.firstlogin", user=user))
 
         return redirect_to_next_auth_step()
@@ -106,7 +107,7 @@ def login(username=None):
         )
 
     user = get_user_from_login(form.login.data)
-    if user and not user.has_password() and current_app.features.has_smtp:
+    if needs_password_initialization(user):
         return redirect(url_for("core.auth.password.firstlogin", user=user))
 
     if not form.validate():

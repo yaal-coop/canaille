@@ -84,6 +84,9 @@ def profile_auth_password(user, edited_user):
 
 def _handle_password_mail(edited_user, action):
     """Handle password initialization and reset mail sending."""
+    if not current_app.features.has_password_recovery:
+        abort(404)
+
     if action == "password-initialization-mail":
         if edited_user.emails:
             reset_url, reset_code = generate_password_reset_url_or_code(edited_user)

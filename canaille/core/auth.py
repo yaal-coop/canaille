@@ -18,6 +18,20 @@ from canaille.core.models import User
 AUTHENTICATION_FACTORS = {}
 
 
+def needs_password_initialization(user):
+    """Whether the user must be sent to the password initialization flow.
+
+    This needs the password recovery feature, as both flows hand out a
+    password over a secret sent by mail.
+    """
+    return (
+        user is not None
+        and not user.has_password()
+        and current_app.features.has_smtp
+        and current_app.features.has_password_recovery
+    )
+
+
 def auth_step(step_name=None):
     """Decorate authentication steps and perform basic checks."""
 

@@ -289,3 +289,32 @@ def test_first_login_code_page_unavailable_for_users_with_password(testclient, u
     """The password initialization code page is reserved to users without password."""
     testclient.app.config["TRUSTED_HOSTS"] = None
     testclient.get("/firstlogin/user/code", status=404)
+
+
+def test_first_login_when_password_recovery_is_disabled(testclient, backend, smtpd):
+    """Password initialization is unavailable when password recovery is disabled."""
+    testclient.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"] = False
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test"],
+    )
+    backend.save(u)
+
+    testclient.get("/firstlogin/temp", status=404)
+    testclient.get("/firstlogin/temp/code", status=404)
+
+    # users without a password get the regular authentication failure
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "temp"
+    res = res.form.submit(status=302)
+    assert res.location == "/auth/password"
+    res = res.follow(status=200)
+
+    res.form["password"] = "whatever"
+    res = res.form.submit(status=200)
+    assert ("error", "Login failed. Please check your information.") in res.flashes
+
+    assert len(smtpd.messages) == 0
+    backend.delete(u)
