@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-05 15:45+0200\n"
+"POT-Creation-Date: 2026-09-05 16:08+0200\n"
 "PO-Revision-Date: 2026-07-09 12:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -796,22 +796,22 @@ msgstr ""
 msgid "You switched to {user_name} session."
 msgstr "Intercambiado a la sesión {user_name}."
 
-#: canaille/core/endpoints/auth/__init__.py:115
-#: canaille/core/endpoints/auth/password.py:89
+#: canaille/core/endpoints/auth/__init__.py:111
+#: canaille/core/endpoints/auth/password.py:86
 #: canaille/core/endpoints/auth/password.py:101
 msgid "Login failed. Please check your information."
 msgstr "Inicio de sesión incorrecto. Compruebe sus credenciales."
 
-#: canaille/core/endpoints/auth/__init__.py:145
+#: canaille/core/endpoints/auth/__init__.py:144
 #, python-brace-format
 msgid "You have been disconnected from {user_name} account."
 msgstr "Has sido desconectado desde la cuenta {user_name}."
 
-#: canaille/core/endpoints/auth/__init__.py:151
+#: canaille/core/endpoints/auth/__init__.py:150
 msgid "This session couldn't be closed. Please try again."
 msgstr "Esta sesión no pudo ser cerrada. Inténtelo de nuevo."
 
-#: canaille/core/endpoints/auth/__init__.py:156
+#: canaille/core/endpoints/auth/__init__.py:155
 msgid "All sessions have been closed."
 msgstr "Se han cerrado todas las sesiones."
 

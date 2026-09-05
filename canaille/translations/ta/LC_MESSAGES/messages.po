@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-05 15:45+0200\n"
+"POT-Creation-Date: 2026-09-05 16:08+0200\n"
 "PO-Revision-Date: 2026-06-24 15:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -768,22 +768,22 @@ msgstr ""
 msgid "You switched to {user_name} session."
 msgstr "{user_name} அமர்வுக்கு மாறிவிட்டீர்கள்."
 
-#: canaille/core/endpoints/auth/__init__.py:115
-#: canaille/core/endpoints/auth/password.py:89
+#: canaille/core/endpoints/auth/__init__.py:111
+#: canaille/core/endpoints/auth/password.py:86
 #: canaille/core/endpoints/auth/password.py:101
 msgid "Login failed. Please check your information."
 msgstr "உள்நுழைவு தோல்வியடைந்தது. உங்கள் தகவலைச் சரிபார்க்கவும்."
 
-#: canaille/core/endpoints/auth/__init__.py:145
+#: canaille/core/endpoints/auth/__init__.py:144
 #, python-brace-format
 msgid "You have been disconnected from {user_name} account."
 msgstr "{user_name} கணக்கிலிருந்து நீங்கள் துண்டிக்கப்பட்டீர்கள்."
 
-#: canaille/core/endpoints/auth/__init__.py:151
+#: canaille/core/endpoints/auth/__init__.py:150
 msgid "This session couldn't be closed. Please try again."
 msgstr "இந்த அமர்வை மூட முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
-#: canaille/core/endpoints/auth/__init__.py:156
+#: canaille/core/endpoints/auth/__init__.py:155
 msgid "All sessions have been closed."
 msgstr "அனைத்து அமர்வுகளும் மூடப்பட்டன."
 

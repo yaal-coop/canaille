@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-05 15:45+0200\n"
+"POT-Creation-Date: 2026-09-05 16:08+0200\n"
 "PO-Revision-Date: 2026-06-25 18:01+0000\n"
 "Last-Translator: ButterflyOfFire <boffire@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Kabyle <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -752,22 +752,22 @@ msgstr ""
 msgid "You switched to {user_name} session."
 msgstr ""
 
-#: canaille/core/endpoints/auth/__init__.py:115
-#: canaille/core/endpoints/auth/password.py:89
+#: canaille/core/endpoints/auth/__init__.py:111
+#: canaille/core/endpoints/auth/password.py:86
 #: canaille/core/endpoints/auth/password.py:101
 msgid "Login failed. Please check your information."
 msgstr ""
 
-#: canaille/core/endpoints/auth/__init__.py:145
+#: canaille/core/endpoints/auth/__init__.py:144
 #, python-brace-format
 msgid "You have been disconnected from {user_name} account."
 msgstr ""
 
-#: canaille/core/endpoints/auth/__init__.py:151
+#: canaille/core/endpoints/auth/__init__.py:150
 msgid "This session couldn't be closed. Please try again."
 msgstr ""
 
-#: canaille/core/endpoints/auth/__init__.py:156
+#: canaille/core/endpoints/auth/__init__.py:155
 #, fuzzy
 #| msgid "Your email address have been confirmed."
 msgid "All sessions have been closed."
