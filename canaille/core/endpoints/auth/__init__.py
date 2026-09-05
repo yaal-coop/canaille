@@ -106,10 +106,6 @@ def login(username=None):
             login_history=get_login_history(),
         )
 
-    user = get_user_from_login(form.login.data)
-    if needs_password_initialization(user):
-        return redirect(url_for("core.auth.password.firstlogin", user=user))
-
     if not form.validate():
         logout_user()
         flash(_("Login failed. Please check your information."), "error")
@@ -118,6 +114,9 @@ def login(username=None):
         )
 
     user = get_user_from_login(form.login.data)
+    if needs_password_initialization(user):
+        return redirect(url_for("core.auth.password.firstlogin", user=user))
+
     if user and user_session_opened(user.id):
         switch_to_session(user.id)
 

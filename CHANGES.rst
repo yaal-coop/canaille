@@ -19,6 +19,11 @@ Changed
 Fixed
 ^^^^^
 - User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
+- The inline validation of the login and password fields redirected users without
+  a password to the password initialization page. As the redirection was answered
+  to a request only expecting a form field, the whole page was rendered inside the
+  field, and its buttons were unusable. The redirection now only happens when the
+  form is submitted.
 - Photo uploads were only validated on their file extension, so a SVG file renamed
   with a ``.jpg`` extension was stored as-is and served inline. Photos that cannot
   be served as images are now downloaded instead of being rendered.

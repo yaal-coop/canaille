@@ -81,15 +81,15 @@ def password():
     if not request.form or form.handle_fieldlist_operation():
         return render_password_template(form)
 
-    if needs_password_initialization(g.auth.user):
-        return redirect(url_for("core.auth.password.firstlogin", user=g.auth.user))
-
     if not form.validate() or not g.auth.user:
         user = g.auth.user
         flash(_("Login failed. Please check your information."), "error")
         response = render_password_template(form)
         logout_user()
         return response
+
+    if needs_password_initialization(g.auth.user):
+        return redirect(url_for("core.auth.password.firstlogin", user=g.auth.user))
 
     user = g.auth.user
     success, message = Backend.instance.check_user_password(user, form.password.data)
