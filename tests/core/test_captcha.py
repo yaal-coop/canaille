@@ -589,3 +589,39 @@ def test_captcha_failure_counter_reset_after_successful_login(
 
     res.mustcontain(no="captcha")
     assert "captcha" not in res.form.fields
+
+
+def test_captcha_refresh_on_password_page(testclient, user):
+    """CAPTCHA refresh should work on the password authentication page."""
+    testclient.app.config["CANAILLE"]["CAPTCHA_FAILURE_THRESHOLD"] = 0
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302).follow()
+
+    old_token = res.form["captcha_token"].value
+    with testclient.session_transaction() as session:
+        assert f"captcha_{old_token}" in session
+
+    res = res.form.submit(name="action", value="refresh_captcha")
+
+    new_token = res.form["captcha_token"].value
+    assert new_token != old_token
+
+    with testclient.session_transaction() as session:
+        assert f"captcha_{old_token}" not in session
+        assert f"captcha_{new_token}" in session
+
+
+def test_captcha_refresh_on_password_page_without_old_token(testclient, user):
+    """CAPTCHA refresh should work even without old token."""
+    testclient.app.config["CANAILLE"]["CAPTCHA_FAILURE_THRESHOLD"] = 0
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302).follow()
+
+    res.form["captcha_token"].value = ""
+    res = res.form.submit(name="action", value="refresh_captcha")
+
+    assert res.form["captcha_token"].value

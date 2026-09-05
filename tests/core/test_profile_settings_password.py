@@ -594,3 +594,28 @@ def test_password_reset_email_failed(
     assert len(smtpd.messages) == 0
 
     backend.delete(u)
+
+
+def test_password_page_unavailable_without_the_password_factor(testclient, logged_user):
+    """The password settings page is useless when passwords are not an authentication factor."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["otp"]
+    testclient.get("/profile/user/auth/password", status=404)
+
+
+def test_password_page_unknown_action(testclient, logged_user):
+    """Unknown actions fall back on rendering the password settings page."""
+    res = testclient.get("/profile/user/auth/password", status=200)
+    res = res.form.submit(name="action", value="unknown-action", status=200)
+    res.mustcontain("Password")
+
+
+def test_password_change_without_any_password(testclient, logged_user, backend):
+    """Submitting the form without any password leaves the password untouched."""
+    res = testclient.get("/profile/user/auth/password", status=200)
+
+    res.form["password1"] = ""
+    res.form["password2"] = ""
+    res = res.form.submit(name="action", value="edit-password", status=200)
+
+    backend.reload(logged_user)
+    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]

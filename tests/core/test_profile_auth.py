@@ -191,3 +191,11 @@ def test_fido2_page_unrecognized_post_action(testclient, backend, logged_user):
         status=200,
     )
     res.mustcontain("Passkeys")
+
+
+def test_profile_auth_without_the_password_factor(testclient, logged_user):
+    """Passwords can be excluded from the available authentication factors."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["otp"]
+
+    res = testclient.get("/profile/user/auth", status=302)
+    assert res.location == "/profile/user/auth/otp"

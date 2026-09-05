@@ -252,3 +252,18 @@ def test_photo_deleted_on_profile_creation(
     user = backend.get(models.User, user_name="foobar")
     assert user.photo is None
     backend.delete(user)
+
+
+def test_webp_photo_upload(testclient, logged_user, webp_photo, backend):
+    """WEBP photos are accepted and converted when the backend cannot store them."""
+    res = testclient.get("/profile/user", status=200)
+    form = res.forms["baseform"]
+    form["photo"] = Upload("logo.webp", webp_photo)
+    form["photo_delete"] = False
+    res = form.submit(name="action", value="edit-profile")
+    assert ("success", "Profile updated successfully.") in res.flashes
+
+    backend.reload(logged_user)
+
+    expected = "WEBP" if "WEBP" in backend.photo_formats else "JPEG"
+    assert photo_format(logged_user.photo) == expected

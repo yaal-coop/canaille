@@ -74,3 +74,12 @@ def test_account_setup_otp(testclient, backend, logged_user, otp_method):
     assert logged_user.secret_token
     if otp_method == "HOTP":
         assert logged_user.hotp_counter == 1
+
+
+def test_account_otp_unknown_action(testclient, backend, logged_user):
+    """Unknown actions fall back on rendering the passcode settings page."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
+
+    res = testclient.get("/profile/user/auth/otp")
+    res = res.form.submit(name="action", value="unknown-action", status=200)
+    res.mustcontain("Reset")

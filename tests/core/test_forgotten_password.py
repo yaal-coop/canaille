@@ -138,6 +138,18 @@ def test_password_forgotten_invalid_form(testclient, user, smtpd):
     assert len(smtpd.messages) == 0
 
 
+def test_password_forgotten_invalid_form_without_trusted_hosts(testclient, user, smtpd):
+    """The form error mentions a code when no trusted host is configured."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    res = testclient.get("/reset", status=200)
+
+    res.form["login"] = ""
+    res = res.form.submit(status=200)
+    assert ("error", "Could not send the password reset code.") in res.flashes
+
+    assert len(smtpd.messages) == 0
+
+
 def test_password_forgotten_invalid(testclient, user, smtpd):
     """Test that invalid login attempts are handled according to HIDE_INVALID_LOGINS setting."""
     testclient.app.config["CANAILLE"]["HIDE_INVALID_LOGINS"] = True

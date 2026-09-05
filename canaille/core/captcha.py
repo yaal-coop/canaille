@@ -12,7 +12,7 @@ CAPTCHA_HEIGHT = 45
 CAPTCHA_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 
 
-def should_show_captcha_on_login(user=None):
+def should_show_captcha_on_login():
     """Determine if CAPTCHA should be shown on login form.
 
     Once the failure threshold is reached, the CAPTCHA remains active
@@ -26,10 +26,9 @@ def should_show_captcha_on_login(user=None):
     if threshold == 0:
         return True
 
-    if not user:
-        if not g.auth or not g.auth.user:
-            return False
-        user = g.auth.user
+    if not g.auth or not g.auth.user:
+        return False
+    user = g.auth.user
 
     if not user.password_failure_timestamps:
         return False

@@ -134,6 +134,16 @@ def test_password_reset_bad_link(testclient, user):
     ) in res.flashes
 
 
+def test_password_reset_bad_code(testclient, user):
+    """The error mentions a code when no trusted host is configured."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    res = testclient.get("/reset/user/foobarbaz")
+    assert (
+        "error",
+        "The password reset code that brought you here was invalid.",
+    ) in res.flashes
+
+
 def test_password_reset_bad_password(testclient, user, backend):
     """Test that password reset fails when confirmation password does not match."""
     token = user.generate_url_safe_token()
