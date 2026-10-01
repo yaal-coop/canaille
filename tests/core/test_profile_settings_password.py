@@ -81,7 +81,7 @@ def test_profile_settings_too_long_password(testclient, logged_user):
     )
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_profile_settings_compromised_password(api_get, testclient, logged_user):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     """Tests if password is compromised."""
@@ -119,7 +119,7 @@ def test_profile_settings_compromised_password(api_get, testclient, logged_user)
     with_different_values("i'm a little pea", 'data-percent="100"')
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_profile_settings_compromised_password_request_api_failed_but_password_updated(
     api_get, testclient, logged_user, backend, caplog, smtpd
 ):
@@ -152,7 +152,7 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
     assert backend.check_user_password(logged_user, "123456789")[0]
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_settings_form(
     api_get, testclient, backend, user, logged_user, caplog, smtpd
 ):
@@ -194,7 +194,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
     assert len(smtpd.messages) == 1
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_settings_form(
     api_get, testclient, backend, user, logged_user, caplog, smtpd
 ):
@@ -236,7 +236,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
     assert len(smtpd.messages) == 0
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_without_smtp_or_without_admin_email_from_settings_form(
     api_get, testclient, backend, user, logged_user, caplog
 ):

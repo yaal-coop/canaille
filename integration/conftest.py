@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-import httpx
+import httpx2
 import portpicker
 import pytest
 
@@ -367,15 +367,15 @@ def canaille_server(
 
 @pytest.fixture
 def client(canaille_server):
-    """Create an httpx client with cookie persistence."""
-    with httpx.Client(base_url=canaille_server, follow_redirects=True) as client:
+    """Create an httpx2 client with cookie persistence."""
+    with httpx2.Client(base_url=canaille_server, follow_redirects=True) as client:
         yield client
 
 
 @pytest.fixture
 def logged_admin_client(canaille_server, admin_data):
-    """Create an httpx client logged in as admin."""
-    with httpx.Client(base_url=canaille_server, follow_redirects=True) as client:
+    """Create an httpx2 client logged in as admin."""
+    with httpx2.Client(base_url=canaille_server, follow_redirects=True) as client:
         response = client.get("/login")
         csrf_token = extract_csrf_token(response.text)
 
@@ -395,8 +395,8 @@ def logged_admin_client(canaille_server, admin_data):
 
 @pytest.fixture
 def logged_user_client(canaille_server, user_data):
-    """Create an httpx client logged in as regular user."""
-    with httpx.Client(base_url=canaille_server, follow_redirects=True) as client:
+    """Create an httpx2 client logged in as regular user."""
+    with httpx2.Client(base_url=canaille_server, follow_redirects=True) as client:
         response = client.get("/login")
         csrf_token = extract_csrf_token(response.text)
 

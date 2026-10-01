@@ -38,7 +38,7 @@ dependencies = [
     "flask-dramatiq>=0.6.0",
     "flask-session>=0.8.0",
     "flask-wtf >= 1.2.1",
-    "httpx>=0.28.1",
+    "httpx2>=2.13.1",
     "pydantic-settings >= 2.8.0",
     "wtforms >= 3.3.0b2",
 ]
@@ -203,7 +203,7 @@ devserver = [
     "faker >= 38.2.0",
     "honcho >= 2.0.0",
     "slapd >= 0.1.6",
-    "httpx >= 0.26.0",
+    "httpx2>=2.13.1",
     "watchdog >= 4.0.0",
     "requests>=2.32.3",
 ]

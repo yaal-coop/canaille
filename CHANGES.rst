@@ -15,6 +15,10 @@ Changed
   the Pillow dependency.
 - Photos are converted to JPEG on the LDAP backend, as they are stored in the
   ``jpegPhoto`` attribute.
+- Canaille uses `httpx2 <https://github.com/pydantic/httpx2>`_ instead of httpx for its
+  outgoing requests, such as the password compromise check and the download of
+  ``request_uri`` and ``jwks_uri`` documents. HTTPS certificates are checked against
+  the system trust store, instead of the certifi bundle.
 
 Removed
 ^^^^^^^

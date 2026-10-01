@@ -4,7 +4,7 @@ import math
 import re
 from typing import Any
 
-import httpx
+import httpx2
 import wtforms.validators
 from flask import abort
 from flask import current_app
@@ -104,7 +104,7 @@ def compromised_password_validator(form, field):
     )
 
     try:
-        response = httpx.get(api_url, timeout=10)
+        response = httpx2.get(api_url, timeout=10)
     except Exception:
         if not request_is_partial():
             current_app.logger.exception(

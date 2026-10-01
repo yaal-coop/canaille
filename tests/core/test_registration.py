@@ -201,7 +201,7 @@ def test_registration_mail_error(SMTP, testclient, backend, smtpd, foo_group, ca
     assert len(smtpd.messages) == 0
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_registration_with_compromised_password(api_get, testclient, backend):
     """Tests a nominal registration with compromised password."""
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
@@ -230,7 +230,7 @@ def test_registration_with_compromised_password(api_get, testclient, backend):
     assert user is None
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_registration_with_compromised_password_request_api_failed_but_account_created(
     api_get, testclient, backend, caplog, smtpd
 ):
@@ -266,7 +266,7 @@ def test_registration_with_compromised_password_request_api_failed_but_account_c
     backend.delete(user)
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_register_form(
     api_get, testclient, backend, caplog, smtpd
 ):
@@ -317,7 +317,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
     backend.delete(user)
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_register_form(
     api_get, testclient, backend, caplog, smtpd
 ):
@@ -368,7 +368,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
     backend.delete(user)
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_without_smtp_from_register_form(
     api_get, testclient, backend, caplog
 ):
@@ -405,7 +405,7 @@ def test_compromised_password_validator_with_failure_of_api_request_without_smtp
     backend.delete(user)
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_without_admin_email_from_register_form(
     api_get, testclient, backend, caplog
 ):
