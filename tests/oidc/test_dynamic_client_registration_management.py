@@ -1,9 +1,9 @@
 import json
 import uuid
 import warnings
+from datetime import UTC
 from datetime import datetime
 from datetime import timedelta
-from datetime import timezone
 
 from joserfc import jwt
 from joserfc.jwk import KeySet
@@ -28,7 +28,7 @@ def test_get(testclient, backend, client, user, client_jwk):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -117,7 +117,7 @@ def test_update(testclient, backend, client, user, client_jwk):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -248,7 +248,7 @@ def test_delete(testclient, backend, user):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -282,7 +282,7 @@ def test_invalid_client(testclient, backend, user):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -318,7 +318,7 @@ def test_management_with_expired_token(testclient, backend, client):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now - timedelta(hours=1)
 
     jwt_payload = {
@@ -346,7 +346,7 @@ def test_management_with_wrong_issuer(testclient, backend, client):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -374,7 +374,7 @@ def test_management_with_wrong_audience(testclient, backend, client):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -402,7 +402,7 @@ def test_management_with_wrong_scope(testclient, backend, client):
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -426,7 +426,7 @@ def test_management_with_wrong_scope(testclient, backend, client):
 
 def test_management_with_unsigned_token(testclient, backend, client):
     """Test that a token forged with the "none" algorithm is rejected."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -456,7 +456,7 @@ def test_management_with_unsigned_token(testclient, backend, client):
 
 def test_management_with_symmetric_signature(testclient, backend, client):
     """Test that a token signed with an attacker-chosen symmetric key is rejected."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -485,7 +485,7 @@ def test_management_with_symmetric_signature(testclient, backend, client):
 
 def test_management_with_inactive_key(testclient, backend, client, old_server_jwk):
     """Test that a token signed before a key rotation is still accepted."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -520,7 +520,7 @@ def test_management_token_of_another_client(
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {

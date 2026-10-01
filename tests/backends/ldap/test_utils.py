@@ -108,7 +108,7 @@ def test_ldap_to_python():
     """Test that Python values are correctly converted to LDAP format."""
     assert (
         python_to_ldap(
-            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.timezone.utc),
+            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.UTC),
             Syntax.GENERALIZED_TIME,
         )
         == b"20000102030405.000000Z"
@@ -147,7 +147,7 @@ def test_python_to_ldap():
     """Test that LDAP values are correctly converted to Python format."""
     assert ldap_to_python(
         b"20000102030405Z", Syntax.GENERALIZED_TIME
-    ) == datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.timezone.utc)
+    ) == datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=datetime.UTC)
     assert ldap_to_python(
         b"20000102030405-0200", Syntax.GENERALIZED_TIME
     ) == datetime.datetime(

@@ -16,7 +16,7 @@ def test_intruder_lockout_fail_second_attempt_then_succeed_in_third(
         assert not session.get("sessions")
 
     with time_machine.travel(
-        datetime.datetime.now(datetime.timezone.utc),
+        datetime.datetime.now(datetime.UTC),
         tick=True,
     ) as traveller:
         res = testclient.get("/login", status=200)
@@ -68,7 +68,7 @@ def test_intruder_lockout_two_consecutive_fails(testclient, user, caplog):
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
     with time_machine.travel(
-        datetime.datetime.now(datetime.timezone.utc),
+        datetime.datetime.now(datetime.UTC),
         tick=True,
     ) as traveller:
         res = testclient.get("/login", status=200)

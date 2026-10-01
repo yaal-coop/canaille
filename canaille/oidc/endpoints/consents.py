@@ -99,7 +99,7 @@ def restore(user, consent):
     else:
         consent.restore()
         if not consent.issue_date:
-            consent.issue_date = datetime.datetime.now(datetime.timezone.utc)
+            consent.issue_date = datetime.datetime.now(datetime.UTC)
         Backend.instance.save(consent)
         flash(_("The access has been restored."), "success")
 

@@ -127,9 +127,7 @@ def join():
         )
 
     payload = RegistrationPayload(
-        creation_date_isoformat=datetime.datetime.now(
-            datetime.timezone.utc
-        ).isoformat(),
+        creation_date_isoformat=datetime.datetime.now(datetime.UTC).isoformat(),
         user_name="",
         user_name_editable=True,
         email=form.email.data,
@@ -210,7 +208,7 @@ class VerificationPayload:
 
     def has_expired(self):
         return datetime.datetime.now(
-            datetime.timezone.utc
+            datetime.UTC
         ) - self.creation_date > datetime.timedelta(
             seconds=current_app.config["CANAILLE"]["INVITATION_EXPIRATION"]
         )
@@ -247,7 +245,7 @@ class GroupInvitationPayload:
         return datetime.datetime.fromisoformat(self.expiration_date_isoformat)
 
     def has_expired(self):
-        return datetime.datetime.now(datetime.timezone.utc) > self.expiration_date
+        return datetime.datetime.now(datetime.UTC) > self.expiration_date
 
     def b64(self):
         return obj_to_b64(astuple(self))
@@ -267,7 +265,7 @@ def user_invitation(user):
     if request.form and form.validate():
         form_validated = True
         payload = RegistrationPayload(
-            datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            datetime.datetime.now(datetime.UTC).isoformat(),
             form.user_name.data,
             form.user_name_editable.data,
             form.email.data,
@@ -655,7 +653,7 @@ def _handle_add_email(edited_user, emails_form, render_context):
         return render_template("core/account/edit.html", **render_context)
 
     email_confirmation = EmailConfirmationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         edited_user.identifier,
         emails_form.new_email.data,
     )
@@ -790,7 +788,7 @@ def _handle_lock_actions(user, edited_user, action):
 
     elif action == "lock-execute":
         flash(_("The account has been locked."), "success")
-        edited_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+        edited_user.lock_date = datetime.datetime.now(datetime.UTC)
         Backend.instance.save(edited_user)
         return _handle_profile_settings_edit(user, edited_user)
 

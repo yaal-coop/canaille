@@ -36,7 +36,7 @@ def oidc_client(testclient, backend):
         redirect_uris=[
             "https://mydomain.test/redirect1",
         ],
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "client_credentials",
@@ -64,7 +64,7 @@ def oidc_token(testclient, oidc_client, backend):
         client=oidc_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -86,7 +86,7 @@ def user_token(testclient, oidc_client, user, backend):
         client=oidc_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -133,7 +133,7 @@ def scim_trusted_client(testclient, scim2_server, backend):
         redirect_uris=[
             client_uri + "/redirect1",
         ],
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "client_credentials",
@@ -160,7 +160,7 @@ def scim_token(testclient, scim_trusted_client, backend):
         client=scim_trusted_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -197,7 +197,7 @@ def client_without_scim(testclient, backend):
             "https://client.trusted.test/redirect2",
         ],
         logo_uri="https://client.trusted.test/logo.webp",
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "password",
@@ -232,7 +232,7 @@ def consent(testclient, client_without_scim, user, backend):
         client=client_without_scim,
         subject=user,
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
     )
     backend.save(t)
     yield t

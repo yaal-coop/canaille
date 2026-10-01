@@ -241,7 +241,7 @@ def test_password_forgotten_mail_error(SMTP, testclient, user, smtpd):
 
 def test_password_forgotten_user_disabled(testclient, user, caplog, backend, smtpd):
     """Test that password reset emails are not sent for locked user accounts."""
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    user.lock_date = datetime.datetime.now(datetime.UTC)
     backend.save(user)
 
     res = testclient.get("/reset", status=200)

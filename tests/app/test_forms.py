@@ -26,7 +26,7 @@ def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
     form.validate()
     assert form.dt.data is None
 
-    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     offset = LOCALTZ.utcoffset(utc_date.replace(tzinfo=None))
     locale_date = datetime.datetime(2023, 6, 1, 12) + offset
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -72,7 +72,7 @@ def test_datetime_utc_field_utc(testclient):
     form.validate()
     assert form.dt.data is None
 
-    date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     rendered_date = date.strftime("%Y-%m-%d %H:%M:%S")
     rendered_date_form = date.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -116,7 +116,7 @@ def test_datetime_utc_field_japan_timezone(testclient):
     form.validate()
     assert form.dt.data is None
 
-    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     locale_date = datetime.datetime(2023, 6, 1, 21)
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")
     rendered_locale_date_form = locale_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -161,7 +161,7 @@ def test_datetime_utc_field_invalid_timezone(testclient):
     form.validate()
     assert form.dt.data is None
 
-    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     offset = LOCALTZ.utcoffset(utc_date.replace(tzinfo=None))
     locale_date = datetime.datetime(2023, 6, 1, 12) + offset
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")

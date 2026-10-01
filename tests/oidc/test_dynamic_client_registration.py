@@ -1,9 +1,9 @@
 import json
 import uuid
 import warnings
+from datetime import UTC
 from datetime import datetime
 from datetime import timedelta
-from datetime import timezone
 from unittest import mock
 
 from joserfc import jwt
@@ -30,7 +30,7 @@ def test_client_registration_with_authentication_jwt_token(
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -114,7 +114,7 @@ def test_client_registration_with_uri_fragments(testclient, backend, client, use
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -165,7 +165,7 @@ def test_client_registration_with_uri_userinfo(testclient, backend, client, user
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -480,7 +480,7 @@ def test_client_registration_with_all_attributes(testclient, backend, user):
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -569,7 +569,7 @@ def test_client_registration_with_expired_token(testclient, backend):
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now - timedelta(hours=1)
 
     jwt_payload = {
@@ -601,7 +601,7 @@ def test_client_registration_with_unsigned_token(testclient, backend):
     )
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -640,7 +640,7 @@ def test_client_registration_with_wrong_issuer(testclient, backend):
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -672,7 +672,7 @@ def test_client_registration_with_wrong_audience(testclient, backend):
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -704,7 +704,7 @@ def test_client_registration_with_wrong_scope(testclient, backend):
     alg = get_alg_for_key(jwk_key)
 
     client_id = str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {
@@ -735,7 +735,7 @@ def test_client_registration_with_existing_client_id(testclient, backend, client
     jwk_key = jwks.keys[0]
     alg = get_alg_for_key(jwk_key)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(hours=1)
 
     jwt_payload = {

@@ -482,7 +482,7 @@ def test_captcha_persists_until_successful_login(testclient, user, caplog, backe
     testclient.app.config["CANAILLE"]["CAPTCHA_FAILURE_THRESHOLD"] = 2
 
     with time_machine.travel(
-        datetime.datetime.now(datetime.timezone.utc), tick=False
+        datetime.datetime.now(datetime.UTC), tick=False
     ) as traveller:
         res = testclient.get("/login", status=200)
         res.form["login"] = "user"

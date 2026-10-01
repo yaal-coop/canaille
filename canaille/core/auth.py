@@ -214,7 +214,7 @@ class AuthenticationSession:
         return self._user
 
     def set_step_started(self) -> None:
-        self.current_step_start_dt = datetime.datetime.now(datetime.timezone.utc)
+        self.current_step_start_dt = datetime.datetime.now(datetime.UTC)
         self.current_step_try_dt = self.current_step_start_dt
 
     def set_step_finished(self, step) -> None:

@@ -151,7 +151,7 @@ def populate(app):
                     "address",
                     "phone",
                 ],
-                issue_date=datetime.datetime.now(tz=datetime.timezone.utc),
+                issue_date=datetime.datetime.now(tz=datetime.UTC),
                 lifetime=60 * 60 * 24,
                 audience=[client],
             )

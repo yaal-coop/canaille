@@ -50,7 +50,7 @@ def test_authentication_with_an_user_token_without_permission(
         client=oidc_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(scim_token)

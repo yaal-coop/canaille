@@ -30,9 +30,7 @@ def test_token_list_pagination(testclient, logged_admin, client, backend):
             type=None,
             refresh_token=gen_salt(48),
             scope=["openid", "profile"],
-            issue_date=(
-                datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
-            ),
+            issue_date=(datetime.datetime.now(datetime.UTC).replace(microsecond=0)),
             lifetime=3600,
         )
         backend.save(token)
@@ -74,9 +72,7 @@ def test_token_list_search(testclient, logged_admin, client, backend):
         type=None,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=(
-            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
-        ),
+        issue_date=(datetime.datetime.now(datetime.UTC).replace(microsecond=0)),
         lifetime=3600,
     )
     backend.save(token1)
@@ -88,9 +84,7 @@ def test_token_list_search(testclient, logged_admin, client, backend):
         type=None,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=(
-            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
-        ),
+        issue_date=(datetime.datetime.now(datetime.UTC).replace(microsecond=0)),
         lifetime=3600,
     )
     backend.save(token2)

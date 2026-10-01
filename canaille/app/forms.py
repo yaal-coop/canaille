@@ -322,7 +322,7 @@ class DateTimeUTCField(wtforms.DateTimeLocalField):
             try:
                 unaware_dt = datetime.datetime.strptime(date_str, format)
                 locale_dt = user_timezone.localize(unaware_dt)
-                utc_dt = locale_dt.astimezone(datetime.timezone.utc)
+                utc_dt = locale_dt.astimezone(datetime.UTC)
                 self.data = utc_dt
                 return
             except ValueError:

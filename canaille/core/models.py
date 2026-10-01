@@ -343,7 +343,7 @@ class User(Model):
     def locked(self) -> bool:
         """Whether the user account has been locked or has expired."""
         return self.lock_date is not None and self.lock_date < datetime.datetime.now(
-            datetime.timezone.utc
+            datetime.UTC
         )
 
     @classmethod
@@ -382,17 +382,13 @@ class User(Model):
     def generate_sms_or_mail_otp(self, length=OTP_DIGITS) -> str:
         otp = string_code(secrets.randbelow(10**length), length)
         self.one_time_password = otp
-        self.one_time_password_emission_date = datetime.datetime.now(
-            datetime.timezone.utc
-        )
+        self.one_time_password_emission_date = datetime.datetime.now(datetime.UTC)
         return otp
 
     def generate_url_safe_token(self) -> str:
         token = secrets.token_urlsafe(LINK_TOKEN_LENGTH)
         self.one_time_password = build_hash(token)
-        self.one_time_password_emission_date = datetime.datetime.now(
-            datetime.timezone.utc
-        )
+        self.one_time_password_emission_date = datetime.datetime.now(datetime.UTC)
         return token
 
     def is_email_or_sms_otp_valid(self, user_otp) -> bool:
@@ -400,15 +396,13 @@ class User(Model):
 
     def is_otp_still_valid(self) -> bool:
         return (
-            datetime.datetime.now(datetime.timezone.utc)
-            - self.one_time_password_emission_date
+            datetime.datetime.now(datetime.UTC) - self.one_time_password_emission_date
             < current_app.config["CANAILLE"]["OTP_LIFETIME"]
         )
 
     def can_send_new_otp(self) -> bool:
         return self.one_time_password_emission_date is None or (
-            datetime.datetime.now(datetime.timezone.utc)
-            - self.one_time_password_emission_date
+            datetime.datetime.now(datetime.UTC) - self.one_time_password_emission_date
             >= datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
         )
 
@@ -417,7 +411,7 @@ class User(Model):
         if self.can_send_new_otp():
             return datetime.timedelta(seconds=0)
 
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.UTC)
         return (
             self.one_time_password_emission_date
             + datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
@@ -434,7 +428,7 @@ class User(Model):
                 attempt
                 for attempt in self.password_failure_timestamps
                 if attempt
-                > datetime.datetime.now(datetime.timezone.utc)
+                > datetime.datetime.now(datetime.UTC)
                 - datetime.timedelta(seconds=PASSWORD_FAILURE_COUNT_INTERVAL)
             ]
         if not self.password_failure_timestamps:
@@ -445,15 +439,12 @@ class User(Model):
             PASSWORD_MIN_DELAY * 2 ** (failed_login_count - 1), PASSWORD_MAX_DELAY
         )
         time_since_last_failed_bind = (
-            datetime.datetime.now(datetime.timezone.utc)
-            - self.password_failure_timestamps[-1]
+            datetime.datetime.now(datetime.UTC) - self.password_failure_timestamps[-1]
         ).total_seconds()
         return max(calculated_delay - time_since_last_failed_bind, 0)
 
     def has_expired_password(self) -> bool:
-        last_update = self.password_last_update or datetime.datetime.now(
-            datetime.timezone.utc
-        )
+        last_update = self.password_last_update or datetime.datetime.now(datetime.UTC)
         if current_app.config["CANAILLE"]["PASSWORD_LIFETIME"] is None:
             password_expiration = None
         else:
@@ -463,8 +454,7 @@ class User(Model):
 
         return (
             password_expiration is not None
-            and last_update + password_expiration
-            < datetime.datetime.now(datetime.timezone.utc)
+            and last_update + password_expiration < datetime.datetime.now(datetime.UTC)
         )
 
 

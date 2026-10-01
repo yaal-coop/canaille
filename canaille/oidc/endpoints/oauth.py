@@ -83,7 +83,7 @@ def get_authorization_request_datetime(request_url: str) -> datetime.datetime | 
 @bp.route("/authorize", methods=["GET", "POST"])
 @csrf.exempt
 def authorize():
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
+    now = datetime.datetime.now(tz=datetime.UTC)
     current_app.logger.debug(
         "authorization endpoint request:\nGET: %s\nPOST: %s",
         request.args.to_dict(flat=False),

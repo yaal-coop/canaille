@@ -64,9 +64,9 @@ def test_revoke_refresh_token_with_hint(testclient, user, client, token, backend
 
 
 def test_cannot_refresh_after_revocation(testclient, user, client, token, backend):
-    token.revokation_date = datetime.datetime.now(
-        datetime.timezone.utc
-    ) - datetime.timedelta(days=7)
+    token.revokation_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(
+        days=7
+    )
     backend.save(token)
 
     res = testclient.post(

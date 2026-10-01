@@ -88,9 +88,9 @@ class MemoryBackend(Backend):
 
     def set_user_password(self, user, password) -> None:
         user.password = password
-        user.password_last_update = datetime.datetime.now(
-            datetime.timezone.utc
-        ).replace(microsecond=0)
+        user.password_last_update = datetime.datetime.now(datetime.UTC).replace(
+            microsecond=0
+        )
 
         self.save(user)
 
@@ -166,7 +166,7 @@ class MemoryBackend(Backend):
         if not instance.id:
             instance.id = str(uuid.uuid4())
 
-        instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
+        instance.last_modified = datetime.datetime.now(datetime.UTC).replace(
             microsecond=0
         )
         if not instance.created:
@@ -253,6 +253,6 @@ class MemoryBackend(Backend):
 
     def record_failed_attempt(self, user) -> None:
         timestamps = user.password_failure_timestamps or []
-        timestamps.append(datetime.datetime.now(datetime.timezone.utc))
+        timestamps.append(datetime.datetime.now(datetime.UTC))
         user.password_failure_timestamps = timestamps
         self.save(user)

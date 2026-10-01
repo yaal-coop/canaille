@@ -73,9 +73,7 @@ def login(username=None):
             switch_to_session(user.id)
 
             if redirect_url := session.pop("redirect-after-login", None):
-                g.session.last_login_datetime = datetime.datetime.now(
-                    datetime.timezone.utc
-                )
+                g.session.last_login_datetime = datetime.datetime.now(datetime.UTC)
                 save_user_session()
                 return redirect(redirect_url)
 
@@ -121,7 +119,7 @@ def login(username=None):
         switch_to_session(user.id)
 
         if redirect_url := session.pop("redirect-after-login", None):
-            g.session.last_login_datetime = datetime.datetime.now(datetime.timezone.utc)
+            g.session.last_login_datetime = datetime.datetime.now(datetime.UTC)
             save_user_session()
             return redirect(redirect_url)
 

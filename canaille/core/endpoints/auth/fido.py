@@ -149,7 +149,7 @@ def verify_auth_response():
         return jsonify({"success": False, "error": str(e)}), 400
 
     credential.sign_count = verification.new_sign_count
-    credential.last_used_at = datetime.datetime.now(datetime.timezone.utc)
+    credential.last_used_at = datetime.datetime.now(datetime.UTC)
     Backend.instance.save(credential)
 
     current_app.logger.security(
@@ -330,7 +330,7 @@ def verify_registration_response_view():
         credential_response.get("response", {}).get("transports", [])
     )
     credential.name = _("My passkey")
-    credential.created_at = datetime.datetime.now(datetime.timezone.utc)
+    credential.created_at = datetime.datetime.now(datetime.UTC)
     credential.user = g.auth.user
 
     Backend.instance.save(credential)

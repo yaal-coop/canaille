@@ -1,15 +1,15 @@
 import datetime
 import importlib.util
 import smtplib
-from enum import Enum
+from enum import StrEnum
 from typing import Literal
+from typing import Self
 
 from pydantic import DirectoryPath
 from pydantic import Field
 from pydantic import ValidationInfo
 from pydantic import field_validator
 from pydantic import model_validator
-from typing_extensions import Self
 
 from canaille.app.configuration import BaseModel
 
@@ -86,7 +86,7 @@ class SMPPSettings(BaseModel):
     """The SMPP password."""
 
 
-class Permission(str, Enum):
+class Permission(StrEnum):
     """The permissions that can be assigned to users.
 
     The permissions are intended to be used in :attr:`ACLSettings <canaille.core.configuration.ACLSettings.PERMISSIONS>`.
@@ -247,7 +247,7 @@ class ACLSettings(BaseModel):
         }
 
 
-class OTPMethod(str, Enum):
+class OTPMethod(StrEnum):
     TOTP = "TOTP"
     """Time-based one time password."""
 

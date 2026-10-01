@@ -78,7 +78,7 @@ def add(user):
         )
 
     client_id = gen_salt(24)
-    client_id_issued_at = datetime.datetime.now(datetime.timezone.utc)
+    client_id_issued_at = datetime.datetime.now(datetime.UTC)
     client = models.Client(
         client_id=client_id,
         client_id_issued_at=client_id_issued_at,
@@ -244,7 +244,7 @@ def client_new_token(user, client):
         ),
         "success",
     )
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.UTC)
     token = models.Token(
         token_id=gen_salt(48),
         type="access_token",

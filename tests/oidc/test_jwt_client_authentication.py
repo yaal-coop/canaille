@@ -27,7 +27,7 @@ def test_client_jwks(
     """Test client JWT authentication as defined per RFC7523, using the client 'jwks' attribute."""
     now = time.time()
 
-    authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
+    authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
     client.client_uri = "https://client.trusted.test"
     client.token_endpoint_auth_method = "client_secret_jwt"
@@ -75,7 +75,7 @@ def test_client_jwks_uri(
         {"keys": [client_jwk.as_dict(private=False)]}
     )
 
-    authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
+    authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
     client.client_uri = "https://client.trusted.test"
     client.jwks_uri = f"http://{httpserver.host}:{httpserver.port}{jwks_uri}"
@@ -120,7 +120,7 @@ def test_client_no_jwks(
     """Test client JWT authentication for a client without JWK being defined."""
     now = time.time()
 
-    authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
+    authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
     client.client_uri = "https://client.trusted.test"
     client.jwks = None
@@ -164,7 +164,7 @@ def test_same_jti_twice(
     now = time.time()
     jti = str(uuid.uuid4())
 
-    authorization.issue_date = datetime.datetime.now(datetime.timezone.utc)
+    authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
     client.client_uri = "https://client.trusted.test"
     client.token_endpoint_auth_method = "client_secret_jwt"
@@ -209,7 +209,7 @@ def test_same_jti_twice(
         response_type="code",
         scope=["openid", "profile"],
         nonce="nonce",
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
         challenge=gen_salt(48),
         challenge_method="plain",

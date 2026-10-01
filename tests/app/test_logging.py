@@ -51,7 +51,7 @@ def test_file_log_config(configuration, backend, tmp_path, user):
         sess["sessions"] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
 
@@ -96,7 +96,7 @@ def test_dict_log_config(configuration, backend, tmp_path, admin, smtpd):
         sess["sessions"] = [
             UserSession(
                 user=admin,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
 

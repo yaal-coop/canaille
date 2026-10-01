@@ -69,7 +69,7 @@ def get_or_create_token(client):
             client=client,
             refresh_token=gen_salt(48),
             scope=["openid", "profile"],
-            issue_date=datetime.datetime.now(datetime.timezone.utc),
+            issue_date=datetime.datetime.now(datetime.UTC),
             lifetime=3600,
         )
         Backend.instance.save(scim_token)

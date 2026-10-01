@@ -104,7 +104,7 @@ def test_fido2_page_with_credentials(testclient, backend, logged_user):
         aaguid=b"\x00" * 16,
         transports='["usb"]',
         name="Test Key",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=logged_user,
     )
     backend.save(credential)
@@ -179,7 +179,7 @@ def test_fido2_page_unrecognized_post_action(testclient, backend, logged_user):
         aaguid=b"\x00" * 16,
         transports='["usb"]',
         name="Test Key",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=logged_user,
     )
     backend.save(credential)

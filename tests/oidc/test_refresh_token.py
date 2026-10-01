@@ -184,7 +184,7 @@ def test_cannot_refresh_token_for_locked_users(
         status=200,
     )
 
-    logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    logged_user.lock_date = datetime.datetime.now(datetime.UTC)
     backend.save(logged_user)
 
     res = testclient.post(

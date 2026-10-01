@@ -236,21 +236,17 @@ def test_model_creation_edition_datetime(testclient, backend):
             formatted_name="foo",
         )
         backend.save(user)
-        assert user.created == datetime.datetime(
-            2020, 1, 1, 2, tzinfo=datetime.timezone.utc
-        )
+        assert user.created == datetime.datetime(2020, 1, 1, 2, tzinfo=datetime.UTC)
         assert user.last_modified == datetime.datetime(
-            2020, 1, 1, 2, tzinfo=datetime.timezone.utc
+            2020, 1, 1, 2, tzinfo=datetime.UTC
         )
 
     with time_machine.travel("2021-01-01 02:00:00+00:00", tick=False):
         user.family_name = "bar"
         backend.save(user)
-        assert user.created == datetime.datetime(
-            2020, 1, 1, 2, tzinfo=datetime.timezone.utc
-        )
+        assert user.created == datetime.datetime(2020, 1, 1, 2, tzinfo=datetime.UTC)
         assert user.last_modified == datetime.datetime(
-            2021, 1, 1, 2, tzinfo=datetime.timezone.utc
+            2021, 1, 1, 2, tzinfo=datetime.UTC
         )
 
     backend.delete(user)

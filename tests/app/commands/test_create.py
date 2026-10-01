@@ -54,7 +54,7 @@ def test_create(cli_runner, backend, foo_group):
     backend.reload(foo_group)
     assert user.groups == [foo_group]
     assert user.lock_date == datetime.datetime(
-        2050, 1, 1, 10, 10, 10, tzinfo=datetime.timezone.utc
+        2050, 1, 1, 10, 10, 10, tzinfo=datetime.UTC
     )
     backend.delete(user)
 
@@ -91,7 +91,7 @@ def test_create_quiet(cli_runner, backend, foo_group):
     backend.reload(foo_group)
     assert user.groups == [foo_group]
     assert user.lock_date == datetime.datetime(
-        2050, 1, 1, 10, 10, 10, tzinfo=datetime.timezone.utc
+        2050, 1, 1, 10, 10, 10, tzinfo=datetime.UTC
     )
     backend.delete(user)
 

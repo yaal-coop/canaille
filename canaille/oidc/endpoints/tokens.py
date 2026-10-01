@@ -41,7 +41,7 @@ def view(user, token):
             return render_template("oidc/modals/revoke-token.html", token=token)
 
         elif request.form.get("action") == "revoke":
-            token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
+            token.revokation_date = datetime.datetime.now(datetime.UTC)
             Backend.instance.save(token)
             current_app.logger.security(
                 f"Revoked token for {token.subject.user_name} in client {token.client.client_name} by {user.user_name}"

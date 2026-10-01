@@ -260,9 +260,7 @@ def invite_to_group(user, group):
         form_validated = True
         invited_user = Backend.instance.query(models.User, emails=form.email.data)[0]
 
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
             seconds=current_app.config["CANAILLE"]["INVITATION_EXPIRATION"]
         )
         payload = GroupInvitationPayload(

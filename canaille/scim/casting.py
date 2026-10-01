@@ -153,7 +153,7 @@ def user_from_scim_to_canaille(scim_user: User, user):
         if group.value
     ]
     if not scim_user.active:
-        user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+        user.lock_date = datetime.datetime.now(datetime.UTC)
     else:
         user.lock_date = None
     return user

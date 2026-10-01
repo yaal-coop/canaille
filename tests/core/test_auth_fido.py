@@ -37,7 +37,7 @@ def fido_credential(user, backend):
         aaguid=b"\x00" * 16,
         transports='["usb", "nfc"]',
         name="Test YubiKey",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=user,
     )
     backend.save(credential)
@@ -638,7 +638,7 @@ def test_auth_with_credential_without_transports(
         aaguid=b"\x00" * 16,
         transports=None,  # No transports
         name="Test Key",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=user,
     )
     backend.save(credential)
@@ -676,7 +676,7 @@ def test_auth_with_credential_empty_transports(
         aaguid=b"\x00" * 16,
         transports="[]",  # Empty list
         name="Test Key",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=user,
     )
     backend.save(credential)
@@ -778,7 +778,7 @@ def test_max_credentials_reached_during_setup_get(testclient, user, backend):
             sign_count=0,
             aaguid=b"\x00" * 16,
             name=f"Key {i}",
-            created_at=datetime.datetime.now(datetime.timezone.utc),
+            created_at=datetime.datetime.now(datetime.UTC),
             user=user,
         )
         backend.save(credential)
@@ -805,7 +805,7 @@ def test_max_credentials_reached_during_setup_post(testclient, user, backend):
             sign_count=0,
             aaguid=b"\x00" * 16,
             name=f"Key {i}",
-            created_at=datetime.datetime.now(datetime.timezone.utc),
+            created_at=datetime.datetime.now(datetime.UTC),
             user=user,
         )
         backend.save(credential)
@@ -842,7 +842,7 @@ def test_setup_with_existing_credentials_with_transports(
             aaguid=b"\x00" * 16,
             transports='["usb", "nfc"]',
             name=f"Existing Key {i}",
-            created_at=datetime.datetime.now(datetime.timezone.utc),
+            created_at=datetime.datetime.now(datetime.UTC),
             user=user,
         )
         backend.save(credential)
@@ -881,7 +881,7 @@ def test_setup_with_credentials_without_and_empty_transports(
         aaguid=b"\x00" * 16,
         transports=None,
         name="Key without transports",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=user,
     )
     backend.save(credential1)
@@ -893,7 +893,7 @@ def test_setup_with_credentials_without_and_empty_transports(
         aaguid=b"\x00" * 16,
         transports="[]",
         name="Key with empty transports",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=user,
     )
     backend.save(credential2)

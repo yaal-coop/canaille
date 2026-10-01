@@ -598,7 +598,7 @@ def test_consent_with_no_scope(testclient, logged_user, backend):
         contacts=["contact@mydomain.test"],
         client_uri="https://client.test",
         redirect_uris=["https://client.test/redirect1"],
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=["authorization_code"],
         response_types=["code"],
@@ -1005,7 +1005,7 @@ def test_locked_account(testclient, logged_user, client, trusted_client, backend
         status=200,
     )
 
-    logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    logged_user.lock_date = datetime.datetime.now(datetime.UTC)
     backend.save(logged_user)
 
     res = res.form.submit(name="answer", value="accept", status=302)
@@ -1036,7 +1036,7 @@ def test_logout_login_with_intruder_lockout(testclient, logged_user, client):
     testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = True
 
     with time_machine.travel(
-        datetime.datetime.now(datetime.timezone.utc),
+        datetime.datetime.now(datetime.UTC),
         tick=True,
     ) as traveller:
         res = testclient.get(

@@ -89,7 +89,7 @@ def client(testclient, trusted_client, backend, client_jwk):
             "https://client.test/redirect2",
         ],
         logo_uri="https://client.test/logo.webp",
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "password",
@@ -134,7 +134,7 @@ def trusted_client(testclient, backend, client_jwk):
             "https://client.trusted.test/redirect2",
         ],
         logo_uri="https://client.trusted.test/logo.webp",
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "password",
@@ -176,7 +176,7 @@ def authorization(testclient, user, client, backend):
         response_type="code",
         scope=["openid", "profile"],
         nonce="nonce",
-        issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
+        issue_date=datetime.datetime(2020, 1, 1, tzinfo=datetime.UTC),
         lifetime=3600,
         challenge=gen_salt(48),
         challenge_method="plain",
@@ -200,7 +200,7 @@ def token(testclient, client, user, backend):
         subject=user,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -221,7 +221,7 @@ def oidc_token(testclient, client, backend):
         client=client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -254,7 +254,7 @@ def consent(testclient, client, user, backend):
         client=client,
         subject=user,
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
     )
     backend.save(t)
     yield t

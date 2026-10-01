@@ -142,7 +142,7 @@ def test_token_custom_expiration_date(
 
 def test_expiry_checks_tolerate_missing_lifetime(testclient, client, user, backend):
     """Tokens and codes without a recorded lifetime are treated as expired."""
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.UTC)
 
     token = models.Token(
         token_id=gen_salt(48),

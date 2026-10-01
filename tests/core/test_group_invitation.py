@@ -6,9 +6,9 @@ from canaille.core.endpoints.account import GroupInvitationPayload
 def test_group_invitation_payload(app):
     """Test GroupInvitationPayload expiration, encoding and hash generation."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id="test-group-id",
@@ -18,9 +18,7 @@ def test_group_invitation_payload(app):
         assert payload.expiration_date == expiration_date
         assert not payload.has_expired()
 
-        past_date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
-            hours=1
-        )
+        past_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(hours=1)
         expired_payload = GroupInvitationPayload(
             expiration_date_isoformat=past_date.isoformat(),
             group_id="test-group-id",
@@ -75,9 +73,9 @@ def test_join_group_with_valid_invitation(
 ):
     """Test joining a group with valid invitation adds user to members."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=bar_group.id,
@@ -106,9 +104,7 @@ def test_join_group_with_valid_invitation(
 def test_join_group_expired_invitation(testclient, logged_user, bar_group, app):
     """Test joining with expired invitation redirects without crashing."""
     with app.app_context():
-        past_date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
-            hours=1
-        )
+        past_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(hours=1)
         payload = GroupInvitationPayload(
             expiration_date_isoformat=past_date.isoformat(),
             group_id=bar_group.id,
@@ -122,9 +118,9 @@ def test_join_group_expired_invitation(testclient, logged_user, bar_group, app):
 def test_join_group_invalid_hash(testclient, logged_user, bar_group, app):
     """Test joining with invalid hash redirects without crashing."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=bar_group.id,
@@ -144,9 +140,9 @@ def test_join_group_invalid_data(testclient, logged_user):
 def test_join_nonexistent_group(testclient, logged_user, app):
     """Test joining a group that doesn't exist redirects without crashing."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id="nonexistent-group-id",
@@ -160,9 +156,9 @@ def test_join_nonexistent_group(testclient, logged_user, app):
 def test_join_group_requires_login(testclient, bar_group, user, app):
     """Test that joining a group requires authentication and redirects to login."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=bar_group.id,
@@ -184,9 +180,9 @@ def test_join_group_requires_login(testclient, bar_group, user, app):
 def test_join_group_invalid_user_redirect(testclient, bar_group, app):
     """Test joining with invalid user ID redirects to account index."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=bar_group.id,
@@ -223,9 +219,9 @@ def test_join_group_wrong_email_invitation(
 ):
     """Test joining with invitation sent to different user shows error."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=bar_group.id,
@@ -246,9 +242,9 @@ def test_join_group_already_member_handling(
 ):
     """Test joining a group when already a member shows appropriate message."""
     with app.app_context():
-        expiration_date = datetime.datetime.now(
-            datetime.timezone.utc
-        ) + datetime.timedelta(hours=24)
+        expiration_date = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
+            hours=24
+        )
         payload = GroupInvitationPayload(
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=foo_group.id,
