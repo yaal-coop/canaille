@@ -26,6 +26,10 @@ Changed
   ``/Users``, as RFC 7643 §6 defines them.
 - The SCIM ``User`` resource type declares the enterprise extension as optional.
   Users without it were already accepted.
+- The SCIM client updates the provisioned users and groups with PATCH requests
+  instead of PUT, when the client supports PATCH. Only the changed attributes are
+  sent, and nothing is sent when nothing changed. The attributes Canaille does not
+  manage are left untouched.
 
 Removed
 ^^^^^^^

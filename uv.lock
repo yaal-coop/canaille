@@ -442,7 +442,7 @@ requires-dist = [
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
     { name = "scim2-client", extras = ["httpx2"], marker = "extra == 'scim'", specifier = ">=0.11.1" },
-    { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.10.1" },
+    { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.10.2" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "six", marker = "extra == 'ldap'", specifier = ">=1.17.0" },
     { name = "smpplib", marker = "extra == 'sms'", specifier = ">=2.2.3" },
@@ -3198,15 +3198,15 @@ httpx2 = [
 
 [[package]]
 name = "scim2-models"
-version = "0.10.1"
+version = "0.10.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "lark" },
     { name = "pydantic", extra = ["email"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7f/eb/7a51b7b1f508a18a784f3427c26563505eda510e08bf06584440e9c93c14/scim2_models-0.10.1.tar.gz", hash = "sha256:f97d6fb5eecf0a7ef2b75f301a0b5370f9be2bfa9b072d3c566800460196f624", size = 101791, upload-time = "2026-09-30T16:19:18.053Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/22/9d/c9e214c82c87e28d764c8ddbc051c3acee7e519a7688cfb810280869b95d/scim2_models-0.10.2.tar.gz", hash = "sha256:6249578db6b3508cd3f5e9817ba682ab60b5bed0382c83fc51fd1b85a85268b9", size = 101955, upload-time = "2026-10-01T16:15:39.848Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/97/57/7970e29757eba393a2fc8815e8fa3d0272cef73d397c532d9bbe99bbdba0/scim2_models-0.10.1-py3-none-any.whl", hash = "sha256:7ced87b5cd6ed2735721f17357d8934837f3ea5f9172751e9df4b66afa8baf1a", size = 124372, upload-time = "2026-09-30T16:19:16.666Z" },
+    { url = "https://files.pythonhosted.org/packages/97/83/80267e9e8c95c5296309a0739f47fccaca9d644424246fbfd4825aec078b/scim2_models-0.10.2-py3-none-any.whl", hash = "sha256:43aca50bdd2d16220d4e61f329daf945dce87d759a50dc2b179d3e55eb4e75c6", size = 124555, upload-time = "2026-10-01T16:15:38.243Z" },
 ]
 
 [[package]]

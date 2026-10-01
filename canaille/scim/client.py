@@ -5,6 +5,7 @@ from flask import current_app
 from httpx2 import Client as httpx_client
 from scim2_client import SCIMClientException
 from scim2_client.engines.httpx2 import SyncSCIMClient
+from scim2_models import PatchOp
 from scim2_models import SCIMException
 from scim2_models import ScimFilter
 from scim2_models import SearchRequest
@@ -55,6 +56,21 @@ def group_from_canaille_to_scim_client(group, group_class, scim_client):
     ] or None
 
     return scim_group
+
+
+def update_distant_resource(scim, distant, wanted):
+    """Update a distant resource, with a PATCH request when the client supports it."""
+    if not scim.provider.config.patch.supported:
+        wanted.id = distant.id
+        wanted.meta = distant.meta
+        scim.replace(wanted)
+        return
+
+    patch = PatchOp.build_from(distant, wanted)
+    if patch is None:
+        return
+
+    scim.modify(distant, patch)
 
 
 def get_or_create_token(client):
@@ -139,10 +155,8 @@ def execute_scim_user_action(client_id, user_id, method):
                     f"SCIM User {user.user_name} creation for client {client.client_name} failed"
                 )
         else:
-            scim_user.id = distant_scim_user.id
-            scim_user.meta = distant_scim_user.meta
             try:
-                scim.replace(scim_user)
+                update_distant_resource(scim, distant_scim_user, scim_user)
             except Exception:
                 current_app.logger.warning(
                     f"SCIM User {user.user_name} update for client {client.client_name} failed"
@@ -180,10 +194,8 @@ def execute_scim_group_action(scim, group, client_name, method):
                     f"SCIM Group {group.display_name} creation for client {client_name} failed"
                 )
         else:
-            group.id = scim_group.id
-            group.meta = scim_group.meta
             try:
-                scim.replace(group)
+                update_distant_resource(scim, scim_group, group)
             except Exception:
                 current_app.logger.warning(
                     f"SCIM Group {group.display_name} update for client {client_name} failed"
