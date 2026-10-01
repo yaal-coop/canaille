@@ -16,6 +16,10 @@ Changed
 - Photos are converted to JPEG on the LDAP backend, as they are stored in the
   ``jpegPhoto`` attribute.
 
+Removed
+^^^^^^^
+- End support for Python 3.10.
+
 Fixed
 ^^^^^
 - User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.

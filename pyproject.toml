@@ -12,7 +12,6 @@ keywords = ["oidc", "oauth", "oauth2", "openid", "identity", "authentication"]
 classifiers = [
     "Intended Audience :: Developers",
     "Development Status :: 4 - Beta",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -28,7 +27,7 @@ classifiers = [
 authors = [{name="Yaal Coop", email="contact@yaal.coop"}]
 maintainers = [{name="Éloi Rivard", email="eloi@yaal.coop"}]
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "blinker>=1.9.0",
     "click>=8.2.0",
@@ -304,7 +303,6 @@ docstring-code-format = true
 requires = ["tox>=4.19"]
 env_list = [
     "style",
-    "py310",
     "py311",
     "py312",
     "py313",
@@ -336,7 +334,7 @@ commands = [
 runner = "uv-venv-runner"
 uv_resolution = "lowest-direct"
 extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server"]
-basepython = ["python3.10"]
+basepython = ["python3.11"]
 
 [tool.tox.env.doc]
 dependency_groups = ["dev", "doc"]
