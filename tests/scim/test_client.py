@@ -2,7 +2,7 @@ import logging
 from unittest import mock
 
 import pytest
-from scim2_client import SCIMClientError
+from scim2_client import SCIMClientException
 from scim2_models import SearchRequest
 
 from canaille.app import models
@@ -241,7 +241,7 @@ def test_save_group_when_client_doesnt_support_scim(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.create")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create")
 def test_failed_scim_user_creation(
     scim_mock,
     testclient,
@@ -250,7 +250,7 @@ def test_failed_scim_user_creation(
     caplog,
 ):
     """Test that a warning is logged when SCIM user creation fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     alice = models.User(
         formatted_name="Alice Alice",
@@ -269,7 +269,7 @@ def test_failed_scim_user_creation(
     backend.delete(alice)
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.replace")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.replace")
 def test_failed_scim_user_update(
     scim_mock,
     testclient,
@@ -279,7 +279,7 @@ def test_failed_scim_user_update(
     user,
 ):
     """Test that a warning is logged when SCIM user update fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     backend.save(user)
 
@@ -290,7 +290,7 @@ def test_failed_scim_user_update(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.delete")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.delete")
 def test_failed_scim_user_delete(
     scim_mock,
     testclient,
@@ -300,7 +300,7 @@ def test_failed_scim_user_delete(
     user,
 ):
     """Test that a warning is logged when SCIM user deletion fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     backend.delete(user)
 
@@ -311,7 +311,7 @@ def test_failed_scim_user_delete(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.create")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create")
 def test_failed_scim_group_creation(
     scim_mock,
     testclient,
@@ -321,7 +321,7 @@ def test_failed_scim_group_creation(
     user,
 ):
     """Test that a warning is logged when SCIM group creation fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     group = models.Group(
         members=[user],
@@ -338,7 +338,7 @@ def test_failed_scim_group_creation(
     backend.delete(group)
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.replace")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.replace")
 def test_failed_scim_group_update(
     scim_mock,
     testclient,
@@ -348,7 +348,7 @@ def test_failed_scim_group_update(
     bar_group,
 ):
     """Test that a warning is logged when SCIM group update fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     backend.save(bar_group)
 
@@ -359,7 +359,7 @@ def test_failed_scim_group_update(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.delete")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.delete")
 def test_failed_scim_group_delete(
     scim_mock,
     testclient,
@@ -369,7 +369,7 @@ def test_failed_scim_group_delete(
     user,
 ):
     """Test that a warning is logged when SCIM group deletion fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     group = models.Group(
         members=[user],

@@ -19,6 +19,13 @@ Changed
   outgoing requests, such as the password compromise check and the download of
   ``request_uri`` and ``jwks_uri`` documents. HTTPS certificates are checked against
   the system trust store, instead of the certifi bundle.
+- The SCIM server follows RFC 7644 more closely on PATCH requests, as it now relies on
+  scim2-models 0.10. For instance, a PATCH that writes the ``display`` of a group
+  member is refused with a ``mutability`` error.
+- The SCIM ``ResourceType`` endpoints are relative to the SCIM base URL, such as
+  ``/Users``, as RFC 7643 §6 defines them.
+- The SCIM ``User`` resource type declares the enterprise extension as optional.
+  Users without it were already accepted.
 
 Removed
 ^^^^^^^
@@ -26,6 +33,8 @@ Removed
 
 Fixed
 ^^^^^
+- SCIM PATCH requests that cannot be applied answer a SCIM error instead of an
+  HTTP 500 error.
 - User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
 - The inline validation of the login and password fields redirected users without
   a password to the password initialization page. As the redirection was answered

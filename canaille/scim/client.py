@@ -2,9 +2,10 @@ import datetime
 
 from blinker import signal
 from flask import current_app
-from httpx import Client as httpx_client
-from scim2_client import SCIMClientError
-from scim2_client.engines.httpx import SyncSCIMClient
+from httpx2 import Client as httpx_client
+from scim2_client import SCIMClientException
+from scim2_client.engines.httpx2 import SyncSCIMClient
+from scim2_models import SCIMException
 from scim2_models import SearchRequest
 from werkzeug.security import gen_salt
 
@@ -89,7 +90,7 @@ def initiate_scim_client(client):
     scim = SyncSCIMClient(client_httpx)
     try:
         scim.discover()
-    except SCIMClientError:
+    except (SCIMClientException, SCIMException):
         current_app.logger.info(
             f"SCIM protocol not supported by client {client.client_name}"
         )
@@ -117,7 +118,7 @@ def execute_scim_user_action(client_id, user_id, method):
     if method == "delete" and distant_scim_user:
         try:
             scim.delete(User, distant_scim_user.id)
-        except SCIMClientError:
+        except (SCIMClientException, SCIMException):
             current_app.logger.warning(
                 f"SCIM User {user.user_name} delete for client {client.client_name} failed"
             )
@@ -133,6 +134,7 @@ def execute_scim_user_action(client_id, user_id, method):
                 )
         else:
             scim_user.id = distant_scim_user.id
+            scim_user.meta = distant_scim_user.meta
             try:
                 scim.replace(scim_user)
             except Exception:
@@ -173,6 +175,7 @@ def execute_scim_group_action(scim, group, client_name, method):
                 )
         else:
             group.id = scim_group.id
+            group.meta = scim_group.meta
             try:
                 scim.replace(group)
             except Exception:

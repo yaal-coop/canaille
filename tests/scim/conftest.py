@@ -95,13 +95,26 @@ def user_token(testclient, oidc_client, user, backend):
 
 
 @pytest.fixture
-def scim_client(app, oidc_client, oidc_token):
+def scim_provider(app):
+    from scim2_models import ScimProvider
+
+    from canaille.scim.endpoints import get_resource_types
+    from canaille.scim.endpoints import get_schemas
+    from canaille.scim.endpoints import get_service_provider_config
+
+    return ScimProvider.from_discovery(
+        schemas=get_schemas().values(),
+        resource_types=get_resource_types().values(),
+        config=get_service_provider_config(),
+    )
+
+
+@pytest.fixture
+def scim_client(app, oidc_client, oidc_token, scim_provider):
     from scim2_client.engines.werkzeug import TestSCIMClient
     from werkzeug.test import Client
 
     from canaille.scim.endpoints import bp
-    from canaille.scim.endpoints import get_resource_types
-    from canaille.scim.endpoints import get_service_provider_config
 
     return TestSCIMClient(
         Client(app),
@@ -113,8 +126,7 @@ def scim_client(app, oidc_client, oidc_token):
             }
         },
         check_response_status_codes=False,
-        service_provider_config=get_service_provider_config(),
-        resource_types=get_resource_types().values(),
+        provider=scim_provider,
     )
 
 

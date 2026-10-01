@@ -20,6 +20,7 @@ from scim2_models import PatchOp
 from scim2_models import ResourceType
 from scim2_models import ResponseParameters
 from scim2_models import Schema
+from scim2_models import SCIMException
 from scim2_models import SearchRequest
 from werkzeug.exceptions import HTTPException
 from werkzeug.exceptions import PreconditionFailed
@@ -132,6 +133,12 @@ def scim_error_handler(error):
     return obj.model_dump(), obj.status
 
 
+@bp.errorhandler(SCIMException)
+def scim_exception_handler(error):
+    obj = error.to_error()
+    return obj.model_dump(), obj.status
+
+
 def parse_search_request(request) -> SearchRequest:
     """Create a SearchRequest object from the request arguments."""
     max_nb_items_per_page = 1000
@@ -164,8 +171,7 @@ def _query_resources(canaille_model, scim_type, to_scim):
     )
     return list_response.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -174,8 +180,7 @@ def _query_resource(resource, to_scim):
     scim_resource = to_scim(resource)
     return scim_resource.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -194,8 +199,7 @@ def _create_resource(scim_type, canaille_model, to_scim, from_scim):
     return (
         response_resource.model_dump(
             scim_ctx=Context.RESOURCE_CREATION_RESPONSE,
-            attributes=req.attributes,
-            excluded_attributes=req.excluded_attributes,
+            response_parameters=req,
         ),
         HTTPStatus.CREATED,
     )
@@ -218,8 +222,7 @@ def _replace_resource(resource, scim_type, to_scim, from_scim):
     response = to_scim(updated)
     return response.model_dump(
         scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -242,8 +245,7 @@ def _patch_resource(resource, scim_type, to_scim, from_scim):
 
     return scim_resource.model_dump(
         scim_ctx=Context.RESOURCE_PATCH_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -376,8 +378,7 @@ def search():
     )
     payload = list_response.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
     return payload
 

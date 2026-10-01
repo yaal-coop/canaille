@@ -1,7 +1,7 @@
 import pytest
-from scim2_client.errors import SCIMResponseErrorObject
 from scim2_models import PatchOp
 from scim2_models import PatchOperation
+from scim2_models import SCIMException
 
 Op = PatchOperation.Op
 
@@ -168,7 +168,7 @@ def test_patch_group_add_invalid_member(app, backend, foo_group, user, scim_clie
     op = PatchOperation(
         op=Op.add,
         path="members",
-        value=[{"value": "invalid", "display": "http://invalid"}],
+        value=[{"value": "invalid"}],
     )
     response_group = scim_client.modify(
         Group, foo_group.id, PatchOp[Group](operations=[op])
@@ -176,6 +176,34 @@ def test_patch_group_add_invalid_member(app, backend, foo_group, user, scim_clie
 
     member_ids = [member.value for member in response_group.members]
     assert member_ids == [user.identifier]
+
+
+def test_patch_group_add_member_with_display(
+    app, backend, foo_group, user, admin, scim_client
+):
+    """Test that PATCH refuses to write the read-only display of a group member."""
+    foo_group.members = [user]
+    backend.save(foo_group)
+
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    op = PatchOperation(
+        op=Op.add,
+        path="members",
+        value=[{"value": admin.identifier, "display": "Admin"}],
+    )
+    error = scim_client.modify(
+        Group,
+        foo_group.id,
+        PatchOp[Group](operations=[op]),
+        raise_scim_errors=False,
+    )
+
+    assert error.status == 400
+    assert error.scim_type == "mutability"
+
+    backend.reload(foo_group)
+    assert foo_group.members == [user]
 
 
 def test_patch_group_add_member(app, backend, foo_group, user, moderator, scim_client):
@@ -213,7 +241,7 @@ def test_patch_invalid_operation(app, backend, user, scim_client):
         "Operations": [{"op": "invalid_operation", "path": "title", "value": "Test"}],
     }
 
-    with pytest.raises(SCIMResponseErrorObject):
+    with pytest.raises(SCIMException):
         scim_client.modify(User, user.id, patch_op_dict, check_request_payload=False)
 
 

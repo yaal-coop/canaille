@@ -222,8 +222,6 @@ def configuration(request):
                 },
                 "loggers": {
                     "faker": {"level": "WARNING"},
-                    "httpx": {"level": "WARNING"},
-                    "httpcore": {"level": "WARNING"},
                     "httpx2": {"level": "WARNING"},
                     "httpcore2": {"level": "WARNING"},
                     "canaille": {"level": "DEBUG", "handlers": ["wsgi"]},
