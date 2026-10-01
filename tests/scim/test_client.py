@@ -7,6 +7,7 @@ from scim2_models import SearchRequest
 
 from canaille.app import models
 from canaille.scim.casting import user_from_scim_to_canaille
+from canaille.scim.client import external_id_filter
 from canaille.scim.client import user_from_canaille_to_scim_client
 from canaille.scim.models import EnterpriseUser
 from canaille.scim.models import User as SCIMUser
@@ -453,3 +454,10 @@ def test_user_from_scim_to_canaille_handles_no_primaries():
     user_from_scim_to_canaille(scim_user, user)
 
     assert user.emails == ["first@example.com", "second@example.com"]
+
+
+def test_external_id_filter_escapes_the_identifier():
+    """Quotes in an identifier cannot alter the externalId filter."""
+    assert (
+        external_id_filter('x" or userName pr') == r'externalId eq "x\" or userName pr"'
+    )
