@@ -399,6 +399,18 @@ def test_user_from_canaille_to_scim_client_without_enterprise_user_extension(
     assert EnterpriseUser not in scim_user
 
 
+def test_user_from_canaille_to_scim_client_does_not_send_the_password(
+    scim_client_for_trusted_client, user
+):
+    """The password hash is not sent to the provisioned clients."""
+    User = scim_client_for_trusted_client.get_resource_model("User")
+    EnterpriseUser = User.get_extension_model("EnterpriseUser")
+
+    scim_user = user_from_canaille_to_scim_client(user, User, EnterpriseUser)
+    assert user.get_password_hash()
+    assert "password" not in scim_user.model_dump()
+
+
 @pytest.mark.skip("Primary is not supported at the moment")
 def test_user_from_scim_to_canaille_sorts_primary_emails_first(backend):
     """Test that primary emails are sorted first when converting from SCIM to Canaille user."""

@@ -33,6 +33,8 @@ Removed
 
 Fixed
 ^^^^^
+- The SCIM client does not send the password hashes to the provisioned clients
+  anymore.
 - The SCIM client escapes the identifiers it puts in ``externalId`` filters.
 - SCIM PATCH requests that cannot be applied answer a SCIM error instead of an
   HTTP 500 error.
