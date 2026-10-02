@@ -201,7 +201,7 @@ def test_ldap_connection_remote(testclient, configuration, backend):
 
 def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
     """Test that configuration validation raises an exception when LDAP server is unreachable."""
-    configuration["CANAILLE_LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    configuration["CANAILLE_LDAP"]["URI"] = "ldap://ldap.invalid"
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()
 

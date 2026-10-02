@@ -14,7 +14,7 @@ def test_ldap_connection_remote_ldap_unreachable(configuration):
     app = create_app(configuration)
     testclient = TestApp(app)
 
-    app.config["CANAILLE_LDAP"]["URI"] = "ldap://invalid-ldap.com"
+    app.config["CANAILLE_LDAP"]["URI"] = "ldap://ldap.invalid"
 
     app.config["DEBUG"] = False
     res = testclient.get("/", status=500, expect_errors=True)

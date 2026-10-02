@@ -177,12 +177,12 @@ def test_smtp_connection_remote_smtp_unreachable(
     testclient, backend, configuration, smtpd
 ):
     """Test SMTP connection check fails when remote SMTP server is unreachable."""
-    configuration["CANAILLE"]["SMTP"]["HOST"] = "smtp://invalid-smtp.com"
+    configuration["CANAILLE"]["SMTP"]["HOST"] = "smtp://smtp.invalid"
     config_obj = settings_factory(configuration)
     config_dict = config_obj.model_dump()["CANAILLE"]["SMTP"]
     assert check_smtp_connection(config_dict) == CheckResult(
         success=False,
-        message=f"Could not connect to the SMTP server 'smtp://invalid-smtp.com' on port '{configuration['CANAILLE']['SMTP']['PORT']}'",
+        message=f"Could not connect to the SMTP server 'smtp://smtp.invalid' on port '{configuration['CANAILLE']['SMTP']['PORT']}'",
     )
 
 
@@ -336,7 +336,7 @@ def test_smpp_connection_remote_smpp_unreachable(
     """Test SMPP connection check fails when remote SMPP server is unreachable."""
     smpp_client.__enter__ = mock.Mock(side_effect=smpplib.exceptions.ConnectionError())
     configuration["CANAILLE"]["SMPP"] = {
-        "HOST": "invalid-smpp.com",
+        "HOST": "smpp.invalid",
         "PORT": 2775,
         "LOGIN": "user",
         "PASSWORD": "user",
@@ -345,7 +345,7 @@ def test_smpp_connection_remote_smpp_unreachable(
     config_dict = config_obj.model_dump()["CANAILLE"]["SMPP"]
     assert check_smpp_connection(config_dict) == CheckResult(
         success=False,
-        message="Could not connect to the SMPP server 'invalid-smpp.com' on port '2775'",
+        message="Could not connect to the SMPP server 'smpp.invalid' on port '2775'",
     )
 
 
