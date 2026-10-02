@@ -441,7 +441,7 @@ requires-dist = [
     { name = "python-ldap", marker = "extra == 'ldap'", specifier = ">=3.4.4" },
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
-    { name = "scim2-client", extras = ["httpx2"], marker = "extra == 'scim'", specifier = ">=0.11.1" },
+    { name = "scim2-client", extras = ["httpx2"], marker = "extra == 'scim'", specifier = ">=0.11.2" },
     { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.10.2" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "six", marker = "extra == 'ldap'", specifier = ">=1.17.0" },
@@ -3181,14 +3181,14 @@ wheels = [
 
 [[package]]
 name = "scim2-client"
-version = "0.11.1"
+version = "0.11.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "scim2-models" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/16/88/50b45ac11b460f8927071f9ebfba3c4c71999de890f5c807a47a63240ff1/scim2_client-0.11.1.tar.gz", hash = "sha256:630d2d8dbc6f40d163dfac1849cc7ad53ab6a4c87cc1b5b14f8d3d424ff9546e", size = 33031, upload-time = "2026-10-01T15:18:47.093Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ea/d4/1b32739f8bdca917f1a4e23ce8f13f049f2dad6c8e33eb31fcdd47fe5f48/scim2_client-0.11.2.tar.gz", hash = "sha256:939c1f5116a56a707e32546fc0bba9f92815dda10b049e9751f30fced6684d0c", size = 33181, upload-time = "2026-10-02T07:18:22.244Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/0d/0b8f8a884b442d52b662d0061ca8ca8709d7e327525c36ba38e8c84add3b/scim2_client-0.11.1-py3-none-any.whl", hash = "sha256:5520f83b285d8f86d204b934524657aa880dd48090e479a288307f12fa966e92", size = 33741, upload-time = "2026-10-01T15:18:45.447Z" },
+    { url = "https://files.pythonhosted.org/packages/a7/3c/145a16b9623ccb5e38b4a72a1fabe9392344bf0355c4be06a5cf612cee54/scim2_client-0.11.2-py3-none-any.whl", hash = "sha256:d4633884ba88946d06d6ad9f2dda3c27d2a3fc485a290b43dbb3e06421f36aa8", size = 33899, upload-time = "2026-10-02T07:18:20.836Z" },
 ]
 
 [package.optional-dependencies]
