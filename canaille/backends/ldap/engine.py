@@ -20,6 +20,8 @@ from .ldapobjectquery import LDAPObjectQuery
 from .utils import is_meaningful_value
 from .utils import python_attrs_to_ldap
 
+LDAP_X_SERVER_UNKNOWN = -19
+
 
 class LDAPAlchemyError(Exception):
     """Base exception for all ldapalchemy errors."""
@@ -62,6 +64,20 @@ def _make_connector_cls(network_timeout):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.set_option(ldap.OPT_NETWORK_TIMEOUT, network_timeout)
+
+        def simple_bind_s(self, *args, **kwargs):
+            try:
+                return super().simple_bind_s(*args, **kwargs)
+            except ldap.LDAPError as exc:
+                # OpenLDAP 2.7 reports unresolvable hosts with a code that
+                # python-ldap does not map. ldappool would hide it in a BackendError.
+                info = exc.args[0] if exc.args else None
+                if (
+                    isinstance(info, dict)
+                    and info.get("result") == LDAP_X_SERVER_UNKNOWN
+                ):
+                    raise ldap.SERVER_DOWN(info) from exc
+                raise
 
     return _Connector
 

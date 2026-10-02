@@ -1,6 +1,7 @@
 import datetime
 from unittest import mock
 
+import ldap
 import ldap.dn
 import pytest
 
@@ -208,6 +209,28 @@ def test_ldap_connection_remote_ldap_unreachable(testclient, configuration):
     with pytest.raises(
         ConfigurationException,
         match=r"Could not connect to the LDAP server",
+    ):
+        LDAPBackend.check_network_config(config_dict)
+
+
+def test_ldap_connection_remote_ldap_unknown_server(testclient, configuration):
+    """Test that configuration validation raises an exception when the LDAP host cannot be resolved."""
+    config_obj = settings_factory(configuration)
+    config_dict = config_obj.model_dump()
+    unknown_server = ldap.LDAPError(
+        {
+            "result": -19,
+            "desc": "Unknown server (X)",
+            "info": "Name or service not known",
+        }
+    )
+
+    with (
+        mock.patch("ldappool.StateConnector.simple_bind_s", side_effect=unknown_server),
+        pytest.raises(
+            ConfigurationException,
+            match=r"Could not connect to the LDAP server",
+        ),
     ):
         LDAPBackend.check_network_config(config_dict)
 

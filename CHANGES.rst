@@ -40,6 +40,8 @@ Fixed
 - The SCIM client does not send the password hashes to the provisioned clients
   anymore.
 - The SCIM client escapes the identifiers it puts in ``externalId`` filters.
+- With OpenLDAP 2.7, an LDAP server address that cannot be resolved raised a raw
+  ``BackendError``. It now reports that Canaille could not connect to the LDAP server.
 - SCIM PATCH requests that cannot be applied answer a SCIM error instead of an
   HTTP 500 error.
 - User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
