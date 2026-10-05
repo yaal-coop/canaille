@@ -45,6 +45,12 @@ def test_trusted_domains_property(testclient, backend):
     assert not client_untrusted.trusted
     assert not client_no_uri.trusted
 
+    backend.delete(client_localhost)
+    backend.delete(client_trusted)
+    backend.delete(client_subdomain)
+    backend.delete(client_untrusted)
+    backend.delete(client_no_uri)
+
 
 def test_trusted_domains_check_the_redirect_uris(testclient, backend):
     """A trusted client_uri is not enough, as it is purely declarative.
@@ -66,6 +72,8 @@ def test_trusted_domains_check_the_redirect_uris(testclient, backend):
     ]
     backend.save(client)
     assert not client.trusted
+
+    backend.delete(client)
 
 
 def test_trusted_domains_consent_bypass(testclient, logged_user, backend):
@@ -97,6 +105,10 @@ def test_trusted_domains_consent_bypass(testclient, logged_user, backend):
 
     assert res.location.startswith("https://localhost:3000/callback?code=")
 
+    for code in backend.query(models.AuthorizationCode, client=client):
+        backend.delete(code)
+    backend.delete(client)
+
 
 def test_untrusted_domains_show_consent(testclient, logged_user, backend):
     """Test that untrusted clients show the consent page."""
@@ -127,6 +139,8 @@ def test_untrusted_domains_show_consent(testclient, logged_user, backend):
 
     res.mustcontain("is requesting access to")
     res.mustcontain("Untrusted Client")
+
+    backend.delete(client)
 
 
 def test_wildcard_and_exact_domain_matching(testclient, backend):
@@ -177,6 +191,12 @@ def test_wildcard_and_exact_domain_matching(testclient, backend):
     assert client_exact_exact.trusted
     assert not client_no_match.trusted
 
+    backend.delete(client_wildcard_sub)
+    backend.delete(client_wildcard_exact)
+    backend.delete(client_exact_sub)
+    backend.delete(client_exact_exact)
+    backend.delete(client_no_match)
+
 
 def test_empty_trusted_domains(testclient, backend):
     """Test that clients are not trusted when TRUSTED_DOMAINS is empty."""
@@ -191,6 +211,8 @@ def test_empty_trusted_domains(testclient, backend):
 
     assert not client.trusted
 
+    backend.delete(client)
+
 
 def test_invalid_client_uri_hostname(testclient, backend):
     """Test that clients with invalid URI hostnames are not trusted."""
@@ -204,3 +226,5 @@ def test_invalid_client_uri_hostname(testclient, backend):
     backend.save(client)
 
     assert not client.trusted
+
+    backend.delete(client)

@@ -38,6 +38,8 @@ def test_generate_registration_token_default(cli_runner, testclient, backend):
 
     assert res.json["client_id"] == client_id
 
+    backend.delete(backend.get(models.Client, client_id=client_id))
+
 
 def test_generate_management(cli_runner, testclient, backend, client):
     """Test management token generation for an existing client."""
@@ -188,6 +190,8 @@ def test_generate_registration_token_custom_expiration(cli_runner, testclient, b
     )
 
     assert res.json["client_id"] == client_id
+
+    backend.delete(backend.get(models.Client, client_id=client_id))
 
 
 def test_generate_registration_token_without_server_name(cli_runner, testclient):
