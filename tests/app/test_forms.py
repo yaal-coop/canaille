@@ -26,7 +26,7 @@ def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
     form.validate()
     assert form.dt.data is None
 
-    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     offset = LOCALTZ.utcoffset(utc_date.replace(tzinfo=None))
     locale_date = datetime.datetime(2023, 6, 1, 12) + offset
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -72,7 +72,7 @@ def test_datetime_utc_field_utc(testclient):
     form.validate()
     assert form.dt.data is None
 
-    date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     rendered_date = date.strftime("%Y-%m-%d %H:%M:%S")
     rendered_date_form = date.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -116,7 +116,7 @@ def test_datetime_utc_field_japan_timezone(testclient):
     form.validate()
     assert form.dt.data is None
 
-    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     locale_date = datetime.datetime(2023, 6, 1, 21)
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")
     rendered_locale_date_form = locale_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -161,7 +161,7 @@ def test_datetime_utc_field_invalid_timezone(testclient):
     form.validate()
     assert form.dt.data is None
 
-    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.timezone.utc)
+    utc_date = datetime.datetime(2023, 6, 1, 12, tzinfo=datetime.UTC)
     offset = LOCALTZ.utcoffset(utc_date.replace(tzinfo=None))
     locale_date = datetime.datetime(2023, 6, 1, 12) + offset
     rendered_locale_date = locale_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -352,7 +352,7 @@ def test_maximum_password_length_config(testclient):
         password_too_long_validator(None, Field("a" * 4097))
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator(api_get, testclient):
     """Test that compromised password validator checks against HIBP API and rejects compromised passwords."""
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
@@ -385,7 +385,7 @@ def test_compromised_password_validator(api_get, testclient):
     assert compromised_password_validator(None, Field("password")) is None
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_without_form_validation(
     api_get, testclient, logged_user, caplog
 ):

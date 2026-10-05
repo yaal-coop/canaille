@@ -1,8 +1,11 @@
 import datetime
 import logging
+import re
 from unittest import mock
 
 import pytest
+
+from canaille.app import models
 
 
 def test_password_forgotten_disabled(testclient, user, smtpd):
@@ -63,6 +66,67 @@ def test_password_forgotten_multiple_mails(smtpd, testclient, user, backend, cap
     assert [message["X-RcptTo"] for message in smtpd.messages] == user.emails
 
 
+def test_password_forgotten_multiple_mails_same_link(smtpd, testclient, user, backend):
+    """All the reset mails sent to a user must carry the same reset link."""
+    user.emails = ["foo@bar.test", "foo@baz.test", "foo@foo.com"]
+    backend.save(user)
+
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res.form.submit(status=200)
+
+    assert len(smtpd.messages) == 3
+    links = {
+        re.search(
+            r"https?://\S+/reset/\S+",
+            str(message.get_payload()[0]).replace("=\n", ""),
+        ).group(0)
+        for message in smtpd.messages
+    }
+    assert len(links) == 1
+
+    path = "/reset/" + links.pop().split("/reset/", 1)[1]
+    testclient.get(path, status=200)
+
+
+def test_password_forgotten_multiple_mails_same_code(smtpd, testclient, user, backend):
+    """All the reset mails sent to a user must carry the same reset code."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    user.emails = ["foo@bar.test", "foo@baz.test", "foo@foo.com"]
+    backend.save(user)
+
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res.form.submit(status=302)
+
+    assert len(smtpd.messages) == 3
+    backend.reload(user)
+    code = user.one_time_password
+    for message in smtpd.messages:
+        body = str(message.get_payload()[0]).replace("=\n", "")
+        assert code in body
+
+
+def test_password_forgotten_without_email_address(smtpd, testclient, backend):
+    """A user without any email address must not get a reset secret generated."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        password="correct horse battery staple",
+    )
+    backend.save(u)
+
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "temp"
+    res.form.submit(status=200)
+
+    assert len(smtpd.messages) == 0
+    backend.reload(u)
+    assert u.one_time_password is None
+    backend.delete(u)
+
+
 def test_password_forgotten_invalid_form(testclient, user, smtpd):
     """Test that password reset form requires a login field."""
     res = testclient.get("/reset", status=200)
@@ -70,6 +134,18 @@ def test_password_forgotten_invalid_form(testclient, user, smtpd):
     res.form["login"] = ""
     res = res.form.submit(status=200)
     assert ("error", "Could not send the password reset link.") in res.flashes
+
+    assert len(smtpd.messages) == 0
+
+
+def test_password_forgotten_invalid_form_without_trusted_hosts(testclient, user, smtpd):
+    """The form error mentions a code when no trusted host is configured."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    res = testclient.get("/reset", status=200)
+
+    res.form["login"] = ""
+    res = res.form.submit(status=200)
+    assert ("error", "Could not send the password reset code.") in res.flashes
 
     assert len(smtpd.messages) == 0
 
@@ -165,7 +241,7 @@ def test_password_forgotten_mail_error(SMTP, testclient, user, smtpd):
 
 def test_password_forgotten_user_disabled(testclient, user, caplog, backend, smtpd):
     """Test that password reset emails are not sent for locked user accounts."""
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    user.lock_date = datetime.datetime.now(datetime.UTC)
     backend.save(user)
 
     res = testclient.get("/reset", status=200)

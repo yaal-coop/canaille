@@ -73,7 +73,10 @@ def test_invalid_redirect_uri(testclient, logged_user, client, backend):
 
 
 def test_internal_server_error_is_logged(testclient, caplog, monkeypatch):
-    """Unexpected OAuth endpoint errors are logged instead of being swallowed."""
+    """Unexpected OAuth endpoint errors are logged instead of being swallowed.
+
+    The exception message is only logged, never sent to the client.
+    """
     from canaille.oidc.endpoints import oauth
 
     def boom(*args, **kwargs):
@@ -89,6 +92,6 @@ def test_internal_server_error_is_logged(testclient, caplog, monkeypatch):
     )
     assert res.json == {
         "error": "internal_server_error",
-        "error_description": "boom",
+        "error_description": "The server encountered an unexpected error.",
     }
     assert ("canaille", logging.ERROR, "boom") in caplog.record_tuples

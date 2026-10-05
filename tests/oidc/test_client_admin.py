@@ -203,7 +203,7 @@ def test_client_delete(testclient, logged_admin, backend):
         token_id="id",
         client=client,
         subject=logged_admin,
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(token)

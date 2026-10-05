@@ -196,9 +196,7 @@ def test_prompt_create_not_logged(testclient, trusted_client, smtpd, backend):
 
     # Simulate a click on the validation link in the mail
     payload = RegistrationPayload(
-        creation_date_isoformat=datetime.datetime.now(
-            datetime.timezone.utc
-        ).isoformat(),
+        creation_date_isoformat=datetime.datetime.now(datetime.UTC).isoformat(),
         user_name="",
         user_name_editable=True,
         email="foo@bar.test",
@@ -279,9 +277,9 @@ def test_prompt_consent(testclient, logged_user, client, backend):
     before returning information to the Client. If it cannot obtain
     consent, it MUST return an error, typically consent_required.
     """
-    original_consent_date = datetime.datetime.now(
-        datetime.timezone.utc
-    ) - datetime.timedelta(minutes=1)
+    original_consent_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(
+        minutes=1
+    )
     consent = models.Consent(
         consent_id=str(uuid.uuid4()),
         client=client,
@@ -399,11 +397,11 @@ def test_prompt_select_account_switch_user(testclient, user, admin, client, back
         sess["sessions"] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             UserSession(
                 user=admin,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc)
+                last_login_datetime=datetime.datetime.now(datetime.UTC)
                 - datetime.timedelta(minutes=1),
             ).serialize(),
         ]

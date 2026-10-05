@@ -69,7 +69,7 @@ def test_auth_time(
     backend,
 ):
     """Check that the ID token contains the user authentication time."""
-    auth_time = datetime.datetime(2025, 1, 1, 12, 0, tzinfo=datetime.timezone.utc)
+    auth_time = datetime.datetime(2025, 1, 1, 12, 0, tzinfo=datetime.UTC)
     with time_machine.travel(auth_time, tick=False):
         res = testclient.get("/login")
         res.form["login"] = "user"
@@ -78,7 +78,7 @@ def test_auth_time(
         res = res.form.submit()
 
     with time_machine.travel(
-        datetime.datetime(2025, 1, 1, 12, 1, tzinfo=datetime.timezone.utc), tick=False
+        datetime.datetime(2025, 1, 1, 12, 1, tzinfo=datetime.UTC), tick=False
     ):
         res = testclient.get(
             "/oauth/authorize",
@@ -99,7 +99,7 @@ def test_auth_time(
     code = params["code"][0]
 
     with time_machine.travel(
-        datetime.datetime(2025, 1, 1, 12, 2, tzinfo=datetime.timezone.utc), tick=False
+        datetime.datetime(2025, 1, 1, 12, 2, tzinfo=datetime.UTC), tick=False
     ):
         res = testclient.post(
             "/oauth/token",
@@ -119,7 +119,7 @@ def test_auth_time(
         registry=registry,
     )
     id_token_auth_time = datetime.datetime.fromtimestamp(
-        claims.claims["auth_time"], tz=datetime.timezone.utc
+        claims.claims["auth_time"], tz=datetime.UTC
     )
     assert id_token_auth_time == auth_time
 
@@ -137,7 +137,7 @@ def test_auth_time_update(
 
     This test calls the authorization endpoint test twice. The first time it includes max_age=15000 (so that the OP is required to return auth_time in the id_token). The second time it includes max_age=10000, and the authorization server must not request that the user logs in. The test verifies that auth_time and sub are consistent between the id_tokens from the first and second authorizations.
     """
-    auth_time = datetime.datetime(2025, 1, 1, 12, 0, tzinfo=datetime.timezone.utc)
+    auth_time = datetime.datetime(2025, 1, 1, 12, 0, tzinfo=datetime.UTC)
     with time_machine.travel(auth_time, tick=False):
         res = testclient.get("/login")
         res.form["login"] = "user"
@@ -146,7 +146,7 @@ def test_auth_time_update(
         res = res.form.submit()
 
     with time_machine.travel(
-        datetime.datetime(2025, 1, 1, 12, 1, tzinfo=datetime.timezone.utc), tick=False
+        datetime.datetime(2025, 1, 1, 12, 1, tzinfo=datetime.UTC), tick=False
     ):
         res = testclient.get(
             "/oauth/authorize",
@@ -169,7 +169,7 @@ def test_auth_time_update(
     code1 = params["code"][0]
 
     with time_machine.travel(
-        datetime.datetime(2025, 1, 1, 12, 2, tzinfo=datetime.timezone.utc), tick=False
+        datetime.datetime(2025, 1, 1, 12, 2, tzinfo=datetime.UTC), tick=False
     ):
         res = testclient.post(
             "/oauth/token",
@@ -190,14 +190,14 @@ def test_auth_time_update(
         registry=registry,
     )
     id_token_1_auth_time = datetime.datetime.fromtimestamp(
-        claims.claims["auth_time"], tz=datetime.timezone.utc
+        claims.claims["auth_time"], tz=datetime.UTC
     )
     assert id_token_1_auth_time == auth_time
 
     backend.delete(backend.get(models.Consent))
 
     with time_machine.travel(
-        datetime.datetime(2025, 1, 1, 12, 3, tzinfo=datetime.timezone.utc), tick=False
+        datetime.datetime(2025, 1, 1, 12, 3, tzinfo=datetime.UTC), tick=False
     ):
         res = testclient.get(
             "/oauth/authorize",
@@ -220,7 +220,7 @@ def test_auth_time_update(
     assert code1 != code2
 
     with time_machine.travel(
-        datetime.datetime(2025, 1, 1, 12, 4, tzinfo=datetime.timezone.utc), tick=False
+        datetime.datetime(2025, 1, 1, 12, 4, tzinfo=datetime.UTC), tick=False
     ):
         res = testclient.post(
             "/oauth/token",
@@ -242,6 +242,6 @@ def test_auth_time_update(
         registry=registry,
     )
     id_token_2_auth_time = datetime.datetime.fromtimestamp(
-        claims.claims["auth_time"], tz=datetime.timezone.utc
+        claims.claims["auth_time"], tz=datetime.UTC
     )
     assert id_token_2_auth_time == auth_time

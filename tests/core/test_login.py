@@ -47,7 +47,7 @@ def test_signin_locked_account(testclient, user, backend):
     with testclient.session_transaction() as session:
         assert not session.get("sessions")
 
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    user.lock_date = datetime.datetime.now(datetime.UTC)
     backend.save(user)
 
     res = testclient.get("/login", status=200)

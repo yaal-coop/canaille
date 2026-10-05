@@ -7,7 +7,7 @@ from . import client_credentials
 def test_expired_secret_cannot_authenticate(testclient, client, backend, caplog):
     """Clients cannot use an expired secret at the token endpoint."""
     client.client_secret_expires_at = datetime.datetime.now(
-        datetime.timezone.utc
+        datetime.UTC
     ) - datetime.timedelta(days=1)
     backend.save(client)
     assert client.secret_expired
@@ -34,7 +34,7 @@ def test_expired_secret_cannot_authenticate_with_client_secret_post(
     """The client_secret_post method is guarded the same way as client_secret_basic."""
     client.token_endpoint_auth_method = "client_secret_post"
     client.client_secret_expires_at = datetime.datetime.now(
-        datetime.timezone.utc
+        datetime.UTC
     ) - datetime.timedelta(days=1)
     backend.save(client)
 
@@ -54,7 +54,7 @@ def test_expired_secret_cannot_authenticate_with_client_secret_post(
 def test_future_expiration_can_authenticate(testclient, client, backend):
     """A secret expiring in the future is still valid."""
     client.client_secret_expires_at = datetime.datetime.now(
-        datetime.timezone.utc
+        datetime.UTC
     ) + datetime.timedelta(days=1)
     backend.save(client)
     assert not client.secret_expired
@@ -71,7 +71,7 @@ def test_edit_secret_expiration(testclient, client, logged_admin, backend):
     """Administrators can set and unset the secret expiration date."""
     assert not client.client_secret_expires_at
 
-    expiration = datetime.datetime.now(datetime.timezone.utc).replace(
+    expiration = datetime.datetime.now(datetime.UTC).replace(
         second=0, microsecond=0
     ) + datetime.timedelta(days=30)
 
@@ -98,7 +98,7 @@ def test_new_client_secret(testclient, client, logged_admin, backend, caplog):
     """Renewing the secret of a client clears its expiration date."""
     old_secret = client.client_secret
     client.client_secret_expires_at = datetime.datetime.now(
-        datetime.timezone.utc
+        datetime.UTC
     ) - datetime.timedelta(days=1)
     backend.save(client)
 
@@ -137,7 +137,7 @@ def test_expired_secret_is_displayed(testclient, client, logged_admin, backend):
     res.mustcontain(no="The secret of this application has expired")
 
     client.client_secret_expires_at = datetime.datetime.now(
-        datetime.timezone.utc
+        datetime.UTC
     ) - datetime.timedelta(days=1)
     backend.save(client)
 
@@ -151,9 +151,7 @@ def test_secret_expiration_is_serialized_as_a_timestamp(testclient, client, back
     """The RFC7591 client information uses timestamps, and 0 when there is no expiration."""
     assert client.client_info["client_secret_expires_at"] == 0
 
-    expiration = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
-        days=1
-    )
+    expiration = datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1)
     client.client_secret_expires_at = expiration
     backend.save(client)
     assert client.client_info["client_secret_expires_at"] == int(expiration.timestamp())

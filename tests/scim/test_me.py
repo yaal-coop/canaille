@@ -86,7 +86,7 @@ def test_delete_me(app, backend, oidc_client):
         client=oidc_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(token)

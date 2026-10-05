@@ -79,8 +79,7 @@ class Client(Model):
         """
         return (
             self.client_secret_expires_at is not None
-            and self.client_secret_expires_at
-            < datetime.datetime.now(datetime.timezone.utc)
+            and self.client_secret_expires_at < datetime.datetime.now(datetime.UTC)
         )
 
     redirect_uris: list[str] = []

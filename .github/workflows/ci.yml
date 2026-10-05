@@ -56,7 +56,6 @@ jobs:
           - '3.13'
           - '3.12'
           - '3.11'
-          - '3.10'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install uv
@@ -126,8 +125,8 @@ jobs:
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           enable-cache: true
-      - name: Install Python 3.10
-        run: uv python install 3.10
+      - name: Install Python 3.11
+        run: uv python install 3.11
       - name: Install apt dependencies
         run: |
           sudo apt update
@@ -142,7 +141,7 @@ jobs:
           # python tzinfo fails on 'act' without this
           ulimit -n 1024
           export TZ=UTC
-          uv sync --all-extras --resolution=lowest-direct --python 3.10
+          uv sync --all-extras --resolution=lowest-direct --python 3.11
           uv run pytest --numprocesses auto
 
   style:

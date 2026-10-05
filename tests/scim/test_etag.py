@@ -1,5 +1,7 @@
+import datetime
 import json
 
+import time_machine
 from werkzeug.test import Client
 
 from canaille.scim.casting import make_etag
@@ -84,3 +86,23 @@ def test_put_user_without_if_match(app, backend, user, oidc_token):
         headers=headers,
     )
     assert response.status_code == 200
+
+
+def test_put_user_without_changes_keeps_version(app, backend, user, oidc_token):
+    """PUT with the current state of a user does not change its version."""
+    client = Client(app)
+    headers = _scim_headers(app, oidc_token)
+    payload = _get_user_payload(client, app, user, oidc_token)
+    etag = make_etag(user)
+    last_modified = user.last_modified
+    with time_machine.travel(datetime.timedelta(minutes=1)):
+        response = client.put(
+            f"/scim/v2/Users/{user.id}",
+            data=json.dumps(payload),
+            headers=headers,
+        )
+    assert response.status_code == 200
+    assert response.headers["ETag"] == etag
+
+    backend.reload(user)
+    assert user.last_modified == last_modified

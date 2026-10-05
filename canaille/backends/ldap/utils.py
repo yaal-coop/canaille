@@ -1,5 +1,5 @@
 import datetime
-from enum import Enum
+from enum import StrEnum
 
 from canaille.backends import Backend
 from canaille.backends import is_meaningful_value
@@ -7,7 +7,7 @@ from canaille.backends import is_meaningful_value
 LDAP_NULL_DATE = "000001010000Z"
 
 
-class Syntax(str, Enum):
+class Syntax(StrEnum):
     # fmt: off
     BINARY =             "1.3.6.1.4.1.1466.115.121.1.5"
     BOOLEAN =            "1.3.6.1.4.1.1466.115.121.1.7"
@@ -42,7 +42,7 @@ def ldap_to_python(value, syntax):
                 "%Y%m%d%H%M%S.%fZ" if "." in value else "%Y%m%d%H%M%SZ"
             )  # microseconds
             return datetime.datetime.strptime(value, format_string).replace(
-                tzinfo=datetime.timezone.utc
+                tzinfo=datetime.UTC
             )
         format_string = "%Y%m%d%H%M%S.%f%z" if "." in value else "%Y%m%d%H%M%S%z"
         return datetime.datetime.strptime(value, format_string)
@@ -67,7 +67,7 @@ def python_to_ldap(value, syntax, encode=True):
     if syntax == Syntax.GENERALIZED_TIME and isinstance(value, datetime.datetime):
         if value == datetime.datetime.min:
             value = LDAP_NULL_DATE
-        elif not value.tzinfo or value.tzinfo == datetime.timezone.utc:
+        elif not value.tzinfo or value.tzinfo == datetime.UTC:
             value = value.strftime("%Y%m%d%H%M%S.%fZ")
         else:
             value = value.strftime("%Y%m%d%H%M%S.%f%z")

@@ -2,6 +2,7 @@ from unittest import mock
 
 from scim2_models import BulkOperation
 from scim2_models import BulkRequest
+from scim2_models import Context
 from scim2_models import Error
 from scim2_models import PatchOp
 from scim2_models import PatchOperation
@@ -15,9 +16,9 @@ def test_bulk_operation_create_user(backend, scim_client):
 
     scim_client.discover()
     User = scim_client.get_resource_model("User")
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -47,9 +48,9 @@ def test_bulk_operation_create_group(backend, scim_client, user):
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="qwerty",
@@ -82,9 +83,9 @@ def test_bulk_operation_create_group(backend, scim_client, user):
 def test_bulk_operation_create_user_validation_error(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -100,9 +101,9 @@ def test_bulk_operation_create_user_validation_error(scim_client):
 def test_bulk_operation_create_group_validation_error(scim_client):
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="qwerty",
@@ -118,9 +119,9 @@ def test_bulk_operation_create_group_validation_error(scim_client):
 def test_bulk_operation_create_user_database_error(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -144,9 +145,9 @@ def test_bulk_operation_create_user_database_error(scim_client):
 def test_bulk_operation_create_group_database_error(scim_client):
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="qwerty",
@@ -175,9 +176,9 @@ def test_bulk_operation_replace_user(backend, scim_client, user):
 
     user_scim.display_name = "Changed"
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="PUT",
                 path="/Users/user",
                 data=user_scim,
@@ -196,9 +197,9 @@ def test_bulk_operation_replace_user_not_found(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="PUT",
                 path="/Users/invalid",
                 data=User(
@@ -209,7 +210,7 @@ def test_bulk_operation_replace_user_not_found(scim_client):
     )
     response = scim_client.bulk(request)
     assert response.operations[0].status == 404
-    assert response.operations[0].response["detail"] == "User not found"
+    assert response.operations[0].response.detail == "User not found"
     assert (
         response.operations[0].location == "http://canaille.test/scim/v2/Users/invalid"
     )
@@ -221,9 +222,9 @@ def test_bulk_operation_replace_user_validation_error(scim_client, user):
     user_scim = scim_client.query(User, "user")
     user_scim.active = None  # user is now missing required field
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(method="PUT", path="/Users/user", data=user_scim),
+            BulkOperation[User](method="PUT", path="/Users/user", data=user_scim),
         ]
     )
     response = scim_client.bulk(request)
@@ -235,10 +236,11 @@ def test_bulk_operation_replace_user_database_error(scim_client, user):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
     user_scim = scim_client.query(User, "user")
+    user_scim.display_name = "Changed"
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(method="PUT", path="/Users/user", data=user_scim),
+            BulkOperation[User](method="PUT", path="/Users/user", data=user_scim),
         ]
     )
     with mock.patch(
@@ -262,9 +264,9 @@ def test_bulk_operation_replace_group(backend, scim_client, foo_group, user, adm
         {"value": "admin", "ref": "User/admin"},
     ]
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PUT",
                 path="/Groups/foo",
                 data=group_scim,
@@ -283,9 +285,9 @@ def test_bulk_operation_replace_group_not_found(scim_client):
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PUT",
                 path="/Groups/invalid",
                 data=Group(
@@ -297,7 +299,7 @@ def test_bulk_operation_replace_group_not_found(scim_client):
 
     response = scim_client.bulk(request)
     assert response.operations[0].status == 404
-    assert response.operations[0].response["detail"] == "Group not found"
+    assert response.operations[0].response.detail == "Group not found"
     assert (
         response.operations[0].location == "http://canaille.test/scim/v2/Groups/invalid"
     )
@@ -309,9 +311,9 @@ def test_bulk_operation_replace_group_validation_error(scim_client, foo_group):
     group_scim = scim_client.query(Group, "foo")
     group_scim.members = None  # group is now missing required field
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(method="PUT", path="/Groups/foo", data=group_scim),
+            BulkOperation[Group](method="PUT", path="/Groups/foo", data=group_scim),
         ]
     )
     response = scim_client.bulk(request)
@@ -319,14 +321,17 @@ def test_bulk_operation_replace_group_validation_error(scim_client, foo_group):
     assert response.operations[0].location == "http://canaille.test/scim/v2/Groups/foo"
 
 
-def test_bulk_operation_replace_group_database_error(scim_client, foo_group):
+def test_bulk_operation_replace_group_database_error(scim_client, foo_group, admin):
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
     group_scim = scim_client.query(Group, "foo")
+    group_scim.members = [
+        {"value": "admin", "ref": "User/admin"},
+    ]
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(method="PUT", path="/Groups/foo", data=group_scim),
+            BulkOperation[Group](method="PUT", path="/Groups/foo", data=group_scim),
         ]
     )
     with mock.patch(
@@ -350,9 +355,9 @@ def test_bulk_operation_modify_user(backend, scim_client, user):
     )
     patch_op = PatchOp[User](operations=[operation])
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="PATCH",
                 path="/Users/user",
                 data=patch_op,
@@ -378,9 +383,9 @@ def test_bulk_operation_modify_user_not_found(scim_client):
     )
     patch_op = PatchOp[User](operations=[operation])
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="PATCH",
                 path="/Users/invalid",
                 data=patch_op,
@@ -403,9 +408,9 @@ def test_bulk_operation_modify_user_validation_error(scim_client, user):
     # operations shouldn't be none
     patch_op = PatchOp[User](operations=None)
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="PATCH",
                 path="/Users/user",
                 data=patch_op,
@@ -427,9 +432,9 @@ def test_bulk_operation_modify_user_database_error(scim_client, user):
     )
     patch_op = PatchOp[User](operations=[operation])
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="PATCH",
                 path="/Users/user",
                 data=patch_op,
@@ -461,9 +466,9 @@ def test_bulk_operation_modify_group(backend, scim_client, foo_group, admin):
     )
     patch_op = PatchOp[Group](operations=[operation])
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PATCH",
                 path="/Groups/foo",
                 data=patch_op,
@@ -490,9 +495,9 @@ def test_bulk_operation_modify_group_not_found(scim_client, admin):
     )
     patch_op = PatchOp[Group](operations=[operation])
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PATCH",
                 path="/Groups/invalid",
                 data=patch_op,
@@ -515,9 +520,9 @@ def test_bulk_operation_modify_group_validation_error(scim_client, foo_group):
     # operations shouldn't be none
     patch_op = PatchOp[Group](operations=None)
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PATCH",
                 path="/Groups/foo",
                 data=patch_op,
@@ -541,9 +546,9 @@ def test_bulk_operation_modify_group_database_error(scim_client, foo_group, admi
     )
     patch_op = PatchOp[Group](operations=[operation])
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PATCH",
                 path="/Groups/foo",
                 data=patch_op,
@@ -563,10 +568,11 @@ def test_bulk_operation_modify_group_database_error(scim_client, foo_group, admi
 
 def test_bulk_operation_delete_user(backend, scim_client, user):
     scim_client.discover()
+    User = scim_client.get_resource_model("User")
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="DELETE",
                 path="/Users/user",
             ),
@@ -584,10 +590,11 @@ def test_bulk_operation_delete_user(backend, scim_client, user):
 
 def test_bulk_operation_delete_user_not_found(scim_client):
     scim_client.discover()
+    User = scim_client.get_resource_model("User")
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="DELETE",
                 path="/Users/invalid",
             ),
@@ -604,10 +611,11 @@ def test_bulk_operation_delete_user_not_found(scim_client):
 
 def test_bulk_operation_delete_user_database_error(scim_client, user):
     scim_client.discover()
+    User = scim_client.get_resource_model("User")
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="DELETE",
                 path="/Users/user",
             ),
@@ -626,10 +634,11 @@ def test_bulk_operation_delete_user_database_error(scim_client, user):
 
 def test_bulk_operation_delete_group(backend, scim_client, foo_group):
     scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="DELETE",
                 path="/Groups/foo",
             ),
@@ -647,10 +656,11 @@ def test_bulk_operation_delete_group(backend, scim_client, foo_group):
 
 def test_bulk_operation_delete_group_not_found(scim_client):
     scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="DELETE",
                 path="/Groups/invalid",
             ),
@@ -667,10 +677,11 @@ def test_bulk_operation_delete_group_not_found(scim_client):
 
 def test_bulk_operation_delete_group_database_error(scim_client, foo_group):
     scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="DELETE",
                 path="/Groups/foo",
             ),
@@ -691,10 +702,10 @@ def test_bulk_operation_stop_after_fail_on_errors_number_reached(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         fail_on_errors=2,
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -704,7 +715,7 @@ def test_bulk_operation_stop_after_fail_on_errors_number_reached(scim_client):
                     active=True,
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwertyu",
@@ -714,7 +725,7 @@ def test_bulk_operation_stop_after_fail_on_errors_number_reached(scim_client):
                     active=True,
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwertyui",
@@ -744,9 +755,9 @@ def test_bulk_too_many_operations(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty1",
@@ -756,7 +767,7 @@ def test_bulk_too_many_operations(scim_client):
                     active=True,
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty2",
@@ -766,7 +777,7 @@ def test_bulk_too_many_operations(scim_client):
                     active=True,
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty3",
@@ -776,7 +787,7 @@ def test_bulk_too_many_operations(scim_client):
                     active=True,
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty4",
@@ -786,7 +797,7 @@ def test_bulk_too_many_operations(scim_client):
                     active=True,
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty5",
@@ -796,7 +807,7 @@ def test_bulk_too_many_operations(scim_client):
                     active=True,
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty6",
@@ -809,7 +820,11 @@ def test_bulk_too_many_operations(scim_client):
         ],
     )
 
-    error = scim_client.bulk(request, raise_scim_errors=False)
+    error = scim_client.bulk(
+        request.model_dump(scim_ctx=Context.BULK_REQUEST),
+        check_request_payload=False,
+        raise_scim_errors=False,
+    )
     assert isinstance(error, Error)
     assert error.status == 413
     assert (
@@ -821,9 +836,9 @@ def test_bulk_request_payload_too_large(scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
 
-    request = BulkRequest(
+    request = BulkRequest[User](
         operations=[
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty1" * 1000,
@@ -836,7 +851,11 @@ def test_bulk_request_payload_too_large(scim_client):
         ],
     )
 
-    error = scim_client.bulk(request, raise_scim_errors=False)
+    error = scim_client.bulk(
+        request.model_dump(scim_ctx=Context.BULK_REQUEST),
+        check_request_payload=False,
+        raise_scim_errors=False,
+    )
     assert isinstance(error, Error)
     assert error.status == 413
     assert (
@@ -850,9 +869,9 @@ def test_create_group_with_bulk_id(backend, scim_client):
     User = scim_client.get_resource_model("User")
     Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="ytrewq",
@@ -861,7 +880,7 @@ def test_create_group_with_bulk_id(backend, scim_client):
                     members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -898,9 +917,9 @@ def test_replace_group_with_bulk_id(backend, scim_client):
     User = scim_client.get_resource_model("User")
     Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="ytrewq",
@@ -909,7 +928,7 @@ def test_replace_group_with_bulk_id(backend, scim_client):
                     members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -924,9 +943,9 @@ def test_replace_group_with_bulk_id(backend, scim_client):
 
     scim_client.bulk(request)
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PUT",
                 path="/Groups/Tour Guides",
                 data=Group(
@@ -934,7 +953,7 @@ def test_replace_group_with_bulk_id(backend, scim_client):
                     members=[Group.Members(value="bulkId:qwerty", ref="Users/Bob")],
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -967,9 +986,9 @@ def test_replace_group_with_invalid_bulk_id(backend, scim_client):
     User = scim_client.get_resource_model("User")
     Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="ytrewq",
@@ -978,7 +997,7 @@ def test_replace_group_with_invalid_bulk_id(backend, scim_client):
                     members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -993,9 +1012,9 @@ def test_replace_group_with_invalid_bulk_id(backend, scim_client):
 
     scim_client.bulk(request)
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="PUT",
                 path="/Groups/Tour Guides",
                 data=Group(
@@ -1003,7 +1022,7 @@ def test_replace_group_with_invalid_bulk_id(backend, scim_client):
                     members=[Group.Members(value="bulkId:invalid", ref="Users/Bob")],
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -1038,9 +1057,9 @@ def test_modify_group_with_bulk_id(backend, scim_client):
     User = scim_client.get_resource_model("User")
     Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="ytrewq",
@@ -1049,7 +1068,7 @@ def test_modify_group_with_bulk_id(backend, scim_client):
                     members=[Group.Members(value="bulkId:qwerty", ref="Users/Alice")],
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -1071,10 +1090,12 @@ def test_modify_group_with_bulk_id(backend, scim_client):
     )
     patch_op = PatchOp[Group](operations=[operation])
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(method="PATCH", path="/Groups/Tour Guides", data=patch_op),
-            BulkOperation(
+            BulkOperation[Group](
+                method="PATCH", path="/Groups/Tour Guides", data=patch_op
+            ),
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -1107,9 +1128,9 @@ def test_create_group_with_invalid_bulk_id(backend, scim_client):
     User = scim_client.get_resource_model("User")
     Group = scim_client.get_resource_model("Group")
 
-    request = BulkRequest(
+    request = BulkRequest[User | Group](
         operations=[
-            BulkOperation(
+            BulkOperation[Group](
                 method="POST",
                 path="/Groups",
                 bulk_id="ytrewq",
@@ -1118,7 +1139,7 @@ def test_create_group_with_invalid_bulk_id(backend, scim_client):
                     members=[Group.Members(value="bulkId:invalid", ref="Users/Alice")],
                 ),
             ),
-            BulkOperation(
+            BulkOperation[User](
                 method="POST",
                 path="/Users",
                 bulk_id="qwerty",
@@ -1134,7 +1155,7 @@ def test_create_group_with_invalid_bulk_id(backend, scim_client):
     response = scim_client.bulk(request)
     assert response.operations[0].status == 400
     assert response.operations[0].location is None
-    assert response.operations[0].response["detail"] == "Could not find bulkId: invalid"
+    assert response.operations[0].response.detail == "Could not find bulkId: invalid"
 
     alice = backend.get(models.User, user_name="Alice")
     assert alice is not None

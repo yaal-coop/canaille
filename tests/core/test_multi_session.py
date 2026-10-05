@@ -64,7 +64,7 @@ def test_switch_to_session_nonexistent_user(testclient, user, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -92,7 +92,7 @@ def test_user_session_opened_true(testclient, user, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -115,11 +115,11 @@ def test_get_active_sessions_multiple(testclient, user, moderator, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             UserSession(
                 user=moderator,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -157,7 +157,7 @@ def test_login_user_removes_duplicate_sessions(testclient, user, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
                 authentication_methods=["password"],
             ).serialize(),
         ]

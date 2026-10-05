@@ -71,7 +71,7 @@ def save_user_session() -> None:
 
 def login_user(user, remember: bool = True) -> None:
     """Open a session for the user."""
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.UTC)
     authentication_methods = g.auth.achieved if hasattr(g, "auth") and g.auth else None
     obj = UserSession(
         user=user,

@@ -12,7 +12,6 @@ keywords = ["oidc", "oauth", "oauth2", "openid", "identity", "authentication"]
 classifiers = [
     "Intended Audience :: Developers",
     "Development Status :: 4 - Beta",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -28,7 +27,7 @@ classifiers = [
 authors = [{name="Yaal Coop", email="contact@yaal.coop"}]
 maintainers = [{name="Éloi Rivard", email="eloi@yaal.coop"}]
 
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "blinker>=1.9.0",
     "click>=8.2.0",
@@ -39,7 +38,7 @@ dependencies = [
     "flask-dramatiq>=0.6.0",
     "flask-session>=0.8.0",
     "flask-wtf >= 1.2.1",
-    "httpx>=0.28.1",
+    "httpx2>=2.13.1",
     "pydantic-settings >= 2.8.0",
     "wtforms >= 3.3.0b2",
 ]
@@ -57,16 +56,15 @@ front = [
 ]
 
 oidc = [
-    "authlib >= 1.7.0",
+    "authlib >= 1.8.0",
     "joserfc >= 1.6.0",
     "tomlkit>=0.13.2",
 ]
 
 scim = [
-    "authlib >= 1.7.0",
-    "httpx>=0.28.1",
-    "scim2-client>=0.7.5",
-    "scim2-models>=0.6.12",
+    "authlib >= 1.8.0",
+    "scim2-client[httpx2]>=0.11.2",
+    "scim2-models>=0.10.2",
 ]
 
 ldap = [
@@ -82,7 +80,7 @@ sentry = [
 sqlite = [
     "flask-alembic>=3.1.1",
     "passlib >= 1.7.4",
-    "sqlalchemy >= 2.0.23",
+    "sqlalchemy >= 2.0.23,<2.1",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]
@@ -161,8 +159,8 @@ dev = [
     "pytest-smtpd >= 0.1.0",
     "pytest-xdist >= 3.3.1",
     "python-avatars >= 1.4.0",
-    "scim2-server>=0.1.8",
-    "scim2-tester>=0.2.8",
+    "scim2-server>=0.5.0",
+    "scim2-tester>=0.5.0",
     "slapd >= 0.1.5",
     "time-machine >= 2.14.1",
     "tox-uv >= 1.16.0",
@@ -173,7 +171,7 @@ dev = [
     # Also, maildump still relies on pkg_resources which have been removed
     # in setuptools 82
     "setuptools >= 50.0.0, <=81; python_version>='3.12'",
-    "pytest-scim2-server>=0.1.6",
+    "pytest-scim2-server>=0.3.0",
     "beautifulsoup4>=4.13.4",
     "prek>=0.1.3",
     "portpicker>=1.6.0",
@@ -204,7 +202,7 @@ devserver = [
     "faker >= 38.2.0",
     "honcho >= 2.0.0",
     "slapd >= 0.1.6",
-    "httpx >= 0.26.0",
+    "httpx2>=2.13.1",
     "watchdog >= 4.0.0",
     "requests>=2.32.3",
 ]
@@ -266,7 +264,7 @@ exclude_lines = [
     "raise NotImplementedError",
     "except ImportError",
     "if app.debug",
-    "pass",
+    "^\\s*pass$",
     "if TYPE_CHECKING",
 ]
 
@@ -304,7 +302,6 @@ docstring-code-format = true
 requires = ["tox>=4.19"]
 env_list = [
     "style",
-    "py310",
     "py311",
     "py312",
     "py313",
@@ -336,7 +333,7 @@ commands = [
 runner = "uv-venv-runner"
 uv_resolution = "lowest-direct"
 extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server"]
-basepython = ["python3.10"]
+basepython = ["python3.11"]
 
 [tool.tox.env.doc]
 dependency_groups = ["dev", "doc"]

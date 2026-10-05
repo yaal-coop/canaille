@@ -183,7 +183,7 @@ def test_invitation_login_already_taken(testclient, logged_admin, smtpd):
 def test_registration(testclient, foo_group):
     """Test that a registration page with a valid payload can be accessed."""
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",
@@ -198,7 +198,7 @@ def test_registration(testclient, foo_group):
 def test_registration_formcontrol(testclient):
     """Test that form controls work correctly during registration."""
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",
@@ -216,7 +216,7 @@ def test_registration_formcontrol(testclient):
 
 def test_registration_invalid_hash(testclient, foo_group):
     """Test that registration with an invalid hash redirects with an error."""
-    now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    now = datetime.datetime.now(datetime.UTC).isoformat()
     payload = RegistrationPayload(
         now, "anything", False, "someone@mydomain.test", [foo_group.id]
     )
@@ -228,7 +228,7 @@ def test_registration_invalid_hash(testclient, foo_group):
 def test_registration_invalid_data(testclient, foo_group):
     """Test that registration with invalid data redirects with an error."""
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",
@@ -241,9 +241,7 @@ def test_registration_invalid_data(testclient, foo_group):
 
 def test_registration_more_than_48_hours_after_invitation(testclient, foo_group):
     """Test that registration links expire after 48 hours."""
-    two_days_ago = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
-        hours=48
-    )
+    two_days_ago = datetime.datetime.now(datetime.UTC) - datetime.timedelta(hours=48)
     payload = RegistrationPayload(
         two_days_ago.isoformat(),
         "someoneelse",
@@ -260,7 +258,7 @@ def test_registration_more_than_48_hours_after_invitation(testclient, foo_group)
 def test_registration_no_password(testclient, foo_group, backend):
     """Test that registration fails when password is not provided."""
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",
@@ -286,7 +284,7 @@ def test_registration_no_password(testclient, foo_group, backend):
 def test_no_registration_if_logged_in(testclient, logged_user, foo_group):
     """Test that logged-in users cannot access registration pages."""
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",
@@ -325,7 +323,7 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
     ]  # remove groups from default read permissions
 
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",

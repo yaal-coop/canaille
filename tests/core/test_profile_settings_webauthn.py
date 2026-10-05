@@ -31,7 +31,7 @@ def fido_credential(testclient, logged_user, backend):
             aaguid=b"\x00" * 16,
             transports='["usb", "nfc"]',
             name=f"Passkey {i}",
-            created_at=datetime.datetime.now(datetime.timezone.utc),
+            created_at=datetime.datetime.now(datetime.UTC),
             user=logged_user,
         )
         backend.save(credential)

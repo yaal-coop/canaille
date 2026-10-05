@@ -150,7 +150,7 @@ def locale_selector():
 
 def timezone_selector():
     if not babel:  # pragma: no cover
-        return datetime.timezone.utc
+        return datetime.UTC
 
     import pytz
     from babel.dates import LOCALTZ

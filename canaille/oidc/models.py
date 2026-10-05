@@ -179,7 +179,7 @@ class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
     def is_expired(self):
         return self.issue_date + datetime.timedelta(
             seconds=int(self.lifetime or 0)
-        ) < datetime.datetime.now(datetime.timezone.utc)
+        ) < datetime.datetime.now(datetime.UTC)
 
     def get_auth_time(self) -> float | None:
         return self.auth_time.timestamp() if self.auth_time else None
@@ -213,12 +213,12 @@ class Token(BaseToken, TokenMixin):
         if self.revokation_date:
             return False
 
-        return self.expire_date >= datetime.datetime.now(datetime.timezone.utc)
+        return self.expire_date >= datetime.datetime.now(datetime.UTC)
 
     def is_expired(self):
         return self.issue_date + datetime.timedelta(
             seconds=int(self.lifetime or 0)
-        ) < datetime.datetime.now(datetime.timezone.utc)
+        ) < datetime.datetime.now(datetime.UTC)
 
     def is_revoked(self):
         return bool(self.revokation_date)
@@ -239,7 +239,7 @@ class Consent(BaseConsent):
         return bool(self.revokation_date)
 
     def revoke(self):
-        self.revokation_date = datetime.datetime.now(datetime.timezone.utc)
+        self.revokation_date = datetime.datetime.now(datetime.UTC)
         Backend.instance.save(self)
 
         tokens = Backend.instance.query(

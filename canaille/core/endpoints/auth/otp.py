@@ -63,7 +63,7 @@ def otp():
         current_app.logger.security(f"Failed OTP authentication for {g.auth.user_name}")
         return render_template("core/auth/otp.html", form=form)
 
-    g.auth.user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
+    g.auth.user.last_otp_login = datetime.datetime.now(datetime.UTC)
     g.auth.user.hotp_counter = hotp_counter
     Backend.instance.save(g.auth.user)
 
@@ -128,7 +128,7 @@ def setup():
             menu=bool(g.session),
         )
 
-    g.auth.user.last_otp_login = datetime.datetime.now(datetime.timezone.utc)
+    g.auth.user.last_otp_login = datetime.datetime.now(datetime.UTC)
     g.auth.user.secret_token = g.auth.data["otp_user_secret"]
     g.auth.user.hotp_counter = hotp_counter
     Backend.instance.save(g.auth.user)

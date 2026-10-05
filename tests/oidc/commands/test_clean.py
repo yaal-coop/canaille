@@ -17,7 +17,7 @@ def test_clean_command(cli_runner, backend, client, user):
         response_type="code",
         scope=["openid", "profile"],
         nonce="nonce",
-        issue_date=datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0),
+        issue_date=datetime.datetime.now(datetime.UTC).replace(microsecond=0),
         lifetime=3600,
         challenge="challenge",
         challenge_method="method",
@@ -33,7 +33,7 @@ def test_clean_command(cli_runner, backend, client, user):
         scope=["openid", "profile"],
         nonce="nonce",
         issue_date=(
-            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+            datetime.datetime.now(datetime.UTC).replace(microsecond=0)
             - datetime.timedelta(days=1)
         ),
         lifetime=3600,
@@ -49,9 +49,7 @@ def test_clean_command(cli_runner, backend, client, user):
         subject=user,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=(
-            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
-        ),
+        issue_date=(datetime.datetime.now(datetime.UTC).replace(microsecond=0)),
         lifetime=3600,
     )
     backend.save(valid_token)
@@ -63,7 +61,7 @@ def test_clean_command(cli_runner, backend, client, user):
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
         issue_date=(
-            datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0)
+            datetime.datetime.now(datetime.UTC).replace(microsecond=0)
             - datetime.timedelta(days=1)
         ),
         lifetime=3600,

@@ -4,7 +4,7 @@ import math
 import re
 from typing import Any
 
-import httpx
+import httpx2
 import wtforms.validators
 from flask import abort
 from flask import current_app
@@ -104,7 +104,7 @@ def compromised_password_validator(form, field):
     )
 
     try:
-        response = httpx.get(api_url, timeout=10)
+        response = httpx2.get(api_url, timeout=10)
     except Exception:
         if not request_is_partial():
             current_app.logger.exception(
@@ -322,7 +322,7 @@ class DateTimeUTCField(wtforms.DateTimeLocalField):
             try:
                 unaware_dt = datetime.datetime.strptime(date_str, format)
                 locale_dt = user_timezone.localize(unaware_dt)
-                utc_dt = locale_dt.astimezone(datetime.timezone.utc)
+                utc_dt = locale_dt.astimezone(datetime.UTC)
                 self.data = utc_dt
                 return
             except ValueError:

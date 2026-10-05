@@ -51,15 +51,15 @@ def test_logout_specific_user_not_current(testclient, user, moderator, admin, ba
         sess[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             UserSession(
                 user=moderator,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             UserSession(
                 user=admin,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -85,11 +85,11 @@ def test_logout_first_session_specific_user(testclient, user, moderator, backend
         sess[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             UserSession(
                 user=moderator,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -113,11 +113,11 @@ def test_logout_user_function_with_user_id(testclient, user, moderator, backend)
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             UserSession(
                 user=moderator,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -143,7 +143,7 @@ def test_logout_user_function_invalid_user_id(testclient, user, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -160,7 +160,7 @@ def test_logout_last_user(testclient, user, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
         g.session = UserSession.deserialize(session[USER_SESSION][0])
@@ -176,11 +176,11 @@ def test_logout_all_users_function(testclient, user, moderator, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             UserSession(
                 user=moderator,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -195,7 +195,7 @@ def test_logout_nonexistent_user_via_url(testclient, user, backend):
         sess[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -226,12 +226,12 @@ def test_logout_user_with_corrupted_session(testclient, user, moderator, backend
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
             {"user": "nonexistent-id", "last_login_datetime": "2024-01-01T00:00:00"},
             UserSession(
                 user=moderator,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 
@@ -248,7 +248,7 @@ def test_logout_all_users_without_g_session(testclient, user, backend):
         session[USER_SESSION] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize(),
         ]
 

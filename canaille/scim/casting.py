@@ -39,7 +39,6 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
         if (user.formatted_name or user.family_name or user.given_name)
         else None,
         display_name=user.display_name,
-        password=user.get_password_hash(),
         title=user.title,
         profile_url=user.profile_url or None,
         emails=[
@@ -103,6 +102,7 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
 def user_from_canaille_to_scim_server(user):
     scim_user = user_from_canaille_to_scim(user, User, EnterpriseUser)
     scim_user.id = user.id
+    scim_user.password = user.get_password_hash()
     return scim_user
 
 
@@ -153,7 +153,7 @@ def user_from_scim_to_canaille(scim_user: User, user):
         if group.value
     ]
     if not scim_user.active:
-        user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+        user.lock_date = datetime.datetime.now(datetime.UTC)
     else:
         user.lock_date = None
     return user

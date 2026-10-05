@@ -24,6 +24,7 @@ from scim2_models import PatchOp
 from scim2_models import ResourceType
 from scim2_models import ResponseParameters
 from scim2_models import Schema
+from scim2_models import SCIMException
 from scim2_models import SearchRequest
 from werkzeug.exceptions import HTTPException
 from werkzeug.exceptions import PreconditionFailed
@@ -136,6 +137,12 @@ def scim_error_handler(error):
     return obj.model_dump(), obj.status
 
 
+@bp.errorhandler(SCIMException)
+def scim_exception_handler(error):
+    obj = error.to_error()
+    return obj.model_dump(), obj.status
+
+
 def parse_search_request(request) -> SearchRequest:
     """Create a SearchRequest object from the request arguments."""
     max_nb_items_per_page = 1000
@@ -168,8 +175,7 @@ def _query_resources(canaille_model, scim_type, to_scim):
     )
     return list_response.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -178,8 +184,7 @@ def _query_resource(resource, to_scim):
     scim_resource = to_scim(resource)
     return scim_resource.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -199,8 +204,7 @@ def _create_resource(scim_type, canaille_model, to_scim, from_scim, data=None):
     return (
         response_resource.model_dump(
             scim_ctx=Context.RESOURCE_CREATION_RESPONSE,
-            attributes=req.attributes,
-            excluded_attributes=req.excluded_attributes,
+            response_parameters=req,
         ),
         HTTPStatus.CREATED,
     )
@@ -214,7 +218,12 @@ def _replace_resource(resource, scim_type, to_scim, from_scim, data=None):
         payload,
         scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
     )
-    scim_resource.replace(original)
+    if not scim_resource.replace(original):
+        return original.model_dump(
+            scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
+            response_parameters=req,
+        )
+
     updated = from_scim(scim_resource, resource)
     Backend.instance.save(updated)
     resource_name = type(resource).__name__.lower()
@@ -224,8 +233,7 @@ def _replace_resource(resource, scim_type, to_scim, from_scim, data=None):
     response = to_scim(updated)
     return response.model_dump(
         scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -249,8 +257,7 @@ def _patch_resource(resource, scim_type, to_scim, from_scim, data=None):
 
     return scim_resource.model_dump(
         scim_ctx=Context.RESOURCE_PATCH_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
 
 
@@ -267,13 +274,13 @@ def get_resource_location_from_path(path):
     return f"{request.url_root}scim/v2{path}"
 
 
-def replace_bulk_ids(group_members, processed_operations):
+def replace_bulk_ids(group_members, processed_operations, payloads):
     for member in group_members:
         if member["value"].startswith("bulkId"):
             bulk_id = member["value"].split(":")[1]
             real_id = next(
                 (
-                    op[0].data.get("id")
+                    payloads[op[1]].get("id")
                     for op in processed_operations
                     if op[0].bulk_id == bulk_id
                 ),
@@ -404,8 +411,7 @@ def search():
     )
     payload = list_response.model_dump(
         scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        attributes=req.attributes,
-        excluded_attributes=req.excluded_attributes,
+        response_parameters=req,
     )
     return payload
 
@@ -427,7 +433,8 @@ def bulk():
             HTTPStatus.CONTENT_TOO_LARGE,
         )
 
-    req = BulkRequest.model_validate(request.json)
+    req = BulkRequest[User[EnterpriseUser] | Group].model_validate(request.json)
+    payloads = [operation.get("data") for operation in request.json["Operations"]]
 
     if len(req.operations) > current_app.config["CANAILLE_SCIM"]["BULK_MAX_OPERATIONS"]:
         return (
@@ -455,9 +462,9 @@ def bulk():
                     models.User,
                     user_from_canaille_to_scim_server,
                     user_from_scim_to_canaille,
-                    data=operation.data,
+                    data=payloads[index],
                 )
-                operation.data = result[0]
+                payloads[index] = result[0]
                 operation.status = result[1]
                 operation.location = result[0]["meta"]["location"]
             except ValidationError as error:
@@ -483,7 +490,7 @@ def bulk():
             try:
                 if operation.method == BulkOperation.Method.put:
                     user = Backend.instance.get(
-                        models.User, user_name=operation.data["userName"]
+                        models.User, user_name=payloads[index]["userName"]
                     )
                     if user:
                         result = _replace_resource(
@@ -491,7 +498,7 @@ def bulk():
                             User[EnterpriseUser],
                             user_from_canaille_to_scim_server,
                             user_from_scim_to_canaille,
-                            data=operation.data,
+                            data=payloads[index],
                         )
                         operation.location = result["meta"]["location"]
                         operation.status = HTTPStatus.OK
@@ -513,7 +520,7 @@ def bulk():
                             User[EnterpriseUser],
                             user_from_canaille_to_scim_server,
                             user_from_scim_to_canaille,
-                            data=operation.data,
+                            data=payloads[index],
                         )
                         operation.location = result["meta"]["location"]
                         operation.status = HTTPStatus.OK
@@ -549,15 +556,17 @@ def bulk():
             and operation.method == BulkOperation.Method.post
         ):
             try:
-                replace_bulk_ids(operation.data["members"], processed_operations)
+                replace_bulk_ids(
+                    payloads[index]["members"], processed_operations, payloads
+                )
                 result = _create_resource(
                     Group,
                     models.Group,
                     group_from_canaille_to_scim_server,
                     group_from_scim_to_canaille,
-                    data=operation.data,
+                    data=payloads[index],
                 )
-                operation.data = result[0]
+                payloads[index] = result[0]
                 operation.status = result[1]
                 operation.location = result[0]["meta"]["location"]
             except InvalidValueException as error:
@@ -589,19 +598,21 @@ def bulk():
             try:
                 if operation.method == BulkOperation.Method.put:
                     group = Backend.instance.get(
-                        models.Group, display_name=operation.data["displayName"]
+                        models.Group, display_name=payloads[index]["displayName"]
                     )
                     if group:
-                        if operation.data.get("members"):
+                        if payloads[index].get("members"):
                             replace_bulk_ids(
-                                operation.data["members"], processed_operations
+                                payloads[index]["members"],
+                                processed_operations,
+                                payloads,
                             )
                         result = _replace_resource(
                             group,
                             Group,
                             group_from_canaille_to_scim_server,
                             group_from_scim_to_canaille,
-                            data=operation.data,
+                            data=payloads[index],
                         )
                         operation.location = result["meta"]["location"]
                         operation.status = HTTPStatus.OK
@@ -618,17 +629,17 @@ def bulk():
                     id = operation.path.split("/")[-1]
                     group = Backend.instance.get(models.Group, display_name=id)
                     if group:
-                        if operation.data.get("Operations"):
-                            for patch_op in operation.data["Operations"]:
+                        if payloads[index].get("Operations"):
+                            for patch_op in payloads[index]["Operations"]:
                                 replace_bulk_ids(
-                                    patch_op["value"], processed_operations
+                                    patch_op["value"], processed_operations, payloads
                                 )
                         result = _patch_resource(
                             group,
                             Group,
                             group_from_canaille_to_scim_server,
                             group_from_scim_to_canaille,
-                            data=operation.data,
+                            data=payloads[index],
                         )
                         operation.location = result["meta"]["location"]
                         operation.status = HTTPStatus.OK
@@ -727,7 +738,7 @@ def bulk():
 
     processed_operations.sort(key=lambda x: x[1])
     processed_operations = list(map(lambda x: x[0], processed_operations))
-    rep = BulkResponse(operations=processed_operations)
+    rep = BulkResponse[User[EnterpriseUser] | Group](operations=processed_operations)
     return (rep.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE), HTTPStatus.OK)
 
 

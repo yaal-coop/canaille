@@ -38,7 +38,7 @@ def oidc_client(testclient, backend):
         redirect_uris=[
             "https://mydomain.test/redirect1",
         ],
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "client_credentials",
@@ -66,7 +66,7 @@ def oidc_token(testclient, oidc_client, backend):
         client=oidc_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -88,7 +88,7 @@ def user_token(testclient, oidc_client, user, backend):
         client=oidc_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -97,13 +97,26 @@ def user_token(testclient, oidc_client, user, backend):
 
 
 @pytest.fixture
-def scim_client(app, oidc_client, oidc_token):
+def scim_provider(app):
+    from scim2_models import ScimProvider
+
+    from canaille.scim.endpoints import get_resource_types
+    from canaille.scim.endpoints import get_schemas
+    from canaille.scim.endpoints import get_service_provider_config
+
+    return ScimProvider.from_discovery(
+        schemas=get_schemas().values(),
+        resource_types=get_resource_types().values(),
+        config=get_service_provider_config(),
+    )
+
+
+@pytest.fixture
+def scim_client(app, oidc_client, oidc_token, scim_provider):
     from scim2_client.engines.werkzeug import TestSCIMClient
     from werkzeug.test import Client
 
     from canaille.scim.endpoints import bp
-    from canaille.scim.endpoints import get_resource_types
-    from canaille.scim.endpoints import get_service_provider_config
 
     return TestSCIMClient(
         Client(app),
@@ -115,8 +128,7 @@ def scim_client(app, oidc_client, oidc_token):
             }
         },
         check_response_status_codes=False,
-        service_provider_config=get_service_provider_config(),
-        resource_types=get_resource_types().values(),
+        provider=scim_provider,
     )
 
 
@@ -135,7 +147,7 @@ def scim_trusted_client(testclient, scim2_server, backend):
         redirect_uris=[
             client_uri + "/redirect1",
         ],
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "client_credentials",
@@ -162,7 +174,7 @@ def scim_token(testclient, scim_trusted_client, backend):
         client=scim_trusted_client,
         refresh_token=gen_salt(48),
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
     backend.save(t)
@@ -199,7 +211,7 @@ def client_without_scim(testclient, backend):
             "https://client.trusted.test/redirect2",
         ],
         logo_uri="https://client.trusted.test/logo.webp",
-        client_id_issued_at=datetime.datetime.now(datetime.timezone.utc),
+        client_id_issued_at=datetime.datetime.now(datetime.UTC),
         client_secret=gen_salt(48),
         grant_types=[
             "password",
@@ -234,7 +246,7 @@ def consent(testclient, client_without_scim, user, backend):
         client=client_without_scim,
         subject=user,
         scope=["openid", "profile"],
-        issue_date=datetime.datetime.now(datetime.timezone.utc),
+        issue_date=datetime.datetime.now(datetime.UTC),
     )
     backend.save(t)
     yield t

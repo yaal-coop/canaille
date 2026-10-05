@@ -89,6 +89,7 @@ def password_init_html(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
+        reset_code=None,
         logo=current_app.config["CANAILLE"]["LOGO"],
         title=_("Password initialization on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
@@ -112,6 +113,7 @@ def password_init_txt(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
+        reset_code=None,
     )
 
 
@@ -119,12 +121,10 @@ def password_init_txt(user):
 @user_needed("manage_oidc")
 def password_reset_html(user):
     base_url = url_for("core.account.index", _external=True)
-    server_name = current_app.config.get("SERVER_NAME")
-    reset_token = user.generate_url_safe_token()
     reset_url = url_for(
         "core.auth.password.reset",
         user=user,
-        token=reset_token,
+        token=user.generate_url_safe_token(),
         title=_("Password reset on {website_name}").format(
             website_name=current_app.config["CANAILLE"]["NAME"]
         ),
@@ -136,8 +136,6 @@ def password_reset_html(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=base_url,
         reset_url=reset_url,
-        server_name=server_name,
-        reset_token=reset_token,
         reset_code=None,
         logo=current_app.config["CANAILLE"]["LOGO"],
         title=_("Password reset on {website_name}").format(
@@ -150,12 +148,10 @@ def password_reset_html(user):
 @user_needed("manage_oidc")
 def password_reset_txt(user):
     base_url = url_for("core.account.index", _external=True)
-    server_name = current_app.config.get("SERVER_NAME")
-    reset_token = user.generate_url_safe_token()
     reset_url = url_for(
         "core.auth.password.reset",
         user=user,
-        token=reset_token,
+        token=user.generate_url_safe_token(),
         _external=True,
     )
 
@@ -164,8 +160,6 @@ def password_reset_txt(user):
         site_name=current_app.config["CANAILLE"]["NAME"],
         site_url=current_app.config.get("SERVER_NAME", base_url),
         reset_url=reset_url,
-        server_name=server_name,
-        reset_token=reset_token,
         reset_code=None,
     )
 

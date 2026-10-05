@@ -28,7 +28,7 @@ client = sa.table(
     ),
 )
 
-EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.UTC)
 
 
 def upgrade() -> None:

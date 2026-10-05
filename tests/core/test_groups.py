@@ -624,7 +624,7 @@ def test_user_without_permissions_cannot_access_groups(testclient, backend, app)
         sess["sessions"] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
 

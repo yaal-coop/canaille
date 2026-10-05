@@ -1,4 +1,5 @@
 import logging
+import re
 from unittest import mock
 
 from flask import current_app
@@ -80,7 +81,7 @@ def test_profile_settings_too_long_password(testclient, logged_user):
     )
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_profile_settings_compromised_password(api_get, testclient, logged_user):
     current_app.config["CANAILLE"]["ENABLE_PASSWORD_COMPROMISSION_CHECK"] = True
     """Tests if password is compromised."""
@@ -118,7 +119,7 @@ def test_profile_settings_compromised_password(api_get, testclient, logged_user)
     with_different_values("i'm a little pea", 'data-percent="100"')
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_profile_settings_compromised_password_request_api_failed_but_password_updated(
     api_get, testclient, logged_user, backend, caplog, smtpd
 ):
@@ -151,7 +152,7 @@ def test_profile_settings_compromised_password_request_api_failed_but_password_u
     assert backend.check_user_password(logged_user, "123456789")[0]
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_success_mail_to_admin_from_settings_form(
     api_get, testclient, backend, user, logged_user, caplog, smtpd
 ):
@@ -193,7 +194,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
     assert len(smtpd.messages) == 1
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_send_mail_to_admin_from_settings_form(
     api_get, testclient, backend, user, logged_user, caplog, smtpd
 ):
@@ -235,7 +236,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
     assert len(smtpd.messages) == 0
 
 
-@mock.patch("httpx.get")
+@mock.patch("httpx2.get")
 def test_compromised_password_validator_with_failure_of_api_request_without_smtp_or_without_admin_email_from_settings_form(
     api_get, testclient, backend, user, logged_user, caplog
 ):
@@ -458,6 +459,104 @@ def test_password_reset_email(smtpd, testclient, backend, logged_admin, caplog):
     backend.delete(u)
 
 
+def test_password_reset_email_multiple_emails_same_link(
+    smtpd, testclient, backend, logged_admin
+):
+    """Every reset mail sent from the admin settings must carry the same link."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test", "johnny@doe.test"],
+        password="correct horse battery staple",
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-reset-mail")
+
+    assert len(smtpd.messages) == 2
+    links = {
+        re.search(
+            r"https?://\S+/reset/\S+",
+            str(message.get_payload()[0]).replace("=\n", ""),
+        ).group(0)
+        for message in smtpd.messages
+    }
+    assert len(links) == 1
+
+    backend.delete(u)
+
+
+def test_password_initialization_mail_multiple_emails_same_link(
+    smtpd, testclient, backend, logged_admin
+):
+    """Every initialization mail sent from the admin settings must carry the same link."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test", "johnny@doe.test"],
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-initialization-mail")
+
+    assert len(smtpd.messages) == 2
+    links = {
+        re.search(
+            r"https?://\S+/reset/\S+",
+            str(message.get_payload()[0]).replace("=\n", ""),
+        ).group(0)
+        for message in smtpd.messages
+    }
+    assert len(links) == 1
+
+    backend.delete(u)
+
+
+def test_password_initialization_mail_without_email_address(
+    smtpd, testclient, backend, logged_admin
+):
+    """A user without any email address must not get a reset token generated."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-initialization-mail")
+
+    assert len(smtpd.messages) == 0
+    backend.reload(u)
+    assert u.one_time_password is None
+    backend.delete(u)
+
+
+def test_password_reset_mail_without_email_address(
+    smtpd, testclient, backend, logged_admin
+):
+    """A user without any email address must not get a reset secret generated."""
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        password="correct horse battery staple",
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res.form.submit(name="action", value="password-reset-mail")
+
+    assert len(smtpd.messages) == 0
+    backend.reload(u)
+    assert u.one_time_password is None
+    backend.delete(u)
+
+
 @mock.patch("smtplib.SMTP")
 def test_password_reset_email_failed(
     SMTP, smtpd, testclient, backend, logged_admin, caplog
@@ -495,3 +594,96 @@ def test_password_reset_email_failed(
     assert len(smtpd.messages) == 0
 
     backend.delete(u)
+
+
+def test_password_page_unavailable_without_the_password_factor(testclient, logged_user):
+    """The password settings page is useless when passwords are not an authentication factor."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["otp"]
+    testclient.get("/profile/user/auth/password", status=404)
+
+
+def test_password_page_unknown_action(testclient, logged_user):
+    """Unknown actions fall back on rendering the password settings page."""
+    res = testclient.get("/profile/user/auth/password", status=200)
+    res = res.form.submit(name="action", value="unknown-action", status=200)
+    res.mustcontain("Password")
+
+
+def test_password_change_without_any_password(testclient, logged_user, backend):
+    """Submitting the form without any password leaves the password untouched."""
+    res = testclient.get("/profile/user/auth/password", status=200)
+
+    res.form["password1"] = ""
+    res.form["password2"] = ""
+    res = res.form.submit(name="action", value="edit-password", status=200)
+
+    backend.reload(logged_user)
+    assert backend.check_user_password(logged_user, "correct horse battery staple")[0]
+
+
+def test_password_initialization_mail_without_trusted_hosts(
+    smtpd, testclient, backend, logged_admin
+):
+    """Administrators send a code when no trusted host is configured."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test"],
+    )
+    backend.save(u)
+
+    res = testclient.get("/profile/temp/auth/password", status=200)
+    res = res.form.submit(name="action", value="password-initialization-mail")
+
+    assert (
+        "info",
+        "Sending password initialization code at the user email address. "
+        "It should be received within a few minutes.",
+    ) in res.flashes
+
+    backend.reload(u)
+    email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
+    assert u.one_time_password in email_content
+    backend.delete(u)
+
+
+def test_password_reset_mail_without_trusted_hosts(
+    smtpd, testclient, backend, logged_admin, user
+):
+    """Administrators send a code when no trusted host is configured."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+
+    res = testclient.get("/profile/user/auth/password", status=200)
+    res = res.form.submit(name="action", value="password-reset-mail")
+
+    assert (
+        "info",
+        "Sending password reset code to the user email address. "
+        "It should be received within a few minutes.",
+    ) in res.flashes
+
+    backend.reload(user)
+    email_content = str(smtpd.messages[0].get_payload()[0]).replace("=\n", "")
+    assert user.one_time_password in email_content
+
+
+def test_password_mails_when_password_recovery_is_disabled(
+    smtpd, testclient, backend, logged_admin, user
+):
+    """Administrators cannot send password mails when password recovery is disabled."""
+    testclient.app.config["CANAILLE"]["ENABLE_PASSWORD_RECOVERY"] = False
+
+    res = testclient.get("/profile/user/auth/password", status=200)
+    res.mustcontain(no="Send mail")
+
+    # the buttons are gone from the page, but the endpoint must refuse them too
+    for action in ("password-reset-mail", "password-initialization-mail"):
+        testclient.post(
+            "/profile/user/auth/password",
+            {"csrf_token": res.form["csrf_token"].value, "action": action},
+            status=404,
+        )
+
+    assert len(smtpd.messages) == 0

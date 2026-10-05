@@ -1,8 +1,8 @@
 import json
 import uuid
+from datetime import UTC
 from datetime import datetime
 from datetime import timedelta
-from datetime import timezone
 
 from flask import current_app
 from joserfc import jwk
@@ -125,7 +125,7 @@ def build_client_management_token(
 
     jti = str(uuid.uuid4())
     client_id = client_id or str(uuid.uuid4())
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     issuer = get_issuer()
 
     payload = {

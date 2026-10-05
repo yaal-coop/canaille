@@ -2,13 +2,18 @@ import logging
 from unittest import mock
 
 import pytest
-from scim2_client import SCIMClientError
+from scim2_client import SCIMClientException
+from scim2_client.engines.httpx2 import SyncSCIMClient
 from scim2_models import SearchRequest
 
 from canaille.app import models
 from canaille.scim.casting import user_from_scim_to_canaille
+from canaille.scim.client import external_id_filter
+from canaille.scim.client import initiate_scim_client
+from canaille.scim.client import update_distant_resource
 from canaille.scim.client import user_from_canaille_to_scim_client
 from canaille.scim.models import EnterpriseUser
+from canaille.scim.models import Group as SCIMGroup
 from canaille.scim.models import User as SCIMUser
 
 
@@ -241,7 +246,99 @@ def test_save_group_when_client_doesnt_support_scim(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.create")
+def distant_user(scim_client, user):
+    """Return the distant copy of a Canaille user."""
+    User = scim_client.get_resource_model("User")
+    req = SearchRequest(filter=external_id_filter(user.id))
+    return scim_client.query(User, query_parameters=req).resources[0]
+
+
+def test_scim_client_user_update_sends_a_patch(
+    testclient, scim_client_for_trusted_client, backend, user
+):
+    """Test that a user update is sent as a PATCH request when the client supports it."""
+    with (
+        mock.patch(
+            "scim2_client.engines.httpx2.SyncSCIMClient.modify",
+            autospec=True,
+            side_effect=SyncSCIMClient.modify,
+        ) as modify,
+        mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.replace") as replace,
+    ):
+        user.display_name = "Jo"
+        backend.save(user)
+
+    patch = modify.call_args.args[2]
+    assert [(op.op.value, op.path) for op in patch.operations] == [
+        ("replace", "displayName")
+    ]
+    replace.assert_not_called()
+    assert distant_user(scim_client_for_trusted_client, user).display_name == "Jo"
+
+
+def test_scim_client_user_update_without_change_sends_nothing(
+    testclient, scim_client_for_trusted_client, backend, user
+):
+    """Test that no request is sent when the distant user is already up to date."""
+    with (
+        mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.modify") as modify,
+        mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.replace") as replace,
+    ):
+        backend.save(user)
+
+    modify.assert_not_called()
+    replace.assert_not_called()
+
+
+def test_scim_client_user_update_falls_back_to_put(
+    testclient, scim_client_for_trusted_client, backend, user, monkeypatch
+):
+    """Test that a user update is sent as a PUT request when the client does not support PATCH."""
+
+    def initiate_scim_client_without_patch(client):
+        scim = initiate_scim_client(client)
+        scim.provider.config.patch.supported = False
+        return scim
+
+    monkeypatch.setattr(
+        "canaille.scim.client.initiate_scim_client",
+        initiate_scim_client_without_patch,
+    )
+    with mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.modify") as modify:
+        user.display_name = "Jo"
+        backend.save(user)
+
+    modify.assert_not_called()
+    assert distant_user(scim_client_for_trusted_client, user).display_name == "Jo"
+
+
+def test_update_distant_resource_leaves_out_read_only_member_display():
+    """Test that a group patch does not set members.display when the client declares it read-only."""
+    scim = mock.Mock()
+    scim.provider.config.patch.supported = True
+    distant = SCIMGroup(
+        id="1",
+        display_name="foobar",
+        members=[SCIMGroup.Members(value="a", display="Alice")],
+    )
+    wanted = SCIMGroup(
+        display_name="foobar",
+        members=[
+            SCIMGroup.Members(value="a", display="Alice"),
+            SCIMGroup.Members(value="b", display="Bob"),
+        ],
+    )
+
+    update_distant_resource(scim, distant, wanted)
+
+    patch = scim.modify.call_args.args[1]
+    assert patch.operations[0].value == [
+        SCIMGroup.Members(value="a"),
+        SCIMGroup.Members(value="b"),
+    ]
+
+
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create")
 def test_failed_scim_user_creation(
     scim_mock,
     testclient,
@@ -250,7 +347,7 @@ def test_failed_scim_user_creation(
     caplog,
 ):
     """Test that a warning is logged when SCIM user creation fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     alice = models.User(
         formatted_name="Alice Alice",
@@ -269,7 +366,7 @@ def test_failed_scim_user_creation(
     backend.delete(alice)
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.replace")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.modify")
 def test_failed_scim_user_update(
     scim_mock,
     testclient,
@@ -279,8 +376,9 @@ def test_failed_scim_user_update(
     user,
 ):
     """Test that a warning is logged when SCIM user update fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
+    user.display_name = "Jo"
     backend.save(user)
 
     assert (
@@ -290,7 +388,7 @@ def test_failed_scim_user_update(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.delete")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.delete")
 def test_failed_scim_user_delete(
     scim_mock,
     testclient,
@@ -300,7 +398,7 @@ def test_failed_scim_user_delete(
     user,
 ):
     """Test that a warning is logged when SCIM user deletion fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     backend.delete(user)
 
@@ -311,7 +409,7 @@ def test_failed_scim_user_delete(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.create")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create")
 def test_failed_scim_group_creation(
     scim_mock,
     testclient,
@@ -321,7 +419,7 @@ def test_failed_scim_group_creation(
     user,
 ):
     """Test that a warning is logged when SCIM group creation fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     group = models.Group(
         members=[user],
@@ -338,7 +436,7 @@ def test_failed_scim_group_creation(
     backend.delete(group)
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.replace")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.modify")
 def test_failed_scim_group_update(
     scim_mock,
     testclient,
@@ -346,10 +444,12 @@ def test_failed_scim_group_update(
     backend,
     caplog,
     bar_group,
+    user,
 ):
     """Test that a warning is logged when SCIM group update fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
+    bar_group.members = bar_group.members + [user]
     backend.save(bar_group)
 
     assert (
@@ -359,7 +459,7 @@ def test_failed_scim_group_update(
     ) in caplog.record_tuples
 
 
-@mock.patch("scim2_client.engines.httpx.SyncSCIMClient.delete")
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.delete")
 def test_failed_scim_group_delete(
     scim_mock,
     testclient,
@@ -369,7 +469,7 @@ def test_failed_scim_group_delete(
     user,
 ):
     """Test that a warning is logged when SCIM group deletion fails."""
-    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientError("error"))
+    scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     group = models.Group(
         members=[user],
@@ -396,6 +496,18 @@ def test_user_from_canaille_to_scim_client_without_enterprise_user_extension(
     assert isinstance(scim_user, User)
     assert not isinstance(scim_user, SCIMUser[EnterpriseUser])
     assert EnterpriseUser not in scim_user
+
+
+def test_user_from_canaille_to_scim_client_does_not_send_the_password(
+    scim_client_for_trusted_client, user
+):
+    """The password hash is not sent to the provisioned clients."""
+    User = scim_client_for_trusted_client.get_resource_model("User")
+    EnterpriseUser = User.get_extension_model("EnterpriseUser")
+
+    scim_user = user_from_canaille_to_scim_client(user, User, EnterpriseUser)
+    assert user.get_password_hash()
+    assert "password" not in scim_user.model_dump()
 
 
 @pytest.mark.skip("Primary is not supported at the moment")
@@ -453,3 +565,10 @@ def test_user_from_scim_to_canaille_handles_no_primaries():
     user_from_scim_to_canaille(scim_user, user)
 
     assert user.emails == ["first@example.com", "second@example.com"]
+
+
+def test_external_id_filter_escapes_the_identifier():
+    """Quotes in an identifier cannot alter the externalId filter."""
+    assert (
+        external_id_filter('x" or userName pr') == r'externalId eq "x\" or userName pr"'
+    )

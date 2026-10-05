@@ -118,9 +118,7 @@ def test_impersonate_locked_user(testclient, backend, logged_admin, user):
     res = testclient.get("/profile/user/settings")
     res.mustcontain("Impersonate")
 
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
-        days=1
-    )
+    user.lock_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
     backend.save(user)
 
     assert user.locked
@@ -213,7 +211,7 @@ def test_account_locking(
     res = res.form.submit(name="action", value="lock-confirm")
     res = res.form.submit(name="action", value="lock-execute")
     user = backend.get(models.User, id=user.id)
-    assert user.lock_date <= datetime.datetime.now(datetime.timezone.utc)
+    assert user.lock_date <= datetime.datetime.now(datetime.UTC)
     assert user.locked
     res.mustcontain("The account has been locked.")
     res.mustcontain(no="Lock the account")
@@ -238,7 +236,7 @@ def test_past_lock_date(
     assert not user.lock_date
     assert not user.locked
 
-    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+    expiration_datetime = datetime.datetime.now(datetime.UTC).replace(
         second=0, microsecond=0
     ) - datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
@@ -261,7 +259,7 @@ def test_future_lock_date(
     assert not user.lock_date
     assert not user.locked
 
-    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+    expiration_datetime = datetime.datetime.now(datetime.UTC).replace(
         second=0, microsecond=0
     ) + datetime.timedelta(days=30)
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M")
@@ -281,7 +279,7 @@ def test_empty_lock_date(
     logged_admin,
     user,
 ):
-    expiration_datetime = datetime.datetime.now(datetime.timezone.utc).replace(
+    expiration_datetime = datetime.datetime.now(datetime.UTC).replace(
         second=0, microsecond=0
     ) + datetime.timedelta(days=30)
     user.lock_date = expiration_datetime
@@ -308,7 +306,7 @@ def test_account_limit_values(
     assert not user.locked
 
     expiration_datetime = datetime.datetime.max.replace(
-        microsecond=0, tzinfo=datetime.timezone.utc
+        microsecond=0, tzinfo=datetime.UTC
     )
     res.form["lock_date"] = expiration_datetime.strftime("%Y-%m-%d %H:%M:%S")
     res = res.form.submit(name="action", value="edit-settings")

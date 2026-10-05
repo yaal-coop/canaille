@@ -50,7 +50,7 @@ def test_request_object_query(testclient, logged_user, trusted_client, client_jw
     [
         "http://127.0.0.1:1/request_obj",
         "file:///etc/passwd",
-        # unparsable URIs raise outside of the httpx exception hierarchy
+        # unparsable URIs raise outside of the httpx2 exception hierarchy
         "http://xn--/",
     ],
 )

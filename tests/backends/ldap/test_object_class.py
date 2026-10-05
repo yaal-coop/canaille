@@ -113,3 +113,15 @@ homeDirectory: /home/foobar
     backend.save(user)
 
     backend.delete(user)
+
+
+def test_ldap_attributes_are_lazily_computed(backend, testclient):
+    """The optional attribute list is computed on the first access."""
+    models.User._may = None
+    models.User._must = None
+
+    assert "sn" in models.User.must()
+    assert models.User._may
+
+    models.User._may = None
+    assert "mail" in models.User.may()

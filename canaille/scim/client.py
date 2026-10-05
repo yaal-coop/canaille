@@ -2,9 +2,12 @@ import datetime
 
 from blinker import signal
 from flask import current_app
-from httpx import Client as httpx_client
-from scim2_client import SCIMClientError
-from scim2_client.engines.httpx import SyncSCIMClient
+from httpx2 import Client as httpx_client
+from scim2_client import SCIMClientException
+from scim2_client.engines.httpx2 import SyncSCIMClient
+from scim2_models import PatchOp
+from scim2_models import SCIMException
+from scim2_models import ScimFilter
 from scim2_models import SearchRequest
 from werkzeug.security import gen_salt
 
@@ -13,6 +16,11 @@ from canaille.app.flask import dramatiq
 from canaille.backends import Backend
 from canaille.scim.casting import group_from_canaille_to_scim
 from canaille.scim.casting import user_from_canaille_to_scim
+
+
+def external_id_filter(external_id):
+    """Build a filter that matches a distant resource by its externalId."""
+    return f"externalId eq {ScimFilter.quote(external_id)}"
 
 
 def user_from_canaille_to_scim_client(user, user_class, enterprise_user_class):
@@ -28,7 +36,7 @@ def group_from_canaille_to_scim_client(group, group_class, scim_client):
     distant_members = []
     User = scim_client.get_resource_model("User")
     for member in group.members:
-        req = SearchRequest(filter=f'externalId eq "{member.id}"')
+        req = SearchRequest(filter=external_id_filter(member.id))
         response = scim_client.query(User, query_parameters=req)
         if response.resources:
             distant_members.append(response.resources[0])
@@ -50,6 +58,21 @@ def group_from_canaille_to_scim_client(group, group_class, scim_client):
     return scim_group
 
 
+def update_distant_resource(scim, distant, wanted):
+    """Update a distant resource, with a PATCH request when the client supports it."""
+    if not scim.provider.config.patch.supported:
+        wanted.id = distant.id
+        wanted.meta = distant.meta
+        scim.replace(wanted)
+        return
+
+    patch = PatchOp.build_from(distant, wanted)
+    if patch is None:
+        return
+
+    scim.modify(distant, patch)
+
+
 def get_or_create_token(client):
     """Retrieve or initialize a client token."""
     scim_tokens = Backend.instance.query(models.Token, client=client, subject=None)
@@ -69,7 +92,7 @@ def get_or_create_token(client):
             client=client,
             refresh_token=gen_salt(48),
             scope=["openid", "profile"],
-            issue_date=datetime.datetime.now(datetime.timezone.utc),
+            issue_date=datetime.datetime.now(datetime.UTC),
             lifetime=3600,
         )
         Backend.instance.save(scim_token)
@@ -89,7 +112,7 @@ def initiate_scim_client(client):
     scim = SyncSCIMClient(client_httpx)
     try:
         scim.discover()
-    except SCIMClientError:
+    except (SCIMClientException, SCIMException):
         current_app.logger.info(
             f"SCIM protocol not supported by client {client.client_name}"
         )
@@ -110,14 +133,14 @@ def execute_scim_user_action(client_id, user_id, method):
 
     User = scim.get_resource_model("User")
 
-    req = SearchRequest(filter=f'externalId eq "{user_id}"')
+    req = SearchRequest(filter=external_id_filter(user_id))
     response = scim.query(User, query_parameters=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
     if method == "delete" and distant_scim_user:
         try:
             scim.delete(User, distant_scim_user.id)
-        except SCIMClientError:
+        except (SCIMClientException, SCIMException):
             current_app.logger.warning(
                 f"SCIM User {user.user_name} delete for client {client.client_name} failed"
             )
@@ -132,9 +155,8 @@ def execute_scim_user_action(client_id, user_id, method):
                     f"SCIM User {user.user_name} creation for client {client.client_name} failed"
                 )
         else:
-            scim_user.id = distant_scim_user.id
             try:
-                scim.replace(scim_user)
+                update_distant_resource(scim, distant_scim_user, scim_user)
             except Exception:
                 current_app.logger.warning(
                     f"SCIM User {user.user_name} update for client {client.client_name} failed"
@@ -151,7 +173,7 @@ def execute_scim_group_action(scim, group, client_name, method):
     """Create/update/delete a distant group with SCIM requests."""
     Group = scim.get_resource_model("Group")
 
-    req = SearchRequest(filter=f'externalId eq "{group.id}"')
+    req = SearchRequest(filter=external_id_filter(group.id))
     response = scim.query(Group, query_parameters=req)
     scim_group = response.resources[0] if response.resources else None
 
@@ -172,9 +194,8 @@ def execute_scim_group_action(scim, group, client_name, method):
                     f"SCIM Group {group.display_name} creation for client {client_name} failed"
                 )
         else:
-            group.id = scim_group.id
             try:
-                scim.replace(group)
+                update_distant_resource(scim, scim_group, group)
             except Exception:
                 current_app.logger.warning(
                     f"SCIM Group {group.display_name} update for client {client_name} failed"

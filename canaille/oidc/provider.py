@@ -130,7 +130,7 @@ def get_jwt_config(client):
 
 def save_authorization_code(code, request):
     nonce = request.payload.data.get("nonce")
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.UTC)
     scope = request.client.get_allowed_scope(request.payload.scope)
     authentication_methods = (
         g.session.authentication_methods
@@ -272,7 +272,7 @@ class RefreshTokenGrant(rfc6749.RefreshTokenGrant):
             return credential.subject
 
     def revoke_old_credential(self, credential):
-        credential.revokation_date = datetime.datetime.now(datetime.timezone.utc)
+        credential.revokation_date = datetime.datetime.now(datetime.UTC)
         Backend.instance.save(credential)
 
 
@@ -319,7 +319,7 @@ def query_client(client_id):
 
 
 def save_token(token, request):
-    now = datetime.datetime.now(datetime.timezone.utc)
+    now = datetime.datetime.now(datetime.UTC)
     scope = unique_scopes(token.get("scope"))
     t = models.Token(
         token_id=gen_salt(48),
@@ -391,7 +391,7 @@ class RevocationEndpoint(rfc7009.RevocationEndpoint):
         return query_token(token, token_type_hint)
 
     def revoke_token(self, token, request):
-        token.revokation_date = datetime.datetime.now(datetime.timezone.utc)
+        token.revokation_date = datetime.datetime.now(datetime.UTC)
         Backend.instance.save(token)
 
 
@@ -428,7 +428,7 @@ class ClientManagementMixin:
         This method validates common claims. Subclasses should override this
         to add specific validation logic and call super()._validate_jwt_claims().
         """
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.UTC)
 
         if claims.get("exp") and claims["exp"] < now.timestamp():
             return None
@@ -469,14 +469,14 @@ class ClientManagementMixin:
     def client_convert_data(self, **kwargs):
         if "client_id_issued_at" in kwargs:
             kwargs["client_id_issued_at"] = datetime.datetime.fromtimestamp(
-                kwargs["client_id_issued_at"], datetime.timezone.utc
+                kwargs["client_id_issued_at"], datetime.UTC
             )
 
         # RFC7591 uses 0 to tell that the secret never expires, and not the epoch.
         if "client_secret_expires_at" in kwargs:
             kwargs["client_secret_expires_at"] = (
                 datetime.datetime.fromtimestamp(
-                    kwargs["client_secret_expires_at"], datetime.timezone.utc
+                    kwargs["client_secret_expires_at"], datetime.UTC
                 )
                 if kwargs["client_secret_expires_at"]
                 else None

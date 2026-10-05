@@ -104,7 +104,7 @@ def test_fido2_page_with_credentials(testclient, backend, logged_user):
         aaguid=b"\x00" * 16,
         transports='["usb"]',
         name="Test Key",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=logged_user,
     )
     backend.save(credential)
@@ -179,7 +179,7 @@ def test_fido2_page_unrecognized_post_action(testclient, backend, logged_user):
         aaguid=b"\x00" * 16,
         transports='["usb"]',
         name="Test Key",
-        created_at=datetime.datetime.now(datetime.timezone.utc),
+        created_at=datetime.datetime.now(datetime.UTC),
         user=logged_user,
     )
     backend.save(credential)
@@ -191,3 +191,11 @@ def test_fido2_page_unrecognized_post_action(testclient, backend, logged_user):
         status=200,
     )
     res.mustcontain("Passkeys")
+
+
+def test_profile_auth_without_the_password_factor(testclient, logged_user):
+    """Passwords can be excluded from the available authentication factors."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["otp"]
+
+    res = testclient.get("/profile/user/auth", status=302)
+    assert res.location == "/profile/user/auth/otp"

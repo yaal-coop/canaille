@@ -222,8 +222,8 @@ def configuration(request):
                 },
                 "loggers": {
                     "faker": {"level": "WARNING"},
-                    "httpx": {"level": "WARNING"},
-                    "httpcore": {"level": "WARNING"},
+                    "httpx2": {"level": "WARNING"},
+                    "httpcore2": {"level": "WARNING"},
                     "canaille": {"level": "DEBUG", "handlers": ["wsgi"]},
                 },
                 "disable_existing_loggers": False,
@@ -323,7 +323,7 @@ def user(app, backend, jpeg_photo):
         department="Engineering",
         secret_token="fefe9b10",
         hotp_counter=1,
-        last_otp_login=datetime.datetime(2020, 1, 1, tzinfo=datetime.timezone.utc),
+        last_otp_login=datetime.datetime(2020, 1, 1, tzinfo=datetime.UTC),
     )
     backend.save(u)
     yield u
@@ -371,7 +371,7 @@ def logged_user(user, testclient):
         sess["sessions"] = existing_sessions + [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
     return user
@@ -386,7 +386,7 @@ def logged_admin(admin, testclient):
         sess["sessions"] = existing_sessions + [
             UserSession(
                 user=admin,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
     return admin
@@ -401,7 +401,7 @@ def logged_moderator(moderator, testclient):
         sess["sessions"] = existing_sessions + [
             UserSession(
                 user=moderator,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
     return moderator

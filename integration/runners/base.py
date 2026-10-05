@@ -4,7 +4,7 @@ from abc import ABC
 from abc import abstractmethod
 from pathlib import Path
 
-import httpx
+import httpx2
 
 
 class CanailleRunner(ABC):
@@ -43,11 +43,11 @@ class CanailleRunner(ABC):
         url = f"http://{host}:{port}/about"
         while time.time() - start < timeout:
             try:
-                with httpx.Client(timeout=2.0) as client:
+                with httpx2.Client(timeout=2.0) as client:
                     response = client.get(url)
                     if response.status_code == 200:
                         return True
-            except (httpx.ConnectError, httpx.ReadError, httpx.TimeoutException):
+            except (httpx2.ConnectError, httpx2.ReadError, httpx2.TimeoutException):
                 pass
             time.sleep(0.5)
         return False

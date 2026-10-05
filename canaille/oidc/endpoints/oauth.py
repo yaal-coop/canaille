@@ -58,7 +58,7 @@ def internal_error_handler(error):
     current_app.logger.exception(error)
     return {
         "error": "internal_server_error",
-        "error_description": str(error),
+        "error_description": "The server encountered an unexpected error.",
     }, 500
 
 
@@ -83,7 +83,7 @@ def get_authorization_request_datetime(request_url: str) -> datetime.datetime | 
 @bp.route("/authorize", methods=["GET", "POST"])
 @csrf.exempt
 def authorize():
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
+    now = datetime.datetime.now(tz=datetime.UTC)
     current_app.logger.debug(
         "authorization endpoint request:\nGET: %s\nPOST: %s",
         request.args.to_dict(flat=False),

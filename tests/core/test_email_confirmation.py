@@ -503,7 +503,7 @@ def test_invitation_form_mail_field_readonly(testclient):
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
 
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",
@@ -521,7 +521,7 @@ def test_invitation_form_mail_field_writable(testclient):
     testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = False
 
     payload = RegistrationPayload(
-        datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        datetime.datetime.now(datetime.UTC).isoformat(),
         "someoneelse",
         False,
         "someone@mydomain.test",

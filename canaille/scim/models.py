@@ -265,13 +265,13 @@ def get_resource_types():
         "User": ResourceType(
             id="User",
             name="User",
-            endpoint=url_for("scim.query_users", _external=True),
+            endpoint="/Users",
             description="User accounts",
             schema_="urn:ietf:params:scim:schemas:core:2.0:User",
             schema_extensions=[
                 SchemaExtension(
                     schema_="urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
-                    required=True,
+                    required=False,
                 )
             ],
             meta=Meta(
@@ -286,7 +286,7 @@ def get_resource_types():
         "Group": ResourceType(
             id="Group",
             name="Group",
-            endpoint=url_for("scim.query_groups", _external=True),
+            endpoint="/Groups",
             description="Group management",
             schema_="urn:ietf:params:scim:schemas:core:2.0:Group",
             meta=Meta(

@@ -16,10 +16,43 @@ Changed
   the Pillow dependency.
 - Photos are converted to JPEG on the LDAP backend, as they are stored in the
   ``jpegPhoto`` attribute.
+- Canaille uses `httpx2 <https://github.com/pydantic/httpx2>`_ instead of httpx for its
+  outgoing requests, such as the password compromise check and the download of
+  ``request_uri`` and ``jwks_uri`` documents. HTTPS certificates are checked against
+  the system trust store, instead of the certifi bundle.
+- The SCIM server follows RFC 7644 more closely on PATCH requests, as it now relies on
+  scim2-models 0.10. For instance, a PATCH that writes the ``display`` of a group
+  member is refused with a ``mutability`` error.
+- The SCIM ``ResourceType`` endpoints are relative to the SCIM base URL, such as
+  ``/Users``, as RFC 7643 §6 defines them.
+- The SCIM ``User`` resource type declares the enterprise extension as optional.
+  Users without it were already accepted.
+- The SCIM client updates the provisioned users and groups with PATCH requests
+  instead of PUT, when the client supports PATCH. Only the changed attributes are
+  sent, and nothing is sent when nothing changed. The attributes Canaille does not
+  manage are left untouched.
+- A SCIM PUT request that changes nothing keeps the ``meta.version`` and
+  ``meta.lastModified`` of the resource.
+
+Removed
+^^^^^^^
+- End support for Python 3.10.
 
 Fixed
 ^^^^^
+- The SCIM client does not send the password hashes to the provisioned clients
+  anymore.
+- The SCIM client escapes the identifiers it puts in ``externalId`` filters.
+- With OpenLDAP 2.7, an LDAP server address that cannot be resolved raised a raw
+  ``BackendError``. It now reports that Canaille could not connect to the LDAP server.
+- SCIM PATCH requests that cannot be applied answer a SCIM error instead of an
+  HTTP 500 error.
 - User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
+- The inline validation of the login and password fields redirected users without
+  a password to the password initialization page. As the redirection was answered
+  to a request only expecting a form field, the whole page was rendered inside the
+  field, and its buttons were unusable. The redirection now only happens when the
+  form is submitted.
 - Photo uploads were only validated on their file extension, so a SVG file renamed
   with a ``.jpg`` extension was stored as-is and served inline. Photos that cannot
   be served as images are now downloaded instead of being rendered.
@@ -31,6 +64,20 @@ Fixed
 - Trusted clients, which skip the user consent page, need both their
   ``client_uri`` and their ``redirect_uris`` to match
   :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`.
+- Users with multiple email addresses now receive, on each address, a valid password reset code
+  (or link if :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` is enabled).
+  This applies to both the password initialization and the password reset flows.
+- Password initialization mails always carried a link, even when
+  :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` was unset. Those links
+  could not be used at all, and were exposed to Host header spoofing the same way password
+  reset links were. Password initialization now sends a code when no trusted host is
+  configured, like password reset already did.
+- Password initialization was offered to users when
+  :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY` was disabled,
+  but led to an unreachable page. As both flows hand out a password over a secret sent by
+  mail, disabling password recovery now disables password initialization as well, instead
+  of leading users to a dead end. Administrators can still set passwords themselves from
+  the user profile.
 
 [0.3.6] - 2026-08-04
 --------------------

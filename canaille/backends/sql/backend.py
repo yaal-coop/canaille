@@ -148,9 +148,9 @@ class SQLBackend(Backend):
 
     def set_user_password(self, user, password) -> None:
         user.password = password
-        user.password_last_update = datetime.datetime.now(
-            datetime.timezone.utc
-        ).replace(microsecond=0)
+        user.password_last_update = datetime.datetime.now(datetime.UTC).replace(
+            microsecond=0
+        )
         self.save(user)
 
     def do_query(self, model, *args, **kwargs):
@@ -288,7 +288,7 @@ class SQLBackend(Backend):
         return state
 
     def do_save(self, instance) -> None:
-        instance.last_modified = datetime.datetime.now(datetime.timezone.utc).replace(
+        instance.last_modified = datetime.datetime.now(datetime.UTC).replace(
             microsecond=0
         )
         if not instance.created:
@@ -308,6 +308,6 @@ class SQLBackend(Backend):
         if user.password_failure_timestamps is None:
             user.password_failure_timestamps = []
         user._password_failure_timestamps.append(
-            str(datetime.datetime.now(datetime.timezone.utc))
+            str(datetime.datetime.now(datetime.UTC))
         )
         self.save(user)

@@ -213,3 +213,24 @@ def test_password_page_without_signin_in_redirects_to_login_page(testclient, use
     assert res.flashes == [
         ("warning", "Cannot remember the login you attempted to sign in with.")
     ]
+
+
+def test_failed_password_without_captcha_nor_intruder_lockout(
+    testclient, user, backend
+):
+    """Failed attempts are not recorded when nothing needs them."""
+    testclient.app.config["CANAILLE"]["CAPTCHA_ENABLED"] = False
+    testclient.app.config["CANAILLE"]["ENABLE_INTRUDER_LOCKOUT"] = False
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302).follow()
+
+    res.form["password"] = "incorrect horse"
+    res = res.form.submit(status=200)
+    assert ("error", "Login failed. Please check your information.") in res.flashes
+
+    # the LDAP server fills pwdFailureTime on its own, whatever Canaille does
+    if backend.__class__.__name__ != "LDAPBackend":
+        backend.reload(user)
+        assert not user.password_failure_timestamps

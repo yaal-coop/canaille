@@ -39,7 +39,7 @@ def test_user_deleted_in_session(testclient, backend):
         session["sessions"] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
 
@@ -88,7 +88,7 @@ def test_admin_self_deletion(testclient, backend):
         sess["sessions"] = [
             UserSession(
                 user=admin,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
 
@@ -120,7 +120,7 @@ def test_user_self_deletion(testclient, backend):
         sess["sessions"] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.timezone.utc),
+                last_login_datetime=datetime.datetime.now(datetime.UTC),
             ).serialize()
         ]
 
@@ -161,7 +161,7 @@ def test_account_locking(user, backend):
         None,
     )
 
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    user.lock_date = datetime.datetime.now(datetime.UTC)
     assert user.locked
     backend.save(user)
     assert user.locked
@@ -190,7 +190,7 @@ def test_account_locking_past_date(user, backend):
         None,
     )
 
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
+    user.lock_date = datetime.datetime.now(datetime.UTC).replace(
         microsecond=0
     ) - datetime.timedelta(days=30)
     backend.save(user)
@@ -211,7 +211,7 @@ def test_account_locking_future_date(user, backend):
         None,
     )
 
-    user.lock_date = datetime.datetime.now(datetime.timezone.utc).replace(
+    user.lock_date = datetime.datetime.now(datetime.UTC).replace(
         microsecond=0
     ) + datetime.timedelta(days=365 * 4)
     backend.save(user)
@@ -225,7 +225,7 @@ def test_account_locking_future_date(user, backend):
 
 def test_account_locked_during_session(testclient, logged_user, backend):
     """Test that a locked account cannot access pages even with an active session."""
-    logged_user.lock_date = datetime.datetime.now(datetime.timezone.utc)
+    logged_user.lock_date = datetime.datetime.now(datetime.UTC)
     backend.save(logged_user)
     testclient.get("/profile/user/settings", status=403)
 
