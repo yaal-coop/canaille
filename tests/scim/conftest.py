@@ -65,7 +65,7 @@ def oidc_token(testclient, oidc_client, backend):
         audience=[oidc_client],
         client=oidc_client,
         refresh_token=gen_salt(48),
-        scope=["openid", "profile"],
+        scope=["openid", "profile", "scim:write"],
         issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
@@ -87,7 +87,7 @@ def user_token(testclient, oidc_client, user, backend):
         audience=[oidc_client],
         client=oidc_client,
         refresh_token=gen_salt(48),
-        scope=["openid", "profile"],
+        scope=["openid", "profile", "scim:me"],
         issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )

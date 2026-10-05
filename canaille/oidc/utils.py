@@ -17,6 +17,7 @@ SCOPE_DETAILS = {
     "address": ("envelope open outline", _("Your postal address.")),
     "phone": ("phone", _("Your phone number.")),
     "groups": ("users", _("Groups you belong to.")),
+    "scim:me": ("user edit", _("Read and edit your account, including your password.")),
 }
 
 

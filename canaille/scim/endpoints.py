@@ -18,6 +18,7 @@ from scim2_models import BulkRequest
 from scim2_models import BulkResponse
 from scim2_models import Context
 from scim2_models import Error
+from scim2_models import ForbiddenException
 from scim2_models import InvalidValueException
 from scim2_models import ListResponse
 from scim2_models import PatchOp
@@ -49,20 +50,51 @@ from .models import get_service_provider_config
 bp = Blueprint("scim", __name__, url_prefix="/scim/v2")
 
 
+USERS_READ = ["scim:users:read", "scim:users:write", "scim:read", "scim:write"]
+USERS_WRITE = ["scim:users:write", "scim:write"]
+GROUPS_READ = ["scim:groups:read", "scim:groups:write", "scim:read", "scim:write"]
+GROUPS_WRITE = ["scim:groups:write", "scim:write"]
+ME_SCOPE = "scim:me"
+
+
 class SCIMBearerTokenValidator(BearerTokenValidator):
     def authenticate_token(self, token_string: str):
-        return Backend.instance.get(models.Token, access_token=token_string)
+        token = Backend.instance.get(models.Token, access_token=token_string)
+        if token and token.subject and token.subject.locked:
+            return None
+        return token
 
 
 require_oauth = ResourceProtector()
 require_oauth.register_token_validator(SCIMBearerTokenValidator())
 
 
-def require_permission(permission):
-    """Check that user tokens have the required Canaille permission.
+def has_scope(scopes):
+    """Whether the current token has one of the scopes."""
+    return bool(set(scopes) & set(current_token.scope or []))
 
-    Client tokens (without subject) bypass this check.
+
+def require_client_scope(scopes):
+    """Check that a client token has one of the scopes.
+
+    User tokens are only accepted on /Me.
     """
+
+    def decorator(f):
+        @wraps(f)
+        @require_oauth(scopes)
+        def wrapper(*args, **kwargs):
+            if current_token.subject:
+                raise ForbiddenException(detail="User tokens are only accepted on /Me")
+            return f(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def require_permission(permission):
+    """Check that user tokens have the required Canaille permission."""
 
     def decorator(f):
         @wraps(f)
@@ -293,8 +325,7 @@ def replace_bulk_ids(group_members, processed_operations, payloads):
 
 @bp.route("/Users", methods=["GET"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_READ)
 def query_users():
     return _query_resources(
         models.User, User[EnterpriseUser], user_from_canaille_to_scim_server
@@ -303,24 +334,21 @@ def query_users():
 
 @bp.route("/Users/<user:user>", methods=["GET"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_READ)
 def query_user(user):
     return _query_resource(user, user_from_canaille_to_scim_server)
 
 
 @bp.route("/Groups", methods=["GET"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_ALL_GROUPS)
+@require_client_scope(GROUPS_READ)
 def query_groups():
     return _query_resources(models.Group, Group, group_from_canaille_to_scim_server)
 
 
 @bp.route("/Groups/<group:group>", methods=["GET"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_ALL_GROUPS)
+@require_client_scope(GROUPS_READ)
 def query_group(group):
     return _query_resource(group, group_from_canaille_to_scim_server)
 
@@ -389,20 +417,23 @@ def query_service_provider_config():
 
 @bp.route("/.search", methods=["POST"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_READ + GROUPS_READ)
 def search():
     req = SearchRequest.model_validate(request.json)
-    total = Backend.instance.count(models.User) + Backend.instance.count(models.Group)
-    users = list(
-        Backend.instance.query(models.User)[req.start_index_0 : req.stop_index_0]
-    )
-    groups = list(
-        Backend.instance.query(models.Group)[req.start_index_0 : req.stop_index_0]
-    )
-    scim_users = [user_from_canaille_to_scim_server(user) for user in users]
-    scim_groups = [group_from_canaille_to_scim_server(group) for group in groups]
-    resources = scim_users + scim_groups
+    total = 0
+    resources = []
+    if has_scope(USERS_READ):
+        total += Backend.instance.count(models.User)
+        users = Backend.instance.query(models.User)[
+            req.start_index_0 : req.stop_index_0
+        ]
+        resources += [user_from_canaille_to_scim_server(user) for user in users]
+    if has_scope(GROUPS_READ):
+        total += Backend.instance.count(models.Group)
+        groups = Backend.instance.query(models.Group)[
+            req.start_index_0 : req.stop_index_0
+        ]
+        resources += [group_from_canaille_to_scim_server(group) for group in groups]
     list_response = ListResponse[User[EnterpriseUser] | Group](
         start_index=req.start_index,
         items_per_page=req.count,
@@ -418,8 +449,7 @@ def search():
 
 @bp.route("/Bulk", methods=["POST"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_WRITE + GROUPS_WRITE)
 def bulk():
     if (
         int(request.headers.get("Content-Length"))
@@ -447,9 +477,29 @@ def bulk():
 
     error_count = 0
     processed_operations = []
+    allowed_operations = []
+    for index, operation in enumerate(req.operations):
+        if operation.path.startswith("/Users"):
+            scopes = USERS_WRITE
+        elif operation.path.startswith("/Groups"):
+            scopes = GROUPS_WRITE
+        else:
+            scopes = None
+        if scopes is None or has_scope(scopes):
+            allowed_operations.append((index, operation))
+            continue
+        operation.status = HTTPStatus.FORBIDDEN
+        operation.response = Error(
+            detail="The token is not allowed to modify this resource type",
+            status=HTTPStatus.FORBIDDEN,
+        ).model_dump()
+        if operation.method != BulkOperation.Method.post:
+            operation.location = get_resource_location_from_path(operation.path)
+        error_count += 1
+        processed_operations.append((operation, index))
 
     # create users
-    for index, operation in enumerate(req.operations):
+    for index, operation in allowed_operations:
         if req.fail_on_errors and error_count >= req.fail_on_errors:
             break
         if (
@@ -480,7 +530,7 @@ def bulk():
             processed_operations.append((operation, index))
 
     # modify users
-    for index, operation in enumerate(req.operations):
+    for index, operation in allowed_operations:
         if req.fail_on_errors and error_count >= req.fail_on_errors:
             break
         if operation.path.startswith("/Users") and operation.method in [
@@ -548,7 +598,7 @@ def bulk():
             processed_operations.append((operation, index))
 
     # create groups
-    for index, operation in enumerate(req.operations):
+    for index, operation in allowed_operations:
         if req.fail_on_errors and error_count >= req.fail_on_errors:
             break
         if (
@@ -588,7 +638,7 @@ def bulk():
             processed_operations.append((operation, index))
 
     # modify groups
-    for index, operation in enumerate(req.operations):
+    for index, operation in allowed_operations:
         if req.fail_on_errors and error_count >= req.fail_on_errors:
             break
         if operation.path.startswith("/Groups") and operation.method in [
@@ -674,7 +724,7 @@ def bulk():
             processed_operations.append((operation, index))
 
     # delete groups
-    for index, operation in enumerate(req.operations):
+    for index, operation in allowed_operations:
         if req.fail_on_errors and error_count >= req.fail_on_errors:
             break
         if (
@@ -706,7 +756,7 @@ def bulk():
             processed_operations.append((operation, index))
 
     # delete users
-    for index, operation in enumerate(req.operations):
+    for index, operation in allowed_operations:
         if req.fail_on_errors and error_count >= req.fail_on_errors:
             break
         if (
@@ -744,8 +794,7 @@ def bulk():
 
 @bp.route("/Users", methods=["POST"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_WRITE)
 def create_user():
     return _create_resource(
         User[EnterpriseUser],
@@ -757,8 +806,7 @@ def create_user():
 
 @bp.route("/Groups", methods=["POST"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_ALL_GROUPS)
+@require_client_scope(GROUPS_WRITE)
 def create_group():
     return _create_resource(
         Group,
@@ -770,8 +818,7 @@ def create_group():
 
 @bp.route("/Users/<user:user>", methods=["PUT"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_WRITE)
 def replace_user(user):
     return _replace_resource(
         user,
@@ -783,8 +830,7 @@ def replace_user(user):
 
 @bp.route("/Groups/<group:group>", methods=["PUT"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_ALL_GROUPS)
+@require_client_scope(GROUPS_WRITE)
 def replace_group(group):
     return _replace_resource(
         group,
@@ -796,8 +842,7 @@ def replace_group(group):
 
 @bp.route("/Users/<user:user>", methods=["PATCH"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_WRITE)
 def patch_user(user):
     return _patch_resource(
         user,
@@ -809,8 +854,7 @@ def patch_user(user):
 
 @bp.route("/Groups/<group:group>", methods=["PATCH"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_ALL_GROUPS)
+@require_client_scope(GROUPS_WRITE)
 def patch_group(group):
     return _patch_resource(
         group,
@@ -822,18 +866,34 @@ def patch_group(group):
 
 @bp.route("/Users/<user:user>", methods=["DELETE"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_USERS)
+@require_client_scope(USERS_WRITE)
 def delete_user(user):
     return _delete_resource(user)
 
 
 @bp.route("/Groups/<group:group>", methods=["DELETE"])
 @csrf.exempt
-@require_oauth()
-@require_permission(Permission.MANAGE_ALL_GROUPS)
+@require_client_scope(GROUPS_WRITE)
 def delete_group(group):
     return _delete_resource(group)
+
+
+def _self_edition(from_scim):
+    """Refuse the changes to the fields the user cannot write on their own account."""
+
+    def wrapper(scim_user, user):
+        before = {name: getattr(user, name) for name in user.attributes}
+        from_scim(scim_user, user)
+        changed = {
+            name for name in user.attributes if getattr(user, name) != before[name]
+        }
+        if forbidden := changed - user.writable_fields:
+            raise ForbiddenException(
+                detail=f"Not allowed to modify: {', '.join(sorted(forbidden))}"
+            )
+        return user
+
+    return wrapper
 
 
 def _resolve_me():
@@ -846,40 +906,40 @@ def _resolve_me():
 
 @bp.route("/Me", methods=["GET"])
 @csrf.exempt
-@require_oauth()
+@require_oauth(ME_SCOPE)
 def query_me():
     return _query_resource(_resolve_me(), user_from_canaille_to_scim_server)
 
 
 @bp.route("/Me", methods=["PUT"])
 @csrf.exempt
-@require_oauth()
+@require_oauth(ME_SCOPE)
 @require_permission(Permission.EDIT_SELF)
 def replace_me():
     return _replace_resource(
         _resolve_me(),
         User[EnterpriseUser],
         user_from_canaille_to_scim_server,
-        user_from_scim_to_canaille,
+        _self_edition(user_from_scim_to_canaille),
     )
 
 
 @bp.route("/Me", methods=["PATCH"])
 @csrf.exempt
-@require_oauth()
+@require_oauth(ME_SCOPE)
 @require_permission(Permission.EDIT_SELF)
 def patch_me():
     return _patch_resource(
         _resolve_me(),
         User[EnterpriseUser],
         user_from_canaille_to_scim_server,
-        user_from_scim_to_canaille,
+        _self_edition(user_from_scim_to_canaille),
     )
 
 
 @bp.route("/Me", methods=["DELETE"])
 @csrf.exempt
-@require_oauth()
+@require_oauth(ME_SCOPE)
 @require_permission(Permission.DELETE_ACCOUNT)
 def delete_me():
     return _delete_resource(_resolve_me())

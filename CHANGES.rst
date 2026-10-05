@@ -78,6 +78,15 @@ Fixed
   mail, disabling password recovery now disables password initialization as well, instead
   of leading users to a dead end. Administrators can still set passwords themselves from
   the user profile.
+- A SCIM PUT on a user whose account expires later locked the account at once.
+
+Security
+^^^^^^^^
+- The SCIM API accepted any access token emitted by Canaille. Client tokens now need
+  a ``scim:users:*``, ``scim:groups:*``, ``scim:read`` or ``scim:write`` scope, and user
+  tokens are only accepted on ``/Me`` with the ``scim:me`` scope. **Existing SCIM clients
+  must be given one of these scopes.**
+- On ``/Me``, users can only modify the attributes of their ``WRITE`` ACL.
 
 [0.3.6] - 2026-08-04
 --------------------

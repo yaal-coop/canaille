@@ -442,7 +442,7 @@ requires-dist = [
     { name = "pytz", marker = "extra == 'front'", specifier = ">=2022.7" },
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
     { name = "scim2-client", extras = ["httpx2"], marker = "extra == 'scim'", specifier = ">=0.11.2" },
-    { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.10.2" },
+    { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.10.3" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "six", marker = "extra == 'ldap'", specifier = ">=1.17.0" },
     { name = "smpplib", marker = "extra == 'sms'", specifier = ">=2.2.3" },

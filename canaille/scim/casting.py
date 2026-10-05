@@ -88,7 +88,7 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
             for group in user.groups or []
         ]
         or None,
-        active=user.lock_date is None,
+        active=not user.locked,
     )
     if enterprise_user_class:
         scim_user[enterprise_user_class] = enterprise_user_class(
@@ -152,10 +152,10 @@ def user_from_scim_to_canaille(scim_user: User, user):
         for group in scim_user.groups or []
         if group.value
     ]
-    if not scim_user.active:
-        user.lock_date = datetime.datetime.now(datetime.UTC)
-    else:
+    if scim_user.active and user.locked:
         user.lock_date = None
+    elif not scim_user.active and not user.locked:
+        user.lock_date = datetime.datetime.now(datetime.UTC)
     return user
 
 

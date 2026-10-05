@@ -30,7 +30,6 @@ Please make sure that your client application is properly configured to accept C
    Some SCIM :ref:`features and endpoints <scim_unimplemented>` are not implemented.
    In addition to these, Canaille will implement in the future:
 
-   - Access control for clients on the SCIM API endpoint, to finely manage permissions depending on clients.
    - Client-side implementation, to broadcast user and groups modifications among all the clients.
 
 Configuration
@@ -38,8 +37,18 @@ Configuration
 
 To allow clients to access the SCIM API, the client must have the :ref:`client_credentials <grant_types>` grant type configured.
 This allows clients to ask an authentication token on their own behalf and use this token to perform queries.
-User tokens are also supported: users with appropriate :class:`permissions <canaille.core.configuration.Permission>` can access SCIM endpoints,
-and the :rfc:`/Me <7644#section-3.11>` endpoint allows authenticated users to manage their own resource.
+The client must also have one of these scopes:
+
+- ``scim:users:read`` and ``scim:users:write`` to read or write the users;
+- ``scim:groups:read`` and ``scim:groups:write`` to read or write the groups;
+- ``scim:read`` and ``scim:write`` to read or write both.
+
+The write scopes also allow reading.
+
+User tokens are only accepted on the :rfc:`/Me <7644#section-3.11>` endpoint, which allows authenticated users to manage their own resource.
+They need the ``scim:me`` scope, which users accept on the consent page.
+Users can only modify the attributes of their ``WRITE`` :class:`ACL <canaille.core.configuration.ACLSettings>`,
+and need the :attr:`~canaille.core.configuration.Permission.EDIT_SELF` and :attr:`~canaille.core.configuration.Permission.DELETE_ACCOUNT` permissions to edit and delete their account.
 
 Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>`
 configuration parameter must be enabled.
@@ -89,6 +98,7 @@ Debugging
 
 To check what data are exposed through the Canaille SCIM API, you need a *client token* and a SCIM client application.
 To generate a client token, you can simply manually create a token from the button on the client administration page.
+The token gets the scopes of the client, so the client needs one of the SCIM scopes listed above.
 Then, we recommend the use of :doc:`scim2-cli:index` to interact with the API:
 
 .. code-block:: console

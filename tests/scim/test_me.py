@@ -20,11 +20,11 @@ def test_get_me(app, backend, user, user_token):
     assert data["id"] == user.id
 
 
-def test_get_me_with_client_token_returns_404(app, backend, oidc_token):
-    """GET /Me with a client token (no subject) returns 404."""
+def test_get_me_with_client_token_is_refused(app, backend, oidc_token):
+    """GET /Me with a client token without the scim:me scope returns 403."""
     client = Client(app)
     response = client.get("/scim/v2/Me", headers=_scim_headers(app, oidc_token))
-    assert response.status_code == 404
+    assert response.status_code == 403
 
 
 def test_replace_me(app, backend, user, user_token):
@@ -85,7 +85,7 @@ def test_delete_me(app, backend, oidc_client):
         audience=[oidc_client],
         client=oidc_client,
         refresh_token=gen_salt(48),
-        scope=["openid", "profile"],
+        scope=["openid", "profile", "scim:me"],
         issue_date=datetime.datetime.now(datetime.UTC),
         lifetime=3600,
     )
