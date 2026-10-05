@@ -10,6 +10,8 @@ def configuration(configuration):
     configuration["CANAILLE_SCIM"] = {
         "ENABLE_SERVER": True,
         "ENABLE_CLIENT": True,
+        "BULK_MAX_OPERATIONS": 5,
+        "BULK_MAX_PAYLOAD_SIZE": 5000,
     }
     return configuration
 
