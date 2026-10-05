@@ -132,9 +132,7 @@ def restore(ctx):
 
         cat dump.json | canaille restore
     """
-    if click.get_text_stream("stdin").isatty() or not (
-        stdin := click.get_text_stream("stdin").read().strip()
-    ):
+    if sys.stdin.isatty() or not (stdin := sys.stdin.read().strip()):
         raise click.ClickException("Restore input is missing")
 
     try:
