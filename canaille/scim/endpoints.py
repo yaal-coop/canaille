@@ -212,7 +212,12 @@ def _replace_resource(resource, scim_type, to_scim, from_scim):
         request.json,
         scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
     )
-    scim_resource.replace(original)
+    if not scim_resource.replace(original):
+        return original.model_dump(
+            scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
+            response_parameters=req,
+        )
+
     updated = from_scim(scim_resource, resource)
     Backend.instance.save(updated)
     resource_name = type(resource).__name__.lower()

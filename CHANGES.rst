@@ -30,6 +30,8 @@ Changed
   instead of PUT, when the client supports PATCH. Only the changed attributes are
   sent, and nothing is sent when nothing changed. The attributes Canaille does not
   manage are left untouched.
+- A SCIM PUT request that changes nothing keeps the ``meta.version`` and
+  ``meta.lastModified`` of the resource.
 
 Removed
 ^^^^^^^
