@@ -1,7 +1,7 @@
 import datetime
 import hashlib
 
-from flask import url_for
+from scim2_models import ForbiddenException
 from scim2_models import Meta
 
 from canaille.app import models
@@ -26,7 +26,6 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
             resource_type="User",
             created=user.created,
             last_modified=user.last_modified,
-            location=url_for("scim.query_user", user=user, _external=True),
             version=make_etag(user),
         ),
         user_name=user.user_name,
@@ -83,7 +82,6 @@ def user_from_canaille_to_scim(user, user_class, enterprise_user_class):
             user_class.Groups(
                 value=group.id,
                 display=group.display_name,
-                ref=url_for("scim.query_group", group=group, _external=True),
             )
             for group in user.groups or []
         ]
@@ -152,9 +150,9 @@ def user_from_scim_to_canaille(scim_user: User, user):
         for group in scim_user.groups or []
         if group.value
     ]
-    if scim_user.active and user.locked:
+    if scim_user.active is True and user.locked:
         user.lock_date = None
-    elif not scim_user.active and not user.locked:
+    elif scim_user.active is False and not user.locked:
         user.lock_date = datetime.datetime.now(datetime.UTC)
     return user
 
@@ -165,7 +163,6 @@ def group_from_canaille_to_scim(group, group_class):
             resource_type="Group",
             created=group.created,
             last_modified=group.last_modified,
-            location=url_for("scim.query_group", group=group, _external=True),
             version=make_etag(group),
         ),
         display_name=group.display_name,
@@ -178,9 +175,8 @@ def group_from_canaille_to_scim_server(group):
 
     scim_group.members = [
         Group.Members(
-            value=user.identifier,
+            value=user.id,
             display=user.display_name,
-            ref=url_for("scim.query_user", user=user, _external=True),
         )
         for user in group.members or []
     ] or None
@@ -198,3 +194,21 @@ def group_from_scim_to_canaille(scim_group: Group, group):
     group.members = members
 
     return group
+
+
+def self_edition(from_scim):
+    """Refuse the changes to the fields the user cannot write on their own account."""
+
+    def wrapper(scim_user, user):
+        before = {name: getattr(user, name) for name in user.attributes}
+        from_scim(scim_user, user)
+        changed = {
+            name for name in user.attributes if getattr(user, name) != before[name]
+        }
+        if forbidden := changed - user.writable_fields:
+            raise ForbiddenException(
+                detail=f"Not allowed to modify: {', '.join(sorted(forbidden))}"
+            )
+        return user
+
+    return wrapper

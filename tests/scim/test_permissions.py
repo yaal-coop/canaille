@@ -34,19 +34,49 @@ def test_user_token_with_manage_users_cannot_list_users(app, backend, user, user
     assert response.status_code == 403
 
 
-def test_user_token_with_manage_users_cannot_read_single_user(
-    app, backend, user, user_token
+def test_user_token_with_manage_users_cannot_read_another_user(
+    app, backend, user, admin, user_token
 ):
-    """A user token is refused on /Users/{id}, even with MANAGE_USERS permission."""
+    """A user token is refused on another user, even with MANAGE_USERS permission."""
     app.config["CANAILLE"]["ACL"]["DEFAULT"]["PERMISSIONS"].append(
         Permission.MANAGE_USERS
     )
     backend.reload(user)
     client = Client(app)
     response = client.get(
-        f"/scim/v2/Users/{user.id}", headers=_scim_headers(app, user_token)
+        f"/scim/v2/Users/{admin.id}", headers=_scim_headers(app, user_token)
     )
     assert response.status_code == 403
+
+
+def test_user_token_can_read_its_own_user(app, backend, user, user_token):
+    """A user token reads its own user on /Users/{id}, as on /Me."""
+    client = Client(app)
+    response = client.get(
+        f"/scim/v2/Users/{user.id}", headers=_scim_headers(app, user_token)
+    )
+    assert response.status_code == 200
+    assert response.json["id"] == user.id
+
+
+def test_user_token_follows_the_write_acl_on_its_own_user(
+    app, backend, user, user_token
+):
+    """A user cannot modify on /Users/{id} a field that the WRITE ACL does not list."""
+    app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("title")
+    backend.reload(user)
+    payload = {
+        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        "Operations": [{"op": "replace", "path": "title", "value": "CEO"}],
+    }
+    response = Client(app).patch(
+        f"/scim/v2/Users/{user.id}",
+        data=json.dumps(payload),
+        headers=_scim_headers(app, user_token),
+    )
+    assert response.status_code == 403
+    backend.reload(user)
+    assert user.title != "CEO"
 
 
 def test_user_token_without_manage_users_cannot_create_user(

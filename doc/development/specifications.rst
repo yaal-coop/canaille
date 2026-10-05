@@ -74,8 +74,9 @@ Endpoints:
 - /Schemas/<schema_id> (GET)
 - /ResourceTypes (GET)
 - /ResourceTypes/<resource_type_id> (GET)
-- :rfc:`/.search <7644#section-3.4.3>` (POST)
+- :rfc:`/.search <7644#section-3.4.3>` (POST), at the root and on /Users and /Groups
 - :rfc:`/Me <7644#section-3.11>` (GET, PUT, PATCH, DELETE)
+- :rfc:`/Bulk <7644#section-3.7>` (POST)
 
 Features:
 
@@ -88,11 +89,7 @@ Features:
 What is not implemented yet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Endpoints:
-
-- :rfc:`/Bulk <7644#section-3.11>` (POST)
-
-Features
+Features:
 
 - :rfc:`filtering <7644#section-3.4.2.2>`
 - :rfc:`sorting <7644#section-3.4.2.3>`

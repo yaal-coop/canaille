@@ -57,8 +57,8 @@ def test_patch_me(app, backend, user, user_token):
         ],
     }
     response = client.patch("/scim/v2/Me", data=json.dumps(payload), headers=headers)
-    assert response.status_code == 200
-    assert response.get_json()["title"] == "CTO"
+    assert response.status_code == 204
+    assert response.headers["Location"].endswith(f"/scim/v2/Users/{user.id}")
 
     backend.reload(user)
     assert user.title == "CTO"

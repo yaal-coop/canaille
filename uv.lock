@@ -317,6 +317,7 @@ scim = [
     { name = "authlib" },
     { name = "scim2-client", extra = ["httpx2"] },
     { name = "scim2-models" },
+    { name = "scim2-server" },
 ]
 sentry = [
     { name = "sentry-sdk" },
@@ -363,7 +364,6 @@ dev = [
     { name = "pytest-smtpd" },
     { name = "pytest-xdist" },
     { name = "python-avatars" },
-    { name = "scim2-server" },
     { name = "scim2-tester" },
     { name = "setuptools", marker = "python_full_version >= '3.12'" },
     { name = "slapd" },
@@ -444,6 +444,7 @@ requires-dist = [
     { name = "qrcode", marker = "extra == 'otp'", specifier = ">=8.0" },
     { name = "scim2-client", extras = ["httpx2"], marker = "extra == 'scim'", specifier = ">=0.11.2" },
     { name = "scim2-models", marker = "extra == 'scim'", specifier = ">=0.10.6" },
+    { name = "scim2-server", marker = "extra == 'scim'", specifier = ">=0.6.2" },
     { name = "sentry-sdk", marker = "extra == 'sentry'", specifier = ">=2.0.0" },
     { name = "six", marker = "extra == 'ldap'", specifier = ">=1.17.0" },
     { name = "smpplib", marker = "extra == 'sms'", specifier = ">=2.2.3" },
@@ -488,7 +489,6 @@ dev = [
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
     { name = "python-avatars", specifier = ">=1.4.0" },
-    { name = "scim2-server", specifier = ">=0.6.2" },
     { name = "scim2-tester", specifier = ">=0.5.2" },
     { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=50.0.0,<=81" },
     { name = "slapd", specifier = ">=0.1.5" },

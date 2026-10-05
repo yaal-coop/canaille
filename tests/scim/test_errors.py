@@ -1,5 +1,8 @@
 import datetime
+import json
+from unittest import mock
 
+import pytest
 from scim2_client.engines.werkzeug import TestSCIMClient
 from scim2_models import Error
 from werkzeug.security import gen_salt
@@ -117,3 +120,49 @@ def test_invalid_payload(app, backend, scim_client):
     assert isinstance(error, Error)
     assert error.scim_type == "invalidValue"
     assert error.status == 400
+
+
+@pytest.mark.parametrize(
+    "path", ["/ServiceProviderConfig", "/ResourceTypes", "/Schemas"]
+)
+def test_discovery_needs_no_token(app, path):
+    """The discovery endpoints answer without a token."""
+    response = Client(app).get(
+        f"/scim/v2{path}", headers={"Host": app.config["SERVER_NAME"]}
+    )
+    assert response.status_code == 200
+
+
+def test_resources_need_a_token(app):
+    """The resources need a token, and the 401 response tells how to get one."""
+    response = Client(app).get(
+        "/scim/v2/Users", headers={"Host": app.config["SERVER_NAME"]}
+    )
+    assert response.status_code == 401
+    assert response.headers["WWW-Authenticate"].startswith("Bearer")
+
+
+def test_internal_error(app, backend, oidc_token, caplog):
+    """An unexpected error gives a 500 SCIM error, and is logged."""
+    payload = {
+        "schemas": ["urn:ietf:params:scim:schemas:core:2.0:User"],
+        "userName": "alice",
+        "name": {"formatted": "Alice", "familyName": "Alice"},
+        "active": True,
+    }
+    with mock.patch(
+        "canaille.backends.Backend.instance.save",
+        side_effect=Exception("Database error"),
+    ):
+        response = Client(app).post(
+            "/scim/v2/Users",
+            data=json.dumps(payload),
+            headers={
+                "Authorization": f"Bearer {oidc_token.access_token}",
+                "Host": app.config["SERVER_NAME"],
+                "Content-Type": "application/scim+json",
+            },
+        )
+    assert response.status_code == 500
+    assert response.json["detail"] == "Internal server error"
+    assert "Database error" in caplog.text

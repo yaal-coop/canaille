@@ -33,6 +33,15 @@ Changed
   manage are left untouched.
 - A SCIM PUT request that changes nothing keeps the ``meta.version`` and
   ``meta.lastModified`` of the resource.
+- The SCIM server is built upon `scim2-server <https://github.com/python-scim/scim2-server>`_.
+  **SCIM clients may need to be adapted:**
+
+  - users and groups are identified by their ``id`` in the URLs, in ``members.value``
+    and in ``$ref``, instead of their ``userName`` and ``displayName``;
+  - a PATCH request answers ``204 No Content`` when no ``attributes`` are requested;
+  - in a bulk request, an operation that refers to an unknown ``bulkId`` answers 409;
+  - the ``/ServiceProviderConfig``, ``/ResourceTypes`` and ``/Schemas`` endpoints need
+    no token.
 
 Removed
 ^^^^^^^
@@ -91,9 +100,10 @@ Security
 ^^^^^^^^
 - The SCIM API accepted any access token emitted by Canaille. Client tokens now need
   a ``scim:users:*``, ``scim:groups:*``, ``scim:read`` or ``scim:write`` scope, and user
-  tokens are only accepted on ``/Me`` with the ``scim:me`` scope. **Existing SCIM clients
-  must be given one of these scopes.**
-- On ``/Me``, users can only modify the attributes of their ``WRITE`` ACL.
+  tokens only give access to their own user, with the ``scim:me`` scope. **Existing SCIM
+  clients must be given one of these scopes.**
+- With SCIM, users can only modify the attributes of their ``WRITE`` ACL on their own
+  account.
 
 [0.3.6] - 2026-08-04
 --------------------
