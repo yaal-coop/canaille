@@ -22,6 +22,7 @@ LDAP_LIMITS = {
     "test_create_does_not_change_the_given_resource": "LDAP users need a name",
     "test_search_a_resource_type": "LDAP groups cannot be empty",
     "test_search_at_the_root": "LDAP groups cannot be empty",
+    "test_search_at_the_root_on_an_attribute_some_types_lack": "LDAP groups cannot be empty",
 }
 
 

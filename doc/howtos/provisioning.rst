@@ -27,8 +27,7 @@ Please make sure that your client application is properly configured to accept C
 
 .. todo::
 
-   Some SCIM :ref:`features and endpoints <scim_unimplemented>` are not implemented.
-   In addition to these, Canaille will implement in the future:
+   Canaille will implement in the future:
 
    - Client-side implementation, to broadcast user and groups modifications among all the clients.
 

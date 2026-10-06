@@ -236,8 +236,8 @@ def get_service_provider_config():
             ],
         ),
         change_password=ChangePassword(supported=True),
-        filter=Filter(supported=False, max_results=1000),
-        sort=Sort(supported=False),
+        filter=Filter(supported=True, max_results=1000),
+        sort=Sort(supported=True),
         etag=ETag(supported=True),
         authentication_schemes=[
             AuthenticationScheme(

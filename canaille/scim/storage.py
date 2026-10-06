@@ -79,7 +79,22 @@ class CanailleStorage(ScimStorage):
         self, resource_types: list[ResourceType], search_request: SearchRequest[Any]
     ) -> tuple[int, list[Resource[Any]]]:
         start = search_request.start_index_0 or 0
-        stop = search_request.stop_index_0
+        stop = None if search_request.count is None else start + search_request.count
+        if search_request.filter is not None or search_request.sort_by is not None:
+            kinds = [KINDS[resource_type.id] for resource_type in resource_types]
+            resources = [
+                kind.to_scim(instance)
+                for kind in kinds
+                for instance in Backend.instance.query(kind.model)
+            ]
+            found = [
+                resource
+                for resource in resources
+                if search_request.filter is None
+                or search_request.filter.match(resource)
+            ]
+            return len(found), search_request.sort(found)[start:stop]
+
         total = 0
         resources = []
         for resource_type in resource_types:

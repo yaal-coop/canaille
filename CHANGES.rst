@@ -8,6 +8,7 @@ Added
   coordinates of smartphone photos, are stripped. They are downscaled to 1024x1024
   and cannot weigh more than 5MB.
 - Support for SCIM bulk operations.
+- Support for SCIM filtering and sorting.
 
 Changed
 ^^^^^^^
