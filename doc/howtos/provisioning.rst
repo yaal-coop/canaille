@@ -27,8 +27,7 @@ Please make sure that your client application is properly configured to accept C
 
 .. todo::
 
-   Some SCIM :ref:`features and endpoints <scim_unimplemented>` are not implemented.
-   In addition to these, Canaille will implement in the future:
+   Canaille will implement in the future:
 
    - Client-side implementation, to broadcast user and groups modifications among all the clients.
 
@@ -45,10 +44,14 @@ The client must also have one of these scopes:
 
 The write scopes also allow reading.
 
-User tokens are only accepted on the :rfc:`/Me <7644#section-3.11>` endpoint, which allows authenticated users to manage their own resource.
+User tokens only give access to the user they belong to,
+on the :rfc:`/Me <7644#section-3.11>` endpoint or on ``/Users/<id>``.
 They need the ``scim:me`` scope, which users accept on the consent page.
 Users can only modify the attributes of their ``WRITE`` :class:`ACL <canaille.core.configuration.ACLSettings>`,
-and need the :attr:`~canaille.core.configuration.Permission.EDIT_SELF` and :attr:`~canaille.core.configuration.Permission.DELETE_ACCOUNT` permissions to edit and delete their account.
+and need the :attr:`~canaille.core.configuration.Permission.EDIT_SELF` permission to edit their account,
+and the :attr:`~canaille.core.configuration.Permission.DELETE_ACCOUNT` or :attr:`~canaille.core.configuration.Permission.MANAGE_USERS` permission to delete it.
+
+The ``/ServiceProviderConfig``, ``/ResourceTypes`` and ``/Schemas`` endpoints need no token.
 
 Then the :attr:`CANAILLE_SCIM.ENABLE_SERVER <canaille.scim.configuration.SCIMSettings.ENABLE_SERVER>`
 configuration parameter must be enabled.
@@ -107,18 +110,18 @@ Then, we recommend the use of :doc:`scim2-cli:index` to interact with the API:
     $ pip install scim2-cli
     $ export SCIM_CLI_URL="https://canaille.example/scim/v2"
     $ export SCIM_CLI_HEADERS="Authorization: Bearer <MY_CLIENT_TOKEN>"
-    $ scim query user bjensen
+    $ scim query user 2819c223-7f76-453a-919d-413861904646
     {
         "schemas": [
             "urn:ietf:params:scim:schemas:core:2.0:User",
             "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
         ],
-        "id": "bjensen",
+        "id": "2819c223-7f76-453a-919d-413861904646",
         "meta": {
             "resourceType": "User",
             "created": "2024-12-05T16:08:51.896646Z",
             "lastModified": "2024-12-05T16:08:51.896646Z",
-            "location": "http://scim.example/v2/Users/bjensen",
+            "location": "https://canaille.example/scim/v2/Users/2819c223-7f76-453a-919d-413861904646",
             "version": "W/\"637b1ce03c010cd55fe45b6f7be2247b5159b135\""
         },
         "userName": "bjensen@example.com"

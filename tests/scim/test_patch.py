@@ -14,7 +14,8 @@ def test_patch_user_replace_simple_attribute(app, backend, user, scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
     op = PatchOperation(op=Op.replace_, path="title", value="Senior Developer")
-    response_user = scim_client.modify(User, user.id, PatchOp[User](operations=[op]))
+    assert scim_client.modify(User, user.id, PatchOp[User](operations=[op])) is None
+    response_user = scim_client.query(User, user.id)
 
     assert response_user.title == "Senior Developer"
 
@@ -33,7 +34,8 @@ def test_patch_user_activate_deactivate(app, backend, user, scim_client):
     User = scim_client.get_resource_model("User")
 
     op = PatchOperation(op=Op.replace_, path="active", value=False)
-    response_user = scim_client.modify(User, user.id, PatchOp[User](operations=[op]))
+    assert scim_client.modify(User, user.id, PatchOp[User](operations=[op])) is None
+    response_user = scim_client.query(User, user.id)
 
     assert response_user.active is False
 
@@ -42,7 +44,8 @@ def test_patch_user_activate_deactivate(app, backend, user, scim_client):
     assert user.given_name == "John"
 
     op = PatchOperation(op=Op.replace_, path="active", value=True)
-    response_user = scim_client.modify(User, user.id, PatchOp[User](operations=[op]))
+    assert scim_client.modify(User, user.id, PatchOp[User](operations=[op])) is None
+    response_user = scim_client.query(User, user.id)
 
     assert response_user.active is True
 
@@ -87,7 +90,8 @@ def test_patch_user_add_email(app, backend, user, scim_client):
     op = PatchOperation(
         op=Op.add, path="emails", value=[{"value": "newemail@example.com"}]
     )
-    response_user = scim_client.modify(User, user.id, PatchOp[User](operations=[op]))
+    assert scim_client.modify(User, user.id, PatchOp[User](operations=[op])) is None
+    response_user = scim_client.query(User, user.id)
 
     email_values = [email.value for email in response_user.emails]
     assert "newemail@example.com" in email_values
@@ -104,7 +108,8 @@ def test_patch_user_remove_attribute(app, backend, user, scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
     op = PatchOperation(op=Op.remove, path="title")
-    response_user = scim_client.modify(User, user.id, PatchOp[User](operations=[op]))
+    assert scim_client.modify(User, user.id, PatchOp[User](operations=[op])) is None
+    response_user = scim_client.query(User, user.id)
 
     assert response_user.title is None
 
@@ -120,7 +125,8 @@ def test_patch_user_multiple_operations(app, backend, user, scim_client):
         PatchOperation(op=Op.replace_, path="title", value="CTO"),
         PatchOperation(op=Op.add, path="preferredLanguage", value="en-US"),
     ]
-    response_user = scim_client.modify(User, user.id, PatchOp[User](operations=ops))
+    assert scim_client.modify(User, user.id, PatchOp[User](operations=ops)) is None
+    response_user = scim_client.query(User, user.id)
 
     assert response_user.title == "CTO"
     assert response_user.preferred_language == "en-US"
@@ -144,12 +150,13 @@ def test_patch_group_replace_members(
         path="members",
         value=[{"value": moderator.id, "display": moderator.display_name}],
     )
-    response_group = scim_client.modify(
-        Group, foo_group.id, PatchOp[Group](operations=[op])
+    assert (
+        scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op])) is None
     )
+    response_group = scim_client.query(Group, foo_group.id)
 
     member_ids = [member.value for member in response_group.members]
-    assert moderator.identifier in member_ids
+    assert moderator.id in member_ids
     assert user.id not in member_ids
 
     backend.reload(foo_group)
@@ -170,12 +177,13 @@ def test_patch_group_add_invalid_member(app, backend, foo_group, user, scim_clie
         path="members",
         value=[{"value": "invalid"}],
     )
-    response_group = scim_client.modify(
-        Group, foo_group.id, PatchOp[Group](operations=[op])
+    assert (
+        scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op])) is None
     )
+    response_group = scim_client.query(Group, foo_group.id)
 
     member_ids = [member.value for member in response_group.members]
-    assert member_ids == [user.identifier]
+    assert member_ids == [user.id]
 
 
 def test_patch_group_add_member_with_display(
@@ -218,13 +226,14 @@ def test_patch_group_add_member(app, backend, foo_group, user, moderator, scim_c
         path="members",
         value=[{"value": moderator.id, "display": moderator.display_name}],
     )
-    response_group = scim_client.modify(
-        Group, foo_group.id, PatchOp[Group](operations=[op])
+    assert (
+        scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op])) is None
     )
+    response_group = scim_client.query(Group, foo_group.id)
 
     member_ids = [member.value for member in response_group.members]
-    assert user.identifier in member_ids
-    assert moderator.identifier in member_ids
+    assert user.id in member_ids
+    assert moderator.id in member_ids
 
     backend.reload(foo_group)
     member_ids_persisted = [member.identifier for member in foo_group.members]
@@ -253,7 +262,8 @@ def test_patch_user_no_modifications(app, backend, user, scim_client):
     scim_client.discover()
     User = scim_client.get_resource_model("User")
     op = PatchOperation(op=Op.replace_, path="title", value="Developer")
-    response_user = scim_client.modify(User, user.id, PatchOp[User](operations=[op]))
+    assert scim_client.modify(User, user.id, PatchOp[User](operations=[op])) is None
+    response_user = scim_client.query(User, user.id)
 
     assert response_user.title == "Developer"
 
@@ -269,9 +279,10 @@ def test_patch_group_no_modification(app, backend, foo_group, user, scim_client)
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
     op = PatchOperation(op=Op.replace_, path="displayName", value="foo")
-    response_group = scim_client.modify(
-        Group, foo_group.id, PatchOp[Group](operations=[op])
+    assert (
+        scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op])) is None
     )
+    response_group = scim_client.query(Group, foo_group.id)
 
     member_ids = [member.value for member in response_group.members]
-    assert user.identifier in member_ids
+    assert user.id in member_ids

@@ -56,9 +56,9 @@ SCIM
 
 Canaille provides a basic SCIM server implementation.
 
-- 🟠 `RFC7642: System for Cross-domain Identity Management: Definitions, Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/rfc7642>`_
-- 🟠 `RFC7643: System for Cross-domain Identity Management: Core Schema <https://www.rfc-editor.org/rfc/rfc7642>`_
-- 🟠 `RFC7644: System for Cross-domain Identity Management: Protocol <https://www.rfc-editor.org/rfc/rfc7642>`_
+- ✅ `RFC7642: System for Cross-domain Identity Management: Definitions, Overview, Concepts, and Requirements <https://www.rfc-editor.org/rfc/rfc7642>`_
+- ✅ `RFC7643: System for Cross-domain Identity Management: Core Schema <https://www.rfc-editor.org/rfc/rfc7643>`_
+- ✅ `RFC7644: System for Cross-domain Identity Management: Protocol <https://www.rfc-editor.org/rfc/rfc7644>`_
 
 What's implemented
 ~~~~~~~~~~~~~~~~~~
@@ -74,25 +74,20 @@ Endpoints:
 - /Schemas/<schema_id> (GET)
 - /ResourceTypes (GET)
 - /ResourceTypes/<resource_type_id> (GET)
-- :rfc:`/.search <7644#section-3.4.3>` (POST)
+- :rfc:`/.search <7644#section-3.4.3>` (POST), at the root and on /Users and /Groups
 - :rfc:`/Me <7644#section-3.11>` (GET, PUT, PATCH, DELETE)
+- :rfc:`/Bulk <7644#section-3.7>` (POST)
 
 Features:
 
+- :rfc:`filtering <7644#section-3.4.2.2>`
+- :rfc:`sorting <7644#section-3.4.2.3>`
 - :rfc:`pagination <7644#section-3.4.2.4>`
 - :rfc:`ETags <7644#section-3.14>`
 - :rfc:`attributes selection <7644#section-3.4.2.5>`
 
-.. _scim_unimplemented:
+Known limits
+~~~~~~~~~~~~
 
-What is not implemented yet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Endpoints:
-
-- :rfc:`/Bulk <7644#section-3.11>` (POST)
-
-Features
-
-- :rfc:`filtering <7644#section-3.4.2.2>`
-- :rfc:`sorting <7644#section-3.4.2.3>`
+- With OpenLDAP, ``meta.created`` is precise to the second only, so it can differ
+  from ``meta.lastModified`` on a resource that was never modified.

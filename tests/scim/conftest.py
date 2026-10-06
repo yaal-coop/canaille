@@ -98,17 +98,9 @@ def user_token(testclient, oidc_client, user, backend):
 
 @pytest.fixture
 def scim_provider(app):
-    from scim2_models import ScimProvider
+    from canaille.scim.models import get_provider
 
-    from canaille.scim.endpoints import get_resource_types
-    from canaille.scim.endpoints import get_schemas
-    from canaille.scim.endpoints import get_service_provider_config
-
-    return ScimProvider.from_discovery(
-        schemas=get_schemas().values(),
-        resource_types=get_resource_types().values(),
-        config=get_service_provider_config(),
-    )
+    return get_provider()
 
 
 @pytest.fixture
@@ -251,3 +243,20 @@ def consent(testclient, client_without_scim, user, backend):
     backend.save(t)
     yield t
     backend.delete(t)
+
+
+@pytest.fixture
+def clean_backend(app, backend):
+    """Delete the users and groups a test creates, as the LDAP server outlives the tests."""
+    from canaille.app import models
+
+    before = {
+        instance.id
+        for model in (models.User, models.Group)
+        for instance in backend.query(model)
+    }
+    yield
+    for model in (models.User, models.Group):
+        for instance in backend.query(model):
+            if instance.id not in before:
+                backend.delete(instance)

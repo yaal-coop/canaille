@@ -5,7 +5,6 @@ from typing import ClassVar
 from typing import Union
 
 from flask import current_app
-from flask import url_for
 from pydantic import EmailStr
 from pydantic import Field
 from scim2_models import URN
@@ -19,7 +18,6 @@ from scim2_models import ETag
 from scim2_models import Extension
 from scim2_models import External
 from scim2_models import Filter
-from scim2_models import Meta
 from scim2_models import Mutability
 from scim2_models import Patch
 from scim2_models import Reference
@@ -27,8 +25,8 @@ from scim2_models import Required
 from scim2_models import Resource
 from scim2_models import ResourceType
 from scim2_models import Returned
-from scim2_models import Schema
 from scim2_models import SchemaExtension
+from scim2_models import ScimProvider
 from scim2_models import ServiceProviderConfig
 from scim2_models import Sort
 from scim2_models import Uniqueness
@@ -228,10 +226,6 @@ class EnterpriseUser(Extension):
 @cache
 def get_service_provider_config():
     return ServiceProviderConfig(
-        meta=Meta(
-            resource_type="ServiceProviderConfig",
-            location=url_for("scim.query_service_provider_config", _external=True),
-        ),
         documentation_uri=DOCUMENTATION_URL,
         patch=Patch(supported=True),
         bulk=Bulk(
@@ -242,8 +236,8 @@ def get_service_provider_config():
             ],
         ),
         change_password=ChangePassword(supported=True),
-        filter=Filter(supported=False, max_results=0),
-        sort=Sort(supported=False),
+        filter=Filter(supported=True, max_results=1000),
+        sort=Sort(supported=True),
         etag=ETag(supported=True),
         authentication_schemes=[
             AuthenticationScheme(
@@ -274,14 +268,6 @@ def get_resource_types():
                     required=False,
                 )
             ],
-            meta=Meta(
-                resource_type="ResourceType",
-                location=url_for(
-                    "scim.query_resource_type",
-                    resource_type_name="User",
-                    _external=True,
-                ),
-            ),
         ),
         "Group": ResourceType(
             id="Group",
@@ -289,34 +275,15 @@ def get_resource_types():
             endpoint="/Groups",
             description="Group management",
             schema_="urn:ietf:params:scim:schemas:core:2.0:Group",
-            meta=Meta(
-                resource_type="ResourceType",
-                location=url_for(
-                    "scim.query_resource_type",
-                    resource_type_name="Group",
-                    _external=True,
-                ),
-            ),
         ),
     }
 
 
 @cache
-def get_schemas():
-    schemas = {
-        str(model.__schema__): model.to_schema()
-        for model in (
-            ServiceProviderConfig,
-            ResourceType,
-            Schema,
-            User,
-            Group,
-            EnterpriseUser,
-        )
-    }
-    for schema_id, schema in schemas.items():
-        schema.meta = Meta(
-            resource_type="Schema",
-            location=url_for("scim.query_schema", schema_id=schema_id, _external=True),
-        )
-    return schemas
+def get_provider():
+    """Return the description of the SCIM service implemented by Canaille."""
+    return ScimProvider(
+        models=[User, Group, EnterpriseUser],
+        resource_types=get_resource_types().values(),
+        config=get_service_provider_config(),
+    )

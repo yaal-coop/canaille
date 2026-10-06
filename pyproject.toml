@@ -65,6 +65,7 @@ scim = [
     "authlib >= 1.8.0",
     "scim2-client[httpx2]>=0.11.2",
     "scim2-models>=0.10.6",
+    "scim2-server>=0.6.2",
 ]
 
 ldap = [
@@ -159,7 +160,6 @@ dev = [
     "pytest-smtpd >= 0.1.0",
     "pytest-xdist >= 3.3.1",
     "python-avatars >= 1.4.0",
-    "scim2-server>=0.6.2",
     "scim2-tester>=0.5.2",
     "slapd >= 0.1.5",
     "time-machine >= 2.14.1",

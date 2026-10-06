@@ -1,60 +1,53 @@
 import json
-from functools import wraps
-from http import HTTPStatus
+from dataclasses import dataclass
+from dataclasses import field
 
 from authlib.integrations.flask_oauth2 import ResourceProtector
-from authlib.integrations.flask_oauth2 import current_token
-from authlib.integrations.flask_oauth2.errors import (
-    _HTTPException as AuthlibHTTPException,
-)
+from authlib.oauth2 import OAuth2Error
 from authlib.oauth2.rfc6750 import BearerTokenValidator
 from flask import Blueprint
-from flask import abort
+from flask import Response
 from flask import current_app
 from flask import request
-from pydantic import ValidationError
-from scim2_models import BulkOperation
-from scim2_models import BulkRequest
-from scim2_models import BulkResponse
-from scim2_models import Context
-from scim2_models import Error
+from flask import url_for
 from scim2_models import ForbiddenException
-from scim2_models import InvalidValueException
-from scim2_models import ListResponse
-from scim2_models import PatchOp
-from scim2_models import ResourceType
-from scim2_models import ResponseParameters
-from scim2_models import Schema
+from scim2_models import NotFoundException
 from scim2_models import SCIMException
-from scim2_models import SearchRequest
-from werkzeug.exceptions import HTTPException
-from werkzeug.exceptions import PreconditionFailed
+from scim2_models import UnauthorizedException
+from scim2_server.handler import ScimHandler
+from scim2_server.requests import ScimRequest
+from scim2_server.routing import Operation
+from scim2_server.service import ScimService
 
 from canaille.app import models
 from canaille.app.flask import csrf
 from canaille.backends import Backend
 from canaille.core.configuration import Permission
 
-from .casting import group_from_canaille_to_scim_server
-from .casting import group_from_scim_to_canaille
-from .casting import make_etag
-from .casting import user_from_canaille_to_scim_server
-from .casting import user_from_scim_to_canaille
-from .models import EnterpriseUser
-from .models import Group
-from .models import User
-from .models import get_resource_types
-from .models import get_schemas
-from .models import get_service_provider_config
+from .models import get_provider
+from .storage import CanailleStorage
 
 bp = Blueprint("scim", __name__, url_prefix="/scim/v2")
 
 
-USERS_READ = ["scim:users:read", "scim:users:write", "scim:read", "scim:write"]
-USERS_WRITE = ["scim:users:write", "scim:write"]
-GROUPS_READ = ["scim:groups:read", "scim:groups:write", "scim:read", "scim:write"]
-GROUPS_WRITE = ["scim:groups:write", "scim:write"]
+READ_SCOPES = {
+    "User": {"scim:users:read", "scim:users:write", "scim:read", "scim:write"},
+    "Group": {"scim:groups:read", "scim:groups:write", "scim:read", "scim:write"},
+}
+WRITE_SCOPES = {
+    "User": {"scim:users:write", "scim:write"},
+    "Group": {"scim:groups:write", "scim:write"},
+}
 ME_SCOPE = "scim:me"
+
+READ_OPERATIONS = {Operation.query, Operation.search, Operation.search_with_body}
+DISCOVERY_OPERATIONS = {
+    Operation.service_provider_config,
+    Operation.resource_types,
+    Operation.resource_type,
+    Operation.schemas,
+    Operation.schema,
+}
 
 
 class SCIMBearerTokenValidator(BearerTokenValidator):
@@ -69,877 +62,103 @@ require_oauth = ResourceProtector()
 require_oauth.register_token_validator(SCIMBearerTokenValidator())
 
 
-def has_scope(scopes):
-    """Whether the current token has one of the scopes."""
-    return bool(set(scopes) & set(current_token.scope or []))
-
-
-def require_client_scope(scopes):
-    """Check that a client token has one of the scopes.
-
-    User tokens are only accepted on /Me.
-    """
-
-    def decorator(f):
-        @wraps(f)
-        @require_oauth(scopes)
-        def wrapper(*args, **kwargs):
-            if current_token.subject:
-                raise ForbiddenException(detail="User tokens are only accepted on /Me")
-            return f(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-
-
-def require_permission(permission):
-    """Check that user tokens have the required Canaille permission."""
-
-    def decorator(f):
-        @wraps(f)
-        def wrapper(*args, **kwargs):
-            if current_token.subject and not current_token.subject.can(permission):
-                err = Error(detail="Insufficient permissions", status=403)
-                return err.model_dump(), 403
-            return f(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-
-
-@bp.after_request
-def add_scim_content_type(response):
-    response.headers["Content-Type"] = "application/scim+json"
-    return response
-
-
-@bp.after_request
-def set_etag_header(response):
-    """Extract ``ETag`` from ``meta.version`` and handle conditional responses."""
-    data = response.get_json(silent=True)
-    if meta := (data or {}).get("meta"):
-        if version := meta.get("version"):
-            response.headers["ETag"] = version
-    response.make_conditional(request)
-    return response
-
-
-@bp.before_request
-def check_etag():
-    """Verify ``If-Match`` on write operations."""
-    if request.method not in ("PUT", "PATCH", "DELETE"):
-        return
-    arg = next(iter(request.view_args.values()), None)
-    if not arg:
-        return
-    if_match = request.headers.get("If-Match")
-    if not if_match:
-        return
-    if if_match.strip() == "*":
-        return
-    etag = make_etag(arg)
-    tags = [t.strip() for t in if_match.split(",")]
-    if etag not in tags:
-        raise PreconditionFailed("ETag mismatch")
-
-
-@bp.errorhandler(HTTPException)
-def http_error_handler(error):
-    obj = Error(detail=str(error), status=error.code)
-    return obj.model_dump(), obj.status
-
-
-@bp.errorhandler(AuthlibHTTPException)
-def oauth2_error(error):
-    body = json.loads(error.body)
-    obj = Error(
-        detail=f"{body['error']}: {body['error_description']}"
-        if "error_description" in body
-        else body["error"],
-        status=error.code,
-    )
-    return obj.model_dump(), error.code
-
-
-@bp.errorhandler(ValidationError)
-def scim_error_handler(error):
-    obj = Error.from_validation_error(error.errors()[0])
-    return obj.model_dump(), obj.status
-
-
-@bp.errorhandler(SCIMException)
-def scim_exception_handler(error):
-    obj = error.to_error()
-    return obj.model_dump(), obj.status
-
-
-def parse_search_request(request) -> SearchRequest:
-    """Create a SearchRequest object from the request arguments."""
-    max_nb_items_per_page = 1000
-    count = (
-        min(request.args["count"], max_nb_items_per_page)
-        if request.args.get("count")
-        else None
-    )
-    req = SearchRequest(
-        attributes=request.args.get("attributes"),
-        excluded_attributes=request.args.get("excludedAttributes"),
-        start_index=request.args.get("startIndex"),
-        count=count,
-    )
-    return req
-
-
-def _query_resources(canaille_model, scim_type, to_scim):
-    req = parse_search_request(request)
-    total = Backend.instance.count(canaille_model)
-    resources = list(
-        Backend.instance.query(canaille_model)[req.start_index_0 : req.stop_index_0]
-    )
-    scim_resources = [to_scim(r) for r in resources]
-    list_response = ListResponse[scim_type](
-        start_index=req.start_index,
-        items_per_page=req.count,
-        total_results=total,
-        resources=scim_resources,
-    )
-    return list_response.model_dump(
-        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        response_parameters=req,
-    )
-
-
-def _query_resource(resource, to_scim):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    scim_resource = to_scim(resource)
-    return scim_resource.model_dump(
-        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        response_parameters=req,
-    )
-
-
-def _create_resource(scim_type, canaille_model, to_scim, from_scim, data=None):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    payload = request.json if data is None else data
-    scim_resource = scim_type.model_validate(
-        payload, scim_ctx=Context.RESOURCE_CREATION_REQUEST
-    )
-    resource = from_scim(scim_resource, canaille_model())
-    Backend.instance.save(resource)
-    resource_name = canaille_model.__name__.lower()
-    current_app.logger.security(
-        f"SCIM created {resource_name} {resource.id} by client {current_token.client.client_id}"
-    )
-    response_resource = to_scim(resource)
-    return (
-        response_resource.model_dump(
-            scim_ctx=Context.RESOURCE_CREATION_RESPONSE,
-            response_parameters=req,
-        ),
-        HTTPStatus.CREATED,
-    )
-
-
-def _replace_resource(resource, scim_type, to_scim, from_scim, data=None):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    original = to_scim(resource)
-    payload = request.json if data is None else data
-    scim_resource = scim_type.model_validate(
-        payload,
-        scim_ctx=Context.RESOURCE_REPLACEMENT_REQUEST,
-    )
-    if not scim_resource.replace(original):
-        return original.model_dump(
-            scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
-            response_parameters=req,
-        )
-
-    updated = from_scim(scim_resource, resource)
-    Backend.instance.save(updated)
-    resource_name = type(resource).__name__.lower()
-    current_app.logger.security(
-        f"SCIM replaced {resource_name} {updated.id} by client {current_token.client.client_id}"
-    )
-    response = to_scim(updated)
-    return response.model_dump(
-        scim_ctx=Context.RESOURCE_REPLACEMENT_RESPONSE,
-        response_parameters=req,
-    )
-
-
-def _patch_resource(resource, scim_type, to_scim, from_scim, data=None):
-    req = ResponseParameters.model_validate(request.args.to_dict())
-    scim_resource = to_scim(resource)
-    payload = request.json if data is None else data
-    patch_op = PatchOp[scim_type].model_validate(
-        payload, scim_ctx=Context.RESOURCE_PATCH_REQUEST
-    )
-    modified = patch_op.patch(scim_resource)
-
-    if modified:
-        updated = from_scim(scim_resource, resource)
-        Backend.instance.save(updated)
-        resource_name = type(resource).__name__.lower()
-        current_app.logger.security(
-            f"SCIM patched {resource_name} {updated.id} by client {current_token.client.client_id}"
-        )
-        scim_resource = to_scim(updated)
-
-    return scim_resource.model_dump(
-        scim_ctx=Context.RESOURCE_PATCH_RESPONSE,
-        response_parameters=req,
-    )
-
-
-def _delete_resource(resource):
-    resource_name = type(resource).__name__.lower()
-    current_app.logger.security(
-        f"SCIM deleted {resource_name} {resource.id} by client {current_token.client.client_id}"
-    )
-    Backend.instance.delete(resource)
-    return "", HTTPStatus.NO_CONTENT
-
-
-def get_resource_location_from_path(path):
-    return f"{request.url_root}scim/v2{path}"
-
-
-def replace_bulk_ids(group_members, processed_operations, payloads):
-    for member in group_members:
-        if member["value"].startswith("bulkId"):
-            bulk_id = member["value"].split(":")[1]
-            real_id = next(
-                (
-                    payloads[op[1]].get("id")
-                    for op in processed_operations
-                    if op[0].bulk_id == bulk_id
-                ),
-                None,
-            )
-            if real_id is None:
-                raise InvalidValueException(detail=f"Could not find bulkId: {bulk_id}")
-            member["value"] = real_id
-
-
-@bp.route("/Users", methods=["GET"])
-@csrf.exempt
-@require_client_scope(USERS_READ)
-def query_users():
-    return _query_resources(
-        models.User, User[EnterpriseUser], user_from_canaille_to_scim_server
-    )
-
-
-@bp.route("/Users/<user:user>", methods=["GET"])
-@csrf.exempt
-@require_client_scope(USERS_READ)
-def query_user(user):
-    return _query_resource(user, user_from_canaille_to_scim_server)
-
-
-@bp.route("/Groups", methods=["GET"])
-@csrf.exempt
-@require_client_scope(GROUPS_READ)
-def query_groups():
-    return _query_resources(models.Group, Group, group_from_canaille_to_scim_server)
-
-
-@bp.route("/Groups/<group:group>", methods=["GET"])
-@csrf.exempt
-@require_client_scope(GROUPS_READ)
-def query_group(group):
-    return _query_resource(group, group_from_canaille_to_scim_server)
-
-
-@bp.route("/Schemas", methods=["GET"])
-@csrf.exempt
-@require_oauth()
-def query_schemas():
-    req = parse_search_request(request)
-    schemas = list(get_schemas().values())[req.start_index_0 : req.stop_index_0]
-    response = ListResponse[Schema](
-        total_results=len(schemas),
-        items_per_page=req.count or len(schemas),
-        start_index=req.start_index,
-        resources=schemas,
-    )
-    return response.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE)
-
-
-@bp.route("/Schemas/<string:schema_id>", methods=["GET"])
-@csrf.exempt
-@require_oauth()
-def query_schema(schema_id):
-    schema = get_schemas().get(schema_id)
-    if not schema:
-        abort(404)
-
-    return schema.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE)
-
-
-@bp.route("/ResourceTypes", methods=["GET"])
-@csrf.exempt
-@require_oauth()
-def query_resource_types():
-    req = parse_search_request(request)
-    resource_types = list(get_resource_types().values())[
-        req.start_index_0 : req.stop_index_0
-    ]
-    response = ListResponse[ResourceType](
-        total_results=len(resource_types),
-        items_per_page=req.count or len(resource_types),
-        start_index=req.start_index,
-        resources=resource_types,
-    )
-    return response.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE)
-
-
-@bp.route("/ResourceTypes/<string:resource_type_name>", methods=["GET"])
-@csrf.exempt
-@require_oauth()
-def query_resource_type(resource_type_name):
-    resource_type = get_resource_types().get(resource_type_name)
-    if not resource_type:
-        abort(404)
-
-    return resource_type.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE)
-
-
-@bp.route("/ServiceProviderConfig", methods=["GET"])
-@csrf.exempt
-@require_oauth()
-def query_service_provider_config():
-    spc = get_service_provider_config()
-    return spc.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE)
-
-
-@bp.route("/.search", methods=["POST"])
-@csrf.exempt
-@require_client_scope(USERS_READ + GROUPS_READ)
-def search():
-    req = SearchRequest.model_validate(request.json)
-    total = 0
-    resources = []
-    if has_scope(USERS_READ):
-        total += Backend.instance.count(models.User)
-        users = Backend.instance.query(models.User)[
-            req.start_index_0 : req.stop_index_0
+@dataclass
+class Subject:
+    """The token of a request, with the permissions of its user loaded in advance."""
+
+    token: "models.Token | None" = None
+    permissions: set[Permission] = field(default_factory=set)
+
+    @classmethod
+    def of(cls, token):
+        user = token.subject if token else None
+        permissions = {p for p in Permission if user.can(p)} if user else set()
+        return cls(token, permissions)
+
+    @property
+    def user(self):
+        return self.token.subject if self.token else None
+
+    @property
+    def scopes(self):
+        return set(self.token.scope or []) if self.token else set()
+
+
+class CanailleService(ScimService):
+    """Check the rights of the tokens, and serve /Me with the user of the token."""
+
+    def me_target(self, request):
+        if ME_SCOPE not in request.subject.scopes:
+            raise ForbiddenException(detail=f"The {ME_SCOPE} scope is required")
+        if not request.subject.user:
+            raise NotFoundException(detail="The token has no user")
+        return self.get_resource_type("User"), request.subject.user.id
+
+    def authorize(self, request, target, resource_type):
+        if request.subject.user:
+            self._authorize_user(request.subject, target, resource_type)
+            return
+
+        scopes = (READ_SCOPES if target.operation in READ_OPERATIONS else WRITE_SCOPES)[
+            resource_type.id
         ]
-        resources += [user_from_canaille_to_scim_server(user) for user in users]
-    if has_scope(GROUPS_READ):
-        total += Backend.instance.count(models.Group)
-        groups = Backend.instance.query(models.Group)[
-            req.start_index_0 : req.stop_index_0
-        ]
-        resources += [group_from_canaille_to_scim_server(group) for group in groups]
-    list_response = ListResponse[User[EnterpriseUser] | Group](
-        start_index=req.start_index,
-        items_per_page=req.count,
-        total_results=total,
-        resources=resources,
-    )
-    payload = list_response.model_dump(
-        scim_ctx=Context.RESOURCE_QUERY_RESPONSE,
-        response_parameters=req,
-    )
-    return payload
-
-
-@bp.route("/Bulk", methods=["POST"])
-@csrf.exempt
-@require_client_scope(USERS_WRITE + GROUPS_WRITE)
-def bulk():
-    if (
-        int(request.headers.get("Content-Length"))
-        > current_app.config["CANAILLE_SCIM"]["BULK_MAX_PAYLOAD_SIZE"]
-    ):
-        return (
-            Error(
-                detail=f"The size of the bulk operation exceeds the maxPayloadSize ({current_app.config['CANAILLE_SCIM']['BULK_MAX_PAYLOAD_SIZE']}).",
-                status=HTTPStatus.CONTENT_TOO_LARGE,
-            ).model_dump(),
-            HTTPStatus.CONTENT_TOO_LARGE,
-        )
-
-    req = BulkRequest[User[EnterpriseUser] | Group].model_validate(request.json)
-    payloads = [operation.get("data") for operation in request.json["Operations"]]
-
-    if len(req.operations) > current_app.config["CANAILLE_SCIM"]["BULK_MAX_OPERATIONS"]:
-        return (
-            Error(
-                detail=f"The number of bulk operations exceeds the maxOperations ({current_app.config['CANAILLE_SCIM']['BULK_MAX_OPERATIONS']}).",
-                status=HTTPStatus.CONTENT_TOO_LARGE,
-            ).model_dump(),
-            HTTPStatus.CONTENT_TOO_LARGE,
-        )
-
-    error_count = 0
-    processed_operations = []
-    allowed_operations = []
-    for index, operation in enumerate(req.operations):
-        if operation.path.startswith("/Users"):
-            scopes = USERS_WRITE
-        elif operation.path.startswith("/Groups"):
-            scopes = GROUPS_WRITE
-        else:
-            scopes = None
-        if scopes is None or has_scope(scopes):
-            allowed_operations.append((index, operation))
-            continue
-        operation.status = HTTPStatus.FORBIDDEN
-        operation.response = Error(
-            detail="The token is not allowed to modify this resource type",
-            status=HTTPStatus.FORBIDDEN,
-        ).model_dump()
-        if operation.method != BulkOperation.Method.post:
-            operation.location = get_resource_location_from_path(operation.path)
-        error_count += 1
-        processed_operations.append((operation, index))
-
-    # create users
-    for index, operation in allowed_operations:
-        if req.fail_on_errors and error_count >= req.fail_on_errors:
-            break
-        if (
-            operation.path.startswith("/Users")
-            and operation.method == BulkOperation.Method.post
-        ):
-            try:
-                result = _create_resource(
-                    User[EnterpriseUser],
-                    models.User,
-                    user_from_canaille_to_scim_server,
-                    user_from_scim_to_canaille,
-                    data=payloads[index],
-                )
-                payloads[index] = result[0]
-                operation.status = result[1]
-                operation.location = result[0]["meta"]["location"]
-            except ValidationError as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = scim_error_handler(error)[0]
-                error_count += 1
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                error_count += 1
-            processed_operations.append((operation, index))
-
-    # modify users
-    for index, operation in allowed_operations:
-        if req.fail_on_errors and error_count >= req.fail_on_errors:
-            break
-        if operation.path.startswith("/Users") and operation.method in [
-            BulkOperation.Method.put,
-            BulkOperation.Method.patch,
-        ]:
-            try:
-                if operation.method == BulkOperation.Method.put:
-                    user = Backend.instance.get(
-                        models.User, user_name=payloads[index]["userName"]
-                    )
-                    if user:
-                        result = _replace_resource(
-                            user,
-                            User[EnterpriseUser],
-                            user_from_canaille_to_scim_server,
-                            user_from_scim_to_canaille,
-                            data=payloads[index],
-                        )
-                        operation.location = result["meta"]["location"]
-                        operation.status = HTTPStatus.OK
-                    else:
-                        operation.status = HTTPStatus.NOT_FOUND
-                        operation.response = Error(
-                            detail="User not found", status=HTTPStatus.NOT_FOUND
-                        ).model_dump()
-                        operation.location = get_resource_location_from_path(
-                            operation.path
-                        )
-                        error_count += 1
-                else:
-                    id = operation.path.split("/")[-1]
-                    user = Backend.instance.get(models.User, user_name=id)
-                    if user:
-                        result = _patch_resource(
-                            user,
-                            User[EnterpriseUser],
-                            user_from_canaille_to_scim_server,
-                            user_from_scim_to_canaille,
-                            data=payloads[index],
-                        )
-                        operation.location = result["meta"]["location"]
-                        operation.status = HTTPStatus.OK
-                    else:
-                        operation.status = HTTPStatus.NOT_FOUND
-                        operation.response = Error(
-                            detail="User not found", status=HTTPStatus.NOT_FOUND
-                        ).model_dump()
-                        operation.location = get_resource_location_from_path(
-                            operation.path
-                        )
-                        error_count += 1
-            except ValidationError as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = scim_error_handler(error)[0]
-                error_count += 1
-                operation.location = get_resource_location_from_path(operation.path)
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                error_count += 1
-                operation.location = get_resource_location_from_path(operation.path)
-            processed_operations.append((operation, index))
-
-    # create groups
-    for index, operation in allowed_operations:
-        if req.fail_on_errors and error_count >= req.fail_on_errors:
-            break
-        if (
-            operation.path.startswith("/Groups")
-            and operation.method == BulkOperation.Method.post
-        ):
-            try:
-                replace_bulk_ids(
-                    payloads[index]["members"], processed_operations, payloads
-                )
-                result = _create_resource(
-                    Group,
-                    models.Group,
-                    group_from_canaille_to_scim_server,
-                    group_from_scim_to_canaille,
-                    data=payloads[index],
-                )
-                payloads[index] = result[0]
-                operation.status = result[1]
-                operation.location = result[0]["meta"]["location"]
-            except InvalidValueException as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.BAD_REQUEST
-                ).model_dump()
-                error_count += 1
-            except ValidationError as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = scim_error_handler(error)[0]
-                error_count += 1
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                error_count += 1
-            processed_operations.append((operation, index))
-
-    # modify groups
-    for index, operation in allowed_operations:
-        if req.fail_on_errors and error_count >= req.fail_on_errors:
-            break
-        if operation.path.startswith("/Groups") and operation.method in [
-            BulkOperation.Method.put,
-            BulkOperation.Method.patch,
-        ]:
-            try:
-                if operation.method == BulkOperation.Method.put:
-                    group = Backend.instance.get(
-                        models.Group, display_name=payloads[index]["displayName"]
-                    )
-                    if group:
-                        if payloads[index].get("members"):
-                            replace_bulk_ids(
-                                payloads[index]["members"],
-                                processed_operations,
-                                payloads,
-                            )
-                        result = _replace_resource(
-                            group,
-                            Group,
-                            group_from_canaille_to_scim_server,
-                            group_from_scim_to_canaille,
-                            data=payloads[index],
-                        )
-                        operation.location = result["meta"]["location"]
-                        operation.status = HTTPStatus.OK
-                    else:
-                        operation.status = HTTPStatus.NOT_FOUND
-                        operation.response = Error(
-                            detail="Group not found", status=HTTPStatus.NOT_FOUND
-                        ).model_dump()
-                        operation.location = get_resource_location_from_path(
-                            operation.path
-                        )
-                        error_count += 1
-                else:
-                    id = operation.path.split("/")[-1]
-                    group = Backend.instance.get(models.Group, display_name=id)
-                    if group:
-                        if payloads[index].get("Operations"):
-                            for patch_op in payloads[index]["Operations"]:
-                                replace_bulk_ids(
-                                    patch_op["value"], processed_operations, payloads
-                                )
-                        result = _patch_resource(
-                            group,
-                            Group,
-                            group_from_canaille_to_scim_server,
-                            group_from_scim_to_canaille,
-                            data=payloads[index],
-                        )
-                        operation.location = result["meta"]["location"]
-                        operation.status = HTTPStatus.OK
-                    else:
-                        operation.status = HTTPStatus.NOT_FOUND
-                        operation.response = Error(
-                            detail="Group not found", status=HTTPStatus.NOT_FOUND
-                        ).model_dump()
-                        operation.location = get_resource_location_from_path(
-                            operation.path
-                        )
-                        error_count += 1
-            except InvalidValueException as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.BAD_REQUEST
-                ).model_dump()
-                operation.location = get_resource_location_from_path(operation.path)
-                error_count += 1
-            except ValidationError as error:
-                operation.status = HTTPStatus.BAD_REQUEST
-                operation.response = scim_error_handler(error)[0]
-                operation.location = get_resource_location_from_path(operation.path)
-                error_count += 1
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                operation.location = get_resource_location_from_path(operation.path)
-                error_count += 1
-            processed_operations.append((operation, index))
-
-    # delete groups
-    for index, operation in allowed_operations:
-        if req.fail_on_errors and error_count >= req.fail_on_errors:
-            break
-        if (
-            operation.path.startswith("/Groups")
-            and operation.method == BulkOperation.Method.delete
-        ):
-            try:
-                id = operation.path.split("/")[-1]
-                group = Backend.instance.get(models.Group, display_name=id)
-                if group:
-                    result = _delete_resource(group)
-                    operation.status = result[1]
-                    operation.location = get_resource_location_from_path(operation.path)
-                else:
-                    operation.status = HTTPStatus.NOT_FOUND
-                    operation.response = Error(
-                        detail="Group not found", status=HTTPStatus.NOT_FOUND
-                    ).model_dump()
-                    operation.location = get_resource_location_from_path(operation.path)
-                    error_count += 1
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                operation.location = get_resource_location_from_path(operation.path)
-                error_count += 1
-
-            processed_operations.append((operation, index))
-
-    # delete users
-    for index, operation in allowed_operations:
-        if req.fail_on_errors and error_count >= req.fail_on_errors:
-            break
-        if (
-            operation.path.startswith("/Users")
-            and operation.method == BulkOperation.Method.delete
-        ):
-            try:
-                id = operation.path.split("/")[-1]
-                user = Backend.instance.get(models.User, user_name=id)
-                if user:
-                    result = _delete_resource(user)
-                    operation.status = result[1]
-                    operation.location = get_resource_location_from_path(operation.path)
-                else:
-                    operation.status = HTTPStatus.NOT_FOUND
-                    operation.response = Error(
-                        detail="User not found", status=HTTPStatus.NOT_FOUND
-                    ).model_dump()
-                    operation.location = get_resource_location_from_path(operation.path)
-                    error_count += 1
-            except Exception as error:
-                operation.status = HTTPStatus.INTERNAL_SERVER_ERROR
-                operation.response = Error(
-                    detail=str(error), status=HTTPStatus.INTERNAL_SERVER_ERROR
-                ).model_dump()
-                operation.location = get_resource_location_from_path(operation.path)
-                error_count += 1
-            processed_operations.append((operation, index))
-
-    processed_operations.sort(key=lambda x: x[1])
-    processed_operations = list(map(lambda x: x[0], processed_operations))
-    rep = BulkResponse[User[EnterpriseUser] | Group](operations=processed_operations)
-    return (rep.model_dump(scim_ctx=Context.RESOURCE_QUERY_RESPONSE), HTTPStatus.OK)
-
-
-@bp.route("/Users", methods=["POST"])
-@csrf.exempt
-@require_client_scope(USERS_WRITE)
-def create_user():
-    return _create_resource(
-        User[EnterpriseUser],
-        models.User,
-        user_from_canaille_to_scim_server,
-        user_from_scim_to_canaille,
-    )
-
-
-@bp.route("/Groups", methods=["POST"])
-@csrf.exempt
-@require_client_scope(GROUPS_WRITE)
-def create_group():
-    return _create_resource(
-        Group,
-        models.Group,
-        group_from_canaille_to_scim_server,
-        group_from_scim_to_canaille,
-    )
-
-
-@bp.route("/Users/<user:user>", methods=["PUT"])
-@csrf.exempt
-@require_client_scope(USERS_WRITE)
-def replace_user(user):
-    return _replace_resource(
-        user,
-        User[EnterpriseUser],
-        user_from_canaille_to_scim_server,
-        user_from_scim_to_canaille,
-    )
-
-
-@bp.route("/Groups/<group:group>", methods=["PUT"])
-@csrf.exempt
-@require_client_scope(GROUPS_WRITE)
-def replace_group(group):
-    return _replace_resource(
-        group,
-        Group,
-        group_from_canaille_to_scim_server,
-        group_from_scim_to_canaille,
-    )
-
-
-@bp.route("/Users/<user:user>", methods=["PATCH"])
-@csrf.exempt
-@require_client_scope(USERS_WRITE)
-def patch_user(user):
-    return _patch_resource(
-        user,
-        User[EnterpriseUser],
-        user_from_canaille_to_scim_server,
-        user_from_scim_to_canaille,
-    )
-
-
-@bp.route("/Groups/<group:group>", methods=["PATCH"])
-@csrf.exempt
-@require_client_scope(GROUPS_WRITE)
-def patch_group(group):
-    return _patch_resource(
-        group,
-        Group,
-        group_from_canaille_to_scim_server,
-        group_from_scim_to_canaille,
-    )
-
-
-@bp.route("/Users/<user:user>", methods=["DELETE"])
-@csrf.exempt
-@require_client_scope(USERS_WRITE)
-def delete_user(user):
-    return _delete_resource(user)
-
-
-@bp.route("/Groups/<group:group>", methods=["DELETE"])
-@csrf.exempt
-@require_client_scope(GROUPS_WRITE)
-def delete_group(group):
-    return _delete_resource(group)
-
-
-def _self_edition(from_scim):
-    """Refuse the changes to the fields the user cannot write on their own account."""
-
-    def wrapper(scim_user, user):
-        before = {name: getattr(user, name) for name in user.attributes}
-        from_scim(scim_user, user)
-        changed = {
-            name for name in user.attributes if getattr(user, name) != before[name]
-        }
-        if forbidden := changed - user.writable_fields:
+        if not scopes & request.subject.scopes:
             raise ForbiddenException(
-                detail=f"Not allowed to modify: {', '.join(sorted(forbidden))}"
+                detail="The token is not allowed to access this resource type"
             )
-        return user
 
-    return wrapper
+    @staticmethod
+    def _authorize_user(subject, target, resource_type):
+        """Let a user token act on its own user only."""
+        if ME_SCOPE not in subject.scopes:
+            raise ForbiddenException(detail=f"The {ME_SCOPE} scope is required")
+
+        if resource_type.id != "User" or target.resource_id != subject.user.id:
+            raise ForbiddenException(detail="User tokens can only access their user")
+
+        if target.operation in (Operation.replace, Operation.patch):
+            needed = {Permission.EDIT_SELF}
+        elif target.operation is Operation.delete:
+            needed = {Permission.DELETE_ACCOUNT, Permission.MANAGE_USERS}
+        else:
+            return
+
+        if not needed & subject.permissions:
+            raise ForbiddenException(detail="Insufficient permissions")
 
 
-def _resolve_me():
-    """Resolve the authenticated user from the token subject."""
-    user = current_token.subject
-    if not user:
-        abort(404)
-    return user
+def _authenticate(scim_request, service):
+    """Return the token of a request, or None for the discovery endpoints."""
+    if service.match(scim_request).operation in DISCOVERY_OPERATIONS:
+        return None
+    try:
+        return require_oauth.acquire_token()
+    except OAuth2Error as error:
+        raise UnauthorizedException(detail=error.description or error.error) from error
 
 
-@bp.route("/Me", methods=["GET"])
+@bp.route("/", defaults={"path": ""}, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+@bp.route("/<path:path>", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 @csrf.exempt
-@require_oauth(ME_SCOPE)
-def query_me():
-    return _query_resource(_resolve_me(), user_from_canaille_to_scim_server)
-
-
-@bp.route("/Me", methods=["PUT"])
-@csrf.exempt
-@require_oauth(ME_SCOPE)
-@require_permission(Permission.EDIT_SELF)
-def replace_me():
-    return _replace_resource(
-        _resolve_me(),
-        User[EnterpriseUser],
-        user_from_canaille_to_scim_server,
-        _self_edition(user_from_scim_to_canaille),
+def scim(path):
+    service = CanailleService(get_provider())
+    scim_request = ScimRequest(
+        method=request.method,
+        base_url=url_for("scim.scim", path="", _external=True).rstrip("/"),
+        path=f"/{path}",
+        query=request.args.to_dict(),
+        headers=list(request.headers.items()),
+        body=request.get_data(),
     )
+    try:
+        token = _authenticate(scim_request, service)
+        scim_request.subject = Subject.of(token)
+        handler = ScimHandler(service, CanailleStorage(token))
+        response = handler.handle(scim_request)
+    except Exception as exception:
+        if not isinstance(exception, SCIMException):
+            current_app.logger.exception(exception)
+        response = service.error_response(exception)
 
-
-@bp.route("/Me", methods=["PATCH"])
-@csrf.exempt
-@require_oauth(ME_SCOPE)
-@require_permission(Permission.EDIT_SELF)
-def patch_me():
-    return _patch_resource(
-        _resolve_me(),
-        User[EnterpriseUser],
-        user_from_canaille_to_scim_server,
-        _self_edition(user_from_scim_to_canaille),
-    )
-
-
-@bp.route("/Me", methods=["DELETE"])
-@csrf.exempt
-@require_oauth(ME_SCOPE)
-@require_permission(Permission.DELETE_ACCOUNT)
-def delete_me():
-    return _delete_resource(_resolve_me())
+    body = "" if response.body is None else json.dumps(response.body)
+    return Response(body, status=response.status, headers=response.headers)
