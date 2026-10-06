@@ -288,9 +288,7 @@ class SQLBackend(Backend):
         return state
 
     def do_save(self, instance) -> None:
-        instance.last_modified = datetime.datetime.now(datetime.UTC).replace(
-            microsecond=0
-        )
+        instance.last_modified = datetime.datetime.now(datetime.UTC)
         if not instance.created:
             instance.created = instance.last_modified
 

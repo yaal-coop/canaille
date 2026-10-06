@@ -166,9 +166,7 @@ class MemoryBackend(Backend):
         if not instance.id:
             instance.id = str(uuid.uuid4())
 
-        instance.last_modified = datetime.datetime.now(datetime.UTC).replace(
-            microsecond=0
-        )
+        instance.last_modified = datetime.datetime.now(datetime.UTC)
         if not instance.created:
             instance.created = instance.last_modified
 

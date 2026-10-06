@@ -224,6 +224,14 @@ def test_model_references(testclient, user, foo_group, admin, bar_group, backend
     assert bar_group not in user.groups
 
 
+def test_model_edition_datetime_is_precise(testclient, backend, user):
+    """Two edits in the same second get different modification dates."""
+    before = user.last_modified
+    user.family_name = "bar"
+    backend.save(user)
+    assert user.last_modified > before
+
+
 def test_model_creation_edition_datetime(testclient, backend):
     """Test that creation and modification timestamps are correctly tracked."""
     if "ldap" in backend.__class__.__module__:

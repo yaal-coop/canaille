@@ -27,7 +27,7 @@ def test_generate_user_claims(user, foo_group):
         "email": "john@doe.test",
         "phone_number": "555-000-000",
         "groups": ["foo"],
-        "updated_at": user.last_modified.timestamp(),
+        "updated_at": int(user.last_modified.timestamp()),
     }
 
 
@@ -117,7 +117,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "locale": "en",
         "website": "https://john.test",
         "picture": mock.ANY,
-        "updated_at": user.last_modified.timestamp(),
+        "updated_at": int(user.last_modified.timestamp()),
     }
 
     token.scope = ["openid", "profile", "email"]
@@ -136,7 +136,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "website": "https://john.test",
         "picture": mock.ANY,
         "email": "john@doe.test",
-        "updated_at": user.last_modified.timestamp(),
+        "updated_at": int(user.last_modified.timestamp()),
     }
 
     token.scope = ["openid", "profile", "address"]
@@ -161,7 +161,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
             "region": "some state",
             "street_address": "1234, some street",
         },
-        "updated_at": user.last_modified.timestamp(),
+        "updated_at": int(user.last_modified.timestamp()),
     }
 
     token.scope = ["openid", "profile", "phone"]
@@ -180,7 +180,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "website": "https://john.test",
         "picture": mock.ANY,
         "phone_number": "555-000-000",
-        "updated_at": user.last_modified.timestamp(),
+        "updated_at": int(user.last_modified.timestamp()),
     }
 
     token.scope = ["openid", "profile", "groups"]
@@ -199,7 +199,7 @@ def test_userinfo_scopes(testclient, token, user, foo_group, backend):
         "website": "https://john.test",
         "picture": mock.ANY,
         "groups": ["foo"],
-        "updated_at": user.last_modified.timestamp(),
+        "updated_at": int(user.last_modified.timestamp()),
     }
 
 

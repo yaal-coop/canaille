@@ -75,6 +75,33 @@ def test_put_user_with_mismatched_etag(app, backend, user, oidc_token):
     assert response.status_code == 412
 
 
+def test_put_user_with_an_outdated_etag(app, backend, user, oidc_token):
+    """PUT with the ETag of a version replaced in the same second returns 412."""
+    client = Client(app)
+    headers = _scim_headers(app, oidc_token)
+    payload = _get_user_payload(client, app, user, oidc_token)
+    outdated = make_etag(user)
+
+    payload["displayName"] = "Babs"
+    response = client.put(
+        f"/scim/v2/Users/{user.id}",
+        data=json.dumps(payload),
+        headers=headers,
+    )
+    assert response.status_code == 200
+
+    payload["displayName"] = "Barbara"
+    headers["If-Match"] = outdated
+    response = client.put(
+        f"/scim/v2/Users/{user.id}",
+        data=json.dumps(payload),
+        headers=headers,
+    )
+    assert response.status_code == 412
+    backend.reload(user)
+    assert user.display_name == "Babs"
+
+
 def test_put_user_without_if_match(app, backend, user, oidc_token):
     """PUT without If-Match header proceeds without ETag verification."""
     client = Client(app)

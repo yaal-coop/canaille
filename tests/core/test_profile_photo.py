@@ -28,9 +28,16 @@ def test_photo(testclient, user, jpeg_photo, backend):
     res = testclient.get(photo_url(testclient, user.identifier))
     assert res.body == user.photo
     assert photo_format(res.body) == "JPEG"
-    assert res.last_modified == user.last_modified
+    assert res.last_modified == user.last_modified.replace(microsecond=0)
     etag = res.etag
     assert etag
+
+    cached = testclient.get(
+        photo_url(testclient, user.identifier),
+        headers={"If-Modified-Since": res.headers["Last-Modified"]},
+        status=304,
+    )
+    assert not cached.body
 
     res = testclient.get(
         photo_url(testclient, user.identifier),

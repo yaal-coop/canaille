@@ -26,6 +26,7 @@ class Syntax(StrEnum):
     PRINTABLE_STRING =   "1.3.6.1.4.1.1466.115.121.1.44"
     TELEPHONE_NUMBER =   "1.3.6.1.4.1.1466.115.121.1.50"
     UTC_TIME =           "1.3.6.1.4.1.1466.115.121.1.53"
+    CSN =                "1.3.6.1.4.1.4203.666.11.2.1"
     # fmt: on
 
 
@@ -46,6 +47,13 @@ def ldap_to_python(value, syntax):
             )
         format_string = "%Y%m%d%H%M%S.%f%z" if "." in value else "%Y%m%d%H%M%S%z"
         return datetime.datetime.strptime(value, format_string)
+
+    if syntax == Syntax.CSN:
+        # The CSN starts with its date: 20261006123456.123456Z#000000#000#000000
+        timestamp = value.decode("utf-8").split("#")[0]
+        return datetime.datetime.strptime(timestamp, "%Y%m%d%H%M%S.%fZ").replace(
+            tzinfo=datetime.UTC
+        )
 
     if syntax == Syntax.INTEGER:
         return int(value.decode("utf-8"))

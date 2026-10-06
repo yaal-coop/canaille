@@ -21,7 +21,7 @@ class User(canaille.core.models.User, LDAPObject):
     attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
-        "last_modified": "modifyTimestamp",
+        "last_modified": "entryCSN",
         "user_name": "uid",
         "password": "userPassword",
         "preferred_language": "preferredLanguage",
@@ -101,7 +101,7 @@ class Group(canaille.core.models.Group, LDAPObject):
     attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
-        "last_modified": "modifyTimestamp",
+        "last_modified": "entryCSN",
         "display_name": "cn",
         "members": "member",
         "owner": "owner",

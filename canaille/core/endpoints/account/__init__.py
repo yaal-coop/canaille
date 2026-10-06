@@ -933,14 +933,16 @@ def photo(token):
     etag = build_hash(user.identifier, user.last_modified.isoformat())
     if request.if_none_match and etag in request.if_none_match:
         return "", 304
-    if request.if_modified_since and request.if_modified_since >= user.last_modified:
+    # HTTP dates are precise to the second only.
+    last_modified = user.last_modified.replace(microsecond=0)
+    if request.if_modified_since and request.if_modified_since >= last_modified:
         return "", 304
 
     mimetype = guess_image_mimetype(user.photo)
     return send_file(
         io.BytesIO(user.photo),
         mimetype=mimetype,
-        last_modified=user.last_modified,
+        last_modified=last_modified,
         etag=etag,
     )
 

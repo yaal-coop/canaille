@@ -58,7 +58,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
     attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
-        "last_modified": "modifyTimestamp",
+        "last_modified": "entryCSN",
         "trusted": "oauthPreconsent",
         "audience": "oauthAudience",
         **client_info_attributes_map,
@@ -73,7 +73,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
     attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
-        "last_modified": "modifyTimestamp",
+        "last_modified": "entryCSN",
         "authorization_code_id": "oauthAuthorizationCodeID",
         "code": "oauthCode",
         "client": "oauthClient",
@@ -100,7 +100,7 @@ class Token(canaille.oidc.models.Token, LDAPObject):
     attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
-        "last_modified": "modifyTimestamp",
+        "last_modified": "entryCSN",
         "token_id": "oauthTokenID",
         "access_token": "oauthAccessToken",
         "client": "oauthClient",
@@ -122,7 +122,7 @@ class Consent(canaille.oidc.models.Consent, LDAPObject):
     attribute_map: ClassVar[dict[str, str] | None] = {
         "id": "entryUUID",
         "created": "createTimestamp",
-        "last_modified": "modifyTimestamp",
+        "last_modified": "entryCSN",
         "consent_id": "cn",
         "subject": "oauthSubject",
         "client": "oauthClient",
