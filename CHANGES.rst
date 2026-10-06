@@ -40,6 +40,9 @@ Removed
 
 Fixed
 ^^^^^
+- The SQL database could not be created on MySQL and MariaDB, because some
+  migrations did not support them. MariaDB is now tested. On MySQL and MariaDB,
+  dates keep their microseconds, as on PostgreSQL.
 - The SCIM client does not send the password hashes to the provisioned clients
   anymore.
 - The SCIM client escapes the identifiers it puts in ``externalId`` filters.

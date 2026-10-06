@@ -10,6 +10,7 @@ from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
 revision: str = "1761866414"
@@ -18,15 +19,27 @@ branch_labels: str | Sequence[str] | None = ()
 depends_on: str | Sequence[str] | None = None
 
 
+# Members are ordered by creation date, so MySQL needs sub-second precision.
+CREATED_AT = sa.DateTime(timezone=True).with_variant(
+    mysql.DATETIME(fsp=6), "mysql", "mariadb"
+)
+
+
+def current_timestamp():
+    if op.get_bind().dialect.name == "mysql":
+        return sa.text("CURRENT_TIMESTAMP(6)")
+    return sa.text("CURRENT_TIMESTAMP")
+
+
 def upgrade() -> None:
     # Step 1: Add created_at column as nullable
     with op.batch_alter_table("membership_association_table", schema=None) as batch_op:
         batch_op.add_column(
             sa.Column(
                 "created_at",
-                sa.DateTime(timezone=True),
+                CREATED_AT,
                 nullable=True,
-                server_default=sa.text("CURRENT_TIMESTAMP"),
+                server_default=current_timestamp(),
             )
         )
 
@@ -39,7 +52,12 @@ def upgrade() -> None:
 
     # Step 3: Make created_at non-nullable and drop index
     with op.batch_alter_table("membership_association_table", schema=None) as batch_op:
-        batch_op.alter_column("created_at", nullable=False)
+        batch_op.alter_column(
+            "created_at",
+            existing_type=CREATED_AT,
+            existing_server_default=current_timestamp(),
+            nullable=False,
+        )
         batch_op.drop_column("index")
 
 
@@ -51,20 +69,32 @@ def downgrade() -> None:
     # Step 2: Set index values (arbitrary order based on created_at)
     # This is best-effort since we can't recover the exact original order
     # We use row_number() window function to assign sequential indices per group
-    op.execute("""
-        WITH numbered AS (
-            SELECT user_id, group_id,
-                   ROW_NUMBER() OVER (PARTITION BY group_id ORDER BY created_at) - 1 as new_index
-            FROM membership_association_table
-        )
-        UPDATE membership_association_table
-        SET "index" = n.new_index
-        FROM numbered n
-        WHERE membership_association_table.user_id = n.user_id
-          AND membership_association_table.group_id = n.group_id
-    """)
+    if op.get_bind().dialect.name == "mysql":
+        op.execute("""
+            UPDATE membership_association_table t
+            JOIN (
+                SELECT user_id, group_id,
+                       ROW_NUMBER() OVER (PARTITION BY group_id ORDER BY created_at) - 1 as new_index
+                FROM membership_association_table
+            ) n
+            ON t.user_id = n.user_id AND t.group_id = n.group_id
+            SET t.`index` = n.new_index
+        """)
+    else:
+        op.execute("""
+            WITH numbered AS (
+                SELECT user_id, group_id,
+                       ROW_NUMBER() OVER (PARTITION BY group_id ORDER BY created_at) - 1 as new_index
+                FROM membership_association_table
+            )
+            UPDATE membership_association_table
+            SET "index" = n.new_index
+            FROM numbered n
+            WHERE membership_association_table.user_id = n.user_id
+              AND membership_association_table.group_id = n.group_id
+        """)
 
     # Step 3: Make index non-nullable and drop created_at
     with op.batch_alter_table("membership_association_table", schema=None) as batch_op:
-        batch_op.alter_column("index", nullable=False)
+        batch_op.alter_column("index", existing_type=sa.INTEGER(), nullable=False)
         batch_op.drop_column("created_at")

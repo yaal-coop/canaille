@@ -30,7 +30,14 @@ def upgrade() -> None:
             nullable=True,
         ),
     )
-    op.add_column("authorization_code", sa.Column("acr", sa.String(), nullable=True))
+    op.add_column(
+        "authorization_code",
+        sa.Column(
+            "acr",
+            sa.String().with_variant(sa.String(255), "mysql", "mariadb"),
+            nullable=True,
+        ),
+    )
     op.add_column("authorization_code", sa.Column("amr", sa.JSON(), nullable=True))
     # ### end Alembic commands ###
 

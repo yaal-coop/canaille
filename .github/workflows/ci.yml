@@ -30,7 +30,7 @@ jobs:
       - name: Install apt dependencies
         run: |
           sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils mariadb-server
       - name: App armor configuration for slapd
         if: ${{ !env.ACT }}
         # aa-complain fails on ubuntu-24.04, so the profile is unloaded directly:
@@ -67,7 +67,7 @@ jobs:
       - name: Install apt dependencies
         run: |
           sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils mariadb-server
       - name: App armor configuration for slapd
         if: ${{ !env.ACT }}
         # aa-complain fails on ubuntu-24.04, so the profile is unloaded directly:
@@ -97,7 +97,7 @@ jobs:
       - name: Install apt dependencies
         run: |
           sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils mariadb-server
       - name: App armor configuration for slapd
         if: ${{ !env.ACT }}
         # aa-complain fails on ubuntu-24.04, so the profile is unloaded directly:
@@ -134,7 +134,7 @@ jobs:
       - name: Install apt dependencies
         run: |
           sudo apt update
-          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils
+          sudo DEBIAN_FRONTEND=noninteractive apt --yes --quiet install libsasl2-dev python3-dev libldap2-dev libssl-dev slapd ldap-utils mariadb-server
       - name: App armor configuration for slapd
         if: ${{ !env.ACT }}
         # aa-complain fails on ubuntu-24.04, so the profile is unloaded directly:
