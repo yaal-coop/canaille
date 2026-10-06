@@ -90,14 +90,14 @@ def test_group_members_are_identified_by_id(storage, user, foo_group, group_type
     group = storage.get(group_type, foo_group.id)
 
     assert [member.value for member in group.members] == [user.id]
-    assert group.members[0].ref.endswith(f"/Users/{user.id}")
+    assert group.members[0].ref == f"Users/{user.id}"
 
 
 def test_user_groups_reference_uses_the_id(storage, user, foo_group, user_type):
     """The reference to the groups of a user uses the group id."""
     scim_user = storage.get(user_type, user.id)
 
-    assert scim_user.groups[0].ref.endswith(f"/Groups/{foo_group.id}")
+    assert scim_user.groups[0].ref == f"Groups/{foo_group.id}"
 
 
 def test_group_members_accept_a_user_name(storage, user_type, group_type):

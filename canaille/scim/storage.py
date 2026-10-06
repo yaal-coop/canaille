@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Any
 
 from flask import current_app
-from flask import url_for
 from scim2_models import NotFoundException
 from scim2_models import PreconditionFailedException
 from scim2_models import Resource
@@ -22,25 +21,6 @@ from .casting import user_from_canaille_to_scim_server
 from .casting import user_from_scim_to_canaille
 
 
-def resource_url(endpoint, resource_id):
-    """Return the SCIM URL of a resource."""
-    return url_for("scim.scim", path=f"{endpoint}/{resource_id}", _external=True)
-
-
-def user_to_scim(user):
-    scim_user = user_from_canaille_to_scim_server(user)
-    for group in scim_user.groups or []:
-        group.ref = resource_url("Groups", group.value)
-    return scim_user
-
-
-def group_to_scim(group):
-    scim_group = group_from_canaille_to_scim_server(group)
-    for member in scim_group.members or []:
-        member.ref = resource_url("Users", member.value)
-    return scim_group
-
-
 @dataclass
 class Kind:
     """How a SCIM resource type maps to a Canaille model."""
@@ -56,8 +36,18 @@ class Kind:
 
 
 KINDS = {
-    "User": Kind("User", "user_name", user_to_scim, user_from_scim_to_canaille),
-    "Group": Kind("Group", "display_name", group_to_scim, group_from_scim_to_canaille),
+    "User": Kind(
+        "User",
+        "user_name",
+        user_from_canaille_to_scim_server,
+        user_from_scim_to_canaille,
+    ),
+    "Group": Kind(
+        "Group",
+        "display_name",
+        group_from_canaille_to_scim_server,
+        group_from_scim_to_canaille,
+    ),
 }
 
 

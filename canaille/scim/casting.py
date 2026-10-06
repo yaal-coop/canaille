@@ -101,6 +101,8 @@ def user_from_canaille_to_scim_server(user):
     scim_user = user_from_canaille_to_scim(user, User, EnterpriseUser)
     scim_user.id = user.id
     scim_user.password = user.get_password_hash()
+    for group in scim_user.groups or []:
+        group.ref = f"Groups/{group.value}"
     return scim_user
 
 
@@ -176,6 +178,7 @@ def group_from_canaille_to_scim_server(group):
     scim_group.members = [
         Group.Members(
             value=user.id,
+            ref=f"Users/{user.id}",
             display=user.display_name,
         )
         for user in group.members or []
