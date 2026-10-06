@@ -40,6 +40,8 @@ Removed
 
 Fixed
 ^^^^^
+- The SQL database could not be created on MariaDB. On MariaDB, dates keep their
+  microseconds, and tokens and authorization codes are case-sensitive.
 - The SCIM client does not send the password hashes to the provisioned clients
   anymore.
 - The SCIM client escapes the identifiers it puts in ``externalId`` filters.

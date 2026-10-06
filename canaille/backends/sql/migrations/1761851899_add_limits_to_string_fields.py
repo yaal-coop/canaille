@@ -10,6 +10,7 @@ from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
 revision: str = "1761851899"
@@ -23,18 +24,21 @@ def upgrade() -> None:
     with op.batch_alter_table("client", schema=None) as batch_op:
         batch_op.alter_column(
             "description",
-            existing_type=sa.VARCHAR(),
+            existing_type=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
             type_=sa.Text(),
             existing_nullable=True,
         )
         batch_op.alter_column(
-            "jwks", existing_type=sa.VARCHAR(), type_=sa.Text(), existing_nullable=True
+            "jwks",
+            existing_type=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
+            type_=sa.Text(),
+            existing_nullable=True,
         )
 
     with op.batch_alter_table("group", schema=None) as batch_op:
         batch_op.alter_column(
             "description",
-            existing_type=sa.VARCHAR(),
+            existing_type=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
             type_=sa.Text(),
             existing_nullable=True,
         )
@@ -42,21 +46,29 @@ def upgrade() -> None:
     with op.batch_alter_table("token", schema=None) as batch_op:
         batch_op.alter_column(
             "access_token",
-            existing_type=sa.VARCHAR(),
-            type_=sa.Text(),
+            existing_type=sa.VARCHAR().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
+            type_=sa.Text().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
             existing_nullable=True,
         )
         batch_op.alter_column(
             "refresh_token",
-            existing_type=sa.VARCHAR(),
-            type_=sa.Text(),
+            existing_type=sa.VARCHAR().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
+            type_=sa.Text().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
             existing_nullable=True,
         )
 
     with op.batch_alter_table("user", schema=None) as batch_op:
         batch_op.alter_column(
             "formatted_address",
-            existing_type=sa.VARCHAR(),
+            existing_type=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
             type_=sa.Text(),
             existing_nullable=True,
         )
@@ -70,21 +82,29 @@ def downgrade() -> None:
         batch_op.alter_column(
             "formatted_address",
             existing_type=sa.Text(),
-            type_=sa.VARCHAR(),
+            type_=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
             existing_nullable=True,
         )
 
     with op.batch_alter_table("token", schema=None) as batch_op:
         batch_op.alter_column(
             "refresh_token",
-            existing_type=sa.Text(),
-            type_=sa.VARCHAR(),
+            existing_type=sa.Text().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
+            type_=sa.VARCHAR().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
             existing_nullable=True,
         )
         batch_op.alter_column(
             "access_token",
-            existing_type=sa.Text(),
-            type_=sa.VARCHAR(),
+            existing_type=sa.Text().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
+            type_=sa.VARCHAR().with_variant(
+                mysql.TEXT(collation="utf8mb4_bin"), "mysql", "mariadb"
+            ),
             existing_nullable=True,
         )
 
@@ -92,18 +112,21 @@ def downgrade() -> None:
         batch_op.alter_column(
             "description",
             existing_type=sa.Text(),
-            type_=sa.VARCHAR(),
+            type_=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
             existing_nullable=True,
         )
 
     with op.batch_alter_table("client", schema=None) as batch_op:
         batch_op.alter_column(
-            "jwks", existing_type=sa.Text(), type_=sa.VARCHAR(), existing_nullable=True
+            "jwks",
+            existing_type=sa.Text(),
+            type_=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
+            existing_nullable=True,
         )
         batch_op.alter_column(
             "description",
             existing_type=sa.Text(),
-            type_=sa.VARCHAR(),
+            type_=sa.VARCHAR().with_variant(sa.Text(), "mysql", "mariadb"),
             existing_nullable=True,
         )
 
