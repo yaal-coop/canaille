@@ -40,6 +40,8 @@ Removed
 
 Fixed
 ^^^^^
+- On the SQL backend, the members added to a group at the same time could be
+  listed in any order. They now keep the order they were added in.
 - The SQL database could not be created on MariaDB. On MariaDB, dates keep their
   microseconds, and tokens and authorization codes are case-sensitive.
 - The SCIM client does not send the password hashes to the provisioned clients

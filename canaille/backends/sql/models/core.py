@@ -94,7 +94,9 @@ class Membership(Base):
         ForeignKey("group.id", ondelete="CASCADE"), primary_key=True
     )
     created_at: Mapped[datetime.datetime] = mapped_column(
-        TZDateTime(timezone=True), server_default="CURRENT_TIMESTAMP"
+        TZDateTime(timezone=True),
+        default=lambda: datetime.datetime.now(datetime.UTC),
+        server_default="CURRENT_TIMESTAMP",
     )
 
     user: Mapped["User"] = relationship("User", foreign_keys=[user_id], lazy="joined")
