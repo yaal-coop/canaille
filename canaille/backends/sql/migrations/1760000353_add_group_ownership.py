@@ -14,7 +14,14 @@ down_revision = "1758051913"
 
 def upgrade():
     """Add group owner field and group_invitation table."""
-    op.add_column("group", sa.Column("owner_id", sa.String(), nullable=True))
+    op.add_column(
+        "group",
+        sa.Column(
+            "owner_id",
+            sa.String().with_variant(sa.String(255), "mysql", "mariadb"),
+            nullable=True,
+        ),
+    )
 
 
 def downgrade():
