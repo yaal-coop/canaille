@@ -319,8 +319,10 @@ def test_bulk_refuses_the_operations_out_of_the_scope(app, backend, user, make_t
     assert response.status_code == 200
     statuses = [operation["status"] for operation in response.json["Operations"]]
     assert statuses == ["201", "403"]
-    assert backend.get(models.User, user_name="bulkuser")
     assert not backend.get(models.Group, display_name="bulkgroup")
+    bulk_user = backend.get(models.User, user_name="bulkuser")
+    assert bulk_user
+    backend.delete(bulk_user)
 
 
 def test_user_token_without_scim_me_scope_is_refused_on_me(
