@@ -50,6 +50,8 @@ Removed
 
 Fixed
 ^^^^^
+- Canaille did not start with the ``postgresql`` and ``mysql`` extras, as they
+  installed SQLAlchemy 2.1, which sqlalchemy-utils does not support yet.
 - Two edits of a resource in the same second got the same SCIM ETag, so an outdated
   ``If-Match`` could be accepted. Modification dates are now precise to the
   microsecond. With OpenLDAP, they are read from ``entryCSN``.

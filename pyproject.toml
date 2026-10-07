@@ -89,7 +89,7 @@ sqlite = [
 postgresql = [
     "flask-alembic>=3.1.1",
     "passlib >= 1.7.4",
-    "sqlalchemy[postgresql-psycopg2binary] >= 2.0.23",
+    "sqlalchemy[postgresql-psycopg2binary] >= 2.0.23,<2.1",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]
@@ -97,7 +97,7 @@ postgresql = [
 mysql = [
     "flask-alembic>=3.1.1",
     "passlib >= 1.7.4",
-    "sqlalchemy[pymysql] >= 2.0.23",
+    "sqlalchemy[pymysql] >= 2.0.23,<2.1",
     "sqlalchemy-json >= 0.7.0",
     "sqlalchemy-utils >= 0.41.1",
 ]
