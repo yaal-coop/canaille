@@ -148,7 +148,7 @@ jobs:
           ulimit -n 1024
           export TZ=UTC
           uv sync --all-extras --resolution=lowest-direct --python 3.11
-          uv run pytest --numprocesses auto
+          uv run --no-sync pytest --numprocesses auto
 
   style:
     runs-on: ubuntu-24.04

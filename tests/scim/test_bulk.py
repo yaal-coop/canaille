@@ -106,7 +106,7 @@ def test_bulk_operation_create_user_validation_error(scim_client):
     assert response.operations[0].location is None
 
 
-def test_bulk_operation_create_group_validation_error(scim_client):
+def test_bulk_operation_create_group_validation_error(scim_client, user):
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
     request = BulkRequest[Group](
@@ -115,7 +115,10 @@ def test_bulk_operation_create_group_validation_error(scim_client):
                 method="POST",
                 path="/Groups",
                 bulk_id="qwerty",
-                data=Group(members=[]),  # group is missing display name
+                # group is missing display name
+                data=Group(
+                    members=[Group.Members(value=user.id, ref=f"Users/{user.id}")]
+                ),
             ),
         ]
     )
@@ -150,7 +153,7 @@ def test_bulk_operation_create_user_database_error(scim_client):
     assert response.operations[0].location is None
 
 
-def test_bulk_operation_create_group_database_error(scim_client):
+def test_bulk_operation_create_group_database_error(scim_client, user):
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
     request = BulkRequest[Group](
@@ -161,7 +164,7 @@ def test_bulk_operation_create_group_database_error(scim_client):
                 bulk_id="qwerty",
                 data=Group(
                     display_name="Le Groupe",
-                    members=[],
+                    members=[Group.Members(value=user.id, ref=f"Users/{user.id}")],
                 ),
             ),
         ]
