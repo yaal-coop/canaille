@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-09-05 16:08+0200\n"
-"PO-Revision-Date: 2026-09-02 09:51+0000\n"
-"Last-Translator: Éloi Rivard <eloi.rivard@nubla.fr>\n"
+"PO-Revision-Date: 2026-10-14 06:51+0000\n"
+"Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.9.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/flask.py:53
@@ -234,10 +234,8 @@ msgid "A user with this email address is already a member of this group."
 msgstr "Un utilisateur avec cette adresse email fait déjà parti de ce groupe."
 
 #: canaille/core/validators.py:110
-#, fuzzy
-#| msgid "This field is not editable"
 msgid "This file is not a supported image."
-msgstr "Ce champ n'est pas modifiable"
+msgstr "Ce fichier n’est pas une image prise en charge."
 
 #: canaille/core/validators.py:117
 msgid "Invalid security code"
@@ -2216,11 +2214,8 @@ msgid "First login"
 msgstr "Première connexion"
 
 #: canaille/templates/core/auth/firstlogin-code.html:40
-#, fuzzy
-#| msgid "Please enter the reset password code you received via email."
 msgid "Please enter the password initialization code you received via email."
-msgstr ""
-"Veuillez entrer le code de réinitialisation que vous avez reçu par email."
+msgstr "Veuillez entrer le mot de passe que vous avez reçu par email."
 
 #: canaille/templates/core/auth/firstlogin.html:35
 msgid ""
@@ -2259,7 +2254,7 @@ msgstr ""
 
 #: canaille/templates/core/auth/firstlogin.html:60
 msgid "I already have a code"
-msgstr ""
+msgstr "J’ai déjà un code"
 
 #: canaille/templates/core/auth/firstlogin.html:62
 msgid "Send the initialization email"
