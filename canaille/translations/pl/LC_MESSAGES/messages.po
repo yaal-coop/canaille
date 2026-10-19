@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-09-05 16:08+0200\n"
-"PO-Revision-Date: 2026-08-17 21:51+0000\n"
-"Last-Translator: Kamil Maciąg <kmaciag93@gmail.com>\n"
+"PO-Revision-Date: 2026-10-19 18:48+0000\n"
+"Last-Translator: Kamil Maciąg <kmaciag93@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/canaille/canaille/"
 "pl/>\n"
 "Language: pl\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Generated-By: Babel 2.18.0\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 2026.9.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 #: canaille/app/flask.py:53
 msgid "Your password has expired, please choose a new password."
@@ -223,10 +223,8 @@ msgid "A user with this email address is already a member of this group."
 msgstr "Użytkownik z tym adresem e-mail jest już członkiem tej grupy."
 
 #: canaille/core/validators.py:110
-#, fuzzy
-#| msgid "This field is not editable"
 msgid "This file is not a supported image."
-msgstr "To pole nie jest edytowalne"
+msgstr "Ten plik nie jest obsługiwanym formatem obrazu."
 
 #: canaille/core/validators.py:117
 msgid "Invalid security code"
@@ -753,15 +751,11 @@ msgstr ""
 "dotrzeć w ciągu kilku minut."
 
 #: canaille/core/endpoints/account/auth/password.py:106
-#, fuzzy
-#| msgid ""
-#| "Sending password initialization link at the user email address. It should "
-#| "be received within a few minutes."
 msgid ""
 "Sending password initialization code at the user email address. It should be "
 "received within a few minutes."
 msgstr ""
-"Wysyłamy link do ustawienia hasła na adres e-mail użytkownika. Powinien "
+"Wysyłamy kod do ustawienia hasła na adres e-mail użytkownika. Powinien "
 "dotrzeć w ciągu kilku minut."
 
 #: canaille/core/endpoints/account/auth/password.py:119
@@ -773,16 +767,12 @@ msgstr ""
 "dotrzeć w ciągu kilku minut."
 
 #: canaille/core/endpoints/account/auth/password.py:127
-#, fuzzy
-#| msgid ""
-#| "Sending password reset link to the user email address. It should be "
-#| "received within a few minutes."
 msgid ""
 "Sending password reset code to the user email address. It should be received "
 "within a few minutes."
 msgstr ""
-"Wysyłamy link resetowania hasła na adres e-mail użytkownika. Powinien "
-"dotrzeć w ciągu kilku minut."
+"Wysyłamy kod resetowania hasła na adres e-mail użytkownika. Powinien dotrzeć "
+"w ciągu kilku minut."
 
 #: canaille/core/endpoints/auth/__init__.py:83
 #, python-brace-format
@@ -852,15 +842,11 @@ msgstr ""
 "ciągu kilku minut."
 
 #: canaille/core/endpoints/auth/password.py:144
-#, fuzzy
-#| msgid ""
-#| "Sending password initialization link at your email address. It should be "
-#| "received within a few minutes."
 msgid ""
 "Sending password initialization code at your email address. It should be "
 "received within a few minutes."
 msgstr ""
-"Wysyłamy link do ustawienia hasła na Twój adres e-mail. Powinien dotrzeć w "
+"Wysyłamy kod do ustawienia hasła na Twój adres e-mail. Powinien dotrzeć w "
 "ciągu kilku minut."
 
 #: canaille/core/endpoints/auth/password.py:167
@@ -971,7 +957,7 @@ msgstr "Klient został usunięty."
 
 #: canaille/oidc/endpoints/clients.py:234
 msgid "The client secret has been renewed. The new secret does not expire."
-msgstr "Sekret klienta został odnowiony. Nowy sekret nie wygasa."
+msgstr "Klucz tajny klienta został odnowiony. Nowy klucz tajny nie wygasa."
 
 #: canaille/oidc/endpoints/clients.py:242
 #, python-brace-format
@@ -1054,15 +1040,15 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:118
 msgid "Secret expiration"
-msgstr "Wygaśnięcie sekretu klienta"
+msgstr "Wygaśnięcie klucza tajnego klienta"
 
 #: canaille/oidc/endpoints/forms.py:127
 msgid ""
 "Date after which the client secret cannot be used to authenticate anymore. "
 "Leave this empty so the secret never expires."
 msgstr ""
-"Data, po której nie będzie już można używać sekretu klienta do "
-"uwierzytelniania. Pozostaw puste, aby sekret nigdy nie wygasł."
+"Data, po której nie będzie już można używać klucza tajnego klienta do "
+"uwierzytelniania. Pozostaw puste, aby klucz tajny nigdy nie wygasł."
 
 #: canaille/oidc/endpoints/forms.py:133
 msgid "Post logout redirect URIs"
@@ -1555,7 +1541,7 @@ msgstr "Utwórz grupę"
 #: canaille/templates/core/partial/profile_settings_password.html:86
 #: canaille/templates/oidc/client_edit.html:133
 msgid "Edit"
-msgstr "Edytuj"
+msgstr "Zapisz"
 
 #: canaille/templates/core/group.html:98
 msgid "Group members"
@@ -1600,8 +1586,8 @@ msgid ""
 "If you need to provide this link by other ways than email, you can copy it "
 "there:"
 msgstr ""
-"Jeśli musisz przekazać ten link inaczej niż e-mailem, możesz skopiować go "
-"poniżej:"
+"Jeśli musisz przekazać ten link inaczej niż e-mailem, możesz go skopiować "
+"tutaj:"
 
 #: canaille/templates/core/invite.html:77
 #, python-format
@@ -1943,7 +1929,7 @@ msgstr ""
 #: canaille/templates/core/account/auth/fido2.html:72
 #: canaille/templates/core/partials/profile_settings_fido.html:40
 msgid "Registered"
-msgstr "Zarejestrowano"
+msgstr "Data rejestracji"
 
 #: canaille/templates/core/account/auth/fido2.html:73
 #: canaille/templates/core/partials/profile_settings_fido.html:41
@@ -1955,7 +1941,7 @@ msgstr "Ostatnie użycie"
 #: canaille/templates/core/partial/groups.html:9
 #: canaille/templates/core/partials/profile_settings_fido.html:42
 msgid "Actions"
-msgstr "Działania"
+msgstr "Akcje"
 
 #: canaille/templates/core/account/auth/fido2.html:83
 #: canaille/templates/core/partials/profile_settings_fido.html:51
@@ -2148,7 +2134,7 @@ msgstr ""
 #: canaille/templates/core/auth/email.html:42
 #: canaille/templates/core/auth/sms.html:42
 msgid "Send another code"
-msgstr "Wyślij inny kod"
+msgstr "Wyślij nowy kod"
 
 #: canaille/templates/core/auth/email.html:45
 #: canaille/templates/core/auth/otp.html:36
@@ -2197,10 +2183,8 @@ msgid "First login"
 msgstr "Pierwsze logowanie"
 
 #: canaille/templates/core/auth/firstlogin-code.html:40
-#, fuzzy
-#| msgid "Please enter the reset password code you received via email."
 msgid "Please enter the password initialization code you received via email."
-msgstr "Wprowadź kod resetowania hasła otrzymany e-mailem."
+msgstr "Wprowadź kod do ustawienia hasła otrzymany e-mailem."
 
 #: canaille/templates/core/auth/firstlogin.html:35
 msgid ""
@@ -2216,13 +2200,6 @@ msgstr ""
 "wiadomość do ustawienia hasła”."
 
 #: canaille/templates/core/auth/firstlogin.html:42
-#, fuzzy
-#| msgid ""
-#| "It seems this is the first time you are logging here. In order to "
-#| "finalize your account configuration, you need to set a password to your "
-#| "account. We will send you an email containing a link that will allow you "
-#| "to set a password. Please click on the \"Send the initialization email\" "
-#| "button below to send the email."
 msgid ""
 "It seems this is the first time you are logging here. In order to finalize "
 "your account configuration, you need to set a password to your account. We "
@@ -2232,12 +2209,12 @@ msgid ""
 msgstr ""
 "Wygląda na to, że logujesz się tutaj po raz pierwszy. Aby dokończyć "
 "konfigurację konta, musisz ustawić hasło. Wyślemy Ci wiadomość e-mail z "
-"linkiem umożliwiającym jego ustawienie. Kliknij poniższy przycisk „Wyślij "
+"kodem umożliwiającym jego ustawienie. Kliknij poniższy przycisk „Wyślij "
 "wiadomość do ustawienia hasła”."
 
 #: canaille/templates/core/auth/firstlogin.html:60
 msgid "I already have a code"
-msgstr ""
+msgstr "Mam już kod"
 
 #: canaille/templates/core/auth/firstlogin.html:62
 msgid "Send the initialization email"
@@ -2428,11 +2405,11 @@ msgstr ""
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:40
 msgid "Secret token"
-msgstr "Sekret"
+msgstr "Tajny klucz"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:48
 msgid "3 - Secret token"
-msgstr "3 – Sekret"
+msgstr "3 – Tajny klucz"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:51
 msgid ""
@@ -2440,11 +2417,11 @@ msgid ""
 "application by manually copying this secret token:"
 msgstr ""
 "Jeśli urządzenie nie może skanować obrazów, możesz skonfigurować aplikację "
-"uwierzytelniającą, ręcznie kopiując ten sekret:"
+"uwierzytelniającą, ręcznie kopiując ten tajny klucz:"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:60
 msgid "Copy secret"
-msgstr "Skopiuj sekret"
+msgstr "Skopiuj tajny klucz"
 
 #: canaille/templates/core/auth/partials/otp_setup_content.html:70
 msgid "Passcode confirmation"
@@ -2617,7 +2594,7 @@ msgid ""
 "settings's password is compromised."
 msgstr ""
 "Nie udało się sprawdzić, czy hasło powiązane z profilem %(site_url)s/profile/"
-"%(user_name)s/settings zostało ujawnione"
+"%(user_name)s/settings zostało ujawnione."
 
 #: canaille/templates/core/mails/compromised_password_check_failure.txt:10
 #, python-format
@@ -2702,17 +2679,13 @@ msgstr "Jednorazowy kod"
 
 #: canaille/templates/core/mails/firstlogin.html:28
 #: canaille/templates/core/mails/firstlogin.txt:4
-#, fuzzy, python-format
-#| msgid ""
-#| "In order to finalize your account configuration at %(site_name)s, we need "
-#| "to setup your password. Please click on the link below and follow the "
-#| "instructions."
+#, python-format
 msgid ""
 "In order to finalize your account configuration at %(site_name)s, we need to "
 "setup your password. Please enter the code below at %(site_name)s."
 msgstr ""
 "Aby dokończyć konfigurację konta w serwisie %(site_name)s, musimy ustawić "
-"hasło. Kliknij poniższy link i postępuj zgodnie z instrukcjami."
+"Twoje hasło. Wprowadź poniższy kod w serwisie %(site_name)s."
 
 #: canaille/templates/core/mails/firstlogin.html:31
 #: canaille/templates/core/mails/firstlogin.txt:5
@@ -3096,7 +3069,7 @@ msgstr "Nie znaleziono elementów pasujących do kryteriów"
 #: canaille/templates/oidc/partial/client_list.html:53
 #: canaille/templates/oidc/partial/token_list.html:47
 msgid "Maybe try with different criteria?"
-msgstr "Spróbuj użyć innych kryteriów."
+msgstr "Może spróbujesz z innymi kryteriami?"
 
 #: canaille/templates/core/partial/group-members.html:95
 #: canaille/templates/core/partial/groups.html:60
@@ -3276,7 +3249,7 @@ msgstr ""
 #: canaille/templates/oidc/client_add.html:46
 #: canaille/templates/oidc/client_edit.html:48
 msgid "Read more…"
-msgstr "Czytaj więcej…"
+msgstr "Dowiedz się więcej…"
 
 #: canaille/templates/oidc/client_add.html:53
 #: canaille/templates/oidc/client_edit.html:55
@@ -3320,12 +3293,12 @@ msgstr "Zaufana"
 msgid ""
 "This application cannot authenticate anymore until its secret is renewed"
 msgstr ""
-"Ta aplikacja nie może się już uwierzytelniać, dopóki jej sekret nie zostanie "
-"odnowiony"
+"Ta aplikacja nie może się już uwierzytelniać, dopóki jej klucz tajny nie "
+"zostanie odnowiony"
 
 #: canaille/templates/oidc/client_edit.html:77
 msgid "Expired secret"
-msgstr "Wygasły sekret"
+msgstr "Wygasły klucz tajny"
 
 #: canaille/templates/oidc/client_edit.html:85
 msgid "ID"
@@ -3337,7 +3310,7 @@ msgstr "Wydano"
 
 #: canaille/templates/oidc/client_edit.html:108
 msgid "Secret"
-msgstr "Sekret"
+msgstr "Klucz tajny"
 
 #: canaille/templates/oidc/client_edit.html:127
 msgid "New access token"
@@ -3531,7 +3504,7 @@ msgstr "Ta aplikacja jest zaufana"
 
 #: canaille/templates/oidc/partial/client_list.html:29
 msgid "The secret of this application has expired"
-msgstr "Sekret tej aplikacji wygasł"
+msgstr "Klucz tajny tej aplikacji wygasł"
 
 #: canaille/templates/oidc/partial/token_list.html:5
 msgid "Token"
