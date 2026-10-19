@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-09-05 16:08+0200\n"
-"PO-Revision-Date: 2026-10-19 18:48+0000\n"
+"PO-Revision-Date: 2026-10-19 20:32+0000\n"
 "Last-Translator: Kamil Maciąg <kmaciag93@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/canaille/canaille/"
 "pl/>\n"
@@ -328,7 +328,7 @@ msgstr "Nazwa użytkownika"
 #: canaille/templates/core/partials/profile_settings_fido.html:39
 #: canaille/templates/oidc/partial/client_list.html:6
 msgid "Name"
-msgstr "Imię i nazwisko"
+msgstr "Nazwa"
 
 #: canaille/core/endpoints/forms.py:171
 msgid "Title"
@@ -1709,7 +1709,7 @@ msgstr "Strona logowania"
 #: canaille/templates/core/auth/password.html:32
 #: canaille/templates/core/join.html:67
 msgid "Forgotten password"
-msgstr "Zapomniane hasło"
+msgstr "Nie pamiętasz hasła?"
 
 #: canaille/templates/core/account/add.html:217
 #: canaille/templates/core/auth/firstlogin-code.html:57
