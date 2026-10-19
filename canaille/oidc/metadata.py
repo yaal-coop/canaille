@@ -123,7 +123,7 @@ def openid_configuration():
         "prompt_values_supported": prompt_values_supported,
         "request_parameter_supported": True,
         "request_uri_parameter_supported": True,
-        "require_request_uri_registration": False,
+        "require_request_uri_registration": True,
         "request_object_signing_alg_values_supported": supported_verification_algorithms(),
         "request_object_encryption_alg_values_supported": None,
         "request_object_encryption_enc_values_supported": None,

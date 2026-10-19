@@ -537,8 +537,8 @@ def test_management_token_of_another_client(
     headers = {"Authorization": f"Bearer {token}"}
     url = f"/oauth/register/{trusted_client.client_id}"
 
-    res = testclient.get(url, headers=headers, status=403)
-    assert res.json["error"] == "unauthorized_client"
+    res = testclient.get(url, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
 
     res = testclient.put_json(
         url,
@@ -547,13 +547,13 @@ def test_management_token_of_another_client(
             "redirect_uris": ["https://evil.test/callback"],
         },
         headers=headers,
-        status=403,
+        status=400,
     )
-    assert res.json["error"] == "unauthorized_client"
+    assert res.json["error"] == "access_denied"
 
     with warnings.catch_warnings(record=True):
-        res = testclient.delete(url, headers=headers, status=403)
-    assert res.json["error"] == "unauthorized_client"
+        res = testclient.delete(url, headers=headers, status=400)
+    assert res.json["error"] == "access_denied"
 
     backend.reload(trusted_client)
     assert trusted_client.redirect_uris == [

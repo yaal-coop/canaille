@@ -420,6 +420,16 @@ class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
         return response
 
 
+class RegistrationAccessToken:
+    """A registration access token validated by :class:`ClientManagementMixin`."""
+
+    def __init__(self, claims):
+        self.claims = claims
+
+    def check_client(self, client):
+        return self.claims.get("sub") == client.client_id
+
+
 class ClientManagementMixin:
     def _validate_jwt_claims(self, claims):
         """Validate common JWT claims for client registration/management.
@@ -442,7 +452,7 @@ class ClientManagementMixin:
     def authenticate_token(self, request):
         """Authenticate JWT tokens for dynamic client registration.
 
-        Returns True if authentication succeeds, None if it fails.
+        Returns the token if authentication succeeds, None if it fails.
         Stores the validated JWT claims in request.jwt_claims for later use.
         """
         if not (bearer_token := get_bearer_token(request)):
@@ -455,7 +465,7 @@ class ClientManagementMixin:
             return None
 
         request.jwt_claims = decoded.claims
-        return True
+        return RegistrationAccessToken(decoded.claims)
 
     def get_server_metadata(self):
         from .metadata import openid_configuration
@@ -613,9 +623,8 @@ class ClientConfigurationEndpoint(
         pass
 
     def check_permission(self, client, request):
-        """Check the management token was issued for the client it targets."""
-        claims = getattr(request, "jwt_claims", {})
-        return claims.get("sub") == client.client_id
+        """Allow the request, as the token already checks its client."""
+        return True
 
     def delete_client(self, client, request):
         current_app.logger.security(
@@ -682,6 +691,10 @@ class IssuerParameter(rfc9207.IssuerParameter):
 class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
     def resolve_client_public_key(self, client):
         return get_client_jwks(client)
+
+    def validate_request_uri(self, request_uri: str, client):
+        """Only download request objects at URIs the client registered."""
+        return request_uri in (client.request_uris or [])
 
     def get_request_object(self, request_uri: str):
         """Download the request object at the URI passed in the authorization request.

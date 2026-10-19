@@ -140,7 +140,7 @@ def test_openid_configuration(testclient):
         "registration_endpoint": "http://canaille.test/oauth/register",
         "request_parameter_supported": True,
         "request_uri_parameter_supported": True,
-        "require_request_uri_registration": False,
+        "require_request_uri_registration": True,
         "response_modes_supported": [
             "query",
             "fragment",

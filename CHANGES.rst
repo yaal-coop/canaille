@@ -107,6 +107,11 @@ Security
   clients must be given one of these scopes.**
 - With SCIM, users can only modify the attributes of their ``WRITE`` ACL on their own
   account.
+- OIDC request objects are only downloaded from the ``request_uris`` the client
+  registered. **Clients that pass a** ``request_uri`` **must register it first.**
+- Canaille requires Authlib 1.9.1, which fixes several security issues. A client
+  management request with a token issued to another client now answers
+  ``400 access_denied`` instead of ``403 unauthorized_client``.
 
 [0.3.6] - 2026-08-04
 --------------------

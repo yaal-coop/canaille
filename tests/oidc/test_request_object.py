@@ -55,9 +55,12 @@ def test_request_object_query(testclient, logged_user, trusted_client, client_jw
     ],
 )
 def test_unreachable_request_object_uri(
-    testclient, logged_user, trusted_client, request_uri
+    testclient, backend, logged_user, trusted_client, request_uri
 ):
     """Request objects that cannot be downloaded are a client error, not a server error."""
+    trusted_client.request_uris = [request_uri]
+    backend.save(trusted_client)
+
     res = testclient.get(
         "/oauth/authorize",
         params=dict(client_id=trusted_client.client_id, request_uri=request_uri),
@@ -66,8 +69,13 @@ def test_unreachable_request_object_uri(
     res.mustcontain("The request_uri in the authorization request returns an error")
 
 
-def test_too_big_request_object(testclient, logged_user, trusted_client, httpserver):
+def test_too_big_request_object(
+    testclient, backend, logged_user, trusted_client, httpserver
+):
     """Request objects are bounded in size, as they are read in memory."""
+    request_uri = f"http://{httpserver.host}:{httpserver.port}/request_obj"
+    trusted_client.request_uris = [request_uri]
+    backend.save(trusted_client)
     httpserver.expect_request("/request_obj").respond_with_data(
         "a" * (MAX_DOCUMENT_SIZE + 1)
     )
@@ -76,18 +84,44 @@ def test_too_big_request_object(testclient, logged_user, trusted_client, httpser
         "/oauth/authorize",
         params=dict(
             client_id=trusted_client.client_id,
-            request_uri=f"http://{httpserver.host}:{httpserver.port}/request_obj",
+            request_uri=request_uri,
         ),
         status=400,
     )
     res.mustcontain("The request_uri in the authorization request returns an error")
 
 
-def test_request_object_uri_query(
+def test_unregistered_request_object_uri(
     testclient, logged_user, trusted_client, client_jwk, httpserver
+):
+    """Request objects are not downloaded from URIs the client did not register."""
+    request_uri = f"http://{httpserver.host}:{httpserver.port}/request_obj"
+    payload = dict(
+        response_type="code",
+        client_id=trusted_client.client_id,
+        scope="openid profile email groups address phone",
+        nonce="somenonce",
+        redirect_uri=trusted_client.redirect_uris[0],
+    )
+    request_obj = jwt.encode({"alg": "RS256"}, payload, client_jwk)
+    httpserver.expect_request("/request_obj").respond_with_data(request_obj)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(client_id=trusted_client.client_id, request_uri=request_uri),
+        status=400,
+    )
+    res.mustcontain("The request_uri in the authorization request returns an error")
+    assert not httpserver.log
+
+
+def test_request_object_uri_query(
+    testclient, backend, logged_user, trusted_client, client_jwk, httpserver
 ):
     """Test an authentication request that uses the request_uri parameter."""
     request_uri = f"http://{httpserver.host}:{httpserver.port}/request_obj"
+    trusted_client.request_uris = [request_uri]
+    backend.save(trusted_client)
     payload = dict(
         response_type="code",
         client_id=trusted_client.client_id,
