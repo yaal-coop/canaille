@@ -132,3 +132,20 @@ def test_smart_language_match(accept_list, available, expected):
     accept = LanguageAccept(accept_list)
     result = smart_language_match(accept, available)
     assert result == expected
+
+
+def test_builtin_validator_translations(testclient, logged_admin, backend):
+    """WTForms built-in messages follow the user language, on static and dynamic forms."""
+    logged_admin.preferred_language = "fr"
+    backend.save(logged_admin)
+
+    res = testclient.get("/profile/admin", status=200)
+    form = res.forms["baseform"]
+    form["family_name"] = ""
+    res = form.submit(name="action", value="edit-profile")
+    res.mustcontain("Ce champ est requis.")
+
+    res = testclient.get("/groups/add", status=200)
+    res.form["display_name"] = ""
+    res = res.form.submit(name="action", value="create-group")
+    res.mustcontain("Ce champ est requis.")

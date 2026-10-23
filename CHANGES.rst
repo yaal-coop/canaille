@@ -50,6 +50,8 @@ Removed
 
 Fixed
 ^^^^^
+- Under concurrent requests, the error messages of the profile forms could show
+  in the language of another user.
 - Without JavaScript, the copy buttons submitted the form they are in.
 - After the inline validation of a password field, password fields could show
   the typed passwords in the page HTML, for every user served by the same process.

@@ -134,18 +134,6 @@ def email_validator(form, field):
         pass
 
 
-meta = DefaultMeta()
-
-
-class I18NFormMixin:
-    def __init__(self, *args, **kwargs):
-        preferred_locale = locale_selector()
-        meta.locales = (
-            [preferred_locale, DEFAULT_LANGUAGE_CODE] if preferred_locale else False
-        )
-        super().__init__(*args, meta=meta, **kwargs)
-
-
 class HTMXFormMixin:
     SEPARATOR = "-"
 
@@ -272,17 +260,22 @@ class HTMXFormMixin:
         return False
 
 
-class Form(HTMXFormMixin, I18NFormMixin, FlaskForm):
+class Form(HTMXFormMixin, FlaskForm):
     action = wtforms.ButtonField()
 
 
-class BaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
+class BaseForm(HTMXFormMixin, wtforms.form.BaseForm):
     def __init__(self, fields, *args, **kwargs):
         fields = {"action": wtforms.ButtonField(), **dict(fields)}
-        super().__init__(fields, *args, **kwargs)
+        preferred_locale = locale_selector()
+        meta = DefaultMeta()
+        meta.locales = (
+            [preferred_locale, DEFAULT_LANGUAGE_CODE] if preferred_locale else False
+        )
+        super().__init__(fields, *args, meta=meta, **kwargs)
 
 
-class TableForm(I18NFormMixin, FlaskForm):
+class TableForm(FlaskForm):
     """A form for table rendering of object collections."""
 
     def __init__(
