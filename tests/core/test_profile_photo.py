@@ -92,7 +92,7 @@ def test_photo_on_profile_edition(
     """Test that photos can be added, kept unchanged, and deleted during profile editing."""
     # Add a photo
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("logo.jpg", jpeg_photo)
     form["photo_delete"] = False
     res = form.submit(name="action", value="edit-profile")
@@ -106,7 +106,7 @@ def test_photo_on_profile_edition(
 
     # No change. The photo must be left untouched, and not re-encoded.
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo_delete"] = False
     res = form.submit(name="action", value="edit-profile")
     assert ("success", "Profile updated successfully.") in res.flashes
@@ -118,7 +118,7 @@ def test_photo_on_profile_edition(
 
     # Photo deletion
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo_delete"] = True
     res = form.submit(name="action", value="edit-profile")
     assert ("success", "Profile updated successfully.") in res.flashes
@@ -130,7 +130,7 @@ def test_photo_on_profile_edition(
 
     # Photo deletion AND upload, this should never happen
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("logo.jpg", jpeg_photo)
     form["photo_delete"] = True
     res = form.submit(name="action", value="edit-profile")
@@ -149,7 +149,7 @@ def test_photo_on_profile_creation(testclient, jpeg_photo, logged_admin, backend
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("logo.jpg", jpeg_photo)
     form["user_name"] = "foobar"
     form["family_name"] = "Abitbol"
@@ -170,7 +170,7 @@ def test_photo_disguised_as_a_jpeg_is_refused(
     initial_photo = logged_user.photo
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("evil.jpg", svg_photo)
     form["photo_delete"] = False
     res = form.submit(name="action", value="edit-profile")
@@ -190,7 +190,7 @@ def test_photo_is_converted_to_a_format_the_backend_supports(
 ):
     """PNG photos are kept as-is, except on backends that can only store JPEG."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("logo.png", png_photo)
     form["photo_delete"] = False
     res = form.submit(name="action", value="edit-profile")
@@ -209,7 +209,7 @@ def test_too_big_photo_is_refused(testclient, logged_user, backend):
     initial_photo = logged_user.photo
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("logo.jpg", b"\xff\xd8\xff" + b"\x00" * (5 * 1024 * 1024))
     form["photo_delete"] = False
     res = form.submit(name="action", value="edit-profile")
@@ -246,7 +246,7 @@ def test_photo_deleted_on_profile_creation(
     res.mustcontain(no="foobar")
 
     res = testclient.get("/profile", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("logo.jpg", jpeg_photo)
     form["photo_delete"] = True
     form["user_name"] = "foobar"
@@ -264,7 +264,7 @@ def test_photo_deleted_on_profile_creation(
 def test_webp_photo_upload(testclient, logged_user, webp_photo, backend):
     """WEBP photos are accepted and converted when the backend cannot store them."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["photo"] = Upload("logo.webp", webp_photo)
     form["photo_delete"] = False
     res = form.submit(name="action", value="edit-profile")

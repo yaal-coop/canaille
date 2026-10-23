@@ -7,7 +7,6 @@ from flask_wtf.file import FileField
 from flask_wtf.file import FileSize
 
 from canaille.app import models
-from canaille.app.forms import BaseForm
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
@@ -363,7 +362,15 @@ PROFILE_FORM_FIELDS = dict(
 )
 
 
-def build_profile_form(write_field_names, readonly_field_names, user=None):
+def build_profile_form(
+    write_field_names,
+    readonly_field_names,
+    user=None,
+    formdata=None,
+    data=None,
+    extra_fields=None,
+):
+    """Build a profile form with the fields that the ACL allow to read or write."""
     if "password" in write_field_names:
         write_field_names = write_field_names | {"password1", "password2"}
 
@@ -391,7 +398,8 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
             ],
         )
 
-    form = BaseForm(fields)
+    fields.update(extra_fields or {})
+    form = type("ProfileForm", (Form,), fields)(formdata, data=data)
     form.user = user
     for field in form:
         if field.name in readonly_field_names - write_field_names:
@@ -400,10 +408,9 @@ def build_profile_form(write_field_names, readonly_field_names, user=None):
     return form
 
 
-def add_captcha_fields(form):
-    """Add CAPTCHA fields to a dynamically built form."""
-    form["captcha_token"] = wtforms.HiddenField()
-    form["captcha"] = CaptchaField()
+def captcha_fields():
+    """Return the CAPTCHA fields to add to a dynamically built form."""
+    return {"captcha_token": wtforms.HiddenField(), "captcha": CaptchaField()}
 
 
 class CreateGroupForm(Form):

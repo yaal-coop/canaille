@@ -39,8 +39,9 @@ def profile_auth_password(user, edited_user):
         user.writable_fields & available_fields,
         user.readable_fields & available_fields,
         edited_user,
+        formdata=CombinedMultiDict((request.files, request.form)) or None,
+        data=data,
     )
-    form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
     action = form["action"].data
 

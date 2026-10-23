@@ -11,12 +11,9 @@ from flask import current_app
 from flask import make_response
 from flask import request
 from flask_wtf import FlaskForm
-from wtforms.meta import DefaultMeta
 
 from canaille.app import models
-from canaille.app.i18n import DEFAULT_LANGUAGE_CODE
 from canaille.app.i18n import gettext as _
-from canaille.app.i18n import locale_selector
 from canaille.app.i18n import timezone_selector
 from canaille.app.mails_sending_conditions import check_if_send_mail_to_admins
 from canaille.backends import Backend
@@ -266,21 +263,6 @@ class Form(HTMXFormMixin, FlaskForm):
         render_field = render_field
 
     action = wtforms.ButtonField()
-
-
-class BaseFormMeta(DefaultMeta):
-    render_field = render_field
-
-
-class BaseForm(HTMXFormMixin, wtforms.form.BaseForm):
-    def __init__(self, fields, *args, **kwargs):
-        fields = {"action": wtforms.ButtonField(), **dict(fields)}
-        preferred_locale = locale_selector()
-        meta = BaseFormMeta()
-        meta.locales = (
-            [preferred_locale, DEFAULT_LANGUAGE_CODE] if preferred_locale else False
-        )
-        super().__init__(fields, *args, meta=meta, **kwargs)
 
 
 class TableForm(FlaskForm):

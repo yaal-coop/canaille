@@ -207,7 +207,7 @@ def test_fieldlist_add_readonly(testclient, logged_user, backend):
     backend.reload(logged_user)
 
     res = testclient.get("/profile/user")
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "readonly" in form["phone_numbers-0"].attrs
     assert "phone_numbers-1" not in form.fields
 
@@ -230,7 +230,7 @@ def test_fieldlist_remove_readonly(testclient, logged_user, backend):
     backend.save(logged_user)
 
     res = testclient.get("/profile/user")
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "readonly" in form["phone_numbers-0"].attrs
     assert "readonly" in form["phone_numbers-1"].attrs
 

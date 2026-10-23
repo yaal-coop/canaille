@@ -53,8 +53,8 @@ from canaille.core.endpoints.forms import InvitationForm
 from canaille.core.endpoints.forms import JoinForm
 from canaille.core.endpoints.forms import JoinFormWithCaptcha
 from canaille.core.endpoints.forms import PasswordResetForm
-from canaille.core.endpoints.forms import add_captcha_fields
 from canaille.core.endpoints.forms import build_profile_form
+from canaille.core.endpoints.forms import captcha_fields
 from canaille.core.mails import send_confirmation_email
 from canaille.core.mails import send_invitation_mail
 from canaille.core.mails import send_registration_mail
@@ -366,9 +366,12 @@ def registration(data=None, hash=None):
     emails_readonly = current_app.features.has_email_confirmation
     readable_fields, writable_fields = default_fields()
 
-    form = build_profile_form(writable_fields, readable_fields)
-    if "groups" not in form and payload and payload.groups:
-        form["groups"] = wtforms.SelectMultipleField(
+    extra_fields = {}
+    payload_groups = (
+        payload and payload.groups and "groups" not in writable_fields | readable_fields
+    )
+    if payload_groups:
+        extra_fields["groups"] = wtforms.SelectMultipleField(
             _("Groups"),
             choices=[
                 wtforms.SelectChoice(value=group, label=group.display_name)
@@ -376,15 +379,22 @@ def registration(data=None, hash=None):
             ],
             coerce=IDToModel("Group"),
         )
-        set_readonly(form["groups"])
 
     if (
         current_app.features.has_captcha
         and not current_app.features.has_email_confirmation
     ):
-        add_captcha_fields(form)
+        extra_fields.update(captcha_fields())
 
-    form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
+    form = build_profile_form(
+        writable_fields,
+        readable_fields,
+        formdata=CombinedMultiDict((request.files, request.form)) or None,
+        data=data,
+        extra_fields=extra_fields,
+    )
+    if payload_groups:
+        set_readonly(form["groups"])
 
     if is_readonly(form["user_name"]) and (not payload or payload.user_name_editable):
         set_writable(form["user_name"])
@@ -506,8 +516,11 @@ def email_confirmation(data, hash):
 @bp.route("/profile", methods=("GET", "POST"))
 @user_needed("manage_users")
 def profile_creation(user):
-    form = build_profile_form(user.writable_fields, user.readable_fields)
-    form.process(CombinedMultiDict((request.files, request.form)) or None)
+    form = build_profile_form(
+        user.writable_fields,
+        user.readable_fields,
+        formdata=CombinedMultiDict((request.files, request.form)) or None,
+    )
 
     for field in form:
         if is_readonly(field):
@@ -597,9 +610,13 @@ def _build_profile_form(user, edited_user, emails_readonly):
         if hasattr(edited_user, field) and getattr(edited_user, field)
     }
     request_data = CombinedMultiDict((request.files, request.form))
-    profile_form = build_profile_form(writable_fields, readable_fields)
-    profile_form.process(request_data or None, data=data)
-    profile_form.user = edited_user
+    profile_form = build_profile_form(
+        writable_fields,
+        readable_fields,
+        edited_user,
+        formdata=request_data or None,
+        data=data,
+    )
     set_permission_indicators(profile_form, user, edited_user)
     return profile_form
 
@@ -900,8 +917,9 @@ def _handle_profile_settings_edit(editor, edited_user):
         editor.writable_fields & available_fields,
         editor.readable_fields & available_fields,
         edited_user,
+        formdata=CombinedMultiDict((request.files, request.form)) or None,
+        data=data,
     )
-    form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
     set_permission_indicators(form, editor, edited_user)
     if request.form and form["action"].data == "edit-settings" or request_is_partial():
         if not form.validate():
