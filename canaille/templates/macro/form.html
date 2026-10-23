@@ -24,9 +24,11 @@ action_button=none
 {%- set lock_indicator = readonly or disabled -%}
 {%- set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required) -%}
 {%- set inline_validation = field.validators and field.type not in ("FileField", "MultipleFileField") -%}
+{%- set display_strength_indicator = field.render_kw and "class" in field.render_kw and "password_strength" in field.render_kw["class"] -%}
 {%- if inline_validation -%}
+    {#- The password strength follows the typing, other fields are checked when left. -#}
     {%- set ignore_me = kwargs.update({"hx-post": ""}) -%}
-    {%- set ignore_me = kwargs.update({"hx-indicator": "closest .input", "hx-trigger": "input changed delay:500ms"}) -%}
+    {%- set ignore_me = kwargs.update({"hx-indicator": "closest .input", "hx-trigger": "input changed delay:500ms" if display_strength_indicator else "blur changed"}) -%}
 {%- endif -%}
 {%- if field.errors -%}
     {%- set ignore_me = kwargs.update({"aria-invalid": "true", "aria-describedby": field.name ~ "-error"}) -%}
@@ -165,7 +167,6 @@ action_button=none
     </div>
 {% endif %}
 
-{% set display_strength_indicator = field.render_kw and "class" in field.render_kw and "password_strength" in field.render_kw["class"] %}
 {% set strength = field.data|password_strength %}
 {% if display_strength_indicator and strength and not field.errors %}
     <div>

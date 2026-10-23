@@ -12,6 +12,8 @@ Added
 
 Changed
 ^^^^^^^
+- Form fields are checked when the user leaves them, instead of while they type,
+  except for the password strength. Characters typed during a check could get lost.
 - Photos need the ``front`` packaging extras, and are refused without it. This keeps
   minimal installations, such as the one :doc:`pytest-iam:index` performs, free of
   the Pillow dependency.
