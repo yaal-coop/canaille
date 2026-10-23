@@ -40,7 +40,7 @@ dependencies = [
     "flask-wtf >= 1.2.1",
     "httpx2>=2.13.1",
     "pydantic-settings >= 2.8.0",
-    "wtforms >= 3.3.0b4",
+    "wtforms >= 3.3.0",
 ]
 
 [project.optional-dependencies]

@@ -464,7 +464,7 @@ requires-dist = [
     { name = "tomlkit", marker = "extra == 'oidc'", specifier = ">=0.13.2" },
     { name = "tomlkit", marker = "extra == 'server'", specifier = ">=0.13.2" },
     { name = "webauthn", marker = "extra == 'fido'", specifier = ">=2.7.0" },
-    { name = "wtforms", specifier = ">=3.3.0b4" },
+    { name = "wtforms", specifier = ">=3.3.0" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.3.0" },
 ]
 provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server", "redis", "rabbitmq"]
@@ -4389,14 +4389,14 @@ wheels = [
 
 [[package]]
 name = "wtforms"
-version = "3.3.0b4"
+version = "3.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markupsafe" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/81/04/acc8c4c01b76f3e8cd1c3538cb28473db35eb31e0522d7e62ab25927189b/wtforms-3.3.0b4.tar.gz", hash = "sha256:3be11335fd48ac15336bdabc81b88202922dd2e50dc4efa6ff752796afe01666", size = 171516, upload-time = "2026-10-23T07:36:04.072Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c4/42/db38b45b7d791f608d7f1afbb9176dfef4a0dec415eb435b07cd44eb96cf/wtforms-3.3.0.tar.gz", hash = "sha256:efbc626b0b68d3bcb77822e0eceb995f56c5e9d0aeb4220b9dc2fc9f03e7e1ed", size = 171987, upload-time = "2026-10-23T14:43:11.152Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/37/0f/ef383dfe1578fa1d219b0abd7c0abda9647f399ac429e1a2623b5f3625c6/wtforms-3.3.0b4-py3-none-any.whl", hash = "sha256:40e29a3f9de15ff9bb8d71698c86b525ccba832532da30f21787e5a0ebe0a63d", size = 171905, upload-time = "2026-10-23T07:36:02.777Z" },
+    { url = "https://files.pythonhosted.org/packages/01/99/e6eef415617529fe9479b4a0ea1a4fa360afece3b3a0c58a6904de3621b8/wtforms-3.3.0-py3-none-any.whl", hash = "sha256:eaf2f7649bedbee0bad74bb068dca8bfec8b00d04fd44c1735682c1fe33acfa7", size = 171960, upload-time = "2026-10-23T14:43:09.699Z" },
 ]
 
 [[package]]
