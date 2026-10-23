@@ -50,6 +50,7 @@ Removed
 
 Fixed
 ^^^^^
+- htmx inserted an inline style sheet that the Content Security Policy blocked.
 - Building a profile form changed the cached access rights of the user, adding
   the password confirmation and photo deletion fields to them.
 - After an inline validation, a field of a list, such as an email address, could

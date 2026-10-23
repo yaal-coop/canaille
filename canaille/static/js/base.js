@@ -28,10 +28,7 @@ function togglePasswordVisibility(icon) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof htmx !== 'undefined') {
-        htmx.config.requestClass = "loading"
-        htmx.config.includeIndicatorStyles = false
-        htmx.config.defaultSwapStyle = "morph"
+    if (typeof Idiomorph !== 'undefined') {
         Idiomorph.defaults.ignoreActiveValue = true
     }
     onDomChanges();

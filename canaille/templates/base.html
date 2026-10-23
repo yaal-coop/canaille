@@ -33,6 +33,9 @@ The main template inherited by almost every other templates.
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            {% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %}
+                <meta name="htmx-config" content='{"requestClass": "loading", "includeIndicatorStyles": false, "defaultSwapStyle": "morph"}'>
+            {% endif %}
             <link href="{{ url_for("static", filename="fomanticui/semantic.min.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="fonts/lato.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="css/base.css") }}" rel="stylesheet">
