@@ -365,10 +365,10 @@ PROFILE_FORM_FIELDS = dict(
 
 def build_profile_form(write_field_names, readonly_field_names, user=None):
     if "password" in write_field_names:
-        write_field_names |= {"password1", "password2"}
+        write_field_names = write_field_names | {"password1", "password2"}
 
     if "photo" in write_field_names:
-        write_field_names |= {"photo_delete"}
+        write_field_names = write_field_names | {"photo_delete"}
 
     fields = {
         name: PROFILE_FORM_FIELDS.get(name)

@@ -419,3 +419,11 @@ def test_readonly_fields_do_not_leak_between_forms(testclient):
 
     assert "readonly" in readonly_form["title"].render_kw
     assert "readonly" not in writable_form["title"].render_kw
+
+
+def test_build_profile_form_keeps_the_given_field_names(testclient):
+    """Building a profile form does not change the field names it is given."""
+    write_field_names = {"family_name", "password", "photo"}
+    build_profile_form(write_field_names, set())
+
+    assert write_field_names == {"family_name", "password", "photo"}

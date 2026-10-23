@@ -50,6 +50,8 @@ Removed
 
 Fixed
 ^^^^^
+- Building a profile form changed the cached access rights of the user, adding
+  the password confirmation and photo deletion fields to them.
 - After an inline validation, a field of a list, such as an email address, could
   show another access indicator than on the page. Profile fields no longer carry
   stray HTML attributes.
