@@ -173,13 +173,12 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     distant_scim_admin = response.resources[0] if response.resources else None
 
     response = scim_client_for_trusted_client.query(Group)
-    assert len(response.resources) == 2
-    retrieved_foo_group = response.resources[0]
-    assert retrieved_foo_group.display_name == "foo"
+    groups = {group.display_name: group for group in response.resources}
+    assert groups.keys() == {"foo", "bar"}
+    retrieved_foo_group = groups["foo"]
     assert len(retrieved_foo_group.members) == 1
     assert retrieved_foo_group.members[0].value == distant_scim_user.id
-    retrieved_bar_group = response.resources[1]
-    assert retrieved_bar_group.display_name == "bar"
+    retrieved_bar_group = groups["bar"]
     assert len(retrieved_bar_group.members) == 1
     assert retrieved_bar_group.members[0].value == distant_scim_admin.id
 
@@ -197,14 +196,13 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     distant_scim_alice = response.resources[0] if response.resources else None
 
     response = scim_client_for_trusted_client.query(Group)
-    assert len(response.resources) == 2
-    retrieved_foo_group = response.resources[0]
-    assert retrieved_foo_group.display_name == "foo"
+    groups = {group.display_name: group for group in response.resources}
+    assert groups.keys() == {"foo", "bar"}
+    retrieved_foo_group = groups["foo"]
     assert len(retrieved_foo_group.members) == 2
     assert retrieved_foo_group.members[0].value == distant_scim_user.id
     assert retrieved_foo_group.members[1].value == distant_scim_alice.id
-    retrieved_bar_group = response.resources[1]
-    assert retrieved_bar_group.display_name == "bar"
+    retrieved_bar_group = groups["bar"]
     assert len(retrieved_bar_group.members) == 2
     assert retrieved_bar_group.members[0].value == distant_scim_admin.id
     assert retrieved_bar_group.members[1].value == distant_scim_alice.id
@@ -212,13 +210,12 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     backend.delete(alice)
 
     response = scim_client_for_trusted_client.query(Group)
-    assert len(response.resources) == 2
-    retrieved_foo_group = response.resources[0]
-    assert retrieved_foo_group.display_name == "foo"
+    groups = {group.display_name: group for group in response.resources}
+    assert groups.keys() == {"foo", "bar"}
+    retrieved_foo_group = groups["foo"]
     assert len(retrieved_foo_group.members) == 1
     assert retrieved_foo_group.members[0].value == distant_scim_user.id
-    retrieved_bar_group = response.resources[1]
-    assert retrieved_bar_group.display_name == "bar"
+    retrieved_bar_group = groups["bar"]
     assert len(retrieved_bar_group.members) == 1
     assert retrieved_bar_group.members[0].value == distant_scim_admin.id
 

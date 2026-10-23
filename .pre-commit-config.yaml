@@ -1,17 +1,17 @@
 ---
 repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.12.1
+    rev: eeca16c54e09b4d9a848259e46bae14737944348  # frozen: 0.13.5
     hooks:
       - id: uv-lock
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.1
+    rev: f368fb366ff7f2f808dd324b83a6d32267799e19  # frozen: v0.17.2
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
       - id: fix-byte-order-marker
       - id: trailing-whitespace
@@ -20,11 +20,11 @@ repos:
         exclude: "\\.svg$|\\.map$|\\.min\\.css$|\\.min\\.js$|\\.po$|\\.pot$"
       - id: check-toml
   - repo: https://github.com/rtts/djhtml
-    rev: 3.0.11
+    rev: 8577ec017145d76a0b954ebb7cb3169d4303014c  # frozen: 3.0.11
     hooks:
       - id: djhtml
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.3
+    rev: 57b21406f092110c18776e39b0bda50d37c945c8  # frozen: v2.4.3
     hooks:
     - id: codespell
       additional_dependencies:
@@ -32,7 +32,7 @@ repos:
       exclude: ".*\\.min\\..*|translations|\\.css$|^tests|fomanticui|doc/locales"
       args: [--write-changes]
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v4.4.0
+    rev: 91ab4bf57e58b32adf1a122681f6ebe164d081c8  # frozen: v4.4.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]

@@ -1,3 +1,4 @@
+import copy
 import json
 
 import pytest
@@ -20,9 +21,6 @@ from canaille.scim.storage import CanailleStorage
 LDAP_LIMITS = {
     "test_create_fills_the_identifier_and_the_meta": "LDAP creation dates are precise to the second only",
     "test_create_does_not_change_the_given_resource": "LDAP users need a name",
-    "test_search_a_resource_type": "LDAP groups cannot be empty",
-    "test_search_at_the_root": "LDAP groups cannot be empty",
-    "test_search_at_the_root_on_an_attribute_some_types_lack": "LDAP groups cannot be empty",
 }
 
 
@@ -59,6 +57,22 @@ class TestCanailleStorage(ScimStorageContract):
         reason = LDAP_LIMITS.get(request.node.originalname)
         if reason and backend.__class__.__name__ == "LDAPBackend":
             request.applymarker(pytest.mark.xfail(reason=reason, strict=True))
+
+    def search_users(self):
+        """Leave out the email types, and give the users a name, as LDAP requires one."""
+        users = []
+        for user in super().search_users():
+            user = copy.deepcopy(user)
+            family_name = user.get("name", {}).get("familyName", user["userName"])
+            user["name"] = {
+                **user.get("name", {}),
+                "formatted": user["userName"],
+                "familyName": family_name,
+            }
+            if "emails" in user:
+                user["emails"] = [{"value": e["value"]} for e in user["emails"]]
+            users.append(user)
+        return users
 
     def create_users(self, storage, user_type, user_model, *user_names):
         """Give the users a name, as LDAP requires one."""
@@ -139,15 +153,15 @@ def test_search_at_the_root_pages_across_resource_types(
     users = backend.count(models.User)
     groups = backend.count(models.Group)
 
-    total, resources = storage.search(
+    page = storage.search(
         [user_type, group_type],
         TestCanailleStorage.search_request(
             [User[EnterpriseUser], Group], start_index=users, count=2
         ),
     )
 
-    assert total == users + groups
-    assert [r.meta.resource_type for r in resources] == ["User", "Group"]
+    assert page.total == users + groups
+    assert [r.meta.resource_type for r in page.resources] == ["User", "Group"]
 
 
 def test_subject_cannot_modify_fields_out_of_the_write_acl(
@@ -238,11 +252,11 @@ def test_search_at_the_root_stops_before_the_groups(
     """A page that ends among the users holds no group."""
     make_user(storage, user_type, "alice")
 
-    _, resources = storage.search(
+    page = storage.search(
         [user_type, group_type],
         TestCanailleStorage.search_request(
             [User[EnterpriseUser], Group], start_index=1, count=1
         ),
     )
 
-    assert [r.meta.resource_type for r in resources] == ["User"]
+    assert [r.meta.resource_type for r in page.resources] == ["User"]

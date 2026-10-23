@@ -6,9 +6,11 @@ from scim2_models import NotFoundException
 from scim2_models import PreconditionFailedException
 from scim2_models import Resource
 from scim2_models import ResourceType
+from scim2_models import ResponseParameters
 from scim2_models import SearchRequest
 from scim2_models import UniquenessException
 from scim2_server.storage import ScimStorage
+from scim2_server.storage import SearchPage
 
 from canaille.app import models
 from canaille.backends import Backend
@@ -61,13 +63,23 @@ class CanailleStorage(ScimStorage):
     def __init__(self, token):
         self.token = token
 
-    def get(self, resource_type: ResourceType, resource_id: str) -> Resource[Any]:
+    def get(
+        self,
+        resource_type: ResourceType,
+        resource_id: str,
+        *,
+        response_parameters: ResponseParameters[Any] | None = None,
+    ) -> Resource[Any]:
         kind = KINDS[resource_type.id]
         return kind.to_scim(self._load(kind, resource_id))
 
     def search(
-        self, resource_types: list[ResourceType], search_request: SearchRequest[Any]
-    ) -> tuple[int, list[Resource[Any]]]:
+        self,
+        resource_types: list[ResourceType],
+        search_request: SearchRequest[Any],
+        *,
+        position: Any = None,
+    ) -> SearchPage:
         start = search_request.start_index_0 or 0
         stop = None if search_request.count is None else start + search_request.count
         if search_request.filter is not None or search_request.sort_by is not None:
@@ -83,7 +95,7 @@ class CanailleStorage(ScimStorage):
                 if search_request.filter is None
                 or search_request.filter.match(resource)
             ]
-            return len(found), search_request.sort(found)[start:stop]
+            return SearchPage(len(found), search_request.sort(found)[start:stop])
 
         total = 0
         resources = []
@@ -95,7 +107,7 @@ class CanailleStorage(ScimStorage):
                 instances = Backend.instance.query(kind.model)[first:last]
                 resources += [kind.to_scim(instance) for instance in instances]
             total += Backend.instance.count(kind.model)
-        return total, resources
+        return SearchPage(total, resources)
 
     def create(
         self, resource_type: ResourceType, resource: Resource[Any]

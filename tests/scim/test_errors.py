@@ -3,7 +3,7 @@ import json
 from unittest import mock
 
 import pytest
-from scim2_client.engines.werkzeug import TestSCIMClient
+from scim2_client.engines.wsgi import WSGISCIMClient
 from scim2_models import Error
 from werkzeug.security import gen_salt
 from werkzeug.test import Client
@@ -14,15 +14,10 @@ from canaille.scim.endpoints import bp
 
 def test_authentication_failure(app, scim_provider):
     """Test authentication with an invalid token."""
-    scim_client = TestSCIMClient(
-        Client(app),
-        scim_prefix=bp.url_prefix,
-        environ={
-            "headers": {
-                "Authorization": "Bearer invalid",
-                "Host": app.config["SERVER_NAME"],
-            }
-        },
+    scim_client = WSGISCIMClient(
+        app,
+        base_url=f"http://{app.config['SERVER_NAME']}{bp.url_prefix}",
+        headers={"Authorization": "Bearer invalid"},
         provider=scim_provider,
     )
     User = scim_client.get_resource_model("User")
@@ -49,15 +44,10 @@ def test_authentication_with_an_user_token_without_permission(
     )
     backend.save(scim_token)
 
-    scim_client = TestSCIMClient(
-        Client(app),
-        scim_prefix=bp.url_prefix,
-        environ={
-            "headers": {
-                "Authorization": f"Bearer {scim_token.access_token}",
-                "Host": app.config["SERVER_NAME"],
-            }
-        },
+    scim_client = WSGISCIMClient(
+        app,
+        base_url=f"http://{app.config['SERVER_NAME']}{bp.url_prefix}",
+        headers={"Authorization": f"Bearer {scim_token.access_token}"},
         provider=scim_provider,
     )
     User = scim_client.get_resource_model("User")

@@ -105,20 +105,14 @@ def scim_provider(app):
 
 @pytest.fixture
 def scim_client(app, oidc_client, oidc_token, scim_provider):
-    from scim2_client.engines.werkzeug import TestSCIMClient
-    from werkzeug.test import Client
+    from scim2_client.engines.wsgi import WSGISCIMClient
 
     from canaille.scim.endpoints import bp
 
-    return TestSCIMClient(
-        Client(app),
-        scim_prefix=bp.url_prefix,
-        environ={
-            "headers": {
-                "Authorization": f"Bearer {oidc_token.access_token}",
-                "Host": app.config["SERVER_NAME"],
-            }
-        },
+    return WSGISCIMClient(
+        app,
+        base_url=f"http://{app.config['SERVER_NAME']}{bp.url_prefix}",
+        headers={"Authorization": f"Bearer {oidc_token.access_token}"},
         check_response_status_codes=False,
         provider=scim_provider,
     )
@@ -176,12 +170,11 @@ def scim_token(testclient, scim_trusted_client, backend):
 
 @pytest.fixture
 def scim_client_for_trusted_client(scim2_server_app, scim_token):
-    from scim2_client.engines.werkzeug import TestSCIMClient
-    from werkzeug.test import Client
+    from scim2_client.engines.wsgi import WSGISCIMClient
 
-    scim_client = TestSCIMClient(
-        Client(scim2_server_app),
-        environ={"headers": {"Authorization": f"Bearer {scim_token.access_token}"}},
+    scim_client = WSGISCIMClient(
+        scim2_server_app,
+        headers={"Authorization": f"Bearer {scim_token.access_token}"},
     )
     scim_client.discover()
     return scim_client
