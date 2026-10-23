@@ -26,7 +26,6 @@ from canaille.app import build_hash
 from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
-from canaille.app.flask import partial_request_trigger
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
@@ -39,7 +38,6 @@ from canaille.app.forms import is_readonly
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import set_readonly
-from canaille.app.forms import set_writable
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import reload_translations
 from canaille.app.session import login_user
@@ -122,10 +120,7 @@ def join():
             session.pop(f"captcha_{old_token}", None)
         return render_join_template()
 
-    if not request.form:
-        return render_join_template()
-
-    if not form.validate():
+    if not form.validate_on_submit():
         return render_join_template()
 
     if Backend.instance.query(models.User, emails=form.email.data):
@@ -273,7 +268,7 @@ def user_invitation(user):
     email_sent = None
     registration_url = None
     form_validated = False
-    if request.form and form.validate():
+    if form.validate_on_submit():
         form_validated = True
         payload = RegistrationPayload(
             datetime.datetime.now(datetime.UTC).isoformat(),
@@ -363,8 +358,13 @@ def registration(data=None, hash=None):
             ],
         }
 
-    emails_readonly = current_app.features.has_email_confirmation
     readable_fields, writable_fields = default_fields()
+    if "user_name" in readable_fields and (not payload or payload.user_name_editable):
+        writable_fields.add("user_name")
+
+    if current_app.features.has_email_confirmation:
+        writable_fields.discard("emails")
+        readable_fields.add("emails")
 
     extra_fields = {}
     payload_groups = (
@@ -395,12 +395,6 @@ def registration(data=None, hash=None):
     )
     if payload_groups:
         set_readonly(form["groups"])
-
-    if is_readonly(form["user_name"]) and (not payload or payload.user_name_editable):
-        set_writable(form["user_name"])
-
-    if not is_readonly(form["emails"]) and emails_readonly:
-        set_readonly(form["emails"])
 
     form["password1"].validators = [
         wtforms.validators.DataRequired(),
@@ -439,10 +433,10 @@ def registration(data=None, hash=None):
             session.pop(f"captcha_{old_token}", None)
         return render_registration_template()
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_registration_template()
+    if not form.validate_on_submit():
+        if not request.form or form.mutated:
+            return render_registration_template()
 
-    if not form.validate():
         flash(
             _("Your account couldn't be created. Please check the form and try again."),
             "error",
@@ -516,25 +510,22 @@ def email_confirmation(data, hash):
 @bp.route("/profile", methods=("GET", "POST"))
 @user_needed("manage_users")
 def profile_creation(user):
+    fields = user.writable_fields | user.readable_fields
     form = build_profile_form(
-        user.writable_fields,
-        user.readable_fields,
+        fields,
+        fields,
         formdata=CombinedMultiDict((request.files, request.form)) or None,
     )
 
-    for field in form:
-        if is_readonly(field):
-            set_writable(field)
+    if not form.validate_on_submit():
+        if not request.form or form.mutated:
+            return render_template(
+                "core/account/add.html",
+                form=form,
+                menuitem="users",
+                captcha_data=None,
+            )
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_template(
-            "core/account/add.html",
-            form=form,
-            menuitem="users",
-            captcha_data=None,
-        )
-
-    if not form.validate():
         flash(
             _("The account couldn't be created. Please check the form and try again."),
             "error",
@@ -656,11 +647,14 @@ def _build_emails_form(edited_user, has_smtp):
 def _handle_edit_profile(
     user, edited_user, profile_form, has_email_changed, render_context
 ):
-    if not profile_form.validate():
-        flash(
-            _("Your changes couldn't be saved. Please check the form and try again."),
-            "error",
-        )
+    if not profile_form.validate_on_submit():
+        if not profile_form.mutated:
+            flash(
+                _(
+                    "Your changes couldn't be saved. Please check the form and try again."
+                ),
+                "error",
+            )
         return render_template("core/account/edit.html", **render_context)
 
     for field in profile_form:
@@ -692,7 +686,7 @@ def _handle_edit_profile(
 
 
 def _handle_add_email(edited_user, emails_form, render_context):
-    if not emails_form.validate():
+    if not emails_form.validate_on_submit():
         flash(
             _("This email couldn't be added. Please check the format and try again."),
             "error",
@@ -772,29 +766,23 @@ def profile_edition(user, edited_user):
         "emails_form": emails_form,
     }
 
-    if not request.form or profile_form.handle_fieldlist_operation():
-        return render_template("core/account/edit.html", **render_context)
+    action = profile_form.action.data
 
-    action = profile_form["action"].data
-
-    if action == "edit-profile" or (
-        request_is_partial() and partial_request_trigger() in profile_form
-    ):
+    if action == "edit-profile" or profile_form.mutated:
         return _handle_edit_profile(
             user, edited_user, profile_form, has_email_changed, render_context
         )
 
-    if action == "add_email" or (
-        request_is_partial()
-        and emails_form
-        and partial_request_trigger() in emails_form
-    ):
+    if action == "add_email" or (emails_form and emails_form.mutated):
         return _handle_add_email(edited_user, emails_form, render_context)
 
     if emails_form and emails_form.email_remove.data:
         return _handle_remove_email(
             edited_user, emails_form.email_remove.data, render_context
         )
+
+    if not request.form:
+        return render_template("core/account/edit.html", **render_context)
 
     abort(400, f"bad form action: {action}")
 
@@ -921,8 +909,8 @@ def _handle_profile_settings_edit(editor, edited_user):
         data=data,
     )
     set_permission_indicators(form, editor, edited_user)
-    if request.form and form["action"].data == "edit-settings" or request_is_partial():
-        if not form.validate():
+    if request.form and (form.action.data == "edit-settings" or form.mutated):
+        if not form.validate_on_submit():
             flash(
                 _(
                     "Your changes couldn't be saved. "
@@ -996,7 +984,7 @@ def reset(user):
     if not g.session or user != g.session.user or not user.has_expired_password():
         abort(403)
 
-    if request.form and form.validate():
+    if form.validate_on_submit():
         Backend.instance.set_user_password(user, form.password.data)
         login_user(user)
         flash(_("Your password has been updated successfully."), "success")

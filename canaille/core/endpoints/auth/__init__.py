@@ -96,14 +96,14 @@ def login(username=None):
     form = LoginForm(request.form or None)
     form["login"].render_kw["placeholder"] = login_placeholder()
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_template(
-            "core/login.html",
-            form=form,
-            login_history=get_login_history(),
-        )
+    if not form.validate_on_submit():
+        if not request.form or form.mutated:
+            return render_template(
+                "core/login.html",
+                form=form,
+                login_history=get_login_history(),
+            )
 
-    if not form.validate():
         logout_user()
         flash(_("Login failed. Please check your information."), "error")
         return render_template(

@@ -36,7 +36,7 @@ def index(user):
 def view(user, token):
     form = TokenRevokationForm(request.form or None)
 
-    if request.form and form.validate():
+    if form.validate_on_submit():
         if form.action.data == "confirm-revoke":
             return render_template(
                 "oidc/modals/revoke-token.html", token=token, form=form

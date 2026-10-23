@@ -2,15 +2,14 @@ import datetime
 import hashlib
 import math
 import re
-from copy import copy
 
 import httpx2
 import wtforms.validators
-from flask import abort
 from flask import current_app
-from flask import make_response
-from flask import request
 from flask_wtf import FlaskForm
+from flask_wtforms_htmx import HtmxFlaskForm
+from wtforms_htmx.mutations import list_add
+from wtforms_htmx.mutations import list_remove
 
 from canaille.app import models
 from canaille.app.i18n import gettext as _
@@ -140,7 +139,7 @@ def _parent_list(field):
     return parent if isinstance(parent, wtforms.FieldList) else None
 
 
-def render_field(meta, field, render_kw):
+def field_wrapper(meta, field, render_kw):
     """Render a field with the Fomantic-UI macros of ``macro/form.html``.
 
     A FieldList entry gets the ``render_kw`` of its list.
@@ -155,112 +154,17 @@ def render_field(meta, field, render_kw):
     return macros.field_wrapper(field, render_kw, parent)
 
 
-class HTMXFormMixin:
-    SEPARATOR = "-"
-
-    def field_from_name(self, field_name):
-        """Return the field with the HTML name ``field_name``, or ``None``."""
-        if self.SEPARATOR not in field_name:
-            return self[field_name] if field_name in self else None
-
-        parts = field_name.split(self.SEPARATOR)
-        fieldlist_name = self.SEPARATOR.join(parts[:-1])
-        try:
-            indice = int(parts[-1])
-        except ValueError:
-            return None
-        fieldlist = self.field_from_name(fieldlist_name)
-        return fieldlist[indice]
-
-    def validate(self, *args, **kwargs):
-        """If the request is a HTMX request, this will only render the field that triggered the request (after having validated the form).
-
-        This uses the Flask abort method to interrupt the flow with an
-        exception.
-        """
-        if not request_is_partial():
-            return super().validate(*args, **kwargs)
-
-        field_name = request.headers.get("HX-Trigger-Name")
-        field = self.field_from_name(field_name)
-        if field:
-            self.validate_field(field, *args, **kwargs)
-            self.render_partial_field(field)
-
-        abort(400, f"{field_name} is not a valid field for inline validation")
-
-    def validate_field(self, field, *args, **kwargs):
-        if getattr(field.widget, "hide_value", False):
-            # The widget is shared by every field of its class: only reveal a copy.
-            field.widget = copy(field.widget)
-            field.widget.hide_value = False
-
-        self.process(request.form)
-        return field.validate(self, *args, **kwargs)
-
-    def render_partial_field(self, field):
-        abort(make_response(field()))
-
-    def _handle_fieldlist_add(self, field_name, fieldlist_suffix):
-        fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
-        fieldlist = self.field_from_name(fieldlist_name)
-
-        if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
-            abort(400, f"{field_name} is not a valid field list")
-
-        if fieldlist.render_kw and (
-            "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
-        ):
-            abort(403)
-
-        if request_is_partial():
-            self.validate_field(fieldlist)
-
-        fieldlist.append_entry()
-
-        if request_is_partial():
-            self.render_partial_field(fieldlist)
-
-    def _handle_fieldlist_remove(self, field_name, fieldlist_suffix):
-        fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
-        fieldlist = self.field_from_name(fieldlist_name)
-
-        if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
-            abort(400, f"{field_name} is not a valid field list")
-
-        if fieldlist.render_kw and (
-            "readonly" in fieldlist.render_kw or "disabled" in fieldlist.render_kw
-        ):
-            abort(403)
-
-        if request_is_partial():
-            self.validate_field(fieldlist)
-
-        fieldlist.pop_entry()
-
-        if request_is_partial():
-            self.render_partial_field(fieldlist)
-
-    def handle_fieldlist_operation(self):
-        """Check whether the current request is the result of the users adding or removing a field from a FieldList."""
-        FIELDLIST_ADD_BUTTON = "fieldlist_add"
-        FIELDLIST_REMOVE_BUTTON = "fieldlist_remove"
-
-        fieldlist_suffix = rf"{self.SEPARATOR}(\d+)$"
-        if field_name := request.form.get(FIELDLIST_ADD_BUTTON):
-            self._handle_fieldlist_add(field_name, fieldlist_suffix)
-            return True
-
-        if field_name := request.form.get(FIELDLIST_REMOVE_BUTTON):
-            self._handle_fieldlist_remove(field_name, fieldlist_suffix)
-            return True
-
-        return False
+def fieldlist_buttons(list_name):
+    """Return the buttons that add an entry to a field list, and remove its last one."""
+    return (
+        wtforms.ButtonField().triggers(list_name, list_add),
+        wtforms.ButtonField().triggers(list_name, list_remove),
+    )
 
 
-class Form(HTMXFormMixin, FlaskForm):
+class Form(HtmxFlaskForm):
     class Meta:
-        render_field = render_field
+        field_wrapper = field_wrapper
 
     action = wtforms.ButtonField()
 
@@ -329,13 +233,6 @@ def set_readonly(field) -> None:
     field.render_kw = field.render_kw or {}
     field.render_kw["readonly"] = True
     field.validators = list(field.validators) + [wtforms.validators.ReadOnly()]
-
-
-def set_writable(field) -> None:
-    del field.render_kw["readonly"]
-    field.validators = [
-        v for v in field.validators if not isinstance(v, wtforms.validators.ReadOnly)
-    ]
 
 
 class IDToModel:

@@ -77,10 +77,10 @@ def password():
             session.pop(f"captcha_{old_token}", None)
         return render_password_template(form)
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_password_template(form)
+    if not form.validate_on_submit() or not g.auth.user:
+        if not request.form or form.mutated:
+            return render_password_template(form)
 
-    if not form.validate() or not g.auth.user:
         user = g.auth.user
         flash(_("Login failed. Please check your information."), "error")
         response = render_password_template(form)
@@ -118,10 +118,8 @@ def firstlogin(user):
         abort(404)
 
     form = FirstLoginForm(request.form or None)
-    if not request.form:
+    if not form.validate_on_submit() and not request.form:
         return render_template("core/auth/firstlogin.html", form=form, user=user)
-
-    form.validate()
 
     if user.emails:
         reset_url, reset_code = generate_password_reset_url_or_code(user)
@@ -158,10 +156,12 @@ def firstlogin_code(user):
         abort(404)
 
     form = ForgottenPasswordCodeForm(request.form)
-    if not request.form:
-        return render_template("core/auth/firstlogin-code.html", form=form)
+    if not form.validate_on_submit() or not user.is_email_or_sms_otp_valid(
+        form.code.data
+    ):
+        if not request.form:
+            return render_template("core/auth/firstlogin-code.html", form=form)
 
-    if not form.validate() or not user.is_email_or_sms_otp_valid(form.code.data):
         flash(
             _("This code is invalid or has expired. Please request a new one."), "error"
         )
@@ -177,10 +177,10 @@ def forgotten():
         abort(404)
 
     form = ForgottenPasswordForm(request.form)
-    if not request.form:
-        return render_template("core/auth/forgotten-password.html", form=form)
+    if not form.validate_on_submit():
+        if not request.form:
+            return render_template("core/auth/forgotten-password.html", form=form)
 
-    if not form.validate():
         if current_app.features.has_trusted_hosts:
             flash(_("Could not send the password reset link."), "error")
         else:
@@ -251,10 +251,12 @@ def forgotten_code(user):
         return redirect(url_for(".forgotten"))
 
     form = ForgottenPasswordCodeForm(request.form)
-    if not request.form:
-        return render_template("core/auth/forgotten-password-code.html", form=form)
+    if not form.validate_on_submit() or not user.is_email_or_sms_otp_valid(
+        form.code.data
+    ):
+        if not request.form:
+            return render_template("core/auth/forgotten-password-code.html", form=form)
 
-    if not form.validate() or not user.is_email_or_sms_otp_valid(form.code.data):
         flash(
             _("This code is invalid or has expired. Please request a new one."), "error"
         )
@@ -285,7 +287,7 @@ def reset(user, token):
             )
         return redirect(url_for("core.account.index"))
 
-    if not request.form or not form.validate():
+    if not form.validate_on_submit():
         return render_template(
             "core/auth/reset-password.html", form=form, user=user, token=token
         )

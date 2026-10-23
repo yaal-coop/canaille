@@ -12,6 +12,7 @@ from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
 from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import email_validator
+from canaille.app.forms import fieldlist_buttons
 from canaille.app.forms import is_uri
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
@@ -137,6 +138,7 @@ class PasswordResetForm(Form):
         render_kw={
             "autocomplete": "new-password",
             "class": "password_strength",
+            "hx-trigger": "input changed delay:500ms",
         },
     )
     confirmation = wtforms.PasswordField(
@@ -299,6 +301,7 @@ PROFILE_FORM_FIELDS = dict(
         render_kw={
             "autocomplete": "new-password",
             "class": "password_strength",
+            "hx-trigger": "input changed delay:500ms",
             "noindicator": True,
         },
     ),
@@ -397,6 +400,12 @@ def build_profile_form(
                 "%Y-%m-%dT%H:%M:%S",
             ],
         )
+
+    for list_name in ("emails", "phone_numbers"):
+        if list_name in fields and list_name in write_field_names:
+            fields[f"add_{list_name}"], fields[f"del_{list_name}"] = fieldlist_buttons(
+                list_name
+            )
 
     fields.update(extra_fields or {})
     form = type("ProfileForm", (Form,), fields)(formdata, data=data)

@@ -44,21 +44,22 @@ def sms():
         else datetime.timedelta(seconds=SEND_NEW_OTP_DELAY)
     )
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_template(
-            "core/auth/sms.html", form=form, resend_delay=resend_delay
-        )
-
     if form.action.data == "resend":
         send_sms_otp()
         return redirect(url_for(".sms"))
 
     if (
-        not form.validate()
+        not form.validate_on_submit()
         or not g.auth.user
         or not g.auth.user.is_email_or_sms_otp_valid(form.otp.data)
     ):
+        if not request.form or form.mutated:
+            return render_template(
+                "core/auth/sms.html", form=form, resend_delay=resend_delay
+            )
+
         flash(_("The passcode you entered is invalid. Please try again."), "error")
+
         current_app.logger.security(
             f"Failed sms code authentication for {g.auth.user_name}"
         )

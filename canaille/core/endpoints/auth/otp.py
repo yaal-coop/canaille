@@ -37,10 +37,10 @@ def otp():
 
     form = TwoFactorForm(request.form or None)
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_template("core/auth/otp.html", form=form)
+    if not form.validate_on_submit() or not g.auth.user:
+        if not request.form or form.mutated:
+            return render_template("core/auth/otp.html", form=form)
 
-    if not form.validate() or not g.auth.user:
         flash(
             _("The passcode you entered is invalid. Please try again."),
             "error",
@@ -100,7 +100,8 @@ def setup():
     )
     base64_qr_image = get_b64encoded_qr_image(uri)
 
-    if not request.form or form.handle_fieldlist_operation():
+    valid = form.validate_on_submit()
+    if not request.form or form.mutated:
         return render_template(
             "core/auth/setup-otp.html",
             secret=secret,
@@ -115,7 +116,7 @@ def setup():
         current_app.config["CANAILLE"]["OTP_METHOD"],
         g.auth.data["otp_user_secret"],
     )
-    if not form.validate() or not otp_valid:
+    if not valid or not otp_valid:
         flash(_("The passcode you entered is invalid. Please try again."), "error")
         return render_template(
             "core/auth/setup-otp.html",

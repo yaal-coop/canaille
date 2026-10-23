@@ -37,7 +37,7 @@ class MailTestForm(Form):
 @user_needed("manage_oidc")
 def mail_index(user):
     form = MailTestForm(request.form or None)
-    if request.form and form.validate():
+    if form.validate_on_submit():
         send_test_mail(form.email.data)
         flash(_("Sending test mail. Please check the recipient mail box."), "info")
 

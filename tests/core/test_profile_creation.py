@@ -192,11 +192,7 @@ def test_formcontrol(testclient, logged_admin):
 def test_formcontrol_htmx(testclient, logged_admin):
     """Test that HTMX form controls work for adding additional email fields."""
     res = testclient.get("/profile")
-    data = {
-        field: res.form[field].value
-        for field in res.form.fields
-        if len(res.form.fields.get(field)) == 1
-    }
+    data = dict(res.form.submit_fields())
     data |= fieldlist_add("emails")
     response = testclient.post(
         "/profile",

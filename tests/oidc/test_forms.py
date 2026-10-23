@@ -78,35 +78,6 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
     backend.delete(client)
 
 
-def test_fieldlist_add_invalid_field(testclient, logged_admin):
-    res = testclient.get("/admin/client/add")
-    csrf_token = res.pyquery("#csrf_token").val()
-    data = {
-        "csrf_token": csrf_token,
-        "client_name": "foobar",
-        "client_uri": "https://foobar.test",
-        "redirect_uris-0": "https://foobar.test/callback",
-        "fieldlist_add": "invalid",
-    }
-    testclient.post("/admin/client/add", data, status=400)
-
-
-def test_fieldlist_delete_invalid_field(testclient, logged_admin, backend):
-    assert not backend.query(models.Client, client_name="foobar")
-    res = testclient.get("/admin/client/add")
-    csrf_token = res.pyquery("#csrf_token").val()
-
-    data = {
-        "csrf_token": csrf_token,
-        "client_name": "foobar",
-        "client_uri": "https://foobar.test",
-        "redirect_uris-0": "https://foobar.test/callback1",
-        "redirect_uris-1": "https://foobar.test/callback2",
-        "fieldlist_remove": "invalid",
-    }
-    testclient.post("/admin/client/add", data, status=400)
-
-
 def test_fieldlist_duplicate_value(testclient, logged_admin, client):
     res = testclient.get("/admin/client/add")
     data = {
@@ -155,26 +126,6 @@ def test_fieldlist_add_field_htmx(testclient, logged_admin):
     )
     assert 'name="redirect_uris-0' in response.text
     assert 'name="redirect_uris-1' in response.text
-
-
-def test_fieldlist_add_field_htmx_validation(testclient, logged_admin):
-    res = testclient.get("/admin/client/add")
-    csrf_token = res.pyquery("#csrf_token").val()
-    data = {
-        "csrf_token": csrf_token,
-        "client_name": "foobar",
-        "client_uri": "https://foobar.test",
-        "redirect_uris-0": "not-a-valid-uri",
-        **fieldlist_add("redirect_uris"),
-    }
-    response = testclient.post(
-        "/admin/client/add",
-        data,
-        headers=htmx_headers(),
-    )
-    assert 'name="redirect_uris-0' in response.text
-    assert 'name="redirect_uris-1' in response.text
-    assert "This is not a valid URL" in response.text
 
 
 def test_fieldlist_remove_field_htmx(testclient, logged_admin):
