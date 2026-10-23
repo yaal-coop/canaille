@@ -43,19 +43,6 @@ Displays the user settings edition form.
     </a>
 {% endblock %}
 
-{% macro render_field(field, noindicator=false) %}
-    {% set lock_indicator = field.render_kw and ("readonly" in field.render_kw or "disabled" in field.render_kw) %}
-    {% if edited_user.user_name == user.user_name or lock_indicator or noindicator %}
-        {{ fui.render_field(field, **kwargs) }}
-    {% elif field.name in edited_user.writable_fields %}
-        {{ fui.render_field(field, **kwargs) }}
-    {% elif field.name in edited_user.readable_fields %}
-        {{ fui.render_field(field, indicator_icon="eye", indicator_text=_("This user cannot edit this field"), **kwargs) }}
-    {% else %}
-        {{ fui.render_field(field, indicator_icon="eye slash", indicator_text=_("This user cannot see this field"), **kwargs) }}
-    {% endif %}
-{% endmacro %}
-
 {% block content %}
     <div class="ui clearing segment">
         <h2 class="ui center aligned header">
@@ -70,15 +57,15 @@ Displays the user settings edition form.
         {% call fui.render_form(form, class_="profile-form info warning") %}
 
             {% if "user_name" in form %}
-                {% block user_name_field scoped %}{{ render_field(form.user_name) }}{% endblock %}
+                {% block user_name_field scoped %}{{ form.user_name() }}{% endblock %}
             {% endif %}
 
             {% if features.has_account_lockability and "lock_date" in form and not edited_user.locked %}
-                {% block lock_date_field scoped %}{{ render_field(form.lock_date) }}{% endblock %}
+                {% block lock_date_field scoped %}{{ form.lock_date() }}{% endblock %}
             {% endif %}
 
             {% if "groups" in form %}
-                {% block groups_field scoped %}{{ render_field(form.groups) }}{% endblock %}
+                {% block groups_field scoped %}{{ form.groups() }}{% endblock %}
             {% endif %}
 
             {% if features.has_account_lockability and edited_user.locked and user.can_manage_users %}

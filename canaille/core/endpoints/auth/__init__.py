@@ -94,7 +94,6 @@ def login(username=None):
         return redirect_to_next_auth_step()
 
     form = LoginForm(request.form or None)
-    form.render_field_macro_file = "core/partial/login_field.html"
     form["login"].render_kw = {
         **form["login"].render_kw,
         "placeholder": login_placeholder(),

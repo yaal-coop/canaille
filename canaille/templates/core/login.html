@@ -15,7 +15,6 @@ This page displays a form to get the user identifier.
 {% extends g.auth.template or 'core/auth/base.html' %}
 {% import 'macro/flask.html' as flask %}
 {% import 'macro/form.html' as fui %}
-{% import 'core/partial/login_field.html' as login_field %}
 
 
 {% block auth_content %}
@@ -87,7 +86,7 @@ This page displays a form to get the user identifier.
 
         {% call fui.render_form(form) %}
             {% block fields %}
-                {% block login_field scoped %}{{ login_field.render_field(form.login, autofocus=true) }}{% endblock %}
+                {% block login_field scoped %}{{ form.login(autofocus=True) }}{% endblock %}
             {% endblock %}
 
             {% block buttons %}
@@ -98,7 +97,7 @@ This page displays a form to get the user identifier.
                         {% endif %}
                     </div>
                     <div class="middle aligned right aligned ten wide column">
-                        {{ fui.render_field(form.remember, class_="right aligned") }}
+                        {{ form.remember() }}
                     </div>
                     <div class="right aligned three wide column">
                         {% call fui.render_button(form.action, class_="ui primary button", **{"hx-boost": "false"}) %}{{ _("Continue") }}{% endcall %}

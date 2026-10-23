@@ -14,7 +14,6 @@ It is used in the registration page, and in the manual account creation page ava
 #}
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
-{% import 'core/partial/profile_field.html' as profile %}
 {% import 'core/partial/captcha_field.html' as captcha_field %}
 
 {%- block title -%}
@@ -65,8 +64,8 @@ It is used in the registration page, and in the manual account creation page ava
                 <div class="ui grid">
                     <div class="three wide column">
                         {% block photo_field scoped %}
-                            {{ profile.render_field(form.photo, display=false, class="photo-field") }}
-                            {{ profile.render_field(form.photo_delete, display=false, class="photo-delete-button") }}
+                            {{ form.photo() }}
+                            {{ form.photo_delete() }}
                             <label
                                 class="ui small bordered image photo-content hidden"
                                 for="{{ form.photo.id }}"
@@ -92,97 +91,97 @@ It is used in the registration page, and in the manual account creation page ava
             {% if "given_name" in form or "family_name" in form %}
                 <div class="equal width fields">
                     {% if "given_name" in form %}
-                        {% block given_name_field scoped %}{{ profile.render_field(form.given_name) }}{% endblock %}
+                        {% block given_name_field scoped %}{{ form.given_name() }}{% endblock %}
                     {% endif %}
 
                     {% if "family_name" in form %}
-                        {% block family_name_field scoped %}{{ profile.render_field(form.family_name) }}{% endblock %}
+                        {% block family_name_field scoped %}{{ form.family_name() }}{% endblock %}
                     {% endif %}
                 </div>
             {% endif %}
 
             {% if "display_name" in form %}
-                {% block display_name_field scoped %}{{ profile.render_field(form.display_name) }}{% endblock %}
+                {% block display_name_field scoped %}{{ form.display_name() }}{% endblock %}
             {% endif %}
 
             {% if "photo" in form %}</div></div>{% endif %}
 
             {% if "emails" in form %}
-                {% block emails_field scoped %}{{ profile.render_field(form.emails) }}{% endblock %}
+                {% block emails_field scoped %}{{ form.emails() }}{% endblock %}
             {% endif %}
 
             {% if "phone_numbers" in form %}
-                {% block phone_numbers_field scoped %}{{ profile.render_field(form.phone_numbers) }}{% endblock %}
+                {% block phone_numbers_field scoped %}{{ form.phone_numbers() }}{% endblock %}
             {% endif %}
 
             {% if "formatted_address" in form %}
-                {% block formatted_address_field scoped %}{{ profile.render_field(form.formatted_address) }}{% endblock %}
+                {% block formatted_address_field scoped %}{{ form.formatted_address() }}{% endblock %}
             {% endif %}
 
             {% if "street" in form %}
-                {% block street_field scoped %}{{ profile.render_field(form.street) }}{% endblock %}
+                {% block street_field scoped %}{{ form.street() }}{% endblock %}
             {% endif %}
 
             <div class="equal width fields">
                 {% if "postal_code" in form %}
-                    {% block postal_code_field scoped %}{{ profile.render_field(form.postal_code) }}{% endblock %}
+                    {% block postal_code_field scoped %}{{ form.postal_code() }}{% endblock %}
                 {% endif %}
 
                 {% if "locality" in form %}
-                    {% block locality_field scoped %}{{ profile.render_field(form.locality) }}{% endblock %}
+                    {% block locality_field scoped %}{{ form.locality() }}{% endblock %}
                 {% endif %}
 
                 {% if "region" in form %}
-                    {% block region_field scoped %}{{ profile.render_field(form.region) }}{% endblock %}
+                    {% block region_field scoped %}{{ form.region() }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "department" in form %}
-                    {% block department_field scoped %}{{ profile.render_field(form.department) }}{% endblock %}
+                    {% block department_field scoped %}{{ form.department() }}{% endblock %}
                 {% endif %}
 
                 {% if "employee_number" in form %}
-                    {% block employee_number_field scoped %}{{ profile.render_field(form.employee_number) }}{% endblock %}
+                    {% block employee_number_field scoped %}{{ form.employee_number() }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "title" in form %}
-                    {% block title_field scoped %}{{ profile.render_field(form.title) }}{% endblock %}
+                    {% block title_field scoped %}{{ form.title() }}{% endblock %}
                 {% endif %}
 
                 {% if "organization" in form %}
-                    {% block organization_field scoped %}{{ profile.render_field(form.organization) }}{% endblock %}
+                    {% block organization_field scoped %}{{ form.organization() }}{% endblock %}
                 {% endif %}
 
             </div>
 
             {% if "profile_url" in form %}
-                {% block profile_uri_field scoped %}{{ profile.render_field(form.profile_url) }}{% endblock %}
+                {% block profile_uri_field scoped %}{{ form.profile_url() }}{% endblock %}
             {% endif %}
 
             {% if "preferred_language" in form %}
-                {% block preferred_language_field scoped %}{{ profile.render_field(form.preferred_language) }}{% endblock %}
+                {% block preferred_language_field scoped %}{{ form.preferred_language() }}{% endblock %}
             {% endif %}
 
             <h4 class="ui dividing header">{% trans %}Account settings{% endtrans %}</h4>
 
             {% if "user_name" in form %}
-                {% block user_name_field scoped %}{{ profile.render_field(form.user_name) }}{% endblock %}
+                {% block user_name_field scoped %}{{ form.user_name() }}{% endblock %}
             {% endif %}
 
             {% if "groups" in form %}
-                {% block groups_field scoped %}{{ profile.render_field(form.groups) }}{% endblock %}
+                {% block groups_field scoped %}{{ form.groups() }}{% endblock %}
             {% endif %}
 
             {% if "password1" in form %}
                 {% block password_field scoped %}
                     <div class="two fields">
-                        {{ profile.render_field(form.password1, noindicator=true) }}
-                        {{ profile.render_field(form.password2, noindicator=true) }}
+                        {{ form.password1() }}
+                        {{ form.password2() }}
                     </div>
                 {% endblock %}
             {% endif %}

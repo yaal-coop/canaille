@@ -38,7 +38,6 @@ def sms():
         send_sms_otp(flashes=False)
 
     form = TwoFactorForm(request.form or None)
-    form.render_field_macro_file = "core/partial/login_field.html"
     resend_delay = (
         g.auth.user.next_otp_send_delay
         if g.auth.user

@@ -14,7 +14,6 @@ Display a QR-code and the OTP secret.
 {% endif %}
 {% import 'macro/flask.html' as flask %}
 {% import 'macro/form.html' as fui %}
-{% import 'core/partial/login_field.html' as login_field %}
 
 {% block script %}
     <script src="{{ url_for("static", filename="js/copy.js") }}" defer></script>
@@ -46,7 +45,7 @@ Display a QR-code and the OTP secret.
 
     {% call fui.render_form(form, hx_boost="false") %}
         <div class="ui attached clearing segment">
-            {{ login_field.render_field(form.otp, autofocus=true) }}
+            {{ form.otp(autofocus=True) }}
         </div>
 
         <div class="ui attached clearing segment">
@@ -88,7 +87,7 @@ Display a QR-code and the OTP secret.
 
                 <div class="ui attached clearing segment">
                     {% call fui.render_form(form, hx_boost="false") %}
-                        {{ login_field.render_field(form.otp, autofocus=true) }}
+                        {{ form.otp(autofocus=True) }}
 
                         <div class="ui clearing container">
                             <div class="ui right floated stackable buttons">

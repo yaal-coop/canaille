@@ -122,19 +122,19 @@ Displays the invitation form to users with the invitation permission.
 
                 {% call fui.render_form(form) %}
                     {% block user_name_field scoped %}
-                        {{ fui.render_field(form.user_name, icon="user") }}
+                        {{ form.user_name() }}
                     {% endblock %}
 
                     {% block user_name_editable_field scoped %}
-                        {{ fui.render_field(form.user_name_editable) }}
+                        {{ form.user_name_editable() }}
                     {% endblock %}
 
                     {% block email_field scoped %}
-                        {{ fui.render_field(form.email, icon="email") }}
+                        {{ form.email() }}
                     {% endblock %}
 
                     {% block groups_field scoped %}
-                        {{ fui.render_field(form.groups, icon="users") }}
+                        {{ form.groups() }}
                     {% endblock %}
 
                     <div class="ui right aligned container">

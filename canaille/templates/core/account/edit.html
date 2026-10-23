@@ -20,8 +20,6 @@ Displays a user profile edition form.
 
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
-{% import 'core/partial/profile_field.html' as profile %}
-{% import 'core/partial/emails_field.html' as emails %}
 
 {%- block title -%}
     {% if not edited_user %}
@@ -77,8 +75,8 @@ Displays a user profile edition form.
                 <div class="ui grid">
                     <div class="three wide column">
                         {% block photo_field scoped %}
-                            {{ profile.render_field(profile_form.photo, display=false, class="photo-field") }}
-                            {{ profile.render_field(profile_form.photo_delete, display=false, class="photo-delete-button") }}
+                            {{ profile_form.photo() }}
+                            {{ profile_form.photo_delete() }}
                             {% set photo = edited_user.photo and edited_user.photo %}
                             <label
                                 class="ui small bordered image photo-content {% if not photo %}hidden{% endif %}"
@@ -105,80 +103,80 @@ Displays a user profile edition form.
             {% if "given_name" in profile_form or "family_name" in profile_form %}
                 <div class="equal width fields">
                     {% if "given_name" in profile_form %}
-                        {% block given_name_field scoped %}{{ profile.render_field(profile_form.given_name, user, edited_user) }}{% endblock %}
+                        {% block given_name_field scoped %}{{ profile_form.given_name() }}{% endblock %}
                     {% endif %}
 
                     {% if "family_name" in profile_form %}
-                        {% block sn_field scoped %}{{ profile.render_field(profile_form.family_name, user, edited_user) }}{% endblock %}
+                        {% block sn_field scoped %}{{ profile_form.family_name() }}{% endblock %}
                     {% endif %}
                 </div>
             {% endif %}
 
             {% if "display_name" in profile_form %}
-                {% block display_name_field scoped %}{{ profile.render_field(profile_form.display_name, user, edited_user) }}{% endblock %}
+                {% block display_name_field scoped %}{{ profile_form.display_name() }}{% endblock %}
             {% endif %}
 
             {% if "photo" in profile_form %}</div></div>{% endif %}
 
             {% if "emails" in profile_form and not emails_form %}
-                {% block emails_field scoped %}{{ profile.render_field(profile_form.emails, user, edited_user) }}{% endblock %}
+                {% block emails_field scoped %}{{ profile_form.emails() }}{% endblock %}
             {% endif %}
 
             {% if "phone_numbers" in profile_form %}
-                {% block phone_numbers_field scoped %}{{ profile.render_field(profile_form.phone_numbers, user, edited_user) }}{% endblock %}
+                {% block phone_numbers_field scoped %}{{ profile_form.phone_numbers() }}{% endblock %}
             {% endif %}
 
             {% if "formatted_address" in profile_form %}
-                {% block formatted_address_field scoped %}{{ profile.render_field(profile_form.formatted_address, user, edited_user) }}{% endblock %}
+                {% block formatted_address_field scoped %}{{ profile_form.formatted_address() }}{% endblock %}
             {% endif %}
 
             {% if "street" in profile_form %}
-                {% block street_field scoped %}{{ profile.render_field(profile_form.street, user, edited_user) }}{% endblock %}
+                {% block street_field scoped %}{{ profile_form.street() }}{% endblock %}
             {% endif %}
 
             <div class="equal width fields">
                 {% if "postal_code" in profile_form %}
-                    {% block postal_code_field scoped %}{{ profile.render_field(profile_form.postal_code, user, edited_user) }}{% endblock %}
+                    {% block postal_code_field scoped %}{{ profile_form.postal_code() }}{% endblock %}
                 {% endif %}
 
                 {% if "locality" in profile_form %}
-                    {% block locality_field scoped %}{{ profile.render_field(profile_form.locality, user, edited_user) }}{% endblock %}
+                    {% block locality_field scoped %}{{ profile_form.locality() }}{% endblock %}
                 {% endif %}
 
                 {% if "region" in profile_form %}
-                    {% block region_field scoped %}{{ profile.render_field(profile_form.region, user, edited_user) }}{% endblock %}
+                    {% block region_field scoped %}{{ profile_form.region() }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "department" in profile_form %}
-                    {% block department_number_field scoped %}{{ profile.render_field(profile_form.department, user, edited_user) }}{% endblock %}
+                    {% block department_number_field scoped %}{{ profile_form.department() }}{% endblock %}
                 {% endif %}
 
                 {% if "employee_number" in profile_form %}
-                    {% block employee_number_field scoped %}{{ profile.render_field(profile_form.employee_number, user, edited_user) }}{% endblock %}
+                    {% block employee_number_field scoped %}{{ profile_form.employee_number() }}{% endblock %}
                 {% endif %}
             </div>
 
             <div class="equal width fields">
 
                 {% if "title" in profile_form %}
-                    {% block title_field scoped %}{{ profile.render_field(profile_form.title, user, edited_user) }}{% endblock %}
+                    {% block title_field scoped %}{{ profile_form.title() }}{% endblock %}
                 {% endif %}
 
                 {% if "organization" in profile_form %}
-                    {% block organization_field scoped %}{{ profile.render_field(profile_form.organization, user, edited_user) }}{% endblock %}
+                    {% block organization_field scoped %}{{ profile_form.organization() }}{% endblock %}
                 {% endif %}
 
             </div>
 
             {% if "profile_url" in profile_form %}
-                {% block profile_url_field scoped %}{{ profile.render_field(profile_form.profile_url, user, edited_user) }}{% endblock %}
+                {% block profile_url_field scoped %}{{ profile_form.profile_url() }}{% endblock %}
             {% endif %}
 
             {% if "preferred_language" in profile_form %}
-                {% block preferred_language_field scoped %}{{ profile.render_field(profile_form.preferred_language, user, edited_user) }}{% endblock %}
+                {% block preferred_language_field scoped %}{{ profile_form.preferred_language() }}{% endblock %}
             {% endif %}
 
             <div class="ui right aligned container">
@@ -207,7 +205,7 @@ Displays a user profile edition form.
                     {% for field in emails_form.old_emails %}
                         <div class="field">
                             <div class="ui corner labeled left icon{% if emails_form.old_emails|len>1 %} action{% endif %} input">
-                                {{ field(readonly=True) }}
+                                {{ field(bare=True, readonly=True) }}
                                 {% if field.description %}
                                     <i class="question circle link icon" title="{{ field.description }}"></i>
                                 {% endif %}
@@ -223,7 +221,7 @@ Displays a user profile edition form.
                     {% endfor %}
                 </div>
                 {% if emails_form.add_email_button %}
-                    {{ emails.render_field(emails_form.new_email) }}
+                    {{ emails_form.new_email() }}
                 {% endif %}
             {% endcall %}
         {% endif %}

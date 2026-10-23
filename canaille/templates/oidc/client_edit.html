@@ -118,7 +118,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
                     </button>
                 </div>
             </div>
-            {{ fui.render_field(form.client_secret_expires_at) }}
+            {{ form.client_secret_expires_at() }}
             {{ fui.render_fields(form, exclude=["client_secret_expires_at"]) }}
 
             <div class="ui right aligned container">

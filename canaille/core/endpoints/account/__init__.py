@@ -66,6 +66,16 @@ bp = Blueprint("account", __name__)
 bp.register_blueprint(auth.bp)
 
 
+INDICATORLESS_FIELD_TYPES = {
+    "HiddenField",
+    "CSRFTokenField",
+    "ButtonField",
+    "SubmitField",
+    "BooleanField",
+    "FileField",
+}
+
+
 @bp.route("/")
 def index():
     if not g.session:
@@ -590,12 +600,32 @@ def _build_profile_form(user, edited_user, emails_readonly):
     profile_form = build_profile_form(writable_fields, readable_fields)
     profile_form.process(request_data or None, data=data)
     profile_form.user = edited_user
-    profile_form.render_field_macro_file = "core/partial/profile_field.html"
-    profile_form.render_field_extra_context = {
-        "user": user,
-        "edited_user": edited_user,
-    }
+    set_permission_indicators(profile_form, user, edited_user)
     return profile_form
+
+
+def set_permission_indicators(form, user, edited_user):
+    """Mark the fields that the edited user can not edit or not see."""
+    if edited_user.user_name == user.user_name:
+        return
+
+    for field in form:
+        render_kw = field.render_kw or {}
+        if (
+            field.type in INDICATORLESS_FIELD_TYPES
+            or is_readonly(field)
+            or "disabled" in render_kw
+            or render_kw.get("noindicator")
+            or field.name in edited_user.writable_fields
+        ):
+            continue
+
+        if field.name in edited_user.readable_fields:
+            icon, text = "eye", _("This user cannot edit this field")
+        else:
+            icon, text = "eye slash", _("This user cannot see this field")
+
+        field.render_kw = {**render_kw, "indicator_icon": icon, "indicator_text": text}
 
 
 def _build_emails_form(edited_user, has_smtp):
@@ -603,7 +633,6 @@ def _build_emails_form(edited_user, has_smtp):
         request.form or None, data={"old_emails": edited_user.emails or []}
     )
     emails_form.add_email_button = has_smtp
-    emails_form.render_field_macro_file = "core/partial/emails_field.html"
     return emails_form
 
 
@@ -873,6 +902,7 @@ def _handle_profile_settings_edit(editor, edited_user):
         edited_user,
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
+    set_permission_indicators(form, editor, edited_user)
     if request.form and form["action"].data == "edit-settings" or request_is_partial():
         if not form.validate():
             flash(

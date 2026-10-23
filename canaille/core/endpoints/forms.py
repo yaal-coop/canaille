@@ -47,6 +47,8 @@ class LoginForm(Form):
             "autocorrect": "off",
             "inputmode": "email",
             "autocomplete": "section-login username",
+            "icon": "user",
+            "noindicator": True,
         },
     )
     remember = wtforms.BooleanField(
@@ -55,7 +57,8 @@ class LoginForm(Form):
         render_kw={
             "title": _(
                 "If unchecked, the session will close when the browser is closed"
-            )
+            ),
+            "container_class": "right aligned",
         },
     )
 
@@ -82,6 +85,8 @@ class PasswordForm(Form):
         validators=[wtforms.validators.DataRequired()],
         render_kw={
             "autocomplete": "section-login current-password",
+            "password_toggle": True,
+            "noindicator": True,
         },
     )
 
@@ -99,6 +104,7 @@ class ForgottenPasswordForm(Form):
             "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "icon": "user",
         },
     )
 
@@ -114,6 +120,8 @@ class ForgottenPasswordCodeForm(Form):
             "placeholder": _("123456"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "icon": "key",
+            "noindicator": True,
         },
     )
 
@@ -271,9 +279,16 @@ PROFILE_FORM_FIELDS = dict(
             FileSize(MAX_PHOTO_UPLOAD_SIZE),
             valid_photo,
         ],
-        render_kw={"accept": "image/jpeg, image/png, image/webp"},
+        render_kw={
+            "accept": "image/jpeg, image/png, image/webp",
+            "display": False,
+            "class": "photo-field",
+        },
     ),
-    photo_delete=wtforms.BooleanField(_("Delete the photo")),
+    photo_delete=wtforms.BooleanField(
+        _("Delete the photo"),
+        render_kw={"display": False, "class": "photo-delete-button"},
+    ),
     password1=wtforms.PasswordField(
         _("Password"),
         validators=[
@@ -285,6 +300,7 @@ PROFILE_FORM_FIELDS = dict(
         render_kw={
             "autocomplete": "new-password",
             "class": "password_strength",
+            "noindicator": True,
         },
     ),
     password2=wtforms.PasswordField(
@@ -296,6 +312,7 @@ PROFILE_FORM_FIELDS = dict(
         ],
         render_kw={
             "autocomplete": "new-password",
+            "noindicator": True,
         },
     ),
     employee_number=wtforms.StringField(
@@ -446,6 +463,7 @@ class GroupInvitationForm(Form):
             "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "icon": "email",
         },
     )
 
@@ -479,7 +497,7 @@ class InvitationForm(Form):
 
     user_name = wtforms.StringField(
         _("User name"),
-        render_kw={"placeholder": _("jdoe")},
+        render_kw={"placeholder": _("jdoe"), "icon": "user"},
         validators=[wtforms.validators.DataRequired(), unique_user_name],
     )
     user_name_editable = wtforms.BooleanField(_("Username editable by the invitee"))
@@ -494,6 +512,7 @@ class InvitationForm(Form):
             "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "icon": "email",
         },
     )
     groups = wtforms.SelectMultipleField(
@@ -502,7 +521,7 @@ class InvitationForm(Form):
             wtforms.SelectChoice(value=group, label=group.display_name)
             for group in Backend.instance.query(models.Group)
         ],
-        render_kw={},
+        render_kw={"icon": "users"},
         coerce=IDToModel("Group"),
     )
 
@@ -534,6 +553,13 @@ class EmailConfirmationForm(Form):
             "placeholder": _("jane.doe@example.com"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "noindicator": True,
+            "action_button": {
+                "value": "add_email",
+                "icon": "send",
+                "label": _("Verify"),
+                "title": _("Send a verification email to validate this address."),
+            },
         },
     )
     email_remove = wtforms.ButtonField()
@@ -556,5 +582,7 @@ class TwoFactorForm(Form):
             "spellcheck": "false",
             "autocorrect": "off",
             "autocomplete": "one-time-code",
+            "icon": "key",
+            "noindicator": True,
         },
     )

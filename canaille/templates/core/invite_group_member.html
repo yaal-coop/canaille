@@ -89,7 +89,7 @@ Displays the group invitation form to users with the appropriate permissions.
 
                 {% call fui.render_form(form) %}
                     {% block email_field scoped %}
-                        {{ fui.render_field(form.email, icon="email") }}
+                        {{ form.email() }}
                     {% endblock %}
 
                     <div class="ui right aligned container">

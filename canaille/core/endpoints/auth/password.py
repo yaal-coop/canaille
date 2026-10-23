@@ -52,7 +52,6 @@ def password():
             if show_captcha
             else PasswordForm(request.form or None)
         )
-        form.render_field_macro_file = "core/partial/login_field.html"
         return form
 
     def render_password_template(form=None):

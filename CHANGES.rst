@@ -50,6 +50,9 @@ Removed
 
 Fixed
 ^^^^^
+- After an inline validation, a field of a list, such as an email address, could
+  show another access indicator than on the page. Profile fields no longer carry
+  stray HTML attributes.
 - A profile field could show as read-only, or as editable, because of the access
   rights of the user of a previous request.
 - Under concurrent requests, the error messages of the profile forms could show

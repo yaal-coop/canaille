@@ -36,7 +36,6 @@ def otp():
         return redirect(url_for(".setup"))
 
     form = TwoFactorForm(request.form or None)
-    form.render_field_macro_file = "core/partial/login_field.html"
 
     if not request.form or form.handle_fieldlist_operation():
         return render_template("core/auth/otp.html", form=form)
@@ -96,7 +95,6 @@ def setup():
         g.auth.data["otp_user_secret"] = make_otp_secret()
 
     form = TwoFactorForm(request.form or None)
-    form.render_field_macro_file = "core/partial/login_field.html"
     uri, secret = get_otp_authentication_setup_uri(
         g.auth.user, g.auth.data["otp_user_secret"]
     )

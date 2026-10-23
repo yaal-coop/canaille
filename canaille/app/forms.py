@@ -3,7 +3,6 @@ import hashlib
 import math
 import re
 from copy import copy
-from typing import Any
 
 import httpx2
 import wtforms.validators
@@ -134,39 +133,47 @@ def email_validator(form, field):
         pass
 
 
+def _parent_list(field):
+    """Return the FieldList that holds ``field``, if any."""
+    if getattr(field, "index", None) is None or field._form is None:
+        return None
+
+    list_name = field.short_name.rpartition("-")[0]
+    parent = field._form._fields.get(list_name)
+    return parent if isinstance(parent, wtforms.FieldList) else None
+
+
+def render_field(meta, field, render_kw):
+    """Render a field with the Fomantic-UI macros of ``macro/form.html``.
+
+    A FieldList entry gets the ``render_kw`` of its list.
+    """
+    parent = _parent_list(field)
+    render_kw = {
+        **((parent.render_kw if parent else None) or {}),
+        **(field.render_kw or {}),
+        **render_kw,
+    }
+    macros = current_app.jinja_env.get_template("macro/form.html").module
+    return macros.field_wrapper(field, render_kw, parent)
+
+
 class HTMXFormMixin:
     SEPARATOR = "-"
 
-    render_field_macro_file = "macro/form.html"
-    """Jinja template file containing the macro to render form fields.
-
-    This template should define a render_field macro that will be used for
-    HTMX partial field rendering. Default is 'macro/form.html'.
-    Can be overridden per-form to use custom field rendering templates.
-    """
-
-    render_field_extra_context: dict[str, Any] = {}
-    """Additional context variables to pass to the render_field macro.
-
-    These variables will be merged with field-specific context when rendering
-    fields via HTMX. Useful for passing form-level data that fields need access to.
-    """
-
     def field_from_name(self, field_name):
-        """Return a tuple containing a field and its rendering context."""
+        """Return the field with the HTML name ``field_name``, or ``None``."""
         if self.SEPARATOR not in field_name:
-            field = self[field_name] if field_name in self else None
-            return field, {}
+            return self[field_name] if field_name in self else None
 
         parts = field_name.split(self.SEPARATOR)
         fieldlist_name = self.SEPARATOR.join(parts[:-1])
         try:
             indice = int(parts[-1])
         except ValueError:
-            return None, {}
-        fieldlist, _ = self.field_from_name(fieldlist_name)
-        context = {"parent_list": fieldlist, "parent_indice": indice}
-        return fieldlist[indice], context
+            return None
+        fieldlist = self.field_from_name(fieldlist_name)
+        return fieldlist[indice]
 
     def validate(self, *args, **kwargs):
         """If the request is a HTMX request, this will only render the field that triggered the request (after having validated the form).
@@ -178,10 +185,10 @@ class HTMXFormMixin:
             return super().validate(*args, **kwargs)
 
         field_name = request.headers.get("HX-Trigger-Name")
-        field, context = self.field_from_name(field_name)
+        field = self.field_from_name(field_name)
         if field:
             self.validate_field(field, *args, **kwargs)
-            self.render_field(field, **context)
+            self.render_partial_field(field)
 
         abort(400, f"{field_name} is not a valid field for inline validation")
 
@@ -194,18 +201,12 @@ class HTMXFormMixin:
         self.process(request.form)
         return field.validate(self, *args, **kwargs)
 
-    def render_field(self, field, *args, **kwargs):
-        form_macro = current_app.jinja_env.get_template(self.render_field_macro_file)
-        response = make_response(
-            form_macro.module.render_field(
-                field, *args, **kwargs, **self.render_field_extra_context
-            )
-        )
-        abort(response)
+    def render_partial_field(self, field):
+        abort(make_response(field()))
 
     def _handle_fieldlist_add(self, field_name, fieldlist_suffix):
         fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
-        fieldlist, context = self.field_from_name(fieldlist_name)
+        fieldlist = self.field_from_name(fieldlist_name)
 
         if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
             abort(400, f"{field_name} is not a valid field list")
@@ -221,11 +222,11 @@ class HTMXFormMixin:
         fieldlist.append_entry()
 
         if request_is_partial():
-            self.render_field(fieldlist, **context)
+            self.render_partial_field(fieldlist)
 
     def _handle_fieldlist_remove(self, field_name, fieldlist_suffix):
         fieldlist_name = re.sub(fieldlist_suffix, "", field_name)
-        fieldlist, context = self.field_from_name(fieldlist_name)
+        fieldlist = self.field_from_name(fieldlist_name)
 
         if not fieldlist or not isinstance(fieldlist, wtforms.FieldList):
             abort(400, f"{field_name} is not a valid field list")
@@ -241,7 +242,7 @@ class HTMXFormMixin:
         fieldlist.pop_entry()
 
         if request_is_partial():
-            self.render_field(fieldlist, **context)
+            self.render_partial_field(fieldlist)
 
     def handle_fieldlist_operation(self):
         """Check whether the current request is the result of the users adding or removing a field from a FieldList."""
@@ -261,14 +262,21 @@ class HTMXFormMixin:
 
 
 class Form(HTMXFormMixin, FlaskForm):
+    class Meta:
+        render_field = render_field
+
     action = wtforms.ButtonField()
+
+
+class BaseFormMeta(DefaultMeta):
+    render_field = render_field
 
 
 class BaseForm(HTMXFormMixin, wtforms.form.BaseForm):
     def __init__(self, fields, *args, **kwargs):
         fields = {"action": wtforms.ButtonField(), **dict(fields)}
         preferred_locale = locale_selector()
-        meta = DefaultMeta()
+        meta = BaseFormMeta()
         meta.locales = (
             [preferred_locale, DEFAULT_LANGUAGE_CODE] if preferred_locale else False
         )

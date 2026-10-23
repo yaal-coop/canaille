@@ -43,7 +43,7 @@ This macro renders a complete CAPTCHA field with:
         </audio>
 
         <div class="ui input">
-            {{ form.captcha(class="") }}
+            {{ form.captcha(bare=True, class="") }}
         </div>
 
         {% if form.captcha.errors %}

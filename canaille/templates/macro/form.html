@@ -13,7 +13,9 @@ indicator_icon=none,
 indicator_text=none,
 display=true,
 add_button=false,
-del_button=false
+del_button=false,
+container_class="",
+action_button=none
 ) -%}
 {%- set field_visible = field.type != 'HiddenField' and field.type !='CSRFTokenField' -%}
 {%- set disabled = kwargs.get("disabled") or (field.render_kw and "disabled" in field.render_kw) -%}
@@ -40,7 +42,7 @@ del_button=false
 
 {% if container and field_visible -%}
     {# open field container #}
-    <div class="field {{ kwargs.pop('class_', '') }}
+    <div class="field {{ container_class }}
                 {%- if field.errors %} error{% endif -%}
                 {%- if disabled %} disabled{% endif -%}
                 {%- if not display %} hidden{% endif -%}"
@@ -64,7 +66,7 @@ del_button=false
                 {%- if corner_indicator %} corner labeled{% endif -%}
                 {%- if icon or field.description %} left icon{% endif -%}
                 {%- if password_toggle %} icon{% endif -%}
-                {%- if field_visible and ((add_button or del_button) and not readonly and not disabled) or caller is defined %} action{% endif -%}
+                {%- if field_visible and ((add_button or del_button) and not readonly and not disabled) or action_button %} action{% endif -%}
                 {%- if field.type not in ("BooleanField", "RadioField") %} input{% endif -%}
                ">
 {% endif %}
@@ -72,15 +74,15 @@ del_button=false
 {% if field.description %}<i class="question circle link icon" title="{{ field.description }}"></i>{% endif %}
 
 {% if field.type not in ("SelectField", "SelectMultipleField") %}
-    {{ field(**kwargs) }}
+    {{ field.widget(field, **kwargs) }}
 {% elif field.type == "SelectMultipleField" and readonly %}
-    {{ field(class_="ui fluid dropdown multiple read-only", **kwargs) }}
+    {{ field.widget(field, class_="ui fluid dropdown multiple read-only", **kwargs) }}
 {% elif field.type == "SelectMultipleField" %}
-    {{ field(class_="ui fluid dropdown multiple", **kwargs) }}
+    {{ field.widget(field, class_="ui fluid dropdown multiple", **kwargs) }}
 {% elif field.type == "SelectField" and readonly %}
-    {{ field(class_="ui fluid dropdown read-only", **kwargs) }}
+    {{ field.widget(field, class_="ui fluid dropdown read-only", **kwargs) }}
 {% elif field.type == "SelectField" %}
-    {{ field(class_="ui fluid dropdown", **kwargs) }}
+    {{ field.widget(field, class_="ui fluid dropdown", **kwargs) }}
 {% endif %}
 
 {% if password_toggle %}
@@ -107,15 +109,18 @@ del_button=false
     {% endif %}
 {% endif %}
 
-{% if caller is defined %}
-    {{ caller() }}
+{% if action_button %}
+    {% call render_button(field._form.action, action_button.value, class_="ui primary right labeled icon button", title=action_button.title, formnovalidate=True, **{"hx-target": "closest .fieldlist"}) %}
+        <i class="{{ action_button.icon }} icon"></i>
+        {{ action_button.label }}
+    {% endcall %}
 {% endif %}
 
 {% if field_visible %}
     {# close input container #}
     </div>
 
-    {% if not (caller is defined) %}
+    {% if not action_button %}
         {% if del_button %}
             <button
                 class="ui teal icon button"
@@ -182,10 +187,53 @@ del_button=false
 {% macro render_fields(form, exclude=[]) %}
     {% for field in form %}
         {% if field.name not in exclude and field.type not in ("ButtonField", "SubmitField") %}
-            {{ render_field(field) }}
+            {{ field() }}
         {% endif %}
     {% endfor %}
 {% endmacro %}
+
+{% macro field_wrapper(field, render_kw, parent_list=none) -%}
+    {#- Render a field: WTForms calls it through the form Meta.render_field. -#}
+    {%- if render_kw.pop("bare", false) or field.type in ("HiddenField", "CSRFTokenField", "SubmitField", "ButtonField") -%}
+        {{ field.widget(field, **render_kw) }}
+    {%- elif field.type == "FieldList" -%}
+        {{ render_list(field) }}
+    {%- else -%}
+        {%- if parent_list -%}
+            {%- set index = field.index -%}
+            {%- set last = index >= parent_list.entries|length - 1 -%}
+            {%- set ignore_me = render_kw.update({
+            "label_visible": false,
+            "add_button": (last and (not parent_list.max_entries or index < parent_list.max_entries)),
+            "del_button": (last and parent_list.min_entries and index >= parent_list.min_entries),
+            }) -%}
+        {%- endif -%}
+        {%- if field.type == "BooleanField" -%}
+            {{ render_checkbox(field, **render_kw) }}
+        {%- else -%}
+            {{ render_input(field, **render_kw) }}
+        {%- endif -%}
+    {%- endif -%}
+{%- endmacro %}
+
+{% macro render_list(field) -%}
+    <div class="field fieldlist" id="{{ field.name }}">
+        {# Strangely enough, translations are not rendered when using field.label() #}
+        {{ field[0].label() }}
+        {% for subfield in field %}
+            {{ subfield() }}
+        {% endfor %}
+    </div>
+{%- endmacro %}
+
+{% macro render_checkbox(field, display=true, label_visible=true, container_class="") -%}
+    <div class="field{% if not display %} hidden{% endif %}">
+        <div class="ui toggle checkbox {{ container_class }}">
+            {{ field.widget(field, **kwargs) }}
+            {% if label_visible %}{{ field.label() }}{% endif %}
+        </div>
+    </div>
+{%- endmacro %}
 
 {% macro render_button(field, value=none) -%}
     {#- The content of the call block is the button label. -#}
@@ -193,49 +241,6 @@ del_button=false
     {%- if value is not none %}{% set ignore_me = kwargs.update({"value": value}) %}{% endif -%}
     {%- if caller is defined %}{% set ignore_me = kwargs.update({"label": caller()|trim}) %}{% endif -%}
     {{ field(**kwargs) }}
-{%- endmacro %}
-
-{% macro render_field(field, parent_list=none, parent_indice=none) -%}
-    {% if parent_list %}
-        {% set last = parent_indice >= parent_list.entries|len -1 %}
-        {% set ignore_me = kwargs.update({
-        "label_visible": false,
-        "add_button": (last and (not parent_list.max_entries or parent_indice < parent_list.max_entries)),
-        "del_button": (last and parent_list.min_entries and parent_indice >= parent_list.min_entries),
-        }) %}
-    {% endif %}
-    {% if field.type == "FieldList" %}
-        {{ render_list(field, **kwargs) }}
-    {% elif field.type == "BooleanField" %}
-        {{ render_checkbox(field, **kwargs) }}
-    {% else %}
-        {{ render_input(field, **kwargs) }}
-    {% endif %}
-{%- endmacro %}
-
-{% macro render_list(field, render_func=none) -%}
-    <div class="field fieldlist" id="{{ field.name }}">
-        {# Strangely enough, translations are not rendered when using field.label() #}
-        {{ field[0].label() }}
-        {% for subfield in field %}
-            {% set ignore_me = kwargs.update(**field.render_kw or {}) %}
-            {{ (render_func or render_field)(
-            subfield,
-            parent_list=field,
-            parent_indice=loop.index0,
-            **kwargs
-            ) }}
-        {% endfor %}
-    </div>
-{%- endmacro %}
-
-{% macro render_checkbox(field, display=true, label_visible=true) -%}
-    <div class="field{% if not display %} hidden{% endif %}">
-        <div class="ui toggle checkbox {{ kwargs.pop('class_', '') }}">
-            {{ field(**kwargs) }}
-            {% if label_visible %}{{ field.label() }}{% endif %}
-        </div>
-    </div>
 {%- endmacro %}
 
 {% macro render_form(

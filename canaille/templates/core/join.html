@@ -10,7 +10,6 @@ It displays a basic account creation form.
 {% extends theme('base.html') %}
 {% import 'macro/form.html' as fui %}
 {% import 'macro/flask.html' as flask %}
-{% import 'core/partial/profile_field.html' as profile %}
 {% import 'core/partial/captcha_field.html' as captcha_field %}
 
 {%- block title -%}
@@ -53,7 +52,7 @@ It displays a basic account creation form.
 
             {% call fui.render_form(form, class_="profile-form info") %}
                 {% if "email" in form %}
-                    {{ profile.render_field(form.email) }}
+                    {{ form.email() }}
                 {% endif %}
 
                 {% if captcha_data %}
