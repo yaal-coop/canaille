@@ -94,10 +94,7 @@ def login(username=None):
         return redirect_to_next_auth_step()
 
     form = LoginForm(request.form or None)
-    form["login"].render_kw = {
-        **form["login"].render_kw,
-        "placeholder": login_placeholder(),
-    }
+    form["login"].render_kw["placeholder"] = login_placeholder()
 
     if not request.form or form.handle_fieldlist_operation():
         return render_template(
