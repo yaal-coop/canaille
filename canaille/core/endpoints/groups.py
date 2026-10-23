@@ -52,7 +52,7 @@ def groups(user):
             flash(_("You are not a member of this group."), "error")
             return redirect(url_for("core.groups.groups"))
 
-        return render_template("core/modals/leave-group.html", group=group)
+        return render_template("core/modals/leave-group.html", group=group, form=form)
 
     filter = {"members": user} if not user.can("manage_all_groups") else {}
     table_form = TableForm(models.Group, formdata=request.form, filter=filter)

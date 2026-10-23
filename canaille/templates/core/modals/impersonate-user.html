@@ -3,8 +3,7 @@
 
 {% block content %}
     <div id="modal-impersonate" class="ui info message">
-        <form method="post" action="{{ request.url }}">
-            {{ form.hidden_tag() }}
+        {% call fui.render_form(form, action=request.url) %}
             <div class="ui icon header">
                 <i class="mask icon"></i>
                 {% trans %}Account impersonation{% endtrans %}
@@ -22,6 +21,6 @@
                     {% call fui.render_button(form.action, "impersonate-execute", class_="ui primary approve button") %}{% trans %}Impersonate{% endtrans %}{% endcall %}
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

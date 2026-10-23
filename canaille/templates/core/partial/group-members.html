@@ -65,13 +65,12 @@
                     </td>
                     <td>
                         {% if edited_group.members|len > 1 %}
-                            <form id="deletegroupmemberform-{{ watched_user.id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
-                                {{ form.hidden_tag() if form.hidden_tag }}
+                            {% call fui.render_form(form, action=url_for(request.url_rule.endpoint, **request.view_args), id="deletegroupmemberform-" ~ watched_user.id) %}
                                 <input type="hidden" name="member" value="{{ watched_user.id }}">
                                 {% call fui.render_button(form.action, "confirm-remove-member", class_="basic negative ui button") %}
                                     {% trans %}Remove{% endtrans %}
                                 {% endcall %}
-                            </form>
+                            {% endcall %}
                         {% else %}
                             <button type="button" class="basic negative ui button" title="{% trans %}Groups must have at least one member{% endtrans %}" disabled>
                                 {% trans %}Remove{% endtrans %}

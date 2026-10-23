@@ -3,8 +3,7 @@
 
 {% block content %}
     <div id="modal-lock" class="ui warning message">
-        <form method="post" action="{{ request.url }}">
-            {{ form.hidden_tag() }}
+        {% call fui.render_form(form, action=request.url) %}
             <div class="ui icon header">
                 <i class="lock icon"></i>
                 {% trans %}Account locking{% endtrans %}
@@ -28,6 +27,6 @@
                     {% call fui.render_button(form.action, "lock-execute", class_="ui red approve button") %}{% trans %}Lock{% endtrans %}{% endcall %}
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

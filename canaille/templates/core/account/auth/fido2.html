@@ -40,8 +40,7 @@ Displays the passkeys management.
             </div>
         </h2>
 
-        <form method="post" class="ui form info">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% call fui.render_form(form, class_="info") %}
 
             {% if edited_user.webauthn_credentials %}
                 <div class="ui top attached info message">
@@ -137,6 +136,6 @@ Displays the passkeys management.
                     </div>
                 </div>
             {% endif %}
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

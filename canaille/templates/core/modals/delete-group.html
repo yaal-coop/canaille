@@ -3,8 +3,7 @@
 
 {% block content %}
     <div class="ui warning message" id="modal-delete">
-        <form method="post" action="{{ request.url }}">
-            {{ form.hidden_tag() }}
+        {% call fui.render_form(form, action=request.url) %}
             <div class="ui icon header">
                 <i class="trash icon"></i>
                 {% trans %}Group deletion{% endtrans %}
@@ -27,6 +26,6 @@
                     {% endcall %}
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

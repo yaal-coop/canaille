@@ -1,9 +1,9 @@
 {% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
 
 {% block content %}
     <div class="ui warning message" id="modal-leave-group">
-        <form method="post" action="{{ url_for('core.groups.leave_group', group=group) }}">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        {% call fui.render_form(form, action=url_for('core.groups.leave_group', group=group)) %}
             <div class="ui icon header">
                 <i class="door open icon"></i>
                 {% trans %}Leave group{% endtrans %}
@@ -26,6 +26,6 @@
                     </button>
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}

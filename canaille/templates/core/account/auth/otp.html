@@ -40,8 +40,7 @@ Displays the authenticator application management.
             </div>
         </h2>
 
-        <form method="post" class="ui form info">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {% call fui.render_form(form, class_="info") %}
 
             <div class="ui info message">
                 {% trans %}
@@ -57,6 +56,6 @@ Displays the authenticator application management.
                     {% endcall %}
                 </div>
             </div>
-        </form>
+        {% endcall %}
     </div>
 {% endblock %}
