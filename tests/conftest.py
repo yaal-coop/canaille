@@ -4,6 +4,7 @@ import socket
 from unittest import mock
 
 import pytest
+import time_machine
 
 from canaille.scim.client import teardown_scim_client
 
@@ -478,3 +479,12 @@ def smpp_client():
     client.__enter__.return_value = client
     with mock.patch("smpplib.client.Client", return_value=client):
         yield client
+
+
+@pytest.fixture
+def totp_window():
+    """Move the clock to the start of the next TOTP window, so generated codes stay valid."""
+    now = datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+    start = now + datetime.timedelta(seconds=30 - now.second % 30 + 1)
+    with time_machine.travel(start):
+        yield

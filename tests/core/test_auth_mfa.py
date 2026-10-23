@@ -1,6 +1,9 @@
+import pytest
+
 from .test_auth_otp import generate_otp
 
 
+@pytest.mark.usefixtures("totp_window")
 def test_signin_with_multiple_otp_methods(smtpd, testclient, backend, user):
     """Test that users can complete multi-factor authentication with multiple OTP methods."""
     testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = [

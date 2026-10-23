@@ -1,6 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 from joserfc import jwt
 
 from canaille.app import models
@@ -55,6 +56,7 @@ def test_amr_password_only(testclient, user, client, server_jwk, backend):
         backend.delete(consent)
 
 
+@pytest.mark.usefixtures("totp_window")
 def test_amr_password_and_otp(testclient, user, client, server_jwk, backend):
     """Test that AMR contains 'pwd', 'otp', and 'mfa' for password + OTP authentication."""
     testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]

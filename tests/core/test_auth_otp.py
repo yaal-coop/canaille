@@ -56,6 +56,7 @@ def test_not_otp_step(testclient, user):
     assert res.location == "/auth/email"
 
 
+@pytest.mark.usefixtures("totp_window")
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_signin_with_otp(testclient, user, caplog, otp_method):
     """Test successful OTP authentication for both TOTP and HOTP methods."""
@@ -201,6 +202,7 @@ def test_signin_invalid_otp_chars(testclient, user, caplog, otp_method):
     ) in caplog.record_tuples
 
 
+@pytest.mark.usefixtures("totp_window")
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_setup_otp(testclient, backend, caplog, otp_method):
     """Users who have never logged in with OTP should be shown the OTP setup screen."""

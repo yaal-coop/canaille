@@ -32,6 +32,7 @@ def test_account_reset_otp(testclient, backend, caplog, logged_user, otp_method)
     ) in caplog.record_tuples
 
 
+@pytest.mark.usefixtures("totp_window")
 @pytest.mark.parametrize("otp_method", ["TOTP", "HOTP"])
 def test_account_setup_otp(testclient, backend, logged_user, otp_method):
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
