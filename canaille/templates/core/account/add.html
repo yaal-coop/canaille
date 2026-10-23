@@ -213,9 +213,9 @@ It is used in the registration page, and in the manual account creation page ava
                     {% if not user %}
                         <a type="button" class="ui right floated button" href="{{ url_for('core.auth.login') }}">{{ _("Login page") }}</a>
                     {% endif %}
-                    <button type="submit" class="ui right floated primary button" name="action" value="create-profile" id="create-profile">
+                    {% call fui.render_button(form.action, "create-profile", class_="ui right floated primary button", id="create-profile") %}
                         {{ _("Submit") }}
-                    </button>
+                    {% endcall %}
                 </div>
             </div>
 

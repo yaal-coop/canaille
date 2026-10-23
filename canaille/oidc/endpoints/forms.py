@@ -17,11 +17,11 @@ from canaille.oidc.jose import supported_verification_algorithms
 
 
 class AuthorizeForm(Form):
-    pass
+    answer = wtforms.ButtonField()
 
 
 class LogoutForm(Form):
-    answer = wtforms.SubmitField()
+    answer = wtforms.ButtonField()
 
 
 def is_jwks(form, field):

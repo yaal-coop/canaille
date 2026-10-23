@@ -80,9 +80,9 @@ Displays the passkeys management.
                                 <td>
                                     <div class="ui action input" style="width: 100%;">
                                         <input type="text" name="credential_name_{{ credential.id }}" value="{{ credential.name or _('My passkey') }}" maxlength="255">
-                                        <button type="submit" class="ui icon button" name="fido2-rename-credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Rename{% endtrans %}">
+                                        {% call fui.render_button(form.fido2_rename_credential, credential.id, class_="ui icon button", formnovalidate=True, title=_("Rename")) %}
                                             <i class="edit icon"></i>
-                                        </button>
+                                        {% endcall %}
                                     </div>
                                 </td>
                                 <td>{{ credential.created_at|datetimeformat }}</td>
@@ -94,9 +94,9 @@ Displays the passkeys management.
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <button type="submit" class="ui basic negative icon button" name="fido2-confirm-credential" value="{{ credential.id }}" formnovalidate title="{% trans %}Delete{% endtrans %}">
+                                    {% call fui.render_button(form.fido2_confirm_credential, credential.id, class_="ui basic negative icon button", formnovalidate=True, title=_("Delete")) %}
                                         <i class="trash icon"></i>
-                                    </button>
+                                    {% endcall %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -106,19 +106,19 @@ Displays the passkeys management.
                 <div class="ui right aligned container">
                     <div class="ui stackable buttons">
                         {% if edited_user.webauthn_credentials|length < config.CANAILLE.FIDO_MAX_CREDENTIALS %}
-                            <button type="submit" class="ui primary button" name="action" value="fido2-setup" id="setup-fido2" formnovalidate>
+                            {% call fui.render_button(form.action, "fido2-setup", class_="ui primary button", id="setup-fido2", formnovalidate=True) %}
                                 <i class="plus icon"></i>
                                 {% trans %}Add another key{% endtrans %}
-                            </button>
+                            {% endcall %}
                         {% else %}
                             <div class="ui disabled button" title="{% trans max=config.CANAILLE.FIDO_MAX_CREDENTIALS %}Maximum limit reached ({{ max }}){% endtrans %}">
                                 <i class="plus icon"></i>
                                 {% trans %}Add another key{% endtrans %}
                             </div>
                         {% endif %}
-                        <button type="submit" class="ui basic negative button confirm" name="action" value="fido2-reset-confirm" id="reset-fido2-all" formnovalidate>
+                        {% call fui.render_button(form.action, "fido2-reset-confirm", class_="ui basic negative button confirm", id="reset-fido2-all", formnovalidate=True) %}
                             {% trans %}Remove all keys{% endtrans %}
-                        </button>
+                        {% endcall %}
                     </div>
                 </div>
 
@@ -131,9 +131,9 @@ Displays the passkeys management.
                 </div>
                 <div class="ui right aligned container">
                     <div class="ui stackable buttons">
-                        <button type="submit" class="ui right floated primary button" name="action" value="fido2-setup" id="setup-fido2" formnovalidate>
+                        {% call fui.render_button(form.action, "fido2-setup", class_="ui right floated primary button", id="setup-fido2", formnovalidate=True) %}
                             {% trans %}Set-up{% endtrans %}
-                        </button>
+                        {% endcall %}
                     </div>
                 </div>
             {% endif %}

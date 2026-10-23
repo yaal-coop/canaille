@@ -13,6 +13,7 @@ from werkzeug.security import gen_salt
 from canaille.app import models
 from canaille.app.flask import render_htmx_template
 from canaille.app.flask import user_needed
+from canaille.app.forms import Form
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
@@ -48,7 +49,7 @@ def add(user):
         "client:register", timedelta(seconds=TOKEN_LIFETIME)
     )
 
-    if request.form.get("action") == "new-registration-token":
+    if form.action.data == "new-registration-token":
         flash(_("A new registration token has been generated."), "info")
         return render_template(
             "oidc/client_add.html",
@@ -109,16 +110,19 @@ def add(user):
 @bp.route("/edit/<client:client>", methods=["GET", "POST"])
 @user_needed("manage_oidc")
 def edit(user, client):
-    if request.form.get("action") == "confirm-delete":
-        return render_template("oidc/modals/delete-client.html", client=client)
+    form = Form(request.form or None)
+    if form.action.data == "confirm-delete":
+        return render_template(
+            "oidc/modals/delete-client.html", client=client, form=form
+        )
 
-    if request.form and request.form.get("action") == "delete":
+    if form.action.data == "delete":
         return client_delete(user, client)
 
-    if request.form and request.form.get("action") == "new-access-token":
+    if form.action.data == "new-access-token":
         return client_new_token(user, client)
 
-    if request.form and request.form.get("action") == "new-client-secret":
+    if form.action.data == "new-client-secret":
         return client_new_secret(user, client)
 
     return client_edit(user, client)
@@ -134,7 +138,7 @@ def client_edit(user, client):
         "client:manage", timedelta(seconds=TOKEN_LIFETIME), client.client_id
     )
 
-    if request.form.get("action") == "new-management-token":
+    if form.action.data == "new-management-token":
         flash(_("A new management token has been generated."), "info")
         return render_template(
             "oidc/client_edit.html",

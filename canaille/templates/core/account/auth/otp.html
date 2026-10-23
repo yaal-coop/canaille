@@ -52,9 +52,9 @@ Displays the authenticator application management.
             </div>
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    <button type="submit" class="ui right floated basic negative button confirm" name="action" value="otp-reset-confirm" id="reset-otp" formnovalidate>
+                    {% call fui.render_button(form.action, "otp-reset-confirm", class_="ui right floated basic negative button confirm", id="reset-otp", formnovalidate=True) %}
                         {% trans %}Reset{% endtrans %}
-                    </button>
+                    {% endcall %}
                 </div>
             </div>
         </form>

@@ -8,6 +8,7 @@ from flask import session
 from flask import url_for
 
 from canaille.app.flask import user_needed
+from canaille.app.forms import Form
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
@@ -32,7 +33,8 @@ def profile_auth_otp(user, edited_user):
         abort(404)
 
     menuitem = "profile" if user.id == edited_user.id else "users"
-    action = request.form.get("action")
+    form = Form(request.form or None)
+    action = form.action.data
 
     if not edited_user.secret_token:
         session["redirect-after-login"] = url_for(
@@ -50,7 +52,7 @@ def profile_auth_otp(user, edited_user):
     if request.method == "POST":
         if action == "otp-reset-confirm":
             return render_template(
-                "core/modals/reset-otp.html", edited_user=edited_user
+                "core/modals/reset-otp.html", edited_user=edited_user, form=form
             )
 
         elif action == "otp-reset":
@@ -73,6 +75,7 @@ def profile_auth_otp(user, edited_user):
 
     return render_template(
         "core/account/auth/otp.html",
+        form=form,
         menuitem=menuitem,
         edited_user=edited_user,
     )

@@ -142,12 +142,12 @@ Displays the invitation form to users with the invitation permission.
                             <a class="ui right floated button" href="{{ url_for("core.account.profile_creation") }}">
                                 {{ _("Create a user") }}
                             </a>
-                            <button type="submit" name="action" value="generate" class="ui right floated primary button">
+                            {% call fui.render_button(form.action, "generate", class_="ui right floated primary button") %}
                                 {{ _("Generate a link") }}
-                            </button>
-                            <button type="submit" name="action" value="send" class="ui right floated primary button">
+                            {% endcall %}
+                            {% call fui.render_button(form.action, "send", class_="ui right floated primary button") %}
                                 {{ _("Send the invitation") }}
-                            </button>
+                            {% endcall %}
                         </div>
                     </div>
                 {% endcall %}

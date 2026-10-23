@@ -50,7 +50,7 @@ def email():
             "core/auth/email.html", form=form, resend_delay=resend_delay
         )
 
-    if request.form.get("action") == "resend":
+    if form.action.data == "resend":
         send_email_otp()
         return redirect(url_for(".email"))
 

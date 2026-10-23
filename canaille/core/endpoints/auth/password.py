@@ -72,7 +72,7 @@ def password():
         )
 
     form = make_password_form()
-    if request.form.get("action") == "refresh_captcha":
+    if form.action.data == "refresh_captcha":
         old_token = request.form.get("captcha_token")
         if old_token:
             session.pop(f"captcha_{old_token}", None)

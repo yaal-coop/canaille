@@ -111,9 +111,9 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
                             {% if token.revokation_date %}
                                 {{ token.revokation_date }}
                             {% else %}
-                                <button type="submit" class="ui negative right floated button confirm" name="action" value="confirm-revoke" id="confirm-revoke">
+                                {% call fui.render_button(form.action, "confirm-revoke", class_="ui negative right floated button confirm", id="confirm-revoke") %}
                                     {% trans %}Revoke token{% endtrans %}
-                                </button>
+                                {% endcall %}
                                 <p>
                                     {% trans %}This token has not been revoked{% endtrans %}
                                 </p>

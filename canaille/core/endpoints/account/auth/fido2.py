@@ -12,6 +12,7 @@ from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import AuthenticationSession
+from canaille.core.endpoints.forms import Fido2CredentialsForm
 
 from . import bp
 
@@ -30,7 +31,7 @@ def _redirect_to_fido2_page(edited_user):
     )
 
 
-def _handle_confirm_delete(edited_user, credential_id):
+def _handle_confirm_delete(edited_user, form, credential_id):
     """Show confirmation modal for deleting a credential."""
     credential = _find_credential(edited_user, credential_id)
     if not credential:
@@ -41,6 +42,7 @@ def _handle_confirm_delete(edited_user, credential_id):
         edited_user=edited_user,
         credential_id=credential_id,
         credential_name=credential.name,
+        form=form,
     )
 
 
@@ -128,23 +130,22 @@ def profile_auth_fido2(user, edited_user):
         abort(404)
 
     menuitem = "profile" if user.id == edited_user.id else "users"
-    action = request.form.get("action")
+    form = Fido2CredentialsForm(request.form or None)
+    action = form.action.data
 
     if not edited_user.webauthn_credentials and action != "fido2-setup":
         return _handle_setup(edited_user)
 
     if request.method == "POST":
-        credential_id = request.form.get("fido2-confirm-credential")
-        if credential_id:
-            return _handle_confirm_delete(edited_user, credential_id)
+        if credential_id := form.fido2_confirm_credential.data:
+            return _handle_confirm_delete(edited_user, form, credential_id)
 
-        credential_id = request.form.get("fido2-rename-credential")
-        if credential_id:
+        if credential_id := form.fido2_rename_credential.data:
             return _handle_rename(user, edited_user, credential_id)
 
         if action == "fido2-reset-confirm":
             return render_template(
-                "core/modals/reset-fido.html", edited_user=edited_user
+                "core/modals/reset-fido.html", edited_user=edited_user, form=form
             )
 
         if action == "fido2-reset":
@@ -159,5 +160,6 @@ def profile_auth_fido2(user, edited_user):
     return render_template(
         "core/account/auth/fido2.html",
         menuitem=menuitem,
+        form=form,
         edited_user=edited_user,
     )

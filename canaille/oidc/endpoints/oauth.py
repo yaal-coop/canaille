@@ -290,9 +290,10 @@ def create_or_update_consent(grant, user, now):
 def authorize_consent(redirect_url, now):
     user = g.session and g.session.user
     grant = authorization.get_consent_grant(end_user=user)
+    form = AuthorizeForm(request.form or None)
 
     # Get the authorization code, or display the user consent form
-    if request.method == "GET" or "answer" not in request.form:
+    if request.method == "GET" or form.answer.data is None:
         if not is_consent_needed(grant, redirect_url):
             response = authorization.create_authorization_response(
                 grant=grant, grant_user=user
@@ -312,8 +313,7 @@ def authorize_consent(redirect_url, now):
         elif request.values.get("prompt") == "none":
             raise ConsentRequiredError(redirect_uri=request.values["redirect_uri"])
 
-        form = AuthorizeForm(request.form or None)
-        form.action = redirect_url
+        form.action_url = redirect_url
         requested_scope = request.values.get("scope")
         effective_scope = grant.client.get_allowed_scope(requested_scope)
         return render_template(
@@ -328,7 +328,7 @@ def authorize_consent(redirect_url, now):
             effective_scope=effective_scope,
         )
 
-    if request.form["answer"] == "logout":
+    if form.answer.data == "logout":
         session["redirect-after-login"] = redirect_url
         start_oidc_auth_session(
             client_id=request.values.get("client_id"),
@@ -337,10 +337,10 @@ def authorize_consent(redirect_url, now):
         )
         return redirect(url_for("core.auth.logout"))
 
-    if request.form["answer"] == "deny":
+    if form.answer.data == "deny":
         grant_user = None
 
-    if request.form["answer"] == "accept":
+    if form.answer.data == "accept":
         grant_user = user
         create_or_update_consent(grant, grant_user, now)
 
@@ -475,7 +475,7 @@ def end_session():
                 "oidc/logout.html", client=req.client, form=form, menu=False
             )
 
-        if request.form.get("answer") != "logout":
+        if form.answer.data != "logout":
             flash(_("You have not been disconnected"), "info")
             return redirect(url_for("core.account.index"))
 

@@ -536,6 +536,12 @@ class EmailConfirmationForm(Form):
             "autocorrect": "off",
         },
     )
+    email_remove = wtforms.ButtonField()
+
+
+class Fido2CredentialsForm(Form):
+    fido2_rename_credential = wtforms.ButtonField()
+    fido2_confirm_credential = wtforms.ButtonField()
 
 
 class TwoFactorForm(Form):

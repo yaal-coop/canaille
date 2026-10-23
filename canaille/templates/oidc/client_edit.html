@@ -50,10 +50,10 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
         {% call fui.render_form(form) %}
             <div class="ui fluid action input">
                 <input type="text" value="{{ management_token }}" readonly class="copy-text" id="management-token" data-copy="management-token">
-                <button type="submit" class="ui teal right labeled icon button copy-button" name="action" value="new-management-token" id="new-management-token">
+                {% call fui.render_button(form.action, "new-management-token", class_="ui teal right labeled icon button copy-button", id="new-management-token") %}
                     <i class="redo icon"></i>
                     {% trans %}Renew{% endtrans %}
-                </button>
+                {% endcall %}
                 <button type="button" class="ui primary right labeled icon button copy-button" data-copy="management-token">
                     <i class="copy icon"></i>
                     {% trans %}Copy{% endtrans %}
@@ -108,10 +108,10 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
                 <label>{% trans %}Secret{% endtrans %}</label>
                 <div class="ui fluid action input">
                     <input type="text" value="{{ client.client_secret }}" readonly class="copy-text" id="client-secret" data-copy="client-secret">
-                    <button type="submit" class="ui teal right labeled icon button" name="action" value="new-client-secret" id="new-client-secret" formnovalidate>
+                    {% call fui.render_button(form.action, "new-client-secret", class_="ui teal right labeled icon button", id="new-client-secret", formnovalidate=True) %}
                         <i class="redo icon"></i>
                         {% trans %}Renew{% endtrans %}
-                    </button>
+                    {% endcall %}
                     <button type="button" class="ui primary right labeled icon button copy-button" data-copy="client-secret">
                         <i class="copy icon"></i>
                         {% trans %}Copy{% endtrans %}
@@ -123,15 +123,15 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    <button type="submit" class="ui right floated button" name="action" value="new-access-token" id="new-access-token">
+                    {% call fui.render_button(form.action, "new-access-token", class_="ui right floated button", id="new-access-token") %}
                         {{ _("New access token") }}
-                    </button>
-                    <button type="submit" class="ui right floated negative basic button confirm" name="action" value="confirm-delete" id="confirm-delete" formnovalidate>
+                    {% endcall %}
+                    {% call fui.render_button(form.action, "confirm-delete", class_="ui right floated negative basic button confirm", id="confirm-delete", formnovalidate=True) %}
                         {{ _("Delete the client") }}
-                    </button>
-                    <button type="submit" class="ui right floated primary button" name="action" value="edit" id="edit">
+                    {% endcall %}
+                    {% call fui.render_button(form.action, "edit", class_="ui right floated primary button", id="edit") %}
                         {{ _("Edit") }}
-                    </button>
+                    {% endcall %}
                 </div>
             </div>
         {% endcall %}

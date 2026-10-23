@@ -7,6 +7,7 @@ Displays a form that asks for the multi-factor authentication code.
 #}
 {% extends g.auth.template or 'core/auth/base.html' %}
 {% import 'core/partial/login_field.html' as login_field %}
+{% import 'macro/form.html' as fui %}
 
 {% block script %}
     <script src="{{ url_for("static", filename="js/verify-mfa.js") }}" defer></script>
@@ -34,14 +35,11 @@ Displays a form that asks for the multi-factor authentication code.
 {% endblock %}
 
 {% block auth_right_buttons %}
-    <button class="ui {% if resend_delay %}disabled {% endif %} button"
-            type="submit" name="action" value="resend" id="resend-button"
-            data-delay="{{ resend_delay.total_seconds() }}" formnovalidate
-    >
+    {% call fui.render_button(form.action, "resend", id="resend-button", class_="ui disabled button" if resend_delay else "ui button", data_delay=resend_delay.total_seconds(), formnovalidate=True) %}
         <i id="resend-icon" class="{% if resend_delay %}hourglass half{% else %}send{% endif %} icon"></i>
         {% trans %}Send another code{% endtrans %}
-    </button>
-    <button type="submit" name="action" value="confirm" class="ui primary button">
+    {% endcall %}
+    {% call fui.render_button(form.action, "confirm", class_="ui primary button") %}
         {{ _("Verify") }}
-    </button>
+    {% endcall %}
 {% endblock %}

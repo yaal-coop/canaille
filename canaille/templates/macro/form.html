@@ -181,11 +181,19 @@ del_button=false
 
 {% macro render_fields(form, exclude=[]) %}
     {% for field in form %}
-        {% if field.name not in exclude %}
+        {% if field.name not in exclude and field.type not in ("ButtonField", "SubmitField") %}
             {{ render_field(field) }}
         {% endif %}
     {% endfor %}
 {% endmacro %}
+
+{% macro render_button(field, value=none) -%}
+    {#- The content of the call block is the button label. -#}
+    {%- set ignore_me = kwargs.setdefault("id", false) -%}
+    {%- if value is not none %}{% set ignore_me = kwargs.update({"value": value}) %}{% endif -%}
+    {%- if caller is defined %}{% set ignore_me = kwargs.update({"label": caller()|trim}) %}{% endif -%}
+    {{ field(**kwargs) }}
+{%- endmacro %}
 
 {% macro render_field(field, parent_list=none, parent_indice=none) -%}
     {% if parent_list %}
@@ -240,7 +248,7 @@ id=none,
 csrf=true) -%}
 <form method="POST"
       id="{{ id or form.__class__.__name__|lower }}"
-      action="{% if action %}{{ action }}{% elif form.action is defined %}{{ form.action }}{% endif %}"
+      action="{% if action %}{{ action }}{% elif form.action_url is defined %}{{ form.action_url }}{% endif %}"
       role="form"
       enctype="multipart/form-data"
       class="ui initial form {{ class_ }}"

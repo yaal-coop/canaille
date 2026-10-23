@@ -31,6 +31,7 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
+from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
 from canaille.app.forms import compromised_password_validator
@@ -105,7 +106,7 @@ def join():
             "core/join.html", form=form, menu=False, captcha_data=captcha_data
         )
 
-    if request.form.get("action") == "refresh_captcha":
+    if form["action"].data == "refresh_captcha":
         old_token = request.form.get("captcha_token")
         if old_token:
             session.pop(f"captcha_{old_token}", None)
@@ -278,7 +279,7 @@ def user_invitation(user):
             _external=True,
         )
 
-        if request.form["action"] == "send":
+        if form.action.data == "send":
             email_sent = send_invitation_mail(form.email.data, registration_url)
 
     return render_template(
@@ -412,7 +413,7 @@ def registration(data=None, hash=None):
             captcha_data=captcha_data,
         )
 
-    if request.form.get("action") == "refresh_captcha":
+    if form["action"].data == "refresh_captcha":
         old_token = request.form.get("captcha_token")
         if old_token:
             session.pop(f"captcha_{old_token}", None)
@@ -728,7 +729,7 @@ def profile_edition(user, edited_user):
     if not request.form or profile_form.handle_fieldlist_operation():
         return render_template("core/account/edit.html", **render_context)
 
-    action = request.form.get("action")
+    action = profile_form["action"].data
 
     if action == "edit-profile" or (
         request_is_partial() and partial_request_trigger() in profile_form
@@ -744,18 +745,18 @@ def profile_edition(user, edited_user):
     ):
         return _handle_add_email(edited_user, emails_form, render_context)
 
-    if request.form.get("email_remove"):
+    if emails_form and emails_form.email_remove.data:
         return _handle_remove_email(
-            edited_user, request.form.get("email_remove"), render_context
+            edited_user, emails_form.email_remove.data, render_context
         )
 
     abort(400, f"bad form action: {action}")
 
 
-def _handle_delete_actions(user, edited_user, action):
-    if action == "delete-confirm":
+def _handle_delete_actions(user, edited_user, form):
+    if form.action.data == "delete-confirm":
         return render_template(
-            "core/modals/delete-account.html", edited_user=edited_user
+            "core/modals/delete-account.html", edited_user=edited_user, form=form
         )
 
     else:  # delete-execute
@@ -782,11 +783,13 @@ def _handle_delete_actions(user, edited_user, action):
         return redirect(url_for("core.account.users"))
 
 
-def _handle_lock_actions(user, edited_user, action):
-    if action == "lock-confirm":
-        return render_template("core/modals/lock-account.html", edited_user=edited_user)
+def _handle_lock_actions(user, edited_user, form):
+    if form.action.data == "lock-confirm":
+        return render_template(
+            "core/modals/lock-account.html", edited_user=edited_user, form=form
+        )
 
-    elif action == "lock-execute":
+    elif form.action.data == "lock-execute":
         flash(_("The account has been locked."), "success")
         edited_user.lock_date = datetime.datetime.now(datetime.UTC)
         Backend.instance.save(edited_user)
@@ -799,16 +802,16 @@ def _handle_lock_actions(user, edited_user, action):
         return _handle_profile_settings_edit(user, edited_user)
 
 
-def _handle_impersonate_actions(user, edited_user, action):
+def _handle_impersonate_actions(user, edited_user, form):
     if not user.can_impersonate_users or edited_user.id == user.id:
         abort(403)
 
     if edited_user.locked:
         abort(403, _("Locked users cannot be impersonated."))
 
-    if action == "impersonate-confirm":
+    if form.action.data == "impersonate-confirm":
         return render_template(
-            "core/modals/impersonate-user.html", edited_user=edited_user
+            "core/modals/impersonate-user.html", edited_user=edited_user, form=form
         )
 
     login_user(edited_user, remember=False)
@@ -828,27 +831,23 @@ def profile_settings(user, edited_user):
     ):
         abort(404)
 
-    if (
-        request.method == "GET"
-        or request.form.get("action") == "edit-settings"
-        or request_is_partial()
-    ):
+    form = Form(request.form or None)
+    action = form.action.data
+    if request.method == "GET" or action == "edit-settings" or request_is_partial():
         return _handle_profile_settings_edit(user, edited_user)
 
-    action = request.form.get("action")
-
     if action in ("delete-confirm", "delete-execute"):
-        return _handle_delete_actions(user, edited_user, action)
+        return _handle_delete_actions(user, edited_user, form)
 
     if current_app.features.has_account_lockability and action in (
         "lock-confirm",
         "lock-execute",
         "unlock",
     ):
-        return _handle_lock_actions(user, edited_user, action)
+        return _handle_lock_actions(user, edited_user, form)
 
     if action in ("impersonate-confirm", "impersonate-execute"):
-        return _handle_impersonate_actions(user, edited_user, action)
+        return _handle_impersonate_actions(user, edited_user, form)
 
     abort(400, f"bad form action: {action}")
 
@@ -874,11 +873,7 @@ def _handle_profile_settings_edit(editor, edited_user):
         edited_user,
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
-    if (
-        request.form
-        and request.form.get("action") == "edit-settings"
-        or request_is_partial()
-    ):
+    if request.form and form["action"].data == "edit-settings" or request_is_partial():
         if not form.validate():
             flash(
                 _(

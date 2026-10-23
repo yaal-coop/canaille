@@ -66,9 +66,9 @@ It displays a basic account creation form.
                         {% if features.has_smtp and features.has_password_recovery %}
                             <a type="button" class="ui right floated button" href="{{ url_for('core.auth.password.forgotten') }}">{{ _("Forgotten password") }}</a>
                         {% endif %}
-                        <button type="submit" class="ui right floated primary button" name="action" value="create-profile" id="create-profile">
+                        {% call fui.render_button(form.action, "create-profile", class_="ui right floated primary button", id="create-profile") %}
                             {{ _("Submit") }}
-                        </button>
+                        {% endcall %}
                     </div>
                 </div>
 

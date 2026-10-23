@@ -464,7 +464,7 @@ requires-dist = [
     { name = "tomlkit", marker = "extra == 'oidc'", specifier = ">=0.13.2" },
     { name = "tomlkit", marker = "extra == 'server'", specifier = ">=0.13.2" },
     { name = "webauthn", marker = "extra == 'fido'", specifier = ">=2.7.0" },
-    { name = "wtforms", specifier = ">=3.3.0b2" },
+    { name = "wtforms", specifier = ">=3.3.0b4" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.3.0" },
 ]
 provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server", "redis", "rabbitmq"]

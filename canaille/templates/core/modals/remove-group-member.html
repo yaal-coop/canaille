@@ -21,9 +21,9 @@
                     <a href="{{ request.url }}" class="ui cancel button">
                         {% trans %}Cancel{% endtrans %}
                     </a>
-                    <button name="action" value="remove-member" id="remove-member" class="ui red approve button">
+                    {% call fui.render_button(form.action, "remove-member", id="remove-member", class_="ui red approve button") %}
                         {% trans %}Remove{% endtrans %}
-                    </button>
+                    {% endcall %}
                 </div>
             </div>
         {% endcall %}

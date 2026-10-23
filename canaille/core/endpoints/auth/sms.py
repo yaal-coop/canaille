@@ -50,7 +50,7 @@ def sms():
             "core/auth/sms.html", form=form, resend_delay=resend_delay
         )
 
-    if request.form.get("action") == "resend":
+    if form.action.data == "resend":
         send_sms_otp()
         return redirect(url_for(".sms"))
 

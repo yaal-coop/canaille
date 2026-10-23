@@ -71,21 +71,21 @@ Displays the group edition or creation form.
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     {% if edited_group %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="confirm-delete" id="confirm-delete">
+                        {% call fui.render_button(form.action, "confirm-delete", class_="ui right floated basic negative button confirm", id="confirm-delete") %}
                             {% trans %}Delete group{% endtrans %}
-                        </button>
+                        {% endcall %}
                         <a href="{{ url_for('core.groups.invite_to_group', group=edited_group) }}" class="ui right floated secondary button">
                             <i class="paper plane icon"></i>
                             {% trans %}Invite Members{% endtrans %}
                         </a>
                     {% endif %}
-                    <button type="submit" class="ui right floated primary button" name="action" value="edit">
+                    {% call fui.render_button(form.action, "edit", class_="ui right floated primary button") %}
                         {% if not edited_group %}
                             {% trans %}Create group{% endtrans %}
                         {% else %}
                             {% trans %}Edit{% endtrans %}
                         {% endif %}
-                    </button>
+                    {% endcall %}
                 </div>
             </div>
         {% endcall %}

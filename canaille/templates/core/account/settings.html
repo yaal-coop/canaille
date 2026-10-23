@@ -83,9 +83,9 @@ Displays the user settings edition form.
 
             {% if features.has_account_lockability and edited_user.locked and user.can_manage_users %}
                 <div class="ui message warning visible">
-                    <button type="submit" name="action" value="unlock" class="ui right floated button">
+                    {% call fui.render_button(form.action, "unlock", class_="ui right floated button") %}
                         {% trans %}Unlock{% endtrans %}
-                    </button>
+                    {% endcall %}
                     <div class="header">
                         {% trans %}This user account is locked{% endtrans %}
                     </div>
@@ -98,30 +98,30 @@ Displays the user settings edition form.
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
                     {% if features.has_account_lockability and "lock_date" in user.writable_fields and not edited_user.locked %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="lock-confirm" id="lock" formnovalidate>
+                        {% call fui.render_button(form.action, "lock-confirm", class_="ui right floated basic negative button confirm", id="lock", formnovalidate=True) %}
                             {% trans %}Lock the account{% endtrans %}
-                        </button>
+                        {% endcall %}
                     {% endif %}
 
                     {% if user.can_manage_users or self_deletion %}
-                        <button type="submit" class="ui right floated basic negative button confirm" name="action" value="delete-confirm" id="delete" formnovalidate>
+                        {% call fui.render_button(form.action, "delete-confirm", class_="ui right floated basic negative button confirm", id="delete", formnovalidate=True) %}
                             {% if user.user_name != edited_user.user_name %}
                                 {{ _("Delete the user") }}
                             {% else %}
                                 {{ _("Delete my account") }}
                             {% endif %}
-                        </button>
+                        {% endcall %}
                     {% endif %}
 
                     {% if user.can_impersonate_users and user.identifier != edited_user.identifier and not edited_user.locked %}
-                        <button type="submit" class="ui right floated basic button confirm" name="action" value="impersonate-confirm" id="impersonate" formnovalidate>
+                        {% call fui.render_button(form.action, "impersonate-confirm", class_="ui right floated basic button confirm", id="impersonate", formnovalidate=True) %}
                             {{ _("Impersonate") }}
-                        </button>
+                        {% endcall %}
                     {% endif %}
 
-                    <button type="submit" class="ui right floated primary button" name="action" value="edit-settings" id="edit-settings">
+                    {% call fui.render_button(form.action, "edit-settings", class_="ui right floated primary button", id="edit-settings") %}
                         {{ _("Edit") }}
-                    </button>
+                    {% endcall %}
 
                 </div>
             </div>

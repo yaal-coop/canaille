@@ -32,12 +32,12 @@ Used during OIDC RP-initiated logout, when an user confirmation is needed.
         <div class="ui center aligned container">
             {% call fui.render_form(form, hx_boost="false") %}
                 <div class="ui stackable buttons">
-                    <button name="answer" type="submit" class="ui button" value="stay" id="stay">
+                    {% call fui.render_button(form.answer, "stay", id="stay", class_="ui button") %}
                         {% trans %}Stay logged{% endtrans %}
-                    </button>
-                    <button name="answer" type="submit" class="ui primary button" value="logout" id="logout">
+                    {% endcall %}
+                    {% call fui.render_button(form.answer, "logout", id="logout", class_="ui primary button") %}
                         {% trans %}Logout{% endtrans %}
-                    </button>
+                    {% endcall %}
                 </div>
             {% endcall %}
         </div>

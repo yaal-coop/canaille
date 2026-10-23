@@ -13,6 +13,7 @@ This macro renders a complete CAPTCHA field with:
 :param captcha_data: Dict with 'token' and 'image_data_uri'
 :param audio_endpoint: Flask endpoint name for audio CAPTCHA (e.g., 'core.auth.password.captcha_audio')
 #}
+{% import 'macro/form.html' as fui %}
 {% macro render_captcha_field(form, captcha_data, audio_endpoint) %}
     {{ form.captcha_token() }}
     <div class="field">
@@ -31,14 +32,9 @@ This macro renders a complete CAPTCHA field with:
                     <i class="volume up icon"></i>
                 </button>
 
-                <button type="submit"
-                        name="action"
-                        value="refresh_captcha"
-                        class="ui icon big button"
-                        title="{% trans %}Refresh the security code{% endtrans %}"
-                        formnovalidate>
+                {% call fui.render_button(form.action, "refresh_captcha", class_="ui icon big button", title=_("Refresh the security code"), formnovalidate=True) %}
                     <i class="refresh icon"></i>
-                </button>
+                {% endcall %}
             </div>
         </div>
 

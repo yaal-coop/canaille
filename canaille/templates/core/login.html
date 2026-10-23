@@ -101,7 +101,7 @@ This page displays a form to get the user identifier.
                         {{ fui.render_field(form.remember, class_="right aligned") }}
                     </div>
                     <div class="right aligned three wide column">
-                        <button type="submit" name="answer" class="ui primary button" hx-boost="false">{{ _("Continue") }}</button>
+                        {% call fui.render_button(form.action, class_="ui primary button", **{"hx-boost": "false"}) %}{{ _("Continue") }}{% endcall %}
                     </div>
                 </div>
             {% endblock %}

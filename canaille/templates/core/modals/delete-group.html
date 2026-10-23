@@ -1,9 +1,10 @@
 {% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
 
 {% block content %}
     <div class="ui warning message" id="modal-delete">
         <form method="post" action="{{ request.url }}">
-            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            {{ form.hidden_tag() }}
             <div class="ui icon header">
                 <i class="trash icon"></i>
                 {% trans %}Group deletion{% endtrans %}
@@ -21,9 +22,9 @@
                     <a href="{{ request.url }}" class="ui cancel button">
                         {% trans %}Cancel{% endtrans %}
                     </a>
-                    <button name="action" value="delete" id="delete" class="ui red approve button">
+                    {% call fui.render_button(form.action, "delete", id="delete", class_="ui red approve button") %}
                         {% trans %}Delete{% endtrans %}
-                    </button>
+                    {% endcall %}
                 </div>
             </div>
         </form>

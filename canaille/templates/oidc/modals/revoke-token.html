@@ -1,9 +1,10 @@
 {% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
 
 {% block content %}
     <div class="ui warning message">
         <form method="post" action="{{ request.url }}">
-            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            {{ form.hidden_tag() }}
             <div class="ui icon header">
                 <i class="trash icon"></i>
                 {% trans %}Token revokation{% endtrans %}
@@ -18,7 +19,7 @@
             <div class="ui center aligned container">
                 <div class="ui stackable buttons">
                     <a href="{{ request.url }}" class="ui cancel button">{% trans %}Cancel{% endtrans %}</a>
-                    <button name="action" value="revoke" class="ui red approve button">{% trans %}Revoke{% endtrans %}</button>
+                    {% call fui.render_button(form.action, "revoke", class_="ui red approve button") %}{% trans %}Revoke{% endtrans %}{% endcall %}
                 </div>
             </div>
         </form>

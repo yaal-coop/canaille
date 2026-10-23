@@ -183,9 +183,9 @@ Displays a user profile edition form.
 
             <div class="ui right aligned container">
                 <div class="ui stackable buttons">
-                    <button type="submit" class="ui right floated primary button" name="action" value="edit-profile" id="edit-profile">
+                    {% call fui.render_button(profile_form.action, "edit-profile", class_="ui right floated primary button", id="edit-profile") %}
                         {{ _("Edit") }}
-                    </button>
+                    {% endcall %}
                 </div>
             </div>
         {% endcall %}
@@ -213,16 +213,9 @@ Displays a user profile edition form.
                                 {% endif %}
 
                                 {% if emails_form.old_emails|len > 1 %}
-                                    <button
-                                        class="ui teal icon button"
-                                        title="{{ _("Remove this email address") }}"
-                                        type="submit"
-                                        name="email_remove"
-                                        value="{{ field.data }}"
-                                        hx-target="closest .fieldlist"
-                                        formnovalidate>
+                                    {% call fui.render_button(emails_form.email_remove, field.data, class_="ui teal icon button", title=_("Remove this email address"), formnovalidate=True, **{"hx-target": "closest .fieldlist"}) %}
                                         <i class="minus icon"></i>
-                                    </button>
+                                    {% endcall %}
                                 {% endif %}
                             </div>
 

@@ -1,9 +1,10 @@
 {% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
 
 {% block content %}
     <div id="modal-lock" class="ui warning message">
         <form method="post" action="{{ request.url }}">
-            <input type="hidden" name="csrf_token" value="{{ request.form.get("csrf_token") }}">
+            {{ form.hidden_tag() }}
             <div class="ui icon header">
                 <i class="lock icon"></i>
                 {% trans %}Account locking{% endtrans %}
@@ -24,7 +25,7 @@
             <div class="ui center aligned container">
                 <div class="ui stackable buttons">
                     <a class="ui cancel button" href="{{ request.url }}">{% trans %}Cancel{% endtrans %}</a>
-                    <button type="submit" name="action" value="lock-execute" class="ui red approve button">{% trans %}Lock{% endtrans %}</button>
+                    {% call fui.render_button(form.action, "lock-execute", class_="ui red approve button") %}{% trans %}Lock{% endtrans %}{% endcall %}
                 </div>
             </div>
         </form>

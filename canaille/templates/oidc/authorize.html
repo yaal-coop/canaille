@@ -84,15 +84,15 @@ It lists the personal information requested by the application, and offers the u
             <div class="ui center aligned container">
                 {% call fui.render_form(form) %}
                     <div class="ui stackable buttons">
-                        <button name="answer" type="submit" class="ui negative button" value="deny" id="deny">
+                        {% call fui.render_button(form.answer, "deny", id="deny", class_="ui negative button") %}
                             {% trans %}Deny{% endtrans %}
-                        </button>
-                        <button name="answer" type="submit" class="ui button" value="logout" id="logout">
+                        {% endcall %}
+                        {% call fui.render_button(form.answer, "logout", id="logout", class_="ui button") %}
                             {% trans %}Switch user{% endtrans %}
-                        </button>
-                        <button name="answer" type="submit" class="ui primary button" value="accept" id="accept">
+                        {% endcall %}
+                        {% call fui.render_button(form.answer, "accept", id="accept", class_="ui primary button") %}
                             {% trans %}Accept{% endtrans %}
-                        </button>
+                        {% endcall %}
                     </div>
                 {% endcall %}
             </div>

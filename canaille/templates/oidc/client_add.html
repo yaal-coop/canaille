@@ -48,10 +48,10 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
         {% call fui.render_form(form) %}
             <div class="ui fluid action input">
                 <input type="text" value="{{ registration_token }}" readonly class="copy-text" id="registration-token" data-copy="registration-token">
-                <button type="submit" class="ui teal right labeled icon button copy-button" name="action" value="new-registration-token" id="new-registration-token">
+                {% call fui.render_button(form.action, "new-registration-token", class_="ui teal right labeled icon button copy-button", id="new-registration-token") %}
                     <i class="redo icon"></i>
                     {% trans %}Renew{% endtrans %}
-                </button>
+                {% endcall %}
                 <button type="button" class="ui primary right labeled icon button copy-button" data-copy="registration-token">
                     <i class="copy icon"></i>
                     {% trans %}Copy{% endtrans %}
@@ -69,9 +69,9 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
             {{ fui.render_fields(form) }}
 
             <div class="ui right aligned container">
-                <button type="submit" class="ui primary button" name="action" value="add" id="add">
+                {% call fui.render_button(form.action, "add", class_="ui primary button", id="add") %}
                     {% trans %}Create{% endtrans %}
-                </button>
+                {% endcall %}
             </div>
         {% endcall %}
     </div>

@@ -1,4 +1,5 @@
 {% import "macro/table.html" as table %}
+{% import "macro/form.html" as fui %}
 <table class="ui bottom attached table users">
     <thead>
         <tr>
@@ -67,9 +68,9 @@
                             <form id="deletegroupmemberform-{{ watched_user.id }}" action="{{ url_for(request.url_rule.endpoint, **request.view_args) }}" method="POST">
                                 {{ form.hidden_tag() if form.hidden_tag }}
                                 <input type="hidden" name="member" value="{{ watched_user.id }}">
-                                <button class="basic negative ui button" name="action" value="confirm-remove-member">
+                                {% call fui.render_button(form.action, "confirm-remove-member", class_="basic negative ui button") %}
                                     {% trans %}Remove{% endtrans %}
-                                </button>
+                                {% endcall %}
                             </form>
                         {% else %}
                             <button class="basic negative ui button" title="{% trans %}Groups must have at least one member{% endtrans %}" disabled>

@@ -42,7 +42,7 @@ def profile_auth_password(user, edited_user):
     )
     form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
-    action = request.form.get("action")
+    action = form["action"].data
 
     if request.method == "POST":
         if action in ("password-initialization-mail", "password-reset-mail"):

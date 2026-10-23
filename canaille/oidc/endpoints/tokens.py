@@ -37,10 +37,12 @@ def view(user, token):
     form = TokenRevokationForm(request.form or None)
 
     if request.form and form.validate():
-        if request.form.get("action") == "confirm-revoke":
-            return render_template("oidc/modals/revoke-token.html", token=token)
+        if form.action.data == "confirm-revoke":
+            return render_template(
+                "oidc/modals/revoke-token.html", token=token, form=form
+            )
 
-        elif request.form.get("action") == "revoke":
+        elif form.action.data == "revoke":
             token.revokation_date = datetime.datetime.now(datetime.UTC)
             Backend.instance.save(token)
             current_app.logger.security(
@@ -49,7 +51,7 @@ def view(user, token):
             flash(_("The token has successfully been revoked."), "success")
 
         else:
-            abort(400, f"bad form action: {request.form.get('action')}")
+            abort(400, f"bad form action: {form.action.data}")
 
     return render_template(
         "oidc/token_view.html",

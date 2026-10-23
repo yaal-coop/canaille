@@ -273,11 +273,13 @@ class HTMXFormMixin:
 
 
 class Form(HTMXFormMixin, I18NFormMixin, FlaskForm):
-    pass
+    action = wtforms.ButtonField()
 
 
 class BaseForm(HTMXFormMixin, I18NFormMixin, wtforms.form.BaseForm):
-    pass
+    def __init__(self, fields, *args, **kwargs):
+        fields = {"action": wtforms.ButtonField(), **dict(fields)}
+        super().__init__(fields, *args, **kwargs)
 
 
 class TableForm(I18NFormMixin, FlaskForm):

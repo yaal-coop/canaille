@@ -59,7 +59,7 @@ This page is displayed to users who do not have set a password yet.
                             {% if not features.has_trusted_hosts %}
                                 <a type="button" class="ui right floated button" href="{{ url_for('core.auth.password.firstlogin_code', user=user) }}">{{ _("I already have a code") }}</a>
                             {% endif %}
-                            <button type="submit" name="action" value="sendmail" class="ui right floated primary button">{{ _("Send the initialization email") }}</button>
+                            {% call fui.render_button(form.action, "sendmail", class_="ui right floated primary button") %}{{ _("Send the initialization email") }}{% endcall %}
                         </div>
                     </div>
                 {% endblock %}

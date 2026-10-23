@@ -16,6 +16,7 @@ from canaille.app.flask import render_htmx_template
 from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
+from canaille.app.forms import Form
 from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
@@ -37,7 +38,8 @@ def groups(user):
     if not (user.can("manage_all_groups") or user.can("manage_own_groups")):
         abort(403)
 
-    if request.form.get("action") == "confirm-leave":
+    form = Form(request.form or None)
+    if form.action.data == "confirm-leave":
         group_id = request.form.get("group_id")
         if not group_id:
             abort(400)
@@ -58,7 +60,11 @@ def groups(user):
         abort(404)
 
     return render_htmx_template(
-        "core/groups.html", menuitem="groups", table_form=table_form, user=user
+        "core/groups.html",
+        menuitem="groups",
+        table_form=table_form,
+        form=form,
+        user=user,
     )
 
 
@@ -109,27 +115,27 @@ def user_can_access_group(user, group):
 def group(user, group):
     if not user_can_access_group(user, group):
         abort(403)
+
+    form = Form(request.form or None)
+    action = form.action.data
     if (
         request.method == "GET"
-        or request.form.get("action") == "edit"
+        or action == "edit"
         or request.form.get("page")
         or request_is_partial()
     ):
         return edit_group(group)
 
-    if request.form.get("action") == "confirm-delete":
-        return render_template("core/modals/delete-group.html", group=group)
+    if action == "confirm-delete":
+        return render_template("core/modals/delete-group.html", group=group, form=form)
 
-    if request.form.get("action") == "delete":
+    if action == "delete":
         return delete_group(group)
 
-    if request.form.get("action") == "confirm-remove-member":
+    if action in ("confirm-remove-member", "remove-member"):
         return delete_member(group)
 
-    if request.form.get("action") == "remove-member":
-        return delete_member(group)
-
-    abort(400, f"bad form action: {request.form.get('action')}")
+    abort(400, f"bad form action: {action}")
 
 
 def edit_group(group):
@@ -147,7 +153,7 @@ def edit_group(group):
 
     if (
         request.form
-        and (request.form.get("action") == "edit" or request_is_partial())
+        and (form.action.data == "edit" or request_is_partial())
         and not request.form.get("page")
     ):
         if form.validate():
@@ -190,7 +196,7 @@ def delete_member(group):
             "error",
         )
 
-    elif request.form.get("action") == "confirm-remove-member":
+    elif form.action.data == "confirm-remove-member":
         return render_template(
             "core/modals/remove-group-member.html", group=group, form=form
         )
