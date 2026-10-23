@@ -128,7 +128,7 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
                         <td>{{ _("Access token") }}</td>
                         <td class="ui fluid action input">
                             <input type="text" value="{{ token.access_token }}" readonly class="copy-text" id="access-token" data-copy="access-token">
-                            <button class="ui primary right labeled icon button copy-button" data-copy="access-token">
+                            <button type="button" class="ui primary right labeled icon button copy-button" data-copy="access-token">
                                 <i class="copy icon"></i>
                                 {% trans %}Copy{% endtrans %}
                             </button>
@@ -139,7 +139,7 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
                         <td>{{ _("Refresh token") }}</td>
                         <td class="ui fluid action input">
                             <input type="text" value="{{ token.refresh_token or "" }}" readonly class="copy-text" id="refresh-token" data-copy="refresh-token" {% if not token.refresh_token %}placeholder="{% trans %}No refresh token{% endtrans %}"{% endif %}>
-                            <button class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
+                            <button type="button" class="ui primary right labeled icon button copy-button" data-copy="refresh-token">
                                 <i class="copy icon"></i>
                                 {% trans %}Copy{% endtrans %}
                             </button>

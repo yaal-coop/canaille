@@ -50,6 +50,7 @@ Removed
 
 Fixed
 ^^^^^
+- Without JavaScript, the copy buttons submitted the form they are in.
 - After the inline validation of a password field, password fields could show
   the typed passwords in the page HTML, for every user served by the same process.
 - Canaille did not start with the ``postgresql`` and ``mysql`` extras, as they
