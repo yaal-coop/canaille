@@ -2,6 +2,7 @@ import datetime
 import hashlib
 import math
 import re
+from copy import copy
 from typing import Any
 
 import httpx2
@@ -197,7 +198,11 @@ class HTMXFormMixin:
         abort(400, f"{field_name} is not a valid field for inline validation")
 
     def validate_field(self, field, *args, **kwargs):
-        field.widget.hide_value = False
+        if getattr(field.widget, "hide_value", False):
+            # The widget is shared by every field of its class: only reveal a copy.
+            field.widget = copy(field.widget)
+            field.widget.hide_value = False
+
         self.process(request.form)
         return field.validate(self, *args, **kwargs)
 

@@ -687,3 +687,29 @@ def test_password_mails_when_password_recovery_is_disabled(
         )
 
     assert len(smtpd.messages) == 0
+
+
+def test_inline_validation_does_not_reveal_passwords_on_later_pages(
+    testclient, logged_user
+):
+    """After an inline validation, password fields of other pages stay empty."""
+    res = testclient.get("/profile/user/auth/password")
+    testclient.post(
+        "/profile/user/auth/password",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "password1": "short",
+        },
+        headers={
+            "HX-Request": "true",
+            "HX-Trigger-Name": "password1",
+        },
+    )
+
+    res = testclient.get("/profile/user/auth/password")
+    res.form["password1"] = "correct horse battery staple"
+    res.form["password2"] = "another horse battery staple"
+    res = res.form.submit(name="action", value="edit-password")
+
+    assert "correct horse battery staple" not in res.text
+    assert "another horse battery staple" not in res.text
