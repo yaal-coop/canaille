@@ -264,6 +264,7 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "wtforms" },
     { name = "wtforms-htmx" },
+    { name = "wtforms-htmx-components" },
 ]
 
 [package.optional-dependencies]
@@ -469,6 +470,7 @@ requires-dist = [
     { name = "webauthn", marker = "extra == 'fido'", specifier = ">=2.7.0" },
     { name = "wtforms", specifier = ">=3.3.0" },
     { name = "wtforms-htmx", specifier = ">=0.1.0" },
+    { name = "wtforms-htmx-components", specifier = ">=0.1.0" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.3.0" },
 ]
 provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server", "redis", "rabbitmq"]
@@ -4427,6 +4429,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/af/11/b144db0f34511455575b97c8429fb15a7650117aea614702e1ba22c7791a/wtforms_htmx-0.1.0.tar.gz", hash = "sha256:dc601ce30bf25cd92957677abf95c3a8fa3b18f258cc3e0cf32ab2270777a915", size = 28961, upload-time = "2026-10-23T21:42:43.762Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0c/46/0401fc19a87e51d85a43d5a4cd9b858aeae9c77ced755d1b10348272225b/wtforms_htmx-0.1.0-py3-none-any.whl", hash = "sha256:a9655ba440c3036d0dfe112ce114bf00d8344c0086b0a03f8cead5294d3b968a", size = 31155, upload-time = "2026-10-23T21:42:42.49Z" },
+]
+
+[[package]]
+name = "wtforms-htmx-components"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "wtforms" },
+    { name = "wtforms-htmx" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b4/e9/d456dbe8f67b3a958e5b7e7db71c3e4f9ae4f9328995cfb63fcf1403eb74/wtforms_htmx_components-0.1.0.tar.gz", hash = "sha256:acf30359fd1bef52cc5f1019c4a26d895ddb3167025a3a156ddaf866ae8f1f6d", size = 11483, upload-time = "2026-10-23T22:02:43.958Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ea/60/8763026d7d32f050005acc0959dd701a4e39da3826ed016135af8819f694/wtforms_htmx_components-0.1.0-py3-none-any.whl", hash = "sha256:e126901a6f5ca695ddd49ffa1a6452516567d2aeb7d9f251b6eab9c7049bb9f9", size = 11048, upload-time = "2026-10-23T22:02:42.781Z" },
 ]
 
 [[package]]

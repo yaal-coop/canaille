@@ -14,6 +14,9 @@ Changed
 ^^^^^^^
 - Form fields are checked when the user leaves them, instead of while they type,
   except for the password strength. Characters typed during a check could get lost.
+- Groups are picked with a search field in the user invitation and account settings
+  forms, also without JavaScript. Groups are searched by the server, instead of being
+  all loaded in the page.
 - Forms rely on `wtforms-htmx <https://wtforms-htmx.readthedocs.io>`_ for their
   inline validation and their add and remove buttons. Read-only lists no longer show
   these buttons.

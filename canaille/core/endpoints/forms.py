@@ -5,8 +5,11 @@ from flask import g
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 from flask_wtf.file import FileSize
+from wtforms_htmx_components import ComboboxMultiField
 
 from canaille.app import models
+from canaille.app.combobox import ChipsWidget
+from canaille.app.combobox import ListboxWidget
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
@@ -405,6 +408,9 @@ def build_profile_form(
     if "groups" in fields and not Backend.instance.query(models.Group):
         del fields["groups"]
 
+    if "groups" in fields:
+        fields["groups"] = groups_combobox(validators=[non_empty_groups])
+
     if current_app.features.has_account_lockability:  # pragma: no branch
         fields["lock_date"] = DateTimeUTCField(
             _("Account expiration"),
@@ -523,6 +529,44 @@ class JoinFormWithCaptcha(JoinForm):
     captcha = CaptchaField()
 
 
+def suggest_groups(query, form):
+    """Return the groups whose name contains ``query``."""
+    return [
+        wtforms.SelectChoice(group.id, group.display_name)
+        for group in Backend.instance.fuzzy(models.Group, query, ["display_name"])
+    ]
+
+
+def group_label(group_id):
+    """Return the name of the group ``group_id``."""
+    group = Backend.instance.get(models.Group, id=group_id)
+    return group.display_name if group else group_id
+
+
+def group_from_id(group_id):
+    """Return the group ``group_id``, or raise ValueError when it does not exist."""
+    if group := Backend.instance.get(models.Group, id=group_id):
+        return group
+
+    raise ValueError(group_id)
+
+
+def groups_combobox(validators=()):
+    """Return a combobox field that picks groups by their name."""
+    return ComboboxMultiField(
+        _("Groups"),
+        suggest=suggest_groups,
+        label_for=group_label,
+        coerce=group_from_id,
+        value_for=lambda group: group.id,
+        validators=list(validators),
+        placeholder=_("users, admins …"),
+        search_label=_("Search"),
+        listbox_widget=ListboxWidget(multi=True),
+        chips_widget=ChipsWidget(),
+    )
+
+
 class InvitationForm(UserForm):
     """The user invitation form."""
 
@@ -546,15 +590,7 @@ class InvitationForm(UserForm):
             "icon": "email",
         },
     )
-    groups = wtforms.SelectMultipleField(
-        _("Groups"),
-        choices=lambda: [
-            wtforms.SelectChoice(value=group, label=group.display_name)
-            for group in Backend.instance.query(models.Group)
-        ],
-        render_kw={"icon": "users"},
-        coerce=IDToModel("Group"),
-    )
+    groups = groups_combobox()
 
 
 class EmailConfirmationForm(UserForm):

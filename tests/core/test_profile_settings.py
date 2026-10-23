@@ -3,16 +3,18 @@ import datetime
 from flask import g
 
 from canaille.app import models
+from tests.htmx import combobox_is_readonly
+from tests.htmx import combobox_values
+from tests.htmx import remove_from_combobox
 
 
 def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     res = testclient.get("/profile/user/settings", status=200)
-    assert (foo_group.id, True, "foo") in res.form["groups"].options
-    assert (bar_group.id, False, "bar") in res.form["groups"].options
+    assert combobox_values(res.form, "groups") == [foo_group.id]
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
-    assert "readonly" in res.form["groups"].attrs
+    assert combobox_is_readonly(res.form, "groups")
     assert "readonly" in res.form["user_name"].attrs
 
     res.form["user_name"] = "toto"
@@ -32,7 +34,7 @@ def test_edition(testclient, logged_user, admin, foo_group, bar_group, backend):
     assert logged_user.groups == [foo_group]
     assert foo_group.members == [logged_user]
     assert bar_group.members == [admin]
-    assert "readonly" in res.form["groups"].attrs
+    assert combobox_is_readonly(res.form, "groups")
     assert "readonly" in res.form["user_name"].attrs
 
 
@@ -44,7 +46,7 @@ def test_group_removal(testclient, logged_admin, user, foo_group, backend):
     assert foo_group in user.groups
 
     res = testclient.get("/profile/user/settings", status=200)
-    res.form["groups"] = []
+    res = remove_from_combobox(res.form, "groups", foo_group.id)
     res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [("success", "Profile updated successfully.")]
 
@@ -66,7 +68,7 @@ def test_empty_group_removal(testclient, logged_admin, user, foo_group, backend)
     assert foo_group in user.groups
 
     res = testclient.get("/profile/user/settings", status=200)
-    res.form["groups"] = []
+    res = remove_from_combobox(res.form, "groups", foo_group.id)
     res = res.form.submit(name="action", value="edit-settings")
     assert res.flashes == [
         (
@@ -320,12 +322,38 @@ def test_account_limit_values(
 
 def test_edition_invalid_group(testclient, logged_admin, user, foo_group):
     res = testclient.get("/profile/user/settings", status=200)
-    res.form["groups"].force_value("invalid")
-    res = res.form.submit(name="action", value="edit-settings")
+    data = dict(res.form.submit_fields()) | {
+        "groups-value": "invalid",
+        "action": "edit-settings",
+    }
+    res = testclient.post("/profile/user/settings", data)
     assert res.flashes == [
         (
             "error",
             "Your changes couldn't be saved. Please check the form and try again.",
         )
     ]
-    res.mustcontain("Invalid choice(s): one or more data inputs could not be coerced.")
+    res.mustcontain("Not a valid choice.")
+
+
+def test_readonly_groups_cannot_be_forged(
+    testclient, logged_user, foo_group, bar_group, backend
+):
+    """A user who can only read their groups cannot change them with a forged request."""
+    res = testclient.get("/profile/user/settings", status=200)
+    assert combobox_is_readonly(res.form, "groups")
+
+    data = dict(res.form.submit_fields()) | {
+        "groups-value": bar_group.id,
+        "action": "edit-settings",
+    }
+    res = testclient.post("/profile/user/settings", data)
+    assert res.flashes == [
+        (
+            "error",
+            "Your changes couldn't be saved. Please check the form and try again.",
+        )
+    ]
+
+    backend.reload(logged_user)
+    assert logged_user.groups == [foo_group]
