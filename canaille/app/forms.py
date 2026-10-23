@@ -336,13 +336,14 @@ def is_readonly(field) -> bool:
 
 
 def set_readonly(field) -> None:
-    field.render_kw = field.render_kw or {}
-    field.render_kw["readonly"] = True
+    field.render_kw = {**(field.render_kw or {}), "readonly": True}
     field.validators = list(field.validators) + [wtforms.validators.ReadOnly()]
 
 
 def set_writable(field) -> None:
-    del field.render_kw["readonly"]
+    field.render_kw = {
+        key: value for key, value in field.render_kw.items() if key != "readonly"
+    }
     field.validators = [
         v for v in field.validators if not isinstance(v, wtforms.validators.ReadOnly)
     ]

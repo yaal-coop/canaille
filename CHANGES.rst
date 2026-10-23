@@ -50,6 +50,8 @@ Removed
 
 Fixed
 ^^^^^
+- A profile field could show as read-only, or as editable, because of the access
+  rights of the user of a previous request.
 - Under concurrent requests, the error messages of the profile forms could show
   in the language of another user.
 - Without JavaScript, the copy buttons submitted the form they are in.

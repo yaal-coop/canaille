@@ -13,6 +13,7 @@ from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import phone_number
+from canaille.core.endpoints.forms import build_profile_form
 from tests.htmx import fieldlist_add
 from tests.htmx import fieldlist_remove
 from tests.htmx import htmx_headers
@@ -407,3 +408,14 @@ def test_compromised_password_validator_with_failure_of_api_request_without_form
         logging.ERROR,
         "Password compromise investigation failed on HIBP API.",
     ) not in caplog.record_tuples
+
+
+def test_readonly_fields_do_not_leak_between_forms(testclient):
+    """A field set readonly in one form stays writable in the next one."""
+    readonly_form = build_profile_form({"family_name"}, {"family_name", "title"})
+    writable_form = build_profile_form(
+        {"family_name", "title"}, {"family_name", "title"}
+    )
+
+    assert "readonly" in readonly_form["title"].render_kw
+    assert "readonly" not in writable_form["title"].render_kw
