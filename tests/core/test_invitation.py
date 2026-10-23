@@ -5,6 +5,7 @@ from flask import g
 
 from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
+from tests.htmx import click_fieldlist_add
 
 
 @pytest.fixture(autouse=True)
@@ -210,7 +211,7 @@ def test_registration_formcontrol(testclient):
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
     assert "emails-1" not in res.form.fields
 
-    res = res.form.submit(status=200, name="fieldlist_add", value="phone_numbers-0")
+    res = click_fieldlist_add(res.form, "phone_numbers", status=200)
     assert "phone_numbers-1" in res.form.fields
 
 

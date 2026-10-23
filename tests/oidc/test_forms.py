@@ -1,4 +1,9 @@
 from canaille.app import models
+from tests.htmx import click_fieldlist_add
+from tests.htmx import click_fieldlist_remove
+from tests.htmx import fieldlist_add
+from tests.htmx import fieldlist_remove
+from tests.htmx import htmx_headers
 
 # TODO: this test files tests generic features about forms,
 # we should rewrite the tests without using specific OIDC
@@ -19,9 +24,7 @@ def test_fieldlist_add(testclient, logged_admin, backend):
     for k, v in data.items():
         res.forms["clientaddform"][k].force_value(v)
 
-    res = res.forms["clientaddform"].submit(
-        status=200, name="fieldlist_add", value="redirect_uris-0"
-    )
+    res = click_fieldlist_add(res.forms["clientaddform"], "redirect_uris", status=200)
     assert not backend.query(models.Client, client_name="foobar")
 
     data["redirect_uris-1"] = "https://foobar.test/callback2"
@@ -53,13 +56,11 @@ def test_fieldlist_delete(testclient, logged_admin, backend):
     }
     for k, v in data.items():
         res.forms["clientaddform"][k].force_value(v)
-    res = res.forms["clientaddform"].submit(
-        status=200, name="fieldlist_add", value="redirect_uris-0"
-    )
+    res = click_fieldlist_add(res.forms["clientaddform"], "redirect_uris", status=200)
 
     res.forms["clientaddform"]["redirect_uris-1"] = "https://foobar.test/callback2"
-    res = res.forms["clientaddform"].submit(
-        status=200, name="fieldlist_remove", value="redirect_uris-1"
+    res = click_fieldlist_remove(
+        res.forms["clientaddform"], "redirect_uris", status=200
     )
     assert not backend.query(models.Client, client_name="foobar")
     assert "redirect_uris-1" not in res.forms["clientaddform"].fields
@@ -115,9 +116,7 @@ def test_fieldlist_duplicate_value(testclient, logged_admin, client):
     }
     for k, v in data.items():
         res.forms["clientaddform"][k].force_value(v)
-    res = res.forms["clientaddform"].submit(
-        status=200, name="fieldlist_add", value="redirect_uris-0"
-    )
+    res = click_fieldlist_add(res.forms["clientaddform"], "redirect_uris", status=200)
     res.forms["clientaddform"]["redirect_uris-1"] = "https://foobar.test/samecallback"
     res = res.forms["clientaddform"].submit(status=200, name="action", value="add")
     res.mustcontain("This value is a duplicate")
@@ -133,9 +132,7 @@ def test_fieldlist_empty_value(testclient, logged_admin, backend):
     }
     for k, v in data.items():
         res.forms["clientaddform"][k].force_value(v)
-    res = res.forms["clientaddform"].submit(
-        status=200, name="fieldlist_add", value="contacts-0"
-    )
+    res = click_fieldlist_add(res.forms["clientaddform"], "contacts", status=200)
     res.forms["clientaddform"].submit(status=302, name="action", value="add")
     client = backend.get(models.Client, client_name="foobar")
     backend.delete(client)
@@ -149,15 +146,12 @@ def test_fieldlist_add_field_htmx(testclient, logged_admin):
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "https://foobar.test/callback",
-        "fieldlist_add": "redirect_uris-0",
+        **fieldlist_add("redirect_uris"),
     }
     response = testclient.post(
         "/admin/client/add",
         data,
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "listfield_add",
-        },
+        headers=htmx_headers(),
     )
     assert 'name="redirect_uris-0' in response.text
     assert 'name="redirect_uris-1' in response.text
@@ -171,15 +165,12 @@ def test_fieldlist_add_field_htmx_validation(testclient, logged_admin):
         "client_name": "foobar",
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "not-a-valid-uri",
-        "fieldlist_add": "redirect_uris-0",
+        **fieldlist_add("redirect_uris"),
     }
     response = testclient.post(
         "/admin/client/add",
         data,
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "listfield_add",
-        },
+        headers=htmx_headers(),
     )
     assert 'name="redirect_uris-0' in response.text
     assert 'name="redirect_uris-1' in response.text
@@ -195,15 +186,12 @@ def test_fieldlist_remove_field_htmx(testclient, logged_admin):
         "client_uri": "https://foobar.test",
         "redirect_uris-0": "https://foobar.test/callback1",
         "redirect_uris-1": "https://foobar.test/callback2",
-        "fieldlist_remove": "redirect_uris-1",
+        **fieldlist_remove("redirect_uris"),
     }
     response = testclient.post(
         "/admin/client/add",
         data,
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "listfield_remove",
-        },
+        headers=htmx_headers(),
     )
     assert 'name="redirect_uris-0' in response.text
     assert 'name="redirect_uris-1' not in response.text
@@ -222,10 +210,7 @@ def test_fieldlist_inline_validation(testclient, logged_admin):
     response = testclient.post(
         "/admin/client/add",
         data,
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "redirect_uris-0",
-        },
+        headers=htmx_headers("redirect_uris-0"),
     )
     assert 'name="redirect_uris-0' in response.text
     assert 'name="redirect_uris-1' not in response.text

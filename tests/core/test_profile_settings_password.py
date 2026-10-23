@@ -5,6 +5,7 @@ from unittest import mock
 from flask import current_app
 
 from canaille.app import models
+from tests.htmx import htmx_headers
 
 
 def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
@@ -15,10 +16,7 @@ def test_profile_settings_edition_dynamic_validation(testclient, logged_admin):
             "csrf_token": res.form["csrf_token"].value,
             "password1": "short",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "password1",
-        },
+        headers=htmx_headers("password1"),
     )
     res.mustcontain("Field must be at least 8 characters long.")
 
@@ -35,10 +33,7 @@ def test_profile_settings_minimum_password_length_validation(testclient, logged_
                 "csrf_token": res.form["csrf_token"].value,
                 "password1": password,
             },
-            headers={
-                "HX-Request": "true",
-                "HX-Trigger-Name": "password1",
-            },
+            headers=htmx_headers("password1"),
         )
         res.mustcontain(f"Field must be at least {length} characters long.")
 
@@ -59,10 +54,7 @@ def test_profile_settings_too_long_password(testclient, logged_user):
                 "csrf_token": res.form["csrf_token"].value,
                 "password1": password,
             },
-            headers={
-                "HX-Request": "true",
-                "HX-Trigger-Name": "password1",
-            },
+            headers=htmx_headers("password1"),
         )
         res.mustcontain(message)
 
@@ -100,10 +92,7 @@ def test_profile_settings_compromised_password(api_get, testclient, logged_user)
                 "csrf_token": res.form["csrf_token"].value,
                 "password1": password,
             },
-            headers={
-                "HX-Request": "true",
-                "HX-Trigger-Name": "password1",
-            },
+            headers=htmx_headers("password1"),
         )
         res.mustcontain(message)
 
@@ -700,10 +689,7 @@ def test_inline_validation_does_not_reveal_passwords_on_later_pages(
             "csrf_token": res.form["csrf_token"].value,
             "password1": "short",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "password1",
-        },
+        headers=htmx_headers("password1"),
     )
 
     res = testclient.get("/profile/user/auth/password")

@@ -7,6 +7,9 @@ from PIL import Image
 from webtest import Upload
 
 from canaille.core.populate import fake_users
+from tests.htmx import click_fieldlist_add
+from tests.htmx import fieldlist_add
+from tests.htmx import htmx_headers
 
 
 @pytest.fixture
@@ -344,7 +347,7 @@ def test_formcontrol(testclient, logged_user):
     form = res.forms["baseform"]
     assert "emails-1" not in form.fields
 
-    res = form.submit(status=200, name="fieldlist_add", value="emails-0")
+    res = click_fieldlist_add(form, "emails", status=200)
     form = res.forms["baseform"]
     assert "emails-1" in form.fields
 
@@ -358,14 +361,11 @@ def test_formcontrol_htmx(testclient, logged_user):
         for field in form.fields
         if len(form.fields.get(field)) == 1
     }
-    data["fieldlist_add"] = "emails-0"
+    data |= fieldlist_add("emails")
     response = testclient.post(
         "/profile/user",
         data,
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "listfield_add",
-        },
+        headers=htmx_headers(),
     )
     assert "emails-0" in response.text
     assert "emails-1" in response.text
@@ -382,10 +382,7 @@ def test_inline_validation(testclient, logged_admin, user):
             "emails-0": "john@doe.test",
             "action": "edit-profile",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "emails-0",
-        },
+        headers=htmx_headers("emails-0"),
     )
     res.mustcontain("The email 'john@doe.test' is already used")
 
@@ -407,9 +404,6 @@ def test_inline_validation_keep_indicators(testclient, logged_admin, user, backe
             "display_name": "George Abitbol",
             "action": "edit-profile",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "display_name",
-        },
+        headers=htmx_headers("display_name"),
     )
     res.mustcontain("This user cannot edit this field")

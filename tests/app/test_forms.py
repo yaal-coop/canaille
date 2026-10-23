@@ -13,6 +13,9 @@ from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
 from canaille.app.forms import phone_number
+from tests.htmx import fieldlist_add
+from tests.htmx import fieldlist_remove
+from tests.htmx import htmx_headers
 
 
 def test_datetime_utc_field_no_timezone_is_local_timezone(testclient):
@@ -211,7 +214,7 @@ def test_fieldlist_add_readonly(testclient, logged_user, backend):
         "csrf_token": form["csrf_token"].value,
         "family_name": form["family_name"].value,
         "phone_numbers-0": form["phone_numbers-0"].value,
-        "fieldlist_add": "phone_numbers-0",
+        **fieldlist_add("phone_numbers"),
     }
     testclient.post("/profile/user", data, status=403)
 
@@ -234,7 +237,7 @@ def test_fieldlist_remove_readonly(testclient, logged_user, backend):
         "csrf_token": form["csrf_token"].value,
         "family_name": form["family_name"].value,
         "phone_numbers-0": form["phone_numbers-0"].value,
-        "fieldlist_remove": "phone_numbers-1",
+        **fieldlist_remove("phone_numbers"),
     }
     testclient.post("/profile/user", data, status=403)
 
@@ -248,10 +251,7 @@ def test_inline_validation_invalid_field(testclient, logged_admin, user):
             "csrf_token": res.form["csrf_token"].value,
             "email": "john@doe.test",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "invalid-field",
-        },
+        headers=htmx_headers("invalid-field"),
         status=400,
     )
 
@@ -312,10 +312,7 @@ def test_password_strength_progress_bar(testclient, logged_user):
             "csrf_token": res.form["csrf_token"].value,
             "password1": "i'm a little pea",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "password1",
-        },
+        headers=htmx_headers("password1"),
     )
     res.mustcontain('data-percent="100"')
 
@@ -400,10 +397,7 @@ def test_compromised_password_validator_with_failure_of_api_request_without_form
             "csrf_token": res.form["csrf_token"].value,
             "password1": "correct horse battery staple",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "password1",
-        },
+        headers=htmx_headers("password1"),
     )
 
     res.mustcontain('data-percent="100"')

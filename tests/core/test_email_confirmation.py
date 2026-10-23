@@ -7,6 +7,8 @@ from flask import url_for
 
 from canaille.core.endpoints.account import EmailConfirmationPayload
 from canaille.core.endpoints.account import RegistrationPayload
+from tests.htmx import click_fieldlist_add
+from tests.htmx import htmx_headers
 
 
 def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
@@ -17,7 +19,7 @@ def test_confirmation_disabled_email_editable(testclient, backend, logged_user):
     assert "readonly" not in res.form["emails-0"].attrs
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
-    res = res.form.submit(name="fieldlist_add", value="emails-0")
+    res = click_fieldlist_add(res.form, "emails")
     res.form["emails-0"] = "email1@mydomain.test"
     res.form["emails-1"] = "email2@mydomain.test"
 
@@ -41,7 +43,7 @@ def test_confirmation_unset_smtp_disabled_email_editable(
     assert "readonly" not in res.form["emails-0"].attrs
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
-    res = res.form.submit(name="fieldlist_add", value="emails-0")
+    res = click_fieldlist_add(res.form, "emails")
     res.form["emails-0"] = "email1@mydomain.test"
     res.form["emails-1"] = "email2@mydomain.test"
 
@@ -79,7 +81,7 @@ def test_confirmation_unset_smtp_enabled_email_admin_editable(
     assert "readonly" not in res.form["emails-0"].attrs
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
-    res = res.form.submit(name="fieldlist_add", value="emails-0")
+    res = click_fieldlist_add(res.form, "emails")
     res.form["emails-0"] = "email1@mydomain.test"
     res.form["emails-1"] = "email2@mydomain.test"
 
@@ -102,7 +104,7 @@ def test_confirmation_enabled_smtp_disabled_admin_editable(
     assert "readonly" not in res.form["emails-0"].attrs
     assert not any(field.id == "add_email" for field in res.form.fields["action"])
 
-    res = res.form.submit(name="fieldlist_add", value="emails-0")
+    res = click_fieldlist_add(res.form, "emails")
     res.form["emails-0"] = "email1@mydomain.test"
     res.form["emails-1"] = "email2@mydomain.test"
 
@@ -199,10 +201,7 @@ def test_confirmation_unset_smtp_enabled_email_user_validation_htmx(
         res = res.forms["emailconfirmationform"].submit(
             name="action",
             value="add_email",
-            headers={
-                "HX-Request": "true",
-                "HX-Trigger-Name": "new_email",
-            },
+            headers=htmx_headers("new_email"),
         )
         assert "</html>" not in res.text
 

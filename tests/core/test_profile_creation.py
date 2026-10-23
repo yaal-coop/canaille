@@ -1,4 +1,7 @@
 from canaille.app import models
+from tests.htmx import click_fieldlist_add
+from tests.htmx import fieldlist_add
+from tests.htmx import htmx_headers
 
 
 def test_user_creation_edition_and_deletion(
@@ -75,10 +78,7 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
             "csrf_token": res.form["csrf_token"].value,
             "emails-0": "john@doe.test",
         },
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "emails-0",
-        },
+        headers=htmx_headers("emails-0"),
     )
     res.mustcontain("The email 'john@doe.test' is already used")
 
@@ -185,7 +185,7 @@ def test_formcontrol(testclient, logged_admin):
     res = testclient.get("/profile")
     assert "emails-1" not in res.form.fields
 
-    res = res.form.submit(status=200, name="fieldlist_add", value="emails-0")
+    res = click_fieldlist_add(res.form, "emails", status=200)
     assert "emails-1" in res.form.fields
 
 
@@ -197,14 +197,11 @@ def test_formcontrol_htmx(testclient, logged_admin):
         for field in res.form.fields
         if len(res.form.fields.get(field)) == 1
     }
-    data["fieldlist_add"] = "emails-0"
+    data |= fieldlist_add("emails")
     response = testclient.post(
         "/profile",
         data,
-        headers={
-            "HX-Request": "true",
-            "HX-Trigger-Name": "listfield_add",
-        },
+        headers=htmx_headers(),
     )
     assert "emails-0" in response.text
     assert "emails-1" in response.text
