@@ -55,6 +55,8 @@ Removed
 Fixed
 ^^^^^
 - The browser console showed Content Security Policy errors on every page.
+- With the memory backend, an OIDC client created without contacts could not be
+  edited.
 - After an inline validation, a field of a list, such as an email address, could
   show another access indicator than on the page.
 - A profile field could show as read-only, or as editable, because of the access

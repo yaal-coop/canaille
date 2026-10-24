@@ -27,7 +27,11 @@ class MemoryModel(BackendModel):
     @classmethod
     def deserialize(cls, attribute_name, value):
         if isinstance(value, list):
-            values = [cls.deserialize(attribute_name, item) for item in value]
+            values = [
+                cls.deserialize(attribute_name, item)
+                for item in value
+                if item not in (None, "")
+            ]
             return [item for item in values if item is not None]
 
         if value is None or value == "":

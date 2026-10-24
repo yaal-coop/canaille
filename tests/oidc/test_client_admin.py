@@ -107,6 +107,29 @@ def test_client_add(testclient, logged_admin, backend):
     backend.delete(client)
 
 
+def test_client_add_without_contacts_can_be_edited(testclient, logged_admin, backend):
+    """A client added without contacts can be edited afterwards."""
+    res = testclient.get("/admin/client/add")
+    data = {
+        "client_name": "foobar",
+        "client_uri": "https://foobar.test",
+        "redirect_uris-0": "https://foobar.test/callback",
+    }
+    for k, v in data.items():
+        res.forms["clientaddform"][k].force_value(v)
+
+    res = res.forms["clientaddform"].submit(status=302, name="action", value="add")
+    res = res.follow(status=200)
+    client = backend.get(
+        models.Client, client_id=res.forms["readonly"]["client_id"].value
+    )
+
+    res = res.forms["clienteditform"].submit(status=302, name="action", value="edit")
+    assert ("success", "The client has been edited.") in res.flashes
+
+    backend.delete(client)
+
+
 def test_add_missing_fields(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
     res = res.forms["clientaddform"].submit(status=200, name="action", value="add")
