@@ -6,7 +6,6 @@ from flask import request
 from flask import url_for
 from werkzeug.datastructures import CombinedMultiDict
 
-from canaille.app.flask import request_is_partial
 from canaille.app.flask import user_needed
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
@@ -39,8 +38,9 @@ def profile_auth_password(user, edited_user):
         user.writable_fields & available_fields,
         user.readable_fields & available_fields,
         edited_user,
+        formdata=CombinedMultiDict((request.files, request.form)) or None,
+        data=data,
     )
-    form.process(CombinedMultiDict((request.files, request.form)) or None, data=data)
 
     action = form["action"].data
 
@@ -48,8 +48,8 @@ def profile_auth_password(user, edited_user):
         if action in ("password-initialization-mail", "password-reset-mail"):
             return _handle_password_mail(edited_user, action)
 
-        if action == "edit-password" or request_is_partial():
-            if not form.validate():
+        if action == "edit-password" or form.mutated:
+            if not form.validate_on_submit():
                 flash(
                     _(
                         "Your changes couldn't be saved. "

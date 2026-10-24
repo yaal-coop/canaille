@@ -65,7 +65,7 @@ def test_confirmation_enabled_smtp_disabled_readonly(testclient, backend, logged
 
     res = testclient.get("/profile/user")
     assert "readonly" in res.forms["emailconfirmationform"]["old_emails-0"].attrs
-    assert "emails-0" not in res.forms["baseform"].fields
+    assert "emails-0" not in res.forms["profileform"].fields
 
     res.forms["emailconfirmationform"]["old_emails-0"] = "email1@mydomain.test"
     assert "action" not in res.forms["emailconfirmationform"].fields
@@ -483,7 +483,7 @@ def test_delete_last_email(testclient, logged_user, backend, smtpd):
 def test_edition_forced_mail(testclient, logged_user, backend, smtpd):
     """Tests that users that must perform email verification cannot force the profile form."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     testclient.post(
         "/profile/user",
         {

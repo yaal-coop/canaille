@@ -201,15 +201,16 @@ def test_datetime_utc_field_invalid_timezone(testclient):
 
 
 def test_fieldlist_add_readonly(testclient, logged_user, backend):
-    """Test that adding entries to a readonly fieldlist is forbidden."""
+    """A readonly fieldlist has no add button, and a forged click adds nothing."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
     backend.reload(logged_user)
 
     res = testclient.get("/profile/user")
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "readonly" in form["phone_numbers-0"].attrs
     assert "phone_numbers-1" not in form.fields
+    assert "add_phone_numbers" not in form.fields
 
     data = {
         "csrf_token": form["csrf_token"].value,
@@ -217,11 +218,12 @@ def test_fieldlist_add_readonly(testclient, logged_user, backend):
         "phone_numbers-0": form["phone_numbers-0"].value,
         **fieldlist_add("phone_numbers"),
     }
-    testclient.post("/profile/user", data, status=403)
+    res = testclient.post("/profile/user", data, status=400)
+    res.mustcontain(no="phone_numbers-1")
 
 
 def test_fieldlist_remove_readonly(testclient, logged_user, backend):
-    """Test that removing entries from a readonly fieldlist is forbidden."""
+    """A readonly fieldlist has no remove button, and a forged click removes nothing."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
     backend.reload(logged_user)
@@ -230,9 +232,10 @@ def test_fieldlist_remove_readonly(testclient, logged_user, backend):
     backend.save(logged_user)
 
     res = testclient.get("/profile/user")
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "readonly" in form["phone_numbers-0"].attrs
     assert "readonly" in form["phone_numbers-1"].attrs
+    assert "del_phone_numbers" not in form.fields
 
     data = {
         "csrf_token": form["csrf_token"].value,
@@ -240,21 +243,9 @@ def test_fieldlist_remove_readonly(testclient, logged_user, backend):
         "phone_numbers-0": form["phone_numbers-0"].value,
         **fieldlist_remove("phone_numbers"),
     }
-    testclient.post("/profile/user", data, status=403)
-
-
-def test_inline_validation_invalid_field(testclient, logged_admin, user):
-    """Test that inline validation returns 400 for invalid field names."""
-    res = testclient.get("/profile")
-    testclient.post(
-        "/profile",
-        {
-            "csrf_token": res.form["csrf_token"].value,
-            "email": "john@doe.test",
-        },
-        headers=htmx_headers("invalid-field"),
-        status=400,
-    )
+    testclient.post("/profile/user", data, status=400)
+    backend.reload(logged_user)
+    assert logged_user.phone_numbers == ["555-555-000", "555-555-111"]
 
 
 def test_phone_number_validator():

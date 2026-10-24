@@ -8,6 +8,7 @@ from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
 from canaille.app.forms import email_validator
+from canaille.app.forms import fieldlist_buttons
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
@@ -81,6 +82,7 @@ class ClientAddForm(Form):
             "Those are the email addresses of people responsible for the client."
         ),
     )
+    add_contacts, del_contacts = fieldlist_buttons("contacts")
 
     client_uri = wtforms.URLField(
         _("URI"),
@@ -109,6 +111,7 @@ class ClientAddForm(Form):
             "URIs for use in redirect-based flows such as the authorization code and implicit flows."
         ),
     )
+    add_redirect_uris, del_redirect_uris = fieldlist_buttons("redirect_uris")
 
 
 class ClientEditForm(ClientAddForm):
@@ -142,6 +145,9 @@ class ClientEditForm(ClientAddForm):
         description=_(
             "URIs that the client may redirect users to after logging them out."
         ),
+    )
+    add_post_logout_redirect_uris, del_post_logout_redirect_uris = fieldlist_buttons(
+        "post_logout_redirect_uris"
     )
 
     grant_types = wtforms.SelectMultipleField(
@@ -364,6 +370,9 @@ class ClientEditForm(ClientAddForm):
             "Default requested Authentication Context Class Reference values. Array of strings that specifies the default acr values that the OP is being requested to use for processing requests from this client, with the values appearing in order of preference."
         ),
     )
+    add_default_acr_values, del_default_acr_values = fieldlist_buttons(
+        "default_acr_values"
+    )
 
     initiate_login_uri = wtforms.URLField(
         _("Initiate login URI"),
@@ -403,6 +412,7 @@ class ClientEditForm(ClientAddForm):
             "Array of request_uri values that are pre-registered by the RP for use at the OP. These URLs must use the https scheme unless the target request object is signed in a way that is verifiable by the OP. Servers may cache the contents of the files referenced by these URIs."
         ),
     )
+    add_request_uris, del_request_uris = fieldlist_buttons("request_uris")
 
     require_signed_request_object = wtforms.BooleanField(
         _("Require signed request object"),

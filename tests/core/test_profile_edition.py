@@ -21,7 +21,7 @@ def configuration(configuration):
 def test_invalid_form_request(testclient, logged_user):
     """Test that submitting an invalid form action returns 400."""
     res = testclient.get("/profile/user")
-    res = res.forms["baseform"].submit(
+    res = res.forms["profileform"].submit(
         name="action", value="invalid-action", status=400
     )
 
@@ -102,7 +102,7 @@ def test_edition_permission(
 def test_edition(testclient, logged_user, admin, jpeg_photo, backend, caplog):
     """Test that profile fields can be successfully edited."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["given_name"] = "given_name"
     form["family_name"] = "family_name"
     form["display_name"] = "display_name"
@@ -166,7 +166,7 @@ def test_edition_remove_fields(
 ):
     """Test that profile fields can be cleared by submitting empty values."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["display_name"] = ""
     form["phone_numbers-0"] = ""
 
@@ -200,7 +200,7 @@ def test_field_permissions_none(testclient, logged_user, backend):
     }
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "phone_numbers-0" not in form.fields
 
     res = testclient.post(
@@ -230,7 +230,7 @@ def test_field_permissions_read(testclient, logged_user, backend):
     }
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "phone_numbers-0" in form.fields
 
     res = testclient.post(
@@ -263,7 +263,7 @@ def test_field_permissions_write(testclient, logged_user, backend):
     }
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "phone_numbers-0" in form.fields
 
     res = testclient.post(
@@ -283,7 +283,7 @@ def test_field_permissions_write(testclient, logged_user, backend):
 def test_simple_user_cannot_edit_other(testclient, admin, logged_user):
     """Test that regular users cannot edit other users' profiles."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     testclient.get("/profile/admin", status=404)
     testclient.post(
         "/profile/admin",
@@ -306,7 +306,7 @@ def test_admin_bad_request(testclient, logged_moderator):
 def test_bad_email(testclient, logged_user, backend):
     """Test that invalid email addresses are rejected during profile editing."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
 
     form["emails-0"] = "john@doe.test"
 
@@ -315,7 +315,7 @@ def test_bad_email(testclient, logged_user, backend):
     assert ["john@doe.test"] == logged_user.emails
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
 
     form["emails-0"] = "yolo"
 
@@ -329,7 +329,7 @@ def test_bad_email(testclient, logged_user, backend):
 def test_surname_is_mandatory(testclient, logged_user, backend):
     """Test that surname is a mandatory field and cannot be removed."""
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     logged_user.family_name = "Doe"
 
     form["family_name"] = ""
@@ -344,23 +344,19 @@ def test_surname_is_mandatory(testclient, logged_user, backend):
 def test_formcontrol(testclient, logged_user):
     """Test that form controls allow adding additional email fields."""
     res = testclient.get("/profile/user")
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "emails-1" not in form.fields
 
     res = click_fieldlist_add(form, "emails", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert "emails-1" in form.fields
 
 
 def test_formcontrol_htmx(testclient, logged_user):
     """Test that HTMX form controls work for adding additional email fields."""
     res = testclient.get("/profile/user")
-    form = res.forms["baseform"]
-    data = {
-        field: form[field].value
-        for field in form.fields
-        if len(form.fields.get(field)) == 1
-    }
+    form = res.forms["profileform"]
+    data = dict(form.submit_fields())
     data |= fieldlist_add("emails")
     response = testclient.post(
         "/profile/user",
@@ -374,7 +370,7 @@ def test_formcontrol_htmx(testclient, logged_user):
 def test_inline_validation(testclient, logged_admin, user):
     """Test that inline validation detects duplicate emails during editing."""
     res = testclient.get("/profile/admin")
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     res = testclient.post(
         "/profile/admin",
         {
@@ -396,7 +392,7 @@ def test_inline_validation_keep_indicators(testclient, logged_admin, user, backe
     backend.reload(user)
 
     res = testclient.get("/profile/admin")
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     res = testclient.post(
         "/profile/user",
         {

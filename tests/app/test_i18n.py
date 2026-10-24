@@ -11,7 +11,7 @@ def test_preferred_language(testclient, logged_user, backend):
     backend.save(logged_user)
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     assert form["preferred_language"].value == "auto"
     assert res.pyquery("html")[0].attrib["lang"] == "en"
     res.mustcontain("My profile")
@@ -21,7 +21,7 @@ def test_preferred_language(testclient, logged_user, backend):
     res = form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Le profil a été mis à jour avec succès.")]
     res = res.follow()
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     backend.reload(logged_user)
     assert logged_user.preferred_language == "fr"
     assert form["preferred_language"].value == "fr"
@@ -33,7 +33,7 @@ def test_preferred_language(testclient, logged_user, backend):
     res = form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     backend.reload(logged_user)
     assert logged_user.preferred_language == "en"
     assert form["preferred_language"].value == "en"
@@ -45,7 +45,7 @@ def test_preferred_language(testclient, logged_user, backend):
     res = form.submit(name="action", value="edit-profile")
     assert res.flashes == [("success", "Profile updated successfully.")]
     res = res.follow()
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     backend.reload(logged_user)
     assert logged_user.preferred_language is None
     assert form["preferred_language"].value == "auto"
@@ -60,7 +60,7 @@ def test_form_translations(testclient, logged_user, backend):
     backend.save(logged_user)
 
     res = testclient.get("/profile/user", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["phone_numbers-0"] = "invalid"
     res = form.submit(name="action", value="edit-profile")
 
@@ -140,7 +140,7 @@ def test_builtin_validator_translations(testclient, logged_admin, backend):
     backend.save(logged_admin)
 
     res = testclient.get("/profile/admin", status=200)
-    form = res.forms["baseform"]
+    form = res.forms["profileform"]
     form["family_name"] = ""
     res = form.submit(name="action", value="edit-profile")
     res.mustcontain("Ce champ est requis.")

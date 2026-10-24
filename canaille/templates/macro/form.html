@@ -12,8 +12,8 @@ noindicator=false,
 indicator_icon=none,
 indicator_text=none,
 display=true,
-add_button=false,
-del_button=false,
+add_button=none,
+del_button=none,
 container_class="",
 action_button=none
 ) -%}
@@ -23,12 +23,9 @@ action_button=none
 {%- set required = "required" in field.flags -%}
 {%- set lock_indicator = readonly or disabled -%}
 {%- set corner_indicator = not noindicator and (indicator_icon or lock_indicator or required) -%}
-{%- set inline_validation = field.validators and field.type not in ("FileField", "MultipleFileField") -%}
 {%- set display_strength_indicator = field.render_kw and "class" in field.render_kw and "password_strength" in field.render_kw["class"] -%}
-{%- if inline_validation -%}
-    {#- The password strength follows the typing, other fields are checked when left. -#}
-    {%- set ignore_me = kwargs.update({"hx-post": ""}) -%}
-    {%- set ignore_me = kwargs.update({"hx-indicator": "closest .input", "hx-trigger": "input changed delay:500ms" if display_strength_indicator else "blur changed"}) -%}
+{%- if "hx-post" in kwargs -%}
+    {%- set ignore_me = kwargs.setdefault("hx-indicator", "closest .input") -%}
 {%- endif -%}
 {%- if field.errors -%}
     {%- set ignore_me = kwargs.update({"aria-invalid": "true", "aria-describedby": field.name ~ "-error"}) -%}
@@ -44,12 +41,10 @@ action_button=none
 
 {% if container and field_visible -%}
     {# open field container #}
-    <div class="field {{ container_class }}
-                {%- if field.errors %} error{% endif -%}
-                {%- if disabled %} disabled{% endif -%}
-                {%- if not display %} hidden{% endif -%}"
-
-         {% if inline_validation %}hx-target="this"{% endif %}
+    <div id="wrap-{{ field.id }}" class="field {{ container_class }}
+                                         {%- if field.errors %} error{% endif -%}
+                                         {%- if disabled %} disabled{% endif -%}
+                                         {%- if not display %} hidden{% endif -%}"
     >
 {% endif -%}
 
@@ -112,7 +107,7 @@ action_button=none
 {% endif %}
 
 {% if action_button %}
-    {% call render_button(field._form.action, action_button.value, class_="ui primary right labeled icon button", title=action_button.title, formnovalidate=True, **{"hx-target": "closest .fieldlist"}) %}
+    {% call render_button(field._form.action, action_button.value, class_="ui primary right labeled icon button", title=action_button.title, formnovalidate=True) %}
         <i class="{{ action_button.icon }} icon"></i>
         {{ action_button.label }}
     {% endcall %}
@@ -124,30 +119,14 @@ action_button=none
 
     {% if not action_button %}
         {% if del_button %}
-            <button
-                class="ui teal icon button"
-                title="{{ _("Remove this field") }}"
-                type="submit"
-                name="fieldlist_remove"
-                value="{{ field.name }}"
-                hx-post=""
-                hx-target="closest .fieldlist"
-                formnovalidate>
+            {% call render_button(del_button, class_="ui teal icon button", title=_("Remove this field")) %}
                 <i class="minus icon"></i>
-            </button>
+            {% endcall %}
         {% endif %}
         {% if add_button and not readonly and not disabled %}
-            <button
-                class="ui teal icon button"
-                title="{{ _("Add another field") }}"
-                type="submit"
-                name="fieldlist_add"
-                value="{{ field.name }}"
-                hx-post=""
-                hx-target="closest .fieldlist"
-                formnovalidate>
+            {% call render_button(add_button, class_="ui teal icon button", title=_("Add another field")) %}
                 <i class="plus icon"></i>
-            </button>
+            {% endcall %}
         {% endif %}
 
         {# close action container #}
@@ -194,7 +173,7 @@ action_button=none
 {% endmacro %}
 
 {% macro field_wrapper(field, render_kw, parent_list=none) -%}
-    {#- Render a field: WTForms calls it through the form Meta.render_field. -#}
+    {#- Render a field: wtforms-htmx calls it through the form Meta.field_wrapper. -#}
     {%- if render_kw.pop("bare", false) or field.type in ("HiddenField", "CSRFTokenField", "SubmitField", "ButtonField") -%}
         {{ field.widget(field, **render_kw) }}
     {%- elif field.type == "FieldList" -%}
@@ -203,10 +182,12 @@ action_button=none
         {%- if parent_list -%}
             {%- set index = field.index -%}
             {%- set last = index >= parent_list.entries|length - 1 -%}
+            {%- set add_name = "add_" ~ parent_list.short_name -%}
+            {%- set del_name = "del_" ~ parent_list.short_name -%}
             {%- set ignore_me = render_kw.update({
             "label_visible": false,
-            "add_button": (last and (not parent_list.max_entries or index < parent_list.max_entries)),
-            "del_button": (last and parent_list.min_entries and index >= parent_list.min_entries),
+            "add_button": field._form[add_name] if last and add_name in field._form and (not parent_list.max_entries or index < parent_list.max_entries) else none,
+            "del_button": field._form[del_name] if last and del_name in field._form and parent_list.min_entries and index >= parent_list.min_entries else none,
             }) -%}
         {%- endif -%}
         {%- if field.type == "BooleanField" -%}
@@ -218,7 +199,7 @@ action_button=none
 {%- endmacro %}
 
 {% macro render_list(field) -%}
-    <div class="field fieldlist" id="{{ field.name }}">
+    <div class="field fieldlist" id="{{ field.id }}">
         {# Strangely enough, translations are not rendered when using field.label() #}
         {{ field[0].label() }}
         {% for subfield in field %}
@@ -228,7 +209,7 @@ action_button=none
 {%- endmacro %}
 
 {% macro render_checkbox(field, display=true, label_visible=true, container_class="") -%}
-    <div class="field{% if not display %} hidden{% endif %}">
+    <div id="wrap-{{ field.id }}" class="field{% if not display %} hidden{% endif %}">
         <div class="ui toggle checkbox {{ container_class }}">
             {{ field.widget(field, **kwargs) }}
             {% if label_visible %}{{ field.label() }}{% endif %}

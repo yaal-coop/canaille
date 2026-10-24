@@ -211,7 +211,7 @@ Displays a user profile edition form.
                                 {% endif %}
 
                                 {% if emails_form.old_emails|len > 1 %}
-                                    {% call fui.render_button(emails_form.email_remove, field.data, class_="ui teal icon button", title=_("Remove this email address"), formnovalidate=True, **{"hx-target": "closest .fieldlist"}) %}
+                                    {% call fui.render_button(emails_form.email_remove, field.data, class_="ui teal icon button", title=_("Remove this email address"), formnovalidate=True) %}
                                         <i class="minus icon"></i>
                                     {% endcall %}
                                 {% endif %}

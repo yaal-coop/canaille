@@ -259,9 +259,11 @@ dependencies = [
     { name = "flask-dramatiq" },
     { name = "flask-session" },
     { name = "flask-wtf" },
+    { name = "flask-wtforms-htmx" },
     { name = "httpx2" },
     { name = "pydantic-settings" },
     { name = "wtforms" },
+    { name = "wtforms-htmx" },
 ]
 
 [package.optional-dependencies]
@@ -429,6 +431,7 @@ requires-dist = [
     { name = "flask-talisman", marker = "extra == 'front'", specifier = ">=1.1.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
     { name = "flask-wtf", specifier = ">=1.2.1" },
+    { name = "flask-wtforms-htmx", specifier = ">=0.1.0" },
     { name = "httpx2", specifier = ">=2.13.1" },
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
     { name = "isodate", marker = "extra == 'front'", specifier = ">=0.7.2" },
@@ -465,6 +468,7 @@ requires-dist = [
     { name = "tomlkit", marker = "extra == 'server'", specifier = ">=0.13.2" },
     { name = "webauthn", marker = "extra == 'fido'", specifier = ">=2.7.0" },
     { name = "wtforms", specifier = ">=3.3.0" },
+    { name = "wtforms-htmx", specifier = ">=0.1.0" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.3.0" },
 ]
 provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server", "redis", "rabbitmq"]
@@ -1332,6 +1336,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/91/f1/605a56d4ea217b307f3e6f4d663e0351253d85d841edc93ba559f0648e19/flask_wtf-1.3.0.tar.gz", hash = "sha256:61d5dabc50c3df885c297dcbd80810443a5d632106c8a69cab8ce740f0cdd7cc", size = 50414, upload-time = "2026-04-23T07:41:55.096Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/14/d2/97adf2ec7af95522573e6dd5493ee84792d0fbfb2def010c4a581b8d6e5e/flask_wtf-1.3.0-py3-none-any.whl", hash = "sha256:dc5e3a4ce97f75c47bf6c1c72ad2c3b7bdf579a2ed13aebcc5d3d81fe2571160", size = 13959, upload-time = "2026-04-23T07:41:53.828Z" },
+]
+
+[[package]]
+name = "flask-wtforms-htmx"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flask" },
+    { name = "flask-wtf" },
+    { name = "wtforms-htmx" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/67/65/dd9d168284cbf886285ba82d1ae2671ab331f01344eec1968fc53fbac0b8/flask_wtforms_htmx-0.1.0.tar.gz", hash = "sha256:29a460421c7f0a0f2bb3f0a12c1a922f0afb2f3b781789c70820b958774c78db", size = 5590, upload-time = "2026-10-23T22:03:08.689Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/96/fe/b270c403a50c6537fcb4bf59f34b207939a5e566cd380428414695448bdb/flask_wtforms_htmx-0.1.0-py3-none-any.whl", hash = "sha256:2f02e5a18c607267fecca08bd944bfe22a1dd2d42ba2b3b4e03ab642f2e2723a", size = 5210, upload-time = "2026-10-23T22:03:07.466Z" },
 ]
 
 [[package]]
@@ -4397,6 +4415,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c4/42/db38b45b7d791f608d7f1afbb9176dfef4a0dec415eb435b07cd44eb96cf/wtforms-3.3.0.tar.gz", hash = "sha256:efbc626b0b68d3bcb77822e0eceb995f56c5e9d0aeb4220b9dc2fc9f03e7e1ed", size = 171987, upload-time = "2026-10-23T14:43:11.152Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/01/99/e6eef415617529fe9479b4a0ea1a4fa360afece3b3a0c58a6904de3621b8/wtforms-3.3.0-py3-none-any.whl", hash = "sha256:eaf2f7649bedbee0bad74bb068dca8bfec8b00d04fd44c1735682c1fe33acfa7", size = 171960, upload-time = "2026-10-23T14:43:09.699Z" },
+]
+
+[[package]]
+name = "wtforms-htmx"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "wtforms" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/af/11/b144db0f34511455575b97c8429fb15a7650117aea614702e1ba22c7791a/wtforms_htmx-0.1.0.tar.gz", hash = "sha256:dc601ce30bf25cd92957677abf95c3a8fa3b18f258cc3e0cf32ab2270777a915", size = 28961, upload-time = "2026-10-23T21:42:43.762Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0c/46/0401fc19a87e51d85a43d5a4cd9b858aeae9c77ced755d1b10348272225b/wtforms_htmx-0.1.0-py3-none-any.whl", hash = "sha256:a9655ba440c3036d0dfe112ce114bf00d8344c0086b0a03f8cead5294d3b968a", size = 31155, upload-time = "2026-10-23T21:42:42.49Z" },
 ]
 
 [[package]]

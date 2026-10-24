@@ -76,7 +76,7 @@ def create_group(user):
     form = CreateGroupForm(request.form or None)
 
     if request.form:
-        if not form.validate():
+        if not form.validate_on_submit():
             flash(
                 _(
                     "The group couldn't be created. "
@@ -153,10 +153,10 @@ def edit_group(group):
 
     if (
         request.form
-        and (form.action.data == "edit" or request_is_partial())
+        and (form.action.data == "edit" or form.mutated)
         and not request.form.get("page")
     ):
-        if form.validate():
+        if form.validate_on_submit():
             group.description = form.description.data
             Backend.instance.save(group)
             flash(
@@ -262,7 +262,7 @@ def invite_to_group(user, group):
     form_validated = False
     invitation_url = None
 
-    if request.form and form.validate():
+    if form.validate_on_submit():
         form_validated = True
         invited_user = Backend.instance.query(models.User, emails=form.email.data)[0]
 

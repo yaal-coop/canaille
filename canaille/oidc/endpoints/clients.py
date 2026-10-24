@@ -58,19 +58,12 @@ def add(user):
             menuitem="admin",
         )
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_template(
-            "oidc/client_add.html",
-            form=form,
-            registration_token=registration_token,
-            menuitem="admin",
-        )
-
-    if not form.validate():
-        flash(
-            _("The client has not been added. Please check your information."),
-            "error",
-        )
+    if not form.validate_on_submit():
+        if request.form and not form.mutated:
+            flash(
+                _("The client has not been added. Please check your information."),
+                "error",
+            )
         return render_template(
             "oidc/client_add.html",
             form=form,
@@ -148,20 +141,12 @@ def client_edit(user, client):
             menuitem="admin",
         )
 
-    if not request.form or form.handle_fieldlist_operation():
-        return render_template(
-            "oidc/client_edit.html",
-            form=form,
-            client=client,
-            management_token=management_token,
-            menuitem="admin",
-        )
-
-    if not form.validate():
-        flash(
-            _("The client has not been edited. Please check your information."),
-            "error",
-        )
+    if not form.validate_on_submit():
+        if request.form and not form.mutated:
+            flash(
+                _("The client has not been edited. Please check your information."),
+                "error",
+            )
         return render_template(
             "oidc/client_edit.html",
             form=form,
