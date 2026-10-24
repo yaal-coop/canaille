@@ -59,6 +59,8 @@ Fixed
   edited.
 - The ``populate`` command could create fewer users than requested, or fail with
   SQL databases, when two fake users got the same user name.
+- With SQL databases, searching the members of a group also listed users who were
+  not members.
 - After an inline validation, a field of a list, such as an email address, could
   show another access indicator than on the page.
 - A profile field could show as read-only, or as editable, because of the access

@@ -183,6 +183,22 @@ def test_fuzzy_unique_attribute(user, moderator, admin, backend):
     assert set(backend.fuzzy(models.User, "ack")) == {moderator}
 
 
+def test_fuzzy_with_filters(user, moderator, admin, foo_group, backend):
+    """Test that fuzzy search only returns the instances that match the filters."""
+    backend.reload(user)
+    backend.reload(moderator)
+    backend.reload(admin)
+
+    assert set(backend.fuzzy(models.User, "doe.test", ["emails"])) == {
+        user,
+        moderator,
+        admin,
+    }
+    assert set(
+        backend.fuzzy(models.User, "doe.test", ["emails"], groups=foo_group)
+    ) == {user}
+
+
 def test_fuzzy_multiple_attribute(user, moderator, admin, backend):
     """Test that fuzzy search works with multi-valued attributes."""
     backend.reload(user)

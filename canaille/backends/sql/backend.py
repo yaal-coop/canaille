@@ -189,8 +189,16 @@ class SQLBackend(Backend):
             if hasattr(getattr(model, attribute_name), "type")
             and isinstance(getattr(model, attribute_name).type, (String, JSONType))
         )
+        attribute_filters = [
+            model.attribute_filter(attribute_name, expected_value)
+            for attribute_name, expected_value in kwargs.items()
+        ]
 
-        return self.db_session.execute(select(model).filter(filter)).scalars().all()
+        return (
+            self.db_session.execute(select(model).filter(filter, *attribute_filters))
+            .scalars()
+            .all()
+        )
 
     def get_persisted_value(self, instance, attribute):
         """Return the committed value from the DB, bypassing the identity map."""
