@@ -6,6 +6,9 @@ from flask import g
 from canaille.app import models
 from canaille.core.endpoints.account import RegistrationPayload
 from tests.htmx import click_fieldlist_add
+from tests.htmx import combobox_is_readonly
+from tests.htmx import combobox_values
+from tests.htmx import pick_in_combobox
 
 
 @pytest.fixture(autouse=True)
@@ -22,7 +25,7 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
     res.form["user_name"] = "someone"
     res.form["user_name_editable"] = False
     res.form["email"] = "someone@domain.test"
-    res.form["groups"] = [foo_group.id]
+    res = pick_in_combobox(res.form, "groups", "fo", foo_group.id)
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
 
@@ -38,11 +41,11 @@ def test_invitation(testclient, logged_admin, foo_group, smtpd, backend):
 
     assert "readonly" in res.form["user_name"].attrs
     assert "readonly" in res.form["emails-0"].attrs
-    assert "readonly" in res.form["groups"].attrs
+    assert combobox_is_readonly(res.form, "groups")
 
     assert res.form["user_name"].value == "someone"
     assert res.form["emails-0"].value == "someone@domain.test"
-    assert res.form["groups"].value == [foo_group.id]
+    assert combobox_values(res.form, "groups") == [foo_group.id]
 
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = "i'm a little pea"
@@ -78,7 +81,7 @@ def test_invitation_editable_user_name(
     res.form["user_name"] = "jackyjack"
     res.form["user_name_editable"] = True
     res.form["email"] = "jackyjack@domain.test"
-    res.form["groups"] = [foo_group.id]
+    res = pick_in_combobox(res.form, "groups", "fo", foo_group.id)
     res = res.form.submit(name="action", value="send", status=200)
     assert len(smtpd.messages) == 1
 
@@ -93,11 +96,11 @@ def test_invitation_editable_user_name(
 
     assert "readonly" not in res.form["user_name"].attrs
     assert "readonly" in res.form["emails-0"].attrs
-    assert "readonly" in res.form["groups"].attrs
+    assert combobox_is_readonly(res.form, "groups")
 
     assert res.form["user_name"].value == "jackyjack"
     assert res.form["emails-0"].value == "jackyjack@domain.test"
-    assert res.form["groups"].value == [foo_group.id]
+    assert combobox_values(res.form, "groups") == [foo_group.id]
 
     res.form["user_name"] = "djorje"
     res.form["password1"] = "i'm a little pea"
@@ -128,7 +131,7 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
 
     res.form["user_name"] = "sometwo"
     res.form["email"] = "sometwo@domain.test"
-    res.form["groups"] = [foo_group.id]
+    res = pick_in_combobox(res.form, "groups", "fo", foo_group.id)
     res = res.form.submit(name="action", value="generate", status=200)
     assert len(smtpd.messages) == 0
 
@@ -143,11 +146,11 @@ def test_generate_link(testclient, logged_admin, foo_group, smtpd, backend):
 
     assert "readonly" in res.form["user_name"].attrs
     assert "readonly" in res.form["emails-0"].attrs
-    assert "readonly" in res.form["groups"].attrs
+    assert combobox_is_readonly(res.form, "groups")
 
     assert res.form["user_name"].value == "sometwo"
     assert res.form["emails-0"].value == "sometwo@domain.test"
-    assert res.form["groups"].value == [foo_group.id]
+    assert combobox_values(res.form, "groups") == [foo_group.id]
 
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = "i'm a little pea"
@@ -335,8 +338,8 @@ def test_groups_are_saved_even_when_user_does_not_have_read_permission(
 
     res = testclient.get(f"/register/{b64}/{hash}", status=200)
 
-    assert res.form["groups"].value == [foo_group.id]
-    assert "readonly" in res.form["groups"].attrs
+    assert combobox_values(res.form, "groups") == [foo_group.id]
+    assert combobox_is_readonly(res.form, "groups")
 
     res.form["password1"] = "i'm a little pea"
     res.form["password2"] = "i'm a little pea"

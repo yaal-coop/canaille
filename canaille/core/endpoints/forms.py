@@ -5,8 +5,11 @@ from flask import g
 from flask_wtf.file import FileAllowed
 from flask_wtf.file import FileField
 from flask_wtf.file import FileSize
+from wtforms_htmx_components import ComboboxMultiField
 
 from canaille.app import models
+from canaille.app.combobox import ChipsWidget
+from canaille.app.combobox import ListboxWidget
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import IDToModel
@@ -405,6 +408,9 @@ def build_profile_form(
     if "groups" in fields and not Backend.instance.query(models.Group):
         del fields["groups"]
 
+    if "groups" in fields:
+        fields["groups"] = groups_combobox(validators=[non_empty_groups])
+
     if current_app.features.has_account_lockability:  # pragma: no branch
         fields["lock_date"] = DateTimeUTCField(
             _("Account expiration"),
@@ -437,7 +443,85 @@ def captcha_fields():
     return {"captcha_token": wtforms.HiddenField(), "captcha": CaptchaField()}
 
 
-class CreateGroupForm(Form):
+def model_combobox(
+    label, model_name, attributes, describe, validators=(), exclude=None, **kwargs
+):
+    """Return a combobox field that picks model instances by their attributes.
+
+    The instances in ``exclude(form)`` are not suggested.
+    """
+
+    def model():
+        return getattr(models, model_name)
+
+    def suggest(query, form):
+        excluded = exclude(form) if exclude else ()
+        return (
+            wtforms.SelectChoice(instance.id, describe(instance))
+            for instance in Backend.instance.fuzzy(model(), query, attributes)
+            if instance not in excluded
+        )
+
+    def label_for(instance_id):
+        instance = Backend.instance.get(model(), id=instance_id)
+        return describe(instance) if instance else instance_id
+
+    def coerce(instance_id):
+        if instance := Backend.instance.get(model(), id=instance_id):
+            return instance
+
+        raise ValueError(instance_id)
+
+    return ComboboxMultiField(
+        label,
+        suggest=suggest,
+        label_for=label_for,
+        coerce=coerce,
+        value_for=lambda instance: instance.id,
+        validators=list(validators),
+        search_label=_("Search"),
+        listbox_widget=ListboxWidget(multi=True),
+        chips_widget=ChipsWidget(),
+        **kwargs,
+    )
+
+
+def groups_combobox(validators=()):
+    """Return a combobox field that picks groups by their name."""
+    return model_combobox(
+        _("Groups"),
+        "Group",
+        ["display_name"],
+        lambda group: group.display_name,
+        validators=validators,
+        placeholder=_("users, admins …"),
+    )
+
+
+def describe_user(user):
+    """Return the name of ``user``, with an email or a user name to tell homonyms apart."""
+    name = user.formatted_name or user.user_name
+    detail = user.emails[0] if user.emails else user.user_name
+    return name if detail == name else f"{name} ({detail})"
+
+
+def group_members_combobox(label, validators=()):
+    """Return a combobox field that picks users who are not members of the edited group yet.
+
+    The suggestions list all users, so this is for users who can manage all groups.
+    """
+    return model_combobox(
+        label,
+        "User",
+        ["user_name", "formatted_name", "emails"],
+        describe_user,
+        validators=validators,
+        exclude=lambda form: form.group.members if form.group else (),
+        placeholder=_("Jane Doe, jane.doe@example.com …"),
+    )
+
+
+class CreateGroupForm(GroupForm):
     """The group creation form."""
 
     display_name = wtforms.StringField(
@@ -469,6 +553,20 @@ class EditGroupForm(Form):
     description = wtforms.StringField(
         _("Description"),
         validators=[wtforms.validators.Optional()],
+    )
+
+
+class CreateGroupWithMembersForm(CreateGroupForm):
+    """The group creation form, with the members to add."""
+
+    members = group_members_combobox(_("Members"))
+
+
+class AddGroupMembersForm(GroupForm):
+    """The form that adds members to a group."""
+
+    new_members = group_members_combobox(
+        _("Add members"), validators=[wtforms.validators.DataRequired()]
     )
 
 
@@ -546,15 +644,7 @@ class InvitationForm(UserForm):
             "icon": "email",
         },
     )
-    groups = wtforms.SelectMultipleField(
-        _("Groups"),
-        choices=lambda: [
-            wtforms.SelectChoice(value=group, label=group.display_name)
-            for group in Backend.instance.query(models.Group)
-        ],
-        render_kw={"icon": "users"},
-        coerce=IDToModel("Group"),
-    )
+    groups = groups_combobox()
 
 
 class EmailConfirmationForm(UserForm):

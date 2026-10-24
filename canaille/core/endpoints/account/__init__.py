@@ -27,11 +27,9 @@ from canaille.app import default_fields
 from canaille.app import models
 from canaille.app import obj_to_b64
 from canaille.app.flask import render_htmx_template
-from canaille.app.flask import request_is_partial
 from canaille.app.flask import smtp_needed
 from canaille.app.flask import user_needed
 from canaille.app.forms import Form
-from canaille.app.forms import IDToModel
 from canaille.app.forms import TableForm
 from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import is_readonly
@@ -53,6 +51,7 @@ from canaille.core.endpoints.forms import JoinFormWithCaptcha
 from canaille.core.endpoints.forms import PasswordResetForm
 from canaille.core.endpoints.forms import build_profile_form
 from canaille.core.endpoints.forms import captcha_fields
+from canaille.core.endpoints.forms import groups_combobox
 from canaille.core.mails import send_confirmation_email
 from canaille.core.mails import send_invitation_mail
 from canaille.core.mails import send_registration_mail
@@ -371,14 +370,7 @@ def registration(data=None, hash=None):
         payload and payload.groups and "groups" not in writable_fields | readable_fields
     )
     if payload_groups:
-        extra_fields["groups"] = wtforms.SelectMultipleField(
-            _("Groups"),
-            choices=[
-                wtforms.SelectChoice(value=group, label=group.display_name)
-                for group in Backend.instance.query(models.Group)
-            ],
-            coerce=IDToModel("Group"),
-        )
+        extra_fields["groups"] = groups_combobox()
 
     if (
         current_app.features.has_captcha
@@ -867,7 +859,7 @@ def profile_settings(user, edited_user):
 
     form = Form(request.form or None)
     action = form.action.data
-    if request.method == "GET" or action == "edit-settings" or request_is_partial():
+    if request.method == "GET" or action in (None, "edit-settings"):
         return _handle_profile_settings_edit(user, edited_user)
 
     if action in ("delete-confirm", "delete-execute"):
@@ -909,15 +901,19 @@ def _handle_profile_settings_edit(editor, edited_user):
         data=data,
     )
     set_permission_indicators(form, editor, edited_user)
+    if request.form and form.action.data is None and not form.mutated:
+        abort(400, "bad form action")
+
     if request.form and (form.action.data == "edit-settings" or form.mutated):
         if not form.validate_on_submit():
-            flash(
-                _(
-                    "Your changes couldn't be saved. "
-                    "Please check the form and try again."
-                ),
-                "error",
-            )
+            if not form.mutated:
+                flash(
+                    _(
+                        "Your changes couldn't be saved. "
+                        "Please check the form and try again."
+                    ),
+                    "error",
+                )
 
         else:
             for attribute in form:

@@ -172,12 +172,14 @@ action_button=none
     {% endfor %}
 {% endmacro %}
 
-{% macro field_wrapper(field, render_kw, parent_list=none) -%}
+{% macro field_wrapper(field, render_kw, parent_list=none, combobox=false) -%}
     {#- Render a field: wtforms-htmx calls it through the form Meta.field_wrapper. -#}
     {%- if render_kw.pop("bare", false) or field.type in ("HiddenField", "CSRFTokenField", "SubmitField", "ButtonField") -%}
         {{ field.widget(field, **render_kw) }}
     {%- elif field.type == "FieldList" -%}
         {{ render_list(field) }}
+    {%- elif combobox -%}
+        {{ render_combobox(field) }}
     {%- else -%}
         {%- if parent_list -%}
             {%- set index = field.index -%}
@@ -196,6 +198,42 @@ action_button=none
             {{ render_input(field, **render_kw) }}
         {%- endif -%}
     {%- endif -%}
+{%- endmacro %}
+
+{% macro render_combobox(field) -%}
+    <div id="wrap-{{ field.id }}" class="field{% if field.errors %} error{% endif %}">
+        {{ field.label() }}
+        {% set readonly = field.flags.readonly or field.flags.disabled %}
+        <div class="combobox">
+            <div class="combobox-control">
+                <div class="combobox-field">
+                    {{ field.value() }}
+                    {% if readonly %}
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    {% else %}
+                        {{ field.query() }}
+                    {% endif %}
+                </div>
+                {% if not readonly and "search" in field.form %}
+                    {{ field.search(class_="ui icon button", label='<i class="search icon"></i>'|safe, title=field.search.label.text) }}
+                {% endif %}
+            </div>
+            {% if not readonly %}
+                {{ field.suggestions() }}
+            {% endif %}
+        </div>
+        {% if field.errors %}
+            <div id="{{ field.name }}-error" role="alert">
+                {% for error in field.errors %}
+                    <div class="ui pointing red basic label">
+                        <p>{{ error }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 {%- endmacro %}
 
 {% macro render_list(field) -%}

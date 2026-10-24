@@ -10,6 +10,7 @@ from flask_wtf import FlaskForm
 from flask_wtforms_htmx import HtmxFlaskForm
 from wtforms_htmx.mutations import list_add
 from wtforms_htmx.mutations import list_remove
+from wtforms_htmx_components import ComboboxField
 
 from canaille.app import models
 from canaille.app.i18n import gettext as _
@@ -151,7 +152,9 @@ def field_wrapper(meta, field, render_kw):
         **render_kw,
     }
     macros = current_app.jinja_env.get_template("macro/form.html").module
-    return macros.field_wrapper(field, render_kw, parent)
+    return macros.field_wrapper(
+        field, render_kw, parent, combobox=isinstance(field, ComboboxField)
+    )
 
 
 def fieldlist_buttons(list_name):
@@ -232,6 +235,7 @@ def is_readonly(field) -> bool:
 def set_readonly(field) -> None:
     field.render_kw = field.render_kw or {}
     field.render_kw["readonly"] = True
+    field.flags.readonly = True
     field.validators = list(field.validators) + [wtforms.validators.ReadOnly()]
 
 

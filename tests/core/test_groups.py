@@ -1,6 +1,8 @@
 from canaille.app import models
 from canaille.core.populate import fake_groups
 from canaille.core.populate import fake_users
+from tests.htmx import combobox_values
+from tests.htmx import pick_in_combobox
 
 
 def test_delete_group(testclient, backend, user, admin, foo_group):
@@ -759,4 +761,100 @@ def test_leave_group_owner_clears_ownership(testclient, logged_user, admin, back
     assert group.members[0].id == admin.id
     assert group.owner is None
 
+    backend.delete(group)
+
+
+def suggestions(res, name):
+    """Return the labels of the combobox suggestions, by their values."""
+    return {
+        button.attrib["value"]: button.text_content().strip()
+        for button in res.pyquery(f"button[name='{name}-suggestions']")
+    }
+
+
+def test_admin_adds_members_to_group(
+    testclient, logged_admin, foo_group, user, moderator, backend
+):
+    """Test that an admin can add members to a group with the combobox."""
+    res = testclient.get("/groups/foo")
+    res = res.click(href="/groups/foo/add-members")
+    form = res.forms["addgroupmembersform"]
+    res = pick_in_combobox(form, "new_members", "jack", moderator.id)
+    form = res.forms["addgroupmembersform"]
+    assert combobox_values(form, "new_members") == [moderator.id]
+
+    res = form.submit(name="action", value="add-members", status=302)
+    assert (
+        "success",
+        "1 member has been added to the group foo.",
+    ) in res.flashes
+    backend.reload(foo_group)
+    assert set(foo_group.members) == {user, moderator}
+
+
+def test_add_no_members(testclient, logged_admin, foo_group, user, backend):
+    """Test that adding members needs at least one user."""
+    res = testclient.get("/groups/foo/add-members")
+    res = res.forms["addgroupmembersform"].submit(
+        name="action", value="add-members", status=200
+    )
+    assert (
+        "error",
+        "The members couldn't be added. Please check the form and try again.",
+    ) in res.flashes
+    backend.reload(foo_group)
+    assert foo_group.members == [user]
+
+
+def test_add_members_suggestions(testclient, logged_admin, foo_group, moderator):
+    """Test that the suggestions tell users apart and leave the members out."""
+    res = testclient.get("/groups/foo/add-members")
+    form = res.forms["addgroupmembersform"]
+    form["new_members-query"] = "doe"
+    res = form.submit("new_members-search")
+
+    assert suggestions(res, "new_members") == {
+        logged_admin.id: "Jane Doe (jane@doe.test)",
+        moderator.id: "Jack Doe (jack@doe.test)",
+    }
+
+
+def test_admin_creates_group_with_members(testclient, logged_admin, user, backend):
+    """Test that an admin can choose the members when creating a group."""
+    res = testclient.get("/groups/add")
+    form = res.forms["creategroupform"]
+    form["display_name"] = "newgroup"
+    res = pick_in_combobox(form, "members", "john", user.id)
+    res = res.forms["creategroupform"].submit(name="action", value="edit", status=302)
+
+    group = backend.get(models.Group, display_name="newgroup")
+    assert set(group.members) == {logged_admin, user}
+    backend.delete(group)
+
+
+def test_group_owner_cannot_add_members(testclient, logged_user, admin, backend):
+    """Test that users who cannot manage all groups cannot list users to add them."""
+    group = models.Group(
+        members=[logged_user], display_name="user_group", owner=logged_user
+    )
+    backend.save(group)
+
+    res = testclient.get("/groups/add")
+    assert "members-query" not in res.forms["creategroupform"].fields
+
+    res = testclient.get("/groups/user_group")
+    assert "/groups/user_group/add-members" not in res.text
+
+    testclient.get("/groups/user_group/add-members", status=403)
+    testclient.post(
+        "/groups/user_group/add-members",
+        {
+            "csrf_token": res.forms["editgroupform"]["csrf_token"].value,
+            "new_members-value": admin.id,
+            "action": "add-members",
+        },
+        status=403,
+    )
+    backend.reload(group)
+    assert group.members == [logged_user]
     backend.delete(group)

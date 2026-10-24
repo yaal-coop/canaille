@@ -2,6 +2,7 @@ from canaille.app import models
 from tests.htmx import click_fieldlist_add
 from tests.htmx import fieldlist_add
 from tests.htmx import htmx_headers
+from tests.htmx import pick_in_combobox
 
 
 def test_user_creation_edition_and_deletion(
@@ -14,12 +15,12 @@ def test_user_creation_edition_and_deletion(
 
     # Fill the profile for a new user.
     res = testclient.get("/profile", status=200)
+    res = pick_in_combobox(res.form, "groups", "fo", foo_group.id)
     res.form["user_name"] = "george"
     res.form["given_name"] = "George"
     res.form["family_name"] = "Abitbol"
     res.form["emails-0"] = "george@abitbol.test"
     res.form["phone_numbers-0"] = "555-666-888"
-    res.form["groups"] = [foo_group.id]
     res.form["password1"] = "totoyolo"
     res.form["password2"] = "totoyolo"
 
@@ -37,7 +38,7 @@ def test_user_creation_edition_and_deletion(
     res.mustcontain("george")
 
     res = testclient.get("/profile/george/settings", status=200)
-    assert "readonly" not in res.form["groups"].attrs
+    assert "groups-query" in res.form.fields
 
     # User have been edited
     res = testclient.get("/profile/george", status=200)
@@ -45,7 +46,7 @@ def test_user_creation_edition_and_deletion(
     res = res.form.submit(name="action", value="edit-profile").follow()
 
     res = testclient.get("/profile/george/settings", status=200)
-    res.form["groups"] = [foo_group.id, bar_group.id]
+    res = pick_in_combobox(res.form, "groups", "ba", bar_group.id)
     res = res.form.submit(name="action", value="edit-settings").follow()
 
     george = backend.get(models.User, user_name="george")
