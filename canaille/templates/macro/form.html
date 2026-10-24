@@ -207,6 +207,7 @@ action_button=none
         <div class="combobox">
             <div class="combobox-control">
                 <div class="combobox-field">
+                    {% if field.description %}<i class="question circle link icon" title="{{ field.description }}"></i>{% endif %}
                     {{ field.value() }}
                     {% if readonly %}
                         <div class="ui corner label" title="{{ _("This field is not editable") }}">

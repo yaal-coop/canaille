@@ -324,6 +324,12 @@ body:has(.loading) #page-progress {
     border: 1px solid rgba(34,36,38,.15);
     border-radius: .28571429rem;
 }
+.ui.form .combobox-field > .question.icon {
+    flex: none;
+    width: 2.14285714em;
+    margin: 0;
+    opacity: .5;
+}
 .ui.form .combobox-field > .ui.corner.label {
     font-size: .64285714em;
 }
