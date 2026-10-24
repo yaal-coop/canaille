@@ -1,6 +1,5 @@
 from canaille.app import models
 from canaille.core.populate import fake_groups
-from canaille.core.populate import fake_users
 from tests.htmx import combobox_values
 from tests.htmx import pick_in_combobox
 
@@ -249,7 +248,14 @@ def test_edition_failed(testclient, logged_moderator, foo_group, backend):
 
 def test_user_list_pagination(testclient, logged_admin, foo_group, backend):
     """Test that user list pagination within a group correctly navigates between pages."""
-    users = fake_users(25)
+    users = [
+        models.User(
+            user_name=f"user-{i}", formatted_name=f"User {i}", family_name=f"User {i}"
+        )
+        for i in range(25)
+    ]
+    for user in users:
+        backend.save(user)
     for user in users:
         foo_group.members = foo_group.members + [user]
     backend.save(foo_group)

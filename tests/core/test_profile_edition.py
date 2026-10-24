@@ -6,7 +6,7 @@ from flask import g
 from PIL import Image
 from webtest import Upload
 
-from canaille.core.populate import fake_users
+from canaille.app import models
 from tests.htmx import click_fieldlist_add
 from tests.htmx import fieldlist_add
 from tests.htmx import htmx_headers
@@ -28,7 +28,14 @@ def test_invalid_form_request(testclient, logged_user):
 
 def test_user_list_pagination(testclient, logged_admin, backend):
     """Test that user list pagination correctly navigates between pages."""
-    users = fake_users(25)
+    users = [
+        models.User(
+            user_name=f"user-{i}", formatted_name=f"User {i}", family_name=f"User {i}"
+        )
+        for i in range(25)
+    ]
+    for user in users:
+        backend.save(user)
     res = testclient.get("/users")
     form = res.forms["tableform"]
     res = form.submit(name="page", value="2")
