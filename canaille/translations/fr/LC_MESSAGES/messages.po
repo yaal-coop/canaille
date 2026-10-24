@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-09-05 16:08+0200\n"
-"PO-Revision-Date: 2026-10-14 06:51+0000\n"
-"Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-24 18:18+0000\n"
+"Last-Translator: Éloi Rivard <azmeuk@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -759,15 +759,11 @@ msgstr ""
 "email. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/endpoints/account/auth/password.py:106
-#, fuzzy
-#| msgid ""
-#| "Sending password initialization link at the user email address. It should "
-#| "be received within a few minutes."
 msgid ""
 "Sending password initialization code at the user email address. It should be "
 "received within a few minutes."
 msgstr ""
-"Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
+"Un code d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "email. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/endpoints/account/auth/password.py:119
@@ -779,15 +775,11 @@ msgstr ""
 "email. Il devrait arriver d'ici quelques de minutes."
 
 #: canaille/core/endpoints/account/auth/password.py:127
-#, fuzzy
-#| msgid ""
-#| "Sending password reset link to the user email address. It should be "
-#| "received within a few minutes."
 msgid ""
 "Sending password reset code to the user email address. It should be received "
 "within a few minutes."
 msgstr ""
-"Un lien de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
+"Un code de réinitialisation de mot de passe a été envoyé à l'utilisateur par "
 "email. Il devrait arriver d'ici quelques de minutes."
 
 #: canaille/core/endpoints/auth/__init__.py:83
@@ -859,15 +851,11 @@ msgstr ""
 "email. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/endpoints/auth/password.py:144
-#, fuzzy
-#| msgid ""
-#| "Sending password initialization link at your email address. It should be "
-#| "received within a few minutes."
 msgid ""
 "Sending password initialization code at your email address. It should be "
 "received within a few minutes."
 msgstr ""
-"Un lien d'initialisation de mot de passe a été envoyé à l'utilisateur par "
+"Un code d'initialisation de mot de passe a été envoyé à l'utilisateur par "
 "email. Il devrait arriver d'ici une quelques minutes."
 
 #: canaille/core/endpoints/auth/password.py:167
@@ -2232,13 +2220,6 @@ msgstr ""
 "cliquez sur le bouton « Envoyer le lien d'initialisation » ci-dessous."
 
 #: canaille/templates/core/auth/firstlogin.html:42
-#, fuzzy
-#| msgid ""
-#| "It seems this is the first time you are logging here. In order to "
-#| "finalize your account configuration, you need to set a password to your "
-#| "account. We will send you an email containing a link that will allow you "
-#| "to set a password. Please click on the \"Send the initialization email\" "
-#| "button below to send the email."
 msgid ""
 "It seems this is the first time you are logging here. In order to finalize "
 "your account configuration, you need to set a password to your account. We "
@@ -2248,7 +2229,7 @@ msgid ""
 msgstr ""
 "Il semblerait que vous vous connectez ici pour la première fois. Afin de "
 "finaliser la configuration de votre compte, vous devez mettre en place un "
-"mot de passe. Nous allons vous envoyer un email contenant un lien qui vous "
+"mot de passe. Nous allons vous envoyer un email contenant un code qui vous "
 "permettra de choisir un mot de passe. Pour continuer et envoyer l'email, "
 "cliquez sur le bouton « Envoyer le lien d'initialisation » ci-dessous."
 
@@ -2727,18 +2708,14 @@ msgstr "Code de connexion"
 
 #: canaille/templates/core/mails/firstlogin.html:28
 #: canaille/templates/core/mails/firstlogin.txt:4
-#, fuzzy, python-format
-#| msgid ""
-#| "In order to finalize your account configuration at %(site_name)s, we need "
-#| "to setup your password. Please click on the link below and follow the "
-#| "instructions."
+#, python-format
 msgid ""
 "In order to finalize your account configuration at %(site_name)s, we need to "
 "setup your password. Please enter the code below at %(site_name)s."
 msgstr ""
 "Afin de finaliser la configuration de votre compte sur %(site_name)s, nous "
-"devons mettre en place un mot de passe. Veuillez cliquer sur le lien ci-"
-"dessous, et suivre les instructions qui vous seront présentées."
+"devons mettre en place un mot de passe. Veuillez renseigner le code ci-"
+"dessous sur %(site_name)s."
 
 #: canaille/templates/core/mails/firstlogin.html:31
 #: canaille/templates/core/mails/firstlogin.txt:5
