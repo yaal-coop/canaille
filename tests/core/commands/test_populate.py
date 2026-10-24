@@ -54,3 +54,25 @@ def test_populate_groups_without_users(cli_runner, backend):
     if "ldap" in backend.__class__.__module__:
         pytest.skip()
     assert fake_groups(nb_users_max=0)
+
+
+def test_fake_users_have_unique_user_names(testclient, backend, monkeypatch):
+    """Fake users get distinct user names, even when faker suggests the same one twice."""
+    from faker.providers.profile import Provider
+
+    profile = Provider.profile
+    user_names = iter(["jdoe", "jdoe", "jsmith"])
+
+    def duplicated_profile(self, *args, **kwargs):
+        result = profile(self, *args, **kwargs)
+        result["username"] = next(user_names)
+        return result
+
+    monkeypatch.setattr(Provider, "profile", duplicated_profile)
+
+    users = fake_users(2)
+
+    assert sorted(user.user_name for user in users) == ["jdoe", "jsmith"]
+
+    for user in users:
+        backend.delete(user)

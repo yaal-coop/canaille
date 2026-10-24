@@ -34,12 +34,24 @@ def fake_users(nb=1):
     locales = list(set(available_language_codes()) & set(AVAILABLE_LOCALES))
     faker_obj = faker.Faker(locales).unique
     users = list()
+    user_names = set()
+    emails = set()
 
     for _ in range(nb):
         try:
             locale = random.choice(locales)
             fake = faker_obj[locale]
+            # The faker uniqueness is on the whole profile, not on its user name
             profile = fake.profile()
+            while (
+                profile["username"] in user_names
+                or profile["mail"] in emails
+                or Backend.instance.get(models.User, user_name=profile["username"])
+            ):
+                profile = fake.profile()
+
+            user_names.add(profile["username"])
+            emails.add(profile["mail"])
             name = profile["name"]
             user = models.User(
                 formatted_name=name,
