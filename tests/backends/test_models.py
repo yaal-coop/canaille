@@ -294,3 +294,7 @@ def test_backend_properties_are_attributes():
     assert "foo" in Backend.attributes
     assert "bar" not in Backend.attributes
     assert "foo" in Base.attributes
+
+    instance = Backend()
+    assert instance.foo == "foo"
+    assert instance.bar == "bar"
