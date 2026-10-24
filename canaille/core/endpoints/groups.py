@@ -171,14 +171,10 @@ def edit_group(group, form):
             )
             return redirect(url_for("core.groups.group", group=group))
 
-        if not form.mutated:
-            flash(
-                _(
-                    "Your changes couldn't be saved. "
-                    "Please check the form and try again."
-                ),
-                "error",
-            )
+        flash(
+            _("Your changes couldn't be saved. Please check the form and try again."),
+            "error",
+        )
 
     return render_htmx_template(
         "core/group.html",
