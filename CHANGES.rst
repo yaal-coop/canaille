@@ -17,23 +17,18 @@ Changed
 - Form fields are checked when the user leaves them, instead of while they type,
   except for the password strength. Characters typed during a check could get lost.
 - Groups are picked with a search field in the user invitation and account settings
-  forms, also without JavaScript. Groups are searched by the server, instead of being
-  all loaded in the page.
-- Forms rely on `wtforms-htmx <https://wtforms-htmx.readthedocs.io>`_ for their
-  inline validation and their add and remove buttons. Read-only lists no longer show
-  these buttons.
-- Photos need the ``front`` packaging extras, and are refused without it. This keeps
-  minimal installations, such as the one :doc:`pytest-iam:index` performs, free of
-  the Pillow dependency.
+  forms, also without JavaScript. The pages stay light with many groups.
+- Read-only lists no longer show the add and remove buttons.
+- Photos need the ``front`` packaging extras, and are refused without it.
 - Photos are converted to JPEG on the LDAP backend, as they are stored in the
   ``jpegPhoto`` attribute.
 - Canaille uses `httpx2 <https://github.com/pydantic/httpx2>`_ instead of httpx for its
   outgoing requests, such as the password compromise check and the download of
   ``request_uri`` and ``jwks_uri`` documents. HTTPS certificates are checked against
   the system trust store, instead of the certifi bundle.
-- The SCIM server follows RFC 7644 more closely on PATCH requests, as it now relies on
-  scim2-models 0.10. For instance, a PATCH that writes the ``display`` of a group
-  member is refused with a ``mutability`` error.
+- The SCIM server follows RFC 7644 more closely on PATCH requests. For instance, a
+  PATCH that writes the ``display`` of a group member is refused with a
+  ``mutability`` error.
 - The SCIM ``ResourceType`` endpoints are relative to the SCIM base URL, such as
   ``/Users``, as RFC 7643 §6 defines them.
 - The SCIM ``User`` resource type declares the enterprise extension as optional.
@@ -44,8 +39,7 @@ Changed
   manage are left untouched.
 - A SCIM PUT request that changes nothing keeps the ``meta.version`` and
   ``meta.lastModified`` of the resource.
-- The SCIM server is built upon `scim2-server <https://github.com/python-scim/scim2-server>`_.
-  **SCIM clients may need to be adapted:**
+- **SCIM clients may need to be adapted:**
 
   - users and groups are identified by their ``id`` in the URLs, in ``members.value``
     and in ``$ref``, instead of their ``userName`` and ``displayName``;
@@ -60,24 +54,21 @@ Removed
 
 Fixed
 ^^^^^
-- htmx inserted an inline style sheet that the Content Security Policy blocked.
-- Building a profile form changed the cached access rights of the user, adding
-  the password confirmation and photo deletion fields to them.
+- The browser console showed Content Security Policy errors on every page.
 - After an inline validation, a field of a list, such as an email address, could
-  show another access indicator than on the page. Profile fields no longer carry
-  stray HTML attributes.
+  show another access indicator than on the page.
 - A profile field could show as read-only, or as editable, because of the access
   rights of the user of a previous request.
 - Under concurrent requests, the error messages of the profile forms could show
   in the language of another user.
 - Without JavaScript, the copy buttons submitted the form they are in.
-- After the inline validation of a password field, password fields could show
-  the typed passwords in the page HTML, for every user served by the same process.
+- After the inline validation of a password field, the typed passwords could be
+  found in the page HTML of other users.
 - Canaille did not start with the ``postgresql`` and ``mysql`` extras, as they
   installed SQLAlchemy 2.1, which sqlalchemy-utils does not support yet.
 - Two edits of a resource in the same second got the same SCIM ETag, so an outdated
   ``If-Match`` could be accepted. Modification dates are now precise to the
-  microsecond. With OpenLDAP, they are read from ``entryCSN``.
+  microsecond.
 - Spaces around a table search query prevented any match.
 - On the SQL backend, the members added to a group at the same time could be
   listed in any order. They now keep the order they were added in.
