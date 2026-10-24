@@ -54,10 +54,6 @@ class ListboxWidget:
         if self.multi:
             attrs["aria-multiselectable"] = "true"
 
-        options = list(field)
-        if options:
-            attrs["class"] = "combobox-suggestions"
-
         items = [
             option(
                 label=option.choice.label,
@@ -65,6 +61,6 @@ class ListboxWidget:
                 class_="item",
                 **option._form.htmx_submit_attrs(option),
             )
-            for option in options
+            for option in field
         ]
         return Markup(f"<div {html_params(**attrs)}>{''.join(items)}</div>")

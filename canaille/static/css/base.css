@@ -305,6 +305,10 @@ body:has(.loading) #page-progress {
 
 /* MEDIA QUERIES */
 
+.group-members-actions {
+    margin-bottom: 1em;
+}
+
 /* COMBOBOX */
 
 .ui.form .combobox-field {
@@ -363,24 +367,36 @@ body:has(.loading) #page-progress {
     box-shadow: none;
     background: transparent;
 }
-.ui.form .combobox-field .ui.basic.button {
+.combobox-control {
+    display: flex;
+}
+.ui.form .combobox-control > .combobox-field {
+    flex: 1;
+    min-width: 0;
+}
+.ui.form .combobox-control:has(> .ui.button) > .combobox-field {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.combobox-control > .ui.button {
     margin: 0;
-    padding: .5em;
-    line-height: 1;
-    box-shadow: none;
+    border-radius: 0;
+}
+.combobox-control > .ui.button:last-child {
+    border-radius: 0 .28571429rem .28571429rem 0;
 }
 .combobox {
     position: relative;
 }
-.ui.form .combobox:not([data-combobox-closed]):has(> .combobox-suggestions) > .combobox-field {
+.ui.form .combobox:not([data-combobox-closed]):has(> [role="listbox"] > [role="option"]) .combobox-field {
     border-color: #96c8da;
     border-radius: .28571429rem .28571429rem 0 0;
     box-shadow: 0 2px 3px 0 rgba(34,36,38,.15);
 }
-.combobox[data-combobox-closed] > .combobox-suggestions {
+.combobox[data-combobox-closed] > [role="listbox"]:has(> [role="option"]) {
     display: none;
 }
-.combobox-suggestions {
+.combobox > [role="listbox"]:has(> [role="option"]) {
     position: absolute;
     top: 100%;
     left: 0;
@@ -396,7 +412,7 @@ body:has(.loading) #page-progress {
     border-radius: 0 0 .28571429rem .28571429rem;
     box-shadow: 0 2px 3px 0 rgba(34,36,38,.15);
 }
-.combobox-suggestions > .item {
+.combobox > [role="listbox"] > .item {
     padding: .78571429rem 1.14285714rem;
     font: inherit;
     line-height: 1em;
@@ -407,7 +423,7 @@ body:has(.loading) #page-progress {
     text-align: left;
     cursor: pointer;
 }
-.combobox-suggestions > .item:hover, .combobox-suggestions > .item:focus {
+.combobox > [role="listbox"] > .item:hover, .combobox > [role="listbox"] > .item:focus {
     background: rgba(0,0,0,.05);
     color: rgba(0,0,0,.95);
 }
@@ -594,14 +610,14 @@ body:has(.loading) #page-progress {
     .ui.form .combobox-field {
         background: #222222;
     }
-    .combobox-suggestions {
+    .combobox > [role="listbox"]:has(> [role="option"]) {
         background: #222222;
     }
-    .combobox-suggestions > .item {
+    .combobox > [role="listbox"] > .item {
         border-top-color: #181818;
         color: rgba(255,255,255,.87);
     }
-    .combobox-suggestions > .item:hover, .combobox-suggestions > .item:focus {
+    .combobox > [role="listbox"] > .item:hover, .combobox > [role="listbox"] > .item:focus {
         background: #282828;
         color: rgba(255,255,255,.87);
     }

@@ -205,17 +205,19 @@ action_button=none
         {{ field.label() }}
         {% set readonly = field.flags.readonly or field.flags.disabled %}
         <div class="combobox">
-            <div class="combobox-field">
-                {{ field.value() }}
-                {% if readonly %}
-                    <div class="ui corner label" title="{{ _("This field is not editable") }}">
-                        <i class="lock icon"></i>
-                    </div>
-                {% else %}
-                    {{ field.query() }}
-                    {% if "search" in field.form %}
-                        {{ field.search(class_="ui basic icon button", label='<i class="search icon"></i>'|safe, title=field.search.label.text) }}
+            <div class="combobox-control">
+                <div class="combobox-field">
+                    {{ field.value() }}
+                    {% if readonly %}
+                        <div class="ui corner label" title="{{ _("This field is not editable") }}">
+                            <i class="lock icon"></i>
+                        </div>
+                    {% else %}
+                        {{ field.query() }}
                     {% endif %}
+                </div>
+                {% if not readonly and "search" in field.form %}
+                    {{ field.search(class_="ui icon button", label='<i class="search icon"></i>'|safe, title=field.search.label.text) }}
                 {% endif %}
             </div>
             {% if not readonly %}

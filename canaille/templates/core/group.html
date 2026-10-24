@@ -58,9 +58,12 @@ Displays the group edition or creation form.
             </div>
         </h2>
 
-        {% call fui.render_form(form) %}
+        {% call fui.render_form(form, id="editgroupform" if edited_group else "creategroupform") %}
             {{ form.display_name() }}
             {{ form.description() }}
+            {% if "members" in form %}
+                {{ form.members() }}
+            {% endif %}
 
             {% if not edited_group %}
                 <div class="ui info visible message">
@@ -74,10 +77,6 @@ Displays the group edition or creation form.
                         {% call fui.render_button(form.action, "confirm-delete", class_="ui right floated basic negative button confirm", id="confirm-delete") %}
                             {% trans %}Delete group{% endtrans %}
                         {% endcall %}
-                        <a href="{{ url_for('core.groups.invite_to_group', group=edited_group) }}" class="ui right floated secondary button">
-                            <i class="paper plane icon"></i>
-                            {% trans %}Invite Members{% endtrans %}
-                        </a>
                     {% endif %}
                     {% call fui.render_button(form.action, "edit", class_="ui right floated primary button") %}
                         {% if not edited_group %}
@@ -98,6 +97,21 @@ Displays the group edition or creation form.
                     {% trans %}Group members{% endtrans %}
                 </div>
             </h2>
+
+            <div class="ui right aligned container group-members-actions">
+                <div class="ui stackable buttons">
+                    <a href="{{ url_for('core.groups.invite_to_group', group=edited_group) }}" class="ui secondary button">
+                        <i class="paper plane icon"></i>
+                        {% trans %}Invite Members{% endtrans %}
+                    </a>
+                    {% if user.can("manage_all_groups") %}
+                        <a href="{{ url_for('core.groups.add_members', group=edited_group) }}" class="ui primary button">
+                            <i class="user plus icon"></i>
+                            {% trans %}Add Members{% endtrans %}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
 
             {{ table.search(table_form, "table.users") }}
         </div>

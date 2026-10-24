@@ -2,7 +2,7 @@
  * Adapted from the wtforms-htmx-components example. Handlers sit on the
  * document, so they keep working after htmx swaps. */
 (function () {
-    const OPTION = '.combobox-suggestions > [role="option"]';
+    const OPTION = '.combobox > [role="listbox"] > [role="option"]';
 
     function options(combobox) {
         return Array.from(combobox.querySelectorAll(OPTION));

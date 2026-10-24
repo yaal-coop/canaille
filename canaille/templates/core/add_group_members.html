@@ -1,0 +1,65 @@
+{#
+Group members addition page.
+
+Lets users who can manage all groups add users to a group, without asking them.
+
+:param form: The form that adds members to the group.
+:type form: :class:`~canaille.core.endpoints.forms.AddGroupMembersForm`
+:param group: The group to add members to.
+:type group: :class:`~canaille.core.models.Group`
+#}
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{%- block title -%}
+    {%- trans group_name=group.display_name %}Add members to {{ group_name }}{% endtrans -%}
+{%- endblock -%}
+
+{% block submenu %}
+    <a class="item" href="{{ url_for('core.groups.groups') }}">
+        <i class="th list icon"></i>
+        {% trans %}Groups{% endtrans %}
+    </a>
+    <a class="item" href="{{ url_for('core.groups.group', group=group) }}">
+        <i class="users icon"></i>
+        {% trans %}View Group{% endtrans %}
+    </a>
+    <a class="active item" href="{{ url_for('core.groups.add_members', group=group) }}">
+        <i class="user plus icon"></i>
+        {% trans %}Add Members{% endtrans %}
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="ui segment">
+        <h2 class="ui center aligned header">
+            <div class="content">
+                {% trans group_name=group.display_name %}Add members to {{ group_name }}{% endtrans %}
+            </div>
+        </h2>
+
+        <div class="ui message">
+            {% trans %}
+                The users are added to the group right away.
+                To ask them first, invite them instead.
+            {% endtrans %}
+        </div>
+
+        {% call fui.render_form(form) %}
+            {% block new_members_field scoped %}
+                {{ form.new_members() }}
+            {% endblock %}
+
+            <div class="ui right aligned container">
+                <div class="ui stackable buttons">
+                    <a class="ui right floated button" href="{{ url_for("core.groups.group", group=group) }}">
+                        {{ _("Cancel") }}
+                    </a>
+                    {% call fui.render_button(form.action, "add-members", class_="ui right floated primary button") %}
+                        {% trans %}Add{% endtrans %}
+                    {% endcall %}
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+{% endblock %}

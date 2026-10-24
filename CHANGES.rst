@@ -9,6 +9,8 @@ Added
   and cannot weigh more than 5MB.
 - Support for SCIM bulk operations.
 - Support for SCIM filtering and sorting.
+- Users who can manage all groups can pick the members of a group when they create
+  it, and add several users at once to an existing group. :issue:`192`
 
 Changed
 ^^^^^^^

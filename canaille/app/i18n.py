@@ -11,6 +11,7 @@ try:
     from flask_babel import get_locale
     from flask_babel import gettext
     from flask_babel import lazy_gettext
+    from flask_babel import ngettext
 
     babel = Babel()
 except ImportError:
@@ -20,6 +21,9 @@ except ImportError:
 
     def get_locale():
         return "en_US"
+
+    def ngettext(singular, plural, num, **variables):
+        return (singular if num == 1 else plural) % {"num": num, **variables}
 
     gettext = identity
     lazy_gettext = identity

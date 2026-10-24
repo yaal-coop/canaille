@@ -443,7 +443,85 @@ def captcha_fields():
     return {"captcha_token": wtforms.HiddenField(), "captcha": CaptchaField()}
 
 
-class CreateGroupForm(Form):
+def model_combobox(
+    label, model_name, attributes, describe, validators=(), exclude=None, **kwargs
+):
+    """Return a combobox field that picks model instances by their attributes.
+
+    The instances in ``exclude(form)`` are not suggested.
+    """
+
+    def model():
+        return getattr(models, model_name)
+
+    def suggest(query, form):
+        excluded = exclude(form) if exclude else ()
+        return (
+            wtforms.SelectChoice(instance.id, describe(instance))
+            for instance in Backend.instance.fuzzy(model(), query, attributes)
+            if instance not in excluded
+        )
+
+    def label_for(instance_id):
+        instance = Backend.instance.get(model(), id=instance_id)
+        return describe(instance) if instance else instance_id
+
+    def coerce(instance_id):
+        if instance := Backend.instance.get(model(), id=instance_id):
+            return instance
+
+        raise ValueError(instance_id)
+
+    return ComboboxMultiField(
+        label,
+        suggest=suggest,
+        label_for=label_for,
+        coerce=coerce,
+        value_for=lambda instance: instance.id,
+        validators=list(validators),
+        search_label=_("Search"),
+        listbox_widget=ListboxWidget(multi=True),
+        chips_widget=ChipsWidget(),
+        **kwargs,
+    )
+
+
+def groups_combobox(validators=()):
+    """Return a combobox field that picks groups by their name."""
+    return model_combobox(
+        _("Groups"),
+        "Group",
+        ["display_name"],
+        lambda group: group.display_name,
+        validators=validators,
+        placeholder=_("users, admins …"),
+    )
+
+
+def describe_user(user):
+    """Return the name of ``user``, with an email or a user name to tell homonyms apart."""
+    name = user.formatted_name or user.user_name
+    detail = user.emails[0] if user.emails else user.user_name
+    return name if detail == name else f"{name} ({detail})"
+
+
+def group_members_combobox(label, validators=()):
+    """Return a combobox field that picks users who are not members of the edited group yet.
+
+    The suggestions list all users, so this is for users who can manage all groups.
+    """
+    return model_combobox(
+        label,
+        "User",
+        ["user_name", "formatted_name", "emails"],
+        describe_user,
+        validators=validators,
+        exclude=lambda form: form.group.members if form.group else (),
+        placeholder=_("Jane Doe, jane.doe@example.com …"),
+    )
+
+
+class CreateGroupForm(GroupForm):
     """The group creation form."""
 
     display_name = wtforms.StringField(
@@ -475,6 +553,20 @@ class EditGroupForm(Form):
     description = wtforms.StringField(
         _("Description"),
         validators=[wtforms.validators.Optional()],
+    )
+
+
+class CreateGroupWithMembersForm(CreateGroupForm):
+    """The group creation form, with the members to add."""
+
+    members = group_members_combobox(_("Members"))
+
+
+class AddGroupMembersForm(GroupForm):
+    """The form that adds members to a group."""
+
+    new_members = group_members_combobox(
+        _("Add members"), validators=[wtforms.validators.DataRequired()]
     )
 
 
@@ -527,44 +619,6 @@ class JoinForm(UserForm):
 class JoinFormWithCaptcha(JoinForm):
     captcha_token = wtforms.HiddenField()
     captcha = CaptchaField()
-
-
-def suggest_groups(query, form):
-    """Return the groups whose name contains ``query``."""
-    return [
-        wtforms.SelectChoice(group.id, group.display_name)
-        for group in Backend.instance.fuzzy(models.Group, query, ["display_name"])
-    ]
-
-
-def group_label(group_id):
-    """Return the name of the group ``group_id``."""
-    group = Backend.instance.get(models.Group, id=group_id)
-    return group.display_name if group else group_id
-
-
-def group_from_id(group_id):
-    """Return the group ``group_id``, or raise ValueError when it does not exist."""
-    if group := Backend.instance.get(models.Group, id=group_id):
-        return group
-
-    raise ValueError(group_id)
-
-
-def groups_combobox(validators=()):
-    """Return a combobox field that picks groups by their name."""
-    return ComboboxMultiField(
-        _("Groups"),
-        suggest=suggest_groups,
-        label_for=group_label,
-        coerce=group_from_id,
-        value_for=lambda group: group.id,
-        validators=list(validators),
-        placeholder=_("users, admins …"),
-        search_label=_("Search"),
-        listbox_widget=ListboxWidget(multi=True),
-        chips_widget=ChipsWidget(),
-    )
 
 
 class InvitationForm(UserForm):
