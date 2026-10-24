@@ -67,6 +67,17 @@ def test_user_list_search(testclient, logged_admin, user, moderator):
     res.mustcontain(no=user.formatted_name)
 
 
+def test_user_list_search_trimmed(testclient, logged_admin, user, moderator):
+    """Test that the spaces around the search query are ignored."""
+    res = testclient.get("/users")
+    form = res.forms["search"]
+    form["query"] = "  Jack  "
+    res = form.submit()
+
+    res.mustcontain(moderator.formatted_name)
+    res.mustcontain(no=user.formatted_name)
+
+
 def test_user_list_search_only_allowed_fields(
     testclient, logged_admin, user, moderator, backend
 ):

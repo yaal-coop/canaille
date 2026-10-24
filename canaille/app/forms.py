@@ -193,7 +193,7 @@ class TableForm(FlaskForm):
         self.items_slice = self.items[first_item:last_item]
 
     page = wtforms.IntegerField(default=1)
-    query = wtforms.StringField(default="")
+    query = wtforms.StringField(default="", filters=[str.strip])
 
     def validate_page(self, field):
         if field.data < 1 or field.data > self.page_max:

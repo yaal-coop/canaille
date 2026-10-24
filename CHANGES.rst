@@ -78,6 +78,7 @@ Fixed
 - Two edits of a resource in the same second got the same SCIM ETag, so an outdated
   ``If-Match`` could be accepted. Modification dates are now precise to the
   microsecond. With OpenLDAP, they are read from ``entryCSN``.
+- Spaces around a table search query prevented any match.
 - On the SQL backend, the members added to a group at the same time could be
   listed in any order. They now keep the order they were added in.
 - The SQL database could not be created on MariaDB. On MariaDB, dates keep their
