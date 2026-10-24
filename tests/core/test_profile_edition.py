@@ -430,3 +430,17 @@ def test_inline_validation_keep_indicators(testclient, logged_admin, user, backe
         headers=htmx_headers("display_name"),
     )
     res.mustcontain("This user cannot edit this field")
+
+
+def test_indicator_for_fields_the_user_cannot_see(
+    testclient, logged_admin, user, backend
+):
+    """An administrator sees which fields the edited user cannot see."""
+    acl = testclient.app.config["CANAILLE"]["ACL"]
+    acl["DEFAULT"]["WRITE"].remove("display_name")
+    acl["ADMIN"]["WRITE"].append("display_name")
+    backend.reload(logged_admin)
+    backend.reload(user)
+
+    res = testclient.get("/profile/user")
+    res.mustcontain("This user cannot see this field")
