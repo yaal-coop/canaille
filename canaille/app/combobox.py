@@ -44,15 +44,15 @@ class ChipsWidget:
 
 
 class ListboxWidget:
-    """Render the suggestions of a combobox as a menu like the Fomantic-UI dropdown one."""
-
-    def __init__(self, multi=False):
-        self.multi = multi
+    """Render the suggestions of a multi combobox as a menu like the Fomantic-UI dropdown one."""
 
     def __call__(self, field, **kwargs):
-        attrs = {"id": field.id, "role": "listbox", **kwargs}
-        if self.multi:
-            attrs["aria-multiselectable"] = "true"
+        attrs = {
+            "id": field.id,
+            "role": "listbox",
+            "aria-multiselectable": "true",
+            **kwargs,
+        }
 
         items = [
             option(

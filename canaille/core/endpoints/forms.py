@@ -480,7 +480,7 @@ def model_combobox(
         value_for=lambda instance: instance.id,
         validators=list(validators),
         search_label=_("Search"),
-        listbox_widget=ListboxWidget(multi=True),
+        listbox_widget=ListboxWidget(),
         chips_widget=ChipsWidget(),
         **kwargs,
     )
