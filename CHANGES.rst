@@ -248,21 +248,21 @@ Fixed
 - SCIM server no longer crashes with a 500 error when querying or patching users that have a profile photo.
 - SCIM server no longer returns an ``invalidSyntax`` error when a user has an empty ``profile_url``.
 
-[0.2.2] - 2025-03-20
+[0.2.2] - 2026-03-20
 --------------------
 
 Fixed
 ^^^^^
 - ``ui_locales_supported`` in OIDC well-known now uses BCP 47 language tags (hyphens) instead of POSIX locale codes (underscores).
 
-[0.2.1] - 2025-02-25
+[0.2.1] - 2026-02-25
 --------------------
 
 Fixed
 ^^^^^
 - Fix alg selection on JWT emission.
 
-[0.2.0] - 2025-02-25
+[0.2.0] - 2026-02-25
 --------------------
 
 Added
@@ -1017,7 +1017,7 @@ Fixed
 - Password comparison was too permissive on login.
 - Encrypt passwords in the SQL backend.
 
-[0.0.35] - 2023-11-25
+[0.0.35] - 2023-11-24
 ---------------------
 
 Added
@@ -1469,7 +1469,7 @@ Fixed
 - Default groups on invitations. :pr:`41`
 - LDAP schemas are shipped within the Canaille package. :pr:`42`
 
-[0.0.5] - 2022-02-17
+[0.0.5] - 2022-03-03
 --------------------
 
 Changed
