@@ -79,6 +79,22 @@ class CaptchaField(wtforms.StringField):
         )
 
 
+class UserForm(Form):
+    """A form whose validators know the edited user, if any."""
+
+    def __init__(self, *args, user=None, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+
+class GroupForm(Form):
+    """A form whose validators know the edited group."""
+
+    def __init__(self, *args, group, **kwargs):
+        self.group = group
+        super().__init__(*args, **kwargs)
+
+
 class PasswordForm(Form):
     password = wtforms.PasswordField(
         _("Password"),
@@ -408,8 +424,7 @@ def build_profile_form(
             )
 
     fields.update(extra_fields or {})
-    form = type("ProfileForm", (Form,), fields)(formdata, data=data)
-    form.user = user
+    form = type("ProfileForm", (UserForm,), fields)(formdata, data=data, user=user)
     for field in form:
         if field.name in readonly_field_names - write_field_names:
             set_readonly(field)
@@ -457,14 +472,14 @@ class EditGroupForm(Form):
     )
 
 
-class DeleteGroupMemberForm(Form):
+class DeleteGroupMemberForm(GroupForm):
     member = wtforms.StringField(
         filters=[IDToModel("User", raise_on_errors=False)],
         validators=[existing_group_member],
     )
 
 
-class GroupInvitationForm(Form):
+class GroupInvitationForm(GroupForm):
     """The group invitation form."""
 
     email = wtforms.EmailField(
@@ -484,7 +499,7 @@ class GroupInvitationForm(Form):
     )
 
 
-class JoinForm(Form):
+class JoinForm(UserForm):
     email = wtforms.EmailField(
         _("Email address"),
         validators=[
@@ -508,7 +523,7 @@ class JoinFormWithCaptcha(JoinForm):
     captcha = CaptchaField()
 
 
-class InvitationForm(Form):
+class InvitationForm(UserForm):
     """The user invitation form."""
 
     user_name = wtforms.StringField(
@@ -542,7 +557,7 @@ class InvitationForm(Form):
     )
 
 
-class EmailConfirmationForm(Form):
+class EmailConfirmationForm(UserForm):
     old_emails = wtforms.FieldList(
         wtforms.EmailField(
             validators=[wtforms.validators.ReadOnly()],

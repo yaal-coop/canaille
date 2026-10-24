@@ -1,6 +1,7 @@
 import datetime
 
 from canaille.core.endpoints.account import GroupInvitationPayload
+from tests.htmx import htmx_headers
 
 
 def test_group_invitation_payload(app):
@@ -294,3 +295,17 @@ def test_group_invitation_workflow_with_email_extraction(
 def test_invite_to_group_unauthorized_user(testclient, logged_user, bar_group, smtpd):
     """Test that a user without access to a group cannot invite others to it."""
     testclient.get(f"/groups/{bar_group.display_name}/invite", status=403)
+
+
+def test_group_invitation_inline_validation(
+    testclient, logged_admin, foo_group, user, smtpd
+):
+    """Test that inline validation detects users already in the group."""
+    res = testclient.get(f"/groups/{foo_group.id}/invite")
+    res = testclient.post(
+        f"/groups/{foo_group.id}/invite",
+        {"csrf_token": res.form["csrf_token"].value, "email": user.emails[0]},
+        headers=htmx_headers("email"),
+    )
+    res.mustcontain("A user with this email address is already a member of this group.")
+    assert len(smtpd.messages) == 0

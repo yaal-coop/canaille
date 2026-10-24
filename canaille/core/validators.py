@@ -14,7 +14,7 @@ from canaille.core.photo import check_photo
 
 def unique_user_name(form, field):
     if Backend.instance.get(models.User, user_name=field.data) and (
-        not getattr(form, "user", None) or form.user.user_name != field.data
+        not form.user or form.user.user_name != field.data
     ):
         raise wtforms.ValidationError(
             _("The user name '{user_name}' already exists").format(user_name=field.data)
@@ -23,7 +23,7 @@ def unique_user_name(form, field):
 
 def unique_email(form, field):
     if Backend.instance.get(models.User, emails=field.data) and (
-        not getattr(form, "user", None) or field.data not in (form.user.emails or [])
+        not form.user or field.data not in (form.user.emails or [])
     ):
         raise wtforms.ValidationError(
             _("The email '{email}' is already used").format(email=field.data)

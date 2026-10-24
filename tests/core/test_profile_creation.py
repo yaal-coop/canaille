@@ -83,6 +83,22 @@ def test_profile_creation_dynamic_validation(testclient, logged_admin, user):
     res.mustcontain("The email 'john@doe.test' is already used")
 
 
+def test_profile_creation_dynamic_validation_with_groups(
+    testclient, logged_admin, user, foo_group
+):
+    """Test that dynamic validation works when the groups field is displayed."""
+    res = testclient.get("/profile")
+    res = testclient.post(
+        "/profile",
+        {
+            "csrf_token": res.form["csrf_token"].value,
+            "emails-0": "john@doe.test",
+        },
+        headers=htmx_headers("emails-0"),
+    )
+    res.mustcontain("The email 'john@doe.test' is already used")
+
+
 def test_user_creation_without_password(testclient, logged_moderator, backend):
     """Test that users can be created without a password."""
     res = testclient.get("/profile", status=200)

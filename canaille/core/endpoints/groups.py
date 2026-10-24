@@ -187,8 +187,7 @@ def edit_group(group):
 
 
 def delete_member(group):
-    form = DeleteGroupMemberForm(request.form or None)
-    form.group = group
+    form = DeleteGroupMemberForm(request.form or None, group=group)
 
     if not form.validate():
         flash(
@@ -257,8 +256,7 @@ def invite_to_group(user, group):
     if not user_can_access_group(user, group):
         abort(403)
 
-    form = GroupInvitationForm(request.form or None)
-    form.group = group
+    form = GroupInvitationForm(request.form or None, group=group)
     form_validated = False
     invitation_url = None
 

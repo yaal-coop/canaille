@@ -383,6 +383,22 @@ def test_inline_validation(testclient, logged_admin, user):
     res.mustcontain("The email 'john@doe.test' is already used")
 
 
+def test_inline_validation_own_email(testclient, logged_user):
+    """Test that inline validation accepts the user's own email."""
+    res = testclient.get("/profile/user")
+    form = res.forms["profileform"]
+    res = testclient.post(
+        "/profile/user",
+        {
+            "csrf_token": form["csrf_token"].value,
+            "emails-0": "john@doe.test",
+            "action": "edit-profile",
+        },
+        headers=htmx_headers("emails-0"),
+    )
+    res.mustcontain(no="is already used")
+
+
 def test_inline_validation_keep_indicators(testclient, logged_admin, user, backend):
     """Test that inline validation preserves permission indicators for fields."""
     testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("display_name")
