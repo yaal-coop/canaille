@@ -62,21 +62,29 @@ class Model:
 
     @classproperty
     def attributes(cls):
-        if not cls._attributes:
+        if not cls.__dict__.get("_attributes"):
+            base_classes = [
+                klass
+                for klass in reversed(cls.__mro__)
+                if issubclass(klass, Model) and not issubclass(klass, BackendModel)
+            ]
             annotations = ChainMap(
-                *(
-                    get_type_hints(klass, include_extras=True)
-                    for klass in reversed(cls.__mro__)
-                    if issubclass(klass, Model) and not issubclass(klass, BackendModel)
-                )
+                *(get_type_hints(klass, include_extras=True) for klass in base_classes)
             )
-            # only keep types that are not ClassVar and not properties
+            # Backends can implement attributes with properties, so only the
+            # properties of the base models are left out.
+            properties = {
+                key
+                for klass in base_classes
+                for key, value in vars(klass).items()
+                if isinstance(value, property)
+            }
             cls._attributes = {
                 key: value
                 for key, value in annotations.items()
                 if get_origin(value) is not ClassVar
                 and not key.startswith("_")
-                and not isinstance(getattr(cls, key, None), property)
+                and key not in properties
             }
         return cls._attributes
 

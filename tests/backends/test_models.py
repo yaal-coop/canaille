@@ -258,3 +258,39 @@ def test_model_creation_edition_datetime(testclient, backend):
         )
 
     backend.delete(user)
+
+
+def test_attributes_are_computed_for_each_class():
+    """A subclass computes its own attributes, even when its parent did it first."""
+    from canaille.backends.models import Model
+
+    class Parent(Model):
+        foo: str | None = None
+
+    class Child(Parent):
+        bar: str | None = None
+
+    assert "bar" not in Parent.attributes
+    assert "bar" in Child.attributes
+
+
+def test_backend_properties_are_attributes():
+    """A backend can implement an attribute with a property."""
+    from canaille.backends.models import BackendModel
+    from canaille.backends.models import Model
+
+    class Base(Model):
+        foo: str | None = None
+
+        @property
+        def bar(self) -> str:
+            return "bar"
+
+    class Backend(Base, BackendModel):
+        @property
+        def foo(self):
+            return "foo"
+
+    assert "foo" in Backend.attributes
+    assert "bar" not in Backend.attributes
+    assert "foo" in Base.attributes
