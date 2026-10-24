@@ -44,14 +44,6 @@ class TestCanailleStorage(ScimStorageContract):
     def provider(self, app):
         return get_provider()
 
-    @pytest.fixture
-    def storage(self, backend, storage):
-        """Start from an empty storage, as the contract expects."""
-        for model in (models.User, models.Group):
-            for instance in backend.query(model):
-                backend.delete(instance)
-        return storage
-
     @pytest.fixture(autouse=True)
     def ldap_limits(self, request, backend):
         reason = LDAP_LIMITS.get(request.node.originalname)
