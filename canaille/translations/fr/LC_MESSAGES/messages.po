@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-10-24 20:08+0200\n"
-"PO-Revision-Date: 2026-10-24 18:18+0000\n"
+"PO-Revision-Date: 2026-10-26 19:51+0000\n"
 "Last-Translator: Éloi Rivard <azmeuk@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -23,10 +23,9 @@ msgstr ""
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/combobox.py:31
-#, fuzzy, python-format
-#| msgid "Remove all keys"
+#, python-format
 msgid "Remove %(label)s"
-msgstr "Supprimer toutes les clés de sécurité"
+msgstr "Supprimer %(label)s"
 
 #: canaille/app/flask.py:52
 msgid "Your password has expired, please choose a new password."
@@ -497,10 +496,8 @@ msgid "Search"
 msgstr "Rechercher"
 
 #: canaille/core/endpoints/forms.py:520
-#, fuzzy
-#| msgid "jane.doe@example.com"
 msgid "Jane Doe, jane.doe@example.com …"
-msgstr "camille.dupont@schmilblick.fr"
+msgstr "Camille Dupont, camille.dupont@schmilblick.fr …"
 
 #: canaille/core/endpoints/forms.py:531
 msgid "group"
@@ -516,10 +513,8 @@ msgid "Members"
 msgstr "Membres"
 
 #: canaille/core/endpoints/forms.py:569
-#, fuzzy
-#| msgid "Group members"
 msgid "Add members"
-msgstr "Membres du groupe"
+msgstr "Ajouter des membres"
 
 #: canaille/core/endpoints/forms.py:584 canaille/core/endpoints/forms.py:602
 #: canaille/core/endpoints/forms.py:634
@@ -598,19 +593,17 @@ msgid "You have left %(group)s."
 msgstr "Vous avez quitté %(group)s."
 
 #: canaille/core/endpoints/groups.py:269
-#, fuzzy, python-format
-#| msgid "%(user_name)s has been removed from the group %(group_name)s"
+#, python-format
 msgid "%(num)d member has been added to the group %(group)s."
 msgid_plural "%(num)d members have been added to the group %(group)s."
-msgstr[0] "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
-msgstr[1] "L’utilisateur %(user_name)s a été retiré du groupe %(group_name)s"
+msgstr[0] "Le membre %(num)d a été ajouté au groupe %(group)s."
+msgstr[1] "Les membres %(num)d a été ajouté au groupe %(group)s."
 
 #: canaille/core/endpoints/groups.py:280
-#, fuzzy
-#| msgid "This email couldn't be added. Please check the format and try again."
 msgid "The members couldn't be added. Please check the form and try again."
 msgstr ""
-"L’adresse email n'a pas pu être ajouté. Veuillez vérifier le formulaire."
+"Les membres n'ont pas été ajouté. Veuillez vérifier le formulaire et ré-"
+"essayer."
 
 #: canaille/core/endpoints/groups.py:329
 #, python-format
@@ -997,7 +990,7 @@ msgstr "Les groupes auxquels vous appartenez."
 
 #: canaille/oidc/utils.py:20
 msgid "Read and edit your account, including your password."
-msgstr ""
+msgstr "Lire et éditer votre compte, et notamment votre mot de passe."
 
 #: canaille/oidc/endpoints/clients.py:53
 msgid "A new registration token has been generated."
@@ -1563,10 +1556,9 @@ msgstr "Code source"
 
 #: canaille/templates/core/add_group_members.html:15
 #: canaille/templates/core/add_group_members.html:37
-#, fuzzy, python-format
-#| msgid "Invite members to %(group_name)s"
+#, python-format
 msgid "Add members to %(group_name)s"
-msgstr "Inviter des membres au groupe %(group_name)s"
+msgstr "Ajouter des membres au groupe %(group_name)s"
 
 #: canaille/templates/core/add_group_members.html:25
 #: canaille/templates/core/invite_group_member.html:29
@@ -1577,16 +1569,16 @@ msgstr "Consulter le groupe"
 
 #: canaille/templates/core/add_group_members.html:29
 #: canaille/templates/core/group.html:110
-#, fuzzy
-#| msgid "Members"
 msgid "Add Members"
-msgstr "Membres"
+msgstr "Ajouter des membres"
 
 #: canaille/templates/core/add_group_members.html:42
 msgid ""
 "The users are added to the group right away. To ask them first, invite them "
 "instead."
 msgstr ""
+"Les utilisateurs sont ajoutés au groupe directement. Pour leur demander "
+"d'abord, invitez-les à la place."
 
 #: canaille/templates/core/add_group_members.html:56
 #: canaille/templates/core/modals/delete-account.html:26
