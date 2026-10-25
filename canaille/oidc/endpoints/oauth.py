@@ -102,6 +102,7 @@ def authorize():
 
     try:
         params = authorization_parameters()
+        g.ui_locales = params.get("ui_locales")
         check_prompt_value(params)
 
         if response := authorize_login(redirect_url, now, params):

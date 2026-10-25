@@ -3,6 +3,8 @@
 https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest
 """
 
+from joserfc import jwt
+
 
 def test_ui_locales_exact_match(testclient, logged_user, client):
     """Test that ui_locales parameter sets the correct locale with exact match."""
@@ -150,5 +152,32 @@ def test_ui_locales_switch_user(testclient, logged_user, client):
     res = res.follow()
     res = res.follow()
     res = res.follow()
+
+    res.mustcontain('<html lang="fr">')
+
+
+def test_ui_locales_in_request_object(testclient, logged_user, client, client_jwk):
+    """The ui_locales of a request object replaces the one of the query."""
+    request_obj = jwt.encode(
+        {"alg": "RS256"},
+        {
+            "response_type": "code",
+            "client_id": client.client_id,
+            "scope": "openid",
+            "nonce": "somenonce",
+            "redirect_uri": "https://client.test/redirect1",
+            "ui_locales": "fr",
+        },
+        client_jwk,
+    )
+    res = testclient.get(
+        "/oauth/authorize",
+        params={
+            "client_id": client.client_id,
+            "ui_locales": "de",
+            "request": request_obj,
+        },
+        status=200,
+    )
 
     res.mustcontain('<html lang="fr">')
