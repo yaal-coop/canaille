@@ -304,8 +304,10 @@ def authorize_consent(redirect_url, now):
     grant = authorization.get_consent_grant(end_user=user)
     form = AuthorizeForm(request.form or None)
 
-    # Get the authorization code, or display the user consent form
-    if request.method == "GET" or form.answer.data is None:
+    # Get the authorization code, or display the user consent form.
+    # The answers without a valid CSRF token are ignored, as the
+    # authorization endpoint itself is exempt from CSRF checks.
+    if request.method == "GET" or form.answer.data is None or not form.validate():
         if not is_consent_needed(grant, redirect_url):
             response = authorization.create_authorization_response(
                 grant=grant, grant_user=user

@@ -54,6 +54,8 @@ Removed
 
 Fixed
 ^^^^^
+- The consent page accepted answers without CSRF token. Another website could make a
+  user consent to an application.
 - Users without the ``USE_OIDC`` permission could still get tokens with the password,
   refresh token and authorization code grants, and use their existing tokens.
 - In debug mode, the pages did not escape the HTML in the values users entered.

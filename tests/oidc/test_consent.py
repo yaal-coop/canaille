@@ -255,3 +255,22 @@ def test_tos_policy(testclient, logged_user, client, trusted_client, backend, ca
     )
     res.mustcontain("https://client.test/tos")
     res.mustcontain("https://client.test/policy")
+
+
+def test_consent_answer_without_csrf_token(testclient, logged_user, client, backend):
+    """A consent answer without CSRF token displays the consent page again."""
+    res = testclient.post(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+            answer="accept",
+        ),
+        status=200,
+    )
+    res.mustcontain('id="accept"')
+    assert not backend.query(models.Consent, client=client, subject=logged_user)
+    assert not backend.query(models.AuthorizationCode, client=client)
