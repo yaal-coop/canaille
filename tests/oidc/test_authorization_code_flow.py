@@ -129,8 +129,8 @@ def test_nominal_case_post(
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=200,
-    )
+        status=303,
+    ).follow(status=200)
 
     res = res.form.submit(name="answer", value="accept", status=302)
     assert (
@@ -229,8 +229,8 @@ def test_duplicate_scope_is_deduplicated(
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=200,
-    )
+        status=303,
+    ).follow(status=200)
     res = res.form.submit(name="answer", value="accept", status=302)
 
     code = parse_qs(urlsplit(res.location).query)["code"][0]
@@ -1173,3 +1173,25 @@ def test_nominal_missing_scope(testclient, logged_user, client, backend):
 
     for consent in consents:
         backend.delete(consent)
+
+
+def test_post_authorization_request(testclient, logged_user, client):
+    """Authorization requests sent with POST are turned into GET requests.
+
+    Browsers do not send the SameSite session cookie with the cross-site POST requests.
+    """
+    params = dict(
+        response_type="code",
+        client_id=client.client_id,
+        scope="openid profile",
+        nonce="somenonce",
+        redirect_uri="https://client.test/redirect1",
+    )
+    res = testclient.post("/oauth/authorize", params=params, status=303)
+    assert res.location.startswith("http://canaille.test/oauth/authorize?")
+    assert parse_qs(urlsplit(res.location).query) == {
+        key: [value] for key, value in params.items()
+    }
+
+    res = res.follow(status=200)
+    res.mustcontain('id="accept"')

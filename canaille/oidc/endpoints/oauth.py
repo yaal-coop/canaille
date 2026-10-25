@@ -97,6 +97,12 @@ def authorize():
         else add_params_to_uri(request.url, request.form)
     )
 
+    # Authorization requests sent with POST come from the client website, so
+    # the browser does not send the SameSite session cookie with them. They are
+    # turned into GET requests, that the browser sends with the cookie.
+    if request.method == "POST" and "answer" not in request.form:
+        return redirect(redirect_url, code=303)
+
     try:
         check_prompt_value()
 
