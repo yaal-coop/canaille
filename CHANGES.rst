@@ -57,6 +57,8 @@ Removed
 
 Fixed
 ^^^^^
+- With ``prompt=none`` and a request object, the ``consent_required`` error could
+  redirect to any URI.
 - With ``prompt=login``, ``prompt=select_account`` or ``max_age``, accepting the
   consent asked to log in again.
 - An authorization request with a ``max_age`` of zero asked to log in again and again.

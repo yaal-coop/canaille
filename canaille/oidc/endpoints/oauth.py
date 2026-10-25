@@ -335,7 +335,7 @@ def authorize_consent(redirect_url, now):
         # Authentication Request is none, but the Authentication Request cannot
         # be completed without displaying a user interface for End-User consent.
         elif request.values.get("prompt") == "none":
-            raise ConsentRequiredError(redirect_uri=request.values["redirect_uri"])
+            raise ConsentRequiredError(redirect_uri=grant.redirect_uri)
 
         form.action_url = redirect_url
         requested_scope = request.values.get("scope")

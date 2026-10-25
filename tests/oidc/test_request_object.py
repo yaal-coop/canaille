@@ -156,3 +156,33 @@ def test_request_object_uri_query(
 
     access_token = res.json["access_token"]
     assert access_token
+
+
+def test_request_object_redirect_uri_on_consent_required(
+    testclient, logged_user, client, client_jwk
+):
+    """The consent_required error goes to the redirect URI of the request object."""
+    request_obj = jwt.encode(
+        {"alg": "RS256"},
+        dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[0],
+            prompt="none",
+        ),
+        client_jwk,
+    )
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            client_id=client.client_id,
+            redirect_uri="https://attacker.test/callback",
+            prompt="none",
+            request=request_obj,
+        ),
+        status=302,
+    )
+    assert res.location.startswith(client.redirect_uris[0])
+    assert parse_qs(urlsplit(res.location).query)["error"] == ["consent_required"]
