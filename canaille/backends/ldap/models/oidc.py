@@ -61,6 +61,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "last_modified": "entryCSN",
         "trusted": "oauthPreconsent",
         "audience": "oauthAudience",
+        "owners": "owner",
         **client_info_attributes_map,
         **client_metadata_attributes_map,
     }

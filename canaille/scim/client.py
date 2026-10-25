@@ -215,9 +215,12 @@ def propagate_group_scim_modification(group, method):
 
 
 def get_clients_to_notify(user):
-    """Return a list of clients that should be notified of updates on 'user'."""
+    """Return a list of clients that should be notified of updates on 'user'.
+
+    Clients with owners are never notified, as their owners choose where they are.
+    """
     consents = Backend.instance.query(models.Consent, subject=user)
-    consented_clients = {t.client for t in consents}
+    consented_clients = {t.client for t in consents if not t.client.owners}
     trusted_clients = [
         client
         for client in Backend.instance.query(models.Client)

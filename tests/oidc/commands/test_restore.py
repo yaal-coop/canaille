@@ -1,5 +1,7 @@
 import json
 
+import pytest
+
 from canaille.app import models
 from canaille.commands import cli
 
@@ -148,3 +150,67 @@ def test_restore_stdin(cli_runner, backend):
     backend.delete(client1)
     backend.delete(client2)
     backend.delete(user)
+
+
+def test_restore_client_owners(cli_runner, backend, user, foo_group):
+    """The users and groups who own a client are restored.
+
+    They can be in the dump, or already in the database.
+    """
+    payload = {
+        "client": [
+            {
+                "id": "b6a0dfb2-4f3e-4a52-9d55-6b2a3d0e1c11",
+                "client_id": "owned-client",
+                "client_name": "Owned client",
+                "client_id_issued_at": "2025-03-15T12:55:32+00:00",
+                "redirect_uris": ["https://owned.test/callback"],
+                "owners": [
+                    "4b8f3e0c-6a21-4d5e-9f3b-2c1d0e9a8b77",
+                    foo_group.id,
+                    user.id,
+                ],
+            }
+        ],
+        "group": [
+            {
+                "id": "4b8f3e0c-6a21-4d5e-9f3b-2c1d0e9a8b77",
+                "display_name": "owners",
+                "members": [user.id],
+            }
+        ],
+    }
+
+    res = cli_runner.invoke(cli, ["restore"], input=json.dumps(payload))
+    assert res.exit_code == 0, res.stdout
+
+    client = backend.get(models.Client, client_id="owned-client")
+    group = backend.get(models.Group, display_name="owners")
+    assert client.owners == [group, foo_group, user]
+
+    backend.delete(client)
+    backend.delete(group)
+
+
+def test_restore_client_with_unknown_owner(cli_runner, backend):
+    """A client whose owner is neither in the dump nor in the database is not restored."""
+    if "memory" in backend.__class__.__module__:
+        pytest.skip()
+
+    payload = {
+        "client": [
+            {
+                "id": "b6a0dfb2-4f3e-4a52-9d55-6b2a3d0e1c11",
+                "client_id": "owned-client",
+                "client_name": "Owned client",
+                "client_id_issued_at": "2025-03-15T12:55:32+00:00",
+                "redirect_uris": ["https://owned.test/callback"],
+                "owners": ["4b8f3e0c-6a21-4d5e-9f3b-2c1d0e9a8b77"],
+            }
+        ],
+    }
+
+    with pytest.raises(ValueError):
+        cli_runner.invoke(cli, ["restore"], input=json.dumps(payload))
+
+    backend.delete(backend.get(models.Client, client_id="owned-client"))

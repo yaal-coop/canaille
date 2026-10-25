@@ -399,3 +399,18 @@ def test_me_replace_keeps_the_scheduled_expiration(app, backend, user, user_toke
     assert response.status_code == 200
     backend.reload(user)
     assert user.lock_date == lock_date
+
+
+def test_token_without_user_of_an_owned_client_is_refused(
+    app, backend, user, oidc_client, oidc_token
+):
+    """A token without user is refused when its client has owners."""
+    client = Client(app)
+    response = client.get("/scim/v2/Users", headers=_scim_headers(app, oidc_token))
+    assert response.status_code == 200
+
+    oidc_client.owners = [user]
+    backend.save(oidc_client)
+
+    response = client.get("/scim/v2/Users", headers=_scim_headers(app, oidc_token))
+    assert response.status_code == 401

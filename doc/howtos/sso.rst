@@ -94,8 +94,57 @@ Manual client registration
    The client addition page.
 
 Users with the right :attr:`~canaille.core.configuration.Permission.MANAGE_OIDC` permission can manage OIDC clients through the web interface.
+Users with the :attr:`~canaille.core.configuration.Permission.MANAGE_OWN_CLIENTS` permission can create and manage their own clients.
+This permission is not granted by default.
 
 Here are some details about the fields in the client edition and registration form:
+
+Owners
+------
+
+The users or groups who own this client.
+Clients can be owned by users or groups:
+
+- **User owners** can edit and use the client for authentication.
+- **Group owners** have a distinct semantic: the *group owner* can edit the client configuration, while *group members* can use it for authentication.
+- **Global clients** (no owners) are accessible to all users with the :attr:`~canaille.core.configuration.Permission.USE_OIDC` permission.
+
+.. note::
+
+    Owners follow the LDAP ``owner`` attribute (:rfc:`4519#section-2.21`):
+    they are the users and groups responsible for the client.
+    No OAuth, OpenID Connect or SCIM specification defines who can use a client.
+    Restricting a client to its owners and to the members of its owner groups is a Canaille extension.
+
+.. warning::
+
+    To restrict a client to the members of a group, add the group as an owner.
+    The owner of the group can then edit the client, if they have the
+    :attr:`~canaille.core.configuration.Permission.MANAGE_OWN_CLIENTS` permission.
+    For instance, they can change the redirect URIs, renew the secret, or delete the client.
+    Users who already consented to the client are not asked again after such changes.
+    The owner of the group also chooses its members, and so who can use the client.
+    When the group is deleted, the clients it is the last owner of are deleted too.
+    Only add a group whose owner you trust to manage the client.
+
+Users who cannot manage all clients can only share the clients they own with the groups they own.
+A group owner only gets rights on the clients of the group with the :attr:`~canaille.core.configuration.Permission.MANAGE_OWN_GROUPS` permission.
+They cannot add other users, nor remove the owners they do not control, nor lose the edition of the client.
+They cannot add themselves back after they left a client.
+They can only pick the clients they can edit as token audiences.
+They can only add the scopes that users consent to, such as ``profile`` or ``email``.
+They cannot create access tokens without a user.
+
+Clients with owners have some restrictions:
+
+- They cannot use the ``client_credentials`` and ``jwt-bearer`` grant types, as those issue tokens without a user consent.
+- They are never trusted, so they always display the consent page, even on a :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS` domain.
+- When the last owner of a client is deleted, the client is deleted too.
+- Users who cannot use the client get an error, and are not redirected to the client.
+- Users confirm the logout before being redirected to the client, and logged out users are not redirected to it.
+- When a user cannot use a client anymore, for instance after leaving an owner group, their tokens for that client are refused.
+- The tokens without a user are refused.
+- Users and groups are not provisioned to them through SCIM.
 
 Name
 ----

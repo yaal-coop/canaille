@@ -110,6 +110,9 @@ class Permission(StrEnum):
     MANAGE_OWN_GROUPS = "manage_own_groups"
     """Allows users to create their own groups and manage groups they own."""
 
+    MANAGE_OWN_CLIENTS = "manage_own_clients"
+    """Allows users to create their own OIDC clients and manage clients they own."""
+
     DELETE_ACCOUNT = "delete_account"
     """Allows users to delete their account.
 

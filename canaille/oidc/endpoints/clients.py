@@ -18,6 +18,8 @@ from canaille.app.forms import TableForm
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.oidc.basemodels import Client as BaseClient
+from canaille.oidc.models import managed_owners
 
 from ..jose import build_client_management_token
 from .forms import ClientAddForm
@@ -29,9 +31,13 @@ TOKEN_LIFETIME = 3600
 
 
 @bp.route("/", methods=["GET", "POST"])
-@user_needed("manage_oidc")
+@user_needed()
 def index(user):
-    table_form = TableForm(models.Client, formdata=request.form)
+    if not (user.can("manage_oidc") or user.can("manage_own_clients")):
+        abort(403)
+
+    filter = {} if user.can("manage_oidc") else {"owners": managed_owners(user)}
+    table_form = TableForm(models.Client, formdata=request.form, filter=filter)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
 
@@ -41,15 +47,22 @@ def index(user):
 
 
 @bp.route("/add", methods=["GET", "POST"])
-@user_needed("manage_oidc")
+@user_needed()
 def add(user):
-    form = ClientAddForm(request.form or None)
+    if not (user.can("manage_oidc") or user.can("manage_own_clients")):
+        abort(403)
+    owners = [] if user.can("manage_oidc") else [user]
+    form = ClientAddForm(request.form or None, data={"owners": owners}, user=user)
 
-    registration_token = build_client_management_token(
-        "client:register", timedelta(seconds=TOKEN_LIFETIME)
-    )
+    registration_token = None
+    if user.can("manage_oidc"):
+        registration_token = build_client_management_token(
+            "client:register", timedelta(seconds=TOKEN_LIFETIME)
+        )
 
     if form.action.data == "new-registration-token":
+        if not registration_token:
+            abort(403)
         flash(_("A new registration token has been generated."), "info")
         return render_template(
             "oidc/client_add.html",
@@ -87,6 +100,7 @@ def add(user):
         client_secret=gen_salt(48),
         application_type="web",
         id_token_signed_response_alg="RS256",
+        owners=list(dict.fromkeys(form["owners"].data)),
     )
     Backend.instance.save(client)
     client.audience = [client]
@@ -101,8 +115,11 @@ def add(user):
 
 
 @bp.route("/edit/<client:client>", methods=["GET", "POST"])
-@user_needed("manage_oidc")
+@user_needed()
 def edit(user, client):
+    if not client.is_editable_by(user):
+        abort(403)
+
     form = Form(request.form or None)
     if form.action.data == "confirm-delete":
         return render_template(
@@ -113,6 +130,8 @@ def edit(user, client):
         return client_delete(user, client)
 
     if form.action.data == "new-access-token":
+        if not user.can("manage_oidc") or client.owners:
+            abort(403)
         return client_new_token(user, client)
 
     if form.action.data == "new-client-secret":
@@ -122,16 +141,27 @@ def edit(user, client):
 
 
 def client_edit(user, client):
-    data = {attribute: getattr(client, attribute) for attribute in client.attributes}
+    data = {
+        attribute: getattr(client, attribute) for attribute in BaseClient.attributes
+    }
     if data["scope"]:
         data["scope"] = " ".join(data["scope"])
-    form = ClientEditForm(request.form or None, data=data, client=client)
-
-    management_token = build_client_management_token(
-        "client:manage", timedelta(seconds=TOKEN_LIFETIME), client.client_id
+    form = ClientEditForm(
+        request.form or None,
+        data=data,
+        client=client,
+        user=user,
     )
 
+    management_token = None
+    if user.can("manage_oidc"):
+        management_token = build_client_management_token(
+            "client:manage", timedelta(seconds=TOKEN_LIFETIME), client.client_id
+        )
+
     if form.action.data == "new-management-token":
+        if not management_token:
+            abort(403)
         flash(_("A new management token has been generated."), "info")
         return render_template(
             "oidc/client_edit.html",
@@ -155,41 +185,44 @@ def client_edit(user, client):
             menuitem="admin",
         )
 
-    Backend.instance.update(
-        client,
-        client_name=form["client_name"].data,
-        contacts=form["contacts"].data,
-        client_uri=form["client_uri"].data,
-        redirect_uris=form["redirect_uris"].data,
-        client_secret_expires_at=form["client_secret_expires_at"].data,
-        post_logout_redirect_uris=form["post_logout_redirect_uris"].data,
-        grant_types=form["grant_types"].data,
-        scope=form["scope"].data.split(" "),
-        response_types=form["response_types"].data,
-        token_endpoint_auth_method=form["token_endpoint_auth_method"].data,
-        audience=form["audience"].data,
-        logo_uri=form["logo_uri"].data,
-        tos_uri=form["tos_uri"].data,
-        policy_uri=form["policy_uri"].data,
-        software_id=form["software_id"].data,
-        software_version=form["software_version"].data,
-        jwks=form["jwks"].data,
-        jwks_uri=form["jwks_uri"].data,
-        token_endpoint_auth_signing_alg=form["token_endpoint_auth_signing_alg"].data
+    update_data = {
+        "client_name": form["client_name"].data,
+        "contacts": form["contacts"].data,
+        "client_uri": form["client_uri"].data,
+        "redirect_uris": form["redirect_uris"].data,
+        "client_secret_expires_at": form["client_secret_expires_at"].data,
+        "post_logout_redirect_uris": form["post_logout_redirect_uris"].data,
+        "grant_types": form["grant_types"].data,
+        "scope": form["scope"].data.split(" "),
+        "response_types": form["response_types"].data,
+        "token_endpoint_auth_method": form["token_endpoint_auth_method"].data,
+        "audience": form["audience"].data,
+        "logo_uri": form["logo_uri"].data,
+        "tos_uri": form["tos_uri"].data,
+        "policy_uri": form["policy_uri"].data,
+        "software_id": form["software_id"].data,
+        "software_version": form["software_version"].data,
+        "jwks": form["jwks"].data,
+        "jwks_uri": form["jwks_uri"].data,
+        "token_endpoint_auth_signing_alg": form["token_endpoint_auth_signing_alg"].data
         or None,
-        sector_identifier_uri=form["sector_identifier_uri"].data or None,
-        subject_type=form["subject_type"].data or None,
-        application_type=form["application_type"].data or None,
-        id_token_signed_response_alg=form["id_token_signed_response_alg"].data,
-        userinfo_signed_response_alg=form["userinfo_signed_response_alg"].data or None,
-        default_max_age=form["default_max_age"].data,
-        require_auth_time=form["require_auth_time"].data,
-        default_acr_values=[v for v in form["default_acr_values"].data if v] or None,
-        initiate_login_uri=form["initiate_login_uri"].data or None,
-        request_object_signing_alg=form["request_object_signing_alg"].data or None,
-        request_uris=[v for v in form["request_uris"].data if v] or None,
-        require_signed_request_object=form["require_signed_request_object"].data,
-    )
+        "sector_identifier_uri": form["sector_identifier_uri"].data or None,
+        "subject_type": form["subject_type"].data or None,
+        "application_type": form["application_type"].data or None,
+        "id_token_signed_response_alg": form["id_token_signed_response_alg"].data,
+        "userinfo_signed_response_alg": form["userinfo_signed_response_alg"].data
+        or None,
+        "default_max_age": form["default_max_age"].data,
+        "require_auth_time": form["require_auth_time"].data,
+        "default_acr_values": [v for v in form["default_acr_values"].data if v] or None,
+        "initiate_login_uri": form["initiate_login_uri"].data or None,
+        "request_object_signing_alg": form["request_object_signing_alg"].data or None,
+        "request_uris": [v for v in form["request_uris"].data if v] or None,
+        "require_signed_request_object": form["require_signed_request_object"].data,
+        "owners": list(dict.fromkeys(form["owners"].data)),
+    }
+
+    Backend.instance.update(client, **update_data)
     Backend.instance.save(client)
     current_app.logger.security(f"Edited client {client.client_id} by {user.id}")
     flash(

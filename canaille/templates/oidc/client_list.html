@@ -23,10 +23,12 @@ Displays a paginated list of :class:`~canaille.oidc.basemodels.Client`.
         <i class="th list icon"></i>
         {% trans %}Applications{% endtrans %}
     </a>
-    <a class="item" href="{{ url_for('oidc.tokens.index') }}">
-        <i class="ticket icon"></i>
-        {% trans %}Tokens{% endtrans %}
-    </a>
+    {% if user.can_manage_oidc %}
+        <a class="item" href="{{ url_for('oidc.tokens.index') }}">
+            <i class="ticket icon"></i>
+            {% trans %}Tokens{% endtrans %}
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block content %}

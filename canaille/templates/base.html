@@ -114,7 +114,7 @@ The main template inherited by almost every other templates.
                                     {% trans %}Groups{% endtrans %}
                                 </a>
                             {% endif %}
-                            {% if features.has_oidc and user.can_manage_oidc %}
+                            {% if features.has_oidc and (user.can_manage_oidc or user.can_manage_own_clients) %}
                                 <a class="item {% if menuitem is defined and menuitem == "admin" %}active{% endif %}" href="{{ url_for('oidc.clients.index') }}">
                                     <i class="settings icon"></i>
                                     {% trans %}Admin{% endtrans %}

@@ -11,11 +11,18 @@ from flask import current_app
 from canaille.app import models
 from canaille.backends import Backend
 from canaille.core.configuration import Permission
+from canaille.core.models import Group
 
 from .basemodels import AuthorizationCode as BaseAuthorizationCode
 from .basemodels import Client as BaseClient
 from .basemodels import Consent as BaseConsent
 from .basemodels import Token as BaseToken
+
+OWNED_CLIENT_FORBIDDEN_GRANT_TYPES = {
+    "client_credentials",
+    "urn:ietf:params:oauth:grant-type:jwt-bearer",
+}
+"""The grants that owned clients cannot use, as they issue tokens without a user consent."""
 
 
 class Client(BaseClient, ClientMixin):
@@ -122,6 +129,9 @@ class Client(BaseClient, ClientMixin):
         return all(r in self.response_types for r in response_type.split(" "))
 
     def check_grant_type(self, grant_type):
+        if self.owners and grant_type in OWNED_CLIENT_FORBIDDEN_GRANT_TYPES:
+            return False
+
         return grant_type in self.grant_types
 
     @property
@@ -166,9 +176,96 @@ class Client(BaseClient, ClientMixin):
     def get_default_redirect_uri(self):
         return None
 
+    def is_editable_by(self, user) -> bool:
+        """Check if a user can edit this client."""
+        if user.can(Permission.MANAGE_OIDC):
+            return True
+
+        if not user.can(Permission.MANAGE_OWN_CLIENTS):
+            return False
+
+        return self._user_can_edit(user)
+
     def is_usable_by(self, user) -> bool:
         """Check if a user can authenticate with this client."""
-        return user.can(Permission.USE_OIDC)
+        if not user.can(Permission.USE_OIDC):
+            return False
+
+        if not self.owners:
+            return True
+
+        return self._user_can_use(user)
+
+    def _user_can_edit(self, user) -> bool:
+        """Check if a user can edit this client.
+
+        A user can edit if they are a direct owner, or if they own a group that owns this client.
+        """
+        for owner in self.owners:
+            if owner == user:
+                return True
+            if isinstance(owner, Group) and owns_group(user, owner):
+                return True
+        return False
+
+    def _user_can_use(self, user) -> bool:
+        """Check if a user can use this client for authentication.
+
+        A user can use if they are a direct owner, or if they are a member of a group that owns this client.
+        """
+        for owner in self.owners:
+            if owner == user:
+                return True
+            if isinstance(owner, Group) and owner in user.groups:
+                return True
+        return False
+
+
+def owns_group(user, group) -> bool:
+    """Tell whether ``user`` manages ``group`` as its owner."""
+    return group.owner == user and user.can(Permission.MANAGE_OWN_GROUPS)
+
+
+def owned_groups(user):
+    """Return the groups that ``user`` manages as their owner."""
+    if not user.can(Permission.MANAGE_OWN_GROUPS):
+        return []
+
+    return Backend.instance.query(models.Group, owner=user)
+
+
+def managed_owners(user):
+    """Return the owners whose clients ``user`` can edit: the user, and the groups they own."""
+    return [user, *owned_groups(user)]
+
+
+def delete_owned_clients(owner, data):
+    """Remove a deleted user or group from the client owners.
+
+    The clients left without owners are deleted.
+    """
+    if not current_app.features.has_oidc:
+        return
+
+    for client in Backend.instance.query(models.Client, owners=owner):
+        owners = [other for other in client.owners if other != owner]
+        if not owners:
+            Backend.instance.delete(client)
+            continue
+
+        Backend.instance.update(client, owners=owners)
+        Backend.instance.save(client)
+
+
+def setup_client_ownership():
+    teardown_client_ownership()
+    signal("before_user_delete").connect(delete_owned_clients)
+    signal("before_group_delete").connect(delete_owned_clients)
+
+
+def teardown_client_ownership():
+    signal("before_user_delete").disconnect(delete_owned_clients)
+    signal("before_group_delete").disconnect(delete_owned_clients)
 
 
 class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
@@ -229,11 +326,15 @@ class Token(BaseToken, TokenMixin):
         """Tell whether the token cannot be used anymore.
 
         This is the case after a revocation, and when its user cannot use its client anymore.
+        Tokens without a user are refused for clients with owners.
         """
         if self.revokation_date:
             return True
 
-        return bool(self.subject) and not self.client.is_usable_by(self.subject)
+        if not self.subject:
+            return bool(self.client.owners)
+
+        return not self.client.is_usable_by(self.subject)
 
     def check_client(self, client):
         return client.client_id == self.client.client_id
