@@ -164,3 +164,26 @@ def test_max_age_zero(testclient, user, client, backend):
     with time_machine.travel("2025-01-01 03:00:10+00:00", tick=False):
         res = res.follow(status=200)
         res.mustcontain('id="accept"')
+
+
+def test_max_age_without_cached_request_time(
+    testclient, logged_user, client, monkeypatch
+):
+    """The authentication age is measured at the current time when the request time is lost."""
+    monkeypatch.setattr(
+        "canaille.oidc.endpoints.oauth.get_authorization_request_datetime",
+        lambda redirect_url: None,
+    )
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+            max_age=3600,
+        ),
+        status=200,
+    )
+    res.mustcontain('id="accept"')

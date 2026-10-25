@@ -163,14 +163,14 @@ def start_oidc_auth_session(client_id, username=None, prompt=None, ui_locales=No
 def authorize_login(redirect_url, now, ui_locales):
     """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
+    request_time = get_authorization_request_datetime(redirect_url) or now
 
     if user := g.session and g.session.user:
         auth_time = g.session.last_login_datetime
 
-        if request.values.get(
-            "prompt"
-        ) == "select_account" and auth_time < get_authorization_request_datetime(
-            redirect_url
+        if (
+            request.values.get("prompt") == "select_account"
+            and auth_time < request_time
         ):
             session["redirect-after-login"] = redirect_url
 
@@ -181,9 +181,7 @@ def authorize_login(redirect_url, now, ui_locales):
             )
             return redirect(url_for("core.auth.login"))
 
-        if request.values.get(
-            "prompt"
-        ) == "login" and auth_time < get_authorization_request_datetime(redirect_url):
+        if request.values.get("prompt") == "login" and auth_time < request_time:
             session["redirect-after-login"] = redirect_url
 
             start_oidc_auth_session(
@@ -209,9 +207,7 @@ def authorize_login(redirect_url, now, ui_locales):
         # The authentication age is measured at the authorization request time,
         # so the user is not asked to log in again after they just did.
         max_age = auth_time + datetime.timedelta(seconds=max_age_seconds)
-        if request.values.get("max_age") and max_age < (
-            get_authorization_request_datetime(redirect_url)
-        ):
+        if request.values.get("max_age") and max_age < request_time:
             session["redirect-after-login"] = redirect_url
 
             start_oidc_auth_session(
@@ -259,7 +255,11 @@ def is_consent_needed(grant, redirect_url) -> bool:
     if (
         request.values.get("prompt") == "consent"
         and consent
-        and consent.issue_date < get_authorization_request_datetime(redirect_url)
+        and consent.issue_date
+        < (
+            get_authorization_request_datetime(redirect_url)
+            or datetime.datetime.now(tz=datetime.UTC)
+        )
     ):
         return True
 
