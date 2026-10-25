@@ -317,11 +317,24 @@ def authorize_consent(redirect_url, now, params):
     user = g.session and g.session.user
     grant = authorization.get_consent_grant(end_user=user)
     form = AuthorizeForm(request.form or None)
+    effective_scope = grant.client.get_allowed_scope(grant.request.payload.scope)
+
+    # The answers without a valid CSRF token are ignored, as the authorization
+    # endpoint itself is exempt from CSRF checks. The consent is only accepted
+    # for the scope that the consent page displayed.
+    displayed_consent = [redirect_url, effective_scope]
+    answered = (
+        request.method == "POST"
+        and form.answer.data is not None
+        and form.validate()
+        and (
+            form.answer.data != "accept"
+            or session.get("displayed-consent") == displayed_consent
+        )
+    )
 
     # Get the authorization code, or display the user consent form.
-    # The answers without a valid CSRF token are ignored, as the
-    # authorization endpoint itself is exempt from CSRF checks.
-    if request.method == "GET" or form.answer.data is None or not form.validate():
+    if not answered:
         if not is_consent_needed(grant, redirect_url):
             response = authorization.create_authorization_response(
                 grant=grant, grant_user=user
@@ -342,7 +355,7 @@ def authorize_consent(redirect_url, now, params):
             raise ConsentRequiredError(redirect_uri=grant.redirect_uri)
 
         form.action_url = redirect_url
-        effective_scope = grant.client.get_allowed_scope(grant.request.payload.scope)
+        session["displayed-consent"] = displayed_consent
         return render_template(
             "oidc/authorize.html",
             user=user,
@@ -368,6 +381,7 @@ def authorize_consent(redirect_url, now, params):
         grant_user = None
 
     if form.answer.data == "accept":
+        session.pop("displayed-consent", None)
         grant_user = user
         create_or_update_consent(grant, grant_user, now)
 

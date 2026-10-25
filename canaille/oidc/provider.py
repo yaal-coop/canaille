@@ -48,6 +48,7 @@ from .utils import unique_scopes
 
 AUTHORIZATION_CODE_LIFETIME = 300
 JWT_JTI_CACHE_LIFETIME = 3600
+REQUEST_OBJECT_CACHE_TIMEOUT = 300
 
 AMR_MAPPING = {
     "password": ["pwd"],
@@ -723,13 +724,23 @@ class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
         ``invalid_request_uri`` error. The URI is unvalidated user input, so no
         exception must escape and turn into a HTTP 500.
         """
+        key = f"request-object:{request_uri}"
+        if document := cache.get(key):
+            return document
+
         try:
-            return fetch_document(request_uri)
+            document = fetch_document(request_uri)
         except Exception:
             current_app.logger.debug(
                 "could not download the request object at %s", request_uri
             )
             return None
+
+        # The request object is read at each step of the authorization, so it
+        # is downloaded once, and cannot change between the consent page and
+        # the user answer.
+        cache.set(key, document, timeout=REQUEST_OBJECT_CACHE_TIMEOUT)
+        return document
 
     def get_server_metadata(self):
         from .metadata import openid_configuration

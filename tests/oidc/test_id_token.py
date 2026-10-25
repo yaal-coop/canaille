@@ -212,8 +212,8 @@ def test_auth_time_update(
             ),
             status=200,
         )
+        res = res.form.submit(name="answer", value="accept", status=302)
 
-    res = res.form.submit(name="answer", value="accept", status=302)
     params = parse_qs(urlsplit(res.location).query)
     code2 = params["code"][0]
 
