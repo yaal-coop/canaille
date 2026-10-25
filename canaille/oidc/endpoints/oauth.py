@@ -196,9 +196,14 @@ def authorize_login(redirect_url, now, ui_locales):
 
         # hotfix for
         # https://github.com/lepture/authlib/issues/741
-        max_age = auth_time + datetime.timedelta(
-            seconds=int(request.values.get("max_age", 0))
-        )
+        try:
+            max_age_seconds = int(request.values.get("max_age", 0))
+        except ValueError as exc:
+            raise InvalidRequestError(
+                description="The 'max_age' parameter must be an integer."
+            ) from exc
+
+        max_age = auth_time + datetime.timedelta(seconds=max_age_seconds)
         if request.values.get("max_age") and max_age < now:
             session["redirect-after-login"] = redirect_url
 

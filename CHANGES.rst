@@ -54,6 +54,8 @@ Removed
 
 Fixed
 ^^^^^
+- An authorization request with a ``max_age`` that is not an integer returned a server
+  error.
 - An authorization request with an unsupported ``prompt`` value could redirect to any
   URI. It now only redirects to the URIs registered for the client.
 - The logout asks for a confirmation when the ID token hint was issued for another

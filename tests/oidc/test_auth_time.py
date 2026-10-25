@@ -103,3 +103,20 @@ def test_max_age_expired(testclient, user, client, trusted_client, backend):
 
     for consent in backend.query(models.Consent, client=client, subject=user):
         backend.delete(consent)
+
+
+def test_invalid_max_age(testclient, logged_user, client):
+    """A max_age that is not an integer is refused."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+            max_age="invalid",
+        ),
+        status=400,
+    )
+    res.mustcontain("The 'max_age' parameter must be an integer.")
