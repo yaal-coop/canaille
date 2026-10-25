@@ -106,7 +106,20 @@ def test_max_age_expired(testclient, user, client, trusted_client, backend):
 
 
 def test_invalid_max_age(testclient, logged_user, client):
-    """A max_age that is not an integer is refused."""
+    """A max_age that is not a positive integer is refused."""
+    testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+            max_age="-1",
+        ),
+        status=400,
+    )
+
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -119,4 +132,35 @@ def test_invalid_max_age(testclient, logged_user, client):
         ),
         status=400,
     )
-    res.mustcontain("The 'max_age' parameter must be an integer.")
+    res.mustcontain("The 'max_age' parameter must be a positive integer.")
+
+
+def test_max_age_zero(testclient, user, client, backend):
+    """A max_age of zero asks to log in once, and not again after the login."""
+    with time_machine.travel("2025-01-01 02:30:00+00:00", tick=False):
+        res = testclient.get("/login")
+        res.form["login"] = "user"
+        res = res.form.submit(name="answer", value="accept", status=302).follow()
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit(name="answer", value="accept", status=302).follow()
+
+    with time_machine.travel("2025-01-01 03:00:00+00:00", tick=False):
+        res = testclient.get(
+            "/oauth/authorize",
+            params=dict(
+                response_type="code",
+                client_id=client.client_id,
+                scope="openid",
+                nonce="somenonce",
+                redirect_uri="https://client.test/redirect1",
+                max_age=0,
+            ),
+        ).follow()
+
+    with time_machine.travel("2025-01-01 03:00:05+00:00", tick=False):
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit(name="answer", value="accept", status=302)
+
+    with time_machine.travel("2025-01-01 03:00:10+00:00", tick=False):
+        res = res.follow(status=200)
+        res.mustcontain('id="accept"')

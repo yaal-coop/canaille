@@ -198,13 +198,20 @@ def authorize_login(redirect_url, now, ui_locales):
         # https://github.com/lepture/authlib/issues/741
         try:
             max_age_seconds = int(request.values.get("max_age", 0))
-        except ValueError as exc:
-            raise InvalidRequestError(
-                description="The 'max_age' parameter must be an integer."
-            ) from exc
+        except ValueError:
+            max_age_seconds = -1
 
+        if max_age_seconds < 0:
+            raise InvalidRequestError(
+                description="The 'max_age' parameter must be a positive integer."
+            )
+
+        # The authentication age is measured at the authorization request time,
+        # so the user is not asked to log in again after they just did.
         max_age = auth_time + datetime.timedelta(seconds=max_age_seconds)
-        if request.values.get("max_age") and max_age < now:
+        if request.values.get("max_age") and max_age < (
+            get_authorization_request_datetime(redirect_url)
+        ):
             session["redirect-after-login"] = redirect_url
 
             start_oidc_auth_session(

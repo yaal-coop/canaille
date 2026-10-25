@@ -57,6 +57,8 @@ Removed
 
 Fixed
 ^^^^^
+- An authorization request with a ``max_age`` of zero asked to log in again and again.
+  A negative ``max_age`` is refused.
 - The consent page accepted answers without CSRF token. Another website could make a
   user consent to an application.
 - Users without the ``USE_OIDC`` permission could still get tokens with the password,
