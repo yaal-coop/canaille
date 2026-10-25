@@ -54,6 +54,8 @@ Removed
 
 Fixed
 ^^^^^
+- The logout asks for a confirmation when the ID token hint was issued for another
+  user. A link could log a user out without their consent.
 - The browser console showed Content Security Policy errors on every page.
 - With the memory backend, an OIDC client created without contacts could not be
   edited.

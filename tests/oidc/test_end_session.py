@@ -368,6 +368,33 @@ def test_bad_user_hint(testclient, backend, logged_user, client, id_token, admin
     testclient.get(f"/profile/{logged_user.user_name}", status=403)
 
 
+def test_id_token_hint_of_another_user(
+    testclient, backend, logged_admin, client, id_token
+):
+    """A logout with the ID token of another user is confirmed first."""
+    post_logout_redirect_url = "https://client.test/disconnected"
+    res = testclient.get(
+        "/oauth/end_session",
+        params={
+            "id_token_hint": id_token,
+            "client_id": client.client_id,
+            "post_logout_redirect_uri": post_logout_redirect_url,
+            "state": "foobar",
+        },
+        status=200,
+    )
+
+    with testclient.session_transaction() as sess:
+        assert sess.get("sessions")
+
+    res = res.form.submit(name="answer", value="logout", status=302)
+
+    with testclient.session_transaction() as sess:
+        assert not sess.get("sessions")
+
+    assert res.location == f"{post_logout_redirect_url}?state=foobar"
+
+
 def test_no_jwt_bad_csrf(testclient, backend, logged_user, client):
     testclient.get(f"/profile/{logged_user.user_name}", status=200)
 

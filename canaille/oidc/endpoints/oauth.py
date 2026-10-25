@@ -35,6 +35,7 @@ from ..provider import IntrospectionEndpoint
 from ..provider import RevocationEndpoint
 from ..provider import UserInfoEndpoint
 from ..provider import authorization
+from ..userinfo import generate_user_claims
 from ..utils import SCOPE_DETAILS
 from ..utils import unique_scopes
 from .forms import AuthorizeForm
@@ -459,8 +460,13 @@ def end_session():
         return authorization.handle_error_response(None, error)
 
     current_user = g.session and g.session.user
-    needs_confirmation = (
-        req.logout_hint and current_user and req.logout_hint != current_user.user_name
+    needs_confirmation = current_user and (
+        (req.logout_hint and req.logout_hint != current_user.user_name)
+        or (
+            req.id_token_claims
+            and req.id_token_claims.get("sub")
+            != generate_user_claims(current_user).get("sub")
+        )
     )
     if request.method == "GET" and (req.needs_confirmation or needs_confirmation):
         form = LogoutForm()
