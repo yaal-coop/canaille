@@ -101,14 +101,13 @@ def authorize():
     redirect_url = request.url
 
     try:
-        check_prompt_value()
+        params = authorization_parameters()
+        check_prompt_value(params)
 
-        ui_locales = request.values.get("ui_locales")
-
-        if response := authorize_login(redirect_url, now, ui_locales):
+        if response := authorize_login(redirect_url, now, params):
             return response
 
-        return authorize_consent(redirect_url, now)
+        return authorize_consent(redirect_url, now, params)
 
     except OAuth2Error as error:
         if not error.redirect_uri:
@@ -121,7 +120,17 @@ def authorize():
         return authorization.handle_error_response(request, error)
 
 
-def check_prompt_value():
+def authorization_parameters():
+    """Return the parameters of the authorization request.
+
+    Per OIDC Core §6.1, the parameters of a request object replace the ones of the query.
+    """
+    oauth_request = authorization.create_oauth2_request(request)
+    authorization.get_authorization_grant(oauth_request)
+    return oauth_request.payload.data
+
+
+def check_prompt_value(params):
     # Until this is fixed upstream:
     # https://github.com/lepture/authlib/issues/735
     #
@@ -132,17 +141,12 @@ def check_prompt_value():
     # Request) status code and an error value of invalid_request.
     # It is RECOMMENDED that the OP return an error_description
     # value identifying the invalid parameter value.
-    if (
-        request.values.get("prompt")
-        and request.values["prompt"]
-        not in openid_configuration()["prompt_values_supported"]
-    ):
-        client = Backend.instance.get(
-            models.Client, client_id=request.values.get("client_id")
-        )
-        redirect_uri = request.values.get("redirect_uri")
+    prompt = params.get("prompt")
+    if prompt and prompt not in openid_configuration()["prompt_values_supported"]:
+        client = Backend.instance.get(models.Client, client_id=params.get("client_id"))
+        redirect_uri = params.get("redirect_uri")
         raise InvalidRequestError(
-            description=f"prompt '{request.values['prompt']}' value is not supported",
+            description=f"prompt '{prompt}' value is not supported",
             redirect_uri=redirect_uri
             if client and client.check_redirect_uri(redirect_uri)
             else None,
@@ -163,34 +167,34 @@ def start_oidc_auth_session(client_id, username=None, prompt=None, ui_locales=No
     g.auth.save()
 
 
-def authorize_login(redirect_url, now, ui_locales):
+def authorize_login(redirect_url, now, params):
     """If user authentication or registration is needed, return a redirection to the correct page."""
     save_authorization_request_datetime(redirect_url, now)
     request_time = get_authorization_request_datetime(redirect_url) or now
+    prompt = params.get("prompt")
+    client_id = params.get("client_id")
+    ui_locales = params.get("ui_locales")
 
     if user := g.session and g.session.user:
         auth_time = g.session.last_login_datetime
 
-        if (
-            request.values.get("prompt") == "select_account"
-            and auth_time < request_time
-        ):
+        if prompt == "select_account" and auth_time < request_time:
             session["redirect-after-login"] = redirect_url
 
             start_oidc_auth_session(
-                client_id=request.values.get("client_id"),
-                prompt=request.values.get("prompt"),
+                client_id=client_id,
+                prompt=prompt,
                 ui_locales=ui_locales,
             )
             return redirect(url_for("core.auth.login"))
 
-        if request.values.get("prompt") == "login" and auth_time < request_time:
+        if prompt == "login" and auth_time < request_time:
             session["redirect-after-login"] = redirect_url
 
             start_oidc_auth_session(
-                client_id=request.values.get("client_id"),
+                client_id=client_id,
                 username=g.session.user.user_name,
-                prompt=request.values.get("prompt"),
+                prompt=prompt,
                 ui_locales=ui_locales,
             )
             return redirect_to_next_auth_step()
@@ -198,7 +202,7 @@ def authorize_login(redirect_url, now, ui_locales):
         # hotfix for
         # https://github.com/lepture/authlib/issues/741
         try:
-            max_age_seconds = int(request.values.get("max_age", 0))
+            max_age_seconds = int(params.get("max_age") or 0)
         except ValueError:
             max_age_seconds = -1
 
@@ -210,13 +214,13 @@ def authorize_login(redirect_url, now, ui_locales):
         # The authentication age is measured at the authorization request time,
         # so the user is not asked to log in again after they just did.
         max_age = auth_time + datetime.timedelta(seconds=max_age_seconds)
-        if request.values.get("max_age") and max_age < request_time:
+        if params.get("max_age") not in (None, "") and max_age < request_time:
             session["redirect-after-login"] = redirect_url
 
             start_oidc_auth_session(
-                client_id=request.values.get("client_id"),
+                client_id=client_id,
                 username=g.session.user.user_name,
-                prompt=request.values.get("prompt"),
+                prompt=prompt,
                 ui_locales=ui_locales,
             )
             return redirect_to_next_auth_step()
@@ -228,16 +232,16 @@ def authorize_login(redirect_url, now, ui_locales):
             )
 
     else:
-        if request.values.get("prompt") == "create":
+        if prompt == "create":
             session["redirect-after-login"] = redirect_url
             return redirect(url_for("core.account.join"))
 
-        if request.values.get("prompt") != "none":
+        if prompt != "none":
             session["redirect-after-login"] = redirect_url
 
             start_oidc_auth_session(
-                client_id=request.values.get("client_id"),
-                prompt=request.values.get("prompt"),
+                client_id=client_id,
+                prompt=prompt,
                 ui_locales=ui_locales,
             )
             return redirect(url_for("core.auth.login"))
@@ -256,7 +260,7 @@ def is_consent_needed(grant, redirect_url) -> bool:
         return True
 
     if (
-        request.values.get("prompt") == "consent"
+        grant.request.payload.data.get("prompt") == "consent"
         and consent
         and consent.issue_date
         < (
@@ -269,7 +273,7 @@ def is_consent_needed(grant, redirect_url) -> bool:
     if grant.client.trusted:
         return False
 
-    requested_scopes = request.values.get("scope", "")
+    requested_scopes = grant.request.payload.scope or ""
     allowed_scopes = unique_scopes(grant.client.get_allowed_scope(requested_scopes))
     if consent and all(scope in set(consent.scope) for scope in allowed_scopes):
         return False
@@ -285,7 +289,7 @@ def create_or_update_consent(grant, user, now):
     )
     consent = consents[0] if consents else None
 
-    requested_scopes = request.values.get("scope", "")
+    requested_scopes = grant.request.payload.scope or ""
     allowed_scopes = unique_scopes(grant.client.get_allowed_scope(requested_scopes))
 
     if consent:
@@ -309,7 +313,7 @@ def create_or_update_consent(grant, user, now):
     )
 
 
-def authorize_consent(redirect_url, now):
+def authorize_consent(redirect_url, now, params):
     user = g.session and g.session.user
     grant = authorization.get_consent_grant(end_user=user)
     form = AuthorizeForm(request.form or None)
@@ -334,12 +338,11 @@ def authorize_consent(redirect_url, now):
         # This error MAY be returned when the prompt parameter value in the
         # Authentication Request is none, but the Authentication Request cannot
         # be completed without displaying a user interface for End-User consent.
-        elif request.values.get("prompt") == "none":
+        elif params.get("prompt") == "none":
             raise ConsentRequiredError(redirect_uri=grant.redirect_uri)
 
         form.action_url = redirect_url
-        requested_scope = request.values.get("scope")
-        effective_scope = grant.client.get_allowed_scope(requested_scope)
+        effective_scope = grant.client.get_allowed_scope(grant.request.payload.scope)
         return render_template(
             "oidc/authorize.html",
             user=user,
@@ -355,9 +358,9 @@ def authorize_consent(redirect_url, now):
     if form.answer.data == "logout":
         session["redirect-after-login"] = redirect_url
         start_oidc_auth_session(
-            client_id=request.values.get("client_id"),
-            prompt=request.values.get("prompt"),
-            ui_locales=request.values.get("ui_locales"),
+            client_id=params.get("client_id"),
+            prompt=params.get("prompt"),
+            ui_locales=params.get("ui_locales"),
         )
         return redirect(url_for("core.auth.logout"))
 

@@ -57,6 +57,9 @@ Removed
 
 Fixed
 ^^^^^
+- With a request object, the consent page showed the scopes of the URL instead of
+  the request object ones, and the ``prompt`` and ``max_age`` parameters of the request
+  object were ignored. A client could get scopes the user never consented to.
 - With ``prompt=none`` and a request object, the ``consent_required`` error could
   redirect to any URI.
 - With ``prompt=login``, ``prompt=select_account`` or ``max_age``, accepting the

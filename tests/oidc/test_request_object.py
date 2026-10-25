@@ -1,9 +1,11 @@
+import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 import pytest
 from joserfc import jwt
 
+from canaille.app import models
 from canaille.oidc.utils import MAX_DOCUMENT_SIZE
 
 from . import client_credentials
@@ -158,6 +160,43 @@ def test_request_object_uri_query(
     assert access_token
 
 
+def test_request_object_scope_is_displayed(
+    testclient, logged_user, client, client_jwk, backend
+):
+    """The consent page displays the scopes of the request object, not the query ones."""
+    consent = models.Consent(
+        consent_id=str(uuid.uuid4()),
+        client=client,
+        subject=logged_user,
+        scope=["openid"],
+    )
+    backend.save(consent)
+
+    request_obj = jwt.encode(
+        {"alg": "RS256"},
+        dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid email",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        client_jwk,
+    )
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(client_id=client.client_id, scope="openid", request=request_obj),
+        status=200,
+    )
+    res.mustcontain("Your e-mail address.")
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+    backend.reload(consent)
+    assert set(consent.scope) == {"openid", "email"}
+
+    backend.delete(consent)
+
+
 def test_request_object_redirect_uri_on_consent_required(
     testclient, logged_user, client, client_jwk
 ):
@@ -186,3 +225,25 @@ def test_request_object_redirect_uri_on_consent_required(
     )
     assert res.location.startswith(client.redirect_uris[0])
     assert parse_qs(urlsplit(res.location).query)["error"] == ["consent_required"]
+
+
+def test_request_object_prompt(testclient, logged_user, client, client_jwk):
+    """The prompt of the request object is applied."""
+    request_obj = jwt.encode(
+        {"alg": "RS256"},
+        dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[0],
+            prompt="login",
+        ),
+        client_jwk,
+    )
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(client_id=client.client_id, request=request_obj),
+        status=302,
+    )
+    assert "/auth/" in res.location

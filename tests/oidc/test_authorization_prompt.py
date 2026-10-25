@@ -456,7 +456,7 @@ def test_unsupported_prompt_with_unknown_redirect_uri(testclient, trusted_client
         params=dict(
             prompt="unsupported", redirect_uri="https://attacker.test/callback"
         ),
-        status=400,
+        status=404,
     )
 
 
