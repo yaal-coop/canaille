@@ -53,3 +53,12 @@ def test_non_get_with_wrong_host_returns_400(testclient):
     res = testclient.delete("/login", headers={"Host": "localhost"}, status=400)
     assert res.status_int == 400
     assert "canaille.test" in res.text
+
+
+def test_debug_responses_keep_the_html_escaping(testclient, logged_user, backend):
+    """The HTML responses of debug instances are prettified, but stay escaped."""
+    logged_user.given_name = "<b>John</b>"
+    backend.save(logged_user)
+
+    res = testclient.get("/profile/user", status=200)
+    res.mustcontain("&lt;b&gt;John&lt;/b&gt;", no="<b>John</b>")

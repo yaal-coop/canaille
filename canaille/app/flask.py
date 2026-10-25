@@ -171,17 +171,14 @@ def setup_flask_blueprints(app) -> None:
 
 
 def beautify_html_resonses(app) -> None:
-    import html
-
     from bs4 import BeautifulSoup
 
     def _prettify_response(response):
         if response.content_type == "text/html; charset=utf-8":
             ugly = response.get_data(as_text=True)
             soup = BeautifulSoup(ugly, "html.parser")
-            pretty = soup.prettify(formatter="html5")
+            pretty = soup.prettify(formatter="minimal")
             response.direct_passthrough = False
-            pretty = html.unescape(pretty)
             response.set_data(pretty)
 
         return response

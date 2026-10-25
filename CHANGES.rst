@@ -54,6 +54,7 @@ Removed
 
 Fixed
 ^^^^^
+- In debug mode, the pages did not escape the HTML in the values users entered.
 - An authorization request with a ``max_age`` that is not an integer returned a server
   error.
 - An authorization request with an unsupported ``prompt`` value could redirect to any
