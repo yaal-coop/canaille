@@ -280,20 +280,28 @@ class SQLBackend(Backend):
     @classmethod
     def replace_ids_with_instances(cls, model, state):
         for attr, value in state.items():
-            generic_attr_model, _ = model.get_model_annotations(attr)
-            if not generic_attr_model:
+            attr_models = model.get_referenced_models(attr)
+            if not attr_models:
                 continue
 
-            model_name = generic_attr_model.__name__.lower()
-            backend_attr_model = MODELS.get(model_name)
             if isinstance(value, list):
-                state[attr] = [
-                    Backend.instance.get(backend_attr_model, id_) for id_ in value
-                ]
+                state[attr] = [cls.get_any(attr_models, id_) for id_ in value]
             else:
-                state[attr] = Backend.instance.get(backend_attr_model, value)
+                state[attr] = cls.get_any(attr_models, value)
 
         return state
+
+    @staticmethod
+    def get_any(models, id_):
+        """Return the instance with the identifier ``id_``, among several models."""
+        return next(
+            (
+                instance
+                for model in models
+                if (instance := Backend.instance.get(model, id_))
+            ),
+            None,
+        )
 
     def do_save(self, instance) -> None:
         instance.last_modified = datetime.datetime.now(datetime.UTC)

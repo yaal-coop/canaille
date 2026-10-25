@@ -134,6 +134,35 @@ class BackendModel:
     """
 
     @classmethod
+    def get_referenced_models(cls, attribute):
+        """Return the backend models an attribute can reference.
+
+        Unions such as ``User | Group`` reference several models.
+        """
+        annotations = cls.attributes[attribute]
+        attribute_type = (
+            typing.get_args(annotations)[0]
+            if typing.get_origin(annotations) is list
+            else annotations
+        )
+        types = (
+            typing.get_args(attribute_type)
+            if typing.get_origin(attribute_type) in UNION_TYPES
+            else [attribute_type]
+        )
+        types = [
+            typing.get_args(type_)[0]
+            if typing.get_origin(type_) is Annotated
+            else type_
+            for type_ in types
+        ]
+        return [
+            getattr(models, type_.__name__)
+            for type_ in types
+            if inspect.isclass(type_) and issubclass(type_, Model)
+        ]
+
+    @classmethod
     def get_model_annotations(cls, attribute):
         annotations = cls.attributes[attribute]
         attribute_type, metadata = get_root_type(annotations)

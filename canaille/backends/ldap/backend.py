@@ -298,20 +298,25 @@ class LDAPBackend(Backend):
 
     @classmethod
     def replace_uuids_with_dns(cls, model, state, uuids_dn):
-        def get_dn_from_uuid(uuid, model):
-            backend_model = MODELS.get(model.__name__.lower())
-            return uuids_dn.get(uuid) or Backend.instance.get(backend_model, id=uuid).dn
+        def get_dn_from_uuid(uuid, models):
+            if dn := uuids_dn.get(uuid):
+                return dn
+
+            for backend_model in models:
+                if instance := Backend.instance.get(backend_model, id=uuid):
+                    return instance.dn
+
+            raise ValueError(f"No object with the id {uuid}.")
 
         def replace_attr(attr, value):
-            type_, _ = model.get_model_annotations(attr)
-            is_model = inspect.isclass(type_) and issubclass(type_, Model)
-            if not is_model:
+            attr_models = model.get_referenced_models(attr)
+            if not attr_models:
                 return value
 
             if isinstance(value, list):
-                return [get_dn_from_uuid(item, type_) for item in value]
+                return [get_dn_from_uuid(item, attr_models) for item in value]
 
-            return get_dn_from_uuid(value, type_)
+            return get_dn_from_uuid(value, attr_models)
 
         return {attr: replace_attr(attr, value) for attr, value in state.items()}
 
