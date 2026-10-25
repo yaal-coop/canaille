@@ -14,6 +14,7 @@ Added
 
 Changed
 ^^^^^^^
+- Group invitation links ask for a confirmation before the user joins the group.
 - The session cookie is only sent with same-site requests by default
   (``SESSION_COOKIE_SAMESITE`` is ``Lax``), also without the ``front`` extras.
 - Form fields are checked when the user leaves them, instead of while they type,

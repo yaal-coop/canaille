@@ -86,8 +86,15 @@ def test_join_group_with_valid_invitation(
         assert logged_user not in bar_group.members
 
         invitation_url = f"/groups/join/{payload.b64()}/{payload.build_hash()}"
-        res = testclient.get(invitation_url, status=302)
+        res = testclient.get(invitation_url, status=200)
+        backend.reload(bar_group)
+        assert logged_user not in bar_group.members
 
+        testclient.post(invitation_url, status=400)
+        backend.reload(bar_group)
+        assert logged_user not in bar_group.members
+
+        res = res.form.submit(status=302)
         assert "/settings" in res.location
 
         assert (

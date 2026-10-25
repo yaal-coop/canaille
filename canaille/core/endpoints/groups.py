@@ -387,6 +387,10 @@ def join_group(data, hash):
             url_for("core.account.profile_settings", edited_user=g.session.user)
         )
 
+    form = Form(request.form or None)
+    if request.method == "GET" or not form.validate():
+        return render_template("core/modals/join-group.html", group=group, form=form)
+
     group.members = list(group.members) + [g.session.user]
     Backend.instance.save(group)
 

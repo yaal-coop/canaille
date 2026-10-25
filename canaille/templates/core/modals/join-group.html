@@ -1,0 +1,31 @@
+{% extends theme('base.html') %}
+{% import 'macro/form.html' as fui %}
+
+{% block content %}
+    <div class="ui info message" id="modal-join-group">
+        {% call fui.render_form(form, action=request.url) %}
+            <div class="ui icon header">
+                <i class="users icon"></i>
+                {% trans %}Join group{% endtrans %}
+            </div>
+            <div class="content">
+                <p>
+                    {% trans group_name=group.display_name %}
+                        You have been invited to join the group "{{ group_name }}".
+                        Do you want to join it?
+                    {% endtrans %}
+                </p>
+            </div>
+            <div class="ui center aligned container">
+                <div class="ui stackable buttons">
+                    <a href="{{ url_for('core.account.index') }}" class="ui cancel button">
+                        {% trans %}Cancel{% endtrans %}
+                    </a>
+                    <button type="submit" class="ui primary approve button" id="join">
+                        {% trans %}Join{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        {% endcall %}
+    </div>
+{% endblock %}
