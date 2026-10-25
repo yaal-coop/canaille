@@ -1,3 +1,8 @@
+import sys
+
+from canaille import create_app
+
+
 def test_redirect_to_server_name(testclient):
     """Requests with wrong host are redirected to SERVER_NAME."""
     testclient.app.config["SERVER_NAME"] = "canaille.test"
@@ -62,3 +67,11 @@ def test_debug_responses_keep_the_html_escaping(testclient, logged_user, backend
 
     res = testclient.get("/profile/user", status=200)
     res.mustcontain("&lt;b&gt;John&lt;/b&gt;", no="<b>John</b>")
+
+
+def test_session_cookie_is_same_site_without_talisman(configuration, monkeypatch):
+    """The session cookie is not sent with cross-site requests, even without Talisman."""
+    monkeypatch.setitem(sys.modules, "flask_talisman", None)
+    app = create_app(configuration)
+
+    assert app.config["SESSION_COOKIE_SAMESITE"] == "Lax"

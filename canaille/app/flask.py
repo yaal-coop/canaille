@@ -191,6 +191,8 @@ def setup_flask(app) -> None:
     from canaille.core.photo import MAX_PHOTO_UPLOAD_SIZE
 
     app.config.setdefault("MAX_CONTENT_LENGTH", MAX_PHOTO_UPLOAD_SIZE + 1024 * 1024)
+    if not app.config.get("SESSION_COOKIE_SAMESITE"):
+        app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
     csrf.init_app(app)
     cache.init_app(app)

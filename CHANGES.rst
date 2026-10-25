@@ -14,6 +14,8 @@ Added
 
 Changed
 ^^^^^^^
+- The session cookie is only sent with same-site requests by default
+  (``SESSION_COOKIE_SAMESITE`` is ``Lax``), also without the ``front`` extras.
 - Form fields are checked when the user leaves them, instead of while they type,
   except for the password strength. Characters typed during a check could get lost.
 - Groups are picked with a search field in the user invitation and account settings
