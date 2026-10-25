@@ -134,9 +134,15 @@ def check_prompt_value():
         and request.values["prompt"]
         not in openid_configuration()["prompt_values_supported"]
     ):
+        client = Backend.instance.get(
+            models.Client, client_id=request.values.get("client_id")
+        )
+        redirect_uri = request.values.get("redirect_uri")
         raise InvalidRequestError(
             description=f"prompt '{request.values['prompt']}' value is not supported",
-            redirect_uri=request.values.get("redirect_uri"),
+            redirect_uri=redirect_uri
+            if client and client.check_redirect_uri(redirect_uri)
+            else None,
         )
 
 

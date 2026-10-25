@@ -54,6 +54,8 @@ Removed
 
 Fixed
 ^^^^^
+- An authorization request with an unsupported ``prompt`` value could redirect to any
+  URI. It now only redirects to the URIs registered for the client.
 - The logout asks for a confirmation when the ID token hint was issued for another
   user. A link could log a user out without their consent.
 - The browser console showed Content Security Policy errors on every page.

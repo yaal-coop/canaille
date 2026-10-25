@@ -156,7 +156,7 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
             scope="openid profile",
             nonce="somenonce",
             prompt="create",
-            redirect_uri="https://myotherdomain.test/redirect1",
+            redirect_uri="https://client.trusted.test/redirect1",
         ),
         status=302,
     )
@@ -434,3 +434,27 @@ def test_prompt_select_account_switch_user(testclient, user, admin, client, back
 
     backend.delete(consent_user)
     backend.delete(consent_admin)
+
+
+def test_unsupported_prompt_with_unknown_redirect_uri(testclient, trusted_client):
+    """An unsupported prompt value does not redirect to an unregistered URI."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=trusted_client.client_id,
+            scope="openid profile",
+            prompt="unsupported",
+            redirect_uri="https://attacker.test/callback",
+        ),
+        status=400,
+    )
+    res.mustcontain("value is not supported")
+
+    testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            prompt="unsupported", redirect_uri="https://attacker.test/callback"
+        ),
+        status=400,
+    )
