@@ -91,17 +91,14 @@ def authorize():
         request.form.to_dict(flat=False),
     )
 
-    redirect_url = (
-        request.url
-        if request.method == "GET"
-        else add_params_to_uri(request.url, request.form)
-    )
-
     # Authorization requests sent with POST come from the client website, so
     # the browser does not send the SameSite session cookie with them. They are
     # turned into GET requests, that the browser sends with the cookie.
     if request.method == "POST" and "answer" not in request.form:
-        return redirect(redirect_url, code=303)
+        return redirect(add_params_to_uri(request.url, request.form), code=303)
+
+    # The consent form posts its answer to the URL of the authorization request.
+    redirect_url = request.url
 
     try:
         check_prompt_value()

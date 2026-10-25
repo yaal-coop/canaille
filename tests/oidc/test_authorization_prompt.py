@@ -458,3 +458,30 @@ def test_unsupported_prompt_with_unknown_redirect_uri(testclient, trusted_client
         ),
         status=400,
     )
+
+
+def test_prompt_login_then_consent(testclient, logged_user, client, backend):
+    """After logging in again for prompt=login, accepting the consent does not ask to log in again."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="login",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=302,
+    ).follow()
+
+    assert res.template == "core/auth/password.html"
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow(status=200)
+
+    res = res.form.submit(name="answer", value="accept", status=302)
+    assert res.location.startswith(client.redirect_uris[0])
+    assert "code" in parse_qs(urlsplit(res.location).query)
+
+    for consent in backend.query(models.Consent, client=client, subject=logged_user):
+        backend.delete(consent)

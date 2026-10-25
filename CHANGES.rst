@@ -57,6 +57,8 @@ Removed
 
 Fixed
 ^^^^^
+- With ``prompt=login``, ``prompt=select_account`` or ``max_age``, accepting the
+  consent asked to log in again.
 - An authorization request with a ``max_age`` of zero asked to log in again and again.
   A negative ``max_age`` is refused.
 - The consent page accepted answers without CSRF token. Another website could make a
