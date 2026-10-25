@@ -15,6 +15,7 @@ from authlib.oauth2 import rfc7662
 from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
+from authlib.oauth2.rfc6749 import InvalidGrantError
 from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
@@ -199,8 +200,13 @@ class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
         Backend.instance.delete(authorization_code)
 
     def authenticate_user(self, authorization_code):
-        if authorization_code.subject and not authorization_code.subject.locked:
-            return authorization_code.subject
+        if not authorization_code.subject or authorization_code.subject.locked:
+            return None
+
+        if not authorization_code.client.is_usable_by(authorization_code.subject):
+            raise InvalidGrantError("The user cannot use this client.")
+
+        return authorization_code.subject
 
 
 class OIDCGrantMixin:
@@ -241,9 +247,18 @@ class PasswordGrant(rfc6749.ResourceOwnerPasswordCredentialsGrant):
         "none",
     ]
 
+    def authenticate_token_endpoint_client(self):
+        self.request.client = super().authenticate_token_endpoint_client()
+        return self.request.client
+
     def authenticate_user(self, username, password):
+        """Return the user if they can use the client and the password is right.
+
+        Both failures give the same error, so the endpoint cannot check passwords
+        of users who cannot use the client.
+        """
         user = get_user_from_login(username)
-        if not user:
+        if not user or not self.request.client.is_usable_by(user):
             return None
 
         success, _ = Backend.instance.check_user_password(user, password)
@@ -268,8 +283,13 @@ class RefreshTokenGrant(rfc6749.RefreshTokenGrant):
             return token[0]
 
     def authenticate_user(self, credential):
-        if credential.subject and not credential.subject.locked:
-            return credential.subject
+        if not credential.subject or credential.subject.locked:
+            return None
+
+        if not credential.client.is_usable_by(credential.subject):
+            raise InvalidGrantError("The user cannot use this client.")
+
+        return credential.subject
 
     def revoke_old_credential(self, credential):
         credential.revokation_date = datetime.datetime.now(datetime.UTC)

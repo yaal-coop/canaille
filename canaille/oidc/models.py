@@ -10,6 +10,7 @@ from flask import current_app
 
 from canaille.app import models
 from canaille.backends import Backend
+from canaille.core.configuration import Permission
 
 from .basemodels import AuthorizationCode as BaseAuthorizationCode
 from .basemodels import Client as BaseClient
@@ -165,6 +166,10 @@ class Client(BaseClient, ClientMixin):
     def get_default_redirect_uri(self):
         return None
 
+    def is_usable_by(self, user) -> bool:
+        """Check if a user can authenticate with this client."""
+        return user.can(Permission.USE_OIDC)
+
 
 class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
     def get_redirect_uri(self):
@@ -221,7 +226,14 @@ class Token(BaseToken, TokenMixin):
         ) < datetime.datetime.now(datetime.UTC)
 
     def is_revoked(self):
-        return bool(self.revokation_date)
+        """Tell whether the token cannot be used anymore.
+
+        This is the case after a revocation, and when its user cannot use its client anymore.
+        """
+        if self.revokation_date:
+            return True
+
+        return bool(self.subject) and not self.client.is_usable_by(self.subject)
 
     def check_client(self, client):
         return client.client_id == self.client.client_id

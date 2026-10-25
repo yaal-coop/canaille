@@ -54,6 +54,8 @@ Removed
 
 Fixed
 ^^^^^
+- Users without the ``USE_OIDC`` permission could still get tokens with the password,
+  refresh token and authorization code grants, and use their existing tokens.
 - In debug mode, the pages did not escape the HTML in the values users entered.
 - An authorization request with a ``max_age`` that is not an integer returned a server
   error.
