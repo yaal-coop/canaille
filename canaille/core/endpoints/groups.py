@@ -112,7 +112,7 @@ def create_group(user):
 
 def user_can_access_group(user, group):
     """Check if user can access group management."""
-    return user.can("manage_all_groups") or group.user_can_edit(user)
+    return user.can("manage_all_groups") or group.is_editable_by(user)
 
 
 @bp.route("/<group:group>", methods=("GET", "POST"))

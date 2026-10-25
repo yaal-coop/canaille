@@ -496,7 +496,7 @@ class Group(Model):
 
     description: str | None = None
 
-    def user_can_edit(self, user: "User") -> bool:
+    def is_editable_by(self, user: "User") -> bool:
         """Check if a user can edit this group.
 
         Returns True if the user has manage_all_groups permission or is the owner of the group

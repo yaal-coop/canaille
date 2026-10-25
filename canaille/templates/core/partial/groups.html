@@ -14,7 +14,7 @@
         {% for group in table_form.items_slice %}
             <tr>
                 <td class="collapsing">
-                    {% if group.user_can_edit(user) %}
+                    {% if group.is_editable_by(user) %}
                         <a href="{{ url_for('core.groups.group', group=group) }}">
                             <i class="users circular black inverted icon"></i>
                         </a>
@@ -23,7 +23,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if group.user_can_edit(user) %}
+                    {% if group.is_editable_by(user) %}
                         <a href="{{ url_for('core.groups.group', group=group) }}">{{ group.display_name }}</a>
                     {% else %}
                         {{ group.display_name }}
@@ -32,7 +32,7 @@
                 <td>{% if group.description %}{{ group.description }}{% endif %}</td>
                 <td>{{ group.members|len|numberformat }}</td>
                 <td class="collapsing">
-                    {% if user in group.members and not group.user_can_edit(user) %}
+                    {% if user in group.members and not group.is_editable_by(user) %}
                         {% call fui.render_form(form, action=url_for('core.groups.groups'), id="leavegroupform-" ~ group.id, style="display: inline;") %}
                             <input type="hidden" name="group_id" value="{{ group.id }}" />
                             {% call fui.render_button(form.action, "confirm-leave", class_="ui red button") %}
