@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 import uuid
 
 from authlib.common.urls import add_params_to_uri
@@ -44,6 +45,7 @@ from .well_known import openid_configuration
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 
 AUTHORIZATION_REQUEST_PROCESS_TIMEOUT: int = 300
+MAX_DISPLAYED_CONSENTS: int = 10
 
 
 @bp.errorhandler(HTTPException)
@@ -322,16 +324,17 @@ def authorize_consent(redirect_url, now, params):
 
     # The answers without a valid CSRF token are ignored, as the authorization
     # endpoint itself is exempt from CSRF checks. The consent is only accepted
-    # for the scope that the consent page displayed.
-    displayed_consent = [redirect_url, effective_scope]
+    # for the scope that the consent page displayed. A hash keeps the session
+    # cookie small, and several consent pages can be open at once.
+    consent_hash = hashlib.sha256(
+        f"{redirect_url} {effective_scope}".encode()
+    ).hexdigest()
+    displayed_consents = session.get("displayed-consents", [])
     answered = (
         request.method == "POST"
         and form.answer.data is not None
         and form.validate()
-        and (
-            form.answer.data != "accept"
-            or session.get("displayed-consent") == displayed_consent
-        )
+        and (form.answer.data != "accept" or consent_hash in displayed_consents)
     )
 
     # Get the authorization code, or display the user consent form.
@@ -356,7 +359,12 @@ def authorize_consent(redirect_url, now, params):
             raise ConsentRequiredError(redirect_uri=grant.redirect_uri)
 
         form.action_url = redirect_url
-        session["displayed-consent"] = displayed_consent
+        session["displayed-consents"] = [
+            *[other for other in displayed_consents if other != consent_hash][
+                -MAX_DISPLAYED_CONSENTS + 1 :
+            ],
+            consent_hash,
+        ]
         return render_template(
             "oidc/authorize.html",
             user=user,
@@ -368,6 +376,10 @@ def authorize_consent(redirect_url, now, params):
             form=form,
             effective_scope=effective_scope,
         )
+
+    session["displayed-consents"] = [
+        other for other in displayed_consents if other != consent_hash
+    ]
 
     if form.answer.data == "logout":
         session["redirect-after-login"] = redirect_url
@@ -382,7 +394,6 @@ def authorize_consent(redirect_url, now, params):
         grant_user = None
 
     if form.answer.data == "accept":
-        session.pop("displayed-consent", None)
         grant_user = user
         create_or_update_consent(grant, grant_user, now)
 

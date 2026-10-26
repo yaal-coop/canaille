@@ -274,3 +274,43 @@ def test_consent_answer_without_csrf_token(testclient, logged_user, client, back
     res.mustcontain('id="accept"')
     assert not backend.query(models.Consent, client=client, subject=logged_user)
     assert not backend.query(models.AuthorizationCode, client=client)
+
+
+def authorization_params(client, state):
+    return dict(
+        response_type="code",
+        client_id=client.client_id,
+        scope="openid profile",
+        nonce="somenonce",
+        redirect_uri="https://client.test/redirect1",
+        state=state,
+    )
+
+
+def test_consent_in_several_tabs(testclient, logged_user, client, backend):
+    """A consent page can be accepted after another one was displayed."""
+    first = testclient.get(
+        "/oauth/authorize", params=authorization_params(client, "first"), status=200
+    )
+    testclient.get(
+        "/oauth/authorize", params=authorization_params(client, "second"), status=200
+    )
+
+    res = first.form.submit(name="answer", value="accept", status=302)
+    assert parse_qs(urlsplit(res.location).query)["state"] == ["first"]
+
+    for consent in backend.query(models.Consent, client=client):
+        backend.delete(consent)
+
+
+def test_displayed_consents_in_session(testclient, logged_user, client):
+    """The session only keeps a hash of the displayed consents, until the user answers."""
+    res = testclient.get(
+        "/oauth/authorize", params=authorization_params(client, "x" * 5000), status=200
+    )
+    with testclient.session_transaction() as sess:
+        assert [len(value) for value in sess["displayed-consents"]] == [64]
+
+    res.form.submit(name="answer", value="deny", status=302)
+    with testclient.session_transaction() as sess:
+        assert sess["displayed-consents"] == []
