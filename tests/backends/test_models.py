@@ -314,3 +314,27 @@ def test_backend_properties_are_attributes():
     instance = Backend()
     assert instance.foo == "foo"
     assert instance.bar == "bar"
+
+
+def test_rename_user_and_group(testclient, backend, user, foo_group):
+    """Changing a user name or a group name keeps the memberships."""
+    user.user_name = "renamed"
+    backend.save(user)
+
+    renamed = backend.get(models.User, user_name="renamed")
+    assert renamed is not None
+    assert renamed.id == user.id
+    assert backend.get(models.User, user_name="user") is None
+
+    backend.reload(foo_group)
+    assert renamed in foo_group.members
+
+    foo_group.display_name = "renamed-group"
+    backend.save(foo_group)
+
+    renamed_group = backend.get(models.Group, display_name="renamed-group")
+    assert renamed_group.id == foo_group.id
+    assert backend.get(models.Group, display_name="foo") is None
+
+    backend.reload(renamed)
+    assert renamed_group in renamed.groups

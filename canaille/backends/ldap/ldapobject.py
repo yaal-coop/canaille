@@ -105,15 +105,23 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
         value = listify(value)
         self._dirty[name] = value
 
-    @property
-    def rdn_value(self):
-        value = self.get_ldap_attribute(self.rdn_attribute)
+    def get_rdn_value(self, lookup_changes=True):
+        value = self.get_ldap_attribute(self.rdn_attribute, lookup_changes)
         rdn_value = value[0] if isinstance(value, list) else value
         return rdn_value.strip() if rdn_value else rdn_value
 
     @property
+    def rdn_value(self):
+        return self.get_rdn_value()
+
+    @property
     def dn(self):
         return self.dn_for(self.rdn_value)
+
+    @property
+    def stored_dn(self):
+        """The DN of the entry in the directory, before its RDN is changed."""
+        return self.dn_for(self.get_rdn_value(lookup_changes=False))
 
     @classmethod
     def dn_for(cls, rdn):

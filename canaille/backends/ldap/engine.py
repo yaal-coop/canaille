@@ -222,6 +222,11 @@ class Engine:
         read_post_control = PostReadControl(criticality=True, attrList=attributes)
 
         if instance.exists:
+            if instance.stored_dn != instance.dn:
+                new_rdn = f"{instance.rdn_attribute}={ldap.dn.escape_dn_chars(instance.rdn_value)}"
+                with self.connection() as conn:
+                    conn.rename_s(instance.stored_dn, new_rdn)
+
             deletions = [
                 name
                 for name, value in instance._dirty.items()
