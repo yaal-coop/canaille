@@ -349,3 +349,16 @@ def test_consent_is_bound_to_the_displayed_user(
     res = res.form.submit(name="answer", value="accept", status=200)
     res.mustcontain(admin.formatted_name)
     assert not backend.query(models.Consent, client=client)
+
+
+def test_unknown_consent_answer(testclient, logged_user, client, backend):
+    """An unknown answer to the consent page is refused."""
+    res = testclient.get(
+        "/oauth/authorize", params=authorization_params(client, "state"), status=200
+    )
+    testclient.post(
+        res.form.action,
+        {"csrf_token": res.form["csrf_token"].value, "answer": "unknown"},
+        status=400,
+    )
+    assert not backend.query(models.Consent, client=client)

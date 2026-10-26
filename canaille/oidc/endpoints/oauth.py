@@ -381,6 +381,9 @@ def authorize_consent(redirect_url, now, params):
         other for other in displayed_consents if other != consent_hash
     ]
 
+    if form.answer.data not in ("accept", "deny", "logout"):
+        abort(400, "Unknown consent answer.")
+
     if form.answer.data == "logout":
         session["redirect-after-login"] = redirect_url
         start_oidc_auth_session(

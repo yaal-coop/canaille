@@ -57,6 +57,7 @@ Removed
 
 Fixed
 ^^^^^
+- An unknown answer to the consent page returned a server error.
 - With a ``request_uri``, a client could change the request object between the consent
   page and the user answer, and get scopes the user did not see. The consent only
   applies to the displayed scopes.
