@@ -20,6 +20,7 @@ from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc import rpinitiated
+from authlib.oidc.core.authorization_request import OpenIDJWTAuthenticationRequest
 from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
 from flask import g
@@ -709,9 +710,12 @@ class IssuerParameter(rfc9207.IssuerParameter):
         return get_issuer()
 
 
-class JWTAuthenticationRequest(rfc9101.JWTAuthenticationRequest):
+class JWTAuthenticationRequest(OpenIDJWTAuthenticationRequest):
     def resolve_client_public_key(self, client):
         return get_client_jwks(client)
+
+    def get_client_request_uris(self, client):
+        return client.request_uris or []
 
     def validate_request_uri(self, request_uri: str, client):
         """Only download request objects at URIs the client registered."""
