@@ -27,6 +27,10 @@ Configuration file
 
 You can have a look at the :ref:`example file <references/configuration:Example file>` for inspiration.
 
+Without :envvar:`CANAILLE_CONFIG`, Canaille reads ``canaille.toml`` in the current directory if it exists.
+Applications that embed Canaille can pass another file to :func:`~canaille.create_app` with ``config_file``,
+or ``config_file=False`` to read no configuration file.
+
 Environment variables
 ~~~~~~~~~~~~~~~~~~~~~
 

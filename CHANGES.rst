@@ -3,6 +3,8 @@
 
 Added
 ^^^^^
+- :func:`~canaille.create_app` takes a ``config_file`` parameter, to choose the TOML
+  configuration file, or to read none with ``config_file=False``.
 - Profile photos can be uploaded in the PNG and WEBP formats, in addition to JPEG.
 - Uploaded photos are decoded and re-encoded, so their metadata, such as the GPS
   coordinates of smartphone photos, are stripped. They are downscaled to 1024x1024

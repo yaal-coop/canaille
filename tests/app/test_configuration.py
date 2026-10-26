@@ -94,6 +94,33 @@ def test_local_configuration(configuration, tmp_path, smtpd):
     os.remove(config_path)
 
 
+def write_configuration(path, configuration, name):
+    configuration["CANAILLE"]["NAME"] = name
+    with open(path, "w") as fd:
+        tomlkit.dump(configuration, fd)
+
+
+def test_explicit_configuration_file(configuration, tmp_path, monkeypatch, smtpd):
+    """The configuration file passed to create_app replaces CANAILLE_CONFIG."""
+    write_configuration(tmp_path / "env.toml", configuration, "From the environment")
+    write_configuration(tmp_path / "explicit.toml", configuration, "Explicit")
+    monkeypatch.setenv("CANAILLE_CONFIG", str(tmp_path / "env.toml"))
+
+    app = create_app(config_file=tmp_path / "explicit.toml")
+    assert app.config["CANAILLE"]["NAME"] == "Explicit"
+
+
+def test_no_configuration_file(configuration, tmp_path, monkeypatch, smtpd):
+    """No configuration file is loaded when config_file is False."""
+    write_configuration(tmp_path / "env.toml", configuration, "From the environment")
+    write_configuration(tmp_path / "canaille.toml", configuration, "Local")
+    monkeypatch.setenv("CANAILLE_CONFIG", str(tmp_path / "env.toml"))
+    monkeypatch.chdir(tmp_path)
+
+    app = create_app(config_file=False)
+    assert app.config["CANAILLE"]["NAME"] == "Canaille"
+
+
 def test_configuration_from_environment_vars(tmp_path):
     """Canaille should read configuration from environment vars."""
     os.environ["SECRET_KEY"] = "very-very-secret"

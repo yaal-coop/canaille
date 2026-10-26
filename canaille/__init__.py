@@ -1,4 +1,6 @@
+import os
 import sys
+from typing import Literal
 
 from flask import Flask
 
@@ -9,6 +11,7 @@ def create_app(
     init_backend=None,
     env_file: str | None = None,
     env_prefix: str = "",
+    config_file: str | os.PathLike | Literal[False] | None = None,
 ):
     """Application entry point.
 
@@ -16,6 +19,9 @@ def create_app(
     :param backend: An optional backend to force. If unset backend will be initialized according to the configuration.
     :param env_file: The path to an environment var file in which configuration can be loaded.
     :param env_prefix: The prefix to configuration environment vars.
+    :param config_file: The TOML configuration file to load. If unset, it is
+        :envvar:`CANAILLE_CONFIG`, or ``canaille.toml`` in the current directory.
+        If :data:`False`, no TOML file is loaded.
     """
     from .app.configuration import setup_config
     from .app.features import setup_features
@@ -39,6 +45,7 @@ def create_app(
             config=config,
             env_file=env_file,
             env_prefix=env_prefix,
+            config_file=config_file,
         ):  # pragma: no cover
             sys.exit(1)
 

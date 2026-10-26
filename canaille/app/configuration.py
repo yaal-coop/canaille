@@ -83,12 +83,13 @@ class RootSettings(BaseSettings):
         dotenv_settings,
         file_secret_settings,
     ):
-        toml_file = os.getenv("CANAILLE_CONFIG") or settings_cls.model_config.get(
-            "toml_file"
+        toml_file = settings_cls.model_config.get("toml_file")
+        toml_settings = (
+            (TomlConfigSettingsSource(settings_cls, toml_file),) if toml_file else ()
         )
         return (
             init_settings,
-            TomlConfigSettingsSource(settings_cls, toml_file),
+            *toml_settings,
             env_settings,
             dotenv_settings,
             file_secret_settings,
@@ -249,11 +250,16 @@ def settings_factory(
     env_file=None,
     env_prefix="",
     init_with_examples=False,
+    config_file=None,
 ):
     """Push the backend specific configuration into CoreSettings.
 
     In the purpose to break dependency against backends libraries like python-ldap or
     sqlalchemy.
+
+    :param config_file: The TOML configuration file to load. If unset, it is
+        :envvar:`CANAILLE_CONFIG`, or ``canaille.toml`` in the current directory.
+        If :data:`False`, no TOML file is loaded.
     """
     from canaille.backends.ldap.configuration import LDAPSettings
     from canaille.backends.sql.configuration import SQLSettings
@@ -293,6 +299,12 @@ def settings_factory(
         __base__=RootSettings,
         **attributes,
     )
+    if config_file is None:
+        config_file = os.getenv("CANAILLE_CONFIG") or DEFAULT_CONFIG_FILE
+    Settings.model_config = {
+        **Settings.model_config,
+        "toml_file": config_file or None,
+    }
 
     return Settings(
         **config,
@@ -312,7 +324,7 @@ class CheckResult:
     success: bool | None = None
 
 
-def setup_config(app, config=None, env_file=None, env_prefix=""):
+def setup_config(app, config=None, env_file=None, env_prefix="", config_file=None):
     app.config.from_mapping(
         {
             # https://flask.palletsprojects.com/en/stable/config/#SESSION_COOKIE_NAME
@@ -323,7 +335,10 @@ def setup_config(app, config=None, env_file=None, env_prefix=""):
     env_file = env_file or os.getenv("CANAILLE_ENV")
     try:
         config_obj = settings_factory(
-            config or {}, env_file=env_file, env_prefix=env_prefix
+            config or {},
+            env_file=env_file,
+            env_prefix=env_prefix,
+            config_file=config_file,
         )
     except ValidationError as exc:  # pragma: no cover
         app.logger.critical(str(exc))
