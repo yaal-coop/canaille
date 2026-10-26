@@ -312,7 +312,9 @@ PASSWORD_COMPROMISSION_CHECK_API_URL = "https://api.pwnedpasswords.test/range/"
 # - If None, everything is logged in the standard error output.
 #   The log level is DEBUG if the DEBUG
 #   setting is True, else this is INFO.
-# - If this is a dict, it is passed to logging.config.dictConfig:
+# - If this is a dict, it is passed to logging.config.dictConfig.
+#   Unless disable_existing_loggers is set, the loggers that exist before
+#   Canaille starts are kept enabled.
 # - If this is a str, it is expected to be a file path that will be passed
 #   to logging.config.fileConfig.
 #

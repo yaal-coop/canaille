@@ -14,6 +14,9 @@ Added
 
 Changed
 ^^^^^^^
+- When ``LOGGING`` is a dictionary, the loggers that exist before Canaille starts,
+  such as the ones of libraries or of the application that embeds Canaille, are no
+  longer disabled. Set ``disable_existing_loggers`` to ``true`` to disable them again.
 - Group invitation links ask for a confirmation before the user joins the group.
 - The session cookie is only sent with same-site requests by default
   (``SESSION_COOKIE_SAMESITE`` is ``Lax``), also without the ``front`` extras.

@@ -172,3 +172,20 @@ def test_silent_custom_logger(testclient, caplog, tmp_path, configuration, backe
 
     assert "foobar" not in log_content
     assert "foobaz" in log_content
+
+
+def test_dict_log_config_keeps_existing_loggers(configuration, backend):
+    """The loggers that exist before Canaille starts are kept enabled."""
+    logger = logging.getLogger("canaille-tests-existing-logger")
+    configuration["CANAILLE"]["LOGGING"] = {
+        "version": 1,
+        "root": {"level": "INFO"},
+    }
+    create_app(configuration, backend=backend)
+    assert not logger.disabled
+
+    configuration["CANAILLE"]["LOGGING"]["disable_existing_loggers"] = True
+    create_app(configuration, backend=backend)
+    assert logger.disabled
+
+    logger.disabled = False

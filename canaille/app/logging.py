@@ -87,7 +87,7 @@ def setup_logging(app) -> None:
         app.logger.addHandler(handler)
 
     elif isinstance(conf, dict):
-        dictConfig(conf)
+        dictConfig({"disable_existing_loggers": False, **conf})
         add_filter_to_handlers(logging.getLogger(), ip_filter)
 
     else:

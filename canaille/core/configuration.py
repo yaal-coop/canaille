@@ -550,7 +550,9 @@ class CoreSettings(BaseModel):
     - If :data:`None`, everything is logged in the standard error output.
       The log level is :data:`~logging.DEBUG` if the :attr:`~canaille.app.configuration.RootSettings.DEBUG`
       setting is :py:data:`True`, else this is :py:data:`~logging.INFO`.
-    - If this is a :class:`dict`, it is passed to :func:`logging.config.dictConfig`:
+    - If this is a :class:`dict`, it is passed to :func:`logging.config.dictConfig`.
+      Unless ``disable_existing_loggers`` is set, the loggers that exist before
+      Canaille starts are kept enabled.
     - If this is a :class:`str`, it is expected to be a file path that will be passed
       to :func:`logging.config.fileConfig`.
 
