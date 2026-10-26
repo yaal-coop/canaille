@@ -1,5 +1,6 @@
 import datetime
 
+from blinker import signal
 from flask import g
 from flask import session
 
@@ -255,3 +256,64 @@ def test_logout_all_users_without_g_session(testclient, user, backend):
         logout_all_users()
 
         assert USER_SESSION not in session
+
+
+def logged_out_users(app):
+    """Return the list of the users that the user_logged_out signal received."""
+    users = []
+
+    def receiver(sender, user):
+        assert sender is app
+        users.append(user)
+
+    return users, signal("user_logged_out").connected_to(receiver, sender=app)
+
+
+def user_sessions(*users):
+    now = datetime.datetime.now(datetime.UTC)
+    return [
+        UserSession(user=user, last_login_datetime=now).serialize() for user in users
+    ]
+
+
+def test_logout_user_sends_a_signal(testclient, user, moderator, backend):
+    """Closing a session sends the user_logged_out signal for its user."""
+    app = testclient.app
+    users, connection = logged_out_users(app)
+    with app.test_request_context(), connection:
+        session[USER_SESSION] = user_sessions(user, moderator)
+        logout_user(moderator.id)
+        logout_user()
+
+    assert users == [moderator, user]
+
+
+def test_logout_all_users_sends_signals(testclient, user, moderator, backend):
+    """Closing all the sessions sends the user_logged_out signal for each user."""
+    app = testclient.app
+    users, connection = logged_out_users(app)
+    with app.test_request_context(), connection:
+        session[USER_SESSION] = user_sessions(user, moderator)
+        logout_all_users()
+
+    assert users == [user, moderator]
+
+
+def test_logout_user_without_session_cookie(testclient, user, backend):
+    """The current session is closed even when the session cookie does not hold it."""
+    app = testclient.app
+    users, connection = logged_out_users(app)
+    with connection:
+        with app.test_request_context():
+            session.clear()
+            g.session = UserSession(user=user)
+            assert logout_user() is True
+            assert "session" not in g
+
+        with app.test_request_context():
+            session.clear()
+            g.session = UserSession(user=user)
+            logout_all_users()
+            assert "session" not in g
+
+    assert users == [user, user]

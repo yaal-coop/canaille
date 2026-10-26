@@ -3,6 +3,8 @@
 
 Added
 ^^^^^
+- ``user_logged_in`` and ``user_logged_out`` blinker signals are sent when a user logs
+  in or out, with the application as sender and the user in the ``user`` argument.
 - :func:`~canaille.create_app` takes a ``config_file`` parameter, to choose the TOML
   configuration file, or to read none with ``config_file=False``.
 - Profile photos can be uploaded in the PNG and WEBP formats, in addition to JPEG.

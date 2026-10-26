@@ -1,5 +1,7 @@
 import datetime
 
+from blinker import signal
+
 from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import get_user_from_login
 
@@ -162,3 +164,21 @@ def test_direct_login_with_username_uses_default_remember(testclient, user, back
     with testclient.session_transaction() as sess:
         assert LOGIN_HISTORY in sess
         assert user.user_name in sess[LOGIN_HISTORY]
+
+
+def test_login_sends_a_signal(testclient, user):
+    """Logging in sends the user_logged_in signal for the user."""
+    users = []
+
+    def receiver(sender, user):
+        assert sender is testclient.app
+        users.append(user)
+
+    with signal("user_logged_in").connected_to(receiver, sender=testclient.app):
+        res = testclient.get("/login")
+        res.form["login"] = "user"
+        res = res.form.submit().follow()
+        res.form["password"] = "correct horse battery staple"
+        res.form.submit(status=302)
+
+    assert users == [user]

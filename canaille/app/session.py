@@ -1,6 +1,7 @@
 import datetime
 from dataclasses import dataclass
 
+from blinker import signal
 from flask import current_app
 from flask import g
 from flask import request
@@ -70,7 +71,10 @@ def save_user_session() -> None:
 
 
 def login_user(user, remember: bool = True) -> None:
-    """Open a session for the user."""
+    """Open a session for the user.
+
+    The ``user_logged_in`` signal is sent for the user.
+    """
     now = datetime.datetime.now(datetime.UTC)
     authentication_methods = g.auth.achieved if hasattr(g, "auth") and g.auth else None
     obj = UserSession(
@@ -103,6 +107,8 @@ def login_user(user, remember: bool = True) -> None:
     if remember:
         add_to_login_history(user.user_name)
 
+    signal("user_logged_in").send(current_app._get_current_object(), user=user)
+
 
 def _find_session_index(sessions, user_id):
     """Find index of session for given user_id, or None if not found."""
@@ -113,13 +119,27 @@ def _find_session_index(sessions, user_id):
     return None
 
 
+def send_user_logged_out(user) -> None:
+    """Send the ``user_logged_out`` signal, with the application as sender."""
+    signal("user_logged_out").send(current_app._get_current_object(), user=user)
+
+
 def logout_user(user_id: str | None = None) -> bool:
     """Close a user session.
 
     If user_id is None, closes the current user session (position 0).
     Otherwise, closes the session for the specified user.
+    The ``user_logged_out`` signal is sent for the user.
     """
     sessions = session.get(USER_SESSION, [])
+    current = getattr(g, "session", None)
+    if user_id is None and not sessions and current:
+        # The current session can be set without the session cookie, for
+        # instance by the tools that log users in for tests.
+        del g.session
+        send_user_logged_out(current.user)
+        return True
+
     if not sessions:
         return False
 
@@ -128,7 +148,7 @@ def logout_user(user_id: str | None = None) -> bool:
     if target_index is None:
         return False
 
-    sessions.pop(target_index)
+    payload = sessions.pop(target_index)
     if sessions:
         session[USER_SESSION] = sessions
     else:
@@ -137,14 +157,29 @@ def logout_user(user_id: str | None = None) -> bool:
     if target_index == 0 and hasattr(g, "session"):
         del g.session
 
+    if closed := UserSession.deserialize(payload):
+        send_user_logged_out(closed.user)
+
     return True
 
 
 def logout_all_users() -> None:
-    """Close all user sessions."""
-    session.pop(USER_SESSION, None)
+    """Close all user sessions.
+
+    The ``user_logged_out`` signal is sent for each user.
+    """
+    closed = [
+        user_session.user
+        for payload in session.pop(USER_SESSION, [])
+        if (user_session := UserSession.deserialize(payload))
+    ]
+    if (current := getattr(g, "session", None)) and current.user not in closed:
+        closed.append(current.user)
     if hasattr(g, "session"):
         del g.session
+
+    for user in closed:
+        send_user_logged_out(user)
 
 
 def _get_login_history_from_cookie():
