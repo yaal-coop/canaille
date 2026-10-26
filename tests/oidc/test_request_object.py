@@ -3,10 +3,10 @@ from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
 import pytest
+from flask import g
 from joserfc import jwt
 
 from canaille.app import models
-from canaille.app.flask import cache
 from canaille.oidc.utils import MAX_DOCUMENT_SIZE
 
 from . import client_credentials
@@ -264,37 +264,23 @@ def request_object(client, client_jwk, scope):
     )
 
 
-def test_request_uri_is_downloaded_once(
+def test_request_uri_is_downloaded_once_per_request(
     testclient, backend, logged_user, client, client_jwk, httpserver
 ):
-    """The request object cannot change between the consent page and the user answer."""
+    """The request object is downloaded once per request, although it is read several times."""
     request_uri = f"http://{httpserver.host}:{httpserver.port}/request_obj"
     client.request_uris = [request_uri]
     backend.save(client)
-    httpserver.expect_oneshot_request("/request_obj").respond_with_data(
+    httpserver.expect_request("/request_obj").respond_with_data(
         request_object(client, client_jwk, "openid profile")
     )
-    httpserver.expect_oneshot_request("/request_obj").respond_with_data(
-        request_object(client, client_jwk, "openid profile email")
-    )
 
-    res = testclient.get(
+    testclient.get(
         "/oauth/authorize",
         params=dict(client_id=client.client_id, request_uri=request_uri),
         status=200,
     )
-    res.mustcontain(no="Your e-mail address.")
-    res = res.form.submit(name="answer", value="accept", status=302)
-
-    code = parse_qs(urlsplit(res.location).query)["code"][0]
-    assert backend.get(models.AuthorizationCode, code=code).scope == [
-        "openid",
-        "profile",
-    ]
     assert len(httpserver.log) == 1
-
-    for consent in backend.query(models.Consent, client=client):
-        backend.delete(consent)
 
 
 def test_consent_is_bound_to_the_displayed_scope(
@@ -316,7 +302,9 @@ def test_consent_is_bound_to_the_displayed_scope(
         params=dict(client_id=client.client_id, request_uri=request_uri),
         status=200,
     )
-    cache.clear()
+    # The test fixtures keep a request context active, so the requests of a
+    # test share g, while each request gets its own g in production.
+    g.pop("request_objects", None)
     res = res.form.submit(name="answer", value="accept", status=200)
     res.mustcontain("Your e-mail address.")
     assert not backend.query(models.Consent, client=client)

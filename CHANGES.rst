@@ -58,8 +58,8 @@ Removed
 Fixed
 ^^^^^
 - With a ``request_uri``, a client could change the request object between the consent
-  page and the user answer, and get scopes the user did not see. The request object is
-  downloaded once, and the consent only applies to the displayed scopes.
+  page and the user answer, and get scopes the user did not see. The consent only
+  applies to the displayed scopes.
 - With a request object, the consent page showed the scopes of the URL instead of
   the request object ones, and the ``prompt`` and ``max_age`` parameters of the request
   object were ignored. A client could get scopes the user never consented to.
