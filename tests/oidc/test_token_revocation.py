@@ -17,6 +17,12 @@ def test_revoke_access_token(testclient, user, client, token, backend):
     backend.reload(token)
     assert token.revokation_date
 
+    testclient.get(
+        "/oauth/userinfo",
+        headers={"Authorization": f"Bearer {token.access_token}"},
+        status=401,
+    )
+
 
 def test_revoke_access_token_with_hint(testclient, user, client, token, backend):
     assert not token.revokation_date

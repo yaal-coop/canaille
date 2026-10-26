@@ -317,3 +317,16 @@ def test_logout_user_without_session_cookie(testclient, user, backend):
             assert "session" not in g
 
     assert users == [user, user]
+
+
+def test_logout_user_of_a_deleted_user(testclient, user, moderator, backend):
+    """Closing the session of a deleted user sends no signal."""
+    app = testclient.app
+    users, connection = logged_out_users(app)
+    with app.test_request_context(), connection:
+        session[USER_SESSION] = user_sessions(moderator, user)
+        backend.delete(moderator)
+        assert logout_user() is True
+        assert logout_user() is True
+
+    assert users == [user]

@@ -9,6 +9,7 @@ from flask import current_app
 from werkzeug.datastructures import ImmutableMultiDict
 
 from canaille.app.forms import DateTimeUTCField
+from canaille.app.forms import IDToModel
 from canaille.app.forms import compromised_password_validator
 from canaille.app.forms import password_length_validator
 from canaille.app.forms import password_too_long_validator
@@ -418,3 +419,11 @@ def test_build_profile_form_keeps_the_given_field_names(testclient):
     build_profile_form(write_field_names, set())
 
     assert write_field_names == {"family_name", "password", "photo"}
+
+
+def test_id_to_model_with_unknown_identifier(testclient, backend):
+    """IDToModel raises a validation error when no model matches the identifier."""
+    with pytest.raises(wtforms.ValidationError):
+        IDToModel("User")("unknown")
+
+    assert IDToModel("User", raise_on_errors=False)("unknown") is None
