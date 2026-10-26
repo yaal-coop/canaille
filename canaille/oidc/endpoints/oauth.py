@@ -324,10 +324,10 @@ def authorize_consent(redirect_url, now, params):
 
     # The answers without a valid CSRF token are ignored, as the authorization
     # endpoint itself is exempt from CSRF checks. The consent is only accepted
-    # for the scope that the consent page displayed. A hash keeps the session
-    # cookie small, and several consent pages can be open at once.
+    # for the user and the scope that the consent page displayed. A hash keeps
+    # the session cookie small, and several consent pages can be open at once.
     consent_hash = hashlib.sha256(
-        f"{redirect_url} {effective_scope}".encode()
+        f"{user.id if user else ''} {redirect_url} {effective_scope}".encode()
     ).hexdigest()
     displayed_consents = session.get("displayed-consents", [])
     answered = (

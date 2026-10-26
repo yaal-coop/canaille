@@ -1,8 +1,12 @@
+import datetime
 import logging
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+from flask import g
+
 from canaille.app import models
+from canaille.app.session import UserSession
 
 from . import client_credentials
 
@@ -314,3 +318,34 @@ def test_displayed_consents_in_session(testclient, logged_user, client):
     res.form.submit(name="answer", value="deny", status=302)
     with testclient.session_transaction() as sess:
         assert sess["displayed-consents"] == []
+
+
+def test_consent_is_bound_to_the_displayed_user(
+    testclient, user, admin, client, backend
+):
+    """A consent page displayed for a user cannot be accepted after switching to another user."""
+
+    def sessions(*users):
+        now = datetime.datetime.now(datetime.UTC)
+        return [
+            UserSession(user=user, last_login_datetime=now).serialize()
+            for user in users
+        ]
+
+    with testclient.session_transaction() as sess:
+        sess["sessions"] = sessions(user, admin)
+
+    res = testclient.get(
+        "/oauth/authorize", params=authorization_params(client, "state"), status=200
+    )
+    res.mustcontain(user.formatted_name)
+
+    with testclient.session_transaction() as sess:
+        sess["sessions"] = sessions(admin, user)
+    # The test fixtures keep a request context active, so the requests of a
+    # test share g, while each request gets its own g in production.
+    g.pop("session", None)
+
+    res = res.form.submit(name="answer", value="accept", status=200)
+    res.mustcontain(admin.formatted_name)
+    assert not backend.query(models.Consent, client=client)
