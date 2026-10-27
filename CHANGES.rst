@@ -115,6 +115,8 @@ Fixed
 - The browser console showed Content Security Policy errors on every page.
 - With the memory backend, an OIDC client created without contacts could not be
   edited.
+- In dark mode, the tooltips and the user menu of the navigation bar had a light
+  background.
 - The ``populate`` command could create fewer users than requested, or fail with
   SQL databases, when two fake users got the same user name.
 - With SQL databases, searching the members of a group also listed users who were

@@ -596,6 +596,33 @@ body:has(.loading) #page-progress {
     .ui.form .field .dropdown .menu > .item:hover {
         background-color: #282828;
     }
+    .ui.menu .dropdown.item .menu, .ui.dropdown .menu {
+        background: #353535;
+        border-color: #222222;
+    }
+    .ui.dropdown .menu > .divider {
+        border-top-color: #222222;
+    }
+    .ui.menu .ui.dropdown .menu > .item {
+        color: rgba(255,255,255,.87) !important;
+    }
+    .ui.menu .ui.dropdown .menu > .item:hover {
+        background: #282828 !important;
+        color: rgba(255,255,255,.95) !important;
+    }
+    .ui.menu .ui.dropdown .menu > .active.item {
+        background: rgba(0,0,0,.2) !important;
+        color: rgba(255,255,255,.95) !important;
+    }
+    .ui.popup {
+        background: #181818;
+        border-color: #555555;
+        color: rgba(255,255,255,.87);
+    }
+    .ui.popup::before {
+        background: #181818 !important;
+        box-shadow: none !important;
+    }
     .ui.form .field.field input:autofill {
         box-shadow: 0 0 0 100px #888888 inset !important;
         border: 1px solid rgba(255,255,255,0.60) !important;
