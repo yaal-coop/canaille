@@ -435,9 +435,7 @@ def authorize_consent(redirect_url, now, params):
 @csrf.exempt
 def issue_token():
     request_params = request.form.to_dict(flat=False)
-    grant_type = (
-        request_params["grant_type"][0] if request_params["grant_type"] else None
-    )
+    grant_type = request.form.get("grant_type")
     current_app.logger.debug("token endpoint request: POST: %s", request_params)
     response = authorization.create_token_response()
     current_app.logger.debug("token endpoint response: %s", response.json)
