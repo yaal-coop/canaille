@@ -76,17 +76,30 @@
         }
     });
 
+    // Typing reopens the listbox. So does a click on the input. The chips and
+    // the input look like a single field: a click on a chip or around them
+    // also focuses the input.
     document.addEventListener("input", function (e) {
         const combobox = e.target.closest?.(".combobox");
         if (combobox) open(combobox);
     });
 
-    // The chips and the input look like a single field: a click on a chip
-    // or around them focuses the input.
     document.addEventListener("click", function (e) {
         const field = e.target.closest?.(".combobox-field");
-        if (!field || e.target.closest("button, input")) return;
-        input(field.closest(".combobox"))?.focus();
+        if (!field || e.target.closest("button")) return;
+        const combobox = field.closest(".combobox");
+        open(combobox);
+        input(combobox)?.focus();
+    });
+
+    // Focus that comes from outside the combobox reopens the listbox. Focus
+    // that moves inside it does not: in Firefox, the Escape handler's
+    // refocus would clear the flag it sets.
+    document.addEventListener("focusin", function (e) {
+        const combobox = e.target.closest?.(".combobox");
+        if (!combobox) return;
+        if (e.relatedTarget?.closest?.(".combobox") === combobox) return;
+        open(combobox);
     });
 
     document.addEventListener("focusout", function (e) {
