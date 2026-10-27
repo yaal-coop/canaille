@@ -81,6 +81,14 @@
         if (combobox) open(combobox);
     });
 
+    // The chips and the input look like a single field: a click on a chip
+    // or around them focuses the input.
+    document.addEventListener("click", function (e) {
+        const field = e.target.closest?.(".combobox-field");
+        if (!field || e.target.closest("button, input")) return;
+        input(field.closest(".combobox"))?.focus();
+    });
+
     document.addEventListener("focusout", function (e) {
         const combobox = e.target.closest?.(".combobox");
         if (!combobox) return;
