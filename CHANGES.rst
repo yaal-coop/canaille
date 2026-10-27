@@ -117,6 +117,7 @@ Fixed
   edited.
 - In dark mode, the tooltips and the user menu of the navigation bar had a light
   background.
+- The user menu of the navigation bar flickered when it opened.
 - An invalid email address also showed the errors that only make sense for valid
   addresses, such as "No user found with this email address".
 - The ``populate`` command could create fewer users than requested, or fail with
