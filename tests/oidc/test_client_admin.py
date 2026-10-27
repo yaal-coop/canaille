@@ -255,7 +255,7 @@ def test_client_delete(testclient, logged_admin, backend):
 
 def test_client_delete_invalid_client(testclient, logged_admin, client):
     res = testclient.get(f"/admin/client/edit/{client.client_id}")
-    csrf_token = res.pyquery("#csrf_token").val()
+    csrf_token = res.pyquery("input[name=csrf_token]").val()
     testclient.post(
         "/admin/client/edit/invalid",
         {

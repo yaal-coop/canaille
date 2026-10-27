@@ -166,7 +166,7 @@ action_button=none
 
 {% macro render_fields(form, exclude=[]) %}
     {% for field in form %}
-        {% if field.name not in exclude and field.type not in ("ButtonField", "SubmitField") %}
+        {% if field.name not in exclude and field.type not in ("ButtonField", "SubmitField", "CSRFTokenField") %}
             {{ field() }}
         {% endif %}
     {% endfor %}
@@ -280,10 +280,10 @@ csrf=true) -%}
       class="ui initial form {{ class_ }}"
       {% for key, value in kwargs.items() %}{{ key.replace("_", "-") }}="{{ value }}" {% endfor %}
 >
+    {% if csrf %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    {% endif %}
     {% if caller is defined %}
-        {% if csrf %}
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        {% endif %}
         {{ caller() }}
     {% else %}
         {{ render_fields(form) }}

@@ -111,7 +111,7 @@ def test_fieldlist_empty_value(testclient, logged_admin, backend):
 
 def test_fieldlist_add_field_htmx(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
-    csrf_token = res.pyquery("#csrf_token").val()
+    csrf_token = res.pyquery("input[name=csrf_token]").val()
     data = {
         "csrf_token": csrf_token,
         "client_name": "foobar",
@@ -130,7 +130,7 @@ def test_fieldlist_add_field_htmx(testclient, logged_admin):
 
 def test_fieldlist_remove_field_htmx(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
-    csrf_token = res.pyquery("#csrf_token").val()
+    csrf_token = res.pyquery("input[name=csrf_token]").val()
     data = {
         "csrf_token": csrf_token,
         "client_name": "foobar",
@@ -150,7 +150,7 @@ def test_fieldlist_remove_field_htmx(testclient, logged_admin):
 
 def test_fieldlist_inline_validation(testclient, logged_admin):
     res = testclient.get("/admin/client/add")
-    csrf_token = res.pyquery("#csrf_token").val()
+    csrf_token = res.pyquery("input[name=csrf_token]").val()
     data = {
         "csrf_token": csrf_token,
         "client_name": "foobar",
