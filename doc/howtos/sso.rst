@@ -106,7 +106,7 @@ The users or groups who own this client.
 Clients can be owned by users or groups:
 
 - **User owners** can edit and use the client for authentication.
-- **Group owners** have a distinct semantic: the *group owner* can edit the client configuration, while *group members* can use it for authentication.
+- **Group owners** have a distinct semantic: the *owners of the group* can edit the client configuration, while *group members* can use it for authentication.
 - **Global clients** (no owners) are accessible to all users with the :attr:`~canaille.core.configuration.Permission.USE_OIDC` permission.
 
 .. note::
@@ -119,13 +119,14 @@ Clients can be owned by users or groups:
 .. warning::
 
     To restrict a client to the members of a group, add the group as an owner.
-    The owner of the group can then edit the client, if they have the
+    The owners of the group can then edit the client, if they have the
     :attr:`~canaille.core.configuration.Permission.MANAGE_OWN_CLIENTS` permission.
     For instance, they can change the redirect URIs, renew the secret, or delete the client.
     Users who already consented to the client are not asked again after such changes.
-    The owner of the group also chooses its members, and so who can use the client.
+    The owners of the group also choose its members, and so who can use the client.
+    They can also make other members owners of the group.
     When the group is deleted, the clients it is the last owner of are deleted too.
-    Only add a group whose owner you trust to manage the client.
+    Only add a group whose owners you trust to manage the client.
 
 Users who cannot manage all clients can only share the clients they own with the groups they own.
 A group owner only gets rights on the clients of the group with the :attr:`~canaille.core.configuration.Permission.MANAGE_OWN_GROUPS` permission.

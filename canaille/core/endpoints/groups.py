@@ -79,14 +79,14 @@ def create_group(user):
     form_class = (
         CreateGroupWithMembersForm if user.can("manage_all_groups") else CreateGroupForm
     )
-    form = form_class(request.form or None, group=None)
+    form = form_class(request.form or None, group=None, data={"owners": [user]})
 
     if form.validate_on_submit():
         group = models.Group()
-        group.members = [user] + [
-            member for member in form.data.get("members") or [] if member != user
-        ]
-        group.owner = user
+        group.owners = form.owners.data if "owners" in form else [user]
+        group.members = list(
+            dict.fromkeys([user, *(form.data.get("members") or []), *group.owners])
+        )
         group.display_name = form.display_name.data
         group.description = form.description.data
         Backend.instance.save(group)
@@ -123,19 +123,26 @@ def group(user, group):
 
     form = EditGroupForm(
         request.form or None,
+        group=group,
+        editor=user,
         data={
             "display_name": group.display_name,
             "description": group.description or "",
+            "owners": list(group.owners),
         },
     )
     action = form.action.data
     if (
         request.method == "GET"
         or action == "edit"
+        or form.mutated
         or request.form.get("page")
         or request_is_partial()
     ):
-        return edit_group(group, form)
+        return edit_group(user, group, form)
+
+    if action in ("confirm-delete", "delete") and not group.is_deletable_by(user):
+        abort(403)
 
     if action == "confirm-delete":
         return render_template("core/modals/delete-group.html", group=group, form=form)
@@ -144,12 +151,15 @@ def group(user, group):
         return delete_group(group)
 
     if action in ("confirm-remove-member", "remove-member"):
-        return delete_member(group, form)
+        return delete_member(user, group, form)
+
+    if action in ("confirm-step-down", "step-down"):
+        return step_down(user, group, form)
 
     abort(400, f"bad form action: {action}")
 
 
-def edit_group(group, form):
+def edit_group(user, group, form):
     table_form = TableForm(models.User, filter={"groups": group}, formdata=request.form)
     if request.form and request.form.get("page") and not table_form.validate():
         abort(404)
@@ -161,6 +171,7 @@ def edit_group(group, form):
     ):
         if form.validate_on_submit():
             group.description = form.description.data
+            group.owners = form.owners.data
             Backend.instance.save(group)
             flash(
                 _(
@@ -169,12 +180,15 @@ def edit_group(group, form):
                 ),
                 "success",
             )
-            return redirect(url_for("core.groups.group", group=group))
+            return redirect_after_ownership_change(user, group)
 
-        flash(
-            _("Your changes couldn't be saved. Please check the form and try again."),
-            "error",
-        )
+        if not form.mutated:
+            flash(
+                _(
+                    "Your changes couldn't be saved. Please check the form and try again."
+                ),
+                "error",
+            )
 
     return render_htmx_template(
         "core/group.html",
@@ -186,12 +200,22 @@ def edit_group(group, form):
     )
 
 
-def delete_member(group, edit_form):
+def redirect_after_ownership_change(user, group):
+    """Redirect to the group, or to the group list if the user cannot manage it anymore."""
+    if group.is_editable_by(user):
+        return redirect(url_for("core.groups.group", group=group))
+
+    return redirect(url_for("core.groups.groups"))
+
+
+def delete_member(user, group, edit_form):
     form = DeleteGroupMemberForm(request.form or None, group=group)
+    if form.member.data and not group.member_is_removable_by(user, form.member.data):
+        abort(403)
 
     if not form.validate():
         flash(
-            "\n".join(form.errors.get("member")),
+            "\n".join(str(e) for e in form.errors.get("member")),
             "error",
         )
 
@@ -212,9 +236,13 @@ def delete_member(group, edit_form):
         group.members = [
             member for member in group.members if member != form.member.data
         ]
+        if form.member.data in group.owners:
+            group.owners = [
+                owner for owner in group.owners if owner != form.member.data
+            ]
         Backend.instance.save(group)
 
-    return edit_group(group, edit_form)
+    return edit_group(user, group, edit_form)
 
 
 def delete_group(group):
@@ -229,18 +257,50 @@ def delete_group(group):
     return redirect(url_for("core.groups.groups"))
 
 
+def step_down(user, group, form):
+    """Remove the ownership of the user on the group."""
+    if user not in group.owners or not group.owner_is_removable_by(user, user):
+        abort(403)
+
+    if form.action.data == "confirm-step-down":
+        return render_template(
+            "core/modals/step-down-group-owner.html", group=group, form=form
+        )
+
+    group.owners = [owner for owner in group.owners if owner != user]
+    Backend.instance.save(group)
+    flash(
+        _(
+            "You are no longer an owner of the group %(group)s.",
+            group=group.display_name,
+        ),
+        "success",
+    )
+    return redirect_after_ownership_change(user, group)
+
+
 @bp.route("/<group:group>/leave", methods=["POST"])
 @user_needed()
 def leave_group(user, group):
-    """Allow a user to leave a group and remove ownership if they are the owner."""
+    """Allow a user to leave a group and remove ownership if they are an owner."""
     if user not in group.members:
         flash(_("You are not a member of this group."), "error")
         return redirect(url_for("core.account.index"))
 
+    if user in group.owners and not group.owner_is_removable_by(user, user):
+        flash(
+            _(
+                "You cannot leave %(group)s because you are its last owner.",
+                group=group.display_name,
+            ),
+            "error",
+        )
+        return redirect(url_for("core.groups.groups"))
+
     group.members = [member for member in group.members if member != user]
 
-    if user == group.owner:
-        group.owner = None
+    if user in group.owners:
+        group.owners = [owner for owner in group.owners if owner != user]
 
     Backend.instance.save(group)
 
@@ -305,6 +365,7 @@ def invite_to_group(user, group):
             expiration_date_isoformat=expiration_date.isoformat(),
             group_id=group.id,
             invited_user_id=invited_user.id,
+            invite_as_owner=form.invite_as_owner.data,
         )
 
         invitation_url = url_for(
@@ -319,6 +380,7 @@ def invite_to_group(user, group):
             invitation_url,
             group.display_name,
             user.formatted_name,
+            as_owner=form.invite_as_owner.data,
         )
 
         flash(
@@ -389,9 +451,16 @@ def join_group(data, hash):
 
     form = Form(request.form or None)
     if request.method == "GET" or not form.validate():
-        return render_template("core/modals/join-group.html", group=group, form=form)
+        return render_template(
+            "core/modals/join-group.html",
+            group=group,
+            form=form,
+            as_owner=payload.invite_as_owner,
+        )
 
     group.members = list(group.members) + [g.session.user]
+    if payload.invite_as_owner:
+        group.owners = list(group.owners) + [g.session.user]
     Backend.instance.save(group)
 
     flash(

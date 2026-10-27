@@ -228,7 +228,7 @@ class Client(BaseClient, ClientMixin):
 
 def owns_group(user, group) -> bool:
     """Tell whether ``user`` manages ``group`` as its owner."""
-    return group.owner == user and user.can(Permission.MANAGE_OWN_GROUPS)
+    return user in group.owners and user.can(Permission.MANAGE_OWN_GROUPS)
 
 
 def owned_groups(user):
@@ -236,7 +236,7 @@ def owned_groups(user):
     if not user.can(Permission.MANAGE_OWN_GROUPS):
         return []
 
-    return Backend.instance.query(models.Group, owner=user)
+    return Backend.instance.query(models.Group, owners=user)
 
 
 def managed_owners(user):

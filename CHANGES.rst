@@ -30,6 +30,10 @@ Added
   limited input capabilities (smart TVs, consoles, CLI tools…).
 - The token introspection and revocation endpoints accept the
   ``client_secret_post`` and ``private_key_jwt`` client authentication methods.
+- Groups can have several owners. Owners can choose the other owners among the members,
+  invite users as owners, remove the members who are not owners, and step down. Only
+  users who can manage all groups can remove the other owners. A group can only be
+  deleted by its only owner. :issue:`309`
 
 Changed
 ^^^^^^^

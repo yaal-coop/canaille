@@ -487,11 +487,12 @@ class Group(Model):
     "Group" resource schema.
     """
 
-    owner: "User | None" = None
-    """The user who can manage this group.
+    owners: list[Annotated["User", {"backref": "owned_groups"}]] = []
+    """The users who can manage this group.
 
-    The group owner has the ability to edit the group description,
-    invite new members, and remove members from the group.
+    Group owners can edit the group description, invite new members,
+    remove members from the group, and promote other members to owners.
+    Only administrators can remove the other owners.
     """
 
     description: str | None = None
@@ -499,13 +500,46 @@ class Group(Model):
     def is_editable_by(self, user: "User") -> bool:
         """Check if a user can edit this group.
 
-        Returns True if the user has manage_all_groups permission or is the owner of the group
+        Returns True if the user has manage_all_groups permission or is an owner of the group
         and has manage_own_groups permission.
         """
         from canaille.core.configuration import Permission
 
         return user.can(Permission.MANAGE_ALL_GROUPS) or (
-            user == self.owner and user.can(Permission.MANAGE_OWN_GROUPS)
+            user in self.owners and user.can(Permission.MANAGE_OWN_GROUPS)
+        )
+
+    def is_deletable_by(self, user: "User") -> bool:
+        """Check if a user can delete this group.
+
+        Administrators can delete any group. An owner can only delete a group they own alone.
+        """
+        from canaille.core.configuration import Permission
+
+        return user.can(Permission.MANAGE_ALL_GROUPS) or (
+            self.is_editable_by(user) and self.owners == [user]
+        )
+
+    def member_is_removable_by(self, user: "User", member: "User") -> bool:
+        """Check if a user can remove a member from this group.
+
+        Only administrators can remove an owner.
+        """
+        from canaille.core.configuration import Permission
+
+        return user.can(Permission.MANAGE_ALL_GROUPS) or (
+            self.is_editable_by(user) and member not in self.owners
+        )
+
+    def owner_is_removable_by(self, user: "User", owner: "User") -> bool:
+        """Check if a user can remove an owner from this group.
+
+        Administrators can remove any owner. Owners can only step down, and the last owner cannot.
+        """
+        from canaille.core.configuration import Permission
+
+        return user.can(Permission.MANAGE_ALL_GROUPS) or (
+            self.is_editable_by(user) and owner == user and len(self.owners) > 1
         )
 
 

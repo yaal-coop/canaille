@@ -107,7 +107,7 @@ def owners_combobox():
                 return
 
             for group in Backend.instance.fuzzy(
-                models.Group, query, ["display_name"], owner=form.user
+                models.Group, query, ["display_name"], owners=form.user
             ):
                 yield wtforms.SelectChoice(f"group:{group.id}", describe_group(group))
             return

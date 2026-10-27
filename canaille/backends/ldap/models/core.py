@@ -104,6 +104,6 @@ class Group(canaille.core.models.Group, LDAPObject):
         "last_modified": "entryCSN",
         "display_name": "cn",
         "members": "member",
-        "owner": "owner",
+        "owners": "owner",
         "description": "description",
     }

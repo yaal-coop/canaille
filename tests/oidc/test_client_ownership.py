@@ -66,7 +66,7 @@ def test_user_owns_the_clients_they_add(testclient, logged_user):
 def test_user_only_finds_their_groups(testclient, logged_user, admin, backend):
     """A user who cannot manage all clients only finds the groups they own."""
     own_group = models.Group(
-        display_name="shared-mine", members=[logged_user], owner=logged_user
+        display_name="shared-mine", members=[logged_user], owners=[logged_user]
     )
     other_group = models.Group(display_name="shared-theirs", members=[admin])
     backend.save(own_group)
@@ -675,7 +675,7 @@ def test_group_owner_allows_group_owner_to_edit(backend, user, admin):
     user._permissions = {"use_oidc", "manage_own_clients", "manage_own_groups"}
     admin._permissions = {"use_oidc", "manage_own_clients", "manage_own_groups"}
 
-    group = models.Group(display_name="test-group-edit", members=[admin], owner=user)
+    group = models.Group(display_name="test-group-edit", members=[admin], owners=[user])
     backend.save(group)
 
     client = models.Client(
@@ -694,7 +694,7 @@ def test_group_owner_allows_group_owner_to_edit(backend, user, admin):
 
 def test_group_owner_allows_member_to_use(backend, user, admin):
     """Test that a member of a group can use a client owned by that group."""
-    group = models.Group(display_name="test-group-use", members=[user], owner=admin)
+    group = models.Group(display_name="test-group-use", members=[user], owners=[admin])
     backend.save(group)
     backend.reload(user)
     backend.reload(admin)
@@ -720,7 +720,7 @@ def test_group_owner_allows_member_to_use(backend, user, admin):
 def test_group_owner_semantic_distinction(backend, user, admin):
     """Test that group owner can edit but not use, member can use but not edit."""
     group = models.Group(
-        display_name="test-group-semantic", members=[admin], owner=user
+        display_name="test-group-semantic", members=[admin], owners=[user]
     )
     backend.save(group)
     backend.reload(user)
@@ -751,7 +751,9 @@ def test_group_owner_semantic_distinction(backend, user, admin):
 
 def test_mixed_user_and_group_owners(backend, user, admin):
     """Test client with both user and group owners."""
-    group = models.Group(display_name="admin-group-mixed", members=[admin], owner=admin)
+    group = models.Group(
+        display_name="admin-group-mixed", members=[admin], owners=[admin]
+    )
     backend.save(group)
     backend.reload(user)
     backend.reload(admin)
@@ -1085,7 +1087,9 @@ def user_owned_client(backend, owners):
 
 def test_user_can_share_a_client_with_their_group(testclient, logged_user, backend):
     """A user can share a client they own with a group they own."""
-    group = models.Group(display_name="mine", members=[logged_user], owner=logged_user)
+    group = models.Group(
+        display_name="mine", members=[logged_user], owners=[logged_user]
+    )
     backend.save(group)
     client = user_owned_client(backend, [logged_user])
 
@@ -1104,7 +1108,9 @@ def test_user_can_share_a_client_with_their_group(testclient, logged_user, backe
 
 def test_user_can_leave_a_client_owned_by_their_group(testclient, logged_user, backend):
     """A user can stop being an owner when a group they own still owns the client."""
-    group = models.Group(display_name="mine", members=[logged_user], owner=logged_user)
+    group = models.Group(
+        display_name="mine", members=[logged_user], owners=[logged_user]
+    )
     backend.save(group)
     client = user_owned_client(backend, [logged_user, group])
 
@@ -1527,7 +1533,9 @@ def test_group_deletion_deletes_the_clients_of_the_group(
         "manage_own_clients"
     )
     backend.reload(logged_user)
-    group = models.Group(display_name="mine", members=[logged_user], owner=logged_user)
+    group = models.Group(
+        display_name="mine", members=[logged_user], owners=[logged_user]
+    )
     backend.save(group)
     client = user_owned_client(backend, [group])
 
@@ -1544,7 +1552,9 @@ def test_user_cannot_add_themself_back(testclient, logged_user, backend):
 
     Otherwise they would keep the edition of the client after losing the group.
     """
-    group = models.Group(display_name="mine", members=[logged_user], owner=logged_user)
+    group = models.Group(
+        display_name="mine", members=[logged_user], owners=[logged_user]
+    )
     backend.save(group)
     client = user_owned_client(backend, [group])
 
@@ -1748,7 +1758,9 @@ def test_group_owner_without_manage_own_groups(testclient, logged_user, backend)
         "manage_own_groups"
     )
     backend.reload(logged_user)
-    group = models.Group(display_name="mine", members=[logged_user], owner=logged_user)
+    group = models.Group(
+        display_name="mine", members=[logged_user], owners=[logged_user]
+    )
     backend.save(group)
     client = user_owned_client(backend, [group])
 

@@ -32,6 +32,7 @@ from canaille.core.validators import captcha_validator
 from canaille.core.validators import email_has_user
 from canaille.core.validators import existing_group_member
 from canaille.core.validators import existing_login
+from canaille.core.validators import group_owners
 from canaille.core.validators import non_empty_groups
 from canaille.core.validators import unique_email
 from canaille.core.validators import unique_group
@@ -444,11 +445,19 @@ def captcha_fields():
 
 
 def model_combobox(
-    label, model_name, attributes, describe, validators=(), exclude=None, **kwargs
+    label,
+    model_name,
+    attributes,
+    describe,
+    validators=(),
+    exclude=None,
+    filter=None,
+    **kwargs,
 ):
     """Return a combobox field that picks model instances by their attributes.
 
-    The instances in ``exclude(form)`` are not suggested.
+    The instances in ``exclude(form)`` are not suggested. The suggestions only
+    match the ``filter(form)`` attributes, and are sorted by their description.
     """
 
     def model():
@@ -456,11 +465,18 @@ def model_combobox(
 
     def suggest(query, form):
         excluded = exclude(form) if exclude else ()
-        return (
+        filters = filter(form) if filter else {}
+        instances = (
+            Backend.instance.fuzzy(model(), query, attributes, **filters)
+            if query
+            else Backend.instance.query(model(), **filters)
+        )
+        choices = (
             wtforms.SelectChoice(instance.id, describe(instance))
-            for instance in Backend.instance.fuzzy(model(), query, attributes)
+            for instance in instances
             if instance not in excluded
         )
+        return sorted(choices, key=lambda choice: choice.label.casefold())
 
     def label_for(instance_id):
         instance = Backend.instance.get(model(), id=instance_id)
@@ -521,6 +537,20 @@ def group_members_combobox(label, validators=()):
     )
 
 
+def group_owners_combobox(validators=(), filter=None, **kwargs):
+    """Return a combobox field that picks the owners of a group."""
+    return model_combobox(
+        _("Owners"),
+        "User",
+        ["user_name", "formatted_name", "emails"],
+        describe_user,
+        validators=validators,
+        filter=filter,
+        placeholder=_("Jane Doe, jane.doe@example.com …"),
+        **kwargs,
+    )
+
+
 class CreateGroupForm(GroupForm):
     """The group creation form."""
 
@@ -537,8 +567,15 @@ class CreateGroupForm(GroupForm):
     )
 
 
-class EditGroupForm(Form):
-    """The group edition form."""
+class EditGroupForm(GroupForm):
+    """The group edition form.
+
+    The validators know the user who edits the group.
+    """
+
+    def __init__(self, *args, editor, **kwargs):
+        self.editor = editor
+        super().__init__(*args, **kwargs)
 
     display_name = wtforms.StringField(
         _("Name"),
@@ -554,12 +591,19 @@ class EditGroupForm(Form):
         _("Description"),
         validators=[wtforms.validators.Optional()],
     )
+    owners = group_owners_combobox(
+        validators=[group_owners],
+        filter=lambda form: {"groups": form.group},
+        min_query_length=0,
+        description=_("Only members can be owners."),
+    )
 
 
 class CreateGroupWithMembersForm(CreateGroupForm):
-    """The group creation form, with the members to add."""
+    """The group creation form, with the members and the owners to add."""
 
     members = group_members_combobox(_("Members"))
+    owners = group_owners_combobox()
 
 
 class AddGroupMembersForm(GroupForm):
@@ -594,6 +638,10 @@ class GroupInvitationForm(GroupForm):
             "autocorrect": "off",
             "icon": "email",
         },
+    )
+    invite_as_owner = wtforms.BooleanField(
+        _("Invite as owner"),
+        default=False,
     )
 
 
