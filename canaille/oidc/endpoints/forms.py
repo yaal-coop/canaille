@@ -2,19 +2,26 @@ import json
 
 import wtforms
 from joserfc.jwk import KeySet
+from wtforms_htmx_components import ComboboxMultiField
 
 from canaille.app import models
+from canaille.app.combobox import ChipsWidget
+from canaille.app.combobox import ListboxWidget
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
-from canaille.app.forms import IDToModel
 from canaille.app.forms import email_validator
 from canaille.app.forms import fieldlist_buttons
 from canaille.app.forms import is_uri
 from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
+from canaille.core.endpoints.forms import describe_user
 from canaille.oidc.jose import supported_signing_algorithms
 from canaille.oidc.jose import supported_verification_algorithms
+from canaille.oidc.models import OWNED_CLIENT_FORBIDDEN_GRANT_TYPES
+from canaille.oidc.models import managed_owners
+from canaille.oidc.models import owns_group
+from canaille.oidc.utils import SCOPE_DETAILS
 
 
 class AuthorizeForm(Form):
@@ -39,13 +46,6 @@ def is_jwks(form, field):
         raise wtforms.ValidationError(_("This value is not a valid JWK.")) from exc
 
 
-def _client_audiences():
-    return [
-        wtforms.SelectChoice(value=client, label=client.client_name)
-        for client in Backend.instance.query(models.Client)
-    ]
-
-
 def _get_algorithm_choices(algorithms, include_empty=True):
     """Build the choices for a JWS algorithm field."""
     choices = []
@@ -58,8 +58,175 @@ def _get_algorithm_choices(algorithms, include_empty=True):
     return choices
 
 
+def describe_group(group):
+    """Return the name of ``group``, telling it is a group."""
+    return str(_("%(name)s (group)", name=group.display_name))
+
+
+USER_SCOPES = {"openid", *SCOPE_DETAILS}
+"""The scopes that users who cannot manage all clients can give to their clients."""
+
+
+OWNER_MODELS = {
+    "user": ("User", ["user_name", "formatted_name", "emails"], describe_user),
+    "group": ("Group", ["display_name"], describe_group),
+}
+"""The models that can own a client, by the prefix of their combobox values."""
+
+
+def owners_combobox():
+    """Return a combobox field that picks users and groups as client owners.
+
+    The values are the model prefix and the instance id, like ``user:<id>``.
+    """
+
+    def suggest(query, form):
+        if not form.user.can("manage_oidc"):
+            if not form.user.can("manage_own_groups"):
+                return
+
+            for group in Backend.instance.fuzzy(
+                models.Group, query, ["display_name"], owner=form.user
+            ):
+                yield wtforms.SelectChoice(f"group:{group.id}", describe_group(group))
+            return
+
+        for prefix, (model_name, attributes, describe) in OWNER_MODELS.items():
+            model = getattr(models, model_name)
+            for instance in Backend.instance.fuzzy(model, query, attributes):
+                yield wtforms.SelectChoice(
+                    f"{prefix}:{instance.id}", describe(instance)
+                )
+
+    def coerce(value):
+        prefix, _separator, instance_id = value.partition(":")
+        if prefix in OWNER_MODELS:
+            model = getattr(models, OWNER_MODELS[prefix][0])
+            if instance := Backend.instance.get(model, id=instance_id):
+                return instance
+
+        raise ValueError(value)
+
+    def value_for(owner):
+        prefix = "group" if isinstance(owner, models.Group) else "user"
+        return f"{prefix}:{owner.id}"
+
+    def label_for(value):
+        try:
+            owner = coerce(value)
+        except ValueError:
+            return value
+
+        prefix = value.partition(":")[0]
+        return OWNER_MODELS[prefix][2](owner)
+
+    return ComboboxMultiField(
+        _("Owners"),
+        suggest=suggest,
+        label_for=label_for,
+        coerce=coerce,
+        value_for=value_for,
+        search_label=_("Search"),
+        listbox_widget=ListboxWidget(),
+        chips_widget=ChipsWidget(),
+        placeholder=_("Jane Doe, admins …"),
+        description=_(
+            "The users or groups who own this client. "
+            "For group owners: the group owner can edit the client, "
+            "while group members can use it for authentication. "
+            "Leave empty for a global client accessible to all users."
+        ),
+    )
+
+
+def is_shareable_with(owner, user):
+    """Tell whether ``user`` can add ``owner`` to, or remove it from, a client they own."""
+    return owner == user or (
+        isinstance(owner, models.Group) and owns_group(user, owner)
+    )
+
+
+def audience_combobox():
+    """Return a combobox field that picks the clients intended to use the tokens.
+
+    The users who cannot manage all clients only find the clients they can edit.
+    """
+
+    def suggest(query, form):
+        filter = (
+            {}
+            if form.user.can("manage_oidc")
+            else {"owners": managed_owners(form.user)}
+        )
+        for client in Backend.instance.fuzzy(
+            models.Client, query, ["client_name", "client_id"], **filter
+        ):
+            yield wtforms.SelectChoice(client.id, client.client_name)
+
+    def coerce(client_id):
+        if client := Backend.instance.get(models.Client, id=client_id):
+            return client
+
+        raise ValueError(client_id)
+
+    def label_for(client_id):
+        client = Backend.instance.get(models.Client, id=client_id)
+        return client.client_name if client else client_id
+
+    return ComboboxMultiField(
+        _("Token audiences"),
+        suggest=suggest,
+        label_for=label_for,
+        coerce=coerce,
+        value_for=lambda client: client.id,
+        search_label=_("Search"),
+        listbox_widget=ListboxWidget(),
+        chips_widget=ChipsWidget(),
+        placeholder=_("Client name …"),
+        description=_(
+            "The other clients that are intended to use the tokens emitted by this client."
+        ),
+    )
+
+
 class ClientAddForm(Form):
-    """Simplified form for adding a new client with only essential fields."""
+    owners = owners_combobox()
+
+    def __init__(self, *args, user, client=None, **kwargs):
+        self.user = user
+        self.client = client
+        super().__init__(*args, **kwargs)
+        if not user.can("manage_oidc"):
+            self.owners.description = _(
+                "You and the groups you own that own this client. "
+                "The group members can use the client."
+            )
+
+    def validate_owners(self, field):
+        """Let the users who cannot manage all clients share them with their groups only.
+
+        They cannot add themselves back, so they lose the edition with the groups they lose.
+        """
+        if self.user.can("manage_oidc"):
+            return
+
+        previous = set(self.client.owners) if self.client else {self.user}
+        added = set(field.data) - previous
+        removed = previous - set(field.data)
+        if self.user in added or not all(
+            is_shareable_with(owner, self.user) for owner in added | removed
+        ):
+            raise wtforms.ValidationError(
+                _(
+                    "You can only add the groups you own, "
+                    "and remove yourself or the groups you own."
+                )
+            )
+
+        if not any(is_shareable_with(owner, self.user) for owner in field.data):
+            raise wtforms.ValidationError(
+                _("You would not be able to edit this client anymore.")
+            )
 
     client_name = wtforms.StringField(
         _("Name"),
@@ -116,6 +283,53 @@ class ClientAddForm(Form):
 
 class ClientEditForm(ClientAddForm):
     """Complete form for editing a client with all metadata fields."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.user.can("manage_oidc"):
+            self.grant_types.choices = {
+                value: label
+                for value, label in self.grant_types.choices.items()
+                if value not in OWNED_CLIENT_FORBIDDEN_GRANT_TYPES
+            }
+            self.scope.description = _(
+                "Kind of information that the client can request about users. "
+                "You can pick among: {scopes}."
+            ).format(scopes=" ".join(sorted(USER_SCOPES)))
+
+    def validate_scope(self, field):
+        """Let the users who cannot manage all clients add the scopes users can consent to only."""
+        if self.user.can("manage_oidc"):
+            return
+
+        added = set(field.data.split()) - set(self.client.scope or [])
+        if forbidden := added - USER_SCOPES:
+            raise wtforms.ValidationError(
+                _("You cannot add the {scopes} scopes.").format(
+                    scopes=", ".join(sorted(forbidden))
+                )
+            )
+
+    def validate_audience(self, field):
+        """Let the users who cannot manage all clients pick the clients they can edit only."""
+        if self.user.can("manage_oidc"):
+            return
+
+        changed = set(self.client.audience) ^ set(field.data)
+        if not all(client.is_editable_by(self.user) for client in changed):
+            raise wtforms.ValidationError(
+                _("You can only add or remove the clients you can edit.")
+            )
+
+    def validate_grant_types(self, field):
+        owners = self.owners.data
+        forbidden = OWNED_CLIENT_FORBIDDEN_GRANT_TYPES & set(field.data)
+        if owners and forbidden:
+            raise wtforms.ValidationError(
+                _(
+                    "Clients with owners cannot use the {grant_types} grant types."
+                ).format(grant_types=", ".join(sorted(forbidden)))
+            )
 
     client_secret_expires_at = DateTimeUTCField(
         _("Secret expiration"),
@@ -200,16 +414,7 @@ class ClientEditForm(ClientAddForm):
         ),
     )
 
-    audience = wtforms.SelectMultipleField(
-        _("Token audiences"),
-        validators=[wtforms.validators.Optional()],
-        choices=_client_audiences,
-        validate_choice=False,
-        coerce=IDToModel("Client"),
-        description=_(
-            "The other clients that are intended to use the tokens emitted by this client."
-        ),
-    )
+    audience = audience_combobox()
 
     logo_uri = wtforms.URLField(
         _("Logo URI"),

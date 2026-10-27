@@ -5,6 +5,7 @@ import uuid
 from authlib.common.urls import add_params_to_uri
 from authlib.oauth2 import OAuth2Error
 from authlib.oauth2.rfc6749.errors import InvalidRequestError
+from authlib.oauth2.rfc6749.errors import UnsupportedResponseTypeError
 from authlib.oidc.core.errors import ConsentRequiredError
 from flask import Blueprint
 from flask import abort
@@ -104,6 +105,7 @@ def authorize():
 
     try:
         params = authorization_parameters()
+        check_client_usability(params)
         g.ui_locales = params.get("ui_locales")
         check_prompt_value(params)
 
@@ -123,13 +125,35 @@ def authorize():
         return authorization.handle_error_response(request, error)
 
 
+def check_client_usability(params):
+    """Refuse the logged users who cannot use the client.
+
+    This happens before any error redirection, as the client owners choose the
+    redirection URIs. Users who are asked to select an account can switch to
+    another one first.
+    """
+    if params.get("prompt") == "select_account":
+        return
+
+    user = g.session and g.session.user
+    client = Backend.instance.get(models.Client, client_id=params.get("client_id"))
+    if user and client and not client.is_usable_by(user):
+        abort(403, "The user cannot use this client.")
+
+
 def authorization_parameters():
     """Return the parameters of the authorization request.
 
     Per OIDC Core §6.1, the parameters of a request object replace the ones of the query.
     """
     oauth_request = authorization.create_oauth2_request(request)
-    authorization.get_authorization_grant(oauth_request)
+    try:
+        authorization.get_authorization_grant(oauth_request)
+    except UnsupportedResponseTypeError:
+        # This error redirects to the client. For logged users, it is raised
+        # again by get_consent_grant, after the client usability checks.
+        if not (g.session and g.session.user):
+            raise
     return oauth_request.payload.data
 
 
@@ -178,7 +202,7 @@ def authorize_login(redirect_url, now, params):
     client_id = params.get("client_id")
     ui_locales = params.get("ui_locales")
 
-    if user := g.session and g.session.user:
+    if g.session and g.session.user:
         auth_time = g.session.last_login_datetime
 
         if prompt == "select_account" and auth_time < request_time:
@@ -227,12 +251,6 @@ def authorize_login(redirect_url, now, params):
                 ui_locales=ui_locales,
             )
             return redirect_to_next_auth_step()
-
-        if not user.can_use_oidc:
-            abort(
-                403,
-                "The user does not have the permission to achieve OIDC authentication.",
-            )
 
     else:
         if prompt == "create":
@@ -318,7 +336,12 @@ def create_or_update_consent(grant, user, now):
 
 def authorize_consent(redirect_url, now, params):
     user = g.session and g.session.user
+    client = Backend.instance.get(models.Client, client_id=params.get("client_id"))
+    if user and client and not client.is_usable_by(user):
+        abort(403, "The user cannot use this client.")
+
     grant = authorization.get_consent_grant(end_user=user)
+
     form = AuthorizeForm(request.form or None)
     effective_scope = grant.client.get_allowed_scope(grant.request.payload.scope)
 
@@ -515,8 +538,17 @@ def end_session():
         return authorization.handle_error_response(None, error)
 
     current_user = g.session and g.session.user
+
+    # Client owners choose the post-logout redirection URIs, so users only get
+    # redirected there after they confirm the logout.
+    owned_client = req.client and req.client.owners
+    if owned_client and not current_user:
+        flash(_("You have been disconnected"), "success")
+        return redirect(url_for("core.account.index"))
+
     needs_confirmation = current_user and (
-        (req.logout_hint and req.logout_hint != current_user.user_name)
+        owned_client
+        or (req.logout_hint and req.logout_hint != current_user.user_name)
         or (
             req.id_token_claims
             and req.id_token_claims.get("sub")

@@ -424,6 +424,7 @@ PASSWORD = "user"
 #         "impersonate_users",
 #     ]
 # PERMISSIONS = ["edit_self", "use_oidc", "manage_own_groups"]
+PERMISSIONS = ["edit_self", "use_oidc", "manage_own_groups", "manage_own_clients"]
 
 # A list of User attributes that users in the ACL will be able to read.
 # READ = ["user_name", "groups", "lock_date"]

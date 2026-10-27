@@ -9,6 +9,7 @@ from scim2_models import SearchRequest
 from canaille.app import models
 from canaille.scim.casting import user_from_scim_to_canaille
 from canaille.scim.client import external_id_filter
+from canaille.scim.client import get_clients_to_notify
 from canaille.scim.client import initiate_scim_client
 from canaille.scim.client import update_distant_resource
 from canaille.scim.client import user_from_canaille_to_scim_client
@@ -228,6 +229,17 @@ def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplo
         logging.INFO,
         "SCIM protocol not supported by client Client",
     ) in caplog.record_tuples
+
+
+def test_clients_with_owners_are_not_notified(backend, user, consent):
+    """The users are not provisioned to the clients with owners."""
+    client = consent.client
+    assert get_clients_to_notify(user) == [client]
+
+    client.owners = [user]
+    backend.save(client)
+
+    assert get_clients_to_notify(user) == []
 
 
 def test_save_group_when_client_doesnt_support_scim(

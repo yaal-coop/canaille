@@ -67,10 +67,12 @@ def create_app(
 
         if app.features.has_oidc:  # pragma: no branch
             from .oidc.cors import setup_cors
+            from .oidc.models import setup_client_ownership
             from .oidc.provider import setup_oauth
 
             setup_oauth(app)
             setup_cors(app)
+            setup_client_ownership()
 
         if app.features.has_scim_client:
             from .scim.client import setup_scim_client

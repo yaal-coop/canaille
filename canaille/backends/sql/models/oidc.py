@@ -3,6 +3,7 @@ import uuid
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean
+from sqlalchemy import CheckConstraint
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
@@ -14,6 +15,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy_json import MutableJson
 
+import canaille.core.models
 import canaille.oidc.models
 
 from ..backend import Base
@@ -21,6 +23,7 @@ from ..utils import TZDateTime
 from .core import SqlAlchemyModel
 
 if TYPE_CHECKING:
+    from .core import Group
     from .core import User
 
 
@@ -40,6 +43,48 @@ class ClientAudience(Base):
     audience: Mapped["Client"] = relationship(
         "Client", foreign_keys=[audience_id], lazy="joined"
     )
+
+
+class ClientOwner(Base):
+    """Association object for Client.owners, that are users or groups."""
+
+    __tablename__ = "client_owner_association_table"
+    __table_args__ = (
+        CheckConstraint(
+            "(user_id IS NULL) <> (group_id IS NULL)", name="user_or_group"
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
+    )
+    client_id: Mapped[str] = mapped_column(
+        ForeignKey("client.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"), nullable=True, index=True
+    )
+    group_id: Mapped[str] = mapped_column(
+        ForeignKey("group.id", ondelete="CASCADE"), nullable=True, index=True
+    )
+    index: Mapped[int] = mapped_column(Integer)
+
+    user: Mapped["User"] = relationship("User", foreign_keys=[user_id], lazy="joined")
+    group: Mapped["Group"] = relationship(
+        "Group", foreign_keys=[group_id], lazy="joined"
+    )
+
+    @classmethod
+    def of(cls, owner):
+        if owner is None:
+            raise ValueError("A client owner cannot be None.")
+        if isinstance(owner, canaille.core.models.Group):
+            return cls(group=owner)
+        return cls(user=owner)
+
+    @property
+    def owner(self):
+        return self.user or self.group
 
 
 class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
@@ -131,6 +176,35 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
         MutableJson, nullable=True, default=[]
     )
     require_signed_request_object: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    _owners_association: Mapped[list["ClientOwner"]] = relationship(
+        "ClientOwner",
+        foreign_keys="ClientOwner.client_id",
+        order_by="ClientOwner.index",
+        collection_class=ordering_list("index"),
+        cascade="all, delete-orphan",
+    )
+    _owners = association_proxy("_owners_association", "owner", creator=ClientOwner.of)
+
+    @property
+    def owners(self):
+        """Return the users and groups who own the client, without the deleted ones."""
+        return [owner for owner in self._owners if owner]
+
+    @owners.setter
+    def owners(self, value):
+        self._owners = value
+
+    @classmethod
+    def attribute_filter(cls, name, value):
+        if name == "owners" and not isinstance(value, list):
+            column = (
+                ClientOwner.group
+                if isinstance(value, canaille.core.models.Group)
+                else ClientOwner.user
+            )
+            return cls._owners_association.any(column == value)
+
+        return super().attribute_filter(name, value)
 
 
 class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemyModel):

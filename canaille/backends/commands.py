@@ -2,6 +2,7 @@ import datetime
 import inspect
 import json
 import sys
+import types
 import typing
 
 import click
@@ -49,6 +50,71 @@ def model_getter(model):
     return wrapped
 
 
+def get_union_models(attribute_type):
+    """Extract Model classes from a union type.
+
+    Returns a list of (model_name, model_class) tuples, or None if not a union of models.
+    """
+    if typing.get_origin(attribute_type) not in (types.UnionType, typing.Union):
+        return None
+
+    model_types = []
+    for arg in typing.get_args(attribute_type):
+        if arg is type(None):
+            continue
+        if inspect.isclass(arg) and issubclass(arg, Model):
+            model_name = arg.__name__.lower()
+            backend_model = MODELS.get(model_name)
+            if backend_model:
+                model_types.append((model_name, backend_model))
+
+    return model_types if len(model_types) > 1 else None
+
+
+def union_model_getter(model_types):
+    """Return a method that gets a model from a union type.
+
+    Supports prefixed identifiers (e.g. 'user:foo' or 'group:bar') to disambiguate.
+    """
+
+    @with_backendcontext
+    def wrapped(identifier):
+        if not identifier:
+            return None
+
+        for model_name, _ in model_types:
+            prefix = model_name + ":"
+            if identifier.lower().startswith(prefix):
+                bare_identifier = identifier[len(prefix) :]
+                _, model = next(
+                    (m for m in model_types if m[0] == model_name), (None, None)
+                )
+                instance = Backend.instance.get(model, bare_identifier)
+                if instance:
+                    return instance
+                raise click.BadParameter(f"{model_name} '{bare_identifier}' not found")
+
+        matches = []
+        for model_name, model in model_types:
+            instance = Backend.instance.get(model, identifier)
+            if instance:
+                matches.append((model_name, instance))
+
+        if len(matches) == 1:
+            return matches[0][1]
+
+        if len(matches) > 1:
+            prefixes = ", ".join(f"'{name}:{identifier}'" for name, _ in matches)
+            raise click.BadParameter(
+                f"Ambiguous identifier '{identifier}'. Use a prefix to disambiguate: {prefixes}"
+            )
+
+        model_names = " or ".join(name for name, _ in model_types)
+        raise click.BadParameter(f"{model_names} '{identifier}' not found")
+
+    return wrapped
+
+
 def click_type(attribute_type):
     """Find click type for a given model attribute type."""
     if typing.get_origin(attribute_type):
@@ -63,6 +129,11 @@ def click_type(attribute_type):
         attribute_type, str
     ):  # pragma: no cover
         attribute_type = getattr(models, attribute_type, attribute_type)
+
+    # Check for union types containing multiple models (e.g. User | Group)
+    union_models = get_union_models(attribute_type)
+    if union_models:
+        return union_model_getter(union_models)
 
     if inspect.isclass(attribute_type) and issubclass(attribute_type, Model):
         return model_getter(attribute_type)

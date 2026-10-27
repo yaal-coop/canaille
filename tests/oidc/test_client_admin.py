@@ -12,8 +12,9 @@ def test_no_logged_no_access(testclient):
     testclient.get("/admin/client", status=403)
 
 
-def test_no_admin_no_access(testclient, logged_user):
-    testclient.get("/admin/client", status=403)
+def test_user_with_manage_own_clients_can_access(testclient, logged_user):
+    """User with manage_own_clients permission can access client admin."""
+    testclient.get("/admin/client", status=200)
 
 
 def test_invalid_client_edition(testclient, logged_admin):
@@ -168,7 +169,6 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
         "software_id": "software",
         "software_version": "1",
         "jwks_uri": "https://foobar.test/jwks.json",
-        "audience": [client.id, trusted_client.id],
         "post_logout_redirect_uris-0": "https://foobar.test/disconnected",
     }
     for k, v in data.items():

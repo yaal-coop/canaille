@@ -5,6 +5,7 @@ from typing import ClassVar
 from typing import List  # noqa: UP035
 
 from canaille.backends.models import Model
+from canaille.core.models import Group
 from canaille.core.models import User
 from canaille.oidc.utils import is_trusted_client
 
@@ -20,6 +21,15 @@ class Client(Model):
 
     description: str | None = None
 
+    owners: list[User | Group] = []
+    """The users or groups who own this client.
+
+    This follows the LDAP ``owner`` attribute (:rfc:`4519#section-2.21`).
+    If set, only the owners (or members of owner groups) can use this client for authentication.
+    This restriction is a Canaille extension.
+    If empty, the client is global and accessible to all users with USE_OIDC permission.
+    """
+
     @property
     def trusted(self) -> bool:
         """Trusted clients don't require to display the consent page to users.
@@ -28,7 +38,11 @@ class Client(Model):
         :attr:`redirect_uris` match the domains listed in the
         :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`
         configuration parameter, that documents the supported patterns.
+        Clients with :attr:`owners` are never trusted.
         """
+        if self.owners:
+            return False
+
         return is_trusted_client(self.client_uri, self.redirect_uris)
 
     # keep 'List' instead of 'list' do not break py310 with the memory backend

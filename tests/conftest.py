@@ -142,7 +142,12 @@ def configuration(request):
             "ACL": {
                 "DEFAULT": {
                     "READ": ["user_name", "groups"],
-                    "PERMISSIONS": ["edit_self", "use_oidc", "manage_own_groups"],
+                    "PERMISSIONS": [
+                        "edit_self",
+                        "use_oidc",
+                        "manage_own_groups",
+                        "manage_own_clients",
+                    ],
                     "WRITE": [
                         "emails",
                         "given_name",

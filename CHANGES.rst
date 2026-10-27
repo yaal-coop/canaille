@@ -1,6 +1,11 @@
 [0.3.7] - Unreleased
 --------------------
 
+.. warning::
+
+    Manual migration required for LDAP backend: an ``owner`` attribute has been added
+    to clients. Please follow the :ref:`ldap_schema_update` section.
+
 Added
 ^^^^^
 - The outgoing HTTP requests go through clients that applications embedding Canaille
@@ -17,6 +22,9 @@ Added
 - Support for SCIM filtering and sorting.
 - Users who can manage all groups can pick the members of a group when they create
   it, and add several users at once to an existing group. :issue:`192`
+- OIDC clients can be owned by users or groups. Users with the
+  ``MANAGE_OWN_CLIENTS`` permission can create clients and manage the ones they own.
+  This permission is not granted by default. :issue:`308`
 
 Changed
 ^^^^^^^
