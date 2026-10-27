@@ -7,7 +7,7 @@ from canaille.commands import cli
 
 
 def test_clean_command(cli_runner, backend, client, user):
-    """Test that the clean command removes expired authorization codes and tokens."""
+    """Test that the clean command removes expired authorization codes, tokens and device codes."""
     valid_code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",
@@ -68,6 +68,32 @@ def test_clean_command(cli_runner, backend, client, user):
     )
     backend.save(expired_token)
 
+    valid_device_code = models.DeviceCode(
+        device_code_id=gen_salt(48),
+        device_code="my-valid-device-code",
+        user_code="VALI-DCOD",
+        client=client,
+        scope=["openid", "profile"],
+        status="pending",
+        issue_date=datetime.datetime.now(datetime.UTC).replace(microsecond=0),
+        lifetime=3600,
+    )
+    backend.save(valid_device_code)
+    expired_device_code = models.DeviceCode(
+        device_code_id=gen_salt(48),
+        device_code="my-expired-device-code",
+        user_code="EXPI-REDC",
+        client=client,
+        scope=["openid", "profile"],
+        status="denied",
+        issue_date=(
+            datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+            - datetime.timedelta(days=1)
+        ),
+        lifetime=3600,
+    )
+    backend.save(expired_device_code)
+
     assert backend.get(models.AuthorizationCode, code="my-expired-code")
     assert backend.get(models.Token, access_token="my-expired-token")
     assert expired_code.is_expired()
@@ -78,3 +104,4 @@ def test_clean_command(cli_runner, backend, client, user):
 
     assert backend.get(models.AuthorizationCode) == valid_code
     assert backend.get(models.Token, subject=user) == valid_token
+    assert backend.get(models.DeviceCode) == valid_device_code

@@ -21,3 +21,7 @@ ou: consents
 dn: ou=codes,ou=oauth,dc=example,dc=org
 objectclass: organizationalUnit
 ou: codes
+
+dn: ou=devices,ou=oauth,dc=example,dc=org
+objectclass: organizationalUnit
+ou: devices

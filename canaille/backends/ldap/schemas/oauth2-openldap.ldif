@@ -523,6 +523,58 @@ olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.61 NAME 'oauthRequireSignedRequestObj
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.62 NAME 'oauthDeviceCode'
+        DESC 'OAuth 2.0 device verification code'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.63 NAME 'oauthUserCode'
+        DESC 'OAuth 2.0 end-user verification code'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.64 NAME 'oauthDeviceCodeID'
+        DESC 'OAuth 2.0 device code identifier'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.65 NAME 'oauthDeviceCodeStatus'
+        DESC 'OAuth 2.0 device code authorization status'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.66 NAME 'oauthDeviceCodeLifetime'
+        DESC 'OAuth 2.0 device code lifetime, in seconds'
+        EQUALITY integerMatch
+        ORDERING integerOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
+olcAttributeTypes: ( 1.3.6.1.4.1.56207.1.1.67 NAME 'oauthLastPolled'
+        DESC 'OAuth 2.0 device code last token endpoint polling date/time'
+        EQUALITY generalizedTimeMatch
+        ORDERING generalizedTimeOrderingMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OAuth 2.0' )
 olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -624,4 +676,20 @@ olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.4 NAME 'oauthConsent'
               oauthIssueDate $
               oauthRevokationDate
         )
+        X-ORIGIN 'OAuth 2.0' )
+olcObjectClasses: ( 1.3.6.1.4.1.56207.1.2.5 NAME 'oauthDeviceCode'
+        DESC 'OAuth 2.0 Device Authorization Grant device code'
+        SUP top
+        STRUCTURAL
+        MUST  oauthDeviceCodeID
+        MAY ( description $
+              oauthDeviceCode $
+              oauthUserCode $
+              oauthClient $
+              oauthSubject $
+              oauthScope $
+              oauthDeviceCodeStatus $
+              oauthIssueDate $
+              oauthDeviceCodeLifetime $
+              oauthLastPolled )
         X-ORIGIN 'OAuth 2.0' )

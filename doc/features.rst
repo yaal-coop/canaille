@@ -303,6 +303,29 @@ Users with the right :attr:`permission <canaille.core.configuration.Permission.M
 
 In some cases, it might be useful to avoid the consent page for some trusted applications, so clients can be pre-consented.
 
+Device authorization
+====================
+
+.. screenshot:: |canaille|/oauth/device
+   :context: admin
+   :align: right
+   :width: 275px
+
+   The device verification dialog.
+
+Canaille implements the :rfc:`OAuth 2.0 Device Authorization Grant <8628>`, which
+allows devices with limited input capabilities or without a browser (such as smart
+TVs, consoles, printers or command-line tools) to obtain user authorization. Users
+authorize the device by entering the code it displays on another device, such as a
+phone or a computer.
+
+The grant must be enabled on the client through its
+:attr:`grant_types <canaille.oidc.basemodels.Client.grant_types>`
+(``urn:ietf:params:oauth:grant-type:device_code``). Users authorize devices at
+``/oauth/device``. The codes lifetime, the polling interval and the user code format
+can be tuned through the
+:class:`OIDC settings <canaille.oidc.configuration.OIDCSettings>`.
+
 Discovery
 =========
 

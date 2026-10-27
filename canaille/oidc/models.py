@@ -4,6 +4,7 @@ from typing import ClassVar
 from authlib.oauth2.rfc6749 import ClientMixin
 from authlib.oauth2.rfc6749 import TokenMixin
 from authlib.oauth2.rfc6749 import util
+from authlib.oauth2.rfc8628 import DeviceCredentialMixin
 from authlib.oidc.core import AuthorizationCodeMixin
 from blinker import signal
 from flask import current_app
@@ -16,6 +17,7 @@ from canaille.core.models import Group
 from .basemodels import AuthorizationCode as BaseAuthorizationCode
 from .basemodels import Client as BaseClient
 from .basemodels import Consent as BaseConsent
+from .basemodels import DeviceCode as BaseDeviceCode
 from .basemodels import Token as BaseToken
 
 OWNED_CLIENT_FORBIDDEN_GRANT_TYPES = {
@@ -109,7 +111,7 @@ class Client(BaseClient, ClientMixin):
         return client_secret == self.client_secret
 
     def check_endpoint_auth_method(self, method, endpoint):
-        if endpoint == "token":
+        if endpoint in ("token", "device_authorization"):
             # hotfix for https://github.com/lepture/authlib/issues/759
             implicit_flow_shortcut = method == "none" and self.grant_types == [
                 "implicit"
@@ -172,6 +174,9 @@ class Client(BaseClient, ClientMixin):
 
         for token in Backend.instance.query(models.Token, client=self):
             Backend.instance.delete(token)
+
+        for device_code in Backend.instance.query(models.DeviceCode, client=self):
+            Backend.instance.delete(device_code)
 
     def get_default_redirect_uri(self):
         return None
@@ -346,6 +351,19 @@ class Token(BaseToken, TokenMixin):
         return self.client
 
 
+class DeviceCode(BaseDeviceCode, DeviceCredentialMixin):
+    def get_client_id(self):
+        return self.client.client_id
+
+    def get_scope(self) -> str:
+        return util.list_to_scope(self.scope)
+
+    def is_expired(self):
+        return self.issue_date + datetime.timedelta(
+            seconds=int(self.lifetime or 0)
+        ) < datetime.datetime.now(datetime.UTC)
+
+
 class Consent(BaseConsent):
     @property
     def revoked(self):
@@ -364,6 +382,13 @@ class Consent(BaseConsent):
         for t in tokens:
             t.revokation_date = self.revokation_date
             Backend.instance.save(t)
+
+        for device_code in Backend.instance.query(
+            models.DeviceCode,
+            client=self.client,
+            subject=self.subject,
+        ):
+            Backend.instance.delete(device_code)
 
     def restore(self):
         self.revokation_date = None

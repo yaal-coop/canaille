@@ -46,6 +46,7 @@ def test_setup_ldap_tree(slapd_server, configuration):
 
     output = slapd_server.slapcat().stdout.decode("utf-8")
     assert "dn: ou=tokens,ou=oauth,dc=example,dc=org" in output
+    assert "dn: ou=devices,ou=oauth,dc=example,dc=org" in output
 
 
 def test_install_schemas(configuration, slapd_server):

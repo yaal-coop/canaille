@@ -521,6 +521,35 @@ class Token(Model):
     audience: List["Client"]  # noqa: UP006
 
 
+class DeviceCode(Model):
+    """OAuth 2.0 Device Authorization Grant device code.
+
+    Based on the :rfc:`OAuth 2.0 Device Authorization Grant <8628>` specification.
+    A single object carries both the device credential (looked up by
+    ``device_code``) and the end-user authorization decision (looked up by
+    ``user_code``).
+    """
+
+    identifier_attribute: ClassVar[str] = "device_code_id"
+
+    device_code_id: str
+    device_code: str
+    user_code: str
+    client: "Client"
+    subject: User | None
+    scope: list[str]
+
+    status: str
+    """The authorization status: ``pending``, ``authorized`` or ``denied``."""
+
+    issue_date: datetime.datetime
+    lifetime: int
+
+    last_polled: datetime.datetime | None
+    """Last time the client polled the token endpoint, used to enforce the
+    minimal polling interval (``slow_down``)."""
+
+
 class Consent(Model):
     """Long-term user consent to an application."""
 

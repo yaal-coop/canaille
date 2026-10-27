@@ -12,11 +12,14 @@ from authlib.oauth2 import rfc7591
 from authlib.oauth2 import rfc7592
 from authlib.oauth2 import rfc7636
 from authlib.oauth2 import rfc7662
+from authlib.oauth2 import rfc8628
 from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
+from authlib.oauth2.rfc6749 import AccessDeniedError
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oauth2.rfc6749 import InvalidGrantError
 from authlib.oauth2.rfc6749 import InvalidScopeError
+from authlib.oauth2.rfc6749 import UnauthorizedClientError
 from authlib.oauth2.rfc9101.errors import InvalidRequestObjectError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
@@ -341,6 +344,131 @@ class OpenIDHybridGrant(OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
 
     def generate_user_info(self, user, scope):
         return UserInfo(generate_user_claims(user)).filter(scope)
+
+
+class DeviceAuthorizationEndpoint(rfc8628.DeviceAuthorizationEndpoint):
+    """Issue a device code, a user code and a verification URI for a device (RFC 8628)."""
+
+    CLIENT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+        "none",
+    ]
+
+    @property
+    def EXPIRES_IN(self):
+        lifetime = current_app.config["CANAILLE_OIDC"]["DEVICE_CODE_LIFETIME"]
+        return int(lifetime.total_seconds())
+
+    @property
+    def INTERVAL(self):
+        interval = current_app.config["CANAILLE_OIDC"]["DEVICE_CODE_POLLING_INTERVAL"]
+        return int(interval.total_seconds())
+
+    @property
+    def USER_CODE_TYPE(self):
+        return current_app.config["CANAILLE_OIDC"]["DEVICE_USER_CODE_TYPE"]
+
+    def authenticate_client(self, request):
+        client = super().authenticate_client(request)
+        if not client.check_grant_type(rfc8628.DEVICE_CODE_GRANT_TYPE):
+            raise UnauthorizedClientError(
+                description="The client cannot use the device authorization grant."
+            )
+        return client
+
+    def generate_user_code(self):
+        """Generate a user code that no other active device code uses."""
+        while True:
+            user_code = super().generate_user_code()
+            codes = Backend.instance.query(models.DeviceCode, user_code=user_code)
+            if all(code.is_expired() for code in codes):
+                return user_code
+
+    def get_verification_uri(self):
+        return url_for("oidc.endpoints.device", _external=True)
+
+    def save_device_credential(self, client_id, scope, data):
+        client = Backend.instance.get(models.Client, client_id=client_id)
+        allowed_scope = client.get_allowed_scope(scope)
+        if scope and not allowed_scope:
+            raise InvalidScopeError()
+
+        device_code = models.DeviceCode(
+            device_code_id=gen_salt(48),
+            device_code=data["device_code"],
+            user_code=data["user_code"],
+            client=client,
+            scope=allowed_scope.split(),
+            status="pending",
+            issue_date=datetime.datetime.now(datetime.UTC),
+            lifetime=data["expires_in"],
+        )
+        Backend.instance.save(device_code)
+
+
+class DeviceCodeGrant(rfc8628.DeviceCodeGrant):
+    """Exchange a device code for a token at the token endpoint, once the user approved it (RFC 8628)."""
+
+    TOKEN_ENDPOINT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+        "none",
+    ]
+
+    def query_device_credential(self, device_code):
+        return Backend.instance.get(models.DeviceCode, device_code=device_code)
+
+    def validate_device_credential(self, credential):
+        """Read the user decision on the device code itself.
+
+        The parent class reads it again by ``user_code``, which is not unique.
+        """
+        if credential.is_expired():
+            raise rfc8628.ExpiredTokenError()
+
+        if credential.status == "denied":
+            Backend.instance.delete(credential)
+            raise AccessDeniedError()
+
+        if credential.status == "authorized":
+            return self.authenticate_device_user(credential)
+
+        if self.should_slow_down(credential):
+            raise rfc8628.SlowDownError()
+
+        raise rfc8628.AuthorizationPendingError()
+
+    def authenticate_device_user(self, credential):
+        """Check that the user who approved the device can still use the client.
+
+        The device code cannot be used anymore when the check fails.
+        """
+        if not credential.subject or credential.subject.locked:
+            Backend.instance.delete(credential)
+            raise InvalidGrantError("There is no 'user' for this code.")
+
+        if not credential.client.is_usable_by(credential.subject):
+            Backend.instance.delete(credential)
+            raise InvalidGrantError("The user cannot use this client.")
+
+        return credential.subject
+
+    def should_slow_down(self, credential):
+        now = datetime.datetime.now(datetime.UTC)
+        interval = current_app.config["CANAILLE_OIDC"]["DEVICE_CODE_POLLING_INTERVAL"]
+        last_polled = credential.last_polled
+        credential.last_polled = now
+        Backend.instance.save(credential)
+        return last_polled is not None and (now - last_polled) < interval
+
+    def create_token_response(self):
+        # The device_code is single use: drop it once a token has been issued.
+        response = super().create_token_response()
+        Backend.instance.delete(self.request.credential)
+        return response
 
 
 def query_client(client_id):
@@ -831,6 +959,7 @@ def setup_oauth(app):
             CodeChallenge(required=True),
         ],
     )
+    authorization.register_grant(DeviceCodeGrant)
 
     with app.app_context():
         if not app.config["SERVER_NAME"]:
@@ -846,6 +975,7 @@ def setup_oauth(app):
     require_oauth.register_token_validator(BearerTokenValidator())
 
     authorization.register_endpoint(UserInfoEndpoint(resource_protector=require_oauth))
+    authorization.register_endpoint(DeviceAuthorizationEndpoint)
     authorization.register_endpoint(IntrospectionEndpoint)
     authorization.register_endpoint(RevocationEndpoint)
     authorization.register_endpoint(EndSessionEndpoint)

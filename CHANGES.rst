@@ -4,7 +4,8 @@
 .. warning::
 
     Manual migration required for LDAP backend: an ``owner`` attribute has been added
-    to clients. Please follow the :ref:`ldap_schema_update` section.
+    to clients, and an ``oauthDeviceCode`` object class has been added for device
+    codes. Please follow the :ref:`ldap_schema_update` section.
 
 Added
 ^^^^^
@@ -25,6 +26,8 @@ Added
 - OIDC clients can be owned by users or groups. Users with the
   ``MANAGE_OWN_CLIENTS`` permission can create clients and manage the ones they own.
   This permission is not granted by default. :issue:`308`
+- :rfc:`OAuth 2.0 Device Authorization Grant <8628>` support, for devices with
+  limited input capabilities (smart TVs, consoles, CLI tools…).
 
 Changed
 ^^^^^^^

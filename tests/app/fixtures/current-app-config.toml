@@ -772,6 +772,24 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 
 # UPDATED_AT = "{% if user.last_modified %}{{ user.last_modified.timestamp() }}{% endif %}"
 
+# The validity period of the device_code and user_code issued by the Device
+# Authorization Grant endpoint.
+#
+# Should be provided in ISO8601 duration format (e.g., "PT30M" for 30 minutes).
+# DEVICE_CODE_LIFETIME = "PT30M"
+
+# The minimum delay a device client should wait between two polling requests to
+# the token endpoint during the Device Authorization Grant.
+#
+# Should be provided in ISO8601 duration format (e.g., "PT5S" for 5 seconds).
+# DEVICE_CODE_POLLING_INTERVAL = "PT5S"
+
+# The kind of user_code generated for the Device Authorization Grant.
+#
+# string produces codes like WDJB-MJHT (letters), while digital produces codes
+# like 019-450-730 (digits only).
+# DEVICE_USER_CODE_TYPE = "string"
+
 [CANAILLE_SCIM]
 # Whether the SCIM server API is enabled.
 #

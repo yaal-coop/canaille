@@ -156,11 +156,12 @@ Please perform your own backups too, in case something unexpected happens.
 .. code-block:: console
     :caption: Backup and purge OIDC related objects
 
-    $ canaille dump client authorizationcode consent token > dump.json
+    $ canaille dump client authorizationcode consent token devicecode > dump.json
     $ canaille delete client --noconfirm
     $ canaille delete authorizationcode --noconfirm
     $ canaille delete consent --noconfirm
     $ canaille delete token --noconfirm
+    $ canaille delete devicecode --noconfirm
 
 Delete the old schema
 ~~~~~~~~~~~~~~~~~~~~~

@@ -27,7 +27,7 @@ from .jose import server_jwks
 @with_appcontext
 @with_backendcontext
 def clean():
-    """Remove expired tokens and authorization codes."""
+    """Remove expired tokens, authorization codes and device codes."""
     for t in Backend.instance.query(models.Token):
         if t.is_expired():
             Backend.instance.delete(t)
@@ -35,6 +35,10 @@ def clean():
     for a in Backend.instance.query(models.AuthorizationCode):
         if a.is_expired():
             Backend.instance.delete(a)
+
+    for d in Backend.instance.query(models.DeviceCode):
+        if d.is_expired():
+            Backend.instance.delete(d)
 
 
 @click.group()
