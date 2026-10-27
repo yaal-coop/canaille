@@ -10,6 +10,9 @@ from canaille.app import DOCUMENTATION_URL
 from .jose import supported_signing_algorithms
 from .jose import supported_verification_algorithms
 from .provider import CodeChallenge
+from .provider import IntrospectionEndpoint
+from .provider import JWTClientAuth
+from .provider import RevocationEndpoint
 from .provider import get_issuer
 
 
@@ -17,6 +20,14 @@ class AuthorizationServerMetadata(
     rfc8414.AuthorizationServerMetadata, rfc9101.AuthorizationServerMetadata
 ):
     pass
+
+
+def endpoint_auth_methods(endpoint):
+    """Return the client authentication methods that an endpoint accepts."""
+    return [
+        "private_key_jwt" if method == JWTClientAuth.CLIENT_AUTH_METHOD else method
+        for method in endpoint.CLIENT_AUTH_METHODS
+    ]
 
 
 def oauth_authorization_server():
@@ -35,13 +46,21 @@ def oauth_authorization_server():
         ),
         "userinfo_endpoint": url_for("oidc.endpoints.userinfo", _external=True),
         "revocation_endpoint": url_for("oidc.endpoints.revoke_token", _external=True),
-        "revocation_endpoint_auth_methods_supported": ["client_secret_basic"],
-        "revocation_endpoint_auth_signing_alg_values_supported": None,
+        "revocation_endpoint_auth_methods_supported": endpoint_auth_methods(
+            RevocationEndpoint
+        ),
+        "revocation_endpoint_auth_signing_alg_values_supported": supported_verification_algorithms(
+            excluded=["none"]
+        ),
         "introspection_endpoint": url_for(
             "oidc.endpoints.introspect_token", _external=True
         ),
-        "introspection_endpoint_auth_methods_supported": ["client_secret_basic"],
-        "introspection_endpoint_auth_signing_alg_values_supported": None,
+        "introspection_endpoint_auth_methods_supported": endpoint_auth_methods(
+            IntrospectionEndpoint
+        ),
+        "introspection_endpoint_auth_signing_alg_values_supported": supported_verification_algorithms(
+            excluded=["none"]
+        ),
         "jwks_uri": url_for("oidc.endpoints.jwks", _external=True),
         "registration_endpoint": url_for(
             "oidc.endpoints.client_registration", _external=True

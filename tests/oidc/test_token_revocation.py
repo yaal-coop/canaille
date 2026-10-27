@@ -1,5 +1,6 @@
 import datetime
 
+from . import client_assertion
 from . import client_credentials
 
 
@@ -85,6 +86,33 @@ def test_cannot_refresh_after_revocation(testclient, user, client, token, backen
         status=400,
     )
     assert res.json == {"error": "invalid_grant"}
+
+
+def test_revoke_with_client_secret_post(testclient, client, token, backend):
+    testclient.post(
+        "/oauth/revoke",
+        params={
+            "token": token.access_token,
+            "client_id": client.client_id,
+            "client_secret": client.client_secret,
+        },
+        status=200,
+    )
+    backend.reload(token)
+    assert token.revokation_date
+
+
+def test_revoke_with_private_key_jwt(testclient, client, client_jwk, token, backend):
+    client.token_endpoint_auth_method = "private_key_jwt"
+    backend.save(client)
+
+    testclient.post(
+        "/oauth/revoke",
+        params={"token": token.access_token, **client_assertion(client, client_jwk)},
+        status=200,
+    )
+    backend.reload(token)
+    assert token.revokation_date
 
 
 def test_token_invalid(testclient, client):

@@ -1,5 +1,24 @@
 from flask import g
 
+VERIFICATION_ALGORITHMS = [
+    "HS256",
+    "HS384",
+    "HS512",
+    "RS256",
+    "RS384",
+    "RS512",
+    "ES256",
+    "ES384",
+    "ES512",
+    "PS256",
+    "PS384",
+    "PS512",
+    "EdDSA",
+    "ES256K",
+    "Ed25519",
+    "Ed448",
+]
+
 
 def test_oauth_authorization_server(testclient):
     res = testclient.get("/.well-known/oauth-authorization-server", status=200).json
@@ -16,7 +35,12 @@ def test_oauth_authorization_server(testclient):
             "urn:ietf:params:oauth:grant-type:device_code",
         ],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
-        "introspection_endpoint_auth_methods_supported": ["client_secret_basic"],
+        "introspection_endpoint_auth_methods_supported": [
+            "client_secret_basic",
+            "client_secret_post",
+            "private_key_jwt",
+        ],
+        "introspection_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
         "issuer": "http://canaille.test",
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
         "registration_endpoint": "http://canaille.test/oauth/register",
@@ -33,7 +57,10 @@ def test_oauth_authorization_server(testclient):
         "revocation_endpoint": "http://canaille.test/oauth/revoke",
         "revocation_endpoint_auth_methods_supported": [
             "client_secret_basic",
+            "client_secret_post",
+            "private_key_jwt",
         ],
+        "revocation_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
         "scopes_supported": [
             "openid",
             "profile",
@@ -50,24 +77,7 @@ def test_oauth_authorization_server(testclient):
             "client_secret_post",
             "none",
         ],
-        "token_endpoint_auth_signing_alg_values_supported": [
-            "HS256",
-            "HS384",
-            "HS512",
-            "RS256",
-            "RS384",
-            "RS512",
-            "ES256",
-            "ES384",
-            "ES512",
-            "PS256",
-            "PS384",
-            "PS512",
-            "EdDSA",
-            "ES256K",
-            "Ed25519",
-            "Ed448",
-        ],
+        "token_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
         "ui_locales_supported": [
             code.replace("_", "-") for code in g.available_language_codes
         ],
@@ -137,7 +147,12 @@ def test_openid_configuration(testclient):
             "PS512",
         ],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
-        "introspection_endpoint_auth_methods_supported": ["client_secret_basic"],
+        "introspection_endpoint_auth_methods_supported": [
+            "client_secret_basic",
+            "client_secret_post",
+            "private_key_jwt",
+        ],
+        "introspection_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
         "issuer": "http://canaille.test",
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
         "registration_endpoint": "http://canaille.test/oauth/register",
@@ -161,7 +176,10 @@ def test_openid_configuration(testclient):
         "revocation_endpoint": "http://canaille.test/oauth/revoke",
         "revocation_endpoint_auth_methods_supported": [
             "client_secret_basic",
+            "client_secret_post",
+            "private_key_jwt",
         ],
+        "revocation_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
         "scopes_supported": [
             "openid",
             "profile",
@@ -179,24 +197,7 @@ def test_openid_configuration(testclient):
             "client_secret_post",
             "none",
         ],
-        "token_endpoint_auth_signing_alg_values_supported": [
-            "HS256",
-            "HS384",
-            "HS512",
-            "RS256",
-            "RS384",
-            "RS512",
-            "ES256",
-            "ES384",
-            "ES512",
-            "PS256",
-            "PS384",
-            "PS512",
-            "EdDSA",
-            "ES256K",
-            "Ed25519",
-            "Ed448",
-        ],
+        "token_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
         "ui_locales_supported": [
             code.replace("_", "-") for code in g.available_language_codes
         ],
