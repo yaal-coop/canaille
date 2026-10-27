@@ -218,6 +218,10 @@ i.massive.massive.massive.portrait.icon, i.massive.massive.massive.portrait.icon
     background: rgba(0,0,0,.05) !important;
 }
 
+.credential-name {
+    width: 100%;
+}
+
 /* NO JS */
 
 select.ui.multiple.dropdown {

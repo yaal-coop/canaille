@@ -77,7 +77,7 @@ Displays the passkeys management.
                         {% for credential in edited_user.webauthn_credentials %}
                             <tr>
                                 <td>
-                                    <div class="ui action input" style="width: 100%;">
+                                    <div class="ui action input credential-name">
                                         <input type="text" name="credential_name_{{ credential.id }}" value="{{ credential.name or _('My passkey') }}" maxlength="255">
                                         {% call fui.render_button(form.fido2_rename_credential, credential.id, class_="ui icon button", formnovalidate=True, title=_("Rename")) %}
                                             <i class="edit icon"></i>
