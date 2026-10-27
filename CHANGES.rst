@@ -117,6 +117,8 @@ Fixed
   edited.
 - In dark mode, the tooltips and the user menu of the navigation bar had a light
   background.
+- An invalid email address also showed the errors that only make sense for valid
+  addresses, such as "No user found with this email address".
 - The ``populate`` command could create fewer users than requested, or fail with
   SQL databases, when two fake users got the same user name.
 - With SQL databases, searching the members of a group also listed users who were

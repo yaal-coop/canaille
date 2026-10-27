@@ -122,12 +122,16 @@ def compromised_password_validator(form, field):
 
 
 def email_validator(form, field):
+    """Check the email address format, and skip the next validators when it is invalid."""
     try:
         import email_validator  # noqa: F401
-
-        wtforms.validators.Email()(form, field)
     except ImportError:
-        pass
+        return
+
+    try:
+        wtforms.validators.Email()(form, field)
+    except wtforms.validators.ValidationError as exc:
+        raise wtforms.validators.StopValidation(str(exc)) from exc
 
 
 def _parent_list(field):

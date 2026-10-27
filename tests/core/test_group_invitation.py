@@ -59,6 +59,18 @@ def test_group_invitation_send_email(testclient, logged_admin, bar_group, user, 
     assert "/groups/join/" in invitation_url
 
 
+def test_group_invitation_invalid_email(testclient, logged_admin, foo_group, smtpd):
+    """Test that an invalid email address only shows the format error."""
+    res = testclient.get(f"/groups/{foo_group.id}/invite", status=200)
+
+    res.form["email"] = "invalid"
+    res = res.form.submit(status=200)
+
+    res.mustcontain("Invalid email address.")
+    res.mustcontain(no="No user found with this email address")
+    assert len(smtpd.messages) == 0
+
+
 def test_group_invitation_nonexistent_user(testclient, logged_admin, foo_group, smtpd):
     """Test invitation with email not belonging to any user shows error message."""
     res = testclient.get(f"/groups/{foo_group.id}/invite", status=200)
