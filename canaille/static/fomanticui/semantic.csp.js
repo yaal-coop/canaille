@@ -4,21 +4,25 @@
 
 var setAttribute_ = Element.prototype.setAttribute;
 
+// The style attribute is blocked by the policy, so its declarations are set
+// through the CSSOM. setProperty keeps the !important priority, that Fomantic
+// uses for instance to display the elements during their transitions.
 Element.prototype.setAttribute = function (attr, val) {
     if (attr.toLowerCase() !== 'style') {
         setAttribute_.apply(this, [attr, val]);
-    } else {
-        var arr = val.split(';').map( (el, index) => el.trim() );
-        for (var i=0, tmp; i < arr.length; ++i) {
-            if (! /:/.test(arr[i]) ) continue;
-            tmp = arr[i].split(':').map( (el, index) => el.trim() );
-            this.style[ camelize(tmp[0]) ] = tmp[1];
-        }
+        return;
     }
-}
 
-function camelize(str) {
-    return str.split('-').map(
-        (word, index) => index == 0 ? word : word[0].toUpperCase() + word.slice(1)
-    ).join('');
+    for (const declaration of val.split(';')) {
+        const index = declaration.indexOf(':');
+        if (index === -1) continue;
+        const property = declaration.slice(0, index).trim();
+        const value = declaration.slice(index + 1).trim();
+        const important = /!\s*important$/i.test(value);
+        this.style.setProperty(
+            property,
+            value.replace(/\s*!\s*important$/i, ''),
+            important ? 'important' : '',
+        );
+    }
 }
