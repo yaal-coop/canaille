@@ -28,6 +28,8 @@ Added
   This permission is not granted by default. :issue:`308`
 - :rfc:`OAuth 2.0 Device Authorization Grant <8628>` support, for devices with
   limited input capabilities (smart TVs, consoles, CLI tools…).
+- The token introspection and revocation endpoints accept the
+  ``client_secret_post`` and ``private_key_jwt`` client authentication methods.
 
 Changed
 ^^^^^^^

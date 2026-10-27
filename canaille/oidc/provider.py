@@ -544,6 +544,12 @@ def query_token(token, token_type_hint):
 
 
 class RevocationEndpoint(rfc7009.RevocationEndpoint):
+    CLIENT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+    ]
+
     def query_token(self, token, token_type_hint):
         return query_token(token, token_type_hint)
 
@@ -553,6 +559,12 @@ class RevocationEndpoint(rfc7009.RevocationEndpoint):
 
 
 class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
+    CLIENT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+    ]
+
     def query_token(self, token, token_type_hint):
         return query_token(token, token_type_hint)
 

@@ -3,6 +3,7 @@ from urllib.parse import urlsplit
 
 from canaille.app import models
 
+from . import client_assertion
 from . import client_credentials
 
 
@@ -65,6 +66,46 @@ def test_refresh_token_introspection(testclient, user, client, token):
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
     } == res.json
+
+
+def test_introspection_with_client_secret_post(testclient, client, token):
+    res = testclient.post(
+        "/oauth/introspect",
+        params={
+            "token": token.access_token,
+            "client_id": client.client_id,
+            "client_secret": client.client_secret,
+        },
+        status=200,
+    )
+    assert res.json["active"]
+
+
+def test_introspection_with_wrong_client_secret_post(testclient, client, token):
+    res = testclient.post(
+        "/oauth/introspect",
+        params={
+            "token": token.access_token,
+            "client_id": client.client_id,
+            "client_secret": "wrong",
+        },
+        status=401,
+    )
+    assert res.json["error"] == "invalid_client"
+
+
+def test_introspection_with_private_key_jwt(
+    testclient, client, client_jwk, token, backend
+):
+    client.token_endpoint_auth_method = "private_key_jwt"
+    backend.save(client)
+
+    res = testclient.post(
+        "/oauth/introspect",
+        params={"token": token.access_token, **client_assertion(client, client_jwk)},
+        status=200,
+    )
+    assert res.json["active"]
 
 
 def test_token_invalid(testclient, client):
