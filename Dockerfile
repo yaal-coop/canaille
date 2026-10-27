@@ -9,7 +9,7 @@ RUN \
     libldap2-dev \
     libssl-dev
 
-COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md /opt/canaille/
+COPY uv.lock pyproject.toml hatch_build.py package-lock.json LICENSE.rst README.md /opt/canaille/
 COPY canaille /opt/canaille/canaille
 WORKDIR /opt/canaille
 RUN uv sync --all-extras

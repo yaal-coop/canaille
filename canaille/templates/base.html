@@ -36,7 +36,7 @@ The main template inherited by almost every other templates.
             {% if config["CANAILLE"]["JAVASCRIPT"] and config["CANAILLE"]["HTMX"] %}
                 <meta name="htmx-config" content='{"requestClass": "loading", "includeIndicatorStyles": false, "defaultSwapStyle": "morph"}'>
             {% endif %}
-            <link href="{{ url_for("static", filename="fomanticui/semantic.min.css") }}" rel="stylesheet">
+            <link href="{{ url_for("static", filename="vendor/fomantic-ui/semantic.min.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="fonts/lato.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="css/base.css") }}" rel="stylesheet">
             {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
@@ -202,12 +202,12 @@ The main template inherited by almost every other templates.
         </footer>
         {% if config["CANAILLE"]["JAVASCRIPT"] %}
             {% if not request_is_boosted %}
-                <script src="{{ url_for("static", filename="jquery/jquery.min.js") }}" defer></script>
-                <script src="{{ url_for("static", filename="fomanticui/semantic.csp.js") }}" defer></script>
-                <script src="{{ url_for("static", filename="fomanticui/semantic.min.js") }}" defer></script>
+                <script src="{{ url_for("static", filename="vendor/jquery/jquery.min.js") }}" defer></script>
+                <script src="{{ url_for("static", filename="js/fomantic-csp.js") }}" defer></script>
+                <script src="{{ url_for("static", filename="vendor/fomantic-ui/semantic.min.js") }}" defer></script>
                 {% if config["CANAILLE"]["HTMX"] %}
-                    <script src="{{ url_for("static", filename="htmx/htmx.min.js") }}" defer></script>
-                    <script src="{{ url_for("static", filename="htmx/idiomorph-ext.min.js") }}" defer></script>
+                    <script src="{{ url_for("static", filename="vendor/htmx/htmx.min.js") }}" defer></script>
+                    <script src="{{ url_for("static", filename="vendor/idiomorph/idiomorph-ext.min.js") }}" defer></script>
                 {% endif %}
                 <script src="{{ url_for("static", filename="js/base.js") }}" defer></script>
                 <script src="{{ url_for("static", filename="js/combobox.js") }}" defer></script>

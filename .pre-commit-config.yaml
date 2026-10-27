@@ -29,7 +29,7 @@ repos:
     - id: codespell
       additional_dependencies:
         - tomli
-      exclude: ".*\\.min\\..*|translations|\\.css$|^tests|fomanticui|doc/locales"
+      exclude: ".*\\.min\\..*|translations|\\.css$|^tests|package-lock\\.json|doc/locales"
       args: [--write-changes]
   - repo: https://github.com/compilerla/conventional-pre-commit
     rev: 91ab4bf57e58b32adf1a122681f6ebe164d081c8  # frozen: v4.4.0

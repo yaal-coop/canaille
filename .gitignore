@@ -30,3 +30,4 @@ canaille/conf/*.key
 dump.json
 .prof
 .integration-build
+canaille/static/vendor/

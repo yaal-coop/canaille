@@ -238,12 +238,26 @@ include = [
 exclude = [
     "doc/_build/",
 ]
-artifacts = ["canaille/translations/*/LC_MESSAGES/*.mo"]
+artifacts = [
+    "canaille/translations/*/LC_MESSAGES/*.mo",
+    "canaille/static/vendor/",
+]
+
+[tool.hatch.build.targets.sdist.force-include]
+"package.json" = "package.json"
+"package-lock.json" = "package-lock.json"
 
 [tool.hatch.build.hooks.custom]
 dependencies = [
     "Babel>=2.6.0",
     "setuptools >= 50.0.0; python_version>='3.12'",
+]
+
+[tool.uv]
+cache-keys = [
+    { file = "pyproject.toml" },
+    { file = "package-lock.json" },
+    { file = "hatch_build.py" },
 ]
 
 [tool.pytest.ini_options]

@@ -206,6 +206,18 @@ The dynamical parts of the interface use `htmx <https://htmx.org/>`_.
   not depend on jQuery at all.
   See the `related issue <https://gitlab.com/yaal/canaille/-/issues/130>`_.
 
+The front-end dependencies are listed in ``package.json``, and pinned in ``package-lock.json``.
+Node is not needed to run Canaille or its tests.
+When the package is built, for instance by ``uv sync``, the files listed in ``hatch_build.py``
+are downloaded from the npm registry into ``canaille/static/vendor``.
+Their integrity is checked against ``package-lock.json``.
+
+To update a front-end dependency, edit ``package.json`` and update the lock file:
+
+.. code-block:: console
+
+    $ npm install --package-lock-only
+
 Documentation
 -------------
 
