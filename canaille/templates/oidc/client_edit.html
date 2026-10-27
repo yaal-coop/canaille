@@ -47,7 +47,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
             {% trans %}This token can be used to edit the application details through the OAuth 2.0 Dynamic Client Registration Management Protocol.{% endtrans %}
             <a href="https://datatracker.ietf.org/doc/html/rfc7592">{% trans %}Read more…{% endtrans %}</a>
         </p>
-        {% call fui.render_form(form) %}
+        {% call fui.render_form(form, id="managementtokenform") %}
             <div class="ui fluid action input">
                 <input type="text" value="{{ management_token }}" readonly class="copy-text" id="management-token" data-copy="management-token">
                 {% call fui.render_button(form.action, "new-management-token", class_="ui teal right labeled icon button copy-button", id="new-management-token") %}

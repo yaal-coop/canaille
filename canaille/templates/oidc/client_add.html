@@ -45,7 +45,7 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
             {% trans %}This token can be used to register a new application through the OAuth 2.0 Dynamic Client Registration Protocol.{% endtrans %}
             <a href="https://datatracker.ietf.org/doc/html/rfc7591">{% trans %}Read more…{% endtrans %}</a>
         </p>
-        {% call fui.render_form(form) %}
+        {% call fui.render_form(form, id="registrationtokenform") %}
             <div class="ui fluid action input">
                 <input type="text" value="{{ registration_token }}" readonly class="copy-text" id="registration-token" data-copy="registration-token">
                 {% call fui.render_button(form.action, "new-registration-token", class_="ui teal right labeled icon button copy-button", id="new-registration-token") %}

@@ -143,7 +143,7 @@ def test_new_registration_token(testclient, logged_admin):
     """Test that clicking renew generates a new registration token."""
     res = testclient.get("/admin/client/add")
     old_token = res.pyquery("#registration-token").val()
-    res = res.forms["clientaddform"].submit(
+    res = res.forms["registrationtokenform"].submit(
         name="action", value="new-registration-token"
     )
     assert ("info", "A new registration token has been generated.") in res.flashes
@@ -346,7 +346,7 @@ def test_new_management_token(testclient, logged_admin, client):
     """Test that clicking renew generates a new management token."""
     res = testclient.get("/admin/client/edit/" + client.client_id)
     old_token = res.pyquery("#management-token").val()
-    res = res.forms["clienteditform"].submit(
+    res = res.forms["managementtokenform"].submit(
         name="action", value="new-management-token"
     )
     assert ("info", "A new management token has been generated.") in res.flashes
