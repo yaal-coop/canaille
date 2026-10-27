@@ -243,6 +243,9 @@ artifacts = [
     "canaille/static/vendor/",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["canaille"]
+
 [tool.hatch.build.targets.sdist.force-include]
 "package.json" = "package.json"
 "package-lock.json" = "package-lock.json"
