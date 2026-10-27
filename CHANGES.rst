@@ -81,6 +81,8 @@ Fixed
 - An unknown answer to the consent page returned a server error.
 - Without ``SERVER_NAME``, the token endpoint returned a server error for public clients
   and for wrong client secrets.
+- When several applications ran in the same process, JWT client authentication could
+  stay enabled on the ones without ``SERVER_NAME``.
 - A token request without ``grant_type`` returned a server error.
 - With a ``request_uri``, a client could change the request object between the consent
   page and the user answer, and get scopes the user did not see. The consent only

@@ -161,6 +161,13 @@ def save_authorization_code(code, request):
 
 
 class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
+    def __call__(self, query_client, request):
+        """Authenticate no client without SERVER_NAME, as the audience could not be checked."""
+        if not current_app.config["SERVER_NAME"]:
+            return None
+
+        return super().__call__(query_client, request)
+
     def get_audiences(self):
         return [url_for("oidc.endpoints.issue_token", _external=True)]
 
@@ -178,14 +185,6 @@ class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
             raise InvalidClientError(description="No matching JWK")
 
         return jwk
-
-
-def disabled_client_auth(query_client, request):
-    """Authenticate no client.
-
-    Authlib fails with an error 500 on methods that are not registered.
-    """
-    return None
 
 
 class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
@@ -838,16 +837,11 @@ def setup_oauth(app):
             app.logger.warning(
                 "The 'SERVER_NAME' configuration parameter is unset. JWT client authentication is disabled."
             )
-            authorization.register_client_auth_method(
-                JWTClientAuth.CLIENT_AUTH_METHOD,
-                disabled_client_auth,
-            )
 
-        else:
-            authorization.register_client_auth_method(
-                JWTClientAuth.CLIENT_AUTH_METHOD,
-                JWTClientAuth(),
-            )
+    authorization.register_client_auth_method(
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+        JWTClientAuth(),
+    )
 
     require_oauth.register_token_validator(BearerTokenValidator())
 

@@ -22,14 +22,9 @@ def test_no_server_name_config(configuration, caplog):
     ) in caplog.record_tuples
 
 
-def test_no_server_name_jwt_client_auth_rejected(
-    configuration, backend, client_jwk, client, authorization
-):
-    """Without SERVER_NAME, a client assertion is rejected instead of crashing."""
-    del configuration["SERVER_NAME"]
-    testclient = TestApp(create_app(configuration, backend=backend))
+def jwt_assertion_request(testclient, client_jwk, client, authorization, backend):
+    """Request a token with a client assertion for the testclient host."""
     now = time.time()
-
     authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
     client.token_endpoint_auth_method = "client_secret_jwt"
@@ -44,7 +39,7 @@ def test_no_server_name_jwt_client_auth_rejected(
         "iat": now - 1,
         "jti": str(uuid.uuid4()),
     }
-    res = testclient.post(
+    return testclient.post(
         "/oauth/token",
         params=dict(
             grant_type="authorization_code",
@@ -54,8 +49,32 @@ def test_no_server_name_jwt_client_auth_rejected(
             client_assertion=jwt.encode({"alg": "RS256"}, payload, client_jwk),
             redirect_uri=client.redirect_uris[0],
         ),
-        status=401,
+        expect_errors=True,
     )
+
+
+def test_no_server_name_jwt_client_auth_rejected(
+    configuration, backend, client_jwk, client, authorization
+):
+    """Without SERVER_NAME, a client assertion is rejected instead of crashing."""
+    del configuration["SERVER_NAME"]
+    testclient = TestApp(create_app(configuration, backend=backend))
+
+    res = jwt_assertion_request(testclient, client_jwk, client, authorization, backend)
+    assert res.status_code == 401
+    assert res.json["error"] == "invalid_client"
+
+
+def test_no_server_name_with_another_application(
+    configuration, backend, client_jwk, client, authorization
+):
+    """An application with SERVER_NAME does not enable JWT client authentication on another one without it."""
+    server_name = configuration.pop("SERVER_NAME")
+    testclient = TestApp(create_app(configuration, backend=backend))
+    create_app({**configuration, "SERVER_NAME": server_name}, backend=backend)
+
+    res = jwt_assertion_request(testclient, client_jwk, client, authorization, backend)
+    assert res.status_code == 401
     assert res.json["error"] == "invalid_client"
 
 
