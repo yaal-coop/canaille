@@ -470,7 +470,7 @@ requires-dist = [
     { name = "webauthn", marker = "extra == 'fido'", specifier = ">=2.7.0" },
     { name = "wtforms", specifier = ">=3.3.0" },
     { name = "wtforms-htmx", specifier = ">=0.1.0" },
-    { name = "wtforms-htmx-components", specifier = ">=0.1.0" },
+    { name = "wtforms-htmx-components", specifier = ">=0.1.2" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.3.0" },
 ]
 provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server", "redis", "rabbitmq"]
@@ -4433,15 +4433,15 @@ wheels = [
 
 [[package]]
 name = "wtforms-htmx-components"
-version = "0.1.1"
+version = "0.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "wtforms" },
     { name = "wtforms-htmx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1b/c4/a5e4ee085201bbdfc062d0f5510feaebb0254769ff06d957e9637ff7cf36/wtforms_htmx_components-0.1.1.tar.gz", hash = "sha256:76689ed7a4cc9de253367f93abe4d45f2704bf7fc2a3aff512fbc934b45da4cc", size = 11858, upload-time = "2026-10-24T23:00:24.76Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/61/7a/db020f0cce3364d1af3d1b4e9c7e3954ea59635704c4379cc273dfb71ac2/wtforms_htmx_components-0.1.2.tar.gz", hash = "sha256:11b9f2d40ec56c58a9a020c831008f4bb14e2a1401d15832ba7438d9567728c0", size = 11882, upload-time = "2026-10-27T20:58:45.276Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d7/b6/2933a8c5a84ae69cc93a7d54506dbae1e89d3808d1a7ddc785a758e1f885/wtforms_htmx_components-0.1.1-py3-none-any.whl", hash = "sha256:478ac112aa23b0b88fc7e629fea62fd3da55a5716df5de95b92ee53865649369", size = 11428, upload-time = "2026-10-24T23:00:23.617Z" },
+    { url = "https://files.pythonhosted.org/packages/49/99/da010949680f85be244a3d4f43d189b8371cf1f0893981b67a2871e21104/wtforms_htmx_components-0.1.2-py3-none-any.whl", hash = "sha256:6925e37d5f5fdc0cc287c02e0a617b5e331595cee24ecfc598cefc9768f65358", size = 11450, upload-time = "2026-10-27T20:58:44.224Z" },
 ]
 
 [[package]]
