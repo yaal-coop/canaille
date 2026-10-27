@@ -2,7 +2,6 @@ import datetime
 
 from blinker import signal
 from flask import current_app
-from httpx2 import Client as httpx_client
 from scim2_client import SCIMClientException
 from scim2_client.engines.httpx2 import SyncSCIMClient
 from scim2_models import PatchOp
@@ -13,6 +12,7 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.app.flask import dramatiq
+from canaille.app.http import http
 from canaille.backends import Backend
 from canaille.scim.casting import group_from_canaille_to_scim
 from canaille.scim.casting import user_from_canaille_to_scim
@@ -105,7 +105,7 @@ def initiate_scim_client(client):
         return None
 
     access_token = get_or_create_token(client).access_token
-    client_httpx = httpx_client(
+    client_httpx = http().build(
         base_url=client.client_uri,
         headers={"Authorization": f"Bearer {access_token}"},
     )

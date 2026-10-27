@@ -28,6 +28,7 @@ def create_app(
     from .app.flask import setup_flask
     from .app.flask import setup_flask_blueprints
     from .app.flask import setup_flask_converters
+    from .app.http import setup_http
     from .app.i18n import setup_i18n
     from .app.logging import setup_logging
     from .app.security import setup_security
@@ -52,6 +53,7 @@ def create_app(
     sentry_sdk = setup_sentry(app)
     try:
         setup_logging(app)
+        setup_http(app)
 
         backend = setup_backend(app, backend, init_backend)
         setup_photo_normalization()

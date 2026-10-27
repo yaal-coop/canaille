@@ -3,6 +3,8 @@
 
 Added
 ^^^^^
+- The outgoing HTTP requests go through clients that applications embedding Canaille
+  can route by URL prefix, for instance to a WSGI application in tests.
 - ``user_logged_in`` and ``user_logged_out`` blinker signals are sent when a user logs
   in or out, with the application as sender and the user in the ``user`` argument.
 - :func:`~canaille.create_app` takes a ``config_file`` parameter, to choose the TOML

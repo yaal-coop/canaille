@@ -17,7 +17,7 @@ def test_unique_scopes():
     assert unique_scopes(None) == []
 
 
-def test_fetch_document(httpserver):
+def test_fetch_document(app, httpserver):
     httpserver.expect_request("/doc").respond_with_data("hello")
     url = f"http://{httpserver.host}:{httpserver.port}/doc"
 
@@ -25,7 +25,7 @@ def test_fetch_document(httpserver):
     assert fetch_document(url, max_size=5) == "hello"
 
 
-def test_fetch_document_compression_bomb(httpserver):
+def test_fetch_document_compression_bomb(app, httpserver):
     """The size limit applies to the decompressed content.
 
     The announced ``Content-Length`` is that of the compressed payload, and stays
@@ -43,7 +43,7 @@ def test_fetch_document_compression_bomb(httpserver):
         fetch_document(url)
 
 
-def test_fetch_document_bails_out_on_content_length(httpserver):
+def test_fetch_document_bails_out_on_content_length(app, httpserver):
     """Documents announcing a too big size are refused before being read."""
     httpserver.expect_request("/doc").respond_with_data("a" * 100)
     url = f"http://{httpserver.host}:{httpserver.port}/doc"

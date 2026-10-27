@@ -3,7 +3,6 @@ import hashlib
 import math
 import re
 
-import httpx2
 import wtforms.validators
 from flask import current_app
 from flask_wtf import FlaskForm
@@ -13,6 +12,7 @@ from wtforms_htmx.mutations import list_remove
 from wtforms_htmx_components import ComboboxField
 
 from canaille.app import models
+from canaille.app.http import http
 from canaille.app.i18n import gettext as _
 from canaille.app.i18n import timezone_selector
 from canaille.app.mails_sending_conditions import check_if_send_mail_to_admins
@@ -101,7 +101,7 @@ def compromised_password_validator(form, field):
     )
 
     try:
-        response = httpx2.get(api_url, timeout=10)
+        response = http().client.get(api_url, timeout=10)
     except Exception:
         if not request_is_partial():
             current_app.logger.exception(

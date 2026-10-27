@@ -1,8 +1,8 @@
 from urllib.parse import urlparse
 
-import httpx2
 from flask import current_app
 
+from canaille.app.http import http
 from canaille.app.i18n import lazy_gettext as _
 
 MAX_DOCUMENT_SIZE = 64 * 1024
@@ -36,7 +36,7 @@ def fetch_document(url: str, max_size: int = MAX_DOCUMENT_SIZE) -> str:
     :raises ValueError: when the document is bigger than *max_size*.
     """
     too_big = f"The document at {url} exceeds {max_size} bytes."
-    with httpx2.stream("GET", url) as response:
+    with http().client.stream("GET", url) as response:
         content_length = response.headers.get("content-length")
         if content_length and int(content_length) > max_size:
             raise ValueError(too_big)
