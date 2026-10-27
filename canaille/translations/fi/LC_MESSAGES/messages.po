@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-24 20:08+0200\n"
+"POT-Creation-Date: 2026-10-27 11:31+0100\n"
 "PO-Revision-Date: 2025-04-12 09:01+0000\n"
 "Last-Translator: Ricky Tigg <ricky.tigg@gmail.com>\n"
 "Language-Team: Finnish <https://hosted.weblate.org/projects/canaille/"
@@ -33,7 +33,7 @@ msgstr "Salasanasi on umpeutunut, valitse uusi salasana."
 msgid "No SMTP server has been configured"
 msgstr "SMTP-palvelinta ei ole määritetty"
 
-#: canaille/app/flask.py:235
+#: canaille/app/flask.py:234
 #, python-format
 msgid "This request should be sent to %(server_name)s"
 msgstr ""
@@ -337,7 +337,7 @@ msgid "Username"
 msgstr "Käyttäjänimi"
 
 #: canaille/core/endpoints/forms.py:197 canaille/core/endpoints/forms.py:528
-#: canaille/core/endpoints/forms.py:544 canaille/oidc/endpoints/forms.py:65
+#: canaille/core/endpoints/forms.py:544 canaille/oidc/endpoints/forms.py:232
 #: canaille/templates/core/account/auth/fido2.html:70
 #: canaille/templates/core/partial/group-members.html:13
 #: canaille/templates/core/partial/groups.html:7
@@ -495,7 +495,8 @@ msgstr "käyttäjät, järjestelmänvalvojat,…"
 msgid "Account expiration"
 msgstr "Tilin päättymisvoimassaolo"
 
-#: canaille/core/endpoints/forms.py:482 canaille/templates/macro/table.html:22
+#: canaille/core/endpoints/forms.py:482 canaille/oidc/endpoints/forms.py:129
+#: canaille/oidc/endpoints/forms.py:182 canaille/templates/macro/table.html:22
 msgid "Search"
 msgstr ""
 
@@ -560,7 +561,7 @@ msgstr ""
 msgid "Passcode"
 msgstr "Salasana"
 
-#: canaille/core/endpoints/groups.py:55 canaille/core/endpoints/groups.py:241
+#: canaille/core/endpoints/groups.py:55 canaille/core/endpoints/groups.py:237
 msgid "You are not a member of this group."
 msgstr ""
 
@@ -584,29 +585,29 @@ msgstr "Ryhmän %(group)s muokkaus onnistui."
 #: canaille/core/endpoints/account/__init__.py:646
 #: canaille/core/endpoints/account/__init__.py:912
 #: canaille/core/endpoints/account/auth/password.py:55
-#: canaille/core/endpoints/groups.py:177
+#: canaille/core/endpoints/groups.py:175
 #, fuzzy
 #| msgid "The client has not been added. Please check your information."
 msgid "Your changes couldn't be saved. Please check the form and try again."
 msgstr "Asiakasta ei ole lisätty. Tarkista tietosi."
 
-#: canaille/core/endpoints/groups.py:210
+#: canaille/core/endpoints/groups.py:206
 #, python-format
 msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgstr "%(user_name)s on poistettu ryhmästä %(group_name)s"
 
-#: canaille/core/endpoints/groups.py:227
+#: canaille/core/endpoints/groups.py:223
 #, fuzzy, python-format
 #| msgid "The group %(group)s has been successfully deleted"
 msgid "The group %(group)s has been successfully deleted."
 msgstr "Ryhmän %(group)s poistaminen onnistui"
 
-#: canaille/core/endpoints/groups.py:251
+#: canaille/core/endpoints/groups.py:247
 #, python-format
 msgid "You have left %(group)s."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:269
+#: canaille/core/endpoints/groups.py:265
 #, fuzzy, python-format
 #| msgid "%(user_name)s has been removed from the group %(group_name)s"
 msgid "%(num)d member has been added to the group %(group)s."
@@ -614,48 +615,48 @@ msgid_plural "%(num)d members have been added to the group %(group)s."
 msgstr[0] "%(user_name)s on poistettu ryhmästä %(group_name)s"
 msgstr[1] "%(user_name)s on poistettu ryhmästä %(group_name)s"
 
-#: canaille/core/endpoints/groups.py:280
+#: canaille/core/endpoints/groups.py:276
 #, fuzzy
 #| msgid "The client has not been added. Please check your information."
 msgid "The members couldn't be added. Please check the form and try again."
 msgstr "Asiakasta ei ole lisätty. Tarkista tietosi."
 
-#: canaille/core/endpoints/groups.py:329
+#: canaille/core/endpoints/groups.py:325
 #, fuzzy, python-format
 #| msgid "The test mail has been sent correctly"
 msgid "An invitation email has been sent to %(email)s."
 msgstr "Testiposti on lähetetty oikein"
 
 #: canaille/core/endpoints/account/__init__.py:469
-#: canaille/core/endpoints/groups.py:348 canaille/core/endpoints/groups.py:359
-#: canaille/core/endpoints/groups.py:382
+#: canaille/core/endpoints/groups.py:344 canaille/core/endpoints/groups.py:355
+#: canaille/core/endpoints/groups.py:378
 msgid "The invitation link that brought you here was invalid."
 msgstr "Tänne sinut tuonut kutsulinkki, on epäkelvollinen."
 
-#: canaille/core/endpoints/groups.py:353
+#: canaille/core/endpoints/groups.py:349
 #, fuzzy
 #| msgid "The user you are trying to remove does not exist."
 msgid "The group you were invited to no longer exists."
 msgstr "Käyttäjää, jota yrität poistaa, ei ole olemassa."
 
-#: canaille/core/endpoints/groups.py:365
+#: canaille/core/endpoints/groups.py:361
 #, python-format
 msgid ""
 "You have been invited to join the group '%(group)s'. Please log in to accept "
 "the invitation."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:374
+#: canaille/core/endpoints/groups.py:370
 msgid "This invitation was not sent to you."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:378
+#: canaille/core/endpoints/groups.py:374
 #, fuzzy
 #| msgid "The registration link that brought you here has expired."
 msgid "The invitation link that brought you here has expired."
 msgstr "Tänne sinut tuonut rekisteröintilinkki, on umpeutunut."
 
-#: canaille/core/endpoints/groups.py:387
+#: canaille/core/endpoints/groups.py:383
 #, python-format
 msgid "You are already a member of %(group)s."
 msgstr ""
@@ -1084,41 +1085,41 @@ msgstr "Ryhmät, joihin kuulut."
 msgid "Read and edit your account, including your password."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:53
+#: canaille/oidc/endpoints/clients.py:66
 msgid "A new registration token has been generated."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:64
+#: canaille/oidc/endpoints/clients.py:77
 msgid "The client has not been added. Please check your information."
 msgstr "Asiakasta ei ole lisätty. Tarkista tietosi."
 
-#: canaille/oidc/endpoints/clients.py:96
+#: canaille/oidc/endpoints/clients.py:110
 msgid "The client has been created."
 msgstr "Asiakas on luotu."
 
-#: canaille/oidc/endpoints/clients.py:135
+#: canaille/oidc/endpoints/clients.py:165
 #, fuzzy
 #| msgid "The client has been created."
 msgid "A new management token has been generated."
 msgstr "Asiakas on luotu."
 
-#: canaille/oidc/endpoints/clients.py:147
+#: canaille/oidc/endpoints/clients.py:177
 msgid "The client has not been edited. Please check your information."
 msgstr "Asiakasta ei ole muokattu. Tarkista tietosi."
 
-#: canaille/oidc/endpoints/clients.py:196
+#: canaille/oidc/endpoints/clients.py:229
 msgid "The client has been edited."
 msgstr "Asiakasta on muokattu."
 
-#: canaille/oidc/endpoints/clients.py:205
+#: canaille/oidc/endpoints/clients.py:238
 msgid "The client has been deleted."
 msgstr "Asiakas on poistettu."
 
-#: canaille/oidc/endpoints/clients.py:223
+#: canaille/oidc/endpoints/clients.py:256
 msgid "The client secret has been renewed. The new secret does not expire."
 msgstr ""
 
-#: canaille/oidc/endpoints/clients.py:231
+#: canaille/oidc/endpoints/clients.py:264
 #, python-brace-format
 msgid "A token has been created for the client {client_name}."
 msgstr ""
@@ -1160,228 +1161,293 @@ msgstr "Tili on lukittu"
 msgid "The access has been restored."
 msgstr "Asiakas on luotu."
 
-#: canaille/oidc/endpoints/forms.py:33
+#: canaille/oidc/endpoints/forms.py:40
 msgid "This value is not a valid JSON string."
 msgstr "Tämä arvo ei ole kelvollinen JSON-merkkijono."
 
-#: canaille/oidc/endpoints/forms.py:39
+#: canaille/oidc/endpoints/forms.py:46
 msgid "This value is not a valid JWK."
 msgstr "Tämä arvo ei ole kelvollinen JWK."
 
-#: canaille/oidc/endpoints/forms.py:53 canaille/oidc/endpoints/forms.py:304
+#: canaille/oidc/endpoints/forms.py:53 canaille/oidc/endpoints/forms.py:509
 msgid "None"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:69
+#: canaille/oidc/endpoints/forms.py:63
+#, python-format
+msgid "%(name)s (group)"
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:124
+msgid "Owners"
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:132
+#, fuzzy
+#| msgid "users, admins …"
+msgid "Jane Doe, admins …"
+msgstr "käyttäjät, järjestelmänvalvojat,…"
+
+#: canaille/oidc/endpoints/forms.py:134
+msgid ""
+"The users or groups who own this client. For group owners: the group owner "
+"can edit the client, while group members can use it for authentication. "
+"Leave empty for a global client accessible to all users."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:177
+msgid "Token audiences"
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:185
+#, fuzzy
+#| msgid "Given name"
+msgid "Client name …"
+msgstr "Etunimi"
+
+#: canaille/oidc/endpoints/forms.py:187
+msgid ""
+"The other clients that are intended to use the tokens emitted by this client."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:201
+msgid ""
+"You and the groups you own that own this client. The group members can use "
+"the client."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:221
+msgid ""
+"You can only add the groups you own, and remove yourself or the groups you "
+"own."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:228
+msgid "You would not be able to edit this client anymore."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:236
 msgid ""
 "This is the name that will be displayed on the web interface, and notably on "
 "the consent page."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:75
+#: canaille/oidc/endpoints/forms.py:242
 msgid "Contacts"
 msgstr "Yhteystiedot"
 
-#: canaille/oidc/endpoints/forms.py:82
+#: canaille/oidc/endpoints/forms.py:249
 msgid "Those are the email addresses of people responsible for the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:88
+#: canaille/oidc/endpoints/forms.py:255
 msgid "URI"
 msgstr "URI"
 
-#: canaille/oidc/endpoints/forms.py:95
+#: canaille/oidc/endpoints/forms.py:262
 msgid "URL string of a web page providing information about the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:101
+#: canaille/oidc/endpoints/forms.py:268
 msgid "Redirect URIs"
 msgstr "Uudelleenohjaamis-URI:t"
 
-#: canaille/oidc/endpoints/forms.py:111
+#: canaille/oidc/endpoints/forms.py:278
 msgid ""
 "URIs for use in redirect-based flows such as the authorization code and "
 "implicit flows."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:121
+#: canaille/oidc/endpoints/forms.py:296
+#, python-brace-format
+msgid ""
+"Kind of information that the client can request about users. You can pick "
+"among: {scopes}."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:308
+#, python-brace-format
+msgid "You cannot add the {scopes} scopes."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:321
+msgid "You can only add or remove the clients you can edit."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:330
+#, python-brace-format
+msgid "Clients with owners cannot use the {grant_types} grant types."
+msgstr ""
+
+#: canaille/oidc/endpoints/forms.py:335
 #, fuzzy
 #| msgid "Account expiration"
 msgid "Secret expiration"
 msgstr "Tilin päättymisvoimassaolo"
 
-#: canaille/oidc/endpoints/forms.py:130
+#: canaille/oidc/endpoints/forms.py:344
 msgid ""
 "Date after which the client secret cannot be used to authenticate anymore. "
 "Leave this empty so the secret never expires."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:136
+#: canaille/oidc/endpoints/forms.py:350
 msgid "Post logout redirect URIs"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:146
+#: canaille/oidc/endpoints/forms.py:360
 msgid "URIs that the client may redirect users to after logging them out."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:154
+#: canaille/oidc/endpoints/forms.py:368
 msgid "Grant types"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:166
+#: canaille/oidc/endpoints/forms.py:380
 msgid "Grant types that the client can use at the token endpoint."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:170
+#: canaille/oidc/endpoints/forms.py:384
 #: canaille/templates/oidc/token_view.html:70
 msgid "Scope"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:174
+#: canaille/oidc/endpoints/forms.py:388
 msgid "Kind of information that the client can request about users."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:178
+#: canaille/oidc/endpoints/forms.py:392
 msgid "Response types"
 msgstr "Vastaustyypit"
 
-#: canaille/oidc/endpoints/forms.py:183
+#: canaille/oidc/endpoints/forms.py:397
 msgid "Response types that the client can use at the authorization endpoint."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:188
+#: canaille/oidc/endpoints/forms.py:402
 msgid "Token endpoint authentication method"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:199
+#: canaille/oidc/endpoints/forms.py:413
 msgid "Authentication method that the client will use at the token endpoint."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:204
-msgid "Token audiences"
-msgstr ""
-
-#: canaille/oidc/endpoints/forms.py:210
-msgid ""
-"The other clients that are intended to use the tokens emitted by this client."
-msgstr ""
-
-#: canaille/oidc/endpoints/forms.py:215
+#: canaille/oidc/endpoints/forms.py:420
 msgid "Logo URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:221
+#: canaille/oidc/endpoints/forms.py:426
 msgid "An URL for the logo of this client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:225
+#: canaille/oidc/endpoints/forms.py:430
 msgid "Terms of service URI"
 msgstr "Palveluehdot-URI"
 
-#: canaille/oidc/endpoints/forms.py:231
+#: canaille/oidc/endpoints/forms.py:436
 msgid "URL to the terms of service of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:235
+#: canaille/oidc/endpoints/forms.py:440
 msgid "Policy URI"
 msgstr "Käytäntö-URI"
 
-#: canaille/oidc/endpoints/forms.py:241
+#: canaille/oidc/endpoints/forms.py:446
 msgid "URL to the privacy policy of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:245
+#: canaille/oidc/endpoints/forms.py:450
 msgid "Software ID"
 msgstr "Ohjelmistotunnus"
 
-#: canaille/oidc/endpoints/forms.py:249
+#: canaille/oidc/endpoints/forms.py:454
 msgid ""
 "Unique identifier for this client, that should be stable in time and common "
 "for all identity providers."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:254
+#: canaille/oidc/endpoints/forms.py:459
 msgid "Software Version"
 msgstr "Ohjelmistoversio"
 
-#: canaille/oidc/endpoints/forms.py:257
+#: canaille/oidc/endpoints/forms.py:462
 msgid "The version of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:261
+#: canaille/oidc/endpoints/forms.py:466
 msgid "JSON Web Keys"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:264
+#: canaille/oidc/endpoints/forms.py:469
 msgid "The public JSON Web Keys of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:268
+#: canaille/oidc/endpoints/forms.py:473
 msgid "JSON Web Keys URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:274
+#: canaille/oidc/endpoints/forms.py:479
 msgid "The URI that points to the public JSON Web Keys of the client."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:278
+#: canaille/oidc/endpoints/forms.py:483
 msgid "Token endpoint authentication signing algorithm"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:284
+#: canaille/oidc/endpoints/forms.py:489
 msgid ""
 "JWS algorithm that must be used for signing the JWT used to authenticate the "
 "client at the token endpoint for the private_key_jwt and client_secret_jwt "
 "authentication methods."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:289
+#: canaille/oidc/endpoints/forms.py:494
 msgid "Sector identifier URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:296
+#: canaille/oidc/endpoints/forms.py:501
 msgid ""
 "URL using the https scheme to be used in calculating pseudonymous "
 "identifiers by the OP. The URL references a file with a single JSON array of "
 "redirect_uri values."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:301
+#: canaille/oidc/endpoints/forms.py:506
 msgid "Subject type"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:309
+#: canaille/oidc/endpoints/forms.py:514
 msgid ""
 "Subject identifier type requested for responses to this client. Valid types "
 "include pairwise and public."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:314
+#: canaille/oidc/endpoints/forms.py:519
 msgid "Application type"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:319
+#: canaille/oidc/endpoints/forms.py:524
 msgid ""
 "Kind of the application. Web clients must use https redirect URIs. Native "
 "clients can use custom URI schemes or http loopback URLs."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:324
+#: canaille/oidc/endpoints/forms.py:529
 msgid "ID Token signed response algorithm"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:331
+#: canaille/oidc/endpoints/forms.py:536
 msgid ""
 "JWS algorithm required for signing the ID Token issued to this client. The "
 "value 'none' must not be used unless the client uses only response types "
 "that return no ID Token from the authorization endpoint."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:336
+#: canaille/oidc/endpoints/forms.py:541
 msgid "UserInfo signed response algorithm"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:340
+#: canaille/oidc/endpoints/forms.py:545
 msgid ""
 "JWS algorithm required for signing UserInfo responses. If specified, the "
 "response will be JWT serialized and signed using JWS. If omitted, the "
@@ -1389,11 +1455,11 @@ msgid ""
 "using the application/json content-type."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:345
+#: canaille/oidc/endpoints/forms.py:550
 msgid "Default maximum authentication age"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:349
+#: canaille/oidc/endpoints/forms.py:554
 msgid ""
 "Default maximum authentication age in seconds. Specifies that the end-user "
 "must be actively authenticated if the end-user was authenticated longer ago "
@@ -1401,21 +1467,21 @@ msgid ""
 "overrides this default value."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:354
+#: canaille/oidc/endpoints/forms.py:559
 msgid "Require auth_time claim"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:357
+#: canaille/oidc/endpoints/forms.py:562
 msgid ""
 "Boolean value specifying whether the auth_time claim in the ID Token is "
 "required. It is required when the value is true."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:363
+#: canaille/oidc/endpoints/forms.py:568
 msgid "Default ACR values"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:370
+#: canaille/oidc/endpoints/forms.py:575
 msgid ""
 "Default requested Authentication Context Class Reference values. Array of "
 "strings that specifies the default acr values that the OP is being requested "
@@ -1423,21 +1489,21 @@ msgid ""
 "in order of preference."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:378
+#: canaille/oidc/endpoints/forms.py:583
 msgid "Initiate login URI"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:385
+#: canaille/oidc/endpoints/forms.py:590
 msgid ""
 "URI using the https scheme that a third party can use to initiate a login by "
 "the RP. The URI must accept requests via both GET and POST."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:390
+#: canaille/oidc/endpoints/forms.py:595
 msgid "Request object signing algorithm"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:394
+#: canaille/oidc/endpoints/forms.py:599
 msgid ""
 "JWS algorithm that must be used for signing request objects sent to the OP. "
 "All request objects from this client must be rejected if not signed with "
@@ -1446,13 +1512,13 @@ msgid ""
 "reference (using the request_uri parameter)."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:400
+#: canaille/oidc/endpoints/forms.py:605
 #, fuzzy
 #| msgid "Redirect URIs"
 msgid "Request URIs"
 msgstr "Uudelleenohjaamis-URI:t"
 
-#: canaille/oidc/endpoints/forms.py:412
+#: canaille/oidc/endpoints/forms.py:617
 msgid ""
 "Array of request_uri values that are pre-registered by the RP for use at the "
 "OP. These URLs must use the https scheme unless the target request object is "
@@ -1460,26 +1526,26 @@ msgid ""
 "of the files referenced by these URIs."
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:418
+#: canaille/oidc/endpoints/forms.py:623
 msgid "Require signed request object"
 msgstr ""
 
-#: canaille/oidc/endpoints/forms.py:421
+#: canaille/oidc/endpoints/forms.py:626
 msgid ""
 "Indicates whether authorization request needs to be protected as a request "
 "object and provided through either request or request_uri parameter."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:479
-#, fuzzy
-#| msgid "You have been disconnected. See you next time %(user)s"
-msgid "You have not been disconnected"
-msgstr "Yhteys on katkennut. Nähdään seuraavan kerran %(user)s"
-
-#: canaille/oidc/endpoints/oauth.py:488
+#: canaille/oidc/endpoints/oauth.py:546 canaille/oidc/endpoints/oauth.py:581
 #, fuzzy
 #| msgid "You have been disconnected. See you next time %(user)s"
 msgid "You have been disconnected"
+msgstr "Yhteys on katkennut. Nähdään seuraavan kerran %(user)s"
+
+#: canaille/oidc/endpoints/oauth.py:572
+#, fuzzy
+#| msgid "You have been disconnected. See you next time %(user)s"
+msgid "You have not been disconnected"
 msgstr "Yhteys on katkennut. Nähdään seuraavan kerran %(user)s"
 
 #: canaille/oidc/endpoints/tokens.py:51
@@ -1633,6 +1699,7 @@ msgstr ""
 #: canaille/templates/core/modals/delete-credential.html:30
 #: canaille/templates/core/modals/delete-group.html:22
 #: canaille/templates/core/modals/impersonate-user.html:20
+#: canaille/templates/core/modals/join-group.html:22
 #: canaille/templates/core/modals/leave-group.html:22
 #: canaille/templates/core/modals/lock-account.html:26
 #: canaille/templates/core/modals/remove-group-member.html:22
@@ -1691,7 +1758,7 @@ msgstr ""
 #: canaille/templates/core/account/edit.html:185
 #: canaille/templates/core/account/settings.html:110
 #: canaille/templates/core/group.html:85
-#: canaille/templates/oidc/client_edit.html:133
+#: canaille/templates/oidc/client_edit.html:140
 msgid "Edit"
 msgstr ""
 
@@ -1757,10 +1824,10 @@ msgstr ""
 
 #: canaille/templates/core/invite.html:89
 #: canaille/templates/core/invite_group_member.html:56
-#: canaille/templates/oidc/client_add.html:57
-#: canaille/templates/oidc/client_edit.html:59
-#: canaille/templates/oidc/client_edit.html:90
-#: canaille/templates/oidc/client_edit.html:117
+#: canaille/templates/oidc/client_add.html:60
+#: canaille/templates/oidc/client_edit.html:62
+#: canaille/templates/oidc/client_edit.html:94
+#: canaille/templates/oidc/client_edit.html:121
 #: canaille/templates/oidc/token_view.html:133
 #: canaille/templates/oidc/token_view.html:144
 msgid "Copy"
@@ -2494,16 +2561,16 @@ msgstr ""
 #: canaille/templates/oidc/client_edit.html:32
 #: canaille/templates/oidc/client_list.html:18
 #: canaille/templates/oidc/client_list.html:24
-#: canaille/templates/oidc/client_list.html:36
+#: canaille/templates/oidc/client_list.html:38
 #: canaille/templates/oidc/token_list.html:26
 #: canaille/templates/oidc/token_view.html:30
 msgid "Applications"
 msgstr ""
 
 #: canaille/templates/core/mails/admin.html:20
-#: canaille/templates/oidc/client_add.html:34
-#: canaille/templates/oidc/client_edit.html:36
-#: canaille/templates/oidc/client_list.html:28
+#: canaille/templates/oidc/client_add.html:35
+#: canaille/templates/oidc/client_edit.html:37
+#: canaille/templates/oidc/client_list.html:29
 #: canaille/templates/oidc/token_list.html:20
 #: canaille/templates/oidc/token_list.html:30
 #: canaille/templates/oidc/token_list.html:38
@@ -2928,6 +2995,23 @@ msgid ""
 "session."
 msgstr ""
 
+#: canaille/templates/core/modals/join-group.html:9
+#, fuzzy
+#| msgid "Groups"
+msgid "Join group"
+msgstr "Ryhmät"
+
+#: canaille/templates/core/modals/join-group.html:13
+#, python-format
+msgid ""
+"You have been invited to join the group \"%(group_name)s\". Do you want to "
+"join it?"
+msgstr ""
+
+#: canaille/templates/core/modals/join-group.html:25
+msgid "Join"
+msgstr ""
+
 #: canaille/templates/core/modals/leave-group.html:9
 #, fuzzy
 #| msgid "group"
@@ -3081,8 +3165,8 @@ msgstr ""
 msgid "Toggle password visibility"
 msgstr ""
 
-#: canaille/templates/macro/form.html:99 canaille/templates/macro/form.html:212
-#: canaille/templates/oidc/client_edit.html:98
+#: canaille/templates/macro/form.html:99 canaille/templates/macro/form.html:213
+#: canaille/templates/oidc/client_edit.html:102
 msgid "This field is not editable"
 msgstr ""
 
@@ -3199,86 +3283,86 @@ msgid "Accept"
 msgstr ""
 
 #: canaille/templates/oidc/client_add.html:20
-#: canaille/templates/oidc/client_add.html:66
-#: canaille/templates/oidc/client_list.html:43
+#: canaille/templates/oidc/client_add.html:70
+#: canaille/templates/oidc/client_list.html:45
 msgid "Add an application"
 msgstr ""
 
-#: canaille/templates/oidc/client_add.html:42
+#: canaille/templates/oidc/client_add.html:45
 msgid "Registration token"
 msgstr ""
 
-#: canaille/templates/oidc/client_add.html:45
+#: canaille/templates/oidc/client_add.html:48
 msgid ""
 "This token can be used to register a new application through the OAuth 2.0 "
 "Dynamic Client Registration Protocol."
 msgstr ""
 
-#: canaille/templates/oidc/client_add.html:46
-#: canaille/templates/oidc/client_edit.html:48
+#: canaille/templates/oidc/client_add.html:49
+#: canaille/templates/oidc/client_edit.html:51
 msgid "Read more…"
 msgstr ""
 
-#: canaille/templates/oidc/client_add.html:53
-#: canaille/templates/oidc/client_edit.html:55
-#: canaille/templates/oidc/client_edit.html:113
+#: canaille/templates/oidc/client_add.html:56
+#: canaille/templates/oidc/client_edit.html:58
+#: canaille/templates/oidc/client_edit.html:117
 msgid "Renew"
 msgstr ""
 
-#: canaille/templates/oidc/client_add.html:73
+#: canaille/templates/oidc/client_add.html:77
 msgid "Create"
 msgstr ""
 
 #: canaille/templates/oidc/client_edit.html:22
-#: canaille/templates/oidc/client_edit.html:67
+#: canaille/templates/oidc/client_edit.html:71
 msgid "Edit an application"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:44
+#: canaille/templates/oidc/client_edit.html:47
 msgid "Management token"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:47
+#: canaille/templates/oidc/client_edit.html:50
 msgid ""
 "This token can be used to edit the application details through the OAuth 2.0 "
 "Dynamic Client Registration Management Protocol."
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:69
+#: canaille/templates/oidc/client_edit.html:73
 msgid ""
 "The domain of this application is trusted and thus it bypasses user consent"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:71
+#: canaille/templates/oidc/client_edit.html:75
 msgid "Trusted"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:75
+#: canaille/templates/oidc/client_edit.html:79
 msgid ""
 "This application cannot authenticate anymore until its secret is renewed"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:77
+#: canaille/templates/oidc/client_edit.html:81
 msgid "Expired secret"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:85
+#: canaille/templates/oidc/client_edit.html:89
 msgid "ID"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:95
+#: canaille/templates/oidc/client_edit.html:99
 msgid "Issued at"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:108
+#: canaille/templates/oidc/client_edit.html:112
 msgid "Secret"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:127
+#: canaille/templates/oidc/client_edit.html:133
 msgid "New access token"
 msgstr ""
 
-#: canaille/templates/oidc/client_edit.html:130
+#: canaille/templates/oidc/client_edit.html:137
 msgid "Delete the client"
 msgstr ""
 
