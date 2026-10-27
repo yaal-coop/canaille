@@ -1,81 +1,82 @@
-[0.3.7] - Unreleased
+[0.4.0] - Unreleased
 --------------------
 
 .. warning::
 
-    Manual migration required for LDAP backend: an ``owner`` attribute has been added
-    to clients, and an ``oauthDeviceCode`` object class has been added for device
-    codes. Please follow the :ref:`ldap_schema_update` section.
+    - Manual migration required for the LDAP backend: an ``owner`` attribute has been
+      added to clients, and an ``oauthDeviceCode`` object class for device codes.
+      Please follow the :ref:`ldap_schema_update` section.
+    - Existing SCIM clients must be given a ``scim:users:*``, ``scim:groups:*``,
+      ``scim:read`` or ``scim:write`` scope.
+    - SCIM clients may need to be adapted:
+
+      - users and groups are identified by their ``id`` in the URLs, in ``members.value``
+        and in ``$ref``, instead of their ``userName`` and ``displayName``;
+      - a PATCH request answers ``204 No Content`` when no ``attributes`` are requested;
+      - in a bulk request, an operation that refers to an unknown ``bulkId`` answers 409.
+
+    - OIDC clients that pass a ``request_uri`` must register it in their
+      ``request_uris``.
+    - Profile photos need the ``front`` packaging extras.
 
 Added
 ^^^^^
-- The outgoing HTTP requests go through clients that applications embedding Canaille
-  can route by URL prefix, for instance to a WSGI application in tests.
-- ``user_logged_in`` and ``user_logged_out`` blinker signals are sent when a user logs
-  in or out, with the application as sender and the user in the ``user`` argument.
-- :func:`~canaille.create_app` takes a ``config_file`` parameter, to choose the TOML
-  configuration file, or to read none with ``config_file=False``.
-- Profile photos can be uploaded in the PNG and WEBP formats, in addition to JPEG.
-- Uploaded photos are decoded and re-encoded, so their metadata, such as the GPS
-  coordinates of smartphone photos, are stripped. They are downscaled to 1024x1024
-  and cannot weigh more than 5MB.
-- Support for SCIM bulk operations.
-- Support for SCIM filtering and sorting.
-- Users who can manage all groups can pick the members of a group when they create
-  it, and add several users at once to an existing group. :issue:`192`
+- :rfc:`OAuth 2.0 Device Authorization Grant <8628>` support, for devices with
+  limited input capabilities (smart TVs, consoles, CLI tools…).
 - OIDC clients can be owned by users or groups. Users with the
   ``MANAGE_OWN_CLIENTS`` permission can create clients and manage the ones they own.
   This permission is not granted by default. :issue:`308`
-- :rfc:`OAuth 2.0 Device Authorization Grant <8628>` support, for devices with
-  limited input capabilities (smart TVs, consoles, CLI tools…).
-- The token introspection and revocation endpoints accept the
-  ``client_secret_post`` and ``private_key_jwt`` client authentication methods.
+- Users who can manage all groups can pick the members of a group when they create
+  it, and add several users at once to an existing group. :issue:`192`
 - Groups can have several owners. Owners can choose the other owners among the members,
   invite users as owners, remove the members who are not owners, and step down. Only
   users who can manage all groups can remove the other owners. A group can only be
   deleted by its only owner. :issue:`309`
+- Profile photos can be uploaded in the PNG and WEBP formats, in addition to JPEG.
+  Their metadata, such as the GPS coordinates of smartphone photos, are removed.
+  They are downscaled to 1024x1024 and cannot weigh more than 5MB. On the LDAP
+  backend, they are converted to JPEG.
+- Support for SCIM bulk operations, filtering and sorting.
+- The token introspection and revocation endpoints accept the
+  ``client_secret_post`` and ``private_key_jwt`` client authentication methods.
 
 Changed
 ^^^^^^^
-- When ``LOGGING`` is a dictionary, the loggers that exist before Canaille starts,
-  such as the ones of libraries or of the application that embeds Canaille, are no
-  longer disabled. Set ``disable_existing_loggers`` to ``true`` to disable them again.
 - Group invitation links ask for a confirmation before the user joins the group.
-- The session cookie is only sent with same-site requests by default
-  (``SESSION_COOKIE_SAMESITE`` is ``Lax``), also without the ``front`` extras.
-- Form fields are checked when the user leaves them, instead of while they type,
-  except for the password strength. Characters typed during a check could get lost.
 - Groups are picked with a search field in the user invitation and account settings
   forms, also without JavaScript. The pages stay light with many groups.
-- Read-only lists no longer show the add and remove buttons.
-- Photos need the ``front`` packaging extras, and are refused without it.
-- Photos are converted to JPEG on the LDAP backend, as they are stored in the
-  ``jpegPhoto`` attribute.
-- Canaille uses `httpx2 <https://github.com/pydantic/httpx2>`_ instead of httpx for its
-  outgoing requests, such as the password compromise check and the download of
-  ``request_uri`` and ``jwks_uri`` documents. HTTPS certificates are checked against
-  the system trust store, instead of the certifi bundle.
-- The SCIM server follows RFC 7644 more closely on PATCH requests. For instance, a
-  PATCH that writes the ``display`` of a group member is refused with a
-  ``mutability`` error.
-- The SCIM ``ResourceType`` endpoints are relative to the SCIM base URL, such as
-  ``/Users``, as RFC 7643 §6 defines them.
-- The SCIM ``User`` resource type declares the enterprise extension as optional.
-  Users without it were already accepted.
-- The SCIM client updates the provisioned users and groups with PATCH requests
-  instead of PUT, when the client supports PATCH. Only the changed attributes are
-  sent, and nothing is sent when nothing changed. The attributes Canaille does not
-  manage are left untouched.
-- A SCIM PUT request that changes nothing keeps the ``meta.version`` and
-  ``meta.lastModified`` of the resource.
-- **SCIM clients may need to be adapted:**
+- Form fields are checked when the user leaves them, instead of while they type,
+  except for the password strength. Characters typed during a check no longer get
+  lost.
+- Disabling
+  :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY` also
+  disables password initialization, which led to an unreachable page.
+  Administrators can still set passwords from the user profile.
+- The session cookie is only sent with same-site requests by default
+  (``SESSION_COOKIE_SAMESITE`` is ``Lax``), also without the ``front`` extras.
+- When ``LOGGING`` is a dictionary, the loggers that exist before Canaille starts are
+  no longer disabled. Set ``disable_existing_loggers`` to ``true`` to disable them
+  again.
+- The HTTPS certificates of the outgoing requests, such as the password compromise
+  check and the download of ``request_uri`` and ``jwks_uri`` documents, are checked
+  against the system trust store instead of the certifi bundle.
+- A client management request with a token issued to another client answers
+  ``400 access_denied`` instead of ``403 unauthorized_client``.
+- The SCIM server follows RFC 7643 and RFC 7644 more closely:
 
-  - users and groups are identified by their ``id`` in the URLs, in ``members.value``
-    and in ``$ref``, instead of their ``userName`` and ``displayName``;
-  - a PATCH request answers ``204 No Content`` when no ``attributes`` are requested;
-  - in a bulk request, an operation that refers to an unknown ``bulkId`` answers 409;
-  - the ``/ServiceProviderConfig``, ``/ResourceTypes`` and ``/Schemas`` endpoints need
-    no token.
+  - a PATCH that writes the ``display`` of a group member is refused with a
+    ``mutability`` error;
+  - the ``ResourceType`` endpoints are relative to the SCIM base URL, such as
+    ``/Users``;
+  - the ``User`` resource type declares the enterprise extension as optional;
+  - the ``/ServiceProviderConfig``, ``/ResourceTypes`` and ``/Schemas`` endpoints
+    need no token;
+  - a PUT that changes nothing keeps the ``meta.version`` and ``meta.lastModified``
+    of the resource.
+
+- The SCIM client updates the provisioned users and groups with PATCH requests,
+  when the client supports PATCH. Only the changed attributes are sent. The
+  attributes Canaille does not manage are left untouched.
 
 Removed
 ^^^^^^^
@@ -83,123 +84,94 @@ Removed
 
 Fixed
 ^^^^^
-- Client keys that could not be read at their ``jwks_uri`` caused server errors. They
-  give an OAuth error.
-- With the LDAP backend, changing the user name of a user, or the name of a group,
-  failed, for instance through SCIM.
-- An unknown answer to the consent page returned a server error.
-- Without ``SERVER_NAME``, the token endpoint returned a server error for public clients
-  and for wrong client secrets.
-- When several applications ran in the same process, JWT client authentication could
-  stay enabled on the ones without ``SERVER_NAME``.
-- A token request without ``grant_type`` returned a server error.
-- With a ``request_uri``, a client could change the request object between the consent
-  page and the user answer, and get scopes the user did not see. The consent only
-  applies to the displayed scopes.
-- With a request object, the consent page showed the scopes of the URL instead of
-  the request object ones, and the ``prompt`` and ``max_age`` parameters of the request
-  object were ignored. A client could get scopes the user never consented to.
-- With ``prompt=none`` and a request object, the ``consent_required`` error could
-  redirect to any URI.
+- Some OIDC requests returned a server error instead of an OAuth error:
+
+  - client keys that could not be read at their ``jwks_uri``;
+  - a token request without ``grant_type``;
+  - without ``SERVER_NAME``, a token request from a public client or with a wrong
+    client secret;
+  - an authorization request with an unreachable or unparsable ``request_uri``, or
+    with a ``max_age`` that is not an integer;
+  - an unknown answer to the consent page.
+
 - With ``prompt=login``, ``prompt=select_account`` or ``max_age``, accepting the
-  consent asked to log in again.
-- An authorization request with a ``max_age`` of zero asked to log in again and again.
-  A negative ``max_age`` is refused.
-- The consent page accepted answers without CSRF token. Another website could make a
-  user consent to an application.
-- Users without the ``USE_OIDC`` permission could still get tokens with the password,
-  refresh token and authorization code grants, and use their existing tokens.
-- In debug mode, the pages did not escape the HTML in the values users entered.
-- An authorization request with a ``max_age`` that is not an integer returned a server
-  error.
-- An authorization request with an unsupported ``prompt`` value could redirect to any
-  URI. It now only redirects to the URIs registered for the client.
-- The logout asks for a confirmation when the ID token hint was issued for another
-  user. A link could log a user out without their consent.
-- The browser console showed Content Security Policy errors on every page.
-- With the memory backend, an OIDC client created without contacts could not be
-  edited.
-- In dark mode, the tooltips and the user menu of the navigation bar had a light
-  background.
-- The user menu of the navigation bar flickered when it opened.
+  consent asked to log in again. A ``max_age`` of zero asked to log in again and
+  again. A negative ``max_age`` is refused.
+- The ``prompt`` and ``max_age`` parameters of request objects were ignored.
+- Users with several email addresses only received a valid password reset or
+  initialization code on one of them.
+- For users without a password, the inline validation of the login and password
+  fields displayed the whole password initialization page inside the field.
+- Profile fields could show the access rights, or the error messages language, of
+  the user of another request. After an inline validation, a field of a list, such
+  as an email address, could show another access indicator.
 - An invalid email address also showed the errors that only make sense for valid
   addresses, such as "No user found with this email address".
-- The ``populate`` command could create fewer users than requested, or fail with
-  SQL databases, when two fake users got the same user name.
-- With SQL databases, searching the members of a group also listed users who were
-  not members.
-- After an inline validation, a field of a list, such as an email address, could
-  show another access indicator than on the page.
-- A profile field could show as read-only, or as editable, because of the access
-  rights of the user of a previous request.
-- Under concurrent requests, the error messages of the profile forms could show
-  in the language of another user.
+- Read-only lists showed the add and remove buttons.
 - Without JavaScript, the copy buttons submitted the form they are in.
-- After the inline validation of a password field, the typed passwords could be
-  found in the page HTML of other users.
+- Spaces around a table search query prevented any match.
+- The browser console showed Content Security Policy errors on every page.
+- The user menu of the navigation bar flickered when it opened. In dark mode, it
+  had a light background, like the tooltips.
+- With the LDAP backend, changing the user name of a user, or the name of a group,
+  failed, for instance through SCIM.
+- With OpenLDAP 2.7, an LDAP server address that cannot be resolved raised a raw
+  ``BackendError`` instead of a connection error.
 - Canaille did not start with the ``postgresql`` and ``mysql`` extras, as they
   installed SQLAlchemy 2.1, which sqlalchemy-utils does not support yet.
-- Two edits of a resource in the same second got the same SCIM ETag, so an outdated
-  ``If-Match`` could be accepted. Modification dates are now precise to the
-  microsecond.
-- Spaces around a table search query prevented any match.
-- On the SQL backend, the members added to a group at the same time could be
-  listed in any order. They now keep the order they were added in.
 - The SQL database could not be created on MariaDB. On MariaDB, dates keep their
   microseconds, and tokens and authorization codes are case-sensitive.
-- The SCIM client does not send the password hashes to the provisioned clients
-  anymore.
-- The SCIM client escapes the identifiers it puts in ``externalId`` filters.
-- With OpenLDAP 2.7, an LDAP server address that cannot be resolved raised a raw
-  ``BackendError``. It now reports that Canaille could not connect to the LDAP server.
+- With SQL databases, searching the members of a group also listed users who were
+  not members.
+- With SQL databases, the members added to a group at the same time could be listed
+  in any order.
+- Two edits of a resource in the same second got the same SCIM ETag, so an outdated
+  ``If-Match`` could be accepted.
+- A SCIM PUT on a user whose account expires later locked the account at once.
 - SCIM PATCH requests that cannot be applied answer a SCIM error instead of an
   HTTP 500 error.
-- User impersonation was a ``GET`` request, thus not covered by the CSRF protection. It is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
-- The inline validation of the login and password fields redirected users without
-  a password to the password initialization page. As the redirection was answered
-  to a request only expecting a form field, the whole page was rendered inside the
-  field, and its buttons were unusable. The redirection now only happens when the
-  form is submitted.
-- Photo uploads were only validated on their file extension, so a SVG file renamed
-  with a ``.jpg`` extension was stored as-is and served inline. Photos that cannot
-  be served as images are now downloaded instead of being rendered.
-- Authorization requests carrying an unreachable or unparsable ``request_uri``
-  answered with a HTTP 500 instead of an ``invalid_request_uri`` error.
-- Request objects and client key sets, downloaded at the ``request_uri`` and
-  ``jwks_uri`` addresses clients indicate, were read in memory without any size
-  limit. They are now bounded to 64kB.
-- Trusted clients, which skip the user consent page, need both their
-  ``client_uri`` and their ``redirect_uris`` to match
-  :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`.
-- Users with multiple email addresses now receive, on each address, a valid password reset code
-  (or link if :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` is enabled).
-  This applies to both the password initialization and the password reset flows.
-- Password initialization mails always carried a link, even when
-  :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` was unset. Those links
-  could not be used at all, and were exposed to Host header spoofing the same way password
-  reset links were. Password initialization now sends a code when no trusted host is
-  configured, like password reset already did.
-- Password initialization was offered to users when
-  :attr:`~canaille.core.configuration.CoreSettings.ENABLE_PASSWORD_RECOVERY` was disabled,
-  but led to an unreachable page. As both flows hand out a password over a secret sent by
-  mail, disabling password recovery now disables password initialization as well, instead
-  of leading users to a dead end. Administrators can still set passwords themselves from
-  the user profile.
-- A SCIM PUT on a user whose account expires later locked the account at once.
+- The SCIM client escapes the identifiers it puts in ``externalId`` filters.
 
 Security
 ^^^^^^^^
 - The SCIM API accepted any access token emitted by Canaille. Client tokens now need
-  a ``scim:users:*``, ``scim:groups:*``, ``scim:read`` or ``scim:write`` scope, and user
-  tokens only give access to their own user, with the ``scim:me`` scope. **Existing SCIM
-  clients must be given one of these scopes.**
+  a SCIM scope. User tokens only give access to their own user, with the
+  ``scim:me`` scope.
 - With SCIM, users can only modify the attributes of their ``WRITE`` ACL on their own
   account.
+- The SCIM client sent the password hashes to the provisioned clients.
+- A client could get scopes the user never consented to. With a request object, the
+  consent page showed the scopes of the URL. With a ``request_uri``, the request
+  object could change between the consent page and the user answer.
 - OIDC request objects are only downloaded from the ``request_uris`` the client
-  registered. **Clients that pass a** ``request_uri`` **must register it first.**
-- Canaille requires Authlib 1.9.1, which fixes several security issues. A client
-  management request with a token issued to another client now answers
-  ``400 access_denied`` instead of ``403 unauthorized_client``.
+  registered.
+- Request objects and client key sets, downloaded at the ``request_uri`` and
+  ``jwks_uri`` addresses clients indicate, had no size limit. They are now limited
+  to 64kB.
+- The consent page accepted answers without CSRF token. Another website could make a
+  user consent to an application.
+- Some authorization errors could redirect to any URI: ``consent_required`` with
+  ``prompt=none`` and a request object, and the error for an unsupported ``prompt``
+  value. They only redirect to the URIs registered for the client.
+- Trusted clients, which skip the user consent page, need both their
+  ``client_uri`` and their ``redirect_uris`` to match
+  :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`.
+- Users without the ``USE_OIDC`` permission could still get tokens with the password,
+  refresh token and authorization code grants, and use their existing tokens.
+- The logout asks for a confirmation when the ID token hint was issued for another
+  user. A link could log a user out without their consent.
+- User impersonation was a ``GET`` request, not covered by the CSRF protection. It
+  is now confirmed with a form, and the ``/impersonate/<user>`` endpoint is removed.
+- Without :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS`, password
+  initialization mails carried a link exposed to Host header spoofing. They now
+  carry a code, like password reset mails.
+- After the inline validation of a password field, the typed passwords could be
+  found in the page HTML of other users.
+- In debug mode, the pages did not escape the HTML in the values users entered.
+- Photo uploads were only checked on their file extension. A SVG file renamed with a
+  ``.jpg`` extension was served inline. Photos that cannot be served as images are
+  now downloaded instead of being rendered.
+- Canaille requires Authlib 1.9.1, which fixes several security issues.
 
 [0.3.6] - 2026-08-04
 --------------------
