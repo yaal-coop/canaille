@@ -176,6 +176,7 @@ class MemoryBackend(Backend):
 
     def do_delete(self, instance) -> None:
         self.index_delete(instance)
+        self.delete_references(instance)
 
     def do_reload(self, instance) -> None:
         instance._state = Backend.instance.get(
@@ -248,6 +249,27 @@ class MemoryBackend(Backend):
 
         # update the id index
         del self.index(instance.__class__)[instance.id]
+
+    def delete_references(self, instance) -> None:
+        """Remove a deleted instance from the attributes with a backref that point to it."""
+        for model in MODELS.values():
+            for attribute in model.attributes:
+                target, mirror_attribute = model.get_model_annotations(attribute)
+                if (
+                    not mirror_attribute
+                    or target.__name__ != instance.__class__.__name__
+                ):
+                    continue
+
+                attribute_index = self.attribute_index(model, attribute)
+                for subinstance_id in attribute_index.pop(instance.id, set()):
+                    subinstance_state = self.index(model)[subinstance_id]
+                    value = subinstance_state.get(attribute)
+                    subinstance_state[attribute] = (
+                        [item for item in value if item != instance.id]
+                        if isinstance(value, list)
+                        else None
+                    )
 
     def record_failed_attempt(self, user) -> None:
         timestamps = user.password_failure_timestamps or []
