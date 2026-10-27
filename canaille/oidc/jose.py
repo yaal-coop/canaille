@@ -96,14 +96,25 @@ def supported_signing_algorithms():
 
 
 def get_client_jwks(client, kid=None):
-    """Get the client JWK set, either stored locally or by downloading them from the URI the client indicated."""
+    """Get the client JWK set, either stored locally or by downloading them from the URI the client indicated.
+
+    Return :data:`None` when the keys at the URI cannot be read.
+    """
 
     @cache.cached(timeout=50, key_prefix=f"jwks_{client.client_id}")
     def get_public_jwks():
         return json.loads(fetch_document(client.jwks_uri))
 
     if client.jwks_uri:
-        raw_jwks = get_public_jwks()
+        try:
+            raw_jwks = get_public_jwks()
+        except Exception:
+            current_app.logger.warning(
+                "could not read the keys of client %s at %s",
+                client.client_id,
+                client.jwks_uri,
+            )
+            return None
         key_set = jwk.KeySet.import_key_set(raw_jwks)
         key = key_set.get_by_kid(kid)
         return key

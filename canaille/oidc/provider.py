@@ -17,6 +17,7 @@ from authlib.oauth2 import rfc9207
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oauth2.rfc6749 import InvalidGrantError
 from authlib.oauth2.rfc6749 import InvalidScopeError
+from authlib.oauth2.rfc9101.errors import InvalidRequestObjectError
 from authlib.oidc import core as oidc_core
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc import rpinitiated
@@ -711,7 +712,11 @@ class IssuerParameter(rfc9207.IssuerParameter):
 
 class JWTAuthenticationRequest(OpenIDJWTAuthenticationRequest):
     def resolve_client_public_key(self, client):
-        return get_client_jwks(client)
+        jwk = get_client_jwks(client)
+        if not jwk and (client.jwks or client.jwks_uri):
+            raise InvalidRequestObjectError(description="No matching JWK")
+
+        return jwk
 
     def get_client_request_uris(self, client):
         return client.request_uris or []

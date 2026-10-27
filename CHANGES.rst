@@ -66,6 +66,8 @@ Removed
 
 Fixed
 ^^^^^
+- Client keys that could not be read at their ``jwks_uri`` caused server errors. They
+  give an OAuth error.
 - With the LDAP backend, changing the user name of a user, or the name of a group,
   failed, for instance through SCIM.
 - An unknown answer to the consent page returned a server error.

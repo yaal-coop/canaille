@@ -309,3 +309,22 @@ def test_consent_is_bound_to_the_displayed_scope(
     res.mustcontain("Your e-mail address.")
     assert not backend.query(models.Consent, client=client)
     assert not backend.query(models.AuthorizationCode, client=client)
+
+
+def test_request_object_with_unreachable_jwks_uri(
+    testclient, backend, logged_user, client, client_jwk
+):
+    """Unreachable client keys make the request object invalid, without a server error."""
+    client.jwks_uri = "http://127.0.0.1:1/jwks.json"
+    client.jwks = None
+    backend.save(client)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            client_id=client.client_id,
+            request=request_object(client, client_jwk, "openid"),
+        ),
+        status=400,
+    )
+    res.mustcontain("No matching JWK")

@@ -235,3 +235,39 @@ def test_same_jti_twice(
         "error_description": "JWT ID is used before.",
     }
     backend.delete(new_code)
+
+
+def test_client_jwks_uri_unreachable(
+    testclient, client_jwk, client, authorization, backend
+):
+    """Unreachable client keys make the client authentication fail without a server error."""
+    now = time.time()
+    authorization.issue_date = datetime.datetime.now(datetime.UTC)
+    backend.save(authorization)
+    client.jwks_uri = "http://127.0.0.1:1/jwks.json"
+    client.jwks = None
+    client.token_endpoint_auth_method = "private_key_jwt"
+    backend.save(client)
+
+    payload = {
+        "iss": client.client_id,
+        "sub": client.client_id,
+        "aud": "http://canaille.test/oauth/token",
+        "nbf": now - 3600,
+        "exp": now + 3600,
+        "iat": now - 1,
+        "jti": str(uuid.uuid4()),
+    }
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=authorization.code,
+            code_verifier=authorization.challenge,
+            client_assertion_type="urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            client_assertion=jwt.encode({"alg": "RS256"}, payload, client_jwk),
+            redirect_uri=client.redirect_uris[0],
+        ),
+        status=400,
+    )
+    assert res.json["error"] == "invalid_client"
