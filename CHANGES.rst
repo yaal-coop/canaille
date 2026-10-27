@@ -79,6 +79,8 @@ Fixed
 - With the LDAP backend, changing the user name of a user, or the name of a group,
   failed, for instance through SCIM.
 - An unknown answer to the consent page returned a server error.
+- Without ``SERVER_NAME``, the token endpoint returned a server error for public clients
+  and for wrong client secrets.
 - With a ``request_uri``, a client could change the request object between the consent
   page and the user answer, and get scopes the user did not see. The consent only
   applies to the displayed scopes.

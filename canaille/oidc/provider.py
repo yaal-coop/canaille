@@ -180,6 +180,14 @@ class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
         return jwk
 
 
+def disabled_client_auth(query_client, request):
+    """Authenticate no client.
+
+    Authlib fails with an error 500 on methods that are not registered.
+    """
+    return None
+
+
 class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
     TOKEN_ENDPOINT_AUTH_METHODS = [
         "client_secret_basic",
@@ -829,6 +837,10 @@ def setup_oauth(app):
         if not app.config["SERVER_NAME"]:
             app.logger.warning(
                 "The 'SERVER_NAME' configuration parameter is unset. JWT client authentication is disabled."
+            )
+            authorization.register_client_auth_method(
+                JWTClientAuth.CLIENT_AUTH_METHOD,
+                disabled_client_auth,
             )
 
         else:

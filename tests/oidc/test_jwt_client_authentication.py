@@ -3,6 +3,7 @@ import logging
 import time
 import uuid
 
+from flask_webtest import TestApp
 from joserfc import jwt
 from werkzeug.security import gen_salt
 
@@ -19,6 +20,43 @@ def test_no_server_name_config(configuration, caplog):
         logging.WARNING,
         "The 'SERVER_NAME' configuration parameter is unset. JWT client authentication is disabled.",
     ) in caplog.record_tuples
+
+
+def test_no_server_name_jwt_client_auth_rejected(
+    configuration, backend, client_jwk, client, authorization
+):
+    """Without SERVER_NAME, a client assertion is rejected instead of crashing."""
+    del configuration["SERVER_NAME"]
+    testclient = TestApp(create_app(configuration, backend=backend))
+    now = time.time()
+
+    authorization.issue_date = datetime.datetime.now(datetime.UTC)
+    backend.save(authorization)
+    client.token_endpoint_auth_method = "client_secret_jwt"
+    backend.save(client)
+
+    payload = {
+        "iss": client.client_id,
+        "sub": client.client_id,
+        "aud": "http://localhost/oauth/token",
+        "nbf": now - 3600,
+        "exp": now + 3600,
+        "iat": now - 1,
+        "jti": str(uuid.uuid4()),
+    }
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=authorization.code,
+            code_verifier=authorization.challenge,
+            client_assertion_type="urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            client_assertion=jwt.encode({"alg": "RS256"}, payload, client_jwk),
+            redirect_uri=client.redirect_uris[0],
+        ),
+        status=401,
+    )
+    assert res.json["error"] == "invalid_client"
 
 
 def test_client_jwks(
