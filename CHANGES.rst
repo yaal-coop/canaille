@@ -158,6 +158,8 @@ Security
   :attr:`~canaille.oidc.configuration.OIDCSettings.TRUSTED_DOMAINS`.
 - Users without the ``USE_OIDC`` permission could still get tokens with the password,
   refresh token and authorization code grants, and use their existing tokens.
+- Deleting a user kept their tokens, consents and authorization codes, except on
+  PostgreSQL and MariaDB. Their access tokens stayed active until they expired.
 - The logout asks for a confirmation when the ID token hint was issued for another
   user. A link could log a user out without their consent.
 - User impersonation was a ``GET`` request, not covered by the CSRF protection. It

@@ -981,14 +981,8 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
         status=400,
     )
     assert res.json["error"] == "invalid_grant"
-    assert res.json["error_description"] in [
-        "Invalid 'code' in request.",
-        "There is no 'user' for this code.",
-    ]
-
-    authcode = backend.get(models.AuthorizationCode, code=code)
-    if authcode:
-        backend.delete(authcode)
+    assert res.json["error_description"] == "Invalid 'code' in request."
+    assert not backend.get(models.AuthorizationCode, code=code)
 
 
 def test_locked_account(testclient, logged_user, client, trusted_client, backend):

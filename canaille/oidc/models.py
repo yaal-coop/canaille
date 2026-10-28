@@ -262,15 +262,32 @@ def delete_owned_clients(owner, data):
         Backend.instance.save(client)
 
 
-def setup_client_ownership():
-    teardown_client_ownership()
+def delete_user_grants(user, data):
+    """Delete the consents, codes and tokens of a deleted user."""
+    if not current_app.features.has_oidc:
+        return
+
+    for model in (
+        models.Consent,
+        models.AuthorizationCode,
+        models.DeviceCode,
+        models.Token,
+    ):
+        for instance in Backend.instance.query(model, subject=user):
+            Backend.instance.delete(instance)
+
+
+def setup_oidc_signals():
+    teardown_oidc_signals()
     signal("before_user_delete").connect(delete_owned_clients)
     signal("before_group_delete").connect(delete_owned_clients)
+    signal("after_user_delete").connect(delete_user_grants)
 
 
-def teardown_client_ownership():
+def teardown_oidc_signals():
     signal("before_user_delete").disconnect(delete_owned_clients)
     signal("before_group_delete").disconnect(delete_owned_clients)
+    signal("after_user_delete").disconnect(delete_user_grants)
 
 
 class AuthorizationCode(BaseAuthorizationCode, AuthorizationCodeMixin):
