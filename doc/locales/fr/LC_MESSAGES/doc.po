@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: canaille 0.0.56\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2025-12-21 00:13+0100\n"
-"PO-Revision-Date: 2026-10-26 19:51+0000\n"
-"Last-Translator: Éloi Rivard <azmeuk@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-29 14:32+0000\n"
+"Last-Translator: sblondon <sblondon@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/"
 "documentation/fr/>\n"
 "Language: fr\n"
@@ -205,18 +205,23 @@ msgid ""
 "LDAP: ``PostReadControl`` only requests attributes that exist in the LDAP "
 "schema."
 msgstr ""
+"LDAP : ``PostReadControl`` demande uniquement les attributes qui existent "
+"dans le schéma LDAP."
 
 #: ../../CHANGES.rst:18 9214e34200c14d0993107905ec9f7dfb
 msgid "Password reset no longer bypasses MFA."
 msgstr ""
+"La réinitialisation du mot de passe ne contourne plus l'authentification "
+"multi-facteurs (MFA)."
 
 #: ../../CHANGES.rst:19 c6545538adc74e848601f0a656e9c40c
 msgid "Usernames don't appear in the photos URLs."
-msgstr ""
+msgstr "Les noms n'appariassent pas dans les URL des photos."
 
 #: ../../CHANGES.rst:20 6acbe998f2934b16a9d5c7587195d92c
 msgid "Include missing Babel data in the pyinstaller binary. :issue:`318`"
 msgstr ""
+"Inclus les données Babel manquantes dans le binaire pyinstaller. :issue:`318`"
 
 #: ../../CHANGES.rst:21 cd414e8c5ee54ac4ac6ff2936a0097b4
 msgid ""
@@ -232,7 +237,7 @@ msgstr ""
 
 #: ../../CHANGES.rst:23 903268eb3f4344f98cd8ea2c9fd19dba
 msgid "Explicitly make RSA keys mandatory."
-msgstr ""
+msgstr "Rend explicitement les clefs RSA obligatoires."
 
 #: ../../CHANGES.rst:24 7a5cf1dde409495484e7f60d3c8ac134
 msgid ""
@@ -292,19 +297,20 @@ msgstr "[0.0.58] - 2025-01-10"
 
 #: ../../CHANGES.rst:60 e516771baef2451f96b61ea1818f0a1b
 msgid "``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` removed in favor of JWT tokens."
-msgstr ""
+msgstr "``DYNAMIC_CLIENT_REGISTRATION_TOKENS`` remplacé par des jetons JWT."
 
 #: ../../CHANGES.rst:61 29d729ab149b45deb6588cb53464b556
 msgid "``MANAGE_GROUPS`` permission is renamed ``MANAGE_ALL_GROUPS``."
-msgstr ""
+msgstr "La permission ``MANAGE_GROUPS`` est renommée ``MANAGE_ALL_GROUPS``."
 
 #: ../../CHANGES.rst:62 8f9668be51b34710b0dbe6c8ccbfb395
 msgid "``CONFIG`` environment variable renamed to ``CANAILLE_CONFIG``."
 msgstr ""
+"La variable d'environnement ``CONFIG`` est renommée ``CANAILLE_CONFIG``."
 
 #: ../../CHANGES.rst:63 eb4fda10e60d4f6d93d1b98afd36dc4f
 msgid "``ENV_FILE`` environment variable renamed to ``CANAILLE_ENV``."
-msgstr ""
+msgstr "La variable d'environnement ``ENV_FILE`` est renommée ``CANAILLE_ENV``."
 
 #: ../../CHANGES.rst:67 b1aeff58824f4df38eb473d4c0025b2a
 #, fuzzy
@@ -8085,7 +8091,7 @@ msgstr "Authentification unique (SSO)"
 
 #: ../references/alternatives.rst:272 290da7b622ad4d70aa3ecd9422c5a321
 msgid "Email"
-msgstr "Email"
+msgstr "E-mail"
 
 #: ../references/alternatives.rst:273 b4c97810ce1e4a8e81f35d8b9044b4cb
 msgid "WebAuthn"
