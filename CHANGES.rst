@@ -3,13 +3,12 @@
 
 Fixed
 ^^^^^
-- The CLI saved unknown references as empty values, for instance an unknown client
-  in ``--audience``. It now displays an error.
-- ``canaille clean`` removes the consents and authorization codes of the users
-  deleted before Canaille 0.4.0.
-- Clients without an audience, such as the ones created with the CLI, issued ID
-  tokens with an empty ``aud`` claim, and could not introspect their own tokens. A
-  client is now always part of its audience. :issue:`246`
+- The CLI displays an error for unknown references, instead of saving empty values.
+- ``canaille clean`` removes the consents and authorization codes of deleted users.
+- A consent can be accepted without displaying the consent page first, as pytest-iam
+  does.
+- Clients without an audience issued ID tokens with an empty ``aud`` claim.
+  :issue:`246`
 
 [0.4.0] - 2026-10-28
 --------------------

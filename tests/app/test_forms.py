@@ -6,8 +6,10 @@ import pytest
 import wtforms
 from babel.dates import LOCALTZ
 from flask import current_app
+from flask_wtf import FlaskForm
 from werkzeug.datastructures import ImmutableMultiDict
 
+from canaille.app.forms import BoundCSRF
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import IDToModel
 from canaille.app.forms import compromised_password_validator
@@ -427,3 +429,32 @@ def test_id_to_model_with_unknown_identifier(testclient, backend):
         IDToModel("User")("unknown")
 
     assert IDToModel("User", raise_on_errors=False)("unknown") is None
+
+
+class BoundForm(FlaskForm):
+    class Meta:
+        csrf_class = BoundCSRF
+        csrf_bind = ""
+
+
+def bound_form(bind, token=None):
+    formdata = ImmutableMultiDict({"csrf_token": token}) if token else None
+    return BoundForm(formdata, meta={"csrf_bind": bind})
+
+
+def test_bound_csrf_token(testclient):
+    """A bound CSRF token is only valid for the same bound value."""
+    token = bound_form("foo").csrf_token.current_token
+
+    assert bound_form("foo", token).validate()
+    assert not bound_form("bar", token).validate()
+
+
+def test_bound_csrf_token_tampered(testclient):
+    """A bound CSRF token without its signature, or with a wrong one, is invalid."""
+    token = bound_form("foo").csrf_token.current_token
+    unbound_token, _, signature = token.rpartition(".")
+
+    assert not bound_form("foo", unbound_token).validate()
+    assert not bound_form("foo", f"{unbound_token}.{signature[::-1]}").validate()
+    assert not bound_form("foo").validate()

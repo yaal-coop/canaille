@@ -1,6 +1,7 @@
 import datetime
 import logging
 from urllib.parse import parse_qs
+from urllib.parse import urlencode
 from urllib.parse import urlsplit
 
 from flask import g
@@ -307,17 +308,21 @@ def test_consent_in_several_tabs(testclient, logged_user, client, backend):
         backend.delete(consent)
 
 
-def test_displayed_consents_in_session(testclient, logged_user, client):
-    """The session only keeps a hash of the displayed consents, until the user answers."""
-    res = testclient.get(
-        "/oauth/authorize", params=authorization_params(client, "x" * 5000), status=200
+def test_consent_answer_without_display(
+    testclient, logged_user, client, backend, monkeypatch
+):
+    """A consent answer can be sent without displaying the page, as test tools do."""
+    monkeypatch.setitem(testclient.app.config, "WTF_CSRF_ENABLED", False)
+    res = testclient.post(
+        "/oauth/authorize?" + urlencode(authorization_params(client, "state")),
+        params=dict(answer="accept"),
+        status=302,
     )
-    with testclient.session_transaction() as sess:
-        assert [len(value) for value in sess["displayed-consents"]] == [64]
+    assert res.location.startswith(client.redirect_uris[0])
+    assert "code" in parse_qs(urlsplit(res.location).query)
 
-    res.form.submit(name="answer", value="deny", status=302)
-    with testclient.session_transaction() as sess:
-        assert sess["displayed-consents"] == []
+    for consent in backend.query(models.Consent, client=client):
+        backend.delete(consent)
 
 
 def test_consent_is_bound_to_the_displayed_user(

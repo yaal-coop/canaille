@@ -431,7 +431,7 @@ requires-dist = [
     { name = "flask-session", specifier = ">=0.8.0" },
     { name = "flask-talisman", marker = "extra == 'front'", specifier = ">=1.1.0" },
     { name = "flask-themer", marker = "extra == 'front'", specifier = ">=2.0.0" },
-    { name = "flask-wtf", specifier = ">=1.2.1" },
+    { name = "flask-wtf", specifier = ">=1.2.1,<1.4" },
     { name = "flask-wtforms-htmx", specifier = ">=0.1.0" },
     { name = "httpx2", specifier = ">=2.13.1" },
     { name = "hypercorn", marker = "extra == 'server'", specifier = ">=0.17.3" },
