@@ -1215,7 +1215,8 @@ def test_admin_can_pick_the_audience(testclient, logged_admin, trusted_client, b
     res = res.forms["clienteditform"].submit(status=302, name="action", value="edit")
 
     backend.reload(client)
-    assert client.audience == [client, trusted_client]
+    assert client.audience == [trusted_client]
+    assert client.full_audience == [client, trusted_client]
 
     backend.delete(client)
 

@@ -58,7 +58,6 @@ def test_dump_stdout(cli_runner, backend, user, client, trusted_client, consent,
     } in payload["client"]
     assert {
         "audience": [
-            client.id,
             trusted_client.id,
         ],
         "client_id": mock.ANY,

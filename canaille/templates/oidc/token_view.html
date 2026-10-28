@@ -80,7 +80,7 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
                         <td>{{ _("Audience") }}</td>
                         <td>
                             <ul class="ui list">
-                                {% for client in token.audience %}
+                                {% for client in token.full_audience %}
                                     <li class="item">
                                         <a href="{{ url_for("oidc.clients.edit", client=client) }}">
                                             {{ client.client_name }}

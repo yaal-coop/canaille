@@ -107,9 +107,8 @@ def client(testclient, trusted_client, backend, client_jwk):
         jwks=json.dumps(key_set),
         token_endpoint_auth_method="client_secret_basic",
         post_logout_redirect_uris=["https://client.test/disconnected"],
+        audience=[trusted_client],
     )
-    backend.save(c)
-    c.audience = [c, trusted_client]
     backend.save(c)
 
     yield c

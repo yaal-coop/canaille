@@ -7,6 +7,9 @@ Fixed
   in ``--audience``. It now displays an error.
 - ``canaille clean`` removes the consents and authorization codes of the users
   deleted before Canaille 0.4.0.
+- Clients without an audience, such as the ones created with the CLI, issued ID
+  tokens with an empty ``aud`` claim, and could not introspect their own tokens. A
+  client is now always part of its audience. :issue:`246`
 
 [0.4.0] - 2026-10-28
 --------------------

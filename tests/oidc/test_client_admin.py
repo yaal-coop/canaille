@@ -102,7 +102,8 @@ def test_client_add(testclient, logged_admin, backend):
     assert client.token_endpoint_auth_method == "client_secret_basic"
     assert client.application_type == "web"
     assert client.id_token_signed_response_alg == "RS256"
-    assert client.audience == [client]
+    assert client.audience == []
+    assert client.full_audience == [client]
     assert not client.trusted
 
     backend.delete(client)
@@ -200,7 +201,7 @@ def test_client_edit(testclient, client, logged_admin, trusted_client, backend):
     assert client.software_id == "software"
     assert client.software_version == "1"
     assert client.jwks_uri == "https://foobar.test/jwks.json"
-    assert client.audience == [client, trusted_client]
+    assert client.audience == [trusted_client]
     assert not client.trusted
     assert client.post_logout_redirect_uris == ["https://foobar.test/disconnected"]
 
@@ -336,7 +337,7 @@ def test_client_new_token(testclient, logged_admin, backend, client):
     assert not token.subject
     assert token.type == "access_token"
     assert token.scope == client.scope
-    assert client in token.audience
+    assert client in token.full_audience
 
     res = res.follow()
     assert res.template == "oidc/token_view.html"

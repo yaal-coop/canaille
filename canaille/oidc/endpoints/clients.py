@@ -103,8 +103,6 @@ def add(user):
         owners=list(dict.fromkeys(form["owners"].data)),
     )
     Backend.instance.save(client)
-    client.audience = [client]
-    Backend.instance.save(client)
     current_app.logger.security(f"Created client {client.client_id} by {user.id}")
     flash(
         _("The client has been created."),
@@ -196,7 +194,7 @@ def client_edit(user, client):
         "scope": form["scope"].data.split(" "),
         "response_types": form["response_types"].data,
         "token_endpoint_auth_method": form["token_endpoint_auth_method"].data,
-        "audience": form["audience"].data,
+        "audience": [aud for aud in form["audience"].data if aud != client],
         "logo_uri": form["logo_uri"].data,
         "tos_uri": form["tos_uri"].data,
         "policy_uri": form["policy_uri"].data,
