@@ -261,6 +261,7 @@ cache-keys = [
     { file = "pyproject.toml" },
     { file = "package-lock.json" },
     { file = "hatch_build.py" },
+    { file = "canaille/static/vendor/.package-lock.sha256" },
 ]
 
 [tool.pytest.ini_options]

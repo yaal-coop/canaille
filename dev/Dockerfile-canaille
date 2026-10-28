@@ -14,7 +14,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-COPY uv.lock pyproject.toml hatch_build.py LICENSE.rst README.md dev/devapp.py /opt/canaille/
+COPY uv.lock pyproject.toml hatch_build.py package-lock.json LICENSE.rst README.md dev/devapp.py /opt/canaille/
 COPY canaille /opt/canaille/canaille
 RUN pip install uv
 WORKDIR /opt/canaille
