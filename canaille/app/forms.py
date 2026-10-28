@@ -1,12 +1,15 @@
 import datetime
 import hashlib
+import hmac
 import math
 import re
 
 import wtforms.validators
 from flask import current_app
 from flask_wtf import FlaskForm
+from flask_wtf.csrf import _FlaskFormCSRF
 from flask_wtforms_htmx import HtmxFlaskForm
+from itsdangerous import want_bytes
 from wtforms_htmx.mutations import list_add
 from wtforms_htmx.mutations import list_remove
 from wtforms_htmx_components import ComboboxField
@@ -174,6 +177,36 @@ class Form(HtmxFlaskForm):
         field_wrapper = field_wrapper
 
     action = wtforms.ButtonField()
+
+
+# Workaround for https://github.com/pallets-eco/flask-wtf/issues/711
+class BoundCSRF(_FlaskFormCSRF):
+    """CSRF tokens that are only valid for the ``csrf_bind`` meta value.
+
+    The token of a page cannot be used once the value changes,
+    for instance when the user or the displayed data change.
+    """
+
+    def bound_signature(self, token):
+        message = f"{token} {self.meta.csrf_bind}".encode()
+        key = want_bytes(self.meta.csrf_secret)
+        return hmac.new(key, message, hashlib.sha256).hexdigest()
+
+    def generate_csrf_token(self, csrf_token_field):
+        token = super().generate_csrf_token(csrf_token_field)
+        return f"{token}.{self.bound_signature(token)}"
+
+    def validate_csrf_token(self, form, field):
+        bound_token = field.data
+        token, _separator, signature = (bound_token or "").rpartition(".")
+        field.data = token
+        try:
+            super().validate_csrf_token(form, field)
+        finally:
+            field.data = bound_token
+
+        if not hmac.compare_digest(signature, self.bound_signature(token)):
+            raise wtforms.validators.ValidationError("The CSRF token does not match.")
 
 
 class TableForm(FlaskForm):

@@ -1,5 +1,4 @@
 import datetime
-import hashlib
 import uuid
 
 from authlib.common.urls import add_params_to_uri
@@ -48,7 +47,6 @@ from .well_known import openid_configuration
 bp = Blueprint("endpoints", __name__, url_prefix="/oauth")
 
 AUTHORIZATION_REQUEST_PROCESS_TIMEOUT: int = 300
-MAX_DISPLAYED_CONSENTS: int = 10
 
 
 @bp.errorhandler(HTTPException)
@@ -343,22 +341,21 @@ def authorize_consent(redirect_url, now, params):
 
     grant = authorization.get_consent_grant(end_user=user)
 
-    form = AuthorizeForm(request.form or None)
     effective_scope = grant.client.get_allowed_scope(grant.request.payload.scope)
 
     # The answers without a valid CSRF token are ignored, as the authorization
-    # endpoint itself is exempt from CSRF checks. The consent is only accepted
-    # for the user and the scope that the consent page displayed. A hash keeps
-    # the session cookie small, and several consent pages can be open at once.
-    consent_hash = hashlib.sha256(
-        f"{user.id if user else ''} {redirect_url} {effective_scope}".encode()
-    ).hexdigest()
-    displayed_consents = session.get("displayed-consents", [])
+    # endpoint itself is exempt from CSRF checks. The token is bound to the
+    # user and the scope of the consent page, so another user of the session
+    # cannot accept it, and a request_uri cannot change the scope after the
+    # page is displayed.
+    form = AuthorizeForm(
+        request.form or None,
+        meta={
+            "csrf_bind": f"{user.id if user else ''} {redirect_url} {effective_scope}"
+        },
+    )
     answered = (
-        request.method == "POST"
-        and form.answer.data is not None
-        and form.validate()
-        and (form.answer.data != "accept" or consent_hash in displayed_consents)
+        request.method == "POST" and form.answer.data is not None and form.validate()
     )
 
     # Get the authorization code, or display the user consent form.
@@ -383,12 +380,6 @@ def authorize_consent(redirect_url, now, params):
             raise ConsentRequiredError(redirect_uri=grant.redirect_uri)
 
         form.action_url = redirect_url
-        session["displayed-consents"] = [
-            *[other for other in displayed_consents if other != consent_hash][
-                -MAX_DISPLAYED_CONSENTS + 1 :
-            ],
-            consent_hash,
-        ]
         return render_template(
             "oidc/authorize.html",
             user=user,
@@ -400,10 +391,6 @@ def authorize_consent(redirect_url, now, params):
             form=form,
             effective_scope=effective_scope,
         )
-
-    session["displayed-consents"] = [
-        other for other in displayed_consents if other != consent_hash
-    ]
 
     if form.answer.data not in ("accept", "deny", "logout"):
         abort(400, "Unknown consent answer.")

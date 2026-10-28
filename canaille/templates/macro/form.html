@@ -281,7 +281,7 @@ csrf=true) -%}
       {% for key, value in kwargs.items() %}{{ key.replace("_", "-") }}="{{ value }}" {% endfor %}
 >
     {% if csrf %}
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="hidden" name="csrf_token" value="{{ form.csrf_token.current_token if form.meta.csrf else csrf_token() }}"/>
     {% endif %}
     {% if caller is defined %}
         {{ caller() }}

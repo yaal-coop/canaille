@@ -8,6 +8,7 @@ from wtforms_htmx_components import ComboboxMultiField
 from canaille.app import models
 from canaille.app.combobox import ChipsWidget
 from canaille.app.combobox import ListboxWidget
+from canaille.app.forms import BoundCSRF
 from canaille.app.forms import DateTimeUTCField
 from canaille.app.forms import Form
 from canaille.app.forms import email_validator
@@ -26,6 +27,10 @@ from canaille.oidc.utils import SCOPE_DETAILS
 
 
 class AuthorizeForm(Form):
+    class Meta:
+        csrf_class = BoundCSRF
+        csrf_bind = ""
+
     answer = wtforms.ButtonField()
 
 
