@@ -20,6 +20,7 @@ from scim2_server.routing import Operation
 from scim2_server.service import ScimService
 
 from canaille.app import models
+from canaille.app.flask import any_host
 from canaille.app.flask import csrf
 from canaille.backends import Backend
 from canaille.core.configuration import Permission
@@ -140,6 +141,7 @@ def _authenticate(scim_request, service):
 @bp.route("/", defaults={"path": ""}, methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 @bp.route("/<path:path>", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 @csrf.exempt
+@any_host
 def scim(path):
     service = CanailleService(get_provider())
     scim_request = ScimRequest(

@@ -2,6 +2,8 @@ from flask import Blueprint
 from flask import jsonify
 from flask import request
 
+from canaille.app.flask import any_host
+
 from ..metadata import oauth_authorization_server
 from ..metadata import openid_configuration
 
@@ -9,6 +11,7 @@ bp = Blueprint("home", __name__, url_prefix="/.well-known")
 
 
 @bp.route("/oauth-authorization-server")
+@any_host
 def oauth_authorization_server_endpoint():
     return jsonify(
         {
@@ -20,6 +23,7 @@ def oauth_authorization_server_endpoint():
 
 
 @bp.route("/openid-configuration")
+@any_host
 def openid_configuration_endpoint():
     return jsonify(
         {key: val for key, val in openid_configuration().items() if val is not None}
@@ -27,6 +31,7 @@ def openid_configuration_endpoint():
 
 
 @bp.route("/webfinger")
+@any_host
 def webfinger():
     return jsonify(
         {

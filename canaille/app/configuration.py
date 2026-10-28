@@ -105,6 +105,10 @@ class RootSettings(BaseSettings):
     """The Flask :external:py:data:`SERVER_NAME` configuration setting.
 
     This sets domain name on which canaille will be served.
+    Requests on other host names are redirected to it, except the endpoints
+    that other servers call, such as token introspection and SCIM.
+    :attr:`~canaille.app.configuration.RootSettings.TRUSTED_HOSTS` can limit the
+    accepted host names.
     """
 
     TRUSTED_HOSTS: list[str] | None = None

@@ -20,6 +20,7 @@ from flask import url_for
 from werkzeug.exceptions import HTTPException
 
 from canaille.app import models
+from canaille.app.flask import any_host
 from canaille.app.flask import cache
 from canaille.app.flask import csrf
 from canaille.app.i18n import gettext as _
@@ -423,6 +424,7 @@ def authorize_consent(redirect_url, now, params):
 
 @bp.route("/token", methods=["POST"])
 @csrf.exempt
+@any_host
 def issue_token():
     request_params = request.form.to_dict(flat=False)
     grant_type = request.form.get("grant_type")
@@ -447,6 +449,7 @@ def issue_token():
 
 @bp.route("/device_authorization", methods=["POST"])
 @csrf.exempt
+@any_host
 def device_authorization():
     """Issue a device code and user code for a device authorization request (RFC 8628)."""
     current_app.logger.debug(
@@ -574,6 +577,7 @@ def device():
 
 @bp.route("/introspect", methods=["POST"])
 @csrf.exempt
+@any_host
 def introspect_token():
     current_app.logger.debug(
         "introspection endpoint request: POST: %s", request.form.to_dict(flat=False)
@@ -587,6 +591,7 @@ def introspect_token():
 
 @bp.route("/revoke", methods=["POST"])
 @csrf.exempt
+@any_host
 def revoke_token():
     current_app.logger.debug(
         "revokation endpoint request: POST: %s", request.form.to_dict(flat=False)
@@ -598,6 +603,7 @@ def revoke_token():
 
 @bp.route("/register", methods=["POST"])
 @csrf.exempt
+@any_host
 def client_registration():
     current_app.logger.debug(
         "client registration endpoint request: POST: %s",
@@ -613,6 +619,7 @@ def client_registration():
 
 @bp.route("/register/<client_id>", methods=["GET", "PUT", "DELETE"])
 @csrf.exempt
+@any_host
 def client_registration_management(client_id):
     if request.method == "PUT":
         current_app.logger.debug(
@@ -629,6 +636,7 @@ def client_registration_management(client_id):
 
 
 @bp.route("/jwks.json")
+@any_host
 def jwks():
     jwks = server_jwks()
     return jsonify(jwks.as_dict(private=False))
@@ -636,6 +644,7 @@ def jwks():
 
 @bp.route("/userinfo", methods=["GET", "POST"])
 @csrf.exempt
+@any_host
 def userinfo():
     current_app.logger.debug("userinfo endpoint request: %s", request.args)
     response = authorization.create_endpoint_response(UserInfoEndpoint.ENDPOINT_NAME)
