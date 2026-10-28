@@ -105,6 +105,21 @@ With the LDAP backend, all data is lost when Canaille stops.
 Docker environment
 ~~~~~~~~~~~~~~~~~~
 
+The development server uses `Compose Watch <https://docs.docker.com/compose/how-tos/file-watch/>`_.
+Your changes in the ``canaille`` directory are copied into the container while it runs.
+The image is rebuilt when the dependencies or the translations change.
+Compose 2.22 or later is needed.
+
+.. note ::
+    podman-compose does not support Compose Watch.
+    With Podman, run Docker Compose on the Podman socket:
+
+    .. code-block:: console
+
+        $ systemctl --user start podman.socket
+        $ export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
+        $ docker compose up --watch
+
 SQL
 ^^^
 With the SQL backend, the development server will load and save data in a local sqlite database.
@@ -113,7 +128,7 @@ With the SQL backend, the development server will load and save data in a local 
     :caption: Run the development server with the SQL backend
 
     $ cd dev
-    $ docker compose up
+    $ docker compose up --watch
 
 Memory
 ^^^^^^
@@ -123,7 +138,7 @@ With the memory backend, all data is lost when Canaille stops.
     :caption: Run the development server with the memory backend
 
     $ cd dev
-    $ docker compose --file docker-compose-memory.yml up
+    $ docker compose --file docker-compose-memory.yml up --watch
 
 LDAP
 ^^^^
@@ -133,7 +148,7 @@ With the LDAP backend, all data is lost when Canaille stops.
     :caption: Run the development server with the LDAP backend
 
     $ cd dev
-    $ docker compose --file docker-compose-ldap.yml up
+    $ docker compose --file docker-compose-ldap.yml up --watch
 
 Populate the database
 ~~~~~~~~~~~~~~~~~~~~~

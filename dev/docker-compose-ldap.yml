@@ -25,8 +25,31 @@ services:
       - CANAILLE_CONFIG=/opt/canaille/conf/canaille.toml
       - FLASK_APP=devapp
     volumes:
-      - ../canaille:/opt/canaille/canaille
       - ./conf:/opt/canaille/conf
+    develop:
+      watch:
+        - action: sync
+          path: ../canaille
+          target: /opt/canaille/canaille
+          initial_sync: true
+          ignore:
+            - "**/__pycache__/"
+            - static/vendor/
+            - translations/
+        - action: rebuild
+          path: ../canaille/translations
+          ignore:
+            - "**/*.mo"
+        - action: rebuild
+          path: ../package-lock.json
+        - action: rebuild
+          path: ../pyproject.toml
+        - action: rebuild
+          path: ../uv.lock
+        - action: rebuild
+          path: ../hatch_build.py
+        - action: rebuild
+          path: devapp.py
     ports:
       - 5000:5000
 
