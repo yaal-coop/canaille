@@ -135,3 +135,25 @@ def test_ignore_errors(cli_runner, backend, monkeypatch):
         )
         assert res.exit_code == 0
         assert res.stdout == ""
+
+
+def test_create_unknown_reference(cli_runner, backend):
+    """An unknown reference is an error instead of an empty value."""
+    res = cli_runner.invoke(
+        cli,
+        [
+            "create",
+            "user",
+            "--formatted-name",
+            "Johnny",
+            "--family-name",
+            "Doe",
+            "--user-name",
+            "johnny",
+            "--groups",
+            "unknown",
+        ],
+    )
+    assert res.exit_code != 0
+    assert "group 'unknown' not found" in res.output
+    assert not backend.get(models.User, user_name="johnny")

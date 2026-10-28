@@ -45,7 +45,13 @@ def model_getter(model):
 
     @with_backendcontext
     def wrapped(id):
-        return Backend.instance.get(model, id) if id else None
+        if not id:
+            return None
+
+        if instance := Backend.instance.get(model, id):
+            return instance
+
+        raise click.BadParameter(f"{model_name} '{id}' not found")
 
     return wrapped
 

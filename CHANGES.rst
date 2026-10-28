@@ -1,3 +1,11 @@
+[0.4.1] - Unreleased
+--------------------
+
+Fixed
+^^^^^
+- The CLI saved unknown references as empty values, for instance an unknown client
+  in ``--audience``. It now displays an error.
+
 [0.4.0] - 2026-10-28
 --------------------
 
