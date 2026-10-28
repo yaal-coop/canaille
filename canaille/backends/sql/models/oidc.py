@@ -33,10 +33,10 @@ class ClientAudience(Base):
     __tablename__ = "client_audience_association_table"
 
     client_id: Mapped[str] = mapped_column(
-        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True, nullable=True
+        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True
     )
     audience_id: Mapped[str] = mapped_column(
-        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True, nullable=True
+        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True
     )
     index: Mapped[int] = mapped_column(Integer)
 
@@ -252,10 +252,10 @@ class TokenAudience(Base):
     __tablename__ = "token_audience_association_table"
 
     token_id: Mapped[str] = mapped_column(
-        ForeignKey("token.id", ondelete="CASCADE"), primary_key=True, nullable=True
+        ForeignKey("token.id", ondelete="CASCADE"), primary_key=True
     )
     client_id: Mapped[str] = mapped_column(
-        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True, nullable=True
+        ForeignKey("client.id", ondelete="CASCADE"), primary_key=True
     )
     index: Mapped[int] = mapped_column(Integer)
 

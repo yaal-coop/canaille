@@ -4,6 +4,7 @@ import typing
 import uuid
 
 from sqlalchemy import ForeignKey
+from sqlalchemy import Index
 from sqlalchemy import Integer
 from sqlalchemy import LargeBinary
 from sqlalchemy import String
@@ -288,10 +289,11 @@ class WebAuthnCredential(
     canaille.core.models.WebAuthnCredential, Base, SqlAlchemyModel
 ):
     __tablename__ = "webauthn_credential"
+    __table_args__ = (Index("ix_webauthn_credential_credential_id", "credential_id"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     credential_id: Mapped[bytes] = mapped_column(
-        LargeBinary, nullable=False, unique=True, index=True
+        LargeBinary, nullable=False, unique=True
     )
     public_key: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
     sign_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
