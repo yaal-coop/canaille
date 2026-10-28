@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-10-27 23:55+0100\n"
-"PO-Revision-Date: 2026-10-26 19:51+0000\n"
+"PO-Revision-Date: 2026-10-28 08:59+0000\n"
 "Last-Translator: Éloi Rivard <azmeuk@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -247,21 +247,18 @@ msgid "Invalid security code"
 msgstr "Code de sécurité invalide"
 
 #: canaille/core/validators.py:124
-#, fuzzy, python-brace-format
-#| msgid "You are not a member of this group."
+#, python-brace-format
 msgid "The user '{user}' is not a member of this group."
-msgstr "Vous n'êtes pas membre de ce groupe."
+msgstr "L'utilisateur '{user}' n'est pas membre de ce groupe."
 
 #: canaille/core/validators.py:136 canaille/templates/core/group.html:90
-#, fuzzy
-#| msgid "Groups must have at least one member"
 msgid "A group must keep at least one owner."
-msgstr "Les groupes doivent avoir au moins un membre"
+msgstr "Les groupes doivent avoir au moins un membre."
 
 #: canaille/core/validators.py:139
 #, python-brace-format
 msgid "Only administrators can remove '{user}' from the owners."
-msgstr ""
+msgstr "Seuls les administrateurs peuvent supprimer '{user}' des propriétaires."
 
 #: canaille/core/endpoints/admin.py:23
 #: canaille/templates/core/partial/users.html:15
@@ -519,7 +516,7 @@ msgstr "Camille Dupont, camille.dupont@schmilblick.fr …"
 
 #: canaille/core/endpoints/forms.py:543 canaille/oidc/endpoints/forms.py:145
 msgid "Owners"
-msgstr ""
+msgstr "Propriétaires"
 
 #: canaille/core/endpoints/forms.py:561
 msgid "group"
@@ -532,7 +529,7 @@ msgstr "Description"
 
 #: canaille/core/endpoints/forms.py:598
 msgid "Only members can be owners."
-msgstr ""
+msgstr "Seuls des membres du groupe peuvent en être propriétaire."
 
 #: canaille/core/endpoints/forms.py:605
 msgid "Members"
@@ -548,10 +545,8 @@ msgid "Email address"
 msgstr "Adresse email"
 
 #: canaille/core/endpoints/forms.py:643
-#, fuzzy
-#| msgid "Invite a user"
 msgid "Invite as owner"
-msgstr "Inviter un utilisateur"
+msgstr "Inviter en tant que propriétaire"
 
 #: canaille/core/endpoints/forms.py:676
 msgid "User name"
@@ -620,15 +615,15 @@ msgid "The group %(group)s has been successfully deleted."
 msgstr "Le groupe %(group)s a bien été supprimé."
 
 #: canaille/core/endpoints/groups.py:274
-#, fuzzy, python-format
-#| msgid "You are already a member of %(group)s."
+#, python-format
 msgid "You are no longer an owner of the group %(group)s."
-msgstr "Vous faites déjà partie du groupe %(group)s."
+msgstr "Vous n'êtes désormais plus propriétaire du groupe %(group)s."
 
 #: canaille/core/endpoints/groups.py:293
 #, python-format
 msgid "You cannot leave %(group)s because you are its last owner."
 msgstr ""
+"Vous ne pouvez pas quitter %(group)s car vous êtes son dernier propriétaire."
 
 #: canaille/core/endpoints/groups.py:307
 #, python-format
@@ -1113,13 +1108,11 @@ msgstr "Aucun"
 #: canaille/oidc/endpoints/forms.py:84
 #, python-format
 msgid "%(name)s (group)"
-msgstr ""
+msgstr "%(name)s (groupe)"
 
 #: canaille/oidc/endpoints/forms.py:153
-#, fuzzy
-#| msgid "users, admins …"
 msgid "Jane Doe, admins …"
-msgstr "utilisateurs, administrateurs …"
+msgstr "Camille Dupont, administrateurs …"
 
 #: canaille/oidc/endpoints/forms.py:155
 msgid ""
@@ -1127,16 +1120,18 @@ msgid ""
 "can edit the client, while group members can use it for authentication. "
 "Leave empty for a global client accessible to all users."
 msgstr ""
+"Les utilisateurs ou groupes qui possèdent ce client. Pour les groupes "
+"propriétaires : les propriétaires du groupe pourront éditer le client, et "
+"les membres du groupe pourront l'utiliser pour l'authentification. Laissez "
+"vide pour un client global accessible à tous les utilisateurs."
 
 #: canaille/oidc/endpoints/forms.py:198
 msgid "Token audiences"
 msgstr "Audiences des jetons"
 
 #: canaille/oidc/endpoints/forms.py:206
-#, fuzzy
-#| msgid "Given name"
 msgid "Client name …"
-msgstr "Prénom"
+msgstr "Nom du client …"
 
 #: canaille/oidc/endpoints/forms.py:208
 msgid ""
@@ -1149,16 +1144,20 @@ msgid ""
 "You and the groups you own that own this client. The group members can use "
 "the client."
 msgstr ""
+"Vous et les groupes que vous possédez qui possèdent ce client. Les membres "
+"des groupes peuvent utiliser le client."
 
 #: canaille/oidc/endpoints/forms.py:242
 msgid ""
 "You can only add the groups you own, and remove yourself or the groups you "
 "own."
 msgstr ""
+"Vous pouvez seulement ajouter les groupes que vous possédez, et vous retirer "
+"vous-même des groupes que vous possédez."
 
 #: canaille/oidc/endpoints/forms.py:249
 msgid "You would not be able to edit this client anymore."
-msgstr ""
+msgstr "Vous ne seriez plus en mesure d'éditer ce client."
 
 #: canaille/oidc/endpoints/forms.py:257
 msgid ""
@@ -1197,27 +1196,30 @@ msgstr ""
 "redirections, tels le code d'autorisation ou le flux implicite."
 
 #: canaille/oidc/endpoints/forms.py:317
-#, fuzzy, python-brace-format
-#| msgid "Kind of information that the client can request about users."
+#, python-brace-format
 msgid ""
 "Kind of information that the client can request about users. You can pick "
 "among: {scopes}."
 msgstr ""
-"Type d'informations que le client peut demander à propos des utilisateurs."
+"Type d'informations que le client peut demander à propos des utilisateurs. "
+"Vous pouvez choisir parmi : {scopes}."
 
 #: canaille/oidc/endpoints/forms.py:329
 #, python-brace-format
 msgid "You cannot add the {scopes} scopes."
-msgstr ""
+msgstr "Vous ne pouvez pas ajouter le scopes {scopes}."
 
 #: canaille/oidc/endpoints/forms.py:342
 msgid "You can only add or remove the clients you can edit."
 msgstr ""
+"Vous ne pouvez ajouter ou retirer que les clients que vous pouvez éditer."
 
 #: canaille/oidc/endpoints/forms.py:351
 #, python-brace-format
 msgid "Clients with owners cannot use the {grant_types} grant types."
 msgstr ""
+"Les clients avec propriétaires ne peuvent pas utiliser les types d'octroi "
+"{grant_types}."
 
 #: canaille/oidc/endpoints/forms.py:356
 msgid "Secret expiration"
@@ -1528,10 +1530,8 @@ msgstr ""
 "Request object et transmise via le paramètre request ou request_uri."
 
 #: canaille/oidc/endpoints/oauth.py:530 canaille/oidc/endpoints/oauth.py:567
-#, fuzzy
-#| msgid "The secret of this application has expired"
 msgid "The user code is invalid or has expired."
-msgstr "Le secret de cette application a expiré"
+msgstr "Le code utilisateur est invalide ou a expiré."
 
 #: canaille/oidc/endpoints/oauth.py:674 canaille/oidc/endpoints/oauth.py:709
 msgid "You have been disconnected"
@@ -1755,7 +1755,7 @@ msgstr "Supprimer le groupe"
 #: canaille/templates/core/group.html:87 canaille/templates/core/group.html:91
 #: canaille/templates/core/modals/step-down-group-owner.html:9
 msgid "Step down as owner"
-msgstr ""
+msgstr "Ne plus être propriétaire"
 
 #: canaille/templates/core/group.html:97
 msgid "Create group"
@@ -2935,6 +2935,7 @@ msgstr ""
 #: canaille/templates/core/mails/group_invitation.txt:5
 msgid "You will be an owner of this group, and you will be able to manage it."
 msgstr ""
+"Vous serez propriétaires de ce groupe, et vous serez en capacité de le gérer."
 
 #: canaille/templates/core/mails/group_invitation.html:41
 #: canaille/templates/core/mails/group_invitation.txt:10
@@ -3123,38 +3124,30 @@ msgstr ""
 "vous pour retourner sur votre session."
 
 #: canaille/templates/core/modals/join-group.html:9
-#, fuzzy
-#| msgid "Join Group"
 msgid "Join group"
 msgstr "Rejoindre le groupe"
 
 #: canaille/templates/core/modals/join-group.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "You have been invited to join the group '%(group)s'. Please log in to "
-#| "accept the invitation."
+#, python-format
 msgid ""
 "You have been invited to join the group \"%(group_name)s\" as an owner. You "
 "will be able to manage it. Do you want to join it?"
 msgstr ""
-"Vous avez été invité à joindre le groupe '%(group)s'. Veuillez vous "
-"identifier pour accepter l’invitation."
+"Vous avez été invité à joindre le groupe '%(group)s' en tant que "
+"propriétaire. Vous serez en mesure de le gérer. Voulez-vous le rejoindre ?"
 
 #: canaille/templates/core/modals/join-group.html:19
-#, fuzzy, python-format
-#| msgid ""
-#| "You have been invited to join the group '%(group)s'. Please log in to "
-#| "accept the invitation."
+#, python-format
 msgid ""
 "You have been invited to join the group \"%(group_name)s\". Do you want to "
 "join it?"
 msgstr ""
-"Vous avez été invité à joindre le groupe '%(group)s'. Veuillez vous "
-"identifier pour accepter l’invitation."
+"Vous avez été invité à joindre le groupe '%(group)s'. Voulez-vous le "
+"rejoindre ?"
 
 #: canaille/templates/core/modals/join-group.html:32
 msgid "Join"
-msgstr ""
+msgstr "Rejoindre"
 
 #: canaille/templates/core/modals/leave-group.html:9
 msgid "Leave group"
@@ -3252,21 +3245,19 @@ msgstr ""
 "application d’authentification ?"
 
 #: canaille/templates/core/modals/step-down-group-owner.html:13
-#, fuzzy, python-format
-#| msgid ""
-#| "Are you sure you want to leave the group \"%(group_name)s\"? You will no "
-#| "longer have access to this group unless you are invited again."
+#, python-format
 msgid ""
 "Are you sure you want to stop being an owner of the group "
 "\"%(group_name)s\"? Only an administrator or another owner can make you an "
 "owner again."
 msgstr ""
-"Êtes-vous sûrs de vouloir quitter le groupe « %(group_name)s » ? Vous "
-"n’aurez plus accès au groupe à moins d’être invité à nouveau."
+"Êtes-vous sûrs de ne plus vouloir être propriétaire du groupe « %(group_name)"
+"s » ? Seul un administrateur ou un autre propriétaire pourra vous faire à "
+"nouveau propriétaire."
 
 #: canaille/templates/core/modals/step-down-group-owner.html:24
 msgid "Step down"
-msgstr ""
+msgstr "Se retirer"
 
 #: canaille/templates/core/partial/captcha_field.html:31
 msgid "Listen to the audio security code"
@@ -3597,45 +3588,40 @@ msgstr ""
 "Vous n'avez pas encore autorisé d'application à accéder à votre profil."
 
 #: canaille/templates/oidc/device.html:33
-#, fuzzy
-#| msgid "Unauthorized"
 msgid "Device authorized"
-msgstr "Accès interdit"
+msgstr "Appareil autorisé"
 
 #: canaille/templates/oidc/device.html:37
 #, python-format
 msgid "You may now go back to %(name)s on your device."
-msgstr ""
+msgstr "Vous pouvez désormais retourner sur %(name)s sur votre appareil."
 
 #: canaille/templates/oidc/device.html:43
-#, fuzzy
-#| msgid "View an authorization"
 msgid "Device authorization denied"
-msgstr "Voir une autorisation"
+msgstr "Autorisation de l'appareil refusée"
 
 #: canaille/templates/oidc/device.html:47
 msgid "The authorization request has been denied. You may close this page."
-msgstr ""
+msgstr "La requête d'autorisation a été refusée. Vous pouvez fermer cette page."
 
 #: canaille/templates/oidc/device.html:58
-#, fuzzy, python-format
-#| msgid "The application %(name)s is requesting access to:"
+#, python-format
 msgid "The device %(name)s is requesting access to:"
-msgstr "L'application %(name)s demande un accès à :"
+msgstr "L'appareil %(name)s demande un accès à :"
 
 #: canaille/templates/oidc/device.html:84
 msgid "Make sure this code matches the one displayed on your device."
 msgstr ""
+"Assurez-vous que ce code correspond à celui qui est affiché sur votre "
+"appareil."
 
 #: canaille/templates/oidc/device.html:110
-#, fuzzy
-#| msgid "Authorization interface"
 msgid "Authorize a device"
-msgstr "Interface de gestion des autorisations"
+msgstr "Autoriser un appareil"
 
 #: canaille/templates/oidc/device.html:112
 msgid "Enter the code displayed on your device to authorize it."
-msgstr ""
+msgstr "Saisissez le code affiché sur votre appareil pour l'autoriser."
 
 #: canaille/templates/oidc/logout.html:19
 msgid "Do you want to log out?"
