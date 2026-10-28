@@ -8,6 +8,7 @@ RUN \
     libsasl2-dev \
     libldap2-dev \
     libssl-dev \
+    libcairo2 \
     curl
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
