@@ -1,6 +1,11 @@
 [0.4.1] - Unreleased
 --------------------
 
+Changed
+^^^^^^^
+- The endpoints that other servers call, such as token introspection and SCIM,
+  accept any host name, for instance the internal name of a container.
+
 Fixed
 ^^^^^
 - The CLI displays an error for unknown references, instead of saving empty values.

@@ -123,6 +123,18 @@ def test_discovery_needs_no_token(app, path):
     assert response.status_code == 200
 
 
+@pytest.mark.parametrize(
+    "path", ["/ServiceProviderConfig", "/ResourceTypes", "/Schemas"]
+)
+def test_discovery_on_any_host(app, path):
+    """Other servers can call SCIM on any host name."""
+    response = Client(app).get(
+        f"/scim/v2{path}", headers={"Host": "canaille.foobar.test"}
+    )
+    assert response.status_code == 200
+    assert "canaille.foobar.test" not in response.text
+
+
 def test_resources_need_a_token(app):
     """The resources need a token, and the 401 response tells how to get one."""
     response = Client(app).get(

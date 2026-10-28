@@ -5,7 +5,10 @@
 
 # The Flask SERVER_NAME configuration setting.
 #
-# This sets domain name on which canaille will be served.
+# This sets domain name on which canaille will be served. Requests on other host
+# names are redirected to it, except the endpoints that other servers call, such
+# as token introspection and SCIM. TRUSTED_HOSTS can limit the accepted host
+# names.
 # SERVER_NAME =
 
 # The Flask TRUSTED_HOSTS configuration setting.

@@ -38,6 +38,17 @@ dramatiq = Dramatiq(
 )
 
 
+def any_host(view):
+    """Accept requests on any host name, and not only on ``SERVER_NAME``.
+
+    This is for the endpoints that other servers call, for instance
+    with the internal name of a container. Their responses must not
+    depend on the request host.
+    """
+    view.any_host = True
+    return view
+
+
 def user_needed(*args):
     permissions = set(args)
 
@@ -224,7 +235,12 @@ def setup_flask(app) -> None:
     def redirect_to_server_name():
         """Redirect requests to SERVER_NAME if host doesn't match."""
         server_name = app.config.get("SERVER_NAME")
-        if not server_name or request.host == server_name:
+        view = app.view_functions.get(request.endpoint)
+        if (
+            not server_name
+            or request.host == server_name
+            or getattr(view, "any_host", False)
+        ):
             return None
 
         if request.method != "GET":
