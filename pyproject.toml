@@ -43,7 +43,7 @@ dependencies = [
     "pydantic-settings >= 2.8.0",
     "wtforms >= 3.3.0",
     "wtforms-htmx >= 0.1.0",
-    "wtforms-htmx-components >= 0.1.2",
+    "wtforms-htmx-components >= 0.3.0",
 ]
 
 [project.optional-dependencies]

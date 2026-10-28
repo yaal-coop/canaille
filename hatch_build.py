@@ -28,6 +28,9 @@ VENDOR_FILES = {
     "jquery": {"dist/jquery.min.js": "jquery/jquery.min.js"},
     "htmx.org": {"dist/htmx.min.js": "htmx/htmx.min.js"},
     "idiomorph": {"dist/idiomorph-ext.min.js": "idiomorph/idiomorph-ext.min.js"},
+    "wtforms-htmx-components": {
+        "combobox.js": "wtforms-htmx-components/combobox.js",
+    },
 }
 
 

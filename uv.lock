@@ -470,7 +470,7 @@ requires-dist = [
     { name = "webauthn", marker = "extra == 'fido'", specifier = ">=2.7.0" },
     { name = "wtforms", specifier = ">=3.3.0" },
     { name = "wtforms-htmx", specifier = ">=0.1.0" },
-    { name = "wtforms-htmx-components", specifier = ">=0.1.2" },
+    { name = "wtforms-htmx-components", specifier = ">=0.3.0" },
     { name = "zxcvbn-rs-py", marker = "extra == 'front'", specifier = ">=0.3.0" },
 ]
 provides-extras = ["front", "oidc", "scim", "ldap", "sentry", "sqlite", "postgresql", "mysql", "otp", "fido", "sms", "captcha", "server", "redis", "rabbitmq"]
@@ -4433,15 +4433,15 @@ wheels = [
 
 [[package]]
 name = "wtforms-htmx-components"
-version = "0.1.2"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "wtforms" },
     { name = "wtforms-htmx" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/61/7a/db020f0cce3364d1af3d1b4e9c7e3954ea59635704c4379cc273dfb71ac2/wtforms_htmx_components-0.1.2.tar.gz", hash = "sha256:11b9f2d40ec56c58a9a020c831008f4bb14e2a1401d15832ba7438d9567728c0", size = 11882, upload-time = "2026-10-27T20:58:45.276Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/37/a4/e8ecc8b978b58e7d788ed829f3af80ed6f3e831feb647a60b542bbfe02bb/wtforms_htmx_components-0.3.0.tar.gz", hash = "sha256:3628625ed43c55dfd2d0a38a8e1262cb23eb618ec46201099e0a4faf212ce2b4", size = 12224, upload-time = "2026-10-28T00:25:44.192Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/99/da010949680f85be244a3d4f43d189b8371cf1f0893981b67a2871e21104/wtforms_htmx_components-0.1.2-py3-none-any.whl", hash = "sha256:6925e37d5f5fdc0cc287c02e0a617b5e331595cee24ecfc598cefc9768f65358", size = 11450, upload-time = "2026-10-27T20:58:44.224Z" },
+    { url = "https://files.pythonhosted.org/packages/51/86/a8c413594430b2466160892195423a2c9b0526c6c15f9ca7d160467fded5/wtforms_htmx_components-0.3.0-py3-none-any.whl", hash = "sha256:47467e2c515c201a283c5bb19ce532499f806ed74583d6e9b86dd1a11e7db391", size = 11724, upload-time = "2026-10-28T00:25:43.091Z" },
 ]
 
 [[package]]

@@ -210,7 +210,7 @@ The main template inherited by almost every other templates.
                     <script src="{{ url_for("static", filename="vendor/idiomorph/idiomorph-ext.min.js") }}" defer></script>
                 {% endif %}
                 <script src="{{ url_for("static", filename="js/base.js") }}" defer></script>
-                <script src="{{ url_for("static", filename="js/combobox.js") }}" defer></script>
+                <script src="{{ url_for("static", filename="vendor/wtforms-htmx-components/combobox.js") }}" defer></script>
             {% endif %}
             {% block script %}{% endblock %}
         {% endif %}

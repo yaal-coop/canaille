@@ -204,9 +204,9 @@ action_button=none
     <div id="wrap-{{ field.id }}" class="field{% if field.errors %} error{% endif %}">
         {{ field.label() }}
         {% set readonly = field.flags.readonly or field.flags.disabled %}
-        <div class="combobox">
+        <div class="combobox" data-combobox>
             <div class="combobox-control">
-                <div class="combobox-field">
+                <div class="combobox-field" data-combobox-field>
                     {% if field.description %}<i class="question circle link icon" title="{{ field.description }}"></i>{% endif %}
                     {{ field.value() }}
                     {% if readonly %}
