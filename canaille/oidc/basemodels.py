@@ -47,6 +47,10 @@ class Client(Model):
 
     # keep 'List' instead of 'list' do not break py310 with the memory backend
     audience: List["Client"] = []  # noqa: UP006
+    """The other clients that are intended to use the tokens emitted by this client.
+
+    The client itself is always part of the audience of its tokens.
+    """
 
     client_id: str | None
     """REQUIRED.

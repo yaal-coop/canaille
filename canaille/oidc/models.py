@@ -164,6 +164,11 @@ class Client(BaseClient, ClientMixin):
 
         return metadata
 
+    @property
+    def full_audience(self):
+        """The client and the other clients of its audience."""
+        return list(dict.fromkeys([self, *(self.audience or [])]))
+
     @classmethod
     def on_delete(cls, self, data):
         for consent in Backend.instance.query(models.Consent, client=self):
@@ -323,6 +328,11 @@ class Token(BaseToken, TokenMixin):
     @property
     def revoked(self):
         return bool(self.revokation_date)
+
+    @property
+    def full_audience(self):
+        """The client that issued the token and the other clients of its audience."""
+        return list(dict.fromkeys([self.client, *(self.audience or [])]))
 
     def get_scope(self):
         return " ".join(self.scope)

@@ -102,7 +102,8 @@ def test_client_registration_with_authentication_jwt_token(
     assert created_client.token_endpoint_auth_method == "client_secret_basic"
     assert created_client.logo_uri == "https://client.test/logo.webp"
     assert created_client.jwks_uri == "https://client.test/my_public_keys.jwks"
-    assert created_client in created_client.audience
+    assert created_client.audience == []
+    assert created_client.full_audience == [created_client]
     backend.delete(created_client)
 
 

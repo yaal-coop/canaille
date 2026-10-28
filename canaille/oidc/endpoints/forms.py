@@ -171,6 +171,7 @@ def audience_combobox():
     """Return a combobox field that picks the clients intended to use the tokens.
 
     The users who cannot manage all clients only find the clients they can edit.
+    The edited client is not suggested, as it is always part of its audience.
     """
 
     def suggest(query, form):
@@ -182,7 +183,8 @@ def audience_combobox():
         for client in Backend.instance.fuzzy(
             models.Client, query, ["client_name", "client_id"], **filter
         ):
-            yield wtforms.SelectChoice(client.id, client.client_name)
+            if client != form.client:
+                yield wtforms.SelectChoice(client.id, client.client_name)
 
     def coerce(client_id):
         if client := Backend.instance.get(models.Client, id=client_id):

@@ -235,7 +235,7 @@ class OIDCGrantMixin:
     def get_client_claims(self, client):
         return {
             "iss": get_issuer(),
-            "aud": [aud.client_id for aud in client.audience],
+            "aud": [aud.client_id for aud in client.full_audience],
         }
 
     def get_encode_header(self, client):
@@ -569,10 +569,10 @@ class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
         return query_token(token, token_type_hint)
 
     def check_permission(self, token, client, request):
-        return client in token.audience
+        return client in token.full_audience
 
     def introspect_token(self, token):
-        audience = [aud.client_id for aud in token.audience]
+        audience = [aud.client_id for aud in token.full_audience]
         response = {
             "active": True,
             "client_id": token.client.client_id,
@@ -754,8 +754,6 @@ class ClientRegistrationEndpoint(
             **self.client_convert_data(**client_info, **client_metadata),
         )
         Backend.instance.save(client)
-        client.audience = [client]
-        Backend.instance.save(client)
 
         current_app.logger.security(
             f"OIDC Dynamic Client Creation of {client.client_id}"
@@ -916,7 +914,7 @@ def generate_access_token(client, grant_type, user, scope):
         # instead of a random string
         return gen_salt(48)
 
-    audience = [client.client_id for client in client.audience]
+    audience = [aud.client_id for aud in client.full_audience]
     jwk, alg = _get_signing_key(client)
     bearer_token_generator = authorization._token_generators["default"]
     return generate_id_token(
