@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-10-27 23:55+0100\n"
-"PO-Revision-Date: 2026-10-28 09:02+0000\n"
-"Last-Translator: Éloi Rivard <azmeuk@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-29 14:32+0000\n"
+"Last-Translator: sblondon <sblondon@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -38,7 +38,7 @@ msgstr "Aucun serveur SMTP n'a été configuré"
 #: canaille/app/flask.py:234
 #, python-format
 msgid "This request should be sent to %(server_name)s"
-msgstr "La requête doit être envoyée à %(server_name)s"
+msgstr "Cette requête doit être envoyée à %(server_name)s"
 
 #: canaille/app/forms.py:27
 msgid "This is not a valid URL"
@@ -92,10 +92,10 @@ msgid ""
 "password compromise investigation.Please update your password as soon as "
 "possible. If this still happens, please contact the administrators."
 msgstr ""
-"Une erreur s'est produite lors de la communication de l'incident aux "
-"administrateurs. Nous contactons votre administrateur pour l'avertir. "
-"Veuillez mettre à jour votre mot de passe dès que possible. Si cela se "
-"produit encore, veuillez contacter les administrateurs."
+"Nous contactons votre administrateur pour l'avertir de l'erreur lors de la "
+"recherche de compromission du mot de passe. Veuillez mettre à jour votre mot "
+"de passe dès que possible. Si cela se produit encore, veuillez contacter les "
+"administrateurs."
 
 #: canaille/backends/ldap/backend.py:175
 #, python-brace-format
@@ -136,7 +136,7 @@ msgstr "jdupont"
 
 #: canaille/core/auth.py:283
 msgid "john.doe@example.com"
-msgstr "jean.dupont@schmilblick.fr"
+msgstr "jean.dupont@cogip.example"
 
 #: canaille/core/auth.py:290
 msgid " or "
@@ -236,7 +236,7 @@ msgstr "Aucun utilisateur enregistré avec cet email."
 
 #: canaille/core/validators.py:95
 msgid "A user with this email address is already a member of this group."
-msgstr "Un utilisateur avec cette adresse email fait déjà parti de ce groupe."
+msgstr "Un utilisateur avec cette adresse e-mail fait déjà parti de ce groupe."
 
 #: canaille/core/validators.py:109
 msgid "This file is not a supported image."
@@ -263,7 +263,7 @@ msgstr "Seuls les administrateurs peuvent supprimer '{user}' des propriétaires.
 #: canaille/core/endpoints/admin.py:23
 #: canaille/templates/core/partial/users.html:15
 msgid "Email"
-msgstr "Email"
+msgstr "E-mail"
 
 #: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:49
 #: canaille/core/endpoints/forms.py:124 canaille/core/endpoints/forms.py:244
@@ -271,11 +271,11 @@ msgstr "Email"
 #: canaille/core/endpoints/forms.py:689 canaille/core/endpoints/forms.py:706
 #: canaille/core/endpoints/forms.py:722
 msgid "jane.doe@example.com"
-msgstr "camille.dupont@schmilblick.fr"
+msgstr "camille.dupont@cogip.example"
 
 #: canaille/core/endpoints/admin.py:42
 msgid "Sending test mail. Please check the recipient mail box."
-msgstr "Envoi d'un email d’essai. Veuillez vérifier votre boîte de réception."
+msgstr "Envoi d'un e-mail d’essai. Veuillez vérifier votre boîte de réception."
 
 #: canaille/core/endpoints/admin.py:184
 #, python-brace-format
@@ -285,7 +285,7 @@ msgstr "Invitation sur {website_name}"
 #: canaille/core/endpoints/admin.py:226 canaille/core/endpoints/admin.py:268
 #, python-brace-format
 msgid "Email confirmation on {website_name}"
-msgstr "Confirmation de votre adresse email sur {website_name}"
+msgstr "Confirmation de votre adresse e-mail sur {website_name}"
 
 #: canaille/core/endpoints/admin.py:349
 #, python-brace-format
@@ -391,13 +391,13 @@ msgstr "Martin.D"
 #: canaille/core/endpoints/forms.py:234 canaille/core/endpoints/forms.py:712
 #: canaille/templates/core/account/edit.html:197
 msgid "Email addresses"
-msgstr "Adresses email"
+msgstr "Adresses e-mail"
 
 #: canaille/core/endpoints/forms.py:241 canaille/core/endpoints/forms.py:703
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
-"Cet email servira d'adresse électronique de récupération pour recevoir une "
+"Cet e-mail servira d'adresse électronique de récupération pour recevoir une "
 "réinitialisation de mot de passe en cas de besoin"
 
 #: canaille/core/endpoints/forms.py:255
@@ -472,7 +472,7 @@ msgstr "Organisation"
 
 #: canaille/core/endpoints/forms.py:355
 msgid "Cogip LTD."
-msgstr "Cogip SARL."
+msgstr "Cogip SARL"
 
 #: canaille/core/endpoints/forms.py:360
 msgid "Website"
@@ -512,7 +512,7 @@ msgstr "Rechercher"
 
 #: canaille/core/endpoints/forms.py:536 canaille/core/endpoints/forms.py:549
 msgid "Jane Doe, jane.doe@example.com …"
-msgstr "Camille Dupont, camille.dupont@schmilblick.fr …"
+msgstr "Camille Dupont, camille.dupont@cogip.example …"
 
 #: canaille/core/endpoints/forms.py:543 canaille/oidc/endpoints/forms.py:145
 msgid "Owners"
