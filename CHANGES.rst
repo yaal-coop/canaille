@@ -5,6 +5,8 @@ Fixed
 ^^^^^
 - The CLI saved unknown references as empty values, for instance an unknown client
   in ``--audience``. It now displays an error.
+- ``canaille clean`` removes the consents and authorization codes of the users
+  deleted before Canaille 0.4.0.
 
 [0.4.0] - 2026-10-28
 --------------------

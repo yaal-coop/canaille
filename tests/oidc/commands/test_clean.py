@@ -105,3 +105,50 @@ def test_clean_command(cli_runner, backend, client, user):
     assert backend.get(models.AuthorizationCode) == valid_code
     assert backend.get(models.Token, subject=user) == valid_token
     assert backend.get(models.DeviceCode) == valid_device_code
+
+
+def test_clean_command_deleted_users(
+    cli_runner, testclient, backend, client, consent, monkeypatch
+):
+    """The clean command removes the consents and codes of deleted users."""
+    user = models.User(
+        user_name="temp-user",
+        formatted_name="Temp User",
+        family_name="User",
+    )
+    backend.save(user)
+    orphan_consent = models.Consent(
+        consent_id=gen_salt(48),
+        client=client,
+        subject=user,
+        scope=["openid"],
+        issue_date=datetime.datetime.now(datetime.UTC),
+    )
+    backend.save(orphan_consent)
+    orphan_code = models.AuthorizationCode(
+        authorization_code_id=gen_salt(48),
+        code=gen_salt(48),
+        client=client,
+        subject=user,
+        redirect_uri="https://foobar.test/callback",
+        response_type="code",
+        scope=["openid"],
+        issue_date=datetime.datetime.now(datetime.UTC),
+        lifetime=3600,
+    )
+    backend.save(orphan_code)
+    orphan_consent_id = orphan_consent.consent_id
+    orphan_code_id = orphan_code.authorization_code_id
+
+    with monkeypatch.context() as patch:
+        patch.setitem(testclient.app.config["CANAILLE_OIDC"], "ENABLE_OIDC", False)
+        backend.delete(user)
+
+    res = cli_runner.invoke(cli, ["clean"])
+    assert res.exit_code == 0, res.stdout
+
+    assert not backend.get(models.Consent, consent_id=orphan_consent_id)
+    assert not backend.get(
+        models.AuthorizationCode, authorization_code_id=orphan_code_id
+    )
+    assert backend.get(models.Consent, consent_id=consent.consent_id)
