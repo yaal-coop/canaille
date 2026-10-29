@@ -36,7 +36,7 @@ def check_if_send_mail_to_admins(form, api_url, hashed_password_suffix):
     )
     flash(
         _(
-            "We are sending an email to your administrator about the failure of the password compromise investigation."
+            "We are sending an email to your administrator about the failure of the password compromise investigation. "
             "Please update your password as soon as possible. "
             "If this still happens, please contact the administrators."
         ),
