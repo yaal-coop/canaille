@@ -424,10 +424,9 @@ def create_command():
 
 
 def delete_factory(model):
-    command_help = f"""Delete a {model.__name__.lower()}.
+    command_help = f"""Delete the {model.__name__.lower()}s that match the filters.
 
-    IDENTIFIER should be a {model.__name__.lower()} id or
-    {model.identifier_attribute}
+    Without filters, all the {model.__name__.lower()}s are deleted.
     """
 
     @click.command(name=model.__name__.lower(), help=command_help)
@@ -437,7 +436,7 @@ def delete_factory(model):
         "--noconfirm",
         is_flag=True,
         default=False,
-        help="Ask for confirmation before deleting objects.",
+        help="Delete without asking for confirmation.",
     )
     @click.option(
         "--ignore-errors",
@@ -458,7 +457,7 @@ def delete_factory(model):
 
         if len(items) > 0 and not noconfirm:
             confirmation = click.confirm(
-                f"{len(items)} will be deleted. Do you confirm?"
+                f"{len(items)} {model.__name__.lower()}(s) will be deleted. Do you confirm?"
             )
             if not confirmation:
                 return
@@ -488,9 +487,8 @@ def delete_factory(model):
 def delete_command():
     """Delete models.
 
-    The command takes a model ID and deletes it.
-    By default all models are deleted, to restrict the deletion parameters like ``--id`` can be used,
-    then only the items matching the filters will be deleted:
+    By default all the models are deleted.
+    Options like ``--id`` restrict the deletion to the matching models:
 
     .. code-block:: console
 

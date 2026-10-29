@@ -17,6 +17,7 @@ def test_delete_all_with_confirmation(cli_runner, backend):
 
     res = cli_runner.invoke(cli, ["delete", "user"], input="Y")
     assert res.exit_code == 0, res.stdout
+    assert "1 user(s) will be deleted. Do you confirm? [y/N]: Y" in res.stdout
     assert "1 item(s) deleted." in res.stdout.splitlines()
 
     assert not backend.get(models.User, user_name="foobar")

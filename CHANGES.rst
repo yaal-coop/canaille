@@ -7,6 +7,10 @@ Changed
   A warning is logged when a deleted user or group is not found on a client.
 - Clients whose SCIM server does not support filters are not provisioned.
 
+Fixed
+^^^^^
+- The help of ``canaille delete`` described arguments and options incorrectly.
+
 [0.4.1] - 2026-10-28
 --------------------
 
