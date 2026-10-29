@@ -168,7 +168,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_success_
 
     assert (
         "info",
-        "We are sending an email to your administrator about the failure of the password compromise investigation."
+        "We are sending an email to your administrator about the failure of the password compromise investigation. "
         "Please update your password as soon as possible. "
         "If this still happens, please contact the administrators.",
     ) in res.flashes
@@ -210,7 +210,7 @@ def test_compromised_password_validator_with_failure_of_api_request_and_fail_to_
 
     assert (
         "info",
-        "We are sending an email to your administrator about the failure of the password compromise investigation."
+        "We are sending an email to your administrator about the failure of the password compromise investigation. "
         "Please update your password as soon as possible. "
         "If this still happens, please contact the administrators.",
     ) in res.flashes
