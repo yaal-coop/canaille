@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-10-29 22:02+0100\n"
-"PO-Revision-Date: 2026-10-29 14:32+0000\n"
-"Last-Translator: sblondon <sblondon@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-10-29 21:23+0000\n"
+"Last-Translator: Éloi Rivard <azmeuk@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
 "Language: fr\n"
@@ -87,11 +87,6 @@ msgstr ""
 "contacter les administrateurs."
 
 #: canaille/app/mails_sending_conditions.py:39
-#, fuzzy
-#| msgid ""
-#| "We are sending an email to your administrator about the failure of the "
-#| "password compromise investigation.Please update your password as soon as "
-#| "possible. If this still happens, please contact the administrators."
 msgid ""
 "We are sending an email to your administrator about the failure of the "
 "password compromise investigation. Please update your password as soon as "
@@ -227,16 +222,13 @@ msgid "The user '{user}' has already been removed from the group '{group}'"
 msgstr "L’utilisateur « {user} » a déjà été retiré du groupe « {group} »"
 
 #: canaille/core/validators.py:67
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "The group '{group}' cannot be removed, because it must have at least one "
-#| "user left."
+#, python-brace-format
 msgid ""
 "The user '{user}' cannot be removed, because the group '{group}' must have "
 "at least one member."
 msgstr ""
-"Le groupe « {group} » doit garder au minimum un utilisateur, et ne peut être "
-"retiré."
+"L'utilisateur '{user}' ne peut pas être supprimé, car le groupe '{group}' "
+"doit avoir au moins un membre."
 
 #: canaille/core/validators.py:81
 #, python-brace-format
@@ -644,11 +636,9 @@ msgstr ""
 "Vous ne pouvez pas quitter %(group)s car vous êtes son dernier propriétaire."
 
 #: canaille/core/endpoints/groups.py:303
-#, fuzzy, python-format
-#| msgid "You cannot leave %(group)s because you are its last owner."
+#, python-format
 msgid "You cannot leave %(group)s because you are its last member."
-msgstr ""
-"Vous ne pouvez pas quitter %(group)s car vous êtes son dernier propriétaire."
+msgstr "Vous ne pouvez pas quitter %(group)s car vous êtes son dernier membre."
 
 #: canaille/core/endpoints/groups.py:317
 #, python-format
@@ -3098,12 +3088,12 @@ msgstr ""
 
 #: canaille/templates/core/modals/delete-account.html:24
 msgid "The groups whose only member is this account will be deleted."
-msgstr ""
+msgstr "Les groupes dont le seul membre est ce compte seront supprimés."
 
 #: canaille/templates/core/modals/delete-account.html:26
 msgid ""
 "The clients owned only by this account or by these groups will be deleted."
-msgstr ""
+msgstr "Les clients détenus seulement par ce compte seront supprimés."
 
 #: canaille/templates/core/modals/delete-credential.html:10
 msgid "Delete passkey"
