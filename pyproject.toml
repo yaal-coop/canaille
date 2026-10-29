@@ -155,7 +155,7 @@ dev = [
     "maildump>=1.0; python_version<'3.12'",
     "maildump>=1.1; python_version>='3.12'",
     "pyquery >= 2.0.0",
-    "pytest >= 8.0.0",
+    "pytest >= 9.1.1",
     "pytest-cov >= 6.0.0",
     "pytest-httpserver >= 1.1.0",
     "pytest-lazy-fixtures >= 1.0.7",
@@ -163,7 +163,7 @@ dev = [
     "pytest-smtpd >= 0.1.0",
     "pytest-xdist >= 3.3.1",
     "python-avatars >= 1.4.0",
-    "scim2-tester>=0.5.2",
+    "scim2-tester[testing]>=0.6.0",
     "slapd >= 0.1.5",
     "time-machine >= 2.14.1",
     "tox-uv >= 1.16.0",
@@ -269,6 +269,7 @@ cache-keys = [
 testpaths = ["tests"]
 filterwarnings = [
     "ignore::joserfc.errors.SecurityWarning",
+    "error::scim2_tester.testing.ScimDeviationWarning",
 ]
 
 [tool.coverage.run]
