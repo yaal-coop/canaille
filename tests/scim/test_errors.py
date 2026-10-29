@@ -95,23 +95,6 @@ def test_query_user_with_empty_profile_url(app, backend, scim_client):
     backend.delete(u)
 
 
-def test_invalid_payload(app, backend, scim_client):
-    """Test that SCIM API returns an invalidValue error when creating a user with an empty payload."""
-    # TODO: push this test in scim2-tester
-    scim_client.discover()
-    User = scim_client.get_resource_model("User")
-    error = scim_client.create(
-        User,
-        {"schemas": [User.__schema__]},
-        check_request_payload=False,
-        url="/Users",
-        raise_scim_errors=False,
-    )
-    assert isinstance(error, Error)
-    assert error.scim_type == "invalidValue"
-    assert error.status == 400
-
-
 @pytest.mark.parametrize(
     "path", ["/ServiceProviderConfig", "/ResourceTypes", "/Schemas"]
 )
