@@ -117,6 +117,13 @@ def initiate_scim_client(client):
             f"SCIM protocol not supported by client {client.client_name}"
         )
         return None
+
+    if not scim.provider.config.filter.supported:
+        current_app.logger.error(
+            f"SCIM client {client.client_name} does not support filters, it cannot be provisioned"
+        )
+        return None
+
     return scim
 
 
@@ -137,11 +144,15 @@ def execute_scim_user_action(client_id, user_id, method):
     response = scim.query(User, query_parameters=req)
     distant_scim_user = response.resources[0] if response.resources else None
 
-    if method == "delete" and distant_scim_user:
+    if method == "delete" and not distant_scim_user:
+        current_app.logger.warning(
+            f"SCIM User {user_id} not found on client {client.client_name}, nothing deleted"
+        )
+    elif method == "delete":
         try:
             scim.delete(User, distant_scim_user.id)
         except (SCIMClientException, SCIMException):
-            current_app.logger.warning(
+            current_app.logger.error(
                 f"SCIM User {user.user_name} delete for client {client.client_name} failed"
             )
     elif method == "save":
@@ -151,14 +162,14 @@ def execute_scim_user_action(client_id, user_id, method):
             try:
                 scim.create(scim_user)
             except Exception:
-                current_app.logger.warning(
+                current_app.logger.error(
                     f"SCIM User {user.user_name} creation for client {client.client_name} failed"
                 )
         else:
             try:
                 update_distant_resource(scim, distant_scim_user, scim_user)
             except Exception:
-                current_app.logger.warning(
+                current_app.logger.error(
                     f"SCIM User {user.user_name} update for client {client.client_name} failed"
                 )
 
@@ -177,11 +188,15 @@ def execute_scim_group_action(scim, group, client_name, method):
     response = scim.query(Group, query_parameters=req)
     scim_group = response.resources[0] if response.resources else None
 
-    if method == "delete" and scim_group:
+    if method == "delete" and not scim_group:
+        current_app.logger.warning(
+            f"SCIM Group {group.display_name} not found on client {client_name}, nothing deleted"
+        )
+    elif method == "delete":
         try:
             scim.delete(Group, scim_group.id)
         except Exception:
-            current_app.logger.warning(
+            current_app.logger.error(
                 f"SCIM Group {group.display_name} delete for client {client_name} failed"
             )
     elif method == "save":  # pragma: no branch
@@ -190,14 +205,14 @@ def execute_scim_group_action(scim, group, client_name, method):
             try:
                 scim.create(group)
             except Exception:
-                current_app.logger.warning(
+                current_app.logger.error(
                     f"SCIM Group {group.display_name} creation for client {client_name} failed"
                 )
         else:
             try:
                 update_distant_resource(scim, scim_group, group)
             except Exception:
-                current_app.logger.warning(
+                current_app.logger.error(
                     f"SCIM Group {group.display_name} update for client {client_name} failed"
                 )
 

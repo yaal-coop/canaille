@@ -231,6 +231,72 @@ def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplo
     ) in caplog.record_tuples
 
 
+def test_save_user_when_client_doesnt_support_filters(
+    testclient, scim_client_for_trusted_client, backend, user, caplog
+):
+    """Test that a client is not provisioned when its SCIM server does not support filters."""
+    discover = SyncSCIMClient.discover
+
+    def discover_without_filters(scim):
+        discover(scim)
+        scim.provider.config.filter.supported = False
+
+    with (
+        mock.patch(
+            "scim2_client.engines.httpx2.SyncSCIMClient.discover",
+            autospec=True,
+            side_effect=discover_without_filters,
+        ),
+        mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.modify") as modify,
+    ):
+        user.display_name = "Jo"
+        backend.save(user)
+
+    modify.assert_not_called()
+    assert (
+        "canaille",
+        logging.ERROR,
+        "SCIM client Some client does not support filters, it cannot be provisioned",
+    ) in caplog.record_tuples
+
+
+def test_delete_user_not_found_on_client(
+    testclient, scim_client_for_trusted_client, backend, user, caplog
+):
+    """Test that a warning is logged when a deleted user cannot be found on the client."""
+    User = scim_client_for_trusted_client.get_resource_model("User")
+    scim_client_for_trusted_client.delete(
+        User, distant_user(scim_client_for_trusted_client, user).id
+    )
+
+    backend.delete(user)
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        f"SCIM User {user.id} not found on client Some client, nothing deleted",
+    ) in caplog.record_tuples
+
+
+def test_delete_group_not_found_on_client(
+    testclient, scim_client_for_trusted_client, backend, user, caplog
+):
+    """Test that a warning is logged when a deleted group cannot be found on the client."""
+    Group = scim_client_for_trusted_client.get_resource_model("Group")
+    group = models.Group(members=[user], display_name="foobar")
+    backend.save(group)
+    distant_group = scim_client_for_trusted_client.query(Group).resources[0]
+    scim_client_for_trusted_client.delete(Group, distant_group.id)
+
+    backend.delete(group)
+
+    assert (
+        "canaille",
+        logging.WARNING,
+        "SCIM Group foobar not found on client Some client, nothing deleted",
+    ) in caplog.record_tuples
+
+
 def test_clients_with_owners_are_not_notified(backend, user, consent):
     """The users are not provisioned to the clients with owners."""
     client = consent.client
@@ -355,7 +421,7 @@ def test_failed_scim_user_creation(
     backend,
     caplog,
 ):
-    """Test that a warning is logged when SCIM user creation fails."""
+    """Test that an error is logged when SCIM user creation fails."""
     scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     alice = models.User(
@@ -368,7 +434,7 @@ def test_failed_scim_user_creation(
 
     assert (
         "canaille",
-        logging.WARNING,
+        logging.ERROR,
         "SCIM User alice creation for client Some client failed",
     ) in caplog.record_tuples
 
@@ -384,7 +450,7 @@ def test_failed_scim_user_update(
     caplog,
     user,
 ):
-    """Test that a warning is logged when SCIM user update fails."""
+    """Test that an error is logged when SCIM user update fails."""
     scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     user.display_name = "Jo"
@@ -392,7 +458,7 @@ def test_failed_scim_user_update(
 
     assert (
         "canaille",
-        logging.WARNING,
+        logging.ERROR,
         "SCIM User user update for client Some client failed",
     ) in caplog.record_tuples
 
@@ -406,14 +472,14 @@ def test_failed_scim_user_delete(
     caplog,
     user,
 ):
-    """Test that a warning is logged when SCIM user deletion fails."""
+    """Test that an error is logged when SCIM user deletion fails."""
     scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     backend.delete(user)
 
     assert (
         "canaille",
-        logging.WARNING,
+        logging.ERROR,
         "SCIM User user delete for client Some client failed",
     ) in caplog.record_tuples
 
@@ -427,7 +493,7 @@ def test_failed_scim_group_creation(
     caplog,
     user,
 ):
-    """Test that a warning is logged when SCIM group creation fails."""
+    """Test that an error is logged when SCIM group creation fails."""
     scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     group = models.Group(
@@ -438,7 +504,7 @@ def test_failed_scim_group_creation(
 
     assert (
         "canaille",
-        logging.WARNING,
+        logging.ERROR,
         "SCIM Group foobar creation for client Some client failed",
     ) in caplog.record_tuples
 
@@ -455,7 +521,7 @@ def test_failed_scim_group_update(
     bar_group,
     user,
 ):
-    """Test that a warning is logged when SCIM group update fails."""
+    """Test that an error is logged when SCIM group update fails."""
     scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     bar_group.members = bar_group.members + [user]
@@ -463,7 +529,7 @@ def test_failed_scim_group_update(
 
     assert (
         "canaille",
-        logging.WARNING,
+        logging.ERROR,
         "SCIM Group bar update for client Some client failed",
     ) in caplog.record_tuples
 
@@ -477,7 +543,7 @@ def test_failed_scim_group_delete(
     caplog,
     user,
 ):
-    """Test that a warning is logged when SCIM group deletion fails."""
+    """Test that an error is logged when SCIM group deletion fails."""
     scim_mock.side_effect = mock.Mock(side_effect=SCIMClientException("error"))
 
     group = models.Group(
@@ -490,7 +556,7 @@ def test_failed_scim_group_delete(
 
     assert (
         "canaille",
-        logging.WARNING,
+        logging.ERROR,
         "SCIM Group foobar delete for client Some client failed",
     ) in caplog.record_tuples
 
