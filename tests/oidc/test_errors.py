@@ -1,5 +1,7 @@
 import logging
 
+from . import client_credentials
+
 
 def test_json_oauth_errors(testclient):
     """Checks that HTTP errors on the oauth endpoints are in the JSON format."""
@@ -95,3 +97,25 @@ def test_internal_server_error_is_logged(testclient, caplog, monkeypatch):
         "error_description": "The server encountered an unexpected error.",
     }
     assert ("canaille", logging.ERROR, "boom") in caplog.record_tuples
+
+
+def test_insecure_transport(testclient, client, caplog, monkeypatch):
+    """OAuth requests over plain HTTP on a non-loopback host get an OAuth error."""
+    monkeypatch.delenv("AUTHLIB_INSECURE_TRANSPORT")
+
+    res = testclient.post(
+        "/oauth/token",
+        params={"grant_type": "client_credentials"},
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=400,
+    )
+    assert res.json == {
+        "error": "insecure_transport",
+        "error_description": "OAuth 2 MUST utilize https.",
+    }
+    assert (
+        "canaille",
+        logging.WARNING,
+        "OAuth request refused on http://canaille.test/oauth/token: "
+        "insecure_transport: OAuth 2 MUST utilize https.",
+    ) in caplog.record_tuples

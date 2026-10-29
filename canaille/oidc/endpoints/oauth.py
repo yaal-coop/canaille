@@ -58,6 +58,19 @@ def http_error_handler(error):
     }, error.code
 
 
+# Authlib lets InsecureTransportError escape from create_*_response:
+# https://github.com/authlib/authlib/issues/973
+@bp.errorhandler(OAuth2Error)
+def oauth2_error_handler(error):
+    current_app.logger.warning(
+        "OAuth request refused on %s: %s: %s",
+        request.url,
+        error.error,
+        error.get_error_description(),
+    )
+    return authorization.handle_error_response(request, error)
+
+
 @bp.errorhandler(Exception)
 def internal_error_handler(error):
     current_app.logger.exception(error)
