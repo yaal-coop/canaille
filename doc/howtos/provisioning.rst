@@ -30,7 +30,6 @@ Canaille sends a user to these clients:
 - the :attr:`trusted <canaille.oidc.basemodels.Client.trusted>` clients, which receive all the users.
 
 Canaille sends a group to the clients of its members, and to the trusted clients.
-The trusted clients also receive the groups without members.
 When a :doc:`task worker <worker>` is configured, it sends the user modifications.
 
 SCIM server requirements
