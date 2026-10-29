@@ -181,7 +181,7 @@ def execute_scim_user_action(client_id, user_id, method):
             current_app.logger.error(
                 f"SCIM User {user_id} delete for client {client.client_name} failed"
             )
-    elif method == "save":
+    else:
         EnterpriseUser = User.get_extension_model("EnterpriseUser")
         scim_user = user_from_canaille_to_scim_client(user, User, EnterpriseUser)
         if not distant_scim_user:
@@ -225,7 +225,7 @@ def execute_scim_group_action(scim, group, client_name, method):
             current_app.logger.error(
                 f"SCIM Group {group.display_name} delete for client {client_name} failed"
             )
-    elif method == "save":  # pragma: no branch
+    else:
         group = group_from_canaille_to_scim_client(group, Group, scim)
         if not scim_group:
             try:
