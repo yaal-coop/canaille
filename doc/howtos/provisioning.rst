@@ -12,24 +12,75 @@ This means that client applications can perform requests on the ``/scim/v2`` end
 Provisioning client
 ===================
 
-Canaille also acts a provisioning client.
-This means that all modifications on user and groups are spread among the client applications implementing the SCIM2 server specification.
-This ensures that the details of users and groups are always synchronized among all your client applications.
-
-Modifications are sent to client applications whether they come from the :ref:`web interface <feature_profile_management>`, the :ref:`CLI <references/commands:Command Line Interface>` or from another client application requesting the Canaille SCIM server endpoint.
-
-Canaille will attempt to authenticate against the client SCIM2 server endpoint with a Bearer token it has emitted on behalf of the client.
-Please make sure that your client application is properly configured to accept Canaille tokens.
+Canaille also acts as a provisioning client.
+It sends the user and group modifications to the client applications that implement a SCIM server.
+The modifications are sent whether they come from the :ref:`web interface <feature_profile_management>`, the :ref:`CLI <references/commands:Command Line Interface>` or from another client application that uses the Canaille SCIM server.
+The :attr:`CANAILLE_SCIM.ENABLE_CLIENT <canaille.scim.configuration.SCIMSettings.ENABLE_CLIENT>` configuration parameter enables the provisioning client.
 
 .. warning::
 
-   Note that the SCIM client feature is at early development stage and comes with poor performances at the moment.
+   The SCIM client feature is at early development stage and comes with poor performances at the moment.
 
-.. todo::
+Provisioned clients
+-------------------
 
-   Canaille will implement in the future:
+Canaille sends a user to these clients:
 
-   - Client-side implementation, to broadcast user and groups modifications among all the clients.
+- the clients the user has given consent to, unless they have :attr:`owners <canaille.oidc.basemodels.Client.owners>`;
+- the :attr:`trusted <canaille.oidc.basemodels.Client.trusted>` clients, which receive all the users.
+
+Canaille sends a group to the clients of its members, and to the trusted clients.
+The trusted clients also receive the groups without members.
+When a :doc:`task worker <worker>` is configured, it sends the user modifications.
+
+SCIM server requirements
+------------------------
+
+Canaille uses the :attr:`~canaille.oidc.basemodels.Client.client_uri` of the client as the base URL of its SCIM server.
+For instance, with ``https://app.example/scim/v2`` as ``client_uri``, Canaille reads ``https://app.example/scim/v2/ResourceTypes``.
+A client without a SCIM server at this URL is skipped.
+
+The SCIM server of the client must:
+
+- publish the ``/ServiceProviderConfig``, ``/ResourceTypes`` and ``/Schemas`` endpoints;
+- support :rfc:`filtering <7644#section-3.4.2.2>`, otherwise Canaille does not provision the client;
+- store the ``externalId`` attribute and filter on it.
+
+Canaille sets the ``externalId`` of the users and groups to their Canaille ``id``.
+Canaille finds the resources of the client with an ``externalId eq "<id>"`` filter, then updates or deletes them.
+When the server does not support PATCH, Canaille replaces the resources with PUT.
+The password of the users is never sent.
+
+Authentication
+--------------
+
+Canaille authenticates against the SCIM server of the client with a Bearer token.
+Canaille issues this token for the client itself: the token has the client as audience, has no user, and expires after one hour.
+To check the token, the client calls the :rfc:`introspection endpoint <7662>` of Canaille, ``/oauth/introspect``, with its own client credentials.
+The introspection response is active while the token is valid.
+
+Troubleshooting
+---------------
+
+Canaille logs the provisioning events in the ``canaille`` logger:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Level
+     - Event
+   * - ``INFO``
+     - The client has no SCIM server at its ``client_uri``.
+   * - ``ERROR``
+     - The SCIM server refuses the token with a 401 or 403 response.
+   * - ``ERROR``
+     - The SCIM server does not support filtering.
+   * - ``ERROR``
+     - The creation, update or deletion of a user or a group fails.
+   * - ``WARNING``
+     - A deleted user or group is not found on the client.
+   * - ``WARNING``
+     - A member of a group is not found on the client.
 
 Configuration
 =============
