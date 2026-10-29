@@ -585,7 +585,7 @@ class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
         }
         if token.subject:
             response["username"] = token.subject.formatted_name
-            response["sub"] = token.subject.user_name
+            response["sub"] = generate_user_claims(token.subject).get("sub")
         return response
 
 

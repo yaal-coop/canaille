@@ -28,6 +28,18 @@ def test_access_token_introspection(testclient, user, client, token, backend):
     } == res.json
 
 
+def test_access_token_introspection_custom_sub(testclient, user, client, token):
+    """The introspection sub follows the configured SUB mapping."""
+    testclient.app.config["CANAILLE_OIDC"]["USERINFO_MAPPING"]["SUB"] = "{{ user.id }}"
+    res = testclient.post(
+        "/oauth/introspect",
+        params={"token": token.access_token},
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+    assert res.json["sub"] == user.id
+
+
 def test_client_access_token_introspection(testclient, client, oidc_token):
     res = testclient.post(
         "/oauth/introspect",

@@ -13,6 +13,7 @@ Fixed
 ^^^^^
 - OAuth endpoints answered with an internal server error to plain HTTP requests.
   They now answer with an ``insecure_transport`` error, and a warning is logged.
+- Token introspection ignored the configured ``sub`` claim and returned the user name.
 
 [0.4.2] - 2026-10-29
 --------------------
