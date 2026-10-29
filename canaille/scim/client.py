@@ -244,8 +244,11 @@ def execute_scim_group_action(scim, group, client_name, method):
 
 
 def propagate_group_scim_modification(group, method):
-    """After a group edition/deletion, broadcast the event to all the clients."""
-    notifiable_clients = set()
+    """After a group edition/deletion, broadcast the event to all the clients.
+
+    Trusted clients are notified of all the groups, including the groups without members.
+    """
+    notifiable_clients = set(get_trusted_clients())
     for member in group.members:
         notifiable_clients.update(get_clients_to_notify(member))
 
@@ -263,11 +266,16 @@ def get_clients_to_notify(user):
     consents = Backend.instance.query(models.Consent, subject=user)
     consented_clients = {t.client for t in consents if not t.client.owners}
     trusted_clients = [
-        client
-        for client in Backend.instance.query(models.Client)
-        if client.trusted and client not in consented_clients
+        client for client in get_trusted_clients() if client not in consented_clients
     ]
-    return list(consented_clients) + list(trusted_clients)
+    return list(consented_clients) + trusted_clients
+
+
+def get_trusted_clients():
+    """Return the clients that are notified of all the users and groups."""
+    return [
+        client for client in Backend.instance.query(models.Client) if client.trusted
+    ]
 
 
 def before_user_save(user, data):

@@ -11,6 +11,7 @@ Fixed
 ^^^^^
 - The help of ``canaille delete`` described arguments and options incorrectly.
 - With an asynchronous task broker, the SCIM provisioning of deleted users could fail.
+- Trusted clients did not receive the groups without members over SCIM.
 
 [0.4.1] - 2026-10-28
 --------------------

@@ -77,6 +77,22 @@ def test_scim_client_group_save_and_delete(
     assert not response.resources
 
 
+def test_scim_client_group_without_members_is_sent_to_trusted_clients(
+    scim_client_for_trusted_client, backend
+):
+    """Test that the trusted clients are notified of the groups without members."""
+    if backend.__class__.__name__ == "LDAPBackend":
+        pytest.skip("LDAP groups cannot be empty")
+
+    group = models.Group(display_name="empty")
+    with mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create") as create:
+        backend.save(group)
+
+    assert create.call_args.args[0].display_name == "empty"
+
+    backend.delete(group)
+
+
 def test_scim_client_group_save_unable_to_retrieve_member_via_scim(
     scim_client_for_trusted_client, backend, user, caplog
 ):
