@@ -59,11 +59,18 @@ def existing_group_member(form, field):
         )
 
 
-def non_empty_groups(form, field):
-    """LDAP groups cannot be empty because groupOfNames.member is a MUST attribute.
+def last_group_member(form, field):
+    """Refuse to remove the last member of a group, because groups cannot be empty."""
+    if field.data and form.group.members == [field.data]:
+        raise wtforms.ValidationError(
+            _(
+                "The user '{user}' cannot be removed, because the group '{group}' must have at least one member."
+            ).format(user=field.data.formatted_name, group=form.group.display_name)
+        )
 
-    https://www.rfc-editor.org/rfc/rfc2256.html#section-7.10
-    """
+
+def non_empty_groups(form, field):
+    """Refuse to remove a user from the groups they are the last member of."""
     if not form.user:
         return
 

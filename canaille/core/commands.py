@@ -38,6 +38,7 @@ def users(ctx):
 @click.option(
     "--nb-users-max",
     default=1,
+    type=click.IntRange(min=1),
     help="The maximum number of users that will randomly be affected in the group",
 )
 @with_appcontext

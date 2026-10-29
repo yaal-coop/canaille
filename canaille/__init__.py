@@ -36,6 +36,7 @@ def create_app(
     from .app.templating import setup_jinja
     from .app.templating import setup_themer
     from .backends import setup_backend
+    from .core.models import setup_group_signals
     from .core.photo import setup_photo_normalization
 
     app = Flask(__name__)
@@ -57,6 +58,7 @@ def create_app(
 
         backend = setup_backend(app, backend, init_backend)
         setup_photo_normalization()
+        setup_group_signals()
         setup_security(app)
         setup_flask_converters(app)
         setup_flask_blueprints(app)

@@ -1,6 +1,13 @@
 Unreleased
 ----------
 
+Changed
+^^^^^^^
+- Groups must have at least one member, on every backend.
+  Deleting the account of the last member of a group deletes the group,
+  and the clients that only this group owns.
+  Existing groups without members need a member before they can be edited.
+
 Fixed
 ^^^^^
 - OAuth endpoints answered with an internal server error to plain HTTP requests.

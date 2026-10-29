@@ -157,3 +157,11 @@ def test_create_unknown_reference(cli_runner, backend):
     assert res.exit_code != 0
     assert "group 'unknown' not found" in res.output
     assert not backend.get(models.User, user_name="johnny")
+
+
+def test_create_group_without_members(cli_runner, backend):
+    """Groups cannot be created without members."""
+    res = cli_runner.invoke(cli, ["create", "group", "--display-name", "staff"])
+    assert res.exit_code == 1
+    assert "The group 'staff' must have at least one member." in res.output
+    assert not backend.get(models.Group, display_name="staff")

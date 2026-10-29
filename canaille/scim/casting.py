@@ -2,6 +2,7 @@ import datetime
 import hashlib
 
 from scim2_models import ForbiddenException
+from scim2_models import InvalidValueException
 from scim2_models import Meta
 
 from canaille.app import models
@@ -193,6 +194,11 @@ def group_from_scim_to_canaille(scim_group: Group, group):
     for member in scim_group.members or []:
         if user := Backend.instance.get(models.User, member.value):
             members.append(user)
+
+    if not members:
+        raise InvalidValueException(
+            detail="A group must have at least one existing member"
+        )
 
     group.members = members
 

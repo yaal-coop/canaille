@@ -157,9 +157,8 @@ class MemoryBackend(Backend):
         return results[0] if results else None
 
     def do_restore(self, models):
-        for model_name, states in models.items():
-            model = MODELS[model_name]
-            for state in states:
+        for model_name, model in MODELS.items():
+            for state in models.get(model_name, []):
                 Backend.instance.save(model(**state))
 
     def do_save(self, instance) -> None:

@@ -68,8 +68,9 @@ Group membership can be use as :attr:`ACL Filter <canaille.core.configuration.AC
 Group management can be enable with a :attr:`dedicated user permission <canaille.core.configuration.Permission.MANAGE_ALL_GROUPS>`.
 
 .. important::
-   Due to limitations in the :ref:`LDAP backend <howtos/database/ldap:LDAP>`, groups must have at least one member.
-   Thus it is not possible to remove the last user of a group without removing the group.
+   Groups must have at least one member.
+   The last member of a group cannot be removed from it.
+   Deleting the account of the last member deletes the group.
 
 .. _feature_user_authentication:
 

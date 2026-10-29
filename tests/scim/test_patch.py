@@ -286,3 +286,15 @@ def test_patch_group_no_modification(app, backend, foo_group, user, scim_client)
 
     member_ids = [member.value for member in response_group.members]
     assert user.id in member_ids
+
+
+def test_patch_group_unknown_members(app, backend, foo_group, user, scim_client):
+    """Groups cannot be left without existing members."""
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    op = PatchOperation(op=Op.replace_, path="members", value=[{"value": "invalid"}])
+    with pytest.raises(SCIMException, match="at least one existing member"):
+        scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op]))
+
+    backend.reload(foo_group)
+    assert foo_group.members == [user]

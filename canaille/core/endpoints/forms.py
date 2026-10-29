@@ -33,6 +33,7 @@ from canaille.core.validators import email_has_user
 from canaille.core.validators import existing_group_member
 from canaille.core.validators import existing_login
 from canaille.core.validators import group_owners
+from canaille.core.validators import last_group_member
 from canaille.core.validators import non_empty_groups
 from canaille.core.validators import unique_email
 from canaille.core.validators import unique_group
@@ -617,7 +618,7 @@ class AddGroupMembersForm(GroupForm):
 class DeleteGroupMemberForm(GroupForm):
     member = wtforms.StringField(
         filters=[IDToModel("User", raise_on_errors=False)],
-        validators=[existing_group_member],
+        validators=[existing_group_member, last_group_member],
     )
 
 

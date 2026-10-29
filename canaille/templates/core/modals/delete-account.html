@@ -20,6 +20,12 @@
                         {% endtrans %}
                     {% endif %}
                 </p>
+                <p>
+                    {% trans %}The groups whose only member is this account will be deleted.{% endtrans %}
+                    {% if features.has_oidc %}
+                        {% trans %}The clients owned only by this account or by these groups will be deleted.{% endtrans %}
+                    {% endif %}
+                </p>
             </div>
             <div class="ui center aligned container">
                 <div class="ui stackable buttons">

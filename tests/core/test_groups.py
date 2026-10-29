@@ -1,3 +1,5 @@
+import pytest
+
 from canaille.app import models
 from canaille.core.populate import fake_groups
 from tests.htmx import combobox_values
@@ -1179,3 +1181,70 @@ def test_sole_owner_deletes_group(testclient, logged_user, backend):
     res = res.form.submit(name="action", value="delete", status=302)
 
     assert backend.get(models.Group, display_name="owned_group") is None
+
+
+def test_empty_group_cannot_be_saved(app, backend):
+    """Groups cannot be empty, on any backend."""
+    group = models.Group(display_name="empty")
+    with pytest.raises(ValueError, match="must have at least one member"):
+        backend.save(group)
+
+
+def test_user_deletion_deletes_the_groups_left_empty(backend, admin):
+    """Deleting the last member of a group deletes the group."""
+    member = models.User(
+        formatted_name="Leaving", family_name="Leaving", user_name="leaving"
+    )
+    backend.save(member)
+    lonely = models.Group(display_name="lonely", members=[member])
+    backend.save(lonely)
+    shared = models.Group(display_name="shared", members=[member, admin])
+    backend.save(shared)
+
+    backend.delete(member)
+
+    assert not backend.get(models.Group, id=lonely.id)
+    backend.reload(shared)
+    assert shared.members == [admin]
+
+    backend.delete(shared)
+
+
+def test_remove_last_member(
+    testclient, logged_admin, foo_group, user, moderator, backend
+):
+    """The last member of a group cannot be removed."""
+    foo_group.members = [user, moderator]
+    backend.save(foo_group)
+
+    res = testclient.get("/groups/foo")
+    form = res.forms[f"deletegroupmemberform-{user.id}"]
+    foo_group.members = [user]
+    backend.save(foo_group)
+
+    res = form.submit(name="action", value="confirm-remove-member")
+    assert (
+        "error",
+        "The user 'John (johnny) Doe' cannot be removed, because the group 'foo' must have at least one member.",
+    ) in res.flashes
+
+    backend.reload(foo_group)
+    assert foo_group.members == [user]
+
+
+def test_leave_group_last_member(testclient, logged_user, foo_group, backend):
+    """The last member of a group cannot leave it."""
+    res = testclient.get("/groups")
+    csrf_token = res.forms["tableform"]["csrf_token"].value
+    res = testclient.post(
+        f"/groups/{foo_group.display_name}/leave",
+        {"csrf_token": csrf_token},
+        status=302,
+    )
+    assert (
+        "error",
+        "You cannot leave foo because you are its last member.",
+    ) in res.flashes
+
+    backend.reload(foo_group)
+    assert foo_group.members == [logged_user]

@@ -1,11 +1,9 @@
 import io
 
-import pytest
 from PIL import Image
 
 from canaille.app import models
 from canaille.commands import cli
-from canaille.core.populate import fake_groups
 from canaille.core.populate import fake_users
 
 
@@ -47,13 +45,6 @@ def test_populate_groups(cli_runner, backend):
 
     for user in backend.query(models.User):
         backend.delete(user)
-
-
-def test_populate_groups_without_users(cli_runner, backend):
-    """Test that groups can be populated without adding users to them."""
-    if "ldap" in backend.__class__.__module__:
-        pytest.skip()
-    assert fake_groups(nb_users_max=0)
 
 
 def test_fake_users_have_unique_user_names(testclient, backend, monkeypatch):

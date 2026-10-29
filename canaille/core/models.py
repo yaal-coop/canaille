@@ -8,6 +8,8 @@ from flask import current_app
 from pydantic import TypeAdapter
 
 from canaille.app import build_hash
+from canaille.app import models
+from canaille.backends import Backend
 from canaille.backends.models import Model
 from canaille.core.configuration import Permission
 
@@ -588,3 +590,29 @@ def string_code(code: int, digit: int) -> str:
         '000123'
     """
     return f"{code:0{digit}}"
+
+
+def check_group_members(group, data):
+    """Refuse to save a group without members."""
+    if not group.members:
+        raise ValueError(
+            f"The group '{group.display_name}' must have at least one member."
+        )
+
+
+def delete_groups_left_empty(user, data):
+    """Delete the groups whose only member is a deleted user."""
+    for group in Backend.instance.query(models.Group, members=user):
+        if group.members == [user]:
+            Backend.instance.delete(group)
+
+
+def setup_group_signals():
+    teardown_group_signals()
+    signal("before_group_save").connect(check_group_members)
+    signal("before_user_delete").connect(delete_groups_left_empty)
+
+
+def teardown_group_signals():
+    signal("before_group_save").disconnect(check_group_members)
+    signal("before_user_delete").disconnect(delete_groups_left_empty)

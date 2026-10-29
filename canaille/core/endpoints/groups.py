@@ -297,6 +297,16 @@ def leave_group(user, group):
         )
         return redirect(url_for("core.groups.groups"))
 
+    if group.members == [user]:
+        flash(
+            _(
+                "You cannot leave %(group)s because you are its last member.",
+                group=group.display_name,
+            ),
+            "error",
+        )
+        return redirect(url_for("core.groups.groups"))
+
     group.members = [member for member in group.members if member != user]
 
     if user in group.owners:

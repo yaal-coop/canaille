@@ -517,6 +517,36 @@ def test_group_owner_deletion_deletes_the_client(testclient, backend, user):
     assert not backend.get(models.Client, client_id=client.client_id)
 
 
+def test_account_deletion_warns_about_clients(testclient, logged_admin, user):
+    """The account deletion confirmation tells that owned clients will be deleted."""
+    res = testclient.get("/profile/user/settings")
+    res = res.form.submit(name="action", value="delete-confirm")
+    res.mustcontain(
+        "The clients owned only by this account or by these groups will be deleted."
+    )
+
+
+def test_last_member_deletion_deletes_the_client_of_the_group(testclient, backend):
+    """Deleting the last member of a group deletes the group and its clients."""
+    member = models.User(
+        formatted_name="Leaving", family_name="Leaving", user_name="leaving"
+    )
+    backend.save(member)
+    group = models.Group(display_name="temp-group", members=[member])
+    backend.save(group)
+    client = models.Client(
+        client_id=gen_salt(24),
+        client_name="group-client",
+        owners=[group],
+    )
+    backend.save(client)
+
+    backend.delete(member)
+
+    assert not backend.get(models.Group, id=group.id)
+    assert not backend.get(models.Client, client_id=client.client_id)
+
+
 def test_user_cannot_see_registration_token(testclient, logged_user):
     """Regular user should not see registration token on client add page."""
     res = testclient.get("/admin/client/add")

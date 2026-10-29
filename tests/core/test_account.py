@@ -94,6 +94,10 @@ def test_admin_self_deletion(testclient, backend):
 
     res = testclient.get("/profile/temp/settings")
     res = res.form.submit(name="action", value="delete-confirm")
+    res.mustcontain("The groups whose only member is this account will be deleted.")
+    res.mustcontain(
+        no="The clients owned only by this account or by these groups will be deleted."
+    )
     res = (
         res.form.submit(name="action", value="delete-execute", status=302)
         .follow(status=302)

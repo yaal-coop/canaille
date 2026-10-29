@@ -10,6 +10,8 @@ from scim2_models import SearchRequest
 from scim2_models import UnauthorizedException
 
 from canaille.app import models
+from canaille.core.models import setup_group_signals
+from canaille.core.models import teardown_group_signals
 from canaille.scim.casting import user_from_scim_to_canaille
 from canaille.scim.client import execute_scim_user_action
 from canaille.scim.client import external_id_filter
@@ -80,13 +82,20 @@ def test_scim_client_group_save_and_delete(
 def test_scim_client_group_without_members_is_sent_to_trusted_clients(
     scim_client_for_trusted_client, backend
 ):
-    """Test that the trusted clients are notified of the groups without members."""
+    """Test that the trusted clients are notified of the groups without members.
+
+    Groups cannot be empty anymore, but SQL databases may still have some.
+    """
     if backend.__class__.__name__ == "LDAPBackend":
         pytest.skip("LDAP groups cannot be empty")
 
     group = models.Group(display_name="empty")
-    with mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create") as create:
-        backend.save(group)
+    teardown_group_signals()
+    try:
+        with mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create") as create:
+            backend.save(group)
+    finally:
+        setup_group_signals()
 
     assert create.call_args.args[0].display_name == "empty"
 

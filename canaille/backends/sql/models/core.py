@@ -284,6 +284,11 @@ class Group(canaille.core.models.Group, Base, SqlAlchemyModel):
         creator=lambda usr: GroupOwnership(owner=usr),
     )
 
+    @classmethod
+    def is_attr_required(cls, attr_name: str) -> bool:
+        """Mark members as required, so restored groups are never empty."""
+        return attr_name == "members" or super().is_attr_required(attr_name)
+
 
 class WebAuthnCredential(
     canaille.core.models.WebAuthnCredential, Base, SqlAlchemyModel
