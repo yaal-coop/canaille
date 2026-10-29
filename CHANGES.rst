@@ -1,3 +1,10 @@
+[0.4.4] - Unreleased
+--------------------
+
+Changed
+^^^^^^^
+- SCIM group requests with unknown members are refused instead of partially applied.
+
 [0.4.3] - 2026-10-29
 --------------------
 

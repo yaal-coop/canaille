@@ -191,14 +191,15 @@ def group_from_scim_to_canaille(scim_group: Group, group):
     group.display_name = scim_group.display_name
 
     members = []
+    unknown = []
     for member in scim_group.members or []:
         if user := Backend.instance.get(models.User, member.value):
             members.append(user)
+        else:
+            unknown.append(member.value)
 
-    if not members:
-        raise InvalidValueException(
-            detail="A group must have at least one existing member"
-        )
+    if unknown:
+        raise InvalidValueException(detail=f"Unknown members: {', '.join(unknown)}")
 
     group.members = members
 

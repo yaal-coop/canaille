@@ -3,6 +3,7 @@ import json
 
 import pytest
 from scim2_models import ForbiddenException
+from scim2_models import InvalidValueException
 from scim2_models import PreconditionFailedException
 from scim2_models import UniquenessException
 from scim2_server.handler import ScimHandler
@@ -116,6 +117,20 @@ def test_group_members_accept_a_user_name(storage, user_type, group_type):
     )
 
     assert [member.value for member in group.members] == [alice.id]
+
+
+def test_update_group_with_an_unknown_member(
+    backend, storage, user, foo_group, group_type
+):
+    """A replacement with an unknown member is refused, and the group is unchanged."""
+    group = storage.get(group_type, foo_group.id)
+    group.members = [Group.Members(value=user.id), Group.Members(value="unknown")]
+
+    with pytest.raises(InvalidValueException, match="Unknown members: unknown"):
+        storage.update(group_type, group)
+
+    backend.reload(foo_group)
+    assert foo_group.members == [user]
 
 
 def test_create_with_a_taken_group_name(storage, user_type, group_type):

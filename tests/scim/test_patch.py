@@ -167,8 +167,10 @@ def test_patch_group_replace_members(
     assert user.identifier not in member_ids_persisted
 
 
-def test_patch_group_add_invalid_member(app, backend, foo_group, user, scim_client):
-    """Test PATCH operation to add a member to a group."""
+def test_patch_group_add_invalid_member(
+    app, backend, foo_group, user, moderator, scim_client
+):
+    """Unknown members make the whole PATCH request fail."""
     foo_group.members = [user]
     backend.save(foo_group)
 
@@ -177,15 +179,13 @@ def test_patch_group_add_invalid_member(app, backend, foo_group, user, scim_clie
     op = PatchOperation(
         op=Op.add,
         path="members",
-        value=[{"value": "invalid"}],
+        value=[{"value": moderator.id}, {"value": "invalid"}],
     )
-    assert (
-        scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op])) is None
-    )
-    response_group = scim_client.query(Group, foo_group.id)
+    with pytest.raises(SCIMException, match="Unknown members: invalid"):
+        scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op]))
 
-    member_ids = [member.value for member in response_group.members]
-    assert member_ids == [user.id]
+    backend.reload(foo_group)
+    assert foo_group.members == [user]
 
 
 def test_patch_group_add_member_with_display(
@@ -310,7 +310,7 @@ def test_patch_group_unknown_members(app, backend, foo_group, user, scim_client)
     scim_client.discover()
     Group = scim_client.get_resource_model("Group")
     op = PatchOperation(op=Op.replace_, path="members", value=[{"value": "invalid"}])
-    with pytest.raises(SCIMException, match="at least one existing member"):
+    with pytest.raises(SCIMException, match="Unknown members: invalid"):
         scim_client.modify(Group, foo_group.id, PatchOp[Group](operations=[op]))
 
     backend.reload(foo_group)
