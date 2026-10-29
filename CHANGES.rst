@@ -10,6 +10,7 @@ Changed
 Fixed
 ^^^^^
 - The help of ``canaille delete`` described arguments and options incorrectly.
+- With an asynchronous task broker, the SCIM provisioning of deleted users could fail.
 
 [0.4.1] - 2026-10-28
 --------------------

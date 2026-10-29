@@ -155,6 +155,11 @@ def execute_scim_user_action(client_id, user_id, method):
             user = Backend.instance.get(models.User, user_id)
             client = Backend.instance.get(models.Client, client_id)
 
+    # With an asynchronous broker, the user may have been deleted before the
+    # message is processed. The deletion message comes next.
+    if method == "save" and not user:
+        return
+
     scim = initiate_scim_client(client)
     if not scim:
         return
@@ -174,7 +179,7 @@ def execute_scim_user_action(client_id, user_id, method):
             scim.delete(User, distant_scim_user.id)
         except (SCIMClientException, SCIMException):
             current_app.logger.error(
-                f"SCIM User {user.user_name} delete for client {client.client_name} failed"
+                f"SCIM User {user_id} delete for client {client.client_name} failed"
             )
     elif method == "save":
         EnterpriseUser = User.get_extension_model("EnterpriseUser")

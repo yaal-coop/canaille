@@ -11,6 +11,7 @@ from scim2_models import UnauthorizedException
 
 from canaille.app import models
 from canaille.scim.casting import user_from_scim_to_canaille
+from canaille.scim.client import execute_scim_user_action
 from canaille.scim.client import external_id_filter
 from canaille.scim.client import get_clients_to_notify
 from canaille.scim.client import initiate_scim_client
@@ -527,7 +528,45 @@ def test_failed_scim_user_delete(
     assert (
         "canaille",
         logging.ERROR,
-        "SCIM User user delete for client Some client failed",
+        f"SCIM User {user.id} delete for client Some client failed",
+    ) in caplog.record_tuples
+
+
+def test_scim_user_save_after_user_deletion(
+    testclient, scim_client_for_trusted_client, scim_trusted_client, backend, user
+):
+    """Test that a user saved then deleted before the message is processed is not sent."""
+    user_id = user.id
+    backend.delete(user)
+
+    with mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.create") as create:
+        execute_scim_user_action(scim_trusted_client.id, user_id, "save")
+
+    create.assert_not_called()
+
+
+@mock.patch("scim2_client.engines.httpx2.SyncSCIMClient.delete")
+def test_failed_scim_user_delete_after_user_deletion(
+    scim_mock,
+    testclient,
+    scim_client_for_trusted_client,
+    scim_trusted_client,
+    backend,
+    caplog,
+    user,
+):
+    """Test that an error is logged when the deletion fails after the user is deleted."""
+    scim_mock.side_effect = SCIMClientException("error")
+    user_id = user.id
+    with mock.patch("canaille.scim.client.propagate_user_scim_modification"):
+        backend.delete(user)
+
+    execute_scim_user_action(scim_trusted_client.id, user_id, "delete")
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        f"SCIM User {user_id} delete for client Some client failed",
     ) in caplog.record_tuples
 
 
