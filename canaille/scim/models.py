@@ -184,7 +184,6 @@ class GroupMember(ComplexAttribute):
     ref: Annotated[
         Reference[Union["User", "Group"]] | None,
         Mutability.immutable,
-        Required.true,
     ] = Field(None, serialization_alias="$ref")
     """The reference URI of a target resource, if the attribute is a
     reference."""
@@ -198,7 +197,7 @@ class Group(Resource[Any]):
 
     external_id: Annotated[str | None, Mutability.read_only, Returned.never] = None
 
-    display_name: Annotated[str | None, Required.true, Mutability.immutable] = None
+    display_name: Annotated[str | None, Required.true] = None
     """A human-readable name for the Group."""
 
     members: Annotated[list[GroupMember] | None, Required.true] = None

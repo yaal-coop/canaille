@@ -3,6 +3,8 @@ from scim2_models import PatchOp
 from scim2_models import PatchOperation
 from scim2_models import SCIMException
 
+from canaille.app import models
+
 Op = PatchOperation.Op
 
 
@@ -288,6 +290,21 @@ def test_patch_group_no_modification(app, backend, foo_group, user, scim_client)
     assert user.id in member_ids
 
 
+def test_patch_group_display_name(app, backend, user, scim_client):
+    """Groups can be renamed."""
+    group = models.Group(display_name="old", members=[user])
+    backend.save(group)
+
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    op = PatchOperation(op=Op.replace_, path="displayName", value="new")
+    scim_client.modify(Group, group.id, PatchOp[Group](operations=[op]))
+
+    group = backend.get(models.Group, id=group.id)
+    assert group.display_name == "new"
+    backend.delete(group)
+
+
 def test_patch_group_unknown_members(app, backend, foo_group, user, scim_client):
     """Groups cannot be left without existing members."""
     scim_client.discover()
@@ -298,3 +315,16 @@ def test_patch_group_unknown_members(app, backend, foo_group, user, scim_client)
 
     backend.reload(foo_group)
     assert foo_group.members == [user]
+
+
+def test_create_group_members_without_ref(app, backend, user, scim_client):
+    """Group members can be sent without $ref."""
+    scim_client.discover()
+    Group = scim_client.get_resource_model("Group")
+    response = scim_client.create(
+        Group(display_name="new", members=[{"value": user.id}])
+    )
+
+    group = backend.get(models.Group, id=response.id)
+    assert group.members == [user]
+    backend.delete(group)

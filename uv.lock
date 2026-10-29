@@ -499,7 +499,7 @@ dev = [
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
     { name = "python-avatars", specifier = ">=1.4.0" },
-    { name = "scim2-tester", extras = ["testing"], specifier = ">=0.6.2" },
+    { name = "scim2-tester", extras = ["testing"], specifier = ">=0.6.3" },
     { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=50.0.0,<=81" },
     { name = "slapd", specifier = ">=0.1.5" },
     { name = "time-machine", specifier = ">=2.14.1" },
@@ -3531,15 +3531,15 @@ wheels = [
 
 [[package]]
 name = "scim2-tester"
-version = "0.6.2"
+version = "0.6.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "scim2-client" },
     { name = "scim2-models" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f7/eb/d67e9f78b64155af9519f7fe59474af9c8b009947826baff4a3dc50c3c10/scim2_tester-0.6.2.tar.gz", hash = "sha256:484f47d33082a75085186eb7cb211cbc2e26b5914b06f0baedfb70e8b0b63f47", size = 36514, upload-time = "2026-10-29T15:13:04.109Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c8/12/ce03563bdd7cd4649be0b30d6234b8afbd713ba21a14fe9097fdb58b491d/scim2_tester-0.6.3.tar.gz", hash = "sha256:6388df039a1cf372dbc133edb0568d1f45cc24a0ed065bb1085d85b34d0bc0a2", size = 37060, upload-time = "2026-10-29T20:47:41.19Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c9/98/b3391622f826cff28483c62bdd8911b90a4b1ebbc7640b8586e2ff843f49/scim2_tester-0.6.2-py3-none-any.whl", hash = "sha256:caaa25d1f5cdad078305f142149307d6b5f8a0c21518c2c9c06403a711089866", size = 49773, upload-time = "2026-10-29T15:13:02.826Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/71/f9f846a533d841619fd000c431a5afb671867f14205e13bab84ab64462bb/scim2_tester-0.6.3-py3-none-any.whl", hash = "sha256:7ea5db4bb3f1e48f22df22a944d8b6f06dc2027d98bff77d8395e851abc6ef08", size = 50707, upload-time = "2026-10-29T20:47:39.743Z" },
 ]
 
 [package.optional-dependencies]

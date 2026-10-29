@@ -7,6 +7,7 @@ Changed
   Deleting the account of the last member of a group deletes the group,
   and the clients that only this group owns.
   Existing groups without members need a member before they can be edited.
+- SCIM group names can be changed, and group members can be sent without ``$ref``.
 
 Fixed
 ^^^^^
