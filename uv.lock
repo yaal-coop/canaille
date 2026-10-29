@@ -370,7 +370,7 @@ dev = [
     { name = "pytest-smtpd" },
     { name = "pytest-xdist" },
     { name = "python-avatars" },
-    { name = "scim2-tester" },
+    { name = "scim2-tester", extra = ["testing"] },
     { name = "setuptools", marker = "python_full_version >= '3.12'" },
     { name = "slapd" },
     { name = "time-machine" },
@@ -489,7 +489,7 @@ dev = [
     { name = "portpicker", specifier = ">=1.6.0" },
     { name = "prek", specifier = ">=0.1.3" },
     { name = "pyquery", specifier = ">=2.0.0" },
-    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest", specifier = ">=9.1.1" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-httpserver", specifier = ">=1.1.0" },
     { name = "pytest-lazy-fixtures", specifier = ">=1.0.7" },
@@ -499,7 +499,7 @@ dev = [
     { name = "pytest-smtpd", specifier = ">=0.1.0" },
     { name = "pytest-xdist", specifier = ">=3.3.1" },
     { name = "python-avatars", specifier = ">=1.4.0" },
-    { name = "scim2-tester", specifier = ">=0.5.2" },
+    { name = "scim2-tester", extras = ["testing"], specifier = ">=0.6.0" },
     { name = "setuptools", marker = "python_full_version >= '3.12'", specifier = ">=50.0.0,<=81" },
     { name = "slapd", specifier = ">=0.1.5" },
     { name = "time-machine", specifier = ">=2.14.1" },
@@ -3531,15 +3531,20 @@ wheels = [
 
 [[package]]
 name = "scim2-tester"
-version = "0.5.2"
+version = "0.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "scim2-client" },
     { name = "scim2-models" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/77/11/5f3952403a9bfa31fa7d2773fd2e550b458dce0d93f3615e284c1edcbd68/scim2_tester-0.5.2.tar.gz", hash = "sha256:f1d7f0d32eb66ff1b3aa48ce1ea272268322f902ce4bafdcd77f4c29b541e6a3", size = 27565, upload-time = "2026-10-06T09:51:09.947Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e1/64/8e46b342655e7cd108f6ae32bc985684c395198aa7bd03614579bd3b6716/scim2_tester-0.6.0.tar.gz", hash = "sha256:06e72d3e70b132c2b48cb48d989ba6c17e5af4fc5b3a59e88a521d9041083dbe", size = 33615, upload-time = "2026-10-29T00:07:07.512Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c1/9d/c7eba398c9c786228baf9c58ee32e8551a5204980ad55ab4e745854592e6/scim2_tester-0.5.2-py3-none-any.whl", hash = "sha256:10bc7068620d1c24f4b5cea2216f86bb8d57d0e56e585d622814f7e6b337dce5", size = 39787, upload-time = "2026-10-06T09:51:08.811Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/c7/bf4bb239491f243a15f02d75f6d150eea5fbf45c308411c1ce6c2b95d8b3/scim2_tester-0.6.0-py3-none-any.whl", hash = "sha256:95df5ebc0d86d0c3565b40fe1d0ff54ffa161e691157fd931605a39382da56b2", size = 45165, upload-time = "2026-10-29T00:07:06.066Z" },
+]
+
+[package.optional-dependencies]
+testing = [
+    { name = "pytest" },
 ]
 
 [[package]]
