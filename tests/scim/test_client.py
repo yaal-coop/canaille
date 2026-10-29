@@ -3,8 +3,11 @@ from unittest import mock
 
 import pytest
 from scim2_client import SCIMClientException
+from scim2_client import UnexpectedStatusCodeException
 from scim2_client.engines.httpx2 import SyncSCIMClient
+from scim2_models import ForbiddenException
 from scim2_models import SearchRequest
+from scim2_models import UnauthorizedException
 
 from canaille.app import models
 from canaille.scim.casting import user_from_scim_to_canaille
@@ -228,6 +231,50 @@ def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplo
         "canaille",
         logging.INFO,
         "SCIM protocol not supported by client Client",
+    ) in caplog.record_tuples
+
+
+@pytest.mark.parametrize(
+    "exception",
+    [
+        UnauthorizedException(),
+        ForbiddenException(),
+        UnexpectedStatusCodeException(401),
+        UnexpectedStatusCodeException(403),
+    ],
+)
+def test_save_user_when_client_refuses_the_credentials(
+    testclient, scim_client_for_trusted_client, backend, user, caplog, exception
+):
+    """Test that an error is logged when the client refuses the SCIM credentials."""
+    with mock.patch(
+        "scim2_client.engines.httpx2.SyncSCIMClient.discover", side_effect=exception
+    ):
+        user.display_name = "Jo"
+        backend.save(user)
+
+    assert (
+        "canaille",
+        logging.ERROR,
+        "SCIM authentication failed for client Some client",
+    ) in caplog.record_tuples
+
+
+def test_save_user_when_client_answers_not_found(
+    testclient, scim_client_for_trusted_client, backend, user, caplog
+):
+    """Test that an info message is logged when the client has no SCIM endpoint."""
+    with mock.patch(
+        "scim2_client.engines.httpx2.SyncSCIMClient.discover",
+        side_effect=UnexpectedStatusCodeException(404),
+    ):
+        user.display_name = "Jo"
+        backend.save(user)
+
+    assert (
+        "canaille",
+        logging.INFO,
+        "SCIM protocol not supported by client Some client",
     ) in caplog.record_tuples
 
 

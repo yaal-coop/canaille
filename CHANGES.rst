@@ -3,7 +3,7 @@
 
 Changed
 ^^^^^^^
-- SCIM provisioning failures are logged as errors.
+- SCIM provisioning failures, including refused credentials, are logged as errors.
   A warning is logged when a deleted user or group is not found on a client.
 - Clients whose SCIM server does not support filters are not provisioned.
 

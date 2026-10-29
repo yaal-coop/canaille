@@ -3,11 +3,14 @@ import datetime
 from blinker import signal
 from flask import current_app
 from scim2_client import SCIMClientException
+from scim2_client import UnexpectedStatusCodeException
 from scim2_client.engines.httpx2 import SyncSCIMClient
+from scim2_models import ForbiddenException
 from scim2_models import PatchOp
 from scim2_models import SCIMException
 from scim2_models import ScimFilter
 from scim2_models import SearchRequest
+from scim2_models import UnauthorizedException
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -73,6 +76,17 @@ def update_distant_resource(scim, distant, wanted):
     scim.modify(distant, patch)
 
 
+def is_authentication_failure(exc):
+    """Tell whether a SCIM request failed because the client refused the credentials."""
+    if isinstance(exc, UnauthorizedException | ForbiddenException):
+        return True
+
+    return isinstance(exc, UnexpectedStatusCodeException) and exc.status_code in (
+        401,
+        403,
+    )
+
+
 def get_or_create_token(client):
     """Retrieve or initialize a client token."""
     scim_tokens = Backend.instance.query(models.Token, client=client, subject=None)
@@ -112,7 +126,13 @@ def initiate_scim_client(client):
     scim = SyncSCIMClient(client_httpx)
     try:
         scim.discover()
-    except (SCIMClientException, SCIMException):
+    except (SCIMClientException, SCIMException) as exc:
+        if is_authentication_failure(exc):
+            current_app.logger.error(
+                f"SCIM authentication failed for client {client.client_name}"
+            )
+            return None
+
         current_app.logger.info(
             f"SCIM protocol not supported by client {client.client_name}"
         )
@@ -134,6 +154,7 @@ def execute_scim_user_action(client_id, user_id, method):
         with current_app.backend.session():
             user = Backend.instance.get(models.User, user_id)
             client = Backend.instance.get(models.Client, client_id)
+
     scim = initiate_scim_client(client)
     if not scim:
         return

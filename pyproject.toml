@@ -66,7 +66,7 @@ oidc = [
 
 scim = [
     "authlib >= 1.9.1",
-    "scim2-client[httpx2]>=0.12.0",
+    "scim2-client[httpx2]>=0.14.0",
     "scim2-models>=0.12.2",
     "scim2-server>=0.8.2",
 ]
