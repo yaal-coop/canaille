@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-29 15:26+0100\n"
+"POT-Creation-Date: 2026-10-29 22:02+0100\n"
 "PO-Revision-Date: 2023-03-24 22:36+0000\n"
 "Last-Translator: Sofi <sofi+git@mailbox.org>\n"
 "Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
@@ -115,8 +115,8 @@ msgstr ""
 msgid "John Doe"
 msgstr "Ola Nordmann"
 
-#: canaille/core/auth.py:282 canaille/core/endpoints/forms.py:195
-#: canaille/core/endpoints/forms.py:677
+#: canaille/core/auth.py:282 canaille/core/endpoints/forms.py:196
+#: canaille/core/endpoints/forms.py:678
 msgid "jdoe"
 msgstr "onord"
 
@@ -214,42 +214,49 @@ msgstr "Siden du leter etter finnes ikke"
 msgid "The user '{user}' has already been removed from the group '{group}'"
 msgstr ""
 
-#: canaille/core/validators.py:74
+#: canaille/core/validators.py:67
+#, python-brace-format
+msgid ""
+"The user '{user}' cannot be removed, because the group '{group}' must have "
+"at least one member."
+msgstr ""
+
+#: canaille/core/validators.py:81
 #, python-brace-format
 msgid ""
 "The group '{group}' cannot be removed, because it must have at least one "
 "user left."
 msgstr ""
 
-#: canaille/core/validators.py:83
+#: canaille/core/validators.py:90
 #, fuzzy
 msgid "No user found with this email address."
 msgstr "Din e-postadresse."
 
-#: canaille/core/validators.py:95
+#: canaille/core/validators.py:102
 msgid "A user with this email address is already a member of this group."
 msgstr ""
 
-#: canaille/core/validators.py:109
+#: canaille/core/validators.py:116
 #, fuzzy
 #| msgid "This field is not editable"
 msgid "This file is not a supported image."
 msgstr "Dette feltet kan ikke endres"
 
-#: canaille/core/validators.py:116
+#: canaille/core/validators.py:123
 msgid "Invalid security code"
 msgstr ""
 
-#: canaille/core/validators.py:124
+#: canaille/core/validators.py:131
 #, python-brace-format
 msgid "The user '{user}' is not a member of this group."
 msgstr ""
 
-#: canaille/core/validators.py:136 canaille/templates/core/group.html:90
+#: canaille/core/validators.py:143 canaille/templates/core/group.html:90
 msgid "A group must keep at least one owner."
 msgstr ""
 
-#: canaille/core/validators.py:139
+#: canaille/core/validators.py:146
 #, python-brace-format
 msgid "Only administrators can remove '{user}' from the owners."
 msgstr ""
@@ -260,11 +267,11 @@ msgstr ""
 msgid "Email"
 msgstr "E-postadresse"
 
-#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:49
-#: canaille/core/endpoints/forms.py:124 canaille/core/endpoints/forms.py:244
-#: canaille/core/endpoints/forms.py:636 canaille/core/endpoints/forms.py:656
-#: canaille/core/endpoints/forms.py:689 canaille/core/endpoints/forms.py:706
-#: canaille/core/endpoints/forms.py:722
+#: canaille/core/endpoints/admin.py:29 canaille/core/endpoints/forms.py:50
+#: canaille/core/endpoints/forms.py:125 canaille/core/endpoints/forms.py:245
+#: canaille/core/endpoints/forms.py:637 canaille/core/endpoints/forms.py:657
+#: canaille/core/endpoints/forms.py:690 canaille/core/endpoints/forms.py:707
+#: canaille/core/endpoints/forms.py:723
 #, fuzzy
 #| msgid "jane@doe.com"
 msgid "jane.doe@example.com"
@@ -290,67 +297,67 @@ msgstr "Invitasjon på {website_name}"
 msgid "Passcode authentication on {website_name}"
 msgstr "Oppsett av passord på {website_name}"
 
-#: canaille/core/endpoints/forms.py:46 canaille/core/endpoints/forms.py:121
+#: canaille/core/endpoints/forms.py:47 canaille/core/endpoints/forms.py:122
 #: canaille/templates/core/partial/group-members.html:10
 #: canaille/templates/core/partial/users.html:9
 #, fuzzy
 msgid "Login"
 msgstr "Logg inn"
 
-#: canaille/core/endpoints/forms.py:59
+#: canaille/core/endpoints/forms.py:60
 msgid "Remember me"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:63
+#: canaille/core/endpoints/forms.py:64
 msgid "If unchecked, the session will close when the browser is closed"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:75
+#: canaille/core/endpoints/forms.py:76
 #, fuzzy
 #| msgid "Source code"
 msgid "Security code"
 msgstr "Kildekode"
 
-#: canaille/core/endpoints/forms.py:78
+#: canaille/core/endpoints/forms.py:79
 msgid "Enter the security code displayed above"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:104 canaille/core/endpoints/forms.py:151
-#: canaille/core/endpoints/forms.py:314
+#: canaille/core/endpoints/forms.py:105 canaille/core/endpoints/forms.py:152
+#: canaille/core/endpoints/forms.py:315
 #: canaille/templates/core/account/auth/index.html:70
 #: canaille/templates/core/account/auth/password.html:41
 msgid "Password"
 msgstr "Passord"
 
-#: canaille/core/endpoints/forms.py:134 canaille/oidc/endpoints/forms.py:45
+#: canaille/core/endpoints/forms.py:135 canaille/oidc/endpoints/forms.py:45
 msgid "Code"
 msgstr "Kode"
 
-#: canaille/core/endpoints/forms.py:140 canaille/core/endpoints/forms.py:750
+#: canaille/core/endpoints/forms.py:141 canaille/core/endpoints/forms.py:751
 #, fuzzy
 #| msgid "1234"
 msgid "123456"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:165 canaille/core/endpoints/forms.py:329
+#: canaille/core/endpoints/forms.py:166 canaille/core/endpoints/forms.py:330
 msgid "Password confirmation"
 msgstr "Passordbekreftelse"
 
 #: canaille/core/endpoints/account/__init__.py:401
-#: canaille/core/endpoints/forms.py:168 canaille/core/endpoints/forms.py:332
+#: canaille/core/endpoints/forms.py:169 canaille/core/endpoints/forms.py:333
 msgid "Password and confirmation do not match."
 msgstr "Passordet og bekreftelsen samsvarer ikke."
 
-#: canaille/core/endpoints/forms.py:189
+#: canaille/core/endpoints/forms.py:190
 msgid "Automatic"
 msgstr "Automatisk"
 
-#: canaille/core/endpoints/forms.py:194
+#: canaille/core/endpoints/forms.py:195
 msgid "Username"
 msgstr "Brukernavn"
 
-#: canaille/core/endpoints/forms.py:198 canaille/core/endpoints/forms.py:558
-#: canaille/core/endpoints/forms.py:581 canaille/oidc/endpoints/forms.py:260
+#: canaille/core/endpoints/forms.py:199 canaille/core/endpoints/forms.py:559
+#: canaille/core/endpoints/forms.py:582 canaille/oidc/endpoints/forms.py:260
 #: canaille/templates/core/account/auth/fido2.html:70
 #: canaille/templates/core/partial/group-members.html:13
 #: canaille/templates/core/partial/groups.html:7
@@ -359,145 +366,145 @@ msgstr "Brukernavn"
 msgid "Name"
 msgstr "Navn"
 
-#: canaille/core/endpoints/forms.py:200
+#: canaille/core/endpoints/forms.py:201
 msgid "Title"
 msgstr "Tittel"
 
-#: canaille/core/endpoints/forms.py:202
+#: canaille/core/endpoints/forms.py:203
 msgid "Vice president"
 msgstr "Visepresident"
 
-#: canaille/core/endpoints/forms.py:207
+#: canaille/core/endpoints/forms.py:208
 msgid "Given name"
 msgstr "Fornavn"
 
-#: canaille/core/endpoints/forms.py:209
+#: canaille/core/endpoints/forms.py:210
 msgid "John"
 msgstr "Ola"
 
-#: canaille/core/endpoints/forms.py:215
+#: canaille/core/endpoints/forms.py:216
 msgid "Family Name"
 msgstr "Etternavn"
 
-#: canaille/core/endpoints/forms.py:218
+#: canaille/core/endpoints/forms.py:219
 msgid "Doe"
 msgstr "Nordmann"
 
-#: canaille/core/endpoints/forms.py:224
+#: canaille/core/endpoints/forms.py:225
 msgid "Display Name"
 msgstr "Visningsnavn"
 
-#: canaille/core/endpoints/forms.py:227
+#: canaille/core/endpoints/forms.py:228
 msgid "Johnny"
 msgstr "Ola"
 
-#: canaille/core/endpoints/forms.py:234 canaille/core/endpoints/forms.py:712
+#: canaille/core/endpoints/forms.py:235 canaille/core/endpoints/forms.py:713
 #: canaille/templates/core/account/edit.html:197
 #, fuzzy
 #| msgid "Email address"
 msgid "Email addresses"
 msgstr "E-postadresse"
 
-#: canaille/core/endpoints/forms.py:241 canaille/core/endpoints/forms.py:703
+#: canaille/core/endpoints/forms.py:242 canaille/core/endpoints/forms.py:704
 msgid ""
 "This email will be used as a recovery address to reset the password if needed"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:255
+#: canaille/core/endpoints/forms.py:256
 #, fuzzy
 #| msgid "Phone number"
 msgid "Phone numbers"
 msgstr "Telefonnummer"
 
-#: canaille/core/endpoints/forms.py:256
+#: canaille/core/endpoints/forms.py:257
 msgid "555-000-555"
 msgstr "87 65 43 21"
 
-#: canaille/core/endpoints/forms.py:263
+#: canaille/core/endpoints/forms.py:264
 msgid "Address"
 msgstr "Adresse"
 
-#: canaille/core/endpoints/forms.py:265
+#: canaille/core/endpoints/forms.py:266
 msgid "132, Foobar Street, Gotham City 12401, XX"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:269
+#: canaille/core/endpoints/forms.py:270
 #, fuzzy
 msgid "Street"
 msgstr "Hemmelighet"
 
-#: canaille/core/endpoints/forms.py:271
+#: canaille/core/endpoints/forms.py:272
 msgid "132, Foobar Street"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:276
+#: canaille/core/endpoints/forms.py:277
 msgid "Postal Code"
 msgstr "Postnummer"
 
-#: canaille/core/endpoints/forms.py:283
+#: canaille/core/endpoints/forms.py:284
 msgid "Locality"
 msgstr "Kommune"
 
-#: canaille/core/endpoints/forms.py:285
+#: canaille/core/endpoints/forms.py:286
 msgid "Gotham City"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:290
+#: canaille/core/endpoints/forms.py:291
 msgid "Region"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:292
+#: canaille/core/endpoints/forms.py:293
 msgid "North Pole"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:297
+#: canaille/core/endpoints/forms.py:298
 msgid "Photo"
 msgstr "Bilde"
 
-#: canaille/core/endpoints/forms.py:310
+#: canaille/core/endpoints/forms.py:311
 #: canaille/templates/core/account/add.html:74
 #: canaille/templates/core/account/edit.html:86
 msgid "Delete the photo"
 msgstr "Slett bildet"
 
-#: canaille/core/endpoints/forms.py:341
+#: canaille/core/endpoints/forms.py:342
 #, fuzzy
 #| msgid "Username"
 msgid "User number"
 msgstr "Brukernavn"
 
-#: canaille/core/endpoints/forms.py:343 canaille/core/endpoints/forms.py:349
+#: canaille/core/endpoints/forms.py:344 canaille/core/endpoints/forms.py:350
 msgid "1234"
 msgstr "1234"
 
-#: canaille/core/endpoints/forms.py:347
+#: canaille/core/endpoints/forms.py:348
 #, fuzzy
 msgid "Department"
 msgstr "Telefonnummer"
 
-#: canaille/core/endpoints/forms.py:353
+#: canaille/core/endpoints/forms.py:354
 #, fuzzy
 #| msgid "Invitation"
 msgid "Organization"
 msgstr "Invitasjon"
 
-#: canaille/core/endpoints/forms.py:355
+#: canaille/core/endpoints/forms.py:356
 msgid "Cogip LTD."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:360
+#: canaille/core/endpoints/forms.py:361
 msgid "Website"
 msgstr "Nettside"
 
-#: canaille/core/endpoints/forms.py:362
+#: canaille/core/endpoints/forms.py:363
 msgid "https://mywebsite.example"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:367
+#: canaille/core/endpoints/forms.py:368
 msgid "Preferred language"
 msgstr "Foretrukket språk"
 
-#: canaille/core/endpoints/forms.py:372 canaille/core/endpoints/forms.py:508
+#: canaille/core/endpoints/forms.py:373 canaille/core/endpoints/forms.py:509
 #: canaille/templates/base.html:114
 #: canaille/templates/core/add_group_members.html:21
 #: canaille/templates/core/groups.html:18
@@ -508,85 +515,85 @@ msgstr "Foretrukket språk"
 msgid "Groups"
 msgstr "Grupper"
 
-#: canaille/core/endpoints/forms.py:381 canaille/core/endpoints/forms.py:513
+#: canaille/core/endpoints/forms.py:382 canaille/core/endpoints/forms.py:514
 #, fuzzy
 msgid "users, admins …"
 msgstr "brukere, administratorer …"
 
-#: canaille/core/endpoints/forms.py:417
+#: canaille/core/endpoints/forms.py:418
 #, fuzzy
 #| msgid "Account creation"
 msgid "Account expiration"
 msgstr "Kontoopprettelse"
 
-#: canaille/core/endpoints/forms.py:498 canaille/oidc/endpoints/forms.py:155
+#: canaille/core/endpoints/forms.py:499 canaille/oidc/endpoints/forms.py:155
 #: canaille/oidc/endpoints/forms.py:210 canaille/templates/macro/table.html:22
 msgid "Search"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:536 canaille/core/endpoints/forms.py:549
+#: canaille/core/endpoints/forms.py:537 canaille/core/endpoints/forms.py:550
 #, fuzzy
 #| msgid "jane@doe.com"
 msgid "Jane Doe, jane.doe@example.com …"
 msgstr "ola@nordmann.no"
 
-#: canaille/core/endpoints/forms.py:543 canaille/oidc/endpoints/forms.py:150
+#: canaille/core/endpoints/forms.py:544 canaille/oidc/endpoints/forms.py:150
 msgid "Owners"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:561
+#: canaille/core/endpoints/forms.py:562
 msgid "group"
 msgstr "gruppe"
 
-#: canaille/core/endpoints/forms.py:565 canaille/core/endpoints/forms.py:591
+#: canaille/core/endpoints/forms.py:566 canaille/core/endpoints/forms.py:592
 #: canaille/templates/core/partial/groups.html:8
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: canaille/core/endpoints/forms.py:598
+#: canaille/core/endpoints/forms.py:599
 msgid "Only members can be owners."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:605
+#: canaille/core/endpoints/forms.py:606
 #, fuzzy
 #| msgid "Invite a user"
 msgid "Members"
 msgstr "Inviter en bruker"
 
-#: canaille/core/endpoints/forms.py:613
+#: canaille/core/endpoints/forms.py:614
 #, fuzzy
 #| msgid "Group members"
 msgid "Add members"
 msgstr "Gruppemedlemmer"
 
-#: canaille/core/endpoints/forms.py:628 canaille/core/endpoints/forms.py:650
-#: canaille/core/endpoints/forms.py:682
+#: canaille/core/endpoints/forms.py:629 canaille/core/endpoints/forms.py:651
+#: canaille/core/endpoints/forms.py:683
 msgid "Email address"
 msgstr "E-postadresse"
 
-#: canaille/core/endpoints/forms.py:643
+#: canaille/core/endpoints/forms.py:644
 #, fuzzy
 #| msgid "Invite a user"
 msgid "Invite as owner"
 msgstr "Inviter en bruker"
 
-#: canaille/core/endpoints/forms.py:676
+#: canaille/core/endpoints/forms.py:677
 #, fuzzy
 #| msgid "Username"
 msgid "User name"
 msgstr "Brukernavn"
 
-#: canaille/core/endpoints/forms.py:680
+#: canaille/core/endpoints/forms.py:681
 msgid "Username editable by the invitee"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:715
+#: canaille/core/endpoints/forms.py:716
 #, fuzzy
 #| msgid "Email address"
 msgid "New email address"
 msgstr "E-postadresse"
 
-#: canaille/core/endpoints/forms.py:729
+#: canaille/core/endpoints/forms.py:730
 #: canaille/templates/core/auth/email.html:42
 #: canaille/templates/core/auth/otp.html:35
 #: canaille/templates/core/auth/setup-otp.html:62
@@ -595,11 +602,11 @@ msgstr "E-postadresse"
 msgid "Verify"
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:730
+#: canaille/core/endpoints/forms.py:731
 msgid "Send a verification email to validate this address."
 msgstr ""
 
-#: canaille/core/endpoints/forms.py:744
+#: canaille/core/endpoints/forms.py:745
 #, fuzzy
 #| msgid "Password"
 msgid "Passcode"
@@ -650,67 +657,72 @@ msgstr ""
 msgid "You cannot leave %(group)s because you are its last owner."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:307
+#: canaille/core/endpoints/groups.py:303
+#, python-format
+msgid "You cannot leave %(group)s because you are its last member."
+msgstr ""
+
+#: canaille/core/endpoints/groups.py:317
 #, python-format
 msgid "You have left %(group)s."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:325
+#: canaille/core/endpoints/groups.py:335
 #, python-format
 msgid "%(num)d member has been added to the group %(group)s."
 msgid_plural "%(num)d members have been added to the group %(group)s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: canaille/core/endpoints/groups.py:336
+#: canaille/core/endpoints/groups.py:346
 #, fuzzy
 #| msgid "Delete the client"
 msgid "The members couldn't be added. Please check the form and try again."
 msgstr "Slett klienten"
 
-#: canaille/core/endpoints/groups.py:387
+#: canaille/core/endpoints/groups.py:397
 #, fuzzy, python-format
 #| msgid "This invitation link has been sent to %(email)s"
 msgid "An invitation email has been sent to %(email)s."
 msgstr "Denne invitasjonslenken har blitt sendt til %(email)s"
 
 #: canaille/core/endpoints/account/__init__.py:470
-#: canaille/core/endpoints/groups.py:406 canaille/core/endpoints/groups.py:417
-#: canaille/core/endpoints/groups.py:440
+#: canaille/core/endpoints/groups.py:416 canaille/core/endpoints/groups.py:427
+#: canaille/core/endpoints/groups.py:450
 msgid "The invitation link that brought you here was invalid."
 msgstr "Invitasjonslenken som tok deg hit er ikke gyldig."
 
-#: canaille/core/endpoints/groups.py:411
+#: canaille/core/endpoints/groups.py:421
 #, fuzzy
 #| msgid "The page you are looking for does not exist"
 msgid "The group you were invited to no longer exists."
 msgstr "Siden du leter etter finnes ikke"
 
-#: canaille/core/endpoints/groups.py:423
+#: canaille/core/endpoints/groups.py:433
 #, python-format
 msgid ""
 "You have been invited to join the group '%(group)s'. Please log in to accept "
 "the invitation."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:432
+#: canaille/core/endpoints/groups.py:442
 #, fuzzy
 #| msgid "This invitation link has been sent to %(email)s"
 msgid "This invitation was not sent to you."
 msgstr "Denne invitasjonslenken har blitt sendt til %(email)s"
 
-#: canaille/core/endpoints/groups.py:436
+#: canaille/core/endpoints/groups.py:446
 #, fuzzy
 #| msgid "The invitation link that brought you here has expired."
 msgid "The invitation link that brought you here has expired."
 msgstr "Invitasjonslenken som tok deg hit har utløpt."
 
-#: canaille/core/endpoints/groups.py:445
+#: canaille/core/endpoints/groups.py:455
 #, python-format
 msgid "You are already a member of %(group)s."
 msgstr ""
 
-#: canaille/core/endpoints/groups.py:467
+#: canaille/core/endpoints/groups.py:477
 #, fuzzy, python-format
 #| msgid "You have been successfully logged out."
 msgid "You have successfully joined %(group)s!"
@@ -1556,19 +1568,19 @@ msgid ""
 "object and provided through either request or request_uri parameter."
 msgstr ""
 
-#: canaille/oidc/endpoints/oauth.py:520 canaille/oidc/endpoints/oauth.py:557
+#: canaille/oidc/endpoints/oauth.py:533 canaille/oidc/endpoints/oauth.py:570
 #, fuzzy
 #| msgid "The application %(name)s is requesting access to:"
 msgid "The user code is invalid or has expired."
 msgstr "Programmet %(name)s forespør tilgang til:"
 
-#: canaille/oidc/endpoints/oauth.py:670 canaille/oidc/endpoints/oauth.py:705
+#: canaille/oidc/endpoints/oauth.py:683 canaille/oidc/endpoints/oauth.py:718
 #, fuzzy
 #| msgid "You have been disconnected"
 msgid "You have been disconnected"
 msgstr "Du har blitt frakoblet"
 
-#: canaille/oidc/endpoints/oauth.py:696
+#: canaille/oidc/endpoints/oauth.py:709
 #, fuzzy
 #| msgid "You have not been disconnected"
 msgid "You have not been disconnected"
@@ -1731,7 +1743,7 @@ msgid ""
 msgstr ""
 
 #: canaille/templates/core/add_group_members.html:56
-#: canaille/templates/core/modals/delete-account.html:26
+#: canaille/templates/core/modals/delete-account.html:32
 #: canaille/templates/core/modals/delete-credential.html:30
 #: canaille/templates/core/modals/delete-group.html:22
 #: canaille/templates/core/modals/impersonate-user.html:20
@@ -2202,7 +2214,7 @@ msgid "Never"
 msgstr ""
 
 #: canaille/templates/core/account/auth/fido2.html:96
-#: canaille/templates/core/modals/delete-account.html:27
+#: canaille/templates/core/modals/delete-account.html:33
 #: canaille/templates/core/modals/delete-group.html:25
 #: canaille/templates/oidc/modals/delete-client.html:21
 msgid "Delete"
@@ -3034,6 +3046,15 @@ msgstr ""
 msgid ""
 "Are you sure you want to delete your account? This action is unrevokable and "
 "all your data will be removed forever."
+msgstr ""
+
+#: canaille/templates/core/modals/delete-account.html:24
+msgid "The groups whose only member is this account will be deleted."
+msgstr ""
+
+#: canaille/templates/core/modals/delete-account.html:26
+msgid ""
+"The clients owned only by this account or by these groups will be deleted."
 msgstr ""
 
 #: canaille/templates/core/modals/delete-credential.html:10
