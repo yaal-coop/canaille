@@ -39,6 +39,8 @@ SCIM server requirements
 Canaille uses the :attr:`~canaille.oidc.basemodels.Client.client_uri` of the client as the base URL of its SCIM server.
 For instance, with ``https://app.example/scim/v2`` as ``client_uri``, Canaille reads ``https://app.example/scim/v2/ResourceTypes``.
 A client without a SCIM server at this URL is skipped.
+Each Canaille process keeps the answers of these endpoints for 5 minutes.
+A change on the SCIM server of the client can take up to 5 minutes to be seen.
 
 The SCIM server of the client must:
 

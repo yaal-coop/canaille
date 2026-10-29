@@ -169,6 +169,19 @@ def scim_token(testclient, scim_trusted_client, backend):
 
 
 @pytest.fixture
+def uncached_discovery():
+    """Clear the SCIM discovery cache before and after the test.
+
+    Request it last, so the cache is cleared before the users are deleted.
+    """
+    from canaille.scim.client import discovery_cache
+
+    discovery_cache.clear()
+    yield
+    discovery_cache.clear()
+
+
+@pytest.fixture
 def scim_client_for_trusted_client(scim2_server_app, scim_token):
     from scim2_client.engines.wsgi import WSGISCIMClient
 

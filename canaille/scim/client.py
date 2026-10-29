@@ -1,4 +1,5 @@
 import datetime
+import time
 
 from blinker import signal
 from flask import current_app
@@ -19,6 +20,10 @@ from canaille.app.http import http
 from canaille.backends import Backend
 from canaille.scim.casting import group_from_canaille_to_scim
 from canaille.scim.casting import user_from_canaille_to_scim
+
+DISCOVERY_CACHE_LIFETIME = 300
+
+discovery_cache = {}
 
 
 def external_id_filter(external_id):
@@ -113,17 +118,11 @@ def get_or_create_token(client):
     return scim_token
 
 
-def initiate_scim_client(client):
-    """Set up the scim2-client object that will perform the SCIM2 requests."""
-    if not client or not client.client_uri:  # pragma: no cover
-        return None
+def discover(scim, client, key):
+    """Discover the SCIM server of a client, and cache the result for a few minutes.
 
-    access_token = get_or_create_token(client).access_token
-    client_httpx = http().build(
-        base_url=client.client_uri,
-        headers={"Authorization": f"Bearer {access_token}"},
-    )
-    scim = SyncSCIMClient(client_httpx)
+    Failures are cached too, except authentication failures, as they depend on the token.
+    """
     try:
         scim.discover()
     except (SCIMClientException, SCIMException) as exc:
@@ -131,11 +130,36 @@ def initiate_scim_client(client):
             current_app.logger.error(
                 f"SCIM authentication failed for client {client.client_name}"
             )
-            return None
+            return False
 
         current_app.logger.info(
             f"SCIM protocol not supported by client {client.client_name}"
         )
+        discovery_cache[key] = (time.monotonic() + DISCOVERY_CACHE_LIFETIME, None)
+        return False
+
+    discovery_cache[key] = (time.monotonic() + DISCOVERY_CACHE_LIFETIME, scim.provider)
+    return True
+
+
+def initiate_scim_client(client):
+    """Set up the scim2-client object that will perform the SCIM2 requests."""
+    if not client or not client.client_uri:  # pragma: no cover
+        return None
+
+    key = (client.client_id, client.client_uri)
+    expiration, provider = discovery_cache.get(key, (0, None))
+    cached = time.monotonic() < expiration
+    if cached and not provider:
+        return None
+
+    access_token = get_or_create_token(client).access_token
+    client_httpx = http().build(
+        base_url=client.client_uri,
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
+    scim = SyncSCIMClient(client_httpx, provider=provider if cached else None)
+    if not cached and not discover(scim, client, key):
         return None
 
     if not scim.provider.config.filter.supported:

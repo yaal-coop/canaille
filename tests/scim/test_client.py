@@ -13,6 +13,7 @@ from canaille.app import models
 from canaille.core.models import setup_group_signals
 from canaille.core.models import teardown_group_signals
 from canaille.scim.casting import user_from_scim_to_canaille
+from canaille.scim.client import discovery_cache
 from canaille.scim.client import execute_scim_user_action
 from canaille.scim.client import external_id_filter
 from canaille.scim.client import get_clients_to_notify
@@ -270,7 +271,13 @@ def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplo
     ],
 )
 def test_save_user_when_client_refuses_the_credentials(
-    testclient, scim_client_for_trusted_client, backend, user, caplog, exception
+    testclient,
+    scim_client_for_trusted_client,
+    backend,
+    user,
+    caplog,
+    exception,
+    uncached_discovery,
 ):
     """Test that an error is logged when the client refuses the SCIM credentials."""
     with mock.patch(
@@ -287,7 +294,12 @@ def test_save_user_when_client_refuses_the_credentials(
 
 
 def test_save_user_when_client_answers_not_found(
-    testclient, scim_client_for_trusted_client, backend, user, caplog
+    testclient,
+    scim_client_for_trusted_client,
+    backend,
+    user,
+    caplog,
+    uncached_discovery,
 ):
     """Test that an info message is logged when the client has no SCIM endpoint."""
     with mock.patch(
@@ -305,7 +317,12 @@ def test_save_user_when_client_answers_not_found(
 
 
 def test_save_user_when_client_doesnt_support_filters(
-    testclient, scim_client_for_trusted_client, backend, user, caplog
+    testclient,
+    scim_client_for_trusted_client,
+    backend,
+    user,
+    caplog,
+    uncached_discovery,
 ):
     """Test that a client is not provisioned when its SCIM server does not support filters."""
     discover = SyncSCIMClient.discover
@@ -331,6 +348,73 @@ def test_save_user_when_client_doesnt_support_filters(
         logging.ERROR,
         "SCIM client Some client does not support filters, it cannot be provisioned",
     ) in caplog.record_tuples
+
+
+def save_user_twice(backend, user):
+    user.display_name = "Jo"
+    backend.save(user)
+    user.display_name = "Joe"
+    backend.save(user)
+
+
+def test_scim_client_discovery_is_cached(
+    testclient, scim_client_for_trusted_client, backend, user, uncached_discovery
+):
+    """Test that the SCIM server of a client is discovered once for several events."""
+    with mock.patch(
+        "scim2_client.engines.httpx2.SyncSCIMClient.discover",
+        autospec=True,
+        side_effect=SyncSCIMClient.discover,
+    ) as discover:
+        save_user_twice(backend, user)
+
+    assert discover.call_count == 1
+    assert distant_user(scim_client_for_trusted_client, user).display_name == "Joe"
+
+
+def test_scim_client_discovery_cache_expires(
+    testclient, scim_client_for_trusted_client, backend, user, uncached_discovery
+):
+    """Test that the SCIM server of a client is discovered again once the cache expired."""
+    with mock.patch(
+        "scim2_client.engines.httpx2.SyncSCIMClient.discover",
+        autospec=True,
+        side_effect=SyncSCIMClient.discover,
+    ) as discover:
+        user.display_name = "Jo"
+        backend.save(user)
+        for key, (_, provider) in discovery_cache.items():
+            discovery_cache[key] = (0, provider)
+        user.display_name = "Joe"
+        backend.save(user)
+
+    assert discover.call_count == 2
+
+
+def test_scim_client_discovery_failure_is_cached(
+    testclient, scim_client_for_trusted_client, backend, user, uncached_discovery
+):
+    """Test that a client without SCIM endpoint is not queried at each event."""
+    with mock.patch(
+        "scim2_client.engines.httpx2.SyncSCIMClient.discover",
+        side_effect=UnexpectedStatusCodeException(404),
+    ) as discover:
+        save_user_twice(backend, user)
+
+    assert discover.call_count == 1
+
+
+def test_scim_client_authentication_failure_is_not_cached(
+    testclient, scim_client_for_trusted_client, backend, user, uncached_discovery
+):
+    """Test that a client that refused the credentials is queried again at the next event."""
+    with mock.patch(
+        "scim2_client.engines.httpx2.SyncSCIMClient.discover",
+        side_effect=UnexpectedStatusCodeException(401),
+    ) as discover:
+        save_user_twice(backend, user)
+
+    assert discover.call_count == 2
 
 
 def test_delete_user_not_found_on_client(

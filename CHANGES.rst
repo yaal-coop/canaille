@@ -4,6 +4,8 @@
 Changed
 ^^^^^^^
 - SCIM group requests with unknown members are refused instead of partially applied.
+- The SCIM client reads the configuration of each application every 5 minutes,
+  instead of at each provisioning event.
 
 [0.4.3] - 2026-10-29
 --------------------
