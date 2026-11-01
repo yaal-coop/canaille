@@ -38,7 +38,7 @@ The main template inherited by almost every other templates.
             <link href="{{ url_for("static", filename="vendor/fomantic-ui/semantic.min.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="fonts/lato.css") }}" rel="stylesheet">
             <link href="{{ url_for("static", filename="css/base.css") }}" rel="stylesheet">
-            {% if logo_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
+            {% if favicon_url %}<link rel="icon" href="{{ favicon_url }}">{% endif %}
         {% endif %}
         {% block style %}{% endblock %}
     </head>
