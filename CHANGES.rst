@@ -13,6 +13,8 @@ Fixed
   and the region in the profile form.
 - Pages can be zoomed on mobile devices.
 - The favicon is displayed when no logo is configured.
+- Screen readers announce the name of the read-only fields
+  that hold tokens, secrets and invitation links.
 
 [0.4.3] - 2026-10-29
 --------------------

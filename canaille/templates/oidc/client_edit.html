@@ -43,7 +43,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
 
     {% if management_token %}
         <div class="ui segment">
-            <h2 class="ui center aligned header">
+            <h2 class="ui center aligned header" id="management-token-label">
                 {% trans %}Management token{% endtrans %}
             </h2>
             <p>
@@ -52,7 +52,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
             </p>
             {% call fui.render_form(form, id="managementtokenform") %}
                 <div class="ui fluid action input">
-                    <input type="text" value="{{ management_token }}" readonly class="copy-text" id="management-token" data-copy="management-token">
+                    <input type="text" value="{{ management_token }}" readonly class="copy-text" id="management-token" data-copy="management-token" aria-labelledby="management-token-label">
                     {% call fui.render_button(form.action, "new-management-token", class_="ui teal right labeled icon button copy-button", id="new-management-token") %}
                         <i class="redo icon"></i>
                         {% trans %}Renew{% endtrans %}
@@ -86,7 +86,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
         <div class="ui form">
             <form id="readonly">
                 <div class="field">
-                    <label>{% trans %}ID{% endtrans %}</label>
+                    <label for="client-id">{% trans %}ID{% endtrans %}</label>
                     <div class="ui fluid action input">
                         <input type="text" value="{{ client.client_id }}" readonly class="copy-text" id="client-id" data-copy="client-id" name="client_id">
                         <button type="button" class="ui primary right labeled icon button copy-button" data-copy="client-id">
@@ -96,9 +96,9 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
                     </div>
                 </div>
                 <div class="field">
-                    <label>{% trans %}Issued at{% endtrans %}</label>
+                    <label for="client-id-issued-at">{% trans %}Issued at{% endtrans %}</label>
                     <div class="ui corner labeled input">
-                        <input type="text" value="{{ client.client_id_issued_at }}" readonly name="client_id_issued_at">
+                        <input type="text" value="{{ client.client_id_issued_at }}" readonly id="client-id-issued-at" name="client_id_issued_at">
                         <div class="ui corner label" title="{{ _("This field is not editable") }}">
                             <i class="lock icon"></i>
                         </div>
@@ -109,7 +109,7 @@ Displays a form to edit a :class:`~canaille.oidc.basemodels.Client`.
 
         {% call fui.render_form(form) %}
             <div class="field">
-                <label>{% trans %}Secret{% endtrans %}</label>
+                <label for="client-secret">{% trans %}Secret{% endtrans %}</label>
                 <div class="ui fluid action input">
                     <input type="text" value="{{ client.client_secret }}" readonly class="copy-text" id="client-secret" data-copy="client-secret">
                     {% call fui.render_button(form.action, "new-client-secret", class_="ui teal right labeled icon button", id="new-client-secret", formnovalidate=True) %}

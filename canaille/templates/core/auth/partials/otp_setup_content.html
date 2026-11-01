@@ -44,7 +44,7 @@
 
         <div class="ui row">
             <div class="ui column">
-                <h4 class="ui header">
+                <h4 class="ui header" id="secret-label">
                     {% trans %}3 - Secret token{% endtrans %}
                 </h4>
 
@@ -54,7 +54,7 @@
             </div>
             <div class="ui column">
                 <div class="ui fluid labeled action input">
-                    <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret">
+                    <input class="copy-text" type="text" id="secret" name="secret" value="{{ secret }}" readonly data-copy="secret" aria-labelledby="secret-label">
                     <button type="button" class="ui teal icon button copy-button" data-copy="secret">
                         <i class="copy icon"></i>
                         {% trans %}Copy secret{% endtrans %}

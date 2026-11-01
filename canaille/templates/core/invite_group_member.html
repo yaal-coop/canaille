@@ -50,7 +50,7 @@ Displays the group invitation form to users with the appropriate permissions.
                 </div>
 
                 <div class="ui fluid action input">
-                    <input type="text" value="{{ invitation_url }}" readonly class="copy-text" id="invitation-url" data-copy="invitation-url">
+                    <input type="text" value="{{ invitation_url }}" readonly class="copy-text" id="invitation-url" data-copy="invitation-url" aria-label="{% trans %}Invitation link{% endtrans %}">
                     <button type="button" class="ui primary right labeled icon button copy-button" data-copy="invitation-url">
                         <i class="copy icon"></i>
                         {% trans %}Copy{% endtrans %}

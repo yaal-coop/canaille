@@ -41,7 +41,7 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
 
     {% if registration_token %}
         <div class="ui segment">
-            <h2 class="ui center aligned header">
+            <h2 class="ui center aligned header" id="registration-token-label">
                 {% trans %}Registration token{% endtrans %}
             </h2>
             <p>
@@ -50,7 +50,7 @@ Displays a form to create a new :class:`~canaille.oidc.basemodels.Client`.
             </p>
             {% call fui.render_form(form, id="registrationtokenform") %}
                 <div class="ui fluid action input">
-                    <input type="text" value="{{ registration_token }}" readonly class="copy-text" id="registration-token" data-copy="registration-token">
+                    <input type="text" value="{{ registration_token }}" readonly class="copy-text" id="registration-token" data-copy="registration-token" aria-labelledby="registration-token-label">
                     {% call fui.render_button(form.action, "new-registration-token", class_="ui teal right labeled icon button copy-button", id="new-registration-token") %}
                         <i class="redo icon"></i>
                         {% trans %}Renew{% endtrans %}
