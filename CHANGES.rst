@@ -11,6 +11,7 @@ Fixed
 ^^^^^
 - Browsers can autofill the names, the street, the locality
   and the region in the profile form.
+- Pages can be zoomed on mobile devices.
 
 [0.4.3] - 2026-10-29
 --------------------
