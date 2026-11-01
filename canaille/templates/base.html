@@ -76,7 +76,7 @@ The main template inherited by almost every other templates.
         {% block menu %}
             {% if menu %}
                 <div class="ui container menu-container">
-                    <a id="skip-link" href="#submenu">{% trans %}Skip main menu{% endtrans %}</a>
+                    <a id="skip-link" href="#content">{% trans %}Skip main menu{% endtrans %}</a>
                     <nav class="ui stackable labeled icon seven item {% if self.submenu() | trim %}{% if not no_secret_key %}top {% endif %}attached{% endif %} menu">
                         {% if logo_url %}
                             <a href="/" class="item logo">
@@ -187,14 +187,16 @@ The main template inherited by almost every other templates.
         {% endblock %}
 
 
-        {% block container %}
-            <div class="ui container">
-                <div class="ui content">
-                    {% block messages %}{{ flask.messages() }}{% endblock %}
-                    {% block content %}{% endblock %}
+        <main id="content">
+            {% block container %}
+                <div class="ui container">
+                    <div class="ui content">
+                        {% block messages %}{{ flask.messages() }}{% endblock %}
+                        {% block content %}{% endblock %}
+                    </div>
                 </div>
-            </div>
-        {% endblock %}
+            {% endblock %}
+        </main>
 
         <footer>
             <a href="{{ url_for('core.account.about') }}">{{ _("About Canaille") }}</a>

@@ -31,3 +31,10 @@ def test_no_favicon(testclient):
 
     res = testclient.get("/login")
     assert not res.pyquery("link[rel=icon]")
+
+
+def test_skip_link_targets_main_content(testclient):
+    """The skip link leads to the main landmark."""
+    res = testclient.get("/about")
+    assert res.pyquery("#skip-link").attr("href") == "#content"
+    assert res.pyquery("main#content")

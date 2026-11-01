@@ -15,6 +15,7 @@ Fixed
 - The favicon is displayed when no logo is configured.
 - Screen readers announce the name of the read-only fields
   that hold tokens, secrets and invitation links.
+- The "Skip main menu" link leads to the page content.
 
 [0.4.3] - 2026-10-29
 --------------------
