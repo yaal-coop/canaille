@@ -210,6 +210,7 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("John"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "autocomplete": "given-name",
         },
     ),
     family_name=wtforms.StringField(
@@ -219,6 +220,7 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("Doe"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "autocomplete": "family-name",
         },
     ),
     display_name=wtforms.StringField(
@@ -228,6 +230,7 @@ PROFILE_FORM_FIELDS = dict(
             "placeholder": _("Johnny"),
             "spellcheck": "false",
             "autocorrect": "off",
+            "autocomplete": "nickname",
         },
     ),
     emails=wtforms.FieldList(
@@ -270,7 +273,7 @@ PROFILE_FORM_FIELDS = dict(
         _("Street"),
         render_kw={
             "placeholder": _("132, Foobar Street"),
-            "autocomplete": "street-address",
+            "autocomplete": "address-line1",
         },
     ),
     postal_code=wtforms.StringField(
@@ -284,14 +287,14 @@ PROFILE_FORM_FIELDS = dict(
         _("Locality"),
         render_kw={
             "placeholder": _("Gotham City"),
-            "autocomplete": "city",
+            "autocomplete": "address-level2",
         },
     ),
     region=wtforms.StringField(
         _("Region"),
         render_kw={
             "placeholder": _("North Pole"),
-            "autocomplete": "country",
+            "autocomplete": "address-level1",
         },
     ),
     photo=FileField(
@@ -368,6 +371,7 @@ PROFILE_FORM_FIELDS = dict(
         _("Preferred language"),
         choices=available_language_choices,
         default="auto",
+        render_kw={"autocomplete": "language"},
     ),
     groups=wtforms.SelectMultipleField(
         _("Groups"),

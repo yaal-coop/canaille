@@ -7,6 +7,11 @@ Changed
 - The SCIM client reads the configuration of each application every 5 minutes,
   instead of at each provisioning event.
 
+Fixed
+^^^^^
+- Browsers can autofill the names, the street, the locality
+  and the region in the profile form.
+
 [0.4.3] - 2026-10-29
 --------------------
 
