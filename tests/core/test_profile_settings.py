@@ -369,6 +369,7 @@ def test_combobox_label_targets_query_input(testclient, logged_admin, user, foo_
 def test_readonly_combobox_label_has_no_target(testclient, logged_user, foo_group):
     """The label of a read-only combobox does not point to a missing input."""
     res = testclient.get("/profile/user/settings", status=200)
-    assert res.pyquery("#wrap-groups label:not([for])")
-    assert not res.pyquery("label[for=groups]")
+    label = res.pyquery("#wrap-groups").find("label")
+    assert label
+    assert label.attr("for") is None
     assert not res.pyquery("label[for=groups-query]")
