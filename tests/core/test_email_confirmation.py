@@ -531,3 +531,17 @@ def test_invitation_form_mail_field_writable(testclient):
 
     res = testclient.get(f"/register/{b64}/{hash}")
     assert "readonly" not in res.form["emails-0"].attrs
+
+
+def test_readonly_emails_have_accessible_name(testclient, backend, logged_user):
+    """Each read-only email address is labelled by the list label."""
+    testclient.app.config["CANAILLE"]["EMAIL_CONFIRMATION"] = True
+    logged_user.emails = ["email1@mydomain.test", "email2@mydomain.test"]
+    backend.save(logged_user)
+
+    res = testclient.get("/profile/user")
+    assert res.pyquery("label#old_emails-label")
+    assert not res.pyquery("label[for=old_emails]")
+    for index in range(2):
+        field = res.pyquery(f"#old_emails-{index}")
+        assert field.attr("aria-labelledby") == "old_emails-label"

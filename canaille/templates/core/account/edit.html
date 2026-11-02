@@ -201,11 +201,11 @@ Displays a user profile edition form.
 
             {% call fui.render_form(emails_form) %}
                 <div class="field fieldlist">
-                    {{ emails_form.old_emails.label() }}
+                    {{ emails_form.old_emails.label(for_=false, id="old_emails-label") }}
                     {% for field in emails_form.old_emails %}
                         <div class="field">
                             <div class="ui corner labeled left icon{% if emails_form.old_emails|len>1 %} action{% endif %} input">
-                                {{ field(bare=True, readonly=True) }}
+                                {{ field(bare=True, readonly=True, aria_labelledby="old_emails-label") }}
                                 {% if field.description %}
                                     <i class="question circle link icon" title="{{ field.description }}"></i>
                                 {% endif %}
