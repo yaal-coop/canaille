@@ -251,6 +251,30 @@ def test_fieldlist_remove_readonly(testclient, logged_user, backend):
     assert logged_user.phone_numbers == ["555-555-000", "555-555-111"]
 
 
+def test_fieldlist_readonly_with_index_gaps(testclient, logged_user, backend):
+    """A readonly fieldlist stays readonly when the submitted indexes have gaps."""
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["WRITE"].remove("phone_numbers")
+    testclient.app.config["CANAILLE"]["ACL"]["DEFAULT"]["READ"].append("phone_numbers")
+    backend.reload(logged_user)
+
+    logged_user.phone_numbers = ["555-555-000", "555-555-111"]
+    backend.save(logged_user)
+
+    res = testclient.get("/profile/user")
+    form = res.forms["profileform"]
+    data = {
+        "csrf_token": form["csrf_token"].value,
+        "family_name": "",
+        "phone_numbers-3": "555-555-000",
+        "phone_numbers-7": "555-555-111",
+        "action": "edit-profile",
+    }
+    res = testclient.post("/profile/user", data)
+    form = res.forms["profileform"]
+    assert "readonly" in form["phone_numbers-0"].attrs
+    assert "readonly" in form["phone_numbers-1"].attrs
+
+
 def test_phone_number_validator():
     """Test that phone number validator accepts various valid formats and rejects invalid ones."""
 

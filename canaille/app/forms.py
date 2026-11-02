@@ -142,9 +142,14 @@ def _parent_list(field):
     if getattr(field, "index", None) is None or field._form is None:
         return None
 
-    list_name = field.short_name.rpartition("-")[0]
-    parent = field._form._fields.get(list_name)
-    return parent if isinstance(parent, wtforms.FieldList) else None
+    return next(
+        (
+            parent
+            for parent in field._form
+            if isinstance(parent, wtforms.FieldList) and field in parent.entries
+        ),
+        None,
+    )
 
 
 def field_wrapper(meta, field, render_kw):

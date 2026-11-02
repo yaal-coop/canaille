@@ -17,6 +17,8 @@ Fixed
   that hold tokens, secrets, invitation links and email addresses.
 - Screen readers announce the name of the search fields for groups,
   members, owners and audiences.
+- List fields, such as phone numbers, lost their read-only state
+  and their add and remove buttons with WTForms 3.3.2.
 - The "Skip main menu" link leads to the page content.
 
 [0.4.3] - 2026-10-29
