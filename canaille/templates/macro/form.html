@@ -202,8 +202,8 @@ action_button=none
 
 {% macro render_combobox(field) -%}
     <div id="wrap-{{ field.id }}" class="field{% if field.errors %} error{% endif %}">
-        {{ field.label() }}
         {% set readonly = field.flags.readonly or field.flags.disabled %}
+        {{ field.label(for_=false if readonly else field.query.id) }}
         <div class="combobox" data-combobox>
             <div class="combobox-control">
                 <div class="combobox-field" data-combobox-field>

@@ -357,3 +357,18 @@ def test_readonly_groups_cannot_be_forged(
 
     backend.reload(logged_user)
     assert logged_user.groups == [foo_group]
+
+
+def test_combobox_label_targets_query_input(testclient, logged_admin, user, foo_group):
+    """The label of an editable combobox points to its search input."""
+    res = testclient.get("/profile/user/settings", status=200)
+    assert res.pyquery("label[for=groups-query]")
+    assert res.pyquery("input#groups-query")
+
+
+def test_readonly_combobox_label_has_no_target(testclient, logged_user, foo_group):
+    """The label of a read-only combobox does not point to a missing input."""
+    res = testclient.get("/profile/user/settings", status=200)
+    assert res.pyquery("#wrap-groups label:not([for])")
+    assert not res.pyquery("label[for=groups]")
+    assert not res.pyquery("label[for=groups-query]")
