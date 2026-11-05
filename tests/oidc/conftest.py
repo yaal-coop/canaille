@@ -233,14 +233,15 @@ def id_token(testclient, client, user, backend):
     from authlib.oidc.core import UserInfo
     from authlib.oidc.core.grants.util import generate_id_token
 
-    from canaille.oidc.provider import get_jwt_config
     from canaille.oidc.userinfo import generate_user_claims
+
+    from . import signing_config
 
     return generate_id_token(
         {},
         UserInfo(generate_user_claims(user)).filter(client.scope),
         aud=client.client_id,
-        **get_jwt_config(None),
+        **signing_config(),
     )
 
 

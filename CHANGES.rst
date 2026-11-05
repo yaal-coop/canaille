@@ -20,11 +20,36 @@ Changed
   are refused. Set them to the ``private_key_jwt`` method.
 - Canaille requires authlib 1.10 and Flask 3.1.
 - Authorization responses redirect with ``303 See Other`` instead of ``302 Found``.
-- Dynamic client registration refuses missing or invalid access tokens
-  with a ``401`` ``invalid_token`` error instead of a ``400`` ``access_denied`` error (RFC 6750).
+- Dynamic client registration and client configuration endpoints answer
+  HTTP 401 ``invalid_token`` to missing or invalid tokens,
+  instead of HTTP 400 ``access_denied``.
+- An invalid ``max_age`` parameter is sent back to the client
+  as an ``invalid_request`` error, instead of an error page.
+- ``prompt`` is ignored in OAuth requests without the ``openid`` scope.
+  Use ``max_age=0`` to ask for a new login.
+- OAuth requests refused over plain HTTP are not logged as warnings anymore.
+- Trusted clients that send ``prompt=consent`` get the consent page.
+- In OpenID Connect requests, unsupported ``prompt`` values get an HTTP 400 error page,
+  instead of an error sent back to the client.
+- Logged out users get an error page for unsupported ``response_type`` values,
+  instead of an error sent back to the client (RFC 9700 §4.11.2).
 
 Fixed
 ^^^^^
+- The ``default_max_age`` setting of clients is applied.
+- ID tokens of the implicit and hybrid flows have the ``amr`` claim.
+- Clients with the ``authorization_code`` and ``implicit`` grant types
+  can use the implicit flow.
+- Requests with several ``prompt`` values, such as ``prompt=login consent``,
+  were refused.
+- Logged out users who got ``prompt=login`` were told that they were already logged in.
+- A ``prompt=none`` request from a user whose login is older than ``max_age``
+  gets a ``login_required`` error, instead of the login page.
+- In the implicit and hybrid flows, the ``auth_time`` claim of ID tokens
+  is the login time, instead of the time the token was issued.
+- Users could skip the login or the consent page asked with ``prompt=login``,
+  ``prompt=consent`` or ``prompt=select_account``, when the same authorization
+  request had been sent less than 5 minutes before, by them or by another user.
 - Browsers can autofill the names, the street, the locality
   and the region in the profile form.
 - Pages can be zoomed on mobile devices.

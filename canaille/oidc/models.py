@@ -123,13 +123,8 @@ class Client(BaseClient, ClientMixin):
 
     def check_endpoint_auth_method(self, method, endpoint):
         if endpoint in ("token", "device_authorization"):
-            # hotfix for https://github.com/lepture/authlib/issues/759
-            implicit_flow_shortcut = method == "none" and self.grant_types == [
-                "implicit"
-            ]
             return (
-                implicit_flow_shortcut
-                or method == self.token_endpoint_auth_method
+                method == self.token_endpoint_auth_method
                 # Workaround: authlib names both JWT methods "client_assertion_jwt".
                 or (
                     method == "client_assertion_jwt"

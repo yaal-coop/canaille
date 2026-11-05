@@ -1,10 +1,14 @@
 import datetime
+import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 import time_machine
+from joserfc import jwt
 
 from canaille.app import models
+from canaille.oidc.jose import registry
 
 from . import client_credentials
 
@@ -107,7 +111,7 @@ def test_max_age_expired(testclient, user, client, trusted_client, backend):
 
 def test_invalid_max_age(testclient, logged_user, client):
     """A max_age that is not a positive integer is refused."""
-    testclient.get(
+    res = testclient.get(
         "/oauth/authorize",
         params=dict(
             response_type="code",
@@ -117,8 +121,10 @@ def test_invalid_max_age(testclient, logged_user, client):
             redirect_uri="https://client.test/redirect1",
             max_age="-1",
         ),
-        status=400,
+        status=303,
     )
+    assert res.location.startswith(client.redirect_uris[0])
+    assert parse_qs(urlsplit(res.location).query)["error"] == ["invalid_request"]
 
     res = testclient.get(
         "/oauth/authorize",
@@ -130,9 +136,10 @@ def test_invalid_max_age(testclient, logged_user, client):
             redirect_uri="https://client.test/redirect1",
             max_age="invalid",
         ),
-        status=400,
+        status=303,
     )
-    res.mustcontain("The 'max_age' parameter must be a positive integer.")
+    assert res.location.startswith(client.redirect_uris[0])
+    assert parse_qs(urlsplit(res.location).query)["error"] == ["invalid_request"]
 
 
 def test_max_age_zero(testclient, user, client, backend):
@@ -166,24 +173,95 @@ def test_max_age_zero(testclient, user, client, backend):
         res.mustcontain('id="accept"')
 
 
-def test_max_age_without_cached_request_time(
-    testclient, logged_user, client, monkeypatch
+def test_prompt_login_after_a_finished_request(
+    testclient, logged_user, client, backend
 ):
-    """The authentication age is measured at the current time when the request time is lost."""
-    monkeypatch.setattr(
-        "canaille.oidc.endpoints.oauth.get_authorization_request_datetime",
-        lambda redirect_url: None,
+    """A finished authorization request sent again asks for a new login."""
+    consent = models.Consent(
+        consent_id=str(uuid.uuid4()),
+        client=client,
+        subject=logged_user,
+        scope=["openid"],
     )
+    backend.save(consent)
+    params = dict(
+        response_type="code",
+        client_id=client.client_id,
+        scope="openid",
+        nonce="somenonce",
+        redirect_uri="https://client.test/redirect1",
+        prompt="login",
+    )
+
+    res = testclient.get("/oauth/authorize", params=params, status=302).follow()
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302).follow(status=303)
+    code = parse_qs(urlsplit(res.location).query)["code"][0]
+
+    # The client exchanges the code, so the nonce can be sent again.
+    backend.delete(backend.get(models.AuthorizationCode, code=code))
+
+    later = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=1)
+    with time_machine.travel(later, tick=False):
+        res = testclient.get("/oauth/authorize", params=params, status=302).follow()
+        assert res.template == "core/auth/password.html"
+
+    backend.delete(consent)
+
+
+@pytest.mark.parametrize("response_type", ["id_token token", "code id_token"])
+def test_auth_time_in_front_channel_id_token(
+    testclient, user, client, server_jwk, backend, response_type
+):
+    """ID tokens sent by the authorization endpoint hold the time of the login."""
+    client.token_endpoint_auth_method = "none"
+    backend.save(client)
+
+    with time_machine.travel("2025-01-01 02:30:00+00:00", tick=False):
+        res = testclient.get("/login")
+
+        res.form["login"] = "user"
+        res = res.form.submit(name="answer", value="accept", status=302).follow()
+
+        res.form["password"] = "correct horse battery staple"
+        res = res.form.submit(name="answer", value="accept", status=302).follow()
+
+    with time_machine.travel("2025-01-01 03:00:00+00:00", tick=False):
+        res = testclient.get(
+            "/oauth/authorize",
+            params=dict(
+                response_type=response_type,
+                client_id=client.client_id,
+                scope="openid",
+                nonce="somenonce",
+                redirect_uri="https://client.test/redirect1",
+            ),
+        )
+        res = res.form.submit(name="answer", value="accept", status=303)
+
+    params = parse_qs(urlsplit(res.location).fragment)
+    claims = jwt.decode(params["id_token"][0], server_jwk, registry=registry).claims
+    login_time = datetime.datetime(2025, 1, 1, 2, 30, tzinfo=datetime.UTC)
+    assert claims["auth_time"] == login_time.timestamp()
+
+    for consent in backend.query(models.Consent, client=client, subject=user):
+        backend.delete(consent)
+
+    client.token_endpoint_auth_method = "client_secret_basic"
+    backend.save(client)
+
+
+def test_max_age_without_openid_scope(testclient, logged_user, client):
+    """Per RFC 9470 §4, max_age also applies to OAuth requests without openid."""
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="openid",
-            nonce="somenonce",
+            scope="profile",
             redirect_uri="https://client.test/redirect1",
-            max_age=3600,
+            max_age=0,
         ),
-        status=200,
-    )
-    res.mustcontain('id="accept"')
+        status=302,
+    ).follow()
+    assert res.template == "core/auth/password.html"

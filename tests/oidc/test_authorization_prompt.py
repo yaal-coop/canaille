@@ -138,15 +138,11 @@ def test_prompt_create_logged(testclient, logged_user, client, backend):
     backend.delete(consent)
 
 
-def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
-    """If prompt=create but Canaille registration is disabled, an error response should be returned.
+def test_prompt_create_registration_disabled(testclient, logged_user, trusted_client):
+    """When registration is disabled, prompt=create is refused with an HTTP 400 error.
 
-    If the OpenID Provider receives a prompt value that it does not
-    support (not declared in the prompt_values_supported metadata field)
-    the OP SHOULD respond with an HTTP 400 (Bad Request) status code and
-    an error value of invalid_request. It is RECOMMENDED that the OP
-    return an error_description value identifying the invalid parameter
-    value.
+    Per Prompt Create §4.1, unsupported prompt values get an invalid_request
+    error, and the user is not redirected to the client.
     """
     res = testclient.get(
         "/oauth/authorize",
@@ -158,12 +154,43 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
             prompt="create",
             redirect_uri="https://client.trusted.test/redirect1",
         ),
-        status=303,
+        status=400,
     )
+    res.mustcontain("The 'prompt' value 'create' is not supported.")
 
-    params = parse_qs(urlsplit(res.location).query)
-    assert params["error"] == ["invalid_request"]
-    assert params["error_description"] == ["prompt 'create' value is not supported"]
+
+def test_prompt_create_registration_disabled_not_logged(testclient, trusted_client):
+    """When registration is disabled, prompt=create is refused for anonymous users too."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=trusted_client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="create",
+            redirect_uri="https://client.trusted.test/redirect1",
+        ),
+        status=400,
+    )
+    res.mustcontain("The 'prompt' value 'create' is not supported.")
+
+
+def test_several_prompt_values(testclient, logged_user, trusted_client):
+    """Each prompt value is checked on its own."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=trusted_client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="login consent",
+            redirect_uri="https://client.trusted.test/redirect1",
+        ),
+        status=302,
+    ).follow()
+    assert res.template == "core/auth/password.html"
 
 
 def test_prompt_create_not_logged(testclient, trusted_client, smtpd, backend):
@@ -314,6 +341,35 @@ def test_prompt_consent(testclient, logged_user, client, backend):
     backend.delete(consent)
 
 
+def test_prompt_consent_trusted_client(
+    testclient, logged_user, trusted_client, backend
+):
+    """Trusted clients get the consent page when they send prompt=consent."""
+    params = dict(
+        response_type="code",
+        client_id=trusted_client.client_id,
+        scope="openid profile",
+        nonce="somenonce",
+        redirect_uri=trusted_client.redirect_uris[0],
+    )
+    res = testclient.get("/oauth/authorize", params=params, status=303)
+    assert "code" in parse_qs(urlsplit(res.location).query)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(params, nonce="othernonce", prompt="consent"),
+        status=200,
+    )
+    assert res.template == "oidc/authorize.html"
+    res = res.form.submit(name="answer", value="accept", status=303)
+    assert "code" in parse_qs(urlsplit(res.location).query)
+
+    for consent in backend.query(
+        models.Consent, client=trusted_client, subject=logged_user
+    ):
+        backend.delete(consent)
+
+
 def test_prompt_select_account_not_logged(testclient, user, client, backend, consent):
     """If prompt=select_account and user is not logged in, then display the login page."""
     res = testclient.get(
@@ -397,12 +453,13 @@ def test_prompt_select_account_switch_user(testclient, user, admin, client, back
         sess["sessions"] = [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.UTC),
+                last_login_datetime=datetime.datetime.now(datetime.UTC)
+                - datetime.timedelta(minutes=1),
             ).serialize(),
             UserSession(
                 user=admin,
                 last_login_datetime=datetime.datetime.now(datetime.UTC)
-                - datetime.timedelta(minutes=1),
+                - datetime.timedelta(minutes=2),
             ).serialize(),
         ]
 
@@ -436,7 +493,9 @@ def test_prompt_select_account_switch_user(testclient, user, admin, client, back
     backend.delete(consent_admin)
 
 
-def test_unsupported_prompt_with_unknown_redirect_uri(testclient, trusted_client):
+def test_unsupported_prompt_with_unknown_redirect_uri(
+    testclient, logged_user, trusted_client
+):
     """An unsupported prompt value does not redirect to an unregistered URI."""
     res = testclient.get(
         "/oauth/authorize",
@@ -449,7 +508,7 @@ def test_unsupported_prompt_with_unknown_redirect_uri(testclient, trusted_client
         ),
         status=400,
     )
-    res.mustcontain("value is not supported")
+    res.mustcontain("Redirect URI https://attacker.test/callback is not supported")
 
     testclient.get(
         "/oauth/authorize",
@@ -485,3 +544,67 @@ def test_prompt_login_then_consent(testclient, logged_user, client, backend):
 
     for consent in backend.query(models.Consent, client=client, subject=logged_user):
         backend.delete(consent)
+
+
+def test_prompt_select_account_with_other_values(testclient, logged_user, client):
+    """prompt=select_account is applied when it comes with other values."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="select_account consent",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=302,
+    ).follow()
+    assert res.template == "core/login.html"
+
+
+def test_prompt_none_select_account(testclient, logged_user, client):
+    """prompt=none with another value is refused, without displaying a page."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="none select_account",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=303,
+    )
+    assert res.location.startswith(client.redirect_uris[0])
+    assert parse_qs(urlsplit(res.location).query)["error"] == ["invalid_request"]
+
+
+def test_prompt_none_create_not_logged(testclient, user, client):
+    """prompt=none with prompt=create is refused after the login, without displaying the registration page.
+
+    Per RFC 9700 §4.11.2, anonymous users are not redirected to the client before they log in.
+    """
+    testclient.app.config["CANAILLE"]["ENABLE_REGISTRATION"] = True
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="create none",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=302,
+    ).follow()
+    assert res.template == "core/login.html"
+
+    res.form["login"] = "user"
+    res = res.form.submit(name="answer", value="accept", status=302).follow()
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(name="answer", value="accept", status=302).follow(status=303)
+    assert res.location.startswith(client.redirect_uris[0])
+    assert parse_qs(urlsplit(res.location).query)["error"] == ["invalid_request"]

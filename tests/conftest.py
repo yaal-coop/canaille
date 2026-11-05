@@ -377,7 +377,8 @@ def logged_user(user, testclient):
         sess["sessions"] = existing_sessions + [
             UserSession(
                 user=user,
-                last_login_datetime=datetime.datetime.now(datetime.UTC),
+                last_login_datetime=datetime.datetime.now(datetime.UTC)
+                - datetime.timedelta(minutes=1),
             ).serialize()
         ]
     return user
@@ -392,7 +393,8 @@ def logged_admin(admin, testclient):
         sess["sessions"] = existing_sessions + [
             UserSession(
                 user=admin,
-                last_login_datetime=datetime.datetime.now(datetime.UTC),
+                last_login_datetime=datetime.datetime.now(datetime.UTC)
+                - datetime.timedelta(minutes=1),
             ).serialize()
         ]
     return admin

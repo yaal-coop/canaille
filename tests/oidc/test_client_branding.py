@@ -117,3 +117,25 @@ def test_password_step_maintains_client_branding(testclient, user, client, backe
     assert "My Test App" in res.text
     assert "Sign in to My Test App" in res.text
     assert client.logo_uri in res.text
+
+
+def test_prompt_login_anonymous_user_message(testclient, client, backend):
+    """Anonymous users who get prompt=login are not told that they are already logged in."""
+    client.client_name = "Test Client"
+    backend.save(client)
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            prompt="login",
+            redirect_uri="https://client.test/redirect1",
+        ),
+        status=302,
+    ).follow()
+
+    assert "Sign in to Test Client" in res.text
+    assert "You are already logged in" not in res.text

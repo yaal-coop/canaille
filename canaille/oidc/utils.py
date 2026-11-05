@@ -21,6 +21,14 @@ SCOPE_DETAILS = {
 }
 
 
+def prompt_values_supported():
+    """Return the prompt values that Canaille supports."""
+    values = ["none", "login", "consent", "select_account"]
+    if current_app.config["CANAILLE"]["ENABLE_REGISTRATION"]:
+        values.append("create")
+    return values
+
+
 def fetch_document(url: str, max_size: int = MAX_DOCUMENT_SIZE) -> str:
     """Download a document at a URI a client indicated.
 

@@ -813,8 +813,7 @@ def test_client_registration_refuses_symmetric_keys(testclient, backend):
     res = testclient.post_json("/oauth/register", payload, status=400)
 
     assert res.json == {
-        "error_description": "Private and symmetric keys are not allowed, "
-        "as the client keys are public.",
+        "error_description": "Invalid claim: 'jwks'",
         "error": "invalid_client_metadata",
     }
     assert not backend.query(models.Client, client_name="My Example Client")

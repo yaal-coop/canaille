@@ -12,7 +12,7 @@ from canaille.app import models
 from canaille.oidc.configuration import OIDCSettings
 from canaille.oidc.jose import registry
 from canaille.oidc.jose import server_jwks
-from canaille.oidc.provider import get_jwt_config
+from canaille.oidc.provider import _get_signing_key
 
 from . import client_credentials
 
@@ -161,8 +161,8 @@ def test_missing_active_jwks_warning(configuration, caplog):
         assert len(server_jwks(False).keys) == 2
 
 
-def test_get_jwt_config_uses_client_algorithm(testclient, client, backend):
-    """Test that get_jwt_config uses the client's id_token_signed_response_alg rather than deriving the algorithm from the key via Strategy.SECURITY.
+def test_signing_key_uses_client_algorithm(testclient, client, backend):
+    """The signing key uses the client's id_token_signed_response_alg rather than deriving the algorithm from the key via Strategy.SECURITY.
 
     An RSA key with Strategy.SECURITY would yield RS512, but when the client
     requests RS256, the signed token must use RS256.
@@ -177,13 +177,13 @@ def test_get_jwt_config_uses_client_algorithm(testclient, client, backend):
     backend.update(client, id_token_signed_response_alg="RS256")
     backend.save(client)
 
-    config = get_jwt_config(client=client)
-    assert config["alg"] == "RS256"
-    assert config["kid"] == rsa_key.kid
+    key, alg = _get_signing_key(client)
+    assert alg == "RS256"
+    assert key.kid == rsa_key.kid
 
 
-def test_get_jwt_config_fallback_to_first_key(testclient):
-    """Test that get_jwt_config falls back to first key when no RSA key exists."""
+def test_signing_key_fallback_to_first_key(testclient):
+    """The signing key falls back to the first key when no RSA key exists."""
     okp_key = jwk.generate_key("OKP", "Ed25519")
     okp_key.ensure_kid()
 
@@ -191,8 +191,8 @@ def test_get_jwt_config_fallback_to_first_key(testclient):
         okp_key.as_dict(private=True)
     ]
 
-    config = get_jwt_config(None)
+    key, alg = _get_signing_key(None)
 
-    assert config["key"].key_type == "OKP"
-    assert config["alg"] == "EdDSA"
-    assert config["kid"] == okp_key.kid
+    assert key.key_type == "OKP"
+    assert alg == "EdDSA"
+    assert key.kid == okp_key.kid

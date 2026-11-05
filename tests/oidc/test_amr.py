@@ -232,3 +232,36 @@ def test_compute_amr_values_deduplication():
     result = compute_amr_values(["email", "sms"])
     assert result.count("mca") == 1
     assert set(result) == {"mca", "sms", "mfa"}
+
+
+@pytest.mark.parametrize("response_type", ["id_token", "code id_token"])
+def test_amr_implicit_and_hybrid(
+    testclient, user, client, server_jwk, backend, response_type
+):
+    """The ID tokens of the implicit and hybrid flows have the amr claim."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password"]
+
+    res = testclient.get("/login")
+    res.form["login"] = "user"
+    res = res.form.submit().follow()
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit()
+
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type=response_type,
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+        ),
+    )
+    res = res.form.submit(name="answer", value="accept", status=303)
+
+    params = parse_qs(urlsplit(res.location).fragment)
+    claims = jwt.decode(params["id_token"][0], server_jwk, registry=registry)
+    assert claims.claims["amr"] == ["pwd"]
+
+    for consent in backend.query(models.Consent, client=client, subject=user):
+        backend.delete(consent)

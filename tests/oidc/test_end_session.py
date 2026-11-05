@@ -2,8 +2,9 @@ from authlib.oidc.core import UserInfo
 from authlib.oidc.core.grants.util import generate_id_token
 from joserfc.jwk import RSAKey
 
-from canaille.oidc.provider import get_jwt_config
 from canaille.oidc.userinfo import generate_user_claims
+
+from . import signing_config
 
 
 def test_end_session(testclient, backend, logged_user, client, id_token):
@@ -164,7 +165,7 @@ def test_client_hint_invalid(testclient, backend, logged_user, client):
         {},
         UserInfo(generate_user_claims(logged_user)).filter(client.scope),
         aud="invalid-client-id",
-        **get_jwt_config(None),
+        **signing_config(),
     )
 
     testclient.get(f"/profile/{logged_user.user_name}", status=200)
@@ -269,7 +270,7 @@ def test_no_jwt_no_logout(testclient, backend, logged_user, client):
 
 
 def test_jwt_not_issued_here(testclient, backend, logged_user, client, user):
-    jwt_config = get_jwt_config(None)
+    jwt_config = signing_config()
     jwt_config["key"] = RSAKey.generate_key(2048, auto_kid=True)
     foreign_id_token = generate_id_token(
         {},
@@ -301,7 +302,7 @@ def test_client_hint_mismatch(testclient, backend, logged_user, client):
         {},
         UserInfo(generate_user_claims(logged_user)).filter(client.scope),
         aud="another_client_id",
-        **get_jwt_config(None),
+        **signing_config(),
     )
 
     testclient.get(f"/profile/{logged_user.user_name}", status=200)

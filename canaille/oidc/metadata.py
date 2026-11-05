@@ -1,7 +1,6 @@
 from authlib.oauth2 import rfc8414
 from authlib.oauth2 import rfc9101
 from authlib.oidc import discovery as oidc_discovery
-from flask import current_app
 from flask import g
 from flask import url_for
 
@@ -15,6 +14,7 @@ from .provider import IntrospectionEndpoint
 from .provider import JWTClientAuth
 from .provider import RevocationEndpoint
 from .provider import get_issuer
+from .utils import prompt_values_supported
 
 
 class AuthorizationServerMetadata(
@@ -112,9 +112,6 @@ def oauth_authorization_server():
 
 
 def openid_configuration():
-    prompt_values_supported = ["none", "login", "consent", "select_account"] + (
-        ["create"] if current_app.config["CANAILLE"]["ENABLE_REGISTRATION"] else []
-    )
     payload = {
         **oauth_authorization_server(),
         "end_session_endpoint": url_for("oidc.endpoints.end_session", _external=True),
@@ -146,7 +143,7 @@ def openid_configuration():
         "userinfo_signing_alg_values_supported": supported_signing_algorithms(),
         "userinfo_encryption_alg_values_supported": None,
         "userinfo_encryption_enc_values_supported": None,
-        "prompt_values_supported": prompt_values_supported,
+        "prompt_values_supported": prompt_values_supported(),
         "request_parameter_supported": True,
         "request_uri_parameter_supported": True,
         "require_request_uri_registration": True,

@@ -1648,7 +1648,7 @@ def test_non_owner_is_not_redirected_on_errors(testclient, logged_user, admin, b
                 redirect_uri="https://shared.test/callback",
                 **params,
             ),
-            status=403,
+            status=400,
         )
 
     backend.delete(client)
@@ -1684,9 +1684,11 @@ def test_non_owner_can_select_another_account(testclient, user, admin, backend):
 
     with testclient.session_transaction() as sess:
         sess["sessions"] = [
-            UserSession(user=user, last_login_datetime=datetime.now(UTC)).serialize(),
             UserSession(
-                user=admin, last_login_datetime=datetime.now(UTC) - timedelta(minutes=1)
+                user=user, last_login_datetime=datetime.now(UTC) - timedelta(minutes=1)
+            ).serialize(),
+            UserSession(
+                user=admin, last_login_datetime=datetime.now(UTC) - timedelta(minutes=2)
             ).serialize(),
         ]
 
@@ -1715,9 +1717,9 @@ def test_non_owner_can_select_another_account(testclient, user, admin, backend):
 def test_non_owner_cannot_select_their_own_account(
     testclient, logged_user, admin, backend
 ):
-    """A user who cannot use a client cannot go through with their own account.
+    """A user who cannot use a client is not redirected to it when the request is invalid.
 
-    They are not redirected to the client, even when the request is invalid.
+    This also applies when the request asks to select an account.
     """
     client = user_owned_client(backend, [admin])
 
@@ -1733,10 +1735,9 @@ def test_non_owner_cannot_select_their_own_account(
             code_challenge="challenge",
             code_challenge_method="invalid",
         ),
-        status=302,
-    ).follow()
-    assert res.template == "core/login.html"
-    testclient.get(f"/login/{logged_user.user_name}", status=302).follow(status=403)
+        status=400,
+    )
+    assert res.template == "error.html"
     assert not backend.query(models.AuthorizationCode, client=client)
 
     backend.delete(client)
@@ -1838,9 +1839,29 @@ def test_non_owner_is_refused_before_unsupported_response_types(
             nonce="somenonce",
             redirect_uri="https://shared.test/callback",
         ),
-        status=403,
+        status=400,
     )
     backend.delete(client)
+
+
+def test_unsupported_response_type_with_select_account(testclient, logged_user, client):
+    """Logged users who ask to select an account get the unsupported response type error."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="unsupported",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[0],
+            prompt="select_account",
+        ),
+        status=303,
+    )
+    assert res.location.startswith(client.redirect_uris[0])
+    assert parse_qs(urlsplit(res.location).query)["error"] == [
+        "unsupported_response_type"
+    ]
 
 
 def test_select_account_in_request_object(
@@ -1870,7 +1891,10 @@ def test_select_account_in_request_object(
 
 
 def test_unsupported_response_type_for_logged_out_users(testclient, client):
-    """Logged out users are redirected to the client for unsupported response types."""
+    """Logged out users get an error page for unsupported response types.
+
+    Per RFC 9700 §4.11.2, they are not redirected to the client before they log in.
+    """
     res = testclient.get(
         "/oauth/authorize",
         params=dict(
@@ -1880,9 +1904,6 @@ def test_unsupported_response_type_for_logged_out_users(testclient, client):
             nonce="somenonce",
             redirect_uri=client.redirect_uris[0],
         ),
-        status=303,
+        status=400,
     )
-    assert res.location.startswith(client.redirect_uris[0])
-    assert parse_qs(urlsplit(res.location).query)["error"] == [
-        "unsupported_response_type"
-    ]
+    assert res.template == "error.html"

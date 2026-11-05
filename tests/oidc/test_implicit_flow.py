@@ -1,6 +1,7 @@
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
+import pytest
 from joserfc import jwt
 
 from canaille.app import models
@@ -44,15 +45,19 @@ def test_oauth_implicit(testclient, user, client, backend):
     backend.save(client)
 
 
-def test_oauth_implicit_auth_method_not_none(testclient, user, client, backend):
-    """Even when token_endpoint_auth_method is not none, the client should be able to not authenticate if its only grant type is implicit.
+@pytest.mark.parametrize(
+    "grant_types", [["implicit"], ["authorization_code", "implicit"]]
+)
+def test_oauth_implicit_auth_method_not_none(
+    testclient, user, client, backend, grant_types
+):
+    """Clients with a token endpoint authentication method can use the implicit flow.
 
-    oidc-core §9 indicates that the 'none' token endpoint authentication method is used when:
-
-         The Client does not authenticate itself at the Token Endpoint, either because it uses only the Implicit Flow (and so does not use the Token Endpoint) or because it is a Public Client with no Client Secret or other authentication mechanism.
+    Per OpenID Connect Core §9, the implicit flow does not use the token endpoint,
+    so the client does not authenticate.
     """
     client.token_endpoint_auth_method = "client_secret_basic"
-    client.grant_types = ["implicit"]
+    client.grant_types = grant_types
     backend.save(client)
 
     res = testclient.get(

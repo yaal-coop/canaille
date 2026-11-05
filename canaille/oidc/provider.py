@@ -2,6 +2,7 @@ import datetime
 import json
 import uuid
 
+from authlib import oauth2
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
 from authlib.oauth2 import rfc6749
@@ -15,6 +16,7 @@ from authlib.oauth2 import rfc7662
 from authlib.oauth2 import rfc8628
 from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
+from authlib.oauth2 import rfc9470
 from authlib.oauth2.rfc6749 import AccessDeniedError
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oauth2.rfc6749 import InvalidGrantError
@@ -22,6 +24,7 @@ from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oauth2.rfc6749 import UnauthorizedClientError
 from authlib.oauth2.rfc9101.errors import InvalidRequestObjectError
 from authlib.oidc import core as oidc_core
+from authlib.oidc import prompt_create
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc import rpinitiated
 from authlib.oidc.core.authorization_request import OpenIDJWTAuthenticationRequest
@@ -30,9 +33,6 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
-from joserfc.errors import InvalidClaimError
-from joserfc.errors import JoseError
-from joserfc.jwk import KeySet
 from joserfc.jwk import OctKey
 from werkzeug.security import gen_salt
 
@@ -43,6 +43,7 @@ from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 from canaille.oidc.utils import fetch_document
 from canaille.oidc.utils import is_trusted_domain
+from canaille.oidc.utils import prompt_values_supported
 
 from .jose import SYMMETRIC_ALGORITHMS
 from .jose import build_client_management_token
@@ -50,7 +51,6 @@ from .jose import client_secret_key
 from .jose import decode_server_token
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
-from .jose import has_private_keys
 from .jose import make_default_okp_jwk
 from .jose import make_default_rsa_jwk
 from .jose import server_jwks
@@ -135,22 +135,10 @@ def _get_signing_key(client):
     return jwk, alg or get_alg_for_key(jwk)
 
 
-def get_jwt_config(client):
-    """Return JWT signing config dict for use with generate_id_token."""
-    jwk, alg = _get_signing_key(client)
-    return {"key": jwk, "iss": get_issuer(), "kid": jwk.kid, "alg": alg}
-
-
 def save_authorization_code(code, request):
     nonce = request.payload.data.get("nonce")
     now = datetime.datetime.now(datetime.UTC)
     scope = request.client.get_allowed_scope(request.payload.scope)
-    authentication_methods = (
-        g.session.authentication_methods
-        if hasattr(g, "session") and g.session
-        else None
-    )
-    amr = compute_amr_values(authentication_methods)
     code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code=code,
@@ -163,8 +151,11 @@ def save_authorization_code(code, request):
         lifetime=AUTHORIZATION_CODE_LIFETIME,
         challenge=request.payload.data.get("code_challenge"),
         challenge_method=request.payload.data.get("code_challenge_method"),
-        auth_time=g.session.last_login_datetime,
-        amr=amr,
+        auth_time=datetime.datetime.fromtimestamp(request.auth_time, datetime.UTC)
+        if request.auth_time is not None
+        else None,
+        acr=request.acr,
+        amr=request.amr,
     )
     Backend.instance.save(code)
     return code.code
@@ -248,8 +239,68 @@ class ClientCredentialsGrant(rfc6749.ClientCredentialsGrant):
     ]
 
 
+class AuthorizationSession(
+    oauth2.AuthorizationSession, oidc_core.AuthorizationSessionMixin
+):
+    """Give authlib the state of the user session during an authorization request."""
+
+    def get_interaction_time(self, request, interaction):
+        if interaction == "login":
+            login_datetime = g.session and g.session.last_login_datetime
+            return login_datetime.timestamp() if login_datetime else None
+
+        if interaction == "consent":
+            consent = get_consent(request.client, request.user)
+            if consent and not consent.revoked and consent.issue_date:
+                return consent.issue_date.timestamp()
+
+        return None
+
+    def is_consent_needed(self, request):
+        consent = get_consent(request.client, request.user)
+        if consent and consent.revoked:
+            return True
+
+        if request.client.trusted:
+            return False
+
+        if not consent:
+            return True
+
+        requested_scopes = request.payload.scope or ""
+        allowed_scopes = unique_scopes(
+            request.client.get_allowed_scope(requested_scopes)
+        )
+        return not set(allowed_scopes).issubset(consent.scope)
+
+    def get_amr(self):
+        return compute_amr_values(
+            g.session.authentication_methods if g.session else None
+        )
+
+    def can_redirect_error(self, request, error):
+        """Redirect the errors to the clients that the user can use only."""
+        if not self.user or not request.client:
+            return True
+
+        return request.client.is_usable_by(self.user)
+
+
+class PromptValues(prompt_create.PromptValues):
+    """Refuse the prompt values that Canaille does not support."""
+
+    def get_server_metadata(self):
+        return {"prompt_values_supported": prompt_values_supported()}
+
+
+def get_consent(client, user):
+    """Return the consent of a user for a client, or None."""
+    consents = Backend.instance.query(models.Consent, client=client, subject=user)
+    return consents[0] if consents else None
+
+
 class OIDCGrantMixin:
-    """Shared implementation of the new authlib 1.7 JWT config API for OIDC grants."""
+    """Shared implementation of the authlib JWT config API for OIDC grants."""
 
     def resolve_client_private_key(self, client):
         jwk, _ = _get_signing_key(client)
@@ -276,8 +327,8 @@ class OpenIDCode(OIDCGrantMixin, oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def generate_user_info(self, user, scope):
-        return UserInfo(generate_user_claims(user)).filter(scope)
+    def generate_user_info(self, user, scope, claims):
+        return UserInfo(generate_user_claims(user)).filter(scope, claims)
 
 
 class PasswordGrant(rfc6749.ResourceOwnerPasswordCredentialsGrant):
@@ -360,8 +411,8 @@ class OpenIDImplicitGrant(OIDCGrantMixin, oidc_core.OpenIDImplicitGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def generate_user_info(self, user, scope):
-        return UserInfo(generate_user_claims(user)).filter(scope)
+    def generate_user_info(self, user, scope, claims):
+        return UserInfo(generate_user_claims(user)).filter(scope, claims)
 
 
 class OpenIDHybridGrant(OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
@@ -371,8 +422,8 @@ class OpenIDHybridGrant(OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
-    def generate_user_info(self, user, scope):
-        return UserInfo(generate_user_claims(user)).filter(scope)
+    def generate_user_info(self, user, scope, claims):
+        return UserInfo(generate_user_claims(user)).filter(scope, claims)
 
 
 class DeviceAuthorizationEndpoint(rfc8628.DeviceAuthorizationEndpoint):
@@ -520,34 +571,6 @@ def save_token(token, request):
         audience=request.client.audience,
     )
     Backend.instance.save(t)
-
-
-class BearerTokenGenerator(rfc6750.BearerTokenGenerator):
-    """Custom token generator that handles missing scope parameter.
-
-    Hotfix for https://github.com/authlib/authlib/pull/847
-    Per RFC 6749 Section 3.3, if the client omits the scope parameter,
-    the server should use the client's default scope.
-    """
-
-    @staticmethod
-    def get_allowed_scope(client, scope):
-        scope = client.get_allowed_scope(scope)
-        if scope is None:  # pragma: no cover
-            raise InvalidScopeError()
-        return scope
-
-
-class CanailleAuthorizationServer(AuthorizationServer):
-    """Custom AuthorizationServer that uses our BearerTokenGenerator."""
-
-    def create_bearer_token_generator(self, config):
-        access_token_generator = super().create_bearer_token_generator(config)
-        return BearerTokenGenerator(
-            access_token_generator.access_token_generator,
-            access_token_generator.refresh_token_generator,
-            access_token_generator.expires_generator,
-        )
 
 
 class BearerTokenValidator(rfc6750.BearerTokenValidator):
@@ -708,29 +731,6 @@ class ClientManagementMixin:
         return kwargs
 
 
-class ClientMetadataClaims(rfc7591.ClientMetadataClaims):
-    def validate_jwks(self):
-        """Per RFC 7591 §2, the client JWK set only holds public keys."""
-        # Workaround: authlib 1.9 accepts private and symmetric keys,
-        # and fails with a server error on some invalid key sets.
-        if "jwks" not in self:
-            return
-
-        if "jwks_uri" in self:
-            raise InvalidClaimError("jwks")
-
-        try:
-            key_set = KeySet.import_key_set(self["jwks"])
-        except (JoseError, ValueError, KeyError, TypeError) as exc:
-            raise InvalidClaimError("jwks") from exc
-
-        if has_private_keys(key_set):
-            raise rfc7591.InvalidClientMetadataError(
-                "Private and symmetric keys are not allowed, "
-                "as the client keys are public."
-            )
-
-
 class ClientRegistrationEndpoint(
     ClientManagementMixin, rfc7591.ClientRegistrationEndpoint
 ):
@@ -878,8 +878,8 @@ class UserInfoEndpoint(oidc_core.UserInfoEndpoint):
     def get_issuer(self):
         return get_issuer()
 
-    def generate_user_info(self, user, scope):
-        return UserInfo(generate_user_claims(user)).filter(scope)
+    def generate_user_info(self, user, scope, claims):
+        return UserInfo(generate_user_claims(user)).filter(scope, claims)
 
     def resolve_private_key(self):
         return server_jwks(include_inactive=False)
@@ -948,23 +948,13 @@ class JWTAuthenticationRequest(OpenIDJWTAuthenticationRequest):
         ``invalid_request_uri`` error. The URI is unvalidated user input, so no
         exception must escape and turn into a HTTP 500.
         """
-        # The request object is read several times while handling a request,
-        # so it is downloaded once per request.
-        if "request_objects" not in g:
-            g.request_objects = {}
-
-        if request_uri in g.request_objects:
-            return g.request_objects[request_uri]
-
         try:
-            g.request_objects[request_uri] = fetch_document(request_uri)
+            return fetch_document(request_uri)
         except Exception:
             current_app.logger.debug(
                 "could not download the request object at %s", request_uri
             )
             return None
-
-        return g.request_objects[request_uri]
 
     def get_server_metadata(self):
         from .metadata import openid_configuration
@@ -975,11 +965,11 @@ class JWTAuthenticationRequest(OpenIDJWTAuthenticationRequest):
         return client.client_metadata.get("require_signed_request_object", False)
 
 
-authorization = CanailleAuthorizationServer()
+authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
 
 
-def generate_access_token(client, grant_type, user, scope):
+def generate_access_token(client, grant_type, user, scope, expires_in):
     if grant_type == "client_credentials":
         # Canaille could generate a JWT with iss/sub/aud/exp/iat/jti/scope/client_id
         # instead of a random string
@@ -987,7 +977,6 @@ def generate_access_token(client, grant_type, user, scope):
 
     audience = [aud.client_id for aud in client.full_audience]
     jwk, alg = _get_signing_key(client)
-    bearer_token_generator = authorization._token_generators["default"]
     return generate_id_token(
         token={},
         user_info=UserInfo(generate_user_claims(user)).filter(scope),
@@ -996,7 +985,7 @@ def generate_access_token(client, grant_type, user, scope):
         iss=get_issuer(),
         kid=jwk.kid,
         alg=alg,
-        exp=bearer_token_generator._get_expires_in(client, grant_type),
+        exp=expires_in,
     )
 
 
@@ -1037,7 +1026,7 @@ def setup_oauth(app):
         AuthorizationCodeGrant,
         [
             OpenIDCode(require_nonce=app.config["CANAILLE_OIDC"]["REQUIRE_NONCE"]),
-            CodeChallenge(required=True),
+            CodeChallenge(),
         ],
     )
     authorization.register_grant(DeviceCodeGrant)
@@ -1063,7 +1052,7 @@ def setup_oauth(app):
     authorization.register_endpoint(
         ClientRegistrationEndpoint(
             claims_classes=[
-                ClientMetadataClaims,
+                rfc7591.ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
                 rpinitiated.ClientMetadataClaims,
@@ -1073,7 +1062,7 @@ def setup_oauth(app):
     authorization.register_endpoint(
         ClientConfigurationEndpoint(
             claims_classes=[
-                ClientMetadataClaims,
+                rfc7591.ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
                 rpinitiated.ClientMetadataClaims,
@@ -1082,4 +1071,6 @@ def setup_oauth(app):
     )
 
     authorization.register_extension(IssuerParameter())
+    authorization.register_extension(rfc9470.StepUpAuthentication())
+    authorization.register_extension(PromptValues())
     authorization.register_extension(JWTAuthenticationRequest())

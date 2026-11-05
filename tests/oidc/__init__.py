@@ -4,6 +4,9 @@ import uuid
 
 from joserfc import jwt
 
+from canaille.oidc.provider import _get_signing_key
+from canaille.oidc.provider import get_issuer
+
 
 def client_credentials(client):
     return base64.b64encode(
@@ -27,3 +30,9 @@ def client_assertion(client, client_jwk):
         "client_assertion_type": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
         "client_assertion": jwt.encode({"alg": "RS256"}, payload, client_jwk),
     }
+
+
+def signing_config(client=None):
+    """Return the arguments of generate_id_token to sign like Canaille."""
+    key, alg = _get_signing_key(client)
+    return {"key": key, "iss": get_issuer(), "kid": key.kid, "alg": alg}
