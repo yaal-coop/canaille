@@ -104,6 +104,9 @@ def test_session_without_login_time(testclient, user, client, backend):
     ).follow()
     assert res.template == "core/login.html"
 
+    res = testclient.get(f"/login/{user.user_name}", status=302).follow(status=303)
+    assert "code" in parse_qs(urlsplit(res.location).query)
+
     for consent in backend.query(models.Consent, client=client, subject=user):
         backend.delete(consent)
 
@@ -128,3 +131,10 @@ def test_aborted_request_ends(testclient, logged_user, client):
     )
     with testclient.session_transaction() as sess:
         assert not sess.get(AUTHORIZATION_REQUEST_TIMES)
+
+
+def test_untracked_interaction_has_no_time(testclient, logged_user, client):
+    """Canaille gives no time for the interactions it does not track."""
+    with testclient.app.test_request_context():
+        authorization_session = AuthorizationSession(logged_user, {})
+        assert authorization_session.get_interaction_time(None, "create") is None

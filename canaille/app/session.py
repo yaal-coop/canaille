@@ -23,6 +23,7 @@ class UserSession:
     user: User | None = None
     last_login_datetime: datetime.datetime | None = None
     authentication_methods: list[str] | None = None
+    account_selection_datetime: datetime.datetime | None = None
 
     @classmethod
     def deserialize(cls, payload):
@@ -41,15 +42,23 @@ class UserSession:
             if payload.get("last_login_datetime")
             else None,
             authentication_methods=payload.get("authentication_methods"),
+            account_selection_datetime=datetime.datetime.fromisoformat(
+                payload["account_selection_datetime"]
+            )
+            if payload.get("account_selection_datetime")
+            else None,
         )
 
     def serialize(self):
-        payload = {
-            "user": self.user.id,
-            "last_login_datetime": self.last_login_datetime.isoformat(),
-        }
+        payload = {"user": self.user.id}
+        if self.last_login_datetime is not None:
+            payload["last_login_datetime"] = self.last_login_datetime.isoformat()
         if self.authentication_methods is not None:
             payload["authentication_methods"] = self.authentication_methods
+        if self.account_selection_datetime is not None:
+            payload["account_selection_datetime"] = (
+                self.account_selection_datetime.isoformat()
+            )
         return payload
 
 

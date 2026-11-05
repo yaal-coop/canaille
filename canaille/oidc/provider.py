@@ -249,6 +249,10 @@ class AuthorizationSession(
             login_datetime = g.session and g.session.last_login_datetime
             return login_datetime.timestamp() if login_datetime else None
 
+        if interaction == "select_account":
+            selection_datetime = g.session and g.session.account_selection_datetime
+            return selection_datetime.timestamp() if selection_datetime else None
+
         if interaction == "consent":
             consent = get_consent(request.client, request.user)
             if consent and not consent.revoked and consent.issue_date:

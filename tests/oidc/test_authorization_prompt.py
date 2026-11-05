@@ -608,3 +608,33 @@ def test_prompt_none_create_not_logged(testclient, user, client):
     res = res.form.submit(name="answer", value="accept", status=302).follow(status=303)
     assert res.location.startswith(client.redirect_uris[0])
     assert parse_qs(urlsplit(res.location).query)["error"] == ["invalid_request"]
+
+
+@pytest.mark.parametrize(
+    "params",
+    [dict(prompt="login select_account"), dict(prompt="select_account", max_age=0)],
+)
+def test_account_switch_is_not_a_login(
+    testclient, logged_user, client, consent, params
+):
+    """Switching to an open session selects the account, but does not count as a new login."""
+    res = testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid profile",
+            nonce="somenonce",
+            redirect_uri="https://client.test/redirect1",
+            **params,
+        ),
+        status=302,
+    ).follow()
+    assert res.template == "core/login.html"
+
+    res = testclient.get(f"/login/{logged_user.user_name}", status=302).follow(
+        status=302
+    )
+    assert not res.location.startswith(client.redirect_uris[0])
+    res = res.follow()
+    assert res.template == "core/auth/password.html"

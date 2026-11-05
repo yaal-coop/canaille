@@ -43,6 +43,9 @@ Fixed
 - Requests with several ``prompt`` values, such as ``prompt=login consent``,
   were refused.
 - Logged out users who got ``prompt=login`` were told that they were already logged in.
+- Switching to another open session during an authorization request counted as a new login.
+  Users could skip the password asked with ``prompt=login`` or ``max_age``,
+  and the ``auth_time`` claim of ID tokens was the switch time.
 - A ``prompt=none`` request from a user whose login is older than ``max_age``
   gets a ``login_required`` error, instead of the login page.
 - In the implicit and hybrid flows, the ``auth_time`` claim of ID tokens
