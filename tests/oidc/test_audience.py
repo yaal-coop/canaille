@@ -51,18 +51,42 @@ def introspect(testclient, client, access_token):
 
 
 def test_client_without_audience(testclient, logged_user, client, server_jwk, backend):
-    """A client without audience is the audience of its own tokens."""
+    """A client without audience is the audience of its own tokens.
+
+    Per OIDC Core §2, the single audience of the ID token is a string.
+    """
     client.audience = []
     backend.save(client)
 
     tokens = get_tokens(testclient, client)
-    for token in (tokens["access_token"], tokens["id_token"]):
-        claims = jwt.decode(token, server_jwk, registry=registry).claims
-        assert claims["aud"] == [client.client_id]
+    claims = jwt.decode(tokens["id_token"], server_jwk, registry=registry).claims
+    assert claims["aud"] == client.client_id
+
+    claims = jwt.decode(tokens["access_token"], server_jwk, registry=registry).claims
+    assert claims["aud"] == [client.client_id]
 
     payload = introspect(testclient, client, tokens["access_token"])
     assert payload["active"]
     assert payload["aud"] == [client.client_id]
+
+
+def test_logout_redirection_with_id_token_hint_only(
+    testclient, logged_user, client, backend
+):
+    """The ID token of a client without audience is enough to redirect after logout."""
+    client.audience = []
+    backend.save(client)
+
+    tokens = get_tokens(testclient, client)
+    res = testclient.get(
+        "/oauth/end_session",
+        params={
+            "id_token_hint": tokens["id_token"],
+            "post_logout_redirect_uri": "https://client.test/disconnected",
+        },
+        status=302,
+    )
+    assert res.location == "https://client.test/disconnected"
 
 
 def test_client_audience_self_reference(

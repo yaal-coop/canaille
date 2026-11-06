@@ -233,9 +233,11 @@ class OIDCGrantMixin:
         return alg
 
     def get_client_claims(self, client):
+        """Per OIDC Core §2, a single audience is sent as a string."""
+        audience = [aud.client_id for aud in client.full_audience]
         return {
             "iss": get_issuer(),
-            "aud": [aud.client_id for aud in client.full_audience],
+            "aud": audience[0] if len(audience) == 1 else audience,
         }
 
     def get_encode_header(self, client):

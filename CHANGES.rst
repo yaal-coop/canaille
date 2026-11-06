@@ -7,6 +7,8 @@ Changed
 - The SCIM client reads the configuration of each application every 5 minutes,
   instead of at each provisioning event.
 - Authorization codes expire after 60 seconds instead of 5 minutes.
+- When a client has no other audience, the ``aud`` claim of its ID tokens
+  is a string instead of a one-item list.
 
 Fixed
 ^^^^^
@@ -21,6 +23,8 @@ Fixed
 - List fields, such as phone numbers, lost their read-only state
   and their add and remove buttons with WTForms 3.3.2.
 - The "Skip main menu" link leads to the page content.
+- After logout, users are redirected to the ``post_logout_redirect_uri``
+  of a client that sends an ``id_token_hint`` without ``client_id``.
 
 [0.4.3] - 2026-10-29
 --------------------
