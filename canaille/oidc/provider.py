@@ -221,6 +221,16 @@ class AuthorizationCodeGrant(rfc6749.AuthorizationCodeGrant):
         return authorization_code.subject
 
 
+class ClientCredentialsGrant(rfc6749.ClientCredentialsGrant):
+    """Per RFC 6749 §4.4, only confidential clients can use this grant."""
+
+    TOKEN_ENDPOINT_AUTH_METHODS = [
+        "client_secret_basic",
+        "client_secret_post",
+        JWTClientAuth.CLIENT_AUTH_METHOD,
+    ]
+
+
 class OIDCGrantMixin:
     """Shared implementation of the new authlib 1.7 JWT config API for OIDC grants."""
 
@@ -957,7 +967,7 @@ def setup_oauth(app):
     authorization.__init__()
     authorization.init_app(app, query_client=query_client, save_token=save_token)
 
-    authorization.register_grant(rfc6749.ClientCredentialsGrant)
+    authorization.register_grant(ClientCredentialsGrant)
     authorization.register_grant(rfc6749.ImplicitGrant)
     authorization.register_grant(PasswordGrant)
     authorization.register_grant(RefreshTokenGrant)

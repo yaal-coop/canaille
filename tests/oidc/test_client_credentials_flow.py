@@ -1,4 +1,8 @@
+import time
+import uuid
+
 import pytest
+from joserfc import jwt
 
 from canaille.app import models
 
@@ -68,3 +72,64 @@ def test_nominal_case(testclient, client, trusted_client, backend, caplog):
         "address",
         "phone",
     }
+
+
+def test_client_secret_post(testclient, client, backend):
+    """Clients can send their credentials in the request body."""
+    client.token_endpoint_auth_method = "client_secret_post"
+    backend.save(client)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="client_credentials",
+            client_id=client.client_id,
+            client_secret=client.client_secret,
+        ),
+        status=200,
+    )
+
+    token = backend.get(models.Token, access_token=res.json["access_token"])
+    assert token.client == client
+
+
+def test_private_key_jwt(testclient, client, client_jwk, backend):
+    """Clients can authenticate with a JWT signed by their private key."""
+    client.token_endpoint_auth_method = "private_key_jwt"
+    backend.save(client)
+
+    now = time.time()
+    payload = {
+        "iss": client.client_id,
+        "sub": client.client_id,
+        "aud": "http://canaille.test/oauth/token",
+        "exp": now + 60,
+        "iat": now,
+        "jti": str(uuid.uuid4()),
+    }
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="client_credentials",
+            client_assertion_type="urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            client_assertion=jwt.encode({"alg": "RS256"}, payload, client_jwk),
+        ),
+        status=200,
+    )
+
+    token = backend.get(models.Token, access_token=res.json["access_token"])
+    assert token.client == client
+
+
+def test_public_client_refused(testclient, client, backend):
+    """Per RFC 6749 §4.4, public clients cannot use this grant."""
+    client.token_endpoint_auth_method = "none"
+    backend.save(client)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(grant_type="client_credentials", client_id=client.client_id),
+        expect_errors=True,
+    )
+
+    assert res.json["error"] == "invalid_client"
