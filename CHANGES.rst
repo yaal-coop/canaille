@@ -27,6 +27,7 @@ Fixed
   that Canaille does not issue.
 - After logout, users are redirected to the ``post_logout_redirect_uri``
   of a client that sends an ``id_token_hint`` without ``client_id``.
+- The OAuth and OpenID Connect discovery documents list the ``jwt-bearer`` grant type.
 
 [0.4.3] - 2026-10-29
 --------------------

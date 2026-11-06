@@ -92,6 +92,7 @@ def oauth_authorization_server():
             "client_credentials",
             "refresh_token",
             "urn:ietf:params:oauth:grant-type:device_code",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
         ],
         "ui_locales_supported": [
             code.replace("_", "-") for code in g.available_language_codes

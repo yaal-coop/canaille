@@ -33,6 +33,7 @@ def test_oauth_authorization_server(testclient):
             "client_credentials",
             "refresh_token",
             "urn:ietf:params:oauth:grant-type:device_code",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
         ],
         "introspection_endpoint": "http://canaille.test/oauth/introspect",
         "introspection_endpoint_auth_methods_supported": [
@@ -126,6 +127,7 @@ def test_openid_configuration(testclient):
             "client_credentials",
             "refresh_token",
             "urn:ietf:params:oauth:grant-type:device_code",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
         ],
         "id_token_signing_alg_values_supported": [
             "none",
