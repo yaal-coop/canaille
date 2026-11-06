@@ -6,6 +6,7 @@ Changed
 - SCIM group requests with unknown members are refused instead of partially applied.
 - The SCIM client reads the configuration of each application every 5 minutes,
   instead of at each provisioning event.
+- Authorization codes expire after 60 seconds instead of 5 minutes.
 
 Fixed
 ^^^^^

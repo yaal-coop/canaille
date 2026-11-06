@@ -31,7 +31,7 @@ def test_token_default_expiration_date(
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = backend.get(models.AuthorizationCode, code=code)
-    assert authcode.lifetime == 300
+    assert authcode.lifetime == 60
 
     res = testclient.post(
         "/oauth/token",
@@ -99,7 +99,7 @@ def test_token_custom_expiration_date(
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = backend.get(models.AuthorizationCode, code=code)
-    assert authcode.lifetime == 300
+    assert authcode.lifetime == 60
 
     res = testclient.post(
         "/oauth/token",
