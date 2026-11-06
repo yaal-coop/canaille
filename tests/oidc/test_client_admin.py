@@ -1,7 +1,9 @@
 import datetime
 import json
 
+import pytest
 from joserfc.jwk import KeySet
+from joserfc.jwk import OctKey
 from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
 
@@ -367,9 +369,14 @@ def test_jwks_is_not_json(testclient, client, logged_admin, trusted_client, back
     res.mustcontain("This value is not a valid JSON string.")
 
 
-def test_jwks_is_not_jwks(testclient, client, logged_admin, trusted_client, backend):
+@pytest.mark.parametrize(
+    "jwks", ["{}", '{"keys": [{"kty": "foo"}]}', '{"keys": "foo"}', "[1]"]
+)
+def test_jwks_is_not_jwks(
+    testclient, client, logged_admin, trusted_client, backend, jwks
+):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    res.forms["clienteditform"]["jwks"] = "{}"
+    res.forms["clienteditform"]["jwks"] = jwks
     res = res.forms["clienteditform"].submit(status=200, name="action", value="edit")
 
     assert (
@@ -379,9 +386,30 @@ def test_jwks_is_not_jwks(testclient, client, logged_admin, trusted_client, back
     res.mustcontain("This value is not a valid JWK.")
 
 
+@pytest.mark.parametrize(
+    "key",
+    [OctKey.import_key(gen_salt(48)), RSAKey.generate_key(1024)],
+    ids=["symmetric", "private"],
+)
+def test_jwks_with_private_keys(testclient, client, logged_admin, backend, key):
+    """Per RFC 7591 §2, the client JWK set only holds public keys."""
+    res = testclient.get("/admin/client/edit/" + client.client_id)
+    keyset = KeySet([key]).as_dict(private=True)
+    res.forms["clienteditform"]["jwks"] = json.dumps(keyset)
+    res = res.forms["clienteditform"].submit(status=200, name="action", value="edit")
+
+    assert (
+        "error",
+        "The client has not been edited. Please check your information.",
+    ) in res.flashes
+    res.mustcontain(
+        "Private and symmetric keys are not allowed, as the client keys are public."
+    )
+
+
 def test_valid_jwk(testclient, client, logged_admin, trusted_client, backend):
     res = testclient.get("/admin/client/edit/" + client.client_id)
-    keyset = KeySet([RSAKey.generate_key(1024)]).as_dict()
+    keyset = KeySet([RSAKey.generate_key(1024)]).as_dict(private=False)
     res.forms["clienteditform"]["jwks"] = json.dumps(keyset)
     res = res.forms["clienteditform"].submit(status=302, name="action", value="edit")
 

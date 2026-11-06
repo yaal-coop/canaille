@@ -30,6 +30,9 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
+from joserfc.errors import InvalidClaimError
+from joserfc.errors import JoseError
+from joserfc.jwk import KeySet
 from joserfc.jwk import OctKey
 from werkzeug.security import gen_salt
 
@@ -41,10 +44,13 @@ from canaille.core.auth import get_user_from_login
 from canaille.oidc.utils import fetch_document
 from canaille.oidc.utils import is_trusted_domain
 
+from .jose import SYMMETRIC_ALGORITHMS
 from .jose import build_client_management_token
+from .jose import client_secret_key
 from .jose import decode_server_token
 from .jose import get_alg_for_key
 from .jose import get_client_jwks
+from .jose import has_private_keys
 from .jose import make_default_okp_jwk
 from .jose import make_default_rsa_jwk
 from .jose import server_jwks
@@ -188,10 +194,11 @@ class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
         # Workaround: authlib handles client_secret_jwt and private_key_jwt as one
         # "client_assertion_jwt" method, so the key depends on the registered method.
         if client.token_endpoint_auth_method == "client_secret_jwt":
-            if not client.has_usable_secret():
+            key = client_secret_key(client)
+            if not key:
                 raise InvalidClientError()
 
-            return OctKey.import_key(client.client_secret)
+            return key
 
         jwk = get_client_jwks(client)
         if not jwk:
@@ -701,6 +708,29 @@ class ClientManagementMixin:
         return kwargs
 
 
+class ClientMetadataClaims(rfc7591.ClientMetadataClaims):
+    def validate_jwks(self):
+        """Per RFC 7591 §2, the client JWK set only holds public keys."""
+        # Workaround: authlib 1.9 accepts private and symmetric keys,
+        # and fails with a server error on some invalid key sets.
+        if "jwks" not in self:
+            return
+
+        if "jwks_uri" in self:
+            raise InvalidClaimError("jwks")
+
+        try:
+            key_set = KeySet.import_key_set(self["jwks"])
+        except (JoseError, ValueError, KeyError, TypeError) as exc:
+            raise InvalidClaimError("jwks") from exc
+
+        if has_private_keys(key_set):
+            raise rfc7591.InvalidClientMetadataError(
+                "Private and symmetric keys are not allowed, "
+                "as the client keys are public."
+            )
+
+
 class ClientRegistrationEndpoint(
     ClientManagementMixin, rfc7591.ClientRegistrationEndpoint
 ):
@@ -878,7 +908,26 @@ class IssuerParameter(rfc9207.IssuerParameter):
 
 
 class JWTAuthenticationRequest(OpenIDJWTAuthenticationRequest):
+    def resolve_client_secret(self, client):
+        """Per OIDC Core §10.1, symmetric signatures use the client secret.
+
+        Only clients that registered a symmetric algorithm can use it.
+        """
+        if client.request_object_signing_alg not in SYMMETRIC_ALGORITHMS:
+            return None
+
+        return client.client_secret if client.has_usable_secret() else None
+
     def resolve_client_public_key(self, client):
+        # Workaround: authlib 1.9 does not call resolve_client_secret
+        # for symmetric signatures.
+        if client.request_object_signing_alg in SYMMETRIC_ALGORITHMS:
+            secret = self.resolve_client_secret(client)
+            if not secret:
+                raise InvalidRequestObjectError()
+
+            return OctKey.import_key(secret)
+
         jwk = get_client_jwks(client)
         if not jwk and (client.jwks or client.jwks_uri):
             raise InvalidRequestObjectError(description="No matching JWK")
@@ -1014,7 +1063,7 @@ def setup_oauth(app):
     authorization.register_endpoint(
         ClientRegistrationEndpoint(
             claims_classes=[
-                rfc7591.ClientMetadataClaims,
+                ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
                 rpinitiated.ClientMetadataClaims,
@@ -1024,7 +1073,7 @@ def setup_oauth(app):
     authorization.register_endpoint(
         ClientConfigurationEndpoint(
             claims_classes=[
-                rfc7591.ClientMetadataClaims,
+                ClientMetadataClaims,
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
                 rpinitiated.ClientMetadataClaims,

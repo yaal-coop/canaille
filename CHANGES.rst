@@ -36,6 +36,22 @@ Fixed
 - Clients can use the ``client_credentials`` grant with the ``client_secret_post``,
   ``client_secret_jwt`` and ``private_key_jwt`` authentication methods.
 - Client secrets are compared in constant time.
+- Clients with several keys in their JWK set can authenticate with ``private_key_jwt``
+  and sign request objects. This allows key rotation.
+- Request objects signed with ``HS256``, ``HS384`` or ``HS512`` are verified
+  with the client secret, as OpenID Connect Core requires.
+  The client must set ``request_object_signing_alg`` to this algorithm.
+- Invalid JWK sets are refused at client registration instead of causing an error.
+
+Security
+^^^^^^^^
+- Symmetric keys in the JWK set of a client were accepted to verify its
+  ``private_key_jwt`` assertions and request objects. Anyone who could read
+  the JWK set could forge them. These keys are now ignored and logged.
+  Clients that signed request objects with such a key must sign them
+  with their client secret instead.
+- Private and symmetric keys are refused in the JWK set when a client
+  is registered or edited.
 
 [0.4.3] - 2026-10-29
 --------------------

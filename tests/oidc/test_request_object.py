@@ -1,3 +1,5 @@
+import datetime
+import json
 import uuid
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
@@ -5,6 +7,10 @@ from urllib.parse import urlsplit
 import pytest
 from flask import g
 from joserfc import jwt
+from joserfc.jwk import KeySet
+from joserfc.jwk import OctKey
+from joserfc.jwk import RSAKey
+from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.oidc.utils import MAX_DOCUMENT_SIZE
@@ -328,3 +334,119 @@ def test_request_object_with_unreachable_jwks_uri(
         status=400,
     )
     res.mustcontain("No matching JWK")
+
+
+def test_request_object_ignores_symmetric_keys(
+    testclient, backend, logged_user, client, client_jwk
+):
+    """Per RFC 7591 §2, the client JWK set is public, so its symmetric keys cannot sign request objects."""
+    oct_key = OctKey.import_key(gen_salt(48), {"kid": "symmetric"})
+    client.jwks = json.dumps(KeySet([client_jwk, oct_key]).as_dict(private=False))
+    backend.save(client)
+
+    request_obj = jwt.encode(
+        {"alg": "HS256", "kid": "symmetric"},
+        dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        oct_key,
+    )
+    testclient.get(
+        "/oauth/authorize",
+        params=dict(client_id=client.client_id, request=request_obj),
+        status=400,
+    )
+
+
+def test_request_object_with_several_keys(testclient, backend, logged_user, client):
+    """A client can sign its request objects with any of its keys."""
+    old_key = RSAKey.generate_key(1024, auto_kid=True)
+    new_key = RSAKey.generate_key(1024, auto_kid=True)
+    client.jwks = json.dumps(KeySet([old_key, new_key]).as_dict(private=False))
+    backend.save(client)
+
+    request_obj = jwt.encode(
+        {"alg": "RS256", "kid": new_key.kid},
+        dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        new_key,
+    )
+    testclient.get(
+        "/oauth/authorize",
+        params=dict(client_id=client.client_id, request=request_obj),
+        status=200,
+    )
+
+
+def hmac_request_object(client, key):
+    return jwt.encode(
+        {"alg": "HS256"},
+        dict(
+            response_type="code",
+            client_id=client.client_id,
+            scope="openid",
+            nonce="somenonce",
+            redirect_uri=client.redirect_uris[0],
+        ),
+        key,
+    )
+
+
+def test_request_object_signed_with_client_secret(
+    testclient, backend, logged_user, client
+):
+    """Per OIDC Core §10.1, symmetric signatures use the client secret."""
+    client.request_object_signing_alg = "HS256"
+    backend.save(client)
+
+    key = OctKey.import_key(client.client_secret)
+    testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            client_id=client.client_id, request=hmac_request_object(client, key)
+        ),
+        status=200,
+    )
+
+
+def test_request_object_signed_with_client_secret_needs_registered_alg(
+    testclient, backend, logged_user, client
+):
+    """The client secret is only used when the client registered a symmetric algorithm."""
+    key = OctKey.import_key(client.client_secret)
+    testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            client_id=client.client_id, request=hmac_request_object(client, key)
+        ),
+        status=400,
+    )
+
+
+def test_request_object_signed_with_expired_client_secret(
+    testclient, backend, logged_user, client
+):
+    """An expired client secret cannot sign request objects."""
+    client.request_object_signing_alg = "HS256"
+    client.client_secret_expires_at = datetime.datetime.now(
+        datetime.UTC
+    ) - datetime.timedelta(days=1)
+    backend.save(client)
+
+    key = OctKey.import_key(client.client_secret)
+    testclient.get(
+        "/oauth/authorize",
+        params=dict(
+            client_id=client.client_id, request=hmac_request_object(client, key)
+        ),
+        status=400,
+    )

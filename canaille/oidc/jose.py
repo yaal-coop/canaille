@@ -9,6 +9,7 @@ from joserfc import jwk
 from joserfc import jws
 from joserfc import jwt
 from joserfc.errors import JoseError
+from joserfc.jwk import OctKey
 from joserfc.jwk import OKPKey
 from joserfc.jwk import RSAKey
 
@@ -95,8 +96,29 @@ def supported_signing_algorithms():
     return algorithms
 
 
-def get_client_jwks(client, kid=None):
-    """Get the client JWK set, either stored locally or by downloading them from the URI the client indicated.
+SYMMETRIC_ALGORITHMS = ("HS256", "HS384", "HS512")
+
+
+def asymmetric_keys(key_set):
+    """Return the keys of the set that are not symmetric."""
+    return [key for key in key_set.keys if key.key_type != "oct"]
+
+
+def has_private_keys(key_set):
+    """Whether the key set holds private or symmetric keys."""
+    return any(key.is_private for key in key_set.keys)
+
+
+def client_secret_key(client):
+    """Return the client secret as an HMAC key, or :data:`None` if it cannot be used."""
+    if not client.has_usable_secret():
+        return None
+
+    return OctKey.import_key(client.client_secret)
+
+
+def read_client_jwks(client):
+    """Read the client JWK set, stored locally or downloaded from the client URI.
 
     Return :data:`None` when the keys at the URI cannot be read.
     """
@@ -107,7 +129,7 @@ def get_client_jwks(client, kid=None):
 
     if client.jwks_uri:
         try:
-            raw_jwks = get_public_jwks()
+            return get_public_jwks()
         except Exception:
             current_app.logger.warning(
                 "could not read the keys of client %s at %s",
@@ -115,17 +137,40 @@ def get_client_jwks(client, kid=None):
                 client.jwks_uri,
             )
             return None
-        key_set = jwk.KeySet.import_key_set(raw_jwks)
-        key = key_set.get_by_kid(kid)
-        return key
 
     if client.jwks:
-        raw_jwks = json.loads(client.jwks)
-        key_set = jwk.KeySet.import_key_set(raw_jwks)
-        key = key_set.get_by_kid(kid)
-        return key
+        return json.loads(client.jwks)
 
     return None
+
+
+def get_client_jwks(client):
+    """Get the client public keys.
+
+    Per RFC 7591 §2, the client JWK set is public, so symmetric keys are ignored.
+    Return :data:`None` when the client has no usable key.
+    """
+    raw_jwks = read_client_jwks(client)
+    if not raw_jwks:
+        return None
+
+    try:
+        key_set = jwk.KeySet.import_key_set(raw_jwks)
+    except (JoseError, ValueError, KeyError, TypeError):
+        current_app.logger.warning("invalid key set for client %s", client.client_id)
+        return None
+
+    keys = asymmetric_keys(key_set)
+    if len(keys) < len(key_set.keys):
+        current_app.logger.security(
+            f"Client {client.client_id} has symmetric keys in its JWK set. "
+            "They are ignored."
+        )
+
+    if not keys:
+        return None
+
+    return jwk.KeySet(keys)
 
 
 def build_client_management_token(

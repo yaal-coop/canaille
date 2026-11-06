@@ -1,11 +1,14 @@
 import datetime
+import json
 import logging
 import time
 import uuid
 
 from flask_webtest import TestApp
 from joserfc import jwt
+from joserfc.jwk import KeySet
 from joserfc.jwk import OctKey
+from joserfc.jwk import RSAKey
 from werkzeug.security import gen_salt
 
 from canaille import create_app
@@ -431,6 +434,69 @@ def test_private_key_jwt_refuses_client_secret(
 
     key = OctKey.import_key(client.client_secret)
     assertion = jwt.encode({"alg": "HS256"}, client_assertion_payload(client), key)
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 400
+    assert res.json["error"] == "invalid_client"
+
+
+def test_private_key_jwt_ignores_symmetric_keys(
+    testclient, client, client_jwk, authorization, backend, caplog
+):
+    """Per RFC 7591 §2, the client JWK set is public, so its symmetric keys cannot sign assertions."""
+    oct_key = OctKey.import_key(gen_salt(48), {"kid": "symmetric"})
+    client.token_endpoint_auth_method = "private_key_jwt"
+    client.jwks = json.dumps(KeySet([client_jwk, oct_key]).as_dict(private=False))
+    backend.save(client)
+
+    assertion = jwt.encode(
+        {"alg": "HS256", "kid": "symmetric"}, client_assertion_payload(client), oct_key
+    )
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 400
+    assert res.json["error"] == "invalid_client"
+    assert (
+        "canaille",
+        logging.SECURITY,
+        f"Client {client.client_id} has symmetric keys in its JWK set. "
+        "They are ignored.",
+    ) in caplog.record_tuples
+
+
+def test_private_key_jwt_with_several_keys(testclient, client, authorization, backend):
+    """A client can publish several keys, for instance during a key rotation."""
+    old_key = RSAKey.generate_key(1024, auto_kid=True)
+    new_key = RSAKey.generate_key(1024, auto_kid=True)
+    client.token_endpoint_auth_method = "private_key_jwt"
+    client.jwks = json.dumps(KeySet([old_key, new_key]).as_dict(private=False))
+    backend.save(client)
+
+    assertion = jwt.encode(
+        {"alg": "RS256", "kid": new_key.kid}, client_assertion_payload(client), new_key
+    )
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 200
+
+
+def test_private_key_jwt_invalid_key_set(
+    testclient, client, client_jwk, authorization, backend
+):
+    """An invalid client key set is refused without a server error."""
+    client.token_endpoint_auth_method = "private_key_jwt"
+    client.jwks = '{"keys": [{"kty": "foo"}]}'
+    backend.save(client)
+
+    assertion = jwt.encode(
+        {"alg": "RS256"}, client_assertion_payload(client), client_jwk
+    )
     res = client_assertion_request(
         testclient, client, authorization, backend, assertion
     )

@@ -2,6 +2,7 @@ import json
 
 import wtforms
 from flask import current_app
+from joserfc.errors import JoseError
 from joserfc.jwk import KeySet
 from wtforms_htmx_components import ComboboxMultiField
 
@@ -18,6 +19,7 @@ from canaille.app.forms import unique_values
 from canaille.app.i18n import lazy_gettext as _
 from canaille.backends import Backend
 from canaille.core.endpoints.forms import describe_user
+from canaille.oidc.jose import has_private_keys
 from canaille.oidc.jose import supported_signing_algorithms
 from canaille.oidc.jose import supported_verification_algorithms
 from canaille.oidc.models import OWNED_CLIENT_FORBIDDEN_GRANT_TYPES
@@ -67,9 +69,17 @@ def is_jwks(form, field):
         ) from exc
 
     try:
-        KeySet.import_key_set(payload)
-    except (KeyError, ValueError) as exc:
+        key_set = KeySet.import_key_set(payload)
+    except (JoseError, KeyError, ValueError, TypeError) as exc:
         raise wtforms.ValidationError(_("This value is not a valid JWK.")) from exc
+
+    if has_private_keys(key_set):
+        raise wtforms.ValidationError(
+            _(
+                "Private and symmetric keys are not allowed, "
+                "as the client keys are public."
+            )
+        )
 
 
 def _get_algorithm_choices(algorithms, include_empty=True):

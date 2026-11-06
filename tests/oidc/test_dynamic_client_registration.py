@@ -7,6 +7,7 @@ from datetime import timedelta
 from unittest import mock
 
 from joserfc import jwt
+from joserfc.jwk import KeySet
 from joserfc.jwk import OctKey
 
 from canaille.app import models
@@ -799,3 +800,46 @@ def test_client_registration_internal_error_returns_json(testclient, backend):
     assert (
         res.json["error_description"] == "The server encountered an unexpected error."
     )
+
+
+def test_client_registration_refuses_symmetric_keys(testclient, backend):
+    """Per RFC 7591 §2, the client JWK set only holds public keys."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+    oct_key = OctKey.import_key(str(uuid.uuid4()))
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "My Example Client",
+        "token_endpoint_auth_method": "private_key_jwt",
+        "jwks": KeySet([oct_key]).as_dict(private=False),
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
+    }
+    res = testclient.post_json("/oauth/register", payload, status=400)
+
+    assert res.json == {
+        "error_description": "Private and symmetric keys are not allowed, "
+        "as the client keys are public.",
+        "error": "invalid_client_metadata",
+    }
+    assert not backend.query(models.Client, client_name="My Example Client")
+
+
+def test_client_registration_refuses_invalid_key_sets(testclient, backend):
+    """An invalid JWK set is refused without a server error."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "My Example Client",
+        "token_endpoint_auth_method": "private_key_jwt",
+        "jwks": {},
+        "grant_types": ["authorization_code"],
+        "response_types": ["code"],
+    }
+    res = testclient.post_json("/oauth/register", payload, status=400)
+
+    assert res.json == {
+        "error_description": "Invalid claim: 'jwks'",
+        "error": "invalid_client_metadata",
+    }
