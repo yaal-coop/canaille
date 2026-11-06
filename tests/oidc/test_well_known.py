@@ -103,7 +103,6 @@ def test_openid_configuration(testclient):
             "sub",
             "iss",
             "auth_time",
-            "acr",
             "name",
             "given_name",
             "family_name",

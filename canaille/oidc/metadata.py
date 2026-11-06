@@ -119,7 +119,6 @@ def openid_configuration():
             "sub",
             "iss",
             "auth_time",
-            "acr",
             "name",
             "given_name",
             "family_name",

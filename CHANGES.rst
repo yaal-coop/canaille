@@ -23,6 +23,8 @@ Fixed
 - List fields, such as phone numbers, lost their read-only state
   and their add and remove buttons with WTForms 3.3.2.
 - The "Skip main menu" link leads to the page content.
+- The OpenID Connect discovery document no longer lists the ``acr`` claim,
+  that Canaille does not issue.
 - After logout, users are redirected to the ``post_logout_redirect_uri``
   of a client that sends an ``id_token_hint`` without ``client_id``.
 
