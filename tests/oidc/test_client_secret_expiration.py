@@ -51,6 +51,24 @@ def test_expired_secret_cannot_authenticate_with_client_secret_post(
     assert res.json["error"] == "invalid_client"
 
 
+def test_non_ascii_secret_is_refused(testclient, client, backend):
+    """A secret with non-ASCII characters is refused without a server error."""
+    client.token_endpoint_auth_method = "client_secret_post"
+    backend.save(client)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="client_credentials",
+            client_id=client.client_id,
+            client_secret="é" + client.client_secret,
+        ),
+        status=401,
+    )
+
+    assert res.json["error"] == "invalid_client"
+
+
 def test_future_expiration_can_authenticate(testclient, client, backend):
     """A secret expiring in the future is still valid."""
     client.client_secret_expires_at = datetime.datetime.now(

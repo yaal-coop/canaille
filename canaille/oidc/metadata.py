@@ -9,6 +9,7 @@ from canaille.app import DOCUMENTATION_URL
 
 from .jose import supported_signing_algorithms
 from .jose import supported_verification_algorithms
+from .provider import AuthorizationCodeGrant
 from .provider import CodeChallenge
 from .provider import IntrospectionEndpoint
 from .provider import JWTClientAuth
@@ -22,12 +23,17 @@ class AuthorizationServerMetadata(
     pass
 
 
-def endpoint_auth_methods(endpoint):
-    """Return the client authentication methods that an endpoint accepts."""
-    return [
-        "private_key_jwt" if method == JWTClientAuth.CLIENT_AUTH_METHOD else method
-        for method in endpoint.CLIENT_AUTH_METHODS
-    ]
+def client_auth_methods(authlib_methods):
+    """Return the client authentication method names from the authlib ones."""
+    # Workaround: authlib names both client_secret_jwt and private_key_jwt
+    # "client_assertion_jwt", which is not a registered method name.
+    methods = []
+    for method in authlib_methods:
+        if method == JWTClientAuth.CLIENT_AUTH_METHOD:
+            methods.extend(["client_secret_jwt", "private_key_jwt"])
+        else:
+            methods.append(method)
+    return methods
 
 
 def oauth_authorization_server():
@@ -35,19 +41,16 @@ def oauth_authorization_server():
         "issuer": get_issuer(),
         "authorization_endpoint": url_for("oidc.endpoints.authorize", _external=True),
         "token_endpoint": url_for("oidc.endpoints.issue_token", _external=True),
-        "token_endpoint_auth_methods_supported": [
-            "client_secret_basic",
-            "private_key_jwt",
-            "client_secret_post",
-            "none",
-        ],
+        "token_endpoint_auth_methods_supported": client_auth_methods(
+            AuthorizationCodeGrant.TOKEN_ENDPOINT_AUTH_METHODS
+        ),
         "token_endpoint_auth_signing_alg_values_supported": supported_verification_algorithms(
             excluded=["none"]
         ),
         "userinfo_endpoint": url_for("oidc.endpoints.userinfo", _external=True),
         "revocation_endpoint": url_for("oidc.endpoints.revoke_token", _external=True),
-        "revocation_endpoint_auth_methods_supported": endpoint_auth_methods(
-            RevocationEndpoint
+        "revocation_endpoint_auth_methods_supported": client_auth_methods(
+            RevocationEndpoint.CLIENT_AUTH_METHODS
         ),
         "revocation_endpoint_auth_signing_alg_values_supported": supported_verification_algorithms(
             excluded=["none"]
@@ -55,8 +58,8 @@ def oauth_authorization_server():
         "introspection_endpoint": url_for(
             "oidc.endpoints.introspect_token", _external=True
         ),
-        "introspection_endpoint_auth_methods_supported": endpoint_auth_methods(
-            IntrospectionEndpoint
+        "introspection_endpoint_auth_methods_supported": client_auth_methods(
+            IntrospectionEndpoint.CLIENT_AUTH_METHODS
         ),
         "introspection_endpoint_auth_signing_alg_values_supported": supported_verification_algorithms(
             excluded=["none"]

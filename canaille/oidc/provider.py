@@ -30,6 +30,7 @@ from flask import current_app
 from flask import g
 from flask import request
 from flask import url_for
+from joserfc.jwk import OctKey
 from werkzeug.security import gen_salt
 
 from canaille.app import models
@@ -183,6 +184,15 @@ class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
         return True
 
     def resolve_client_public_key(self, client):
+        """Per OIDC Core §9, client_secret_jwt assertions are signed with the client secret."""
+        # Workaround: authlib handles client_secret_jwt and private_key_jwt as one
+        # "client_assertion_jwt" method, so the key depends on the registered method.
+        if client.token_endpoint_auth_method == "client_secret_jwt":
+            if not client.has_usable_secret():
+                raise InvalidClientError()
+
+            return OctKey.import_key(client.client_secret)
+
         jwk = get_client_jwks(client)
         if not jwk:
             raise InvalidClientError(description="No matching JWK")

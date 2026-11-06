@@ -5,6 +5,7 @@ import uuid
 
 from flask_webtest import TestApp
 from joserfc import jwt
+from joserfc.jwk import OctKey
 from werkzeug.security import gen_salt
 
 from canaille import create_app
@@ -27,7 +28,7 @@ def jwt_assertion_request(testclient, client_jwk, client, authorization, backend
     now = time.time()
     authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
-    client.token_endpoint_auth_method = "client_secret_jwt"
+    client.token_endpoint_auth_method = "private_key_jwt"
     backend.save(client)
 
     payload = {
@@ -87,7 +88,7 @@ def test_client_jwks(
     authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
     client.client_uri = "https://client.trusted.test"
-    client.token_endpoint_auth_method = "client_secret_jwt"
+    client.token_endpoint_auth_method = "private_key_jwt"
     backend.save(client)
 
     header = {"alg": "RS256"}
@@ -137,7 +138,7 @@ def test_client_jwks_uri(
     client.client_uri = "https://client.trusted.test"
     client.jwks_uri = f"http://{httpserver.host}:{httpserver.port}{jwks_uri}"
     client.jwks = None
-    client.token_endpoint_auth_method = "client_secret_jwt"
+    client.token_endpoint_auth_method = "private_key_jwt"
     backend.save(client)
 
     header = {"alg": "RS256"}
@@ -181,7 +182,7 @@ def test_client_no_jwks(
     backend.save(authorization)
     client.client_uri = "https://client.trusted.test"
     client.jwks = None
-    client.token_endpoint_auth_method = "client_secret_jwt"
+    client.token_endpoint_auth_method = "private_key_jwt"
     backend.save(client)
 
     header = {"alg": "RS256"}
@@ -224,7 +225,7 @@ def test_same_jti_twice(
     authorization.issue_date = datetime.datetime.now(datetime.UTC)
     backend.save(authorization)
     client.client_uri = "https://client.trusted.test"
-    client.token_endpoint_auth_method = "client_secret_jwt"
+    client.token_endpoint_auth_method = "private_key_jwt"
     backend.save(client)
 
     header = {"alg": "RS256"}
@@ -327,4 +328,112 @@ def test_client_jwks_uri_unreachable(
         ),
         status=400,
     )
+    assert res.json["error"] == "invalid_client"
+
+
+def client_assertion_request(testclient, client, authorization, backend, assertion):
+    """Request a token with a client assertion."""
+    authorization.issue_date = datetime.datetime.now(datetime.UTC)
+    backend.save(authorization)
+    return testclient.post(
+        "/oauth/token",
+        params=dict(
+            grant_type="authorization_code",
+            code=authorization.code,
+            code_verifier=authorization.challenge,
+            client_assertion_type="urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+            client_assertion=assertion,
+            redirect_uri=client.redirect_uris[0],
+        ),
+        expect_errors=True,
+    )
+
+
+def client_assertion_payload(client):
+    now = time.time()
+    return {
+        "iss": client.client_id,
+        "sub": client.client_id,
+        "aud": "http://canaille.test/oauth/token",
+        "exp": now + 60,
+        "iat": now,
+        "jti": str(uuid.uuid4()),
+    }
+
+
+def test_client_secret_jwt(testclient, client, authorization, backend, user):
+    """Per OIDC Core §9, client_secret_jwt assertions are signed with the client secret."""
+    client.token_endpoint_auth_method = "client_secret_jwt"
+    backend.save(client)
+
+    key = OctKey.import_key(client.client_secret)
+    assertion = jwt.encode({"alg": "HS256"}, client_assertion_payload(client), key)
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 200
+    token = backend.get(models.Token, access_token=res.json["access_token"])
+    assert token.client == client
+    assert token.subject == user
+
+
+def test_client_secret_jwt_refuses_client_keys(
+    testclient, client_jwk, client, authorization, backend
+):
+    """A client_secret_jwt client cannot sign its assertions with its private key."""
+    client.token_endpoint_auth_method = "client_secret_jwt"
+    backend.save(client)
+
+    assertion = jwt.encode(
+        {"alg": "RS256"}, client_assertion_payload(client), client_jwk
+    )
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 400
+    assert res.json["error"] == "invalid_client"
+
+
+def test_client_secret_jwt_expired_secret(
+    testclient, client, authorization, backend, caplog
+):
+    """An expired client secret cannot sign client_secret_jwt assertions."""
+    client.token_endpoint_auth_method = "client_secret_jwt"
+    client.client_secret_expires_at = datetime.datetime.now(
+        datetime.UTC
+    ) - datetime.timedelta(days=1)
+    backend.save(client)
+
+    key = OctKey.import_key(client.client_secret)
+    assertion = jwt.encode({"alg": "HS256"}, client_assertion_payload(client), key)
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 400
+    assert res.json == {"error": "invalid_client"}
+    assert (
+        "canaille",
+        logging.SECURITY,
+        f"Client {client.client_id} authentication attempt with a secret "
+        f"expired since {client.client_secret_expires_at}",
+    ) in caplog.record_tuples
+
+
+def test_private_key_jwt_refuses_client_secret(
+    testclient, client, authorization, backend
+):
+    """A private_key_jwt client cannot sign its assertions with its client secret."""
+    client.token_endpoint_auth_method = "private_key_jwt"
+    backend.save(client)
+
+    key = OctKey.import_key(client.client_secret)
+    assertion = jwt.encode({"alg": "HS256"}, client_assertion_payload(client), key)
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 400
     assert res.json["error"] == "invalid_client"

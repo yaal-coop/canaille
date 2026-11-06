@@ -93,7 +93,7 @@ class Client(Model):
         """Whether the client secret has expired.
 
         Clients with an expired secret cannot authenticate anymore with the
-        ``client_secret_basic`` and ``client_secret_post`` methods.
+        ``client_secret_basic``, ``client_secret_post`` and ``client_secret_jwt`` methods.
         """
         return (
             self.client_secret_expires_at is not None

@@ -1,4 +1,5 @@
 import datetime
+import secrets
 from typing import ClassVar
 
 from authlib.oauth2.rfc6749 import ClientMixin
@@ -100,7 +101,11 @@ class Client(BaseClient, ClientMixin):
     def check_redirect_uri(self, redirect_uri: str) -> bool:
         return redirect_uri in self.redirect_uris
 
-    def check_client_secret(self, client_secret: str) -> bool:
+    def has_usable_secret(self) -> bool:
+        """Whether the client has a secret that has not expired."""
+        if not self.client_secret:
+            return False
+
         if self.secret_expired:
             current_app.logger.security(
                 f"Client {self.client_id} authentication attempt with a secret "
@@ -108,7 +113,13 @@ class Client(BaseClient, ClientMixin):
             )
             return False
 
-        return client_secret == self.client_secret
+        return True
+
+    def check_client_secret(self, client_secret: str) -> bool:
+        """Compare the secrets in constant time."""
+        return self.has_usable_secret() and secrets.compare_digest(
+            client_secret.encode(), self.client_secret.encode()
+        )
 
     def check_endpoint_auth_method(self, method, endpoint):
         if endpoint in ("token", "device_authorization"):
@@ -119,6 +130,7 @@ class Client(BaseClient, ClientMixin):
             return (
                 implicit_flow_shortcut
                 or method == self.token_endpoint_auth_method
+                # Workaround: authlib names both JWT methods "client_assertion_jwt".
                 or (
                     method == "client_assertion_jwt"
                     and self.token_endpoint_auth_method

@@ -9,6 +9,8 @@ Changed
 - Authorization codes expire after 60 seconds instead of 5 minutes.
 - When a client has no other audience, the ``aud`` claim of its ID tokens
   is a string instead of a one-item list.
+- ``client_secret_jwt`` clients that sign their assertions with their private key
+  are refused. Set them to the ``private_key_jwt`` method.
 
 Fixed
 ^^^^^
@@ -27,9 +29,13 @@ Fixed
   that Canaille does not issue.
 - After logout, users are redirected to the ``post_logout_redirect_uri``
   of a client that sends an ``id_token_hint`` without ``client_id``.
-- The OAuth and OpenID Connect discovery documents list the ``jwt-bearer`` grant type.
+- The OAuth and OpenID Connect discovery documents list the ``jwt-bearer`` grant type
+  and the ``client_secret_jwt`` authentication method.
+- ``client_secret_jwt`` clients sign their assertions with their client secret,
+  as OpenID Connect Core requires.
 - Clients can use the ``client_credentials`` grant with the ``client_secret_post``,
   ``client_secret_jwt`` and ``private_key_jwt`` authentication methods.
+- Client secrets are compared in constant time.
 
 [0.4.3] - 2026-10-29
 --------------------

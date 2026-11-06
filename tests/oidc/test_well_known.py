@@ -39,6 +39,7 @@ def test_oauth_authorization_server(testclient):
         "introspection_endpoint_auth_methods_supported": [
             "client_secret_basic",
             "client_secret_post",
+            "client_secret_jwt",
             "private_key_jwt",
         ],
         "introspection_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
@@ -59,6 +60,7 @@ def test_oauth_authorization_server(testclient):
         "revocation_endpoint_auth_methods_supported": [
             "client_secret_basic",
             "client_secret_post",
+            "client_secret_jwt",
             "private_key_jwt",
         ],
         "revocation_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
@@ -74,8 +76,9 @@ def test_oauth_authorization_server(testclient):
         "token_endpoint": "http://canaille.test/oauth/token",
         "token_endpoint_auth_methods_supported": [
             "client_secret_basic",
-            "private_key_jwt",
             "client_secret_post",
+            "client_secret_jwt",
+            "private_key_jwt",
             "none",
         ],
         "token_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
@@ -151,6 +154,7 @@ def test_openid_configuration(testclient):
         "introspection_endpoint_auth_methods_supported": [
             "client_secret_basic",
             "client_secret_post",
+            "client_secret_jwt",
             "private_key_jwt",
         ],
         "introspection_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
@@ -178,6 +182,7 @@ def test_openid_configuration(testclient):
         "revocation_endpoint_auth_methods_supported": [
             "client_secret_basic",
             "client_secret_post",
+            "client_secret_jwt",
             "private_key_jwt",
         ],
         "revocation_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,
@@ -194,8 +199,9 @@ def test_openid_configuration(testclient):
         "token_endpoint": "http://canaille.test/oauth/token",
         "token_endpoint_auth_methods_supported": [
             "client_secret_basic",
-            "private_key_jwt",
             "client_secret_post",
+            "client_secret_jwt",
+            "private_key_jwt",
             "none",
         ],
         "token_endpoint_auth_signing_alg_values_supported": VERIFICATION_ALGORITHMS,

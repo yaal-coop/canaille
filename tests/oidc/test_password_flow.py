@@ -150,7 +150,7 @@ def test_jwt_auth(testclient, client_jwk, client, token, caplog, backend, user):
     now = time.time()
 
     client.client_uri = "https://client.trusted.test"
-    client.token_endpoint_auth_method = "client_secret_jwt"
+    client.token_endpoint_auth_method = "private_key_jwt"
     backend.save(client)
 
     header = {"alg": "RS256"}
