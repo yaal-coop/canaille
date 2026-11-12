@@ -12,6 +12,7 @@ from flask.cli import with_appcontext
 
 from canaille.app import models
 from canaille.app.commands import with_backendcontext
+from canaille.app.encryption import decryption_failures
 from canaille.app.models import MODELS
 from canaille.backends import Backend
 from canaille.backends.models import Model
@@ -169,6 +170,7 @@ def register(cli) -> None:
     cli.add_command(reset_otp)
     cli.add_command(dump)
     cli.add_command(restore)
+    cli.add_command(secrets)
 
 
 def check_models(names) -> None:
@@ -189,6 +191,8 @@ def dump(model: list[str] | None):
     """Dump all the available models.
 
     If no argument is passed, all model instances are dumped.
+    The dump holds the client secrets and the one-time passcode secrets
+    in clear text.
     """
     check_models(model)
     payload = Backend.instance.dump(model)
@@ -520,3 +524,52 @@ def reset_otp(identifier):
 
     output = json.dumps(user, cls=Backend.instance.json_encoder)
     click.echo(output)
+
+
+ENCRYPTED_ATTRIBUTES = {"client": "client_secret", "user": "secret_token"}
+"""The model attributes encrypted with the ``SECRET_KEY`` in the database."""
+
+
+@click.group()
+def secrets():
+    """Manage the secrets stored in the database."""
+
+
+@secrets.command()
+@with_appcontext
+@with_backendcontext
+def reencrypt():
+    """Encrypt the stored secrets with the current SECRET_KEY.
+
+    Run it after changing SECRET_KEY, and before removing the previous key
+    from SECRET_KEY_FALLBACKS. Secrets stored in clear text are encrypted too.
+    """
+    if not current_app.config.get("SECRET_KEY"):
+        raise click.ClickException("SECRET_KEY is not set")
+
+    count = 0
+    failures = []
+    token = decryption_failures.set(failures)
+    try:
+        for model_name, attribute in ENCRYPTED_ATTRIBUTES.items():
+            if model_name not in MODELS:
+                continue
+
+            for instance in Backend.instance.query(MODELS[model_name]):
+                value = getattr(instance, attribute)
+                if not value:
+                    continue
+
+                setattr(instance, attribute, value)
+                # Skip the save signals, as no visible attribute changes.
+                Backend.instance.do_save(instance)
+                count += 1
+    finally:
+        decryption_failures.reset(token)
+
+    click.echo(f"{count} secrets encrypted")
+    if failures:
+        raise click.ClickException(
+            f"{len(failures)} secrets cannot be decrypted. Add the key that "
+            "encrypted them to SECRET_KEY_FALLBACKS, then run the command again."
+        )

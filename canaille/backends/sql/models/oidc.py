@@ -19,6 +19,7 @@ import canaille.core.models
 import canaille.oidc.models
 
 from ..backend import Base
+from ..utils import EncryptedString
 from ..utils import TZDateTime
 from .core import SqlAlchemyModel
 
@@ -117,7 +118,9 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
         creator=lambda aud: ClientAudience(audience=aud),
     )
     client_id: Mapped[str] = mapped_column(String(255), nullable=True)
-    client_secret: Mapped[str] = mapped_column(String(255), nullable=True)
+    client_secret: Mapped[str] = mapped_column(
+        EncryptedString(255, "client_secret"), nullable=True
+    )
     client_id_issued_at: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )

@@ -9,6 +9,8 @@ from ..ldapobject import LDAPObject
 
 
 class User(canaille.core.models.User, LDAPObject):
+    encrypted_attributes: ClassVar[set[str]] = {"secret_token"}
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

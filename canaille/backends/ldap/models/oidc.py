@@ -9,6 +9,7 @@ class Client(canaille.oidc.models.Client, LDAPObject):
     ldap_object_class = ["oauthClient"]
     base = "ou=clients,ou=oauth"
     rdn_attribute = "oauthClientID"
+    encrypted_attributes: ClassVar[set[str]] = {"client_secret"}
 
     client_info_attributes_map: ClassVar[dict[str, str]] = {
         "client_id": "oauthClientID",

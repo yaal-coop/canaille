@@ -24,6 +24,7 @@ from canaille.backends import Backend
 from canaille.backends.models import BackendModel
 
 from ..backend import Base
+from ..utils import EncryptedString
 from ..utils import TZDateTime
 
 force_auto_coercion()
@@ -216,7 +217,9 @@ class User(canaille.core.models.User, Base, SqlAlchemyModel):
     last_otp_login: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
-    secret_token: Mapped[str] = mapped_column(String(255), nullable=True, unique=True)
+    secret_token: Mapped[str] = mapped_column(
+        EncryptedString(255, "secret_token"), nullable=True, unique=True
+    )
     hotp_counter: Mapped[int] = mapped_column(Integer, nullable=True)
     one_time_password: Mapped[str] = mapped_column(String(255), nullable=True)
     one_time_password_emission_date: Mapped[datetime.datetime] = mapped_column(

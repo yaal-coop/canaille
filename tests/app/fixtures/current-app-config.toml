@@ -1,8 +1,24 @@
 # The Flask SECRET_KEY configuration setting.
 #
 # You MUST set a value before deploying in production.
+#
+# It also encrypts the client secrets and the one-time passcode secrets in the
+# database. To change it, see SECRET_KEY_FALLBACKS.
 # SECRET_KEY =
 SECRET_KEY = "very-secret"
+
+# The Flask SECRET_KEY_FALLBACKS configuration setting.
+#
+# The previous secret keys. They still validate sessions and decrypt secrets.
+#
+# To change SECRET_KEY, move the current key to SECRET_KEY_FALLBACKS and set the
+# new key. Then run canaille secrets reencrypt, and remove the previous key from
+# SECRET_KEY_FALLBACKS. Secrets that are still encrypted with a removed key are
+# lost.
+#
+# The links already sent by email, such as password reset links, stop working.
+# Without ACTIVE_JWKS, the default key that signs the ID tokens changes too.
+# SECRET_KEY_FALLBACKS =
 
 # The Flask SERVER_NAME configuration setting.
 #

@@ -1,6 +1,13 @@
 [0.4.4] - Unreleased
 --------------------
 
+Added
+^^^^^
+- The ``SECRET_KEY_FALLBACKS`` setting keeps the previous secret keys
+  after a ``SECRET_KEY`` change, so sessions and stored secrets stay valid.
+- The ``canaille secrets reencrypt`` command encrypts the stored secrets
+  with the current ``SECRET_KEY``.
+
 Changed
 ^^^^^^^
 - SCIM group requests with unknown members are refused instead of partially applied.
@@ -11,7 +18,7 @@ Changed
   is a string instead of a one-item list.
 - ``client_secret_jwt`` clients that sign their assertions with their private key
   are refused. Set them to the ``private_key_jwt`` method.
-- Canaille requires authlib 1.10.
+- Canaille requires authlib 1.10 and Flask 3.1.
 - Authorization responses redirect with ``303 See Other`` instead of ``302 Found``.
 - Dynamic client registration refuses missing or invalid access tokens
   with a ``401`` ``invalid_token`` error instead of a ``400`` ``access_denied`` error (RFC 6750).
@@ -56,6 +63,9 @@ Security
   with their client secret instead.
 - Private and symmetric keys are refused in the JWK set when a client
   is registered or edited.
+- Client secrets and one-time passcode secrets are encrypted in the database
+  with a key derived from ``SECRET_KEY``. Existing secrets stay readable.
+  Run ``canaille secrets reencrypt`` after the upgrade to encrypt them.
 
 [0.4.3] - 2026-10-29
 --------------------

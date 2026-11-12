@@ -99,6 +99,27 @@ class RootSettings(BaseSettings):
     """The Flask :external:py:data:`SECRET_KEY` configuration setting.
 
     You MUST set a value before deploying in production.
+
+    It also encrypts the client secrets and the one-time passcode secrets
+    in the database. To change it, see
+    :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY_FALLBACKS`.
+    """
+
+    SECRET_KEY_FALLBACKS: list[str] | None = None
+    """The Flask :external:py:data:`SECRET_KEY_FALLBACKS` configuration setting.
+
+    The previous secret keys. They still validate sessions and decrypt secrets.
+
+    To change :attr:`~canaille.app.configuration.RootSettings.SECRET_KEY`,
+    move the current key to ``SECRET_KEY_FALLBACKS`` and set the new key.
+    Then run ``canaille secrets reencrypt``, and remove the previous key
+    from ``SECRET_KEY_FALLBACKS``. Secrets that are still encrypted
+    with a removed key are lost.
+
+    The links already sent by email, such as password reset links, stop
+    working. Without
+    :attr:`~canaille.oidc.configuration.OIDCSettings.ACTIVE_JWKS`,
+    the default key that signs the ID tokens changes too.
     """
 
     SERVER_NAME: str | None = None

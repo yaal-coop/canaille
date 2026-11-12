@@ -39,6 +39,9 @@ def is_otp_valid(
     otp, method, secret_token, hotp_counter=HOTP_START_COUNTER
 ) -> tuple[bool, int]:
     """Return whether the OTP code is valid, and the new hotp_counter for the user."""
+    if not secret_token:
+        return False, hotp_counter
+
     if method == "TOTP":
         period = int(current_app.config["CANAILLE"]["TOTP_LIFETIME"].total_seconds())
         result = otpauth.TOTP(secret_token.encode("utf-8"), period=period).verify(otp)

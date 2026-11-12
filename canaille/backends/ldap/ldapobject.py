@@ -4,6 +4,8 @@ from typing import get_origin
 import ldap.dn
 import ldap.filter
 
+from canaille.app.encryption import decrypt
+from canaille.app.encryption import encrypt
 from canaille.backends.models import BackendModel
 
 from .backend import LDAPBackend
@@ -39,6 +41,8 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
     root_dn = None
     rdn_attribute = None
     attribute_map: ClassVar[dict[str, str] | None] = None
+    encrypted_attributes: ClassVar[set[str]] = set()
+    """Attributes encrypted with the ``SECRET_KEY`` in the directory."""
     ldap_object_class = None
 
     def __init__(self, dn=None, **kwargs):
@@ -73,11 +77,26 @@ class LDAPObject(BackendModel, metaclass=LDAPObjectMetaclass):
 
         python_single_value = get_origin(self.attributes[name]) is not list
         ldap_value = self.get_ldap_attribute(ldap_name)
-        return cardinalize_attribute(python_single_value, ldap_value)
+        value = cardinalize_attribute(python_single_value, ldap_value)
+        if name in self.encrypted_attributes:
+            return self.decrypt_attribute(name, value)
+
+        return value
+
+    def decrypt_attribute(self, name, value):
+        """Decrypt an attribute value once per instance."""
+        decrypted = self.__dict__.setdefault("_decrypted", {})
+        if (name, value) not in decrypted:
+            decrypted[(name, value)] = decrypt(value, name)
+
+        return decrypted[(name, value)]
 
     def __setattr__(self, name, value):
         if name not in self.attributes:
             super().__setattr__(name, value)
+
+        if name in self.encrypted_attributes:
+            value = encrypt(value, name)
 
         ldap_name = self.python_attribute_to_ldap(name)
         self.set_ldap_attribute(ldap_name, value)
