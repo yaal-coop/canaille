@@ -32,7 +32,7 @@ def test_amr_password_only(testclient, user, client, server_jwk, backend):
             redirect_uri="https://client.test/redirect1",
         ),
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -83,7 +83,7 @@ def test_amr_password_and_otp(testclient, user, client, server_jwk, backend):
             redirect_uri="https://client.test/redirect1",
         ),
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -131,7 +131,7 @@ def test_amr_password_and_sms(smtpd, testclient, user, client, server_jwk, backe
             redirect_uri="https://client.test/redirect1",
         ),
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -182,7 +182,7 @@ def test_amr_password_and_email(smtpd, testclient, user, client, server_jwk, bac
             redirect_uri="https://client.test/redirect1",
         ),
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]

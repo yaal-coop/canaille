@@ -27,7 +27,7 @@ def test_token_default_expiration_date(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = backend.get(models.AuthorizationCode, code=code)
@@ -95,7 +95,7 @@ def test_token_custom_expiration_date(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = backend.get(models.AuthorizationCode, code=code)

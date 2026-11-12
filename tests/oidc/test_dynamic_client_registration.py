@@ -222,18 +222,13 @@ def test_client_registration_with_authentication_no_token(
         "response_types": ["code"],
     }
 
-    res = testclient.post_json("/oauth/register", payload, status=400)
-    assert res.json == {
-        "error": "access_denied",
-        "error_description": "The resource owner or authorization server denied the request",
-    }
+    res = testclient.post_json("/oauth/register", payload, status=401)
+    assert res.json == {}
+    assert res.headers["WWW-Authenticate"] == "Bearer"
 
     headers = {"Authorization": "Bearer"}
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-    assert res.json == {
-        "error": "access_denied",
-        "error_description": "The resource owner or authorization server denied the request",
-    }
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
 
 def test_client_registration_with_authentication_invalid_token(
@@ -257,10 +252,10 @@ def test_client_registration_with_authentication_invalid_token(
         "response_types": ["code"],
     }
     headers = {"Authorization": "Bearer invalid-token"}
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
     assert res.json == {
-        "error": "access_denied",
-        "error_description": "The resource owner or authorization server denied the request",
+        "error": "invalid_token",
+        "error_description": "The access token provided is expired, revoked, malformed, or invalid for other reasons.",
     }
 
 
@@ -592,8 +587,8 @@ def test_client_registration_with_expired_token(testclient, backend):
     }
     headers = {"Authorization": f"Bearer {token}"}
 
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
 
 def test_client_registration_with_unsigned_token(testclient, backend):
@@ -630,8 +625,8 @@ def test_client_registration_with_unsigned_token(testclient, backend):
     }
     headers = {"Authorization": f"Bearer {token}"}
 
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
     assert not backend.get(models.Client, client_id=client_id)
 
 
@@ -663,8 +658,8 @@ def test_client_registration_with_wrong_issuer(testclient, backend):
     }
     headers = {"Authorization": f"Bearer {token}"}
 
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
 
 def test_client_registration_with_wrong_audience(testclient, backend):
@@ -695,8 +690,8 @@ def test_client_registration_with_wrong_audience(testclient, backend):
     }
     headers = {"Authorization": f"Bearer {token}"}
 
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
 
 def test_client_registration_with_wrong_scope(testclient, backend):
@@ -727,8 +722,8 @@ def test_client_registration_with_wrong_scope(testclient, backend):
     }
     headers = {"Authorization": f"Bearer {token}"}
 
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
 
 def test_client_registration_with_existing_client_id(testclient, backend, client):
@@ -758,8 +753,8 @@ def test_client_registration_with_existing_client_id(testclient, backend, client
     }
     headers = {"Authorization": f"Bearer {token}"}
 
-    res = testclient.post_json("/oauth/register", payload, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.post_json("/oauth/register", payload, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
 
 def test_client_registration_secret_never_expires(testclient, backend):

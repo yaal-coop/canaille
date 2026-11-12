@@ -29,7 +29,7 @@ def test_nominal_case(
         ),
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -93,7 +93,7 @@ def test_auth_time(
                 max_age=15000,
             ),
         )
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -163,7 +163,7 @@ def test_auth_time_update(
             status=200,
         )
 
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code1 = params["code"][0]
@@ -212,7 +212,7 @@ def test_auth_time_update(
             ),
             status=200,
         )
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code2 = params["code"][0]

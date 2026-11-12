@@ -105,7 +105,7 @@ def test_id_token_signing_uses_key_matching_client_algorithm(
             "redirect_uri": client.redirect_uris[0],
         },
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]

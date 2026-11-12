@@ -31,7 +31,7 @@ def test_request_object_query(testclient, logged_user, trusted_client, client_jw
     res = testclient.get(
         "/oauth/authorize",
         params=dict(client_id=trusted_client.client_id, request=request_obj),
-        status=302,
+        status=303,
     )
 
     assert res.location.startswith(trusted_client.redirect_uris[0])
@@ -144,7 +144,7 @@ def test_request_object_uri_query(
     res = testclient.get(
         "/oauth/authorize",
         params=dict(client_id=trusted_client.client_id, request_uri=request_uri),
-        status=302,
+        status=303,
     )
 
     assert res.location.startswith(trusted_client.redirect_uris[0])
@@ -197,7 +197,7 @@ def test_request_object_scope_is_displayed(
     )
     res.mustcontain("Your e-mail address.")
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     backend.reload(consent)
     assert set(consent.scope) == {"openid", "email"}
 
@@ -228,7 +228,7 @@ def test_request_object_redirect_uri_on_consent_required(
             prompt="none",
             request=request_obj,
         ),
-        status=302,
+        status=303,
     )
     assert res.location.startswith(client.redirect_uris[0])
     assert parse_qs(urlsplit(res.location).query)["error"] == ["consent_required"]

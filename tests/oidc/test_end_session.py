@@ -19,7 +19,7 @@ def test_end_session(testclient, backend, logged_user, client, id_token):
             "post_logout_redirect_uri": post_logout_redirect_url,
             "state": "foobar",
         },
-        status=302,
+        status=303,
     )
 
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
@@ -42,7 +42,7 @@ def test_end_session_no_client_id(testclient, backend, logged_user, client, id_t
             "post_logout_redirect_uri": post_logout_redirect_url,
             "state": "foobar",
         },
-        status=302,
+        status=303,
     )
 
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
@@ -233,7 +233,7 @@ def test_no_jwt_trusted_domain_logout_redirection(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="logout", status=302)
+    res = res.form.submit(name="answer", value="logout", status=303)
 
     with testclient.session_transaction() as sess:
         assert not sess.get("sessions")
@@ -358,7 +358,7 @@ def test_bad_user_hint(testclient, backend, logged_user, client, id_token, admin
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="logout", status=302)
+    res = res.form.submit(name="answer", value="logout", status=303)
 
     with testclient.session_transaction() as sess:
         assert not sess.get("sessions")
@@ -387,7 +387,7 @@ def test_id_token_hint_of_another_user(
     with testclient.session_transaction() as sess:
         assert sess.get("sessions")
 
-    res = res.form.submit(name="answer", value="logout", status=302)
+    res = res.form.submit(name="answer", value="logout", status=303)
 
     with testclient.session_transaction() as sess:
         assert not sess.get("sessions")
@@ -426,7 +426,7 @@ def test_end_session_already_disconnected(testclient, backend, user, client, id_
             "post_logout_redirect_uri": post_logout_redirect_url,
             "state": "foobar",
         },
-        status=302,
+        status=303,
     )
 
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
@@ -444,7 +444,7 @@ def test_end_session_no_state(testclient, backend, logged_user, client, id_token
             "client_id": client.client_id,
             "post_logout_redirect_uri": post_logout_redirect_url,
         },
-        status=302,
+        status=303,
     )
 
     assert res.location == post_logout_redirect_url

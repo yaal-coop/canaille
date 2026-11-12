@@ -114,7 +114,7 @@ def test_refresh_token_with_invalid_user(testclient, client, backend):
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(name="answer", value="accept", status=302).follow()
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]

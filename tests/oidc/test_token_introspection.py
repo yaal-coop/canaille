@@ -143,7 +143,7 @@ def test_full_flow(testclient, logged_user, client, user, trusted_client, backen
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)

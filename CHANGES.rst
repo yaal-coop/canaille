@@ -11,6 +11,10 @@ Changed
   is a string instead of a one-item list.
 - ``client_secret_jwt`` clients that sign their assertions with their private key
   are refused. Set them to the ``private_key_jwt`` method.
+- Canaille requires authlib 1.10.
+- Authorization responses redirect with ``303 See Other`` instead of ``302 Found``.
+- Dynamic client registration refuses missing or invalid access tokens
+  with a ``401`` ``invalid_token`` error instead of a ``400`` ``access_denied`` error (RFC 6750).
 
 Fixed
 ^^^^^

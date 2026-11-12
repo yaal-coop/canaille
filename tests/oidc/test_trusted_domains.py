@@ -100,7 +100,7 @@ def test_trusted_domains_consent_bypass(testclient, logged_user, backend):
             "redirect_uri": "https://localhost:3000/callback",
             "nonce": "test-nonce",
         },
-        status=302,
+        status=303,
     )
 
     assert res.location.startswith("https://localhost:3000/callback?code=")

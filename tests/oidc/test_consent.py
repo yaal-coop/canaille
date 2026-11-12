@@ -134,7 +134,7 @@ def test_oidc_authorization_after_revokation(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
     backend.reload(consent)
@@ -301,7 +301,7 @@ def test_consent_in_several_tabs(testclient, logged_user, client, backend):
         "/oauth/authorize", params=authorization_params(client, "second"), status=200
     )
 
-    res = first.form.submit(name="answer", value="accept", status=302)
+    res = first.form.submit(name="answer", value="accept", status=303)
     assert parse_qs(urlsplit(res.location).query)["state"] == ["first"]
 
     for consent in backend.query(models.Consent, client=client):
@@ -316,7 +316,7 @@ def test_consent_answer_without_display(
     res = testclient.post(
         "/oauth/authorize?" + urlencode(authorization_params(client, "state")),
         params=dict(answer="accept"),
-        status=302,
+        status=303,
     )
     assert res.location.startswith(client.redirect_uris[0])
     assert "code" in parse_qs(urlsplit(res.location).query)

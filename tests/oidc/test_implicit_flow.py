@@ -31,7 +31,7 @@ def test_oauth_implicit(testclient, user, client, backend):
 
     assert "text/html" == res.content_type, res.json
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).fragment)
@@ -75,7 +75,7 @@ def test_oauth_implicit_auth_method_not_none(testclient, user, client, backend):
 
     assert "text/html" == res.content_type, res.json
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).fragment)
@@ -123,7 +123,7 @@ def test_oidc_implicit(testclient, server_jwk, user, client, trusted_client, bac
 
     assert "text/html" == res.content_type, res.json
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).fragment)
@@ -173,7 +173,7 @@ def test_oidc_implicit_with_group(
 
     assert "text/html" == res.content_type, res.json
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).fragment)

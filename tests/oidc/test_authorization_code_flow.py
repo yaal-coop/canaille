@@ -34,7 +34,7 @@ def test_nominal_case_get(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     assert (
         "canaille",
         logging.SECURITY,
@@ -132,7 +132,7 @@ def test_nominal_case_post(
         status=303,
     ).follow(status=200)
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     assert (
         "canaille",
         logging.SECURITY,
@@ -231,7 +231,7 @@ def test_duplicate_scope_is_deduplicated(
         ),
         status=303,
     ).follow(status=200)
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     code = parse_qs(urlsplit(res.location).query)["code"][0]
     authcode = backend.get(models.AuthorizationCode, code=code)
@@ -258,7 +258,7 @@ def test_redirect_uri(testclient, logged_user, client, trusted_client, backend):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[1])
     params = parse_qs(urlsplit(res.location).query)
@@ -305,7 +305,7 @@ def test_trusted_client(testclient, logged_user, client, trusted_client, backend
             nonce="somenonce",
             redirect_uri=client.redirect_uris[0],
         ),
-        status=302,
+        status=303,
     )
 
     assert res.location.startswith(client.redirect_uris[0])
@@ -376,7 +376,7 @@ def test_logout_login(testclient, logged_user, client, backend):
     res = res.form.submit(status=302)
     res = res.follow(status=200)
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -431,7 +431,7 @@ def test_deny(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="deny", status=302)
+    res = res.form.submit(name="answer", value="deny", status=303)
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
     error = params["error"][0]
@@ -464,7 +464,7 @@ def test_code_challenge(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -523,7 +523,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -556,7 +556,7 @@ def test_consent_already_given(testclient, logged_user, client, backend):
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=302,
+        status=303,
     )
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -581,7 +581,7 @@ def test_consent_with_openid_scope_only(testclient, logged_user, client, backend
         ),
         status=200,
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     consents = backend.query(models.Consent, client=client, subject=logged_user)
 
@@ -643,7 +643,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -680,7 +680,7 @@ def test_when_consent_already_given_but_for_a_smaller_scope(
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -732,7 +732,7 @@ def test_nonce_required_in_oidc_requests(testclient, logged_user, client):
             scope="openid profile",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=302,
+        status=303,
     )
 
     params = parse_qs(urlsplit(res.location).query)
@@ -755,7 +755,7 @@ def test_nonce_not_required_in_oauth_requests(testclient, logged_user, client, b
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     for consent in backend.query(models.Consent, client=client, subject=logged_user):
@@ -780,7 +780,7 @@ def test_request_scope_too_large(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -846,7 +846,7 @@ def test_client_has_no_maximum_scope(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -915,7 +915,7 @@ def test_code_expired(testclient, user, client):
 
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit(name="answer", value="accept").follow()
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept", status=303)
         params = parse_qs(urlsplit(res.location).query)
         code = params["code"][0]
 
@@ -964,7 +964,7 @@ def test_code_with_invalid_user(testclient, admin, client, backend):
 
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(name="answer", value="accept", status=302).follow()
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     backend.delete(user)
@@ -1002,7 +1002,7 @@ def test_locked_account(testclient, logged_user, client, trusted_client, backend
     logged_user.lock_date = datetime.datetime.now(datetime.UTC)
     backend.save(logged_user)
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
 
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -1073,7 +1073,7 @@ def test_logout_login_with_intruder_lockout(testclient, logged_user, client):
         res = res.form.submit(status=302)
         res = res.follow(status=200)
 
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept", status=303)
 
         assert res.location.startswith(client.redirect_uris[0])
 
@@ -1091,7 +1091,7 @@ def test_rfc9207(testclient, logged_user, client, trusted_client, backend, caplo
         ),
         status=200,
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     params = parse_qs(urlsplit(res.location).query)
     issuer = params["iss"][0]
     assert issuer == "http://canaille.test"
@@ -1117,7 +1117,7 @@ def test_nominal_missing_scope(testclient, logged_user, client, backend):
         status=200,
     )
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
     authcode = backend.get(models.AuthorizationCode, code=code)

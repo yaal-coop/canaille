@@ -41,7 +41,7 @@ def test_prompt_none(testclient, logged_user, client, backend):
             prompt="none",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=302,
+        status=303,
     )
     assert res.location.startswith(client.redirect_uris[0])
     params = parse_qs(urlsplit(res.location).query)
@@ -77,7 +77,7 @@ def test_prompt_not_logged(testclient, user, client, backend):
             prompt="none",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=302,
+        status=303,
     )
     params = parse_qs(urlsplit(res.location).query)
     assert params["error"] == ["login_required"]
@@ -103,7 +103,7 @@ def test_prompt_no_consent(testclient, logged_user, client):
             prompt="none",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=302,
+        status=303,
     )
     params = parse_qs(urlsplit(res.location).query)
     assert params["error"] == ["consent_required"]
@@ -131,7 +131,7 @@ def test_prompt_create_logged(testclient, logged_user, client, backend):
             prompt="create",
             redirect_uri="https://client.test/redirect1",
         ),
-        status=302,
+        status=303,
     )
     assert res.location.startswith(client.redirect_uris[0])
 
@@ -158,7 +158,7 @@ def test_prompt_create_registration_disabled(testclient, trusted_client, smtpd):
             prompt="create",
             redirect_uri="https://client.trusted.test/redirect1",
         ),
-        status=302,
+        status=303,
     )
 
     params = parse_qs(urlsplit(res.location).query)
@@ -479,7 +479,7 @@ def test_prompt_login_then_consent(testclient, logged_user, client, backend):
     res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302).follow(status=200)
 
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     assert res.location.startswith(client.redirect_uris[0])
     assert "code" in parse_qs(urlsplit(res.location).query)
 

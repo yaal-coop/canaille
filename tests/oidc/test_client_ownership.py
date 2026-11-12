@@ -1760,7 +1760,7 @@ def test_owned_client_logout_needs_confirmation(
         },
         status=200,
     )
-    res = res.form.submit(name="answer", value="logout", status=302)
+    res = res.form.submit(name="answer", value="logout", status=303)
     assert res.location == f"{post_logout_redirect_url}?state=foobar"
 
 
@@ -1880,7 +1880,7 @@ def test_unsupported_response_type_for_logged_out_users(testclient, client):
             nonce="somenonce",
             redirect_uri=client.redirect_uris[0],
         ),
-        status=302,
+        status=303,
     )
     assert res.location.startswith(client.redirect_uris[0])
     assert parse_qs(urlsplit(res.location).query)["error"] == [

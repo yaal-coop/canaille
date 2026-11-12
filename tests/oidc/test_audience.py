@@ -24,7 +24,7 @@ def get_tokens(testclient, client):
         ),
         status=200,
     )
-    res = res.form.submit(name="answer", value="accept", status=302)
+    res = res.form.submit(name="answer", value="accept", status=303)
     code = parse_qs(urlsplit(res.location).query)["code"][0]
 
     res = testclient.post(
@@ -84,7 +84,7 @@ def test_logout_redirection_with_id_token_hint_only(
             "id_token_hint": tokens["id_token"],
             "post_logout_redirect_uri": "https://client.test/disconnected",
         },
-        status=302,
+        status=303,
     )
     assert res.location == "https://client.test/disconnected"
 

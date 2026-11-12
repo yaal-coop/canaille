@@ -34,7 +34,7 @@ def test_nominal_case(testclient, user, client, trusted_client, backend):
                 max_age=max_age,
             ),
         )
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]
@@ -84,7 +84,7 @@ def test_max_age_expired(testclient, user, client, trusted_client, backend):
         res.form["password"] = "correct horse battery staple"
         res = res.form.submit(name="answer", value="accept", status=302).follow()
 
-        res = res.form.submit(name="answer", value="accept", status=302)
+        res = res.form.submit(name="answer", value="accept", status=303)
 
     params = parse_qs(urlsplit(res.location).query)
     code = params["code"][0]

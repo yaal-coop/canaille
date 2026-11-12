@@ -304,11 +304,11 @@ def test_invalid_client(testclient, backend, user):
 
     headers = {"Authorization": f"Bearer {token}"}
     res = testclient.put_json(
-        "/oauth/register/invalid-client-id", payload, headers=headers, status=400
+        "/oauth/register/invalid-client-id", payload, headers=headers, status=401
     )
     assert res.json == {
-        "error": "access_denied",
-        "error_description": "The resource owner or authorization server denied the request",
+        "error": "invalid_token",
+        "error_description": "The access token provided is expired, revoked, malformed, or invalid for other reasons.",
     }
 
 
@@ -335,9 +335,9 @@ def test_management_with_expired_token(testclient, backend, client):
 
     headers = {"Authorization": f"Bearer {token}"}
     res = testclient.get(
-        f"/oauth/register/{client.client_id}", headers=headers, status=400
+        f"/oauth/register/{client.client_id}", headers=headers, status=401
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json["error"] == "invalid_token"
 
 
 def test_management_with_wrong_issuer(testclient, backend, client):
@@ -363,9 +363,9 @@ def test_management_with_wrong_issuer(testclient, backend, client):
 
     headers = {"Authorization": f"Bearer {token}"}
     res = testclient.get(
-        f"/oauth/register/{client.client_id}", headers=headers, status=400
+        f"/oauth/register/{client.client_id}", headers=headers, status=401
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json["error"] == "invalid_token"
 
 
 def test_management_with_wrong_audience(testclient, backend, client):
@@ -391,9 +391,9 @@ def test_management_with_wrong_audience(testclient, backend, client):
 
     headers = {"Authorization": f"Bearer {token}"}
     res = testclient.get(
-        f"/oauth/register/{client.client_id}", headers=headers, status=400
+        f"/oauth/register/{client.client_id}", headers=headers, status=401
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json["error"] == "invalid_token"
 
 
 def test_management_with_wrong_scope(testclient, backend, client):
@@ -419,9 +419,9 @@ def test_management_with_wrong_scope(testclient, backend, client):
 
     headers = {"Authorization": f"Bearer {token}"}
     res = testclient.get(
-        f"/oauth/register/{client.client_id}", headers=headers, status=400
+        f"/oauth/register/{client.client_id}", headers=headers, status=401
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json["error"] == "invalid_token"
 
 
 def test_management_with_unsigned_token(testclient, backend, client):
@@ -449,9 +449,9 @@ def test_management_with_unsigned_token(testclient, backend, client):
 
     headers = {"Authorization": f"Bearer {token}"}
     res = testclient.get(
-        f"/oauth/register/{client.client_id}", headers=headers, status=400
+        f"/oauth/register/{client.client_id}", headers=headers, status=401
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json["error"] == "invalid_token"
 
 
 def test_management_with_symmetric_signature(testclient, backend, client):
@@ -478,9 +478,9 @@ def test_management_with_symmetric_signature(testclient, backend, client):
 
     headers = {"Authorization": f"Bearer {token}"}
     res = testclient.get(
-        f"/oauth/register/{client.client_id}", headers=headers, status=400
+        f"/oauth/register/{client.client_id}", headers=headers, status=401
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json["error"] == "invalid_token"
 
 
 def test_management_with_inactive_key(testclient, backend, client, old_server_jwk):
@@ -537,8 +537,8 @@ def test_management_token_of_another_client(
     headers = {"Authorization": f"Bearer {token}"}
     url = f"/oauth/register/{trusted_client.client_id}"
 
-    res = testclient.get(url, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.get(url, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
     res = testclient.put_json(
         url,
@@ -547,13 +547,13 @@ def test_management_token_of_another_client(
             "redirect_uris": ["https://evil.test/callback"],
         },
         headers=headers,
-        status=400,
+        status=401,
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json["error"] == "invalid_token"
 
     with warnings.catch_warnings(record=True):
-        res = testclient.delete(url, headers=headers, status=400)
-    assert res.json["error"] == "access_denied"
+        res = testclient.delete(url, headers=headers, status=401)
+    assert res.json["error"] == "invalid_token"
 
     backend.reload(trusted_client)
     assert trusted_client.redirect_uris == [
@@ -569,8 +569,8 @@ def test_management_without_token_when_registration_is_open(
     testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
     url = f"/oauth/register/{client.client_id}"
 
-    res = testclient.get(url, status=400)
-    assert res.json["error"] == "access_denied"
+    res = testclient.get(url, status=401)
+    assert res.json == {}
 
     res = testclient.put_json(
         url,
@@ -578,13 +578,13 @@ def test_management_without_token_when_registration_is_open(
             "client_id": client.client_id,
             "redirect_uris": ["https://evil.test/callback"],
         },
-        status=400,
+        status=401,
     )
-    assert res.json["error"] == "access_denied"
+    assert res.json == {}
 
     with warnings.catch_warnings(record=True):
-        res = testclient.delete(url, status=400)
-    assert res.json["error"] == "access_denied"
+        res = testclient.delete(url, status=401)
+    assert res.json == {}
 
     backend.reload(client)
     assert client.redirect_uris == [

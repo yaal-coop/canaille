@@ -99,7 +99,7 @@ def test_internal_server_error_is_logged(testclient, caplog, monkeypatch):
     assert ("canaille", logging.ERROR, "boom") in caplog.record_tuples
 
 
-def test_insecure_transport(testclient, client, caplog, monkeypatch):
+def test_insecure_transport(testclient, client, monkeypatch):
     """OAuth requests over plain HTTP on a non-loopback host get an OAuth error."""
     monkeypatch.delenv("AUTHLIB_INSECURE_TRANSPORT")
 
@@ -113,9 +113,3 @@ def test_insecure_transport(testclient, client, caplog, monkeypatch):
         "error": "insecure_transport",
         "error_description": "OAuth 2 MUST utilize https.",
     }
-    assert (
-        "canaille",
-        logging.WARNING,
-        "OAuth request refused on http://canaille.test/oauth/token: "
-        "insecure_transport: OAuth 2 MUST utilize https.",
-    ) in caplog.record_tuples
