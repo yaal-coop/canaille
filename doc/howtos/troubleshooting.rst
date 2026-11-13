@@ -28,3 +28,19 @@ and set :attr:`PROXY_MODE <canaille.hypercorn.configuration.HypercornSettings.PR
 For test environments without TLS, such as containers that reach Canaille by its service name,
 set the ``AUTHLIB_INSECURE_TRANSPORT=1`` environment variable.
 Never set it in production.
+
+Canaille cannot reach an application on a local network
+=======================================================
+
+Canaille sends requests to URLs that clients provide,
+such as their JWK set, their request objects or their SCIM server.
+To prevent SSRF attacks, Canaille refuses the requests to addresses that are not public,
+such as ``localhost``, ``10.0.0.0/8`` or ``192.168.0.0/16``.
+It then logs a message that starts with ``Request to ... refused``.
+
+If your applications run on a local network, list their networks in
+:attr:`~canaille.core.configuration.CoreSettings.OUTGOING_ALLOWED_NETWORKS`.
+
+The requests are not checked in development and test environments,
+when :attr:`~canaille.app.configuration.RootSettings.DEBUG` or ``TESTING`` is enabled,
+or when the ``AUTHLIB_INSECURE_TRANSPORT`` environment variable is set.

@@ -292,6 +292,20 @@ ADMIN_EMAIL = "admin_default_mail@mydomain.test"
 # PASSWORD_COMPROMISSION_CHECK_API_URL = "https://api.pwnedpasswords.com/range/"
 PASSWORD_COMPROMISSION_CHECK_API_URL = "https://api.pwnedpasswords.test/range/"
 
+# The local networks where Canaille can send requests to client URLs.
+#
+# Canaille sends requests to URLs that clients provide, such as their JWK set,
+# their request objects or their SCIM server. To prevent SSRF attacks, requests to
+# addresses that are not public are refused, unless their network is in this list.
+# For example:
+#
+#     OUTGOING_ALLOWED_NETWORKS = ["10.0.0.0/8", "192.168.1.0/24"]
+#
+# The requests are not checked when DEBUG or TESTING is enabled, or when the
+# AUTHLIB_INSECURE_TRANSPORT environment variable is set. These requests do not
+# use the HTTP_PROXY and HTTPS_PROXY environment variables.
+# OUTGOING_ALLOWED_NETWORKS = []
+
 # Enable CAPTCHA on authentication and registration forms.
 # CAPTCHA_ENABLED = true
 

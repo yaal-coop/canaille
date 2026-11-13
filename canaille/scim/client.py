@@ -155,6 +155,7 @@ def initiate_scim_client(client):
 
     access_token = get_or_create_token(client).access_token
     client_httpx = http().build(
+        untrusted=True,
         base_url=client.client_uri,
         headers={"Authorization": f"Bearer {access_token}"},
     )

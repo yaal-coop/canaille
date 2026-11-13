@@ -1,5 +1,6 @@
 import datetime
 import importlib.util
+import ipaddress
 import smtplib
 from enum import StrEnum
 from typing import Literal
@@ -12,6 +13,7 @@ from pydantic import field_validator
 from pydantic import model_validator
 
 from canaille.app.configuration import BaseModel
+from canaille.app.configuration import CommaSeparatedList
 
 DEFAULT_SMTP_PORT = 25
 
@@ -510,6 +512,30 @@ class CoreSettings(BaseModel):
 
     PASSWORD_COMPROMISSION_CHECK_API_URL: str = "https://api.pwnedpasswords.com/range/"
     """Have i been pwned api url for compromission checks."""
+
+    OUTGOING_ALLOWED_NETWORKS: CommaSeparatedList = []
+    """The local networks where Canaille can send requests to client URLs.
+
+    Canaille sends requests to URLs that clients provide,
+    such as their JWK set, their request objects or their SCIM server.
+    To prevent SSRF attacks, requests to addresses that are not public are refused,
+    unless their network is in this list. For example:
+
+    .. code-block:: toml
+
+        OUTGOING_ALLOWED_NETWORKS = ["10.0.0.0/8", "192.168.1.0/24"]
+
+    The requests are not checked when ``DEBUG`` or ``TESTING`` is enabled,
+    or when the ``AUTHLIB_INSECURE_TRANSPORT`` environment variable is set.
+    These requests do not use the ``HTTP_PROXY`` and ``HTTPS_PROXY`` environment variables.
+    """
+
+    @field_validator("OUTGOING_ALLOWED_NETWORKS")
+    @classmethod
+    def validate_networks(cls, networks: list[str]) -> list[str]:
+        for network in networks:
+            ipaddress.ip_network(network, strict=False)
+        return networks
 
     CAPTCHA_ENABLED: bool = True
     """Enable CAPTCHA on authentication and registration forms."""
