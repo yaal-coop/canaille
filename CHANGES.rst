@@ -21,9 +21,12 @@ Added
   introspection endpoint, and see revoked tokens immediately.
 - The ``ACCESS_TOKEN_LIFETIME`` and ``REFRESH_TOKEN_LIFETIME`` settings.
   They replace the authlib ``OAUTH2_TOKEN_EXPIRES_IN`` setting.
+- The ``form_post`` response mode, for all the authorization flows.
 
 Changed
 ^^^^^^^
+- The authorization code flow follows the ``response_mode`` parameter.
+  An unsupported value gets an ``invalid_request`` error.
 - Access tokens follow RFC 9068. They have the ``at+jwt`` type,
   and ``client_id``, ``scope`` and ``jti`` claims.
   They are signed with RS256 when an RSA key is available.
@@ -70,6 +73,8 @@ Changed
 Fixed
 ^^^^^
 - A failed login no longer logs out the account that is already logged in.
+- The ``form_post`` response mode of the implicit and hybrid flows
+  left users on a blank page, as the content security policy blocked its script.
 - The ``default_max_age`` setting of clients is applied.
 - ID tokens of the implicit and hybrid flows have the ``amr`` claim.
 - Clients with the ``authorization_code`` and ``implicit`` grant types

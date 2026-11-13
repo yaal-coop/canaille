@@ -9,6 +9,7 @@ from canaille.app import DOCUMENTATION_URL
 
 from .jose import supported_signing_algorithms
 from .jose import supported_verification_algorithms
+from .provider import RESPONSE_MODES_SUPPORTED
 from .provider import AuthorizationCodeGrant
 from .provider import CodeChallenge
 from .provider import IntrospectionEndpoint
@@ -89,6 +90,7 @@ def oauth_authorization_server():
             "token id_token",
             "code id_token token",
         ],
+        "response_modes_supported": list(RESPONSE_MODES_SUPPORTED),
         "grant_types_supported": [
             "authorization_code",
             "implicit",
@@ -151,7 +153,6 @@ def openid_configuration():
         "request_object_signing_alg_values_supported": supported_verification_algorithms(),
         "request_object_encryption_alg_values_supported": None,
         "request_object_encryption_enc_values_supported": None,
-        "response_modes_supported": ["query", "fragment"],
         "acr_values_supported": None,
         "display_values_supported": None,
         "backchannel_logout_supported": True,

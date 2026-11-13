@@ -234,7 +234,8 @@ def authorize_consent(grant, redirect_url, now):
                 grant=grant, grant_user=user
             )
             current_app.logger.debug(
-                "authorization endpoint response (trusted): %s", response.location
+                "authorization endpoint response (trusted): %s",
+                response.location or response.get_data(as_text=True),
             )
             return response
 
@@ -275,7 +276,10 @@ def authorize_consent(grant, redirect_url, now):
         grant=grant, grant_user=grant_user
     )
 
-    current_app.logger.debug("authorization endpoint response: %s", response.location)
+    current_app.logger.debug(
+        "authorization endpoint response: %s",
+        response.location or response.get_data(as_text=True),
+    )
     return response
 
 

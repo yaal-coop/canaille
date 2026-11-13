@@ -1,0 +1,37 @@
+{# The OAuth 2.0 Form Post Response Mode page.
+
+Sends the authorization response to the client with a form.
+A script submits the form. Without JavaScript, the user clicks on the button.
+
+:param redirect_uri: The redirect URI of the client.
+:type redirect_uri: :class:`str`
+:param params: The parameters of the authorization response.
+:type params: :class:`list` of (:class:`str`, :class:`str`) tuples
+#}
+{% macro submit_button() %}
+    <p>{% trans %}You are being redirected to the application.{% endtrans %}</p>
+    <button type="submit">{% trans %}Continue{% endtrans %}</button>
+{% endmacro %}
+<!doctype html>
+<html lang="{{ locale }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% trans %}Redirecting{% endtrans %} - {{ website_name|default("Canaille") }}</title>
+    </head>
+    <body>
+        <form id="form-post" method="post" action="{{ redirect_uri }}" hx-boost="false">
+            {% for name, value in params %}
+                <input type="hidden" name="{{ name }}" value="{{ value }}">
+            {% endfor %}
+            {% if config["CANAILLE"]["JAVASCRIPT"] %}
+                <noscript>{{ submit_button() }}</noscript>
+            {% else %}
+                {{ submit_button() }}
+            {% endif %}
+        </form>
+        {% if config["CANAILLE"]["JAVASCRIPT"] %}
+            <script src="{{ url_for("static", filename="js/form-post.js") }}"></script>
+        {% endif %}
+    </body>
+</html>

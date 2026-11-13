@@ -41,12 +41,8 @@ OAuth2
 - 🟡 `RFC10070: Updates to OAuth 2.0 JWT Client Authentication and Assertion-Based Authorization Grants <https://tools.ietf.org/html/rfc10070>`_:
   JWT authorization grants accept the issuer as audience.
   JWT client authentication still expects the token endpoint as audience.
-- 🟡 `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html>`_:
-  all the response types are supported,
-  but the authorization code flow ignores ``response_mode``.
-- 🟡 `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html>`_:
-  only the implicit and hybrid flows support ``form_post``,
-  and the server metadata does not list it.
+- ✅ `OAuth2 Multiple Response Types <https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html>`_
+- ✅ `OAuth2 Form Post Response Mode <https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html>`_
 - ❌ `JWT Secured Authorization Response Mode for OAuth 2.0 (JARM) <https://openid.net/specs/oauth-v2-jarm.html>`_
 - ❌ `FAPI 2.0 Security Profile <https://openid.net/specs/fapi-security-profile-2_0-final.html>`_
 - ❌ `FAPI 2.0 Message Signing <https://openid.net/specs/fapi-message-signing-2_0-final.html>`_

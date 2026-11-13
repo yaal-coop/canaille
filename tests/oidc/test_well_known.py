@@ -47,6 +47,11 @@ def test_oauth_authorization_server(testclient):
         "jwks_uri": "http://canaille.test/oauth/jwks.json",
         "registration_endpoint": "http://canaille.test/oauth/register",
         "device_authorization_endpoint": "http://canaille.test/oauth/device_authorization",
+        "response_modes_supported": [
+            "query",
+            "fragment",
+            "form_post",
+        ],
         "response_types_supported": [
             "code",
             "token",
@@ -170,6 +175,7 @@ def test_openid_configuration(testclient):
         "response_modes_supported": [
             "query",
             "fragment",
+            "form_post",
         ],
         "response_types_supported": [
             "code",

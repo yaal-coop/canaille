@@ -6,6 +6,8 @@ import uuid
 from authlib import oauth2
 from authlib.integrations.flask_oauth2 import AuthorizationServer
 from authlib.integrations.flask_oauth2 import ResourceProtector
+from authlib.oauth2 import form_post
+from authlib.oauth2 import multiple_response_types
 from authlib.oauth2 import rfc6749
 from authlib.oauth2 import rfc6750
 from authlib.oauth2 import rfc7009
@@ -23,6 +25,7 @@ from authlib.oauth2.rfc6749 import AccessDeniedError
 from authlib.oauth2.rfc6749 import InvalidClientError
 from authlib.oauth2.rfc6749 import InvalidGrantError
 from authlib.oauth2.rfc6749 import InvalidScopeError
+from authlib.oauth2.rfc6749 import OAuth2Response
 from authlib.oauth2.rfc6749 import UnauthorizedClientError
 from authlib.oauth2.rfc9101.errors import InvalidRequestObjectError
 from authlib.oidc import backchannel
@@ -41,6 +44,7 @@ from werkzeug.security import gen_salt
 from canaille.app import models
 from canaille.app.flask import cache
 from canaille.app.session import logout_user
+from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
 from canaille.oidc.utils import fetch_document
@@ -1033,6 +1037,33 @@ class IssuerParameter(rfc9207.IssuerParameter):
         return get_issuer()
 
 
+RESPONSE_MODES_SUPPORTED = ["query", "fragment", "form_post"]
+
+
+class MultipleResponseTypes(multiple_response_types.MultipleResponseTypes):
+    def get_server_metadata(self):
+        return {"response_modes_supported": list(RESPONSE_MODES_SUPPORTED)}
+
+
+class FormPost(form_post.FormPost):
+    """Send the authorization response with a Canaille page.
+
+    The authlib page submits its form with an inline script,
+    which the content security policy blocks.
+    """
+
+    def encode(self, response):
+        authlib_response = super().encode(response)
+        body = render_template(
+            "oidc/form_post.html",
+            redirect_uri=response.redirect_uri,
+            params=response.params,
+        )
+        return OAuth2Response(
+            authlib_response.status_code, body, authlib_response.headers
+        )
+
+
 class JWTAuthenticationRequest(OpenIDJWTAuthenticationRequest):
     def resolve_client_secret(self, client):
         """Per OIDC Core §10.1, symmetric signatures use the client secret.
@@ -1240,6 +1271,7 @@ def setup_oauth(app):
     )
 
     authorization.register_extension(IssuerParameter())
+    authorization.register_extension(MultipleResponseTypes([FormPost()]))
     authorization.register_extension(rfc9470.StepUpAuthentication())
     authorization.register_extension(PromptValues())
     authorization.register_extension(JWTAuthenticationRequest())
