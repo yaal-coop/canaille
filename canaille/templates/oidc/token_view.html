@@ -95,7 +95,7 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
                         <td>{{ token.issue_date|datetimeformat }}</td>
                     </tr>
                     <tr>
-                        <td>{{ _("Expiration date") }}</td>
+                        <td>{{ _("Access token expiration date") }}</td>
                         <td>
                             {{ token.expire_date|datetimeformat }}
                             {% if token.is_expired() %}
@@ -105,6 +105,19 @@ Displays the details of a token :class:`~canaille.oidc.basemodels.Token`.
                             {% endif %}
                         </td>
                     </tr>
+                    {% if token.refresh_token %}
+                        <tr>
+                            <td>{{ _("Refresh token expiration date") }}</td>
+                            <td>
+                                {{ token.refresh_token_expire_date|datetimeformat }}
+                                {% if not token.revoked and not token.is_refresh_token_active() %}
+                                    <a class="item">
+                                        <div class="ui red horizontal label">{% trans %}This token has expired.{% endtrans %}</div>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
                     <tr>
                         <td>{{ _("Revokation date") }}</td>
                         <td>

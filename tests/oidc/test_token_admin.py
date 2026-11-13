@@ -106,6 +106,17 @@ def test_token_view(testclient, token, logged_admin):
     res.mustcontain(token.access_token)
 
 
+def test_token_view_refresh_token_expiration(testclient, token, logged_admin, backend):
+    """The page shows that the refresh token is still valid after the access token expired."""
+    token.issue_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
+    backend.save(token)
+
+    res = testclient.get("/admin/token/" + token.token_id)
+
+    res.mustcontain("Refresh token expiration date")
+    assert res.text.count("This token has expired.") == 1
+
+
 def test_token_not_found(testclient, logged_admin):
     testclient.get("/admin/token/" + "yolo", status=404)
 

@@ -232,3 +232,35 @@ def test_jwt_auth(testclient, client_jwk, client, token, caplog, backend, user):
     token = backend.get(models.Token, access_token=access_token)
     assert token.client == client
     assert token.subject == user
+
+
+def refresh(testclient, client, token, status):
+    return testclient.post(
+        "/oauth/token",
+        params=dict(grant_type="refresh_token", refresh_token=token.refresh_token),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=status,
+    )
+
+
+def test_refresh_after_access_token_expiration(testclient, client, token, backend):
+    """A refresh token stays valid after its access token expired."""
+    token.issue_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
+    backend.save(token)
+    assert token.is_expired()
+
+    refresh(testclient, client, token, status=200)
+
+
+def test_expired_refresh_token(testclient, client, token, backend, monkeypatch):
+    """A refresh token expires after REFRESH_TOKEN_LIFETIME."""
+    monkeypatch.setitem(
+        testclient.app.config["CANAILLE_OIDC"],
+        "REFRESH_TOKEN_LIFETIME",
+        datetime.timedelta(hours=1),
+    )
+    token.issue_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(hours=2)
+    backend.save(token)
+
+    res = refresh(testclient, client, token, status=400)
+    assert res.json["error"] == "invalid_grant"

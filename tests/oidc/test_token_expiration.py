@@ -7,7 +7,6 @@ from werkzeug.security import gen_salt
 
 from canaille.app import models
 from canaille.oidc.jose import registry
-from canaille.oidc.provider import setup_oauth
 
 from . import client_credentials
 
@@ -45,18 +44,18 @@ def test_token_default_expiration_date(
         status=200,
     )
 
-    assert res.json["expires_in"] == 864000
+    assert res.json["expires_in"] == 3600
 
     access_token = res.json["access_token"]
     token = backend.get(models.Token, access_token=access_token)
-    assert token.lifetime == 864000
+    assert token.lifetime == 3600
 
     claims = jwt.decode(
         access_token,
         server_jwk,
         registry=registry,
     )
-    assert claims.claims["exp"] - claims.claims["iat"] == 864000
+    assert claims.claims["exp"] - claims.claims["iat"] == 3600
 
     id_token = res.json["id_token"]
     claims = jwt.decode(
@@ -72,16 +71,13 @@ def test_token_default_expiration_date(
 
 
 def test_token_custom_expiration_date(
-    testclient, logged_user, client, server_jwk, backend
+    testclient, logged_user, client, server_jwk, backend, monkeypatch
 ):
-    testclient.app.config["OAUTH2_TOKEN_EXPIRES_IN"] = {
-        "authorization_code": 1000,
-        "implicit": 2000,
-        "password": 3000,
-        "client_credentials": 4000,
-        "urn:ietf:params:oauth:grant-type:jwt-bearer": 5000,
-    }
-    setup_oauth(testclient.app)
+    monkeypatch.setitem(
+        testclient.app.config["CANAILLE_OIDC"],
+        "ACCESS_TOKEN_LIFETIME",
+        datetime.timedelta(seconds=1000),
+    )
 
     res = testclient.get(
         "/oauth/authorize",

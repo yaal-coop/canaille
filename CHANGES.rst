@@ -16,9 +16,26 @@ Added
   after a ``SECRET_KEY`` change, so sessions and stored secrets stay valid.
 - The ``canaille secrets reencrypt`` command encrypts the stored secrets
   with the current ``SECRET_KEY``.
+- The ``ACCESS_TOKEN_TYPE`` setting chooses between JWT access tokens and random
+  string access tokens. Resource servers check random string tokens with the
+  introspection endpoint, and see revoked tokens immediately.
+- The ``ACCESS_TOKEN_LIFETIME`` and ``REFRESH_TOKEN_LIFETIME`` settings.
+  They replace the authlib ``OAUTH2_TOKEN_EXPIRES_IN`` setting.
 
 Changed
 ^^^^^^^
+- Access tokens follow RFC 9068. They have the ``at+jwt`` type,
+  and ``client_id``, ``scope`` and ``jti`` claims.
+  They are signed with RS256 when an RSA key is available.
+  Client credentials access tokens are JWTs too, with the client as subject.
+  Access tokens have no ``auth_time`` claim anymore. It was the issue time instead of the login time.
+- The ``aud`` claim of access tokens contains the userinfo endpoint for the ``openid`` scope,
+  the SCIM server for SCIM scopes, and the other clients of the client audience.
+  The client itself is not in the ``aud`` claim anymore.
+  When none of them apply, the ``aud`` claim is the issuer.
+  The introspection endpoint returns the same audience.
+- Access tokens expire after one hour instead of ten days.
+  Refresh tokens still expire after ten days.
 - JWT bearer assertions must be signed with a key of the client in the ``iss`` claim (RFC 7523).
   Assertions signed with the Canaille keys are refused.
   The assertions must have a ``sub`` and a ``jti``, and expire within one hour.

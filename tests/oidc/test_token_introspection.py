@@ -1,3 +1,4 @@
+import datetime
 from urllib.parse import parse_qs
 from urllib.parse import urlsplit
 
@@ -21,7 +22,7 @@ def test_access_token_introspection(testclient, user, client, token, backend):
         "username": user.formatted_name,
         "scope": token.get_scope(),
         "sub": user.user_name,
-        "aud": [client.client_id],
+        "aud": ["http://canaille.test/oauth/userinfo"],
         "iss": "http://canaille.test",
         "exp": token.get_expires_at(),
         "iat": token.get_issued_at(),
@@ -40,6 +41,25 @@ def test_access_token_introspection_custom_sub(testclient, user, client, token):
     assert res.json["sub"] == user.id
 
 
+def test_introspection_after_access_token_expiration(
+    testclient, user, client, token, backend
+):
+    """The refresh token stays active after the access token expired."""
+    token.issue_date = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
+    backend.save(token)
+
+    def introspect(value):
+        return testclient.post(
+            "/oauth/introspect",
+            params={"token": value},
+            headers={"Authorization": f"Basic {client_credentials(client)}"},
+            status=200,
+        ).json
+
+    assert introspect(token.access_token) == {"active": False}
+    assert introspect(token.refresh_token)["active"]
+
+
 def test_client_access_token_introspection(testclient, client, oidc_token):
     res = testclient.post(
         "/oauth/introspect",
@@ -52,7 +72,7 @@ def test_client_access_token_introspection(testclient, client, oidc_token):
         "client_id": client.client_id,
         "token_type": oidc_token.type,
         "scope": oidc_token.get_scope(),
-        "aud": [client.client_id],
+        "aud": ["http://canaille.test/oauth/userinfo"],
         "iss": "http://canaille.test",
         "exp": oidc_token.get_expires_at(),
         "iat": oidc_token.get_issued_at(),
@@ -73,9 +93,9 @@ def test_refresh_token_introspection(testclient, user, client, token):
         "username": user.formatted_name,
         "scope": token.get_scope(),
         "sub": user.user_name,
-        "aud": [client.client_id],
+        "aud": ["http://canaille.test/oauth/userinfo"],
         "iss": "http://canaille.test",
-        "exp": token.get_expires_at(),
+        "exp": (token.issue_date + datetime.timedelta(days=10)).timestamp(),
         "iat": token.get_issued_at(),
     } == res.json
 
@@ -176,7 +196,7 @@ def test_full_flow(testclient, logged_user, client, user, trusted_client, backen
         headers={"Authorization": f"Basic {client_credentials(client)}"},
         status=200,
     )
-    assert set(res.json["aud"]) == {client.client_id, trusted_client.client_id}
+    assert res.json["aud"] == [trusted_client.client_id]
     assert res.json["active"]
     assert res.json["client_id"] == client.client_id
     assert res.json["token_type"] == token.type

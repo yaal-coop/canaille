@@ -28,3 +28,15 @@ def test_device_code_lifetime_too_short():
     """The device code lifetime must be longer than the polling interval."""
     with pytest.raises(ValidationError, match="DEVICE_CODE_LIFETIME"):
         OIDCSettings(DEVICE_CODE_LIFETIME="PT5S", DEVICE_CODE_POLLING_INTERVAL="PT5S")
+
+
+def test_access_token_lifetime_too_short():
+    """The access token lifetime must last at least one second."""
+    with pytest.raises(ValidationError, match="ACCESS_TOKEN_LIFETIME"):
+        OIDCSettings(ACCESS_TOKEN_LIFETIME="PT0S")
+
+
+def test_refresh_token_lifetime_too_short():
+    """The refresh token lifetime must last at least one second."""
+    with pytest.raises(ValidationError, match="REFRESH_TOKEN_LIFETIME"):
+        OIDCSettings(REFRESH_TOKEN_LIFETIME="PT0S")

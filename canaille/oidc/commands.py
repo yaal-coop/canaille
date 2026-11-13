@@ -29,7 +29,7 @@ from .jose import server_jwks
 def clean():
     """Remove expired tokens and codes, and the consents and codes of deleted users."""
     for t in Backend.instance.query(models.Token):
-        if t.is_expired():
+        if t.is_expired() and not t.is_refresh_token_active():
             Backend.instance.delete(t)
 
     for a in Backend.instance.query(models.AuthorizationCode):

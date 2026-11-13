@@ -352,11 +352,20 @@ class Token(BaseToken, TokenMixin):
     def get_expires_at(self) -> float:
         return self.get_issued_at() + (self.lifetime or 0)
 
+    @property
+    def refresh_token_expire_date(self):
+        """The expiration date of the refresh token, after REFRESH_TOKEN_LIFETIME."""
+        if not self.refresh_token:
+            return None
+
+        lifetime = current_app.config["CANAILLE_OIDC"]["REFRESH_TOKEN_LIFETIME"]
+        return self.issue_date + lifetime
+
     def is_refresh_token_active(self):
-        if self.revokation_date:
+        if self.revokation_date or not self.refresh_token:
             return False
 
-        return self.expire_date >= datetime.datetime.now(datetime.UTC)
+        return self.refresh_token_expire_date >= datetime.datetime.now(datetime.UTC)
 
     def is_expired(self):
         return self.issue_date + datetime.timedelta(

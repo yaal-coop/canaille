@@ -2,6 +2,7 @@ import datetime
 import json
 
 import pytest
+from joserfc import jws
 from werkzeug.security import gen_salt
 from werkzeug.test import Client
 
@@ -9,6 +10,7 @@ from canaille.app import models
 from canaille.core.configuration import Permission
 from canaille.scim.client import get_or_create_token
 
+from ..oidc import client_credentials
 from .conftest import _scim_headers
 
 
@@ -414,3 +416,29 @@ def test_token_without_user_of_an_owned_client_is_refused(
 
     response = client.get("/scim/v2/Users", headers=_scim_headers(app, oidc_token))
     assert response.status_code == 401
+
+
+def test_client_credentials_token_audience(
+    testclient, backend, oidc_client, monkeypatch
+):
+    """Per RFC 9068 §3, a token with SCIM scopes is for the SCIM server."""
+    monkeypatch.setenv("AUTHLIB_INSECURE_TRANSPORT", "true")
+    oidc_client.scope = ["scim:read"]
+    backend.save(oidc_client)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(grant_type="client_credentials", scope="scim:read"),
+        headers={"Authorization": f"Basic {client_credentials(oidc_client)}"},
+        status=200,
+    )
+    access_token = res.json["access_token"]
+
+    claims = json.loads(jws.extract_compact(access_token.encode()).payload)
+    assert claims["aud"] == ["http://canaille.test/scim/v2"]
+
+    testclient.get(
+        "/scim/v2/Users",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=200,
+    )

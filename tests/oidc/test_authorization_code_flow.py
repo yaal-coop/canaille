@@ -96,7 +96,10 @@ def test_nominal_case_get(
     )
     assert claims.claims["sub"] == logged_user.user_name
     assert claims.claims["name"] == logged_user.formatted_name
-    assert claims.claims["aud"] == [client.client_id, trusted_client.client_id]
+    assert claims.claims["aud"] == [
+        "http://canaille.test/oauth/userinfo",
+        trusted_client.client_id,
+    ]
 
     assert (
         "canaille",
@@ -194,7 +197,10 @@ def test_nominal_case_post(
     )
     assert claims.claims["sub"] == logged_user.user_name
     assert claims.claims["name"] == logged_user.formatted_name
-    assert claims.claims["aud"] == [client.client_id, trusted_client.client_id]
+    assert claims.claims["aud"] == [
+        "http://canaille.test/oauth/userinfo",
+        trusted_client.client_id,
+    ]
 
     assert (
         "canaille",

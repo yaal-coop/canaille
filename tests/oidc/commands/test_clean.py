@@ -7,7 +7,10 @@ from canaille.commands import cli
 
 
 def test_clean_command(cli_runner, backend, client, user):
-    """Test that the clean command removes expired authorization codes, tokens and device codes."""
+    """Test that the clean command removes expired authorization codes, tokens and device codes.
+
+    Tokens are kept while their refresh token is valid.
+    """
     valid_code = models.AuthorizationCode(
         authorization_code_id=gen_salt(48),
         code="my-valid-code",
@@ -53,6 +56,20 @@ def test_clean_command(cli_runner, backend, client, user):
         lifetime=3600,
     )
     backend.save(valid_token)
+    refreshable_token = models.Token(
+        token_id=gen_salt(48),
+        access_token="my-refreshable-token",
+        client=client,
+        subject=user,
+        refresh_token=gen_salt(48),
+        scope=["openid", "profile"],
+        issue_date=(
+            datetime.datetime.now(datetime.UTC).replace(microsecond=0)
+            - datetime.timedelta(days=1)
+        ),
+        lifetime=3600,
+    )
+    backend.save(refreshable_token)
     expired_token = models.Token(
         token_id=gen_salt(48),
         access_token="my-expired-token",
@@ -62,7 +79,7 @@ def test_clean_command(cli_runner, backend, client, user):
         scope=["openid", "profile"],
         issue_date=(
             datetime.datetime.now(datetime.UTC).replace(microsecond=0)
-            - datetime.timedelta(days=1)
+            - datetime.timedelta(days=11)
         ),
         lifetime=3600,
     )
@@ -103,7 +120,10 @@ def test_clean_command(cli_runner, backend, client, user):
     assert res.exit_code == 0, res.stdout
 
     assert backend.get(models.AuthorizationCode) == valid_code
-    assert backend.get(models.Token, subject=user) == valid_token
+    assert {token.token_id for token in backend.query(models.Token, subject=user)} == {
+        valid_token.token_id,
+        refreshable_token.token_id,
+    }
     assert backend.get(models.DeviceCode) == valid_device_code
 
 
