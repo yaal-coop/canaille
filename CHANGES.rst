@@ -94,6 +94,14 @@ Security
 - Client secrets and one-time passcode secrets are encrypted in the database
   with a key derived from ``SECRET_KEY``. Existing secrets stay readable.
   Run ``canaille secrets reencrypt`` after the upgrade to encrypt them.
+- Canaille refuses to send requests to local networks at the URLs that clients provide:
+  JWK sets, request objects and SCIM servers. Anyone who could register a client
+  could make Canaille send requests to its internal network (SSRF).
+  If your applications run on a local network,
+  list their networks in the new ``OUTGOING_ALLOWED_NETWORKS`` setting.
+  The requests are not checked when ``DEBUG`` or ``TESTING`` is enabled,
+  or when ``AUTHLIB_INSECURE_TRANSPORT`` is set.
+  These requests do not use the ``HTTP_PROXY`` and ``HTTPS_PROXY`` environment variables anymore.
 
 [0.4.3] - 2026-10-29
 --------------------

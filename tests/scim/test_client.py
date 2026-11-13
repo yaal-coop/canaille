@@ -1,4 +1,5 @@
 import logging
+import socket
 from unittest import mock
 
 import pytest
@@ -249,6 +250,29 @@ def test_scim_client_user_creation_and_deletion_also_updates_their_groups(
     retrieved_bar_group = groups["bar"]
     assert len(retrieved_bar_group.members) == 1
     assert retrieved_bar_group.members[0].value == distant_scim_admin.id
+
+
+def test_save_user_when_client_is_on_a_local_network(
+    testclient, backend, user, consent, caplog, monkeypatch, uncached_discovery
+):
+    """The SCIM requests to the local networks are refused, to prevent SSRF attacks."""
+    monkeypatch.setattr(testclient.app, "testing", False)
+    monkeypatch.delenv("AUTHLIB_INSECURE_TRANSPORT", raising=False)
+    monkeypatch.setattr(
+        socket,
+        "getaddrinfo",
+        lambda host, port, *args, **kwargs: [
+            (socket.AF_INET, socket.SOCK_STREAM, 6, "", ("10.0.0.1", port))
+        ],
+    )
+
+    backend.save(user)
+
+    assert any(
+        record.levelname == "SECURITY"
+        and "refused, as 10.0.0.1 is not a public address" in record.getMessage()
+        for record in caplog.records
+    )
 
 
 def test_save_user_when_client_doesnt_support_scim(backend, user, consent, caplog):
