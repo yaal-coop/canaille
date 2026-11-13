@@ -19,6 +19,11 @@ Added
 
 Changed
 ^^^^^^^
+- JWT bearer assertions must be signed with a key of the client in the ``iss`` claim (RFC 7523).
+  Assertions signed with the Canaille keys are refused.
+  The assertions must have a ``sub`` and a ``jti``, and expire within one hour.
+  Each assertion can only be used once.
+  The ``aud`` claim can be the token endpoint or the issuer.
 - When users log out, the tokens issued during their session are revoked.
   Applications cannot refresh them anymore.
 - SCIM group requests with unknown members are refused instead of partially applied.

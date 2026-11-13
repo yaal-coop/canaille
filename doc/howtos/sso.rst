@@ -195,7 +195,13 @@ Grant types that the client can use at the token endpoint.
 - **refresh token** asks for a token that cannot be used to access protected resources, but can be used to get a new access token without user manual intervention.
   This is generally useful.
 - **client credentials** is intended to be used for server-to-server applications, when no user interaction is expected. For example this is the grant type that should be used for :doc:`provisioning <provisioning>`.
-- **JWT bearer** allows clients to exchange a JWT signed by the authorization server against an *access token*.
+- **JWT bearer** allows clients to get tokens for a user without user interaction (:rfc:`7523`).
+  The client signs a JWT with one of its keys, published in :attr:`~canaille.oidc.basemodels.Client.jwks_uri` or :attr:`~canaille.oidc.basemodels.Client.jwks`.
+  The JWT has the client identifier in ``iss``, the user identifier in ``sub``,
+  the token endpoint or the Canaille issuer in ``aud``, a unique ``jti``,
+  and an ``exp`` at most one hour later.
+  Each JWT can only be used once.
+  The user must have consented to the requested scopes, or the client must be trusted.
 
 Scope
 -----

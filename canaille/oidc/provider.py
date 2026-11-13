@@ -1,5 +1,6 @@
 import datetime
 import json
+import time
 import uuid
 
 from authlib import oauth2
@@ -61,6 +62,7 @@ from .utils import unique_scopes
 
 AUTHORIZATION_CODE_LIFETIME = 60
 JWT_JTI_CACHE_LIFETIME = 3600
+JWT_BEARER_ASSERTION_MAX_LIFETIME = 3600
 
 AMR_MAPPING = {
     "password": ["pwd"],
@@ -425,22 +427,73 @@ class RefreshTokenGrant(rfc6749.RefreshTokenGrant):
 
 
 class JWTBearerGrant(rfc7523.JWTBearerGrant):
+    """Per RFC 7523 §3, the client in the 'iss' claim signs the assertion.
+
+    The assertion must name a user, and can only be used once.
+    """
+
+    CLAIMS_OPTIONS = {
+        **rfc7523.JWTBearerGrant.CLAIMS_OPTIONS,
+        "sub": {"essential": True},
+        "jti": {"essential": True},
+    }
+
+    def verify_claims(self, claims):
+        super().verify_claims(claims)
+        if isinstance(claims["aud"], list) and len(claims["aud"]) > 1:
+            raise InvalidGrantError(
+                description="The 'aud' claim must have a single value."
+            )
+
+        # Per RFC 7523 §3, an exp too far in the future can be refused.
+        if claims["exp"] - time.time() > JWT_BEARER_ASSERTION_MAX_LIFETIME:
+            raise InvalidGrantError(description="The assertion expires too late.")
+
+        key = "jwt-bearer-jti:{}-{}".format(claims["iss"], claims["jti"])
+        if cache.get(key):
+            raise InvalidGrantError(description="The assertion was already used.")
+        cache.set(key, 1, timeout=JWT_BEARER_ASSERTION_MAX_LIFETIME + self.LEEWAY)
+
     def resolve_issuer_client(self, issuer):
         return Backend.instance.get(models.Client, client_id=issuer)
 
     def resolve_client_public_key(self, client):
-        return server_jwks().keys[0]
+        key_set = get_client_jwks(client)
+        if not key_set:
+            raise InvalidGrantError(description="The client has no public key.")
+
+        return key_set
 
     def get_audiences(self):
-        return [url_for("oidc.endpoints.issue_token", _external=True)]
+        """RFC 7523 §3 uses the token endpoint, and draft-ietf-oauth-rfc7523bis the issuer."""
+        return [url_for("oidc.endpoints.issue_token", _external=True), get_issuer()]
 
     def authenticate_user(self, subject: str):
-        return get_user_from_login(subject)
+        user = get_user_from_login(subject)
+        if not user or user.locked:
+            return None
+
+        if not self.request.client.is_usable_by(user):
+            raise InvalidGrantError("The user cannot use this client.")
+
+        return user
 
     def has_granted_permission(self, client, user):
-        grant = Backend.instance.get(models.Consent, client=client, subject=user)
-        has_permission = (grant and not grant.revoked) or (not grant and client.trusted)
-        return has_permission
+        """Check that the user consented to the requested scopes, or that the client is trusted."""
+        consent = get_consent(client, user)
+        if consent and consent.revoked:
+            return False
+
+        if client.trusted:
+            return True
+
+        if not consent:
+            return False
+
+        requested_scopes = unique_scopes(
+            client.get_allowed_scope(self.request.payload.scope or "")
+        )
+        return set(requested_scopes).issubset(consent.scope)
 
 
 class SessionClaimMixin:
