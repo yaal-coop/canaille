@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urlsplit
 
 import wtforms
 from flask import current_app
@@ -80,6 +81,11 @@ def is_jwks(form, field):
                 "as the client keys are public."
             )
         )
+
+
+def has_no_fragment(form, field):
+    if field.data and urlsplit(field.data).fragment:
+        raise wtforms.ValidationError(_("This URL must not have a fragment"))
 
 
 def _get_algorithm_choices(algorithms, include_empty=True):
@@ -400,6 +406,21 @@ class ClientEditForm(ClientAddForm):
     )
     add_post_logout_redirect_uris, del_post_logout_redirect_uris = fieldlist_buttons(
         "post_logout_redirect_uris"
+    )
+
+    backchannel_logout_uri = wtforms.URLField(
+        _("Back-channel logout URI"),
+        validators=[wtforms.validators.Optional(), is_uri, has_no_fragment],
+        render_kw={"placeholder": "https://client.example/oauth/backchannel-logout"},
+        description=_(
+            "URI where Canaille sends a logout token when a user session ends."
+        ),
+    )
+
+    backchannel_logout_session_required = wtforms.BooleanField(
+        _("Require the session identifier in logout tokens"),
+        default=False,
+        description=_("Only send logout tokens that identify the session of the user."),
     )
 
     grant_types = wtforms.SelectMultipleField(

@@ -472,6 +472,18 @@ class Client(Model):
     """Indicates where authorization request needs to be protected as Request Object and provided
     through either request or request_uri parameter."""
 
+    backchannel_logout_uri: str | None = None
+    """RP URL that will cause the RP to log itself out when sent a Logout Token by the OP.
+
+    Per OpenID Connect Back-Channel Logout §2.2, this URL MUST NOT include a fragment.
+    """
+
+    backchannel_logout_session_required: bool = False
+    """Whether the RP requires a sid (session ID) Claim in the Logout Token.
+
+    Per OpenID Connect Back-Channel Logout §2.2, the default value is false.
+    """
+
 
 class AuthorizationCode(Model):
     """OpenID Connect temporary authorization code definition."""
@@ -505,6 +517,9 @@ class AuthorizationCode(Model):
     JSON array of strings that are identifiers for authentication methods used in
     the authentication."""
 
+    sid: str | None = None
+    """The identifier of the user session where the code was issued."""
+
 
 class Token(Model):
     """OpenID Connect token definition."""
@@ -523,6 +538,9 @@ class Token(Model):
     revokation_date: datetime.datetime
     # keep 'List' instead of 'list' do not break py310 with the memory backend
     audience: List["Client"]  # noqa: UP006
+
+    sid: str | None = None
+    """The identifier of the user session where the token was issued."""
 
 
 class DeviceCode(Model):

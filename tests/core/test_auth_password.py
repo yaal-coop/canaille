@@ -69,6 +69,7 @@ def test_signin_and_out(testclient, user, caplog):
         assert [
             {
                 "user": user.id,
+                "sid": mock.ANY,
                 "last_login_datetime": mock.ANY,
                 "authentication_methods": ["password"],
             }
@@ -200,6 +201,7 @@ def test_signin_with_alternate_attribute(testclient, user):
         assert [
             {
                 "user": user.id,
+                "sid": mock.ANY,
                 "last_login_datetime": mock.ANY,
                 "authentication_methods": ["password"],
             }

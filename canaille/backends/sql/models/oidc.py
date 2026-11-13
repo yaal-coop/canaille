@@ -179,6 +179,10 @@ class Client(canaille.oidc.models.Client, Base, SqlAlchemyModel):
         MutableJson, nullable=True, default=[]
     )
     require_signed_request_object: Mapped[bool] = mapped_column(Boolean, nullable=True)
+    backchannel_logout_uri: Mapped[str] = mapped_column(String(2048), nullable=True)
+    backchannel_logout_session_required: Mapped[bool] = mapped_column(
+        Boolean, nullable=True
+    )
     _owners_association: Mapped[list["ClientOwner"]] = relationship(
         "ClientOwner",
         foreign_keys="ClientOwner.client_id",
@@ -247,6 +251,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, Base, SqlAlchemy
     )
     acr: Mapped[str] = mapped_column(String(255), nullable=True)
     amr: Mapped[list[str]] = mapped_column(MutableJson, nullable=True)
+    sid: Mapped[str] = mapped_column(String(255), nullable=True)
 
 
 class TokenAudience(Base):
@@ -298,6 +303,7 @@ class Token(canaille.oidc.models.Token, Base, SqlAlchemyModel):
     revokation_date: Mapped[datetime.datetime] = mapped_column(
         TZDateTime(timezone=True), nullable=True
     )
+    sid: Mapped[str] = mapped_column(String(255), nullable=True, index=True)
     _audience_association: Mapped[list["TokenAudience"]] = relationship(
         "TokenAudience",
         foreign_keys="TokenAudience.token_id",

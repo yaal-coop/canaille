@@ -48,7 +48,8 @@ def test_group_owners_migration(app, backend, user, admin, foo_group):
     user_id, group_id = user.id, foo_group.id
     backend.db_session.commit()
 
-    backend.alembic.downgrade("-1")
+    # The revision before the group owners migration.
+    backend.alembic.downgrade("1793102055")
     group_table = sa.table("group", sa.column("id"), sa.column("owner_id"))
     owner_id = backend.db_session.execute(
         sa.select(group_table.c.owner_id).where(group_table.c.id == group_id)

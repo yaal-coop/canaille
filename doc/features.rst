@@ -290,6 +290,15 @@ Consent management
 Users can give their consent to application requesting access to their personal information,
 and then revoke those consent at their will.
 
+Back-channel logout
+===================
+
+When users log out, or when their account is locked or deleted,
+Canaille notifies the applications that support
+`OpenID Connect Back-Channel Logout <https://openid.net/specs/openid-connect-backchannel-1_0.html>`_.
+Each application receives a logout token at its back-channel logout URI,
+and can close the session of the user.
+
 Application management
 ======================
 

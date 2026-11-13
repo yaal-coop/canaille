@@ -190,6 +190,10 @@ def client_edit(user, client):
         "redirect_uris": form["redirect_uris"].data,
         "client_secret_expires_at": form["client_secret_expires_at"].data,
         "post_logout_redirect_uris": form["post_logout_redirect_uris"].data,
+        "backchannel_logout_uri": form["backchannel_logout_uri"].data or None,
+        "backchannel_logout_session_required": form[
+            "backchannel_logout_session_required"
+        ].data,
         "grant_types": form["grant_types"].data,
         "scope": form["scope"].data.split(" "),
         "response_types": form["response_types"].data,

@@ -72,6 +72,8 @@ class Client(BaseClient, ClientMixin):
         "request_uris",
         "require_signed_request_object",
         "post_logout_redirect_uris",
+        "backchannel_logout_uri",
+        "backchannel_logout_session_required",
     ]
 
     def __init__(self, *args, **kwargs):

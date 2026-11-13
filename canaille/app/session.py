@@ -1,5 +1,7 @@
 import datetime
+import secrets
 from dataclasses import dataclass
+from dataclasses import field
 
 from blinker import signal
 from flask import current_app
@@ -24,6 +26,8 @@ class UserSession:
     last_login_datetime: datetime.datetime | None = None
     authentication_methods: list[str] | None = None
     account_selection_datetime: datetime.datetime | None = None
+    sid: str = field(default_factory=lambda: secrets.token_urlsafe(32))
+    """The session identifier, in the sid claim of the ID tokens."""
 
     @classmethod
     def deserialize(cls, payload):
@@ -47,10 +51,11 @@ class UserSession:
             )
             if payload.get("account_selection_datetime")
             else None,
+            **({"sid": payload["sid"]} if payload.get("sid") else {}),
         )
 
     def serialize(self):
-        payload = {"user": self.user.id}
+        payload = {"user": self.user.id, "sid": self.sid}
         if self.last_login_datetime is not None:
             payload["last_login_datetime"] = self.last_login_datetime.isoformat()
         if self.authentication_methods is not None:
@@ -65,6 +70,9 @@ class UserSession:
 def current_user_session():
     for payload in session.get(USER_SESSION, []):
         if obj := UserSession.deserialize(payload):
+            if "sid" not in payload:
+                payload["sid"] = obj.sid
+                session.modified = True
             return obj
 
         session[USER_SESSION].remove(payload)
@@ -101,7 +109,8 @@ def login_user(user, remember: bool = True) -> None:
 
         existing_index = _find_session_index(previous, user.id)
         if existing_index is not None:
-            previous.pop(existing_index)
+            existing = previous.pop(existing_index)
+            obj.sid = existing.get("sid") or obj.sid
 
         session[USER_SESSION] = [obj.serialize()] + previous
     except KeyError:
@@ -128,9 +137,13 @@ def _find_session_index(sessions, user_id):
     return None
 
 
-def send_user_logged_out(user) -> None:
+def send_user_logged_out(user_session: UserSession) -> None:
     """Send the ``user_logged_out`` signal, with the application as sender."""
-    signal("user_logged_out").send(current_app._get_current_object(), user=user)
+    signal("user_logged_out").send(
+        current_app._get_current_object(),
+        user=user_session.user,
+        user_session=user_session,
+    )
 
 
 def logout_user(user_id: str | None = None) -> bool:
@@ -146,7 +159,7 @@ def logout_user(user_id: str | None = None) -> bool:
         # The current session can be set without the session cookie, for
         # instance by the tools that log users in for tests.
         del g.session
-        send_user_logged_out(current.user)
+        send_user_logged_out(current)
         return True
 
     if not sessions:
@@ -167,7 +180,7 @@ def logout_user(user_id: str | None = None) -> bool:
         del g.session
 
     if closed := UserSession.deserialize(payload):
-        send_user_logged_out(closed.user)
+        send_user_logged_out(closed)
 
     return True
 
@@ -178,17 +191,18 @@ def logout_all_users() -> None:
     The ``user_logged_out`` signal is sent for each user.
     """
     closed = [
-        user_session.user
+        user_session
         for payload in session.pop(USER_SESSION, [])
         if (user_session := UserSession.deserialize(payload))
     ]
-    if (current := getattr(g, "session", None)) and current.user not in closed:
-        closed.append(current.user)
+    current = getattr(g, "session", None)
+    if current and current.user not in [user_session.user for user_session in closed]:
+        closed.append(current)
     if hasattr(g, "session"):
         del g.session
 
-    for user in closed:
-        send_user_logged_out(user)
+    for user_session in closed:
+        send_user_logged_out(user_session)
 
 
 def _get_login_history_from_cookie():

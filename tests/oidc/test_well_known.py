@@ -123,6 +123,8 @@ def test_openid_configuration(testclient):
         ],
         "code_challenge_methods_supported": ["plain", "S256"],
         "end_session_endpoint": "http://canaille.test/oauth/end_session",
+        "backchannel_logout_supported": True,
+        "backchannel_logout_session_supported": True,
         "grant_types_supported": [
             "authorization_code",
             "implicit",
