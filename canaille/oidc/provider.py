@@ -15,6 +15,7 @@ from authlib.oauth2 import rfc7592
 from authlib.oauth2 import rfc7636
 from authlib.oauth2 import rfc7662
 from authlib.oauth2 import rfc8628
+from authlib.oauth2 import rfc9068
 from authlib.oauth2 import rfc9101
 from authlib.oauth2 import rfc9207
 from authlib.oauth2 import rfc9470
@@ -30,7 +31,6 @@ from authlib.oidc import prompt_create
 from authlib.oidc import registration as oidc_registration
 from authlib.oidc import rpinitiated
 from authlib.oidc.core.authorization_request import OpenIDJWTAuthenticationRequest
-from authlib.oidc.core.grants.util import generate_id_token
 from flask import current_app
 from flask import g
 from flask import request
@@ -46,6 +46,7 @@ from canaille.core.auth import get_user_from_login
 from canaille.oidc.utils import fetch_document
 from canaille.oidc.utils import is_trusted_domain
 from canaille.oidc.utils import prompt_values_supported
+from canaille.scim import scim_base_url
 
 from .jose import SYMMETRIC_ALGORITHMS
 from .jose import build_client_management_token
@@ -712,6 +713,24 @@ class RevocationEndpoint(rfc7009.RevocationEndpoint):
         Backend.instance.save(token)
 
 
+class IntrospectedRefreshToken:
+    """A token found by its refresh token, with the expiration of the refresh token."""
+
+    def __init__(self, token):
+        self.token = token
+
+    def __getattr__(self, name):
+        return getattr(self.token, name)
+
+    def is_expired(self):
+        return self.token.refresh_token_expire_date < datetime.datetime.now(
+            datetime.UTC
+        )
+
+    def get_expires_at(self):
+        return self.token.refresh_token_expire_date.timestamp()
+
+
 class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
     CLIENT_AUTH_METHODS = [
         "client_secret_basic",
@@ -720,19 +739,24 @@ class IntrospectionEndpoint(rfc7662.IntrospectionEndpoint):
     ]
 
     def query_token(self, token, token_type_hint):
-        return query_token(token, token_type_hint)
+        item = query_token(token, token_type_hint)
+        if item and item.refresh_token == token:
+            return IntrospectedRefreshToken(item)
+
+        return item
 
     def check_permission(self, token, client, request):
         return client in token.full_audience
 
     def introspect_token(self, token):
-        audience = [aud.client_id for aud in token.full_audience]
         response = {
             "active": True,
             "client_id": token.client.client_id,
             "token_type": token.type,
             "scope": token.get_scope(),
-            "aud": audience,
+            "aud": access_token_audiences(
+                token.client, token.audience, token.get_scope()
+            ),
             "iss": get_issuer(),
             "exp": token.get_expires_at(),
             "iat": token.get_issued_at(),
@@ -1071,30 +1095,71 @@ authorization = AuthorizationServer()
 require_oauth = ResourceProtector()
 
 
+def access_token_audiences(client, audience, scope):
+    """Return the Canaille resources of the scope, and the other clients of ``audience``.
+
+    Per RFC 9068 §3, the audiences are the resources that accept the token.
+    The client itself is not an audience, so the access token cannot be
+    used as an ID token.
+    """
+    scopes = unique_scopes(scope)
+    audiences = []
+    if "openid" in scopes:
+        audiences.append(url_for("oidc.endpoints.userinfo", _external=True))
+
+    if current_app.features.has_scim_server and any(
+        scope_part.startswith("scim:") for scope_part in scopes
+    ):
+        audiences.append(scim_base_url())
+
+    audiences.extend(other.client_id for other in audience or [] if other != client)
+    return audiences or [get_issuer()]
+
+
+class JWTAccessTokenGenerator(rfc9068.JWTBearerTokenGenerator):
+    """Per RFC 9068, access tokens are JWTs that resource servers can verify."""
+
+    def get_jwks(self):
+        return server_jwks(include_inactive=False)
+
+    def get_audiences(self, client, user, scope):
+        return access_token_audiences(client, client.audience, scope)
+
+    def get_extra_claims(self, client, grant_type, user, scope):
+        if not user:
+            return {}
+
+        claims = generate_user_claims(user)
+        user_info = UserInfo(claims).filter(scope)
+        # Without the openid scope, the filtered claims have no 'sub'.
+        if sub := claims.get("sub"):
+            user_info["sub"] = sub
+        return user_info
+
+
 def generate_access_token(client, grant_type, user, scope, expires_in):
-    if grant_type == "client_credentials":
-        # Canaille could generate a JWT with iss/sub/aud/exp/iat/jti/scope/client_id
-        # instead of a random string
+    if current_app.config["CANAILLE_OIDC"]["ACCESS_TOKEN_TYPE"] == "plain":
         return gen_salt(48)
 
-    audience = [aud.client_id for aud in client.full_audience]
-    jwk, alg = _get_signing_key(client)
-    return generate_id_token(
-        token={},
-        user_info=UserInfo(generate_user_claims(user)).filter(scope),
-        aud=audience,
-        key=jwk,
-        iss=get_issuer(),
-        kid=jwk.kid,
-        alg=alg,
-        exp=expires_in,
-    )
+    # Per RFC 9068 §4, resource servers must support RS256.
+    jwks = server_jwks(include_inactive=False)
+    alg = "RS256" if jwks.pick_random_key("RS256") else _get_signing_key(None)[1]
+    generator = JWTAccessTokenGenerator(issuer=get_issuer(), alg=alg)
+    return generator.access_token_generator(client, grant_type, user, scope, expires_in)
+
+
+def access_token_lifetime(client, grant_type):
+    lifetime = current_app.config["CANAILLE_OIDC"]["ACCESS_TOKEN_LIFETIME"]
+    return int(lifetime.total_seconds())
 
 
 def setup_oauth(app):
     app.config["OAUTH2_REFRESH_TOKEN_GENERATOR"] = True
     app.config["OAUTH2_ACCESS_TOKEN_GENERATOR"] = (
         "canaille.oidc.provider.generate_access_token"
+    )
+    app.config["OAUTH2_TOKEN_EXPIRES_IN"] = (
+        "canaille.oidc.provider.access_token_lifetime"
     )
 
     oidc_config = app.config.get("CANAILLE_OIDC")

@@ -85,6 +85,31 @@ class OIDCSettings(BaseModel):
     Those keys are only used to verify JWTs.
     The keys can be in the form of JWK dict or raw keys."""
 
+    ACCESS_TOKEN_TYPE: Literal["jwt", "plain"] = "jwt"
+    """The format of the access tokens.
+
+    - ``jwt``: signed :rfc:`JWT access tokens <9068>`.
+      Resource servers can check them with the server public keys,
+      but they do not see revoked tokens until the tokens expire.
+    - ``plain``: random strings.
+      Resource servers must check them with the
+      :rfc:`introspection endpoint <7662>`, and see revoked tokens immediately.
+      The clients and the resource servers cannot read anything in the tokens.
+    """
+
+    ACCESS_TOKEN_LIFETIME: datetime.timedelta = datetime.timedelta(hours=1)
+    """The validity period of the access tokens.
+
+    Clients can get new access tokens with their refresh tokens.
+    Should be provided in ISO8601 duration format (e.g., "PT1H" for 1 hour)."""
+
+    REFRESH_TOKEN_LIFETIME: datetime.timedelta = datetime.timedelta(days=10)
+    """The validity period of the refresh tokens.
+
+    Each refresh gives a new refresh token, so the period starts again.
+    A change applies to the refresh tokens already issued.
+    Should be provided in ISO8601 duration format (e.g., "P10D" for 10 days)."""
+
     TRUSTED_DOMAINS: CommaSeparatedList = [".localhost", "127.0.0.1"]
     """Trusted domains for automatic client trust.
 
@@ -140,6 +165,16 @@ class OIDCSettings(BaseModel):
             raise ValueError(
                 "DEVICE_CODE_LIFETIME must be longer than DEVICE_CODE_POLLING_INTERVAL."
             )
+
+        return self
+
+    @model_validator(mode="after")
+    def validate_token_lifetimes(self):
+        if self.ACCESS_TOKEN_LIFETIME < datetime.timedelta(seconds=1):
+            raise ValueError("ACCESS_TOKEN_LIFETIME must be at least one second.")
+
+        if self.REFRESH_TOKEN_LIFETIME < datetime.timedelta(seconds=1):
+            raise ValueError("REFRESH_TOKEN_LIFETIME must be at least one second.")
 
         return self
 

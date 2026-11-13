@@ -308,6 +308,10 @@ class User(Model):
         """Check whether a WebAuthn credential has been registered for the user."""
         return len(self.webauthn_credentials) > 0
 
+    def get_user_id(self) -> str:
+        """Return the identifier of the user in the OAuth2 tokens."""
+        return self.user_name
+
     def can_read(self, field: str) -> bool:
         return field in self.readable_fields | self.writable_fields
 

@@ -49,7 +49,9 @@ class Client(Model):
     audience: List["Client"] = []  # noqa: UP006
     """The other clients that are intended to use the tokens emitted by this client.
 
-    The client itself is always part of the audience of its tokens.
+    The client itself is always part of the audience of its ID tokens.
+    It is not part of the audience of its access tokens,
+    so they cannot be used as ID tokens.
     """
 
     client_id: str | None

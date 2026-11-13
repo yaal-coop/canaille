@@ -9,7 +9,6 @@ from flask import Blueprint
 from flask import Response
 from flask import current_app
 from flask import request
-from flask import url_for
 from scim2_models import ForbiddenException
 from scim2_models import NotFoundException
 from scim2_models import SCIMException
@@ -25,6 +24,7 @@ from canaille.app.flask import csrf
 from canaille.backends import Backend
 from canaille.core.configuration import Permission
 
+from . import scim_base_url
 from .models import get_provider
 from .storage import CanailleStorage
 
@@ -146,7 +146,7 @@ def scim(path):
     service = CanailleService(get_provider())
     scim_request = ScimRequest(
         method=request.method,
-        base_url=url_for("scim.scim", path="", _external=True).rstrip("/"),
+        base_url=scim_base_url(),
         path=f"/{path}",
         query=request.args.to_dict(),
         headers=list(request.headers.items()),

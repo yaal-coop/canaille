@@ -668,6 +668,30 @@ GROUP_BASE = "ou=groups,dc=example,dc=org"
 # or raw keys.
 # INACTIVE_JWKS =
 
+# The format of the access tokens.
+#
+# - jwt: signed JWT access tokens.
+#   Resource servers can check them with the server public keys,
+#   but they do not see revoked tokens until the tokens expire.
+# - plain: random strings.
+#   Resource servers must check them with the
+#   introspection endpoint, and see revoked tokens immediately.
+#   The clients and the resource servers cannot read anything in the tokens.
+# ACCESS_TOKEN_TYPE = "jwt"
+
+# The validity period of the access tokens.
+#
+# Clients can get new access tokens with their refresh tokens. Should be provided
+# in ISO8601 duration format (e.g., "PT1H" for 1 hour).
+# ACCESS_TOKEN_LIFETIME = "PT1H"
+
+# The validity period of the refresh tokens.
+#
+# Each refresh gives a new refresh token, so the period starts again. A change
+# applies to the refresh tokens already issued. Should be provided in ISO8601
+# duration format (e.g., "P10D" for 10 days).
+# REFRESH_TOKEN_LIFETIME = "P10D"
+
 # Trusted domains for automatic client trust.
 #
 # Clients with a client_uri matching these domains will be automatically

@@ -51,9 +51,10 @@ def introspect(testclient, client, access_token):
 
 
 def test_client_without_audience(testclient, logged_user, client, server_jwk, backend):
-    """A client without audience is the audience of its own tokens.
+    """A client without audience is the audience of its ID tokens.
 
     Per OIDC Core §2, the single audience of the ID token is a string.
+    Per RFC 9068 §3, the access token is for the userinfo endpoint.
     """
     client.audience = []
     backend.save(client)
@@ -63,11 +64,11 @@ def test_client_without_audience(testclient, logged_user, client, server_jwk, ba
     assert claims["aud"] == client.client_id
 
     claims = jwt.decode(tokens["access_token"], server_jwk, registry=registry).claims
-    assert claims["aud"] == [client.client_id]
+    assert claims["aud"] == ["http://canaille.test/oauth/userinfo"]
 
     payload = introspect(testclient, client, tokens["access_token"])
     assert payload["active"]
-    assert payload["aud"] == [client.client_id]
+    assert payload["aud"] == ["http://canaille.test/oauth/userinfo"]
 
 
 def test_logout_redirection_with_id_token_hint_only(
@@ -117,7 +118,7 @@ def test_token_without_audience_introspection(testclient, client, user, backend)
 
     payload = introspect(testclient, client, token.access_token)
     assert payload["active"]
-    assert payload["aud"] == [client.client_id]
+    assert payload["aud"] == ["http://canaille.test/oauth/userinfo"]
 
     backend.delete(token)
 
