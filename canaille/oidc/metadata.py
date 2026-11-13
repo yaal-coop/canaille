@@ -1,5 +1,6 @@
 from authlib.oauth2 import rfc8414
 from authlib.oauth2 import rfc9101
+from authlib.oidc import backchannel
 from authlib.oidc import discovery as oidc_discovery
 from flask import g
 from flask import url_for
@@ -153,7 +154,9 @@ def openid_configuration():
         "response_modes_supported": ["query", "fragment"],
         "acr_values_supported": None,
         "display_values_supported": None,
+        "backchannel_logout_supported": True,
+        "backchannel_logout_session_supported": True,
     }
     obj = oidc_discovery.OpenIDProviderMetadata(payload)
-    obj.validate()
+    obj.validate(metadata_classes=[backchannel.OpenIDProviderMetadata])
     return obj

@@ -102,6 +102,8 @@ def test_get(testclient, backend, client, user, client_jwk):
         "post_logout_redirect_uris": [
             "https://client.test/disconnected",
         ],
+        "backchannel_logout_uri": None,
+        "backchannel_logout_session_required": None,
     }
 
 
@@ -216,6 +218,8 @@ def test_update(testclient, backend, client, user, client_jwk):
         "post_logout_redirect_uris": [
             "https://client.test/disconnected",
         ],
+        "backchannel_logout_uri": None,
+        "backchannel_logout_session_required": None,
     }
 
     assert client.redirect_uris == ["https://newname.example.test/callback"]

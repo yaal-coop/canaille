@@ -164,6 +164,14 @@ def test_get_persisted_value(testclient, user, backend):
     user.family_name = original_name
 
 
+def test_get_persisted_value_after_save(testclient, user, foo_group, backend):
+    """The stored value is returned for an attribute changed right after a save."""
+    backend.save(foo_group)
+    user.lock_date = datetime.datetime.now(datetime.UTC)
+    assert backend.get_persisted_value(user, "lock_date") is None
+    user.lock_date = None
+
+
 def test_fuzzy_unique_attribute(user, moderator, admin, backend):
     """Test that fuzzy search works with single-valued attributes."""
     backend.reload(user)

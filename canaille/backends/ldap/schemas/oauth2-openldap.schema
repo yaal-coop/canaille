@@ -573,6 +573,29 @@ attributetype ( 1.3.6.1.4.1.56207.1.1.67 NAME 'oauthLastPolled'
         SINGLE-VALUE
         USAGE userApplications
         X-ORIGIN 'OAuth 2.0' )
+attributetype ( 1.3.6.1.4.1.56207.1.1.68 NAME 'oauthBackchannelLogoutURI'
+        DESC 'OpenID Connect Back-Channel Logout URI'
+        EQUALITY caseExactMatch
+        ORDERING caseExactOrderingMatch
+        SUBSTR caseExactSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OpenID Connect Back-Channel Logout 1.0' )
+attributetype ( 1.3.6.1.4.1.56207.1.1.69 NAME 'oauthBackchannelLogoutSessionRequired'
+        DESC 'Whether the RP requires a sid in the Logout Token'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OpenID Connect Back-Channel Logout 1.0' )
+attributetype ( 1.3.6.1.4.1.56207.1.1.70 NAME 'oauthSessionID'
+        DESC 'Identifier of the user session where a code or a token was issued'
+        EQUALITY caseExactMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+        SINGLE-VALUE
+        USAGE userApplications
+        X-ORIGIN 'OpenID Connect Back-Channel Logout 1.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
         DESC 'OAuth 2.0 Authorization Code'
         SUP top
@@ -619,6 +642,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.1 NAME 'oauthClient'
               oauthRequestObjectEncryptionEnc $
               oauthRequestURI $
               oauthRequireSignedRequestObject $
+              oauthBackchannelLogoutURI $
+              oauthBackchannelLogoutSessionRequired $
               owner )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
@@ -641,7 +666,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.2 NAME 'oauthAuthorizationCode'
               oauthRevokationDate $
               oauthAuthTime $
               oauthACR $
-              oauthAMR )
+              oauthAMR $
+              oauthSessionID )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
         DESC 'OAuth 2.0 Token'
@@ -658,7 +684,8 @@ objectclass ( 1.3.6.1.4.1.56207.1.2.3 NAME 'oauthToken'
               oauthIssueDate $
               oauthTokenLifetime $
               oauthRevokationDate $
-              oauthAudience )
+              oauthAudience $
+              oauthSessionID )
         X-ORIGIN 'OAuth 2.0' )
 objectclass ( 1.3.6.1.4.1.56207.1.2.4 NAME 'oauthConsent'
         DESC 'OAuth 2.0 User consents'

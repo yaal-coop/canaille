@@ -54,6 +54,8 @@ class Client(canaille.oidc.models.Client, LDAPObject):
         "request_uris": "oauthRequestURI",
         "require_signed_request_object": "oauthRequireSignedRequestObject",
         "post_logout_redirect_uris": "oauthPostLogoutRedirectURI",
+        "backchannel_logout_uri": "oauthBackchannelLogoutURI",
+        "backchannel_logout_session_required": "oauthBackchannelLogoutSessionRequired",
     }
 
     attribute_map: ClassVar[dict[str, str] | None] = {
@@ -92,6 +94,7 @@ class AuthorizationCode(canaille.oidc.models.AuthorizationCode, LDAPObject):
         "auth_time": "oauthAuthTime",
         "acr": "oauthACR",
         "amr": "oauthAMR",
+        "sid": "oauthSessionID",
     }
 
 
@@ -114,6 +117,7 @@ class Token(canaille.oidc.models.Token, LDAPObject):
         "lifetime": "oauthTokenLifetime",
         "revokation_date": "oauthRevokationDate",
         "audience": "oauthAudience",
+        "sid": "oauthSessionID",
     }
 
 

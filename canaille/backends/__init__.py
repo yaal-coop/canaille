@@ -5,6 +5,7 @@ import importlib
 import json
 import typing
 from contextlib import contextmanager
+from contextlib import nullcontext
 from math import ceil
 
 from blinker import signal
@@ -168,12 +169,21 @@ class Backend:
         """Validate the current modifications in the database."""
         data = {}
         model_name = instance.__class__.__name__.lower()
-        signal(f"before_{model_name}_save").send(instance, data=data)
+        with self.pending_changes():
+            signal(f"before_{model_name}_save").send(instance, data=data)
         self.do_save(instance)
         signal(f"after_{model_name}_save").send(instance, data=data)
 
     def do_save(self, instance) -> None:
         raise NotImplementedError()
+
+    def pending_changes(self):
+        """Keep the unsaved changes out of the database in this context.
+
+        The ``before_save`` receivers read the stored values with
+        :meth:`get_persisted_value` while the changes are pending.
+        """
+        return nullcontext()
 
     def delete(self, instance) -> None:
         """Remove the current instance from the database."""

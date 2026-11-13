@@ -262,8 +262,9 @@ def logged_out_users(app):
     """Return the list of the users that the user_logged_out signal received."""
     users = []
 
-    def receiver(sender, user):
+    def receiver(sender, user, user_session):
         assert sender is app
+        assert user_session.user == user
         users.append(user)
 
     return users, signal("user_logged_out").connected_to(receiver, sender=app)

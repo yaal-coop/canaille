@@ -23,6 +23,7 @@ from authlib.oauth2.rfc6749 import InvalidGrantError
 from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oauth2.rfc6749 import UnauthorizedClientError
 from authlib.oauth2.rfc9101.errors import InvalidRequestObjectError
+from authlib.oidc import backchannel
 from authlib.oidc import core as oidc_core
 from authlib.oidc import prompt_create
 from authlib.oidc import registration as oidc_registration
@@ -135,6 +136,30 @@ def _get_signing_key(client):
     return jwk, alg or get_alg_for_key(jwk)
 
 
+def current_sid():
+    """Return the identifier of the session of the current user, or None."""
+    return g.session.sid if g.get("session") else None
+
+
+def token_sid(request):
+    """Return the identifier of the session where a token is issued.
+
+    Tokens issued at the token endpoint inherit the session of their code or
+    of their refresh token. Tokens issued at the authorization endpoint, in the
+    implicit and hybrid flows, belong to the current session.
+    """
+    if request.authorization_code:
+        return request.authorization_code.sid
+
+    if request.refresh_token:
+        return request.refresh_token.sid
+
+    if request.payload.response_type:
+        return current_sid()
+
+    return None
+
+
 def save_authorization_code(code, request):
     nonce = request.payload.data.get("nonce")
     now = datetime.datetime.now(datetime.UTC)
@@ -156,6 +181,7 @@ def save_authorization_code(code, request):
         else None,
         acr=request.acr,
         amr=request.amr,
+        sid=current_sid(),
     )
     Backend.instance.save(code)
     return code.code
@@ -331,6 +357,12 @@ class OpenIDCode(OIDCGrantMixin, oidc_core.OpenIDCode):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
+    def get_authorization_code_claims(self, authorization_code):
+        claims = super().get_authorization_code_claims(authorization_code)
+        if authorization_code.sid:
+            claims["sid"] = authorization_code.sid
+        return claims
+
     def generate_user_info(self, user, scope, claims):
         return UserInfo(generate_user_claims(user)).filter(scope, claims)
 
@@ -411,7 +443,19 @@ class JWTBearerGrant(rfc7523.JWTBearerGrant):
         return has_permission
 
 
-class OpenIDImplicitGrant(OIDCGrantMixin, oidc_core.OpenIDImplicitGrant):
+class SessionClaimMixin:
+    """Put the session identifier in the ID tokens of the authorization endpoint."""
+
+    def get_compatible_claims(self, request):
+        claims = super().get_compatible_claims(request)
+        if sid := current_sid():
+            claims["sid"] = sid
+        return claims
+
+
+class OpenIDImplicitGrant(
+    SessionClaimMixin, OIDCGrantMixin, oidc_core.OpenIDImplicitGrant
+):
     def exists_nonce(self, nonce, request):
         return exists_nonce(nonce, request)
 
@@ -419,7 +463,7 @@ class OpenIDImplicitGrant(OIDCGrantMixin, oidc_core.OpenIDImplicitGrant):
         return UserInfo(generate_user_claims(user)).filter(scope, claims)
 
 
-class OpenIDHybridGrant(OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
+class OpenIDHybridGrant(SessionClaimMixin, OIDCGrantMixin, oidc_core.OpenIDHybridGrant):
     def save_authorization_code(self, code, request):
         return save_authorization_code(code, request)
 
@@ -573,6 +617,7 @@ def save_token(token, request):
         refresh_token=token.get("refresh_token"),
         subject=request.user,
         audience=request.client.audience,
+        sid=token_sid(request),
     )
     Backend.instance.save(t)
 
@@ -1060,6 +1105,7 @@ def setup_oauth(app):
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
                 rpinitiated.ClientMetadataClaims,
+                backchannel.ClientMetadataClaims,
             ]
         )
     )
@@ -1070,6 +1116,7 @@ def setup_oauth(app):
                 rfc9101.ClientMetadataClaims,
                 oidc_registration.ClientMetadataClaims,
                 rpinitiated.ClientMetadataClaims,
+                backchannel.ClientMetadataClaims,
             ]
         )
     )

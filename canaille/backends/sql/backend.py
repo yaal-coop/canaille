@@ -200,8 +200,17 @@ class SQLBackend(Backend):
             .all()
         )
 
+    def pending_changes(self):
+        # Reading an expired instance loads it, and the load must not flush
+        # the pending changes.
+        return self.db_session.no_autoflush
+
     def get_persisted_value(self, instance, attribute):
         """Return the committed value from the DB, bypassing the identity map."""
+        with self.pending_changes():
+            return self._get_persisted_value(instance, attribute)
+
+    def _get_persisted_value(self, instance, attribute):
         if not instance.id:
             return []
         state = inspect(instance)
@@ -214,9 +223,17 @@ class SQLBackend(Backend):
             return [getattr(assoc, attribute[:-1]) for assoc in committed_assocs]
         # Scalar/column attributes: read committed value from history
         history = state.attrs[attribute].history
+        if not history.has_changes():
+            return getattr(instance, attribute)
+
         if history.deleted:
             return history.deleted[0]
-        return getattr(instance, attribute)
+
+        # The previous value was not loaded, as the attribute expired at commit.
+        model = type(instance)
+        return self.db_session.execute(
+            select(getattr(model, attribute)).where(model.id == instance.id)
+        ).scalar()
 
     def get(self, model, identifier=None, /, **kwargs):
         if identifier:

@@ -1,8 +1,17 @@
 [0.4.4] - Unreleased
 --------------------
 
+.. warning::
+
+    Manual migration required for the LDAP backend: back-channel logout attributes
+    have been added to clients, and a session identifier to authorization codes and tokens.
+    Please follow the :ref:`ldap_schema_update` section.
+
 Added
 ^^^^^
+- OpenID Connect Back-Channel Logout. Clients with a back-channel logout URI receive
+  a logout token when a user logs out, and when a user account is locked or deleted.
+  ID tokens have a ``sid`` claim.
 - The ``SECRET_KEY_FALLBACKS`` setting keeps the previous secret keys
   after a ``SECRET_KEY`` change, so sessions and stored secrets stay valid.
 - The ``canaille secrets reencrypt`` command encrypts the stored secrets
@@ -10,6 +19,8 @@ Added
 
 Changed
 ^^^^^^^
+- When users log out, the tokens issued during their session are revoked.
+  Applications cannot refresh them anymore.
 - SCIM group requests with unknown members are refused instead of partially applied.
 - The SCIM client reads the configuration of each application every 5 minutes,
   instead of at each provisioning event.
