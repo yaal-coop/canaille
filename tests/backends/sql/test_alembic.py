@@ -48,8 +48,10 @@ def test_group_owners_migration(app, backend, user, admin, foo_group):
     user_id, group_id = user.id, foo_group.id
     backend.db_session.commit()
 
-    # The revision before the group owners migration.
-    backend.alembic.downgrade("1793102055")
+    # The revision before the group owners migration. Older flask-alembic
+    # versions read a numeric string as a relative revision.
+    revision = backend.alembic.script_directory.get_revision("1793102055")
+    backend.alembic.downgrade(revision)
     group_table = sa.table("group", sa.column("id"), sa.column("owner_id"))
     owner_id = backend.db_session.execute(
         sa.select(group_table.c.owner_id).where(group_table.c.id == group_id)
