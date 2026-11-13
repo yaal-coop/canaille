@@ -173,3 +173,28 @@ def test_login_user_removes_duplicate_sessions(testclient, user, backend):
         first_session = sessions[0]
         assert first_session.user.id == user.id
         assert first_session.authentication_methods is None
+
+
+def test_failed_password_keeps_the_open_session(testclient, logged_user, moderator):
+    """A wrong password for another account does not close the open session."""
+    res = testclient.get("/login", status=200)
+    res.form["login"] = moderator.user_name
+    res = res.form.submit(status=302).follow(status=200)
+
+    res.form["password"] = "incorrect horse"
+    res = res.form.submit(status=200)
+
+    assert ("error", "Login failed. Please check your information.") in res.flashes
+    with testclient.session_transaction() as sess:
+        assert UserSession.deserialize(sess[USER_SESSION][0]).user == logged_user
+
+
+def test_invalid_login_form_keeps_the_open_session(testclient, logged_user):
+    """An invalid login form does not close the open session."""
+    res = testclient.get("/login", status=200)
+    res.form["login"] = ""
+    res = res.form.submit(status=200)
+
+    assert ("error", "Login failed. Please check your information.") in res.flashes
+    with testclient.session_transaction() as sess:
+        assert UserSession.deserialize(sess[USER_SESSION][0]).user == logged_user

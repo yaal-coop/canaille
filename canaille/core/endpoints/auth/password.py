@@ -12,7 +12,6 @@ from canaille.app import build_hash
 from canaille.app.flask import smtp_needed
 from canaille.app.i18n import gettext as _
 from canaille.app.session import login_user
-from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import auth_step
@@ -83,9 +82,7 @@ def password():
 
         user = g.auth.user
         flash(_("Login failed. Please check your information."), "error")
-        response = render_password_template(form)
-        logout_user()
-        return response
+        return render_password_template(form)
 
     if needs_password_initialization(g.auth.user):
         return redirect(url_for("core.auth.password.firstlogin", user=g.auth.user))
@@ -95,7 +92,6 @@ def password():
     if not success:
         user_name = g.auth.user_name
         user_id = user.id
-        logout_user()
         current_app.logger.security(f"Failed password authentication for {user_name}")
         flash(message or _("Login failed. Please check your information."), "error")
 

@@ -106,7 +106,6 @@ def login(username=None):
                 login_history=get_login_history(),
             )
 
-        logout_user()
         flash(_("Login failed. Please check your information."), "error")
         return render_template(
             "core/login.html", form=form, login_history=get_login_history()

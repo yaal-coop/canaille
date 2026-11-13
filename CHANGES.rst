@@ -36,6 +36,7 @@ Changed
 
 Fixed
 ^^^^^
+- A failed login no longer logs out the account that is already logged in.
 - The ``default_max_age`` setting of clients is applied.
 - ID tokens of the implicit and hybrid flows have the ``amr`` claim.
 - Clients with the ``authorization_code`` and ``implicit`` grant types
