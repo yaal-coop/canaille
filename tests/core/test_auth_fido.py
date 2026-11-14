@@ -45,6 +45,100 @@ def fido_credential(user, backend):
     return credential
 
 
+@pytest.mark.parametrize("path", ["/auth/fido2", "/auth/fido2-setup"])
+def test_fido_posts_require_csrf_token(testclient, path):
+    """WebAuthn POST endpoints reject requests without a CSRF token."""
+    testclient.app.config["WTF_CSRF_ENABLED"] = True
+
+    response = testclient.post_json(path, {}, status=400)
+
+    assert response.json == {
+        "success": False,
+        "error": "This page has expired. Please reload it.",
+    }
+
+
+@patch("webauthn.verify_authentication_response")
+def test_fido_authentication_accepts_valid_csrf_token(
+    mock_verify, testclient, fido_credential
+):
+    """WebAuthn authentication accepts the CSRF token rendered by its form."""
+    testclient.app.config["WTF_CSRF_ENABLED"] = True
+    with testclient.session_transaction() as session:
+        session["auth"] = AuthenticationSession(
+            user_name="user", remaining=["fido2"]
+        ).serialize()
+    page = testclient.get("/auth/fido2", status=200)
+    csrf_token = page.pyquery("#csrf-token").val()
+
+    assert csrf_token
+
+    mock_verify.return_value = MagicMock(new_sign_count=1)
+    response = testclient.post_json(
+        "/auth/fido2",
+        {
+            "id": "test_id",
+            "rawId": "dGVzdF9jcmVkZW50aWFsX2lkXzEyMzQ1Ng",
+            "type": "public-key",
+            "response": {
+                "authenticatorData": "eHh4eHh4eHh4",
+                "clientDataJSON": "eHh4eHh4eHh4eHh4eHh4",
+                "signature": "eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4",
+                "userHandle": None,
+            },
+        },
+        headers={"X-CSRFToken": csrf_token},
+        status=200,
+    )
+
+    assert response.json["success"] is True
+
+
+@pytest.mark.parametrize("logged_in", [False, True])
+@patch("webauthn.verify_registration_response")
+def test_fido_registration_accepts_valid_csrf_token(
+    mock_verify, testclient, user, backend, request, logged_in
+):
+    """WebAuthn registration accepts the CSRF token rendered by its form."""
+    testclient.app.config["WTF_CSRF_ENABLED"] = True
+    if logged_in:
+        request.getfixturevalue("logged_user")
+    else:
+        with testclient.session_transaction() as session:
+            session["auth"] = AuthenticationSession(
+                user_name="user", remaining=["fido2"]
+            ).serialize()
+    page = testclient.get("/auth/fido2-setup", status=200)
+    csrf_token = page.pyquery("#csrf-token").val()
+
+    assert csrf_token
+
+    mock_verify.return_value = MagicMock(
+        credential_id=b"new_credential_id",
+        credential_public_key=b"new_public_key",
+        sign_count=0,
+        aaguid=b"\x00" * 16,
+    )
+    response = testclient.post_json(
+        "/auth/fido2-setup",
+        {
+            "credential": {
+                "id": "new_id",
+                "rawId": "bmV3X2lk",
+                "type": "public-key",
+                "response": {
+                    "attestationObject": "dGVzdA",
+                    "clientDataJSON": "dGVzdA",
+                },
+            },
+        },
+        headers={"X-CSRFToken": csrf_token},
+        status=200,
+    )
+
+    assert response.json["success"] is True
+
+
 def test_no_auth_session_not_logged_in(testclient, user):
     """Non-logged users should not be able to access the fido2 auth form without an authentication session."""
     res = testclient.get("/auth/fido2", status=302)

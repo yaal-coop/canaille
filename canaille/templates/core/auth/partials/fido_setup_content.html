@@ -26,3 +26,4 @@ Displays the registration instructions, error messages, and options.
 {% endwith %}
 
 <input type="hidden" id="webauthn-options" value="{{ options_json }}">
+<input type="hidden" id="csrf-token" value="{{ csrf_token() }}">

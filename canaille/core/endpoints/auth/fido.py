@@ -11,9 +11,9 @@ from flask import redirect
 from flask import request
 from flask import session
 from flask import url_for
+from flask_wtf.csrf import CSRFError
 
 from canaille.app import models
-from canaille.app.flask import csrf
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
@@ -22,6 +22,14 @@ from canaille.core.auth import auth_step
 from canaille.core.auth import redirect_to_next_auth_step
 
 bp = Blueprint("fido2", __name__)
+
+
+@bp.errorhandler(CSRFError)
+def csrf_error(error):
+    """Return CSRF errors as JSON, so the WebAuthn script can display them."""
+    return jsonify(
+        {"success": False, "error": _("This page has expired. Please reload it.")}
+    ), 400
 
 
 @bp.context_processor
@@ -36,7 +44,6 @@ def global_processor():
 
 @bp.route("/auth/fido2", methods=("GET", "POST"))
 @auth_step("fido2")
-@csrf.exempt
 def webauthn():
     if not current_app.features.has_fido:
         abort(404)
@@ -162,7 +169,6 @@ def verify_auth_response():
 
 
 @bp.route("/auth/fido2-setup", methods=("GET", "POST"))
-@csrf.exempt
 def setup():
     """Register a new WebAuthn credential during authentication flow."""
     if not current_app.features.has_fido:

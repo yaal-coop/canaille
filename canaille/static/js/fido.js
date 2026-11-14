@@ -62,9 +62,15 @@ function initFido() {
 function initWebAuthn(mode, button) {
     const messageDiv = document.getElementById('webauthn-message');
     const optionsInput = document.getElementById('webauthn-options');
+    const csrfToken = document.getElementById('csrf-token')?.value;
 
     if (!button || !optionsInput) {
         console.error('WebAuthn elements not found');
+        return;
+    }
+
+    if (!csrfToken) {
+        console.error('WebAuthn CSRF token not found: the template needs a #csrf-token input');
         return;
     }
 
@@ -187,6 +193,7 @@ function initWebAuthn(mode, button) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
                 },
                 body: JSON.stringify(response)
             });

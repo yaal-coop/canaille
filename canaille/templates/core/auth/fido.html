@@ -16,6 +16,8 @@ Displays the WebAuthn authentication interface.
 {% endblock %}
 
 {% block auth_content %}
+    <input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
+
     <div class="ui icon message" id="webauthn-message">
         <i class="key icon"></i>
         <div class="content">
