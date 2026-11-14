@@ -469,7 +469,7 @@ OAuth2/OIDC Specifications Compatibility
       - `✅ <../development/specifications.html>`__
       - `✅ <../development/specifications.html>`__
       - `✅ <../development/specifications.html>`__
-      - ❌
+      - `✅ <../development/specifications.html>`__
       - ❌
       - ❌
       - `✅ <../development/specifications.html>`__
@@ -781,7 +781,7 @@ OpenID Connect Advanced Features
       - `✅ <../development/specifications.html>`__
       - ❌
       - ❌
-      - ❌
+      - `✅ <../development/specifications.html>`__
       - ❌
       - `✅ <../development/specifications.html>`__
       - ❌
