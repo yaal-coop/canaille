@@ -155,7 +155,7 @@ dev = [
     "flask-webtest >= 0.1.6",
     "maildump>=1.0; python_version<'3.12'",
     "maildump>=1.1; python_version>='3.12'",
-    "pyquery >= 2.0.0",
+    "pyquery >= 2.1.0",
     "pytest >= 9.1.1",
     "pytest-cov >= 6.0.0",
     "pytest-httpserver >= 1.1.0",
