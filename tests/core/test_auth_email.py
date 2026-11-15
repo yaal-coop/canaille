@@ -5,6 +5,8 @@ import pytest
 import time_machine
 
 from canaille.app import mask_email
+from canaille.core.auth import PASSCODE_LOCK_DURATION
+from canaille.core.auth import PASSCODE_MAX_FAILURES
 from canaille.core.auth import AuthenticationSession
 from canaille.core.mails import send_one_time_password_mail
 
@@ -290,3 +292,77 @@ def test_mask_email():
 
     email = "hello"
     assert mask_email(email) is None
+
+
+def start_email_login(testclient, backend, user):
+    """Log in up to the email step, and return the form with the sent passcode."""
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+    backend.reload(user)
+    return res
+
+
+def wrong_passcode(user):
+    return "000000" if user.one_time_password != "000000" else "111111"
+
+
+def test_too_many_wrong_email_otp(testclient, backend, user, caplog, smtpd):
+    """Wrong passcodes end the login, and lock passcodes for a while."""
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
+        res = start_email_login(testclient, backend, user)
+        for _ in range(PASSCODE_MAX_FAILURES - 1):
+            res.form["otp"] = wrong_passcode(user)
+            res = res.form.submit(status=200, name="action", value="confirm")
+
+        res.form["otp"] = wrong_passcode(user)
+        res = res.form.submit(status=302, name="action", value="confirm")
+        assert res.location == "/login"
+        assert (
+            "error",
+            "Too many failed attempts. Please try again later.",
+        ) in res.flashes
+        assert (
+            "canaille",
+            logging.SECURITY,
+            "Too many wrong passcodes for user",
+        ) in caplog.record_tuples
+        with testclient.session_transaction() as session:
+            assert "auth" not in session
+
+        traveller.shift(datetime.timedelta(seconds=SEND_NEW_OTP_DELAY + 1))
+        res = testclient.get("/login", status=200)
+        res.form["login"] = "user"
+        res = res.form.submit(status=302)
+        res = res.follow(status=302)
+        assert res.location == "/login"
+        assert len(smtpd.messages) == 1
+
+        traveller.shift(PASSCODE_LOCK_DURATION)
+        res = start_email_login(testclient, backend, user)
+        res.form["otp"] = user.one_time_password
+        res = res.form.submit(status=302, name="action", value="confirm")
+        assert (
+            "success",
+            "Connection successful. Welcome Johnny",
+        ) in res.flashes
+
+
+def test_email_otp_success_resets_failures(testclient, backend, user, smtpd):
+    """A good passcode resets the count of wrong passcodes."""
+    with time_machine.travel("2020-01-01 01:00:00+00:00", tick=False) as traveller:
+        for _ in range(2):
+            res = start_email_login(testclient, backend, user)
+            for _ in range(PASSCODE_MAX_FAILURES - 1):
+                res.form["otp"] = wrong_passcode(user)
+                res = res.form.submit(status=200, name="action", value="confirm")
+
+            res.form["otp"] = user.one_time_password
+            res = res.form.submit(status=302, name="action", value="confirm")
+            assert (
+                "success",
+                "Connection successful. Welcome Johnny",
+            ) in res.flashes
+            testclient.get("/logout")
+            traveller.shift(datetime.timedelta(seconds=SEND_NEW_OTP_DELAY + 1))

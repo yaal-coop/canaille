@@ -45,6 +45,7 @@ def profile_auth_otp(user, edited_user):
             user_name=g.session.user.user_name,
             welcome_flash=False,
             remaining=["otp"],
+            data={"enrollment": True},
         )
         g.auth.save()
         return redirect(url_for("core.auth.otp.setup"))

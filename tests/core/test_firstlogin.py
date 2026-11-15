@@ -3,6 +3,7 @@ import re
 from unittest import mock
 
 from canaille.app import models
+from canaille.core.auth import PASSCODE_MAX_FAILURES
 
 
 def test_user_without_password_first_login(testclient, backend, smtpd, caplog):
@@ -317,4 +318,36 @@ def test_first_login_when_password_recovery_is_disabled(testclient, backend, smt
     assert ("error", "Login failed. Please check your information.") in res.flashes
 
     assert len(smtpd.messages) == 0
+    backend.delete(u)
+
+
+def test_first_login_code_too_many_wrong_codes(testclient, backend, smtpd):
+    """Wrong password initialization codes are limited, so the code cannot be guessed."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    u = models.User(
+        formatted_name="Temp User",
+        family_name="Temp",
+        user_name="temp",
+        emails=["john@doe.test"],
+    )
+    backend.save(u)
+
+    res = testclient.get("/firstlogin/temp", status=200)
+    res = res.form.submit(name="action", value="sendmail", status=302)
+    res = res.follow(status=200)
+    backend.reload(u)
+    wrong_code = "000000" if u.one_time_password != "000000" else "111111"
+
+    for _ in range(PASSCODE_MAX_FAILURES - 1):
+        res.forms[0]["code"] = wrong_code
+        res = res.forms[0].submit(status=200)
+
+    res.forms[0]["code"] = wrong_code
+    res = res.forms[0].submit(status=302)
+    assert res.location == "/login"
+
+    res = testclient.get("/firstlogin/temp/code", status=200)
+    res.forms[0]["code"] = u.one_time_password
+    res = res.forms[0].submit(status=302)
+    assert res.location == "/login"
     backend.delete(u)

@@ -6,6 +6,7 @@ import smpplib
 import time_machine
 
 from canaille.app import mask_phone
+from canaille.core.auth import PASSCODE_MAX_FAILURES
 from canaille.core.auth import AuthenticationSession
 
 # OTP_VALIDITY now configured via OTP_LIFETIME
@@ -253,3 +254,33 @@ def test_mask_phone_number():
     """Test that phone numbers are properly masked for security."""
     phone = "+33123456789"
     assert mask_phone(phone) == "+33#####89"
+
+
+def test_too_many_wrong_sms_otp(smpp_client, testclient, backend, user, caplog):
+    """Wrong passcodes end the login, and lock passcodes for a while."""
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+    backend.reload(user)
+    wrong_passcode = "000000" if user.one_time_password != "000000" else "111111"
+
+    for _ in range(PASSCODE_MAX_FAILURES - 1):
+        res.form["otp"] = wrong_passcode
+        res = res.form.submit(status=200, name="action", value="confirm")
+
+    res.form["otp"] = wrong_passcode
+    res = res.form.submit(status=302, name="action", value="confirm")
+    assert res.location == "/login"
+    assert (
+        "error",
+        "Too many failed attempts. Please try again later.",
+    ) in res.flashes
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=302)
+    assert res.location == "/login"
+    with testclient.session_transaction() as session:
+        assert not session.get("sessions")
