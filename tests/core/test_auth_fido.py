@@ -6,10 +6,12 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 
 import pytest
+from webauthn.helpers.bytes_to_base64url import bytes_to_base64url
 from webauthn.helpers.exceptions import InvalidAuthenticationResponse
 from webauthn.helpers.exceptions import InvalidRegistrationResponse
 
 from canaille.app import models
+from canaille.app.fido import get_fake_credential
 from canaille.core.auth import AuthenticationSession
 
 
@@ -1249,3 +1251,38 @@ def test_fido_setup_first_passkey_of_another_account(
     with testclient.session_transaction() as session:
         assert len(session["sessions"]) == 2
         assert "auth" not in session
+
+
+def allowed_credentials_for(testclient, login):
+    testclient.post("/login", {"login": login}, status=302)
+    res = testclient.get("/auth/fido2", status=200)
+    return json.loads(res.pyquery("#webauthn-options").val())["allowCredentials"]
+
+
+def test_unknown_login_gets_a_fake_credential(testclient, fido_credential):
+    """Unknown logins get a stable fake passkey, so they look like real accounts."""
+    fake = get_fake_credential("nobody")
+    unknown = allowed_credentials_for(testclient, "nobody")
+    assert unknown == [
+        {
+            "id": bytes_to_base64url(fake.id),
+            "transports": [transport.value for transport in fake.transports],
+            "type": "public-key",
+        }
+    ]
+    assert allowed_credentials_for(testclient, "nobody") == unknown
+    assert allowed_credentials_for(testclient, "NoBody") == unknown
+    assert allowed_credentials_for(testclient, "somebody") != unknown
+
+    known = allowed_credentials_for(testclient, "user")
+    assert known[0]["id"] == bytes_to_base64url(fido_credential.credential_id)
+    assert set(known[0]) == set(unknown[0])
+
+
+def test_unknown_login_authentication_fails(testclient):
+    """Authentication with an unknown login fails like with an unknown passkey."""
+    fake_id = bytes_to_base64url(get_fake_credential("nobody").id)
+    allowed_credentials_for(testclient, "nobody")
+
+    res = testclient.post_json("/auth/fido2", {"rawId": fake_id}, status=400)
+    assert res.json == {"success": False, "error": "Credential not found"}

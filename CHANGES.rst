@@ -75,6 +75,8 @@ Fixed
 - The passkey authentication and registration pages are protected against CSRF.
   Themes that override ``core/auth/fido.html`` or ``core/auth/partials/fido_setup_content.html``
   must add the ``<input type="hidden" id="csrf-token" value="{{ csrf_token() }}">`` field.
+- When passkeys are the first authentication factor, an unknown login caused a server error.
+  It now gets the passkey page, as an existing account would.
 - A failed login no longer logs out the account that is already logged in.
 - The ``form_post`` response mode of the implicit and hybrid flows
   left users on a blank page, as the content security policy blocked its script.

@@ -1,11 +1,36 @@
 """FIDO2/WebAuthn utilities and helpers."""
 
+import hashlib
+import hmac
 import json
 
+from flask import current_app
 from flask import request
 from webauthn.helpers.structs import AuthenticatorTransport
+from webauthn.helpers.structs import PublicKeyCredentialDescriptor
 
 from canaille.app import get_current_domain
+
+FAKE_CREDENTIAL_TRANSPORTS = [
+    [AuthenticatorTransport.INTERNAL, AuthenticatorTransport.HYBRID],
+    [AuthenticatorTransport.USB, AuthenticatorTransport.NFC],
+    [AuthenticatorTransport.USB],
+    [AuthenticatorTransport.HYBRID],
+]
+"""Usual transports of passkeys, to make fake credentials look real."""
+
+
+def get_fake_credential(login: str | None) -> PublicKeyCredentialDescriptor:
+    """Build a stable passkey descriptor for a login that matches no user.
+
+    Per WebAuthn Level 3 §14.6.2, unknown logins get a plausible credential,
+    so the authentication options do not tell whether the account exists.
+    """
+    key = current_app.config["SECRET_KEY"].encode("utf-8")
+    message = f"webauthn-credential:{(login or '').casefold()}".encode()
+    digest = hmac.new(key, message, hashlib.sha256).digest()
+    transports = FAKE_CREDENTIAL_TRANSPORTS[digest[0] % len(FAKE_CREDENTIAL_TRANSPORTS)]
+    return PublicKeyCredentialDescriptor(id=digest, transports=transports)
 
 
 def get_rp_id() -> str:
@@ -15,8 +40,6 @@ def get_rp_id() -> str:
 
 def get_rp_name() -> str:
     """Get Relying Party display name from CANAILLE.NAME configuration."""
-    from flask import current_app
-
     return current_app.config["CANAILLE"]["NAME"]
 
 

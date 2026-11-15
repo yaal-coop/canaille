@@ -70,21 +70,23 @@ def generate_auth_options():
     from webauthn.helpers.structs import UserVerificationRequirement
 
     from canaille.app.fido import deserialize_transports
+    from canaille.app.fido import get_fake_credential
     from canaille.app.fido import get_rp_id
 
     rp_id = get_rp_id()
 
-    allowed_credentials = []
-    for credential in g.auth.user.webauthn_credentials:
-        transports = (
-            deserialize_transports(credential.transports)
-            if credential.transports
-            else None
-        )
-        descriptor = PublicKeyCredentialDescriptor(
-            id=credential.credential_id, transports=transports
-        )
-        allowed_credentials.append(descriptor)
+    if not g.auth.user:
+        allowed_credentials = [get_fake_credential(g.auth.user_name)]
+    else:
+        allowed_credentials = [
+            PublicKeyCredentialDescriptor(
+                id=credential.credential_id,
+                transports=deserialize_transports(credential.transports)
+                if credential.transports
+                else None,
+            )
+            for credential in g.auth.user.webauthn_credentials
+        ]
 
     timeout_ms = int(
         current_app.config["CANAILLE"]["FIDO_TIMEOUT"].total_seconds() * 1000
@@ -129,12 +131,9 @@ def verify_auth_response():
     except (KeyError, ValueError) as e:
         return jsonify({"success": False, "error": f"Invalid credential ID: {e}"}), 400
 
+    credentials = g.auth.user.webauthn_credentials if g.auth.user else []
     credential = next(
-        (
-            c
-            for c in g.auth.user.webauthn_credentials
-            if c.credential_id == credential_raw_id
-        ),
+        (c for c in credentials if c.credential_id == credential_raw_id),
         None,
     )
     if not credential:
