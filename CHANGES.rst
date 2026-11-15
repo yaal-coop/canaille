@@ -1,3 +1,17 @@
+Unreleased
+----------
+
+Security
+^^^^^^^^
+- An attacker could set up an authenticator application or a passkey on any account
+  before the password step, and then log in to this account.
+  During the login, users can now only set up their first authenticator application
+  or passkey, after another authentication step succeeded.
+  When ``otp`` or ``fido2`` is the first item of ``AUTHENTICATION_FACTORS``,
+  users who have not set up this factor cannot log in.
+  New users can set it up from their profile, after they create their account
+  from an invitation.
+
 [0.4.3] - 2026-10-29
 --------------------
 

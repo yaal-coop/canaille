@@ -19,7 +19,9 @@ from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import AuthenticationSession
 from canaille.core.auth import auth_step
+from canaille.core.auth import can_enroll_factor
 from canaille.core.auth import redirect_to_next_auth_step
+from canaille.core.auth import refuse_factor_enrollment
 
 bp = Blueprint("fido2", __name__)
 
@@ -42,6 +44,8 @@ def webauthn():
         abort(404)
 
     if g.auth.user and not g.auth.user.has_webauthn_credential():
+        if not can_enroll_factor("fido2", has_factor=False):
+            return refuse_factor_enrollment()
         return redirect(url_for(".setup"))
 
     if request.method == "GET":
@@ -177,8 +181,21 @@ def setup():
             user_name=g.session.user.user_name,
             welcome_flash=False,
             remaining=["fido2"],
+            data={"enrollment": True},
         )
         g.auth.save()
+
+    has_credential = bool(
+        g.auth and g.auth.user and g.auth.user.has_webauthn_credential()
+    )
+    if not g.auth or not can_enroll_factor("fido2", has_factor=has_credential):
+        if request.method == "POST":
+            return jsonify({"success": False, "error": "Invalid session"}), 400
+
+        if not g.auth:
+            return redirect(url_for("core.auth.login"))
+
+        return redirect_to_next_auth_step()
 
     if request.method == "GET":
         return generate_registration_options_view()
@@ -340,7 +357,7 @@ def verify_registration_response_view():
     )
     flash(_("Passkey successfully registered."), "success")
 
-    if g.get("session"):
+    if g.auth.data.get("enrollment"):
         g.auth = None
         session.pop("auth", None)
         redirect_url = url_for(

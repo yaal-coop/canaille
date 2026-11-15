@@ -14,7 +14,9 @@ from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import auth_step
+from canaille.core.auth import can_enroll_factor
 from canaille.core.auth import redirect_to_next_auth_step
+from canaille.core.auth import refuse_factor_enrollment
 from canaille.core.endpoints.forms import TwoFactorForm
 
 bp = Blueprint("otp", __name__)
@@ -32,7 +34,9 @@ def global_processor():
 def otp():
     from canaille.app.otp import is_otp_valid
 
-    if g.auth.user and not g.auth.user.last_otp_login:
+    if g.auth.user and not g.auth.user.secret_token:
+        if not can_enroll_factor("otp", has_factor=False):
+            return refuse_factor_enrollment()
         return redirect(url_for(".setup"))
 
     form = TwoFactorForm(request.form or None)
@@ -90,6 +94,10 @@ def setup():
             if g.session
             else url_for("core.auth.login")
         )
+
+    has_otp = bool(g.auth.user and g.auth.user.secret_token)
+    if not can_enroll_factor("otp", has_factor=has_otp):
+        return redirect_to_next_auth_step()
 
     if "otp_user_secret" not in g.auth.data:
         g.auth.data["otp_user_secret"] = make_otp_secret()

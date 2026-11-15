@@ -8,6 +8,7 @@ import time_machine
 from canaille.app import models
 from canaille.app.otp import HOTP_LOOK_AHEAD_WINDOW
 from canaille.app.otp import HOTP_START_COUNTER
+from canaille.app.otp import make_otp_secret
 from canaille.core.auth import AuthenticationSession
 
 
@@ -207,6 +208,7 @@ def test_signin_invalid_otp_chars(testclient, user, caplog, otp_method):
 def test_setup_otp(testclient, backend, caplog, otp_method):
     """Users who have never logged in with OTP should be shown the OTP setup screen."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
 
     user = models.User(
         formatted_name="Otp User",
@@ -226,6 +228,10 @@ def test_setup_otp(testclient, backend, caplog, otp_method):
     res = testclient.get("/login", status=200)
 
     res.form["login"] = "otp"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
     res = res.follow(status=302)
 
@@ -265,6 +271,7 @@ def test_setup_otp(testclient, backend, caplog, otp_method):
 def test_setup_otp_bad_otp(testclient, backend, caplog, otp_method):
     """Users who have never logged in with OTP should be shown the OTP setup screen."""
     testclient.app.config["CANAILLE"]["OTP_METHOD"] = otp_method
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
 
     user = models.User(
         formatted_name="Otp User",
@@ -284,6 +291,10 @@ def test_setup_otp_bad_otp(testclient, backend, caplog, otp_method):
     res = testclient.get("/login", status=200)
 
     res.form["login"] = "otp"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    res.form["password"] = "correct horse battery staple"
     res = res.form.submit(status=302)
     res = res.follow(status=302)
 
@@ -402,3 +413,174 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user, caplog
 
     user = backend.get(models.User, id=user.id)
     assert user.hotp_counter == 1
+
+
+@pytest.mark.usefixtures("totp_window")
+def test_setup_otp_before_password(testclient, backend, user):
+    """The OTP setup page cannot be used to skip the password step."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password"]
+    testclient.app.config["WTF_CSRF_ENABLED"] = False
+    secret_token = user.secret_token
+
+    res = testclient.get("/login/user", status=302)
+    assert res.location == "/auth/password"
+
+    res = testclient.get("/auth/otp-setup", status=302)
+    assert res.location == "/auth/password"
+
+    attacker_secret = make_otp_secret()
+    with testclient.session_transaction() as session:
+        auth = session["auth"]
+        auth["data"] = {"otp_user_secret": attacker_secret}
+        session["auth"] = auth
+
+    res = testclient.post(
+        "/auth/otp-setup", {"otp": generate_otp("TOTP", attacker_secret)}, status=302
+    )
+    assert res.location == "/auth/password"
+
+    backend.reload(user)
+    assert user.secret_token == secret_token
+    with testclient.session_transaction() as session:
+        assert not session.get("sessions")
+
+
+def test_setup_otp_with_existing_otp(testclient, backend, user):
+    """Users who have an OTP cannot replace it during the login."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
+    secret_token = user.secret_token
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+    assert res.location == "/auth/otp"
+
+    res = testclient.get("/auth/otp-setup", status=302)
+    assert res.location == "/auth/otp"
+
+    backend.reload(user)
+    assert user.secret_token == secret_token
+
+
+def test_setup_otp_as_first_step(testclient, backend, caplog):
+    """Users cannot enroll an OTP when it is the first authentication step."""
+    user = models.User(
+        formatted_name="Otp User",
+        family_name="Otp",
+        user_name="otp",
+        emails=["john@doe.test"],
+    )
+    backend.save(user)
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "otp"
+    res = res.form.submit(status=302)
+    assert res.location == "/auth/otp"
+
+    res = testclient.get("/auth/otp", status=302)
+    assert res.location == "/login"
+    assert (
+        "error",
+        "This authentication method is not set up for your account. "
+        "Please contact your administrator.",
+    ) in res.flashes
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Authentication factor enrollment refused for otp",
+    ) in caplog.record_tuples
+
+    res = testclient.get("/auth/otp-setup", status=302)
+    assert res.location == "/login"
+
+    backend.reload(user)
+    assert not user.secret_token
+    backend.delete(user)
+
+
+def test_set_step_finished_checks_the_current_step(testclient):
+    """Only the current authentication step can be marked as finished."""
+    auth = AuthenticationSession(user_name="user", remaining=["password", "otp"])
+
+    with pytest.raises(ValueError):
+        auth.set_step_finished("otp")
+
+    auth.set_step_finished("password")
+    assert auth.remaining == ["otp"]
+    assert auth.achieved == ["password"]
+
+
+def test_setup_otp_after_admin_reset(testclient, backend, user):
+    """Users whose OTP was reset by an administrator set up a new one after the password."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
+    user.secret_token = None
+    user.hotp_counter = None
+    backend.save(user)
+    assert user.last_otp_login
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+    res.form["password"] = "correct horse battery staple"
+    res = res.form.submit(status=302)
+    res = res.follow(status=302)
+    assert res.location == "/auth/otp-setup"
+    testclient.get("/auth/otp-setup", status=200)
+
+
+def test_setup_otp_logged_in_wrong_step(testclient, backend, logged_user):
+    """Logged-in users can only set up an OTP at the OTP step of their login."""
+    secret_token = logged_user.secret_token
+    with testclient.session_transaction() as session:
+        session["auth"] = AuthenticationSession(
+            user_name="user",
+            remaining=["password", "otp"],
+        ).serialize()
+
+    res = testclient.get("/auth/otp-setup", status=302)
+    assert res.location == "/auth/password"
+
+    backend.reload(logged_user)
+    assert logged_user.secret_token == secret_token
+
+
+def test_login_with_another_user_restarts_the_steps(testclient, backend, user, admin):
+    """Steps passed for one user do not count for another user typed in the same login."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "otp"]
+    testclient.app.config["WTF_CSRF_ENABLED"] = False
+
+    res = testclient.post("/login", {"login": "user"}, status=302)
+    assert res.location == "/auth/password"
+    res = testclient.post(
+        "/auth/password", {"password": "correct horse battery staple"}, status=302
+    )
+    assert res.location == "/auth/otp"
+
+    res = testclient.post("/login", {"login": "admin"}, status=302)
+    assert res.location == "/auth/password"
+
+    res = testclient.get("/auth/otp-setup", status=302)
+    assert res.location == "/auth/password"
+    backend.reload(admin)
+    assert not admin.secret_token
+
+
+def test_setup_otp_reauthentication_with_existing_otp(testclient, backend, logged_user):
+    """A re-authentication cannot replace the OTP of the logged-in user."""
+    secret_token = logged_user.secret_token
+    with testclient.session_transaction() as session:
+        session["auth"] = AuthenticationSession(
+            user_name="user",
+            remaining=["otp"],
+            achieved=["password"],
+        ).serialize()
+
+    res = testclient.get("/auth/otp-setup", status=302)
+    assert res.location == "/auth/otp"
+
+    backend.reload(logged_user)
+    assert logged_user.secret_token == secret_token

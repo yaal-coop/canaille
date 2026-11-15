@@ -217,9 +217,49 @@ class AuthenticationSession:
         self.current_step_start_dt = datetime.datetime.now(datetime.UTC)
         self.current_step_try_dt = self.current_step_start_dt
 
+    def is_current_step(self, step) -> bool:
+        if isinstance(self.current_step, list):
+            return step in self.current_step
+        return step == self.current_step
+
     def set_step_finished(self, step) -> None:
+        if not self.is_current_step(step):
+            raise ValueError(f"'{step}' is not the current authentication step")
+
         self.achieved.append(step)
         self.remaining.pop(0)
+
+
+def can_enroll_factor(step, has_factor) -> bool:
+    """Indicate whether the user of the authentication session can enroll a factor.
+
+    Logged-in users can enroll factors on their own account from their profile.
+    During the login, users can only enroll their first factor of a kind,
+    at the matching step, after another step succeeded.
+    """
+    if not g.auth.user or not g.auth.is_current_step(step):
+        return False
+
+    if g.auth.data.get("enrollment"):
+        return bool(g.session) and g.session.user.id == g.auth.user.id
+
+    return bool(g.auth.achieved) and not has_factor
+
+
+def refuse_factor_enrollment():
+    """End the login of a user who has no factor of a kind and cannot enroll one."""
+    current_app.logger.security(
+        f"Authentication factor enrollment refused for {g.auth.user_name}"
+    )
+    del g.auth
+    flash(
+        _(
+            "This authentication method is not set up for your account. "
+            "Please contact your administrator."
+        ),
+        "error",
+    )
+    return redirect(url_for("core.auth.login"))
 
 
 def redirect_to_next_auth_step():

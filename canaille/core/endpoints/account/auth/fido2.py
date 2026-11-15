@@ -107,6 +107,7 @@ def _handle_setup(edited_user):
         user_name=g.session.user.user_name,
         welcome_flash=False,
         remaining=["fido2"],
+        data={"enrollment": True},
     )
     g.auth.save()
     response = redirect(url_for("core.auth.fido2.setup"))

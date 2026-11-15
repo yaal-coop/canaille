@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 import uuid
 from unittest.mock import MagicMock
 from unittest.mock import patch
@@ -78,6 +79,7 @@ def test_redirect_to_setup_without_credential(testclient, user):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
     res = testclient.get("/auth/fido2", status=302)
@@ -95,6 +97,7 @@ def test_generate_auth_options(mock_gen_options, testclient, user, fido_credenti
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
     with patch("webauthn.options_to_json") as mock_to_json:
@@ -120,6 +123,7 @@ def test_successful_authentication(
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -211,6 +215,7 @@ def test_full_login_flow_with_existing_credential(
 @patch("webauthn.verify_registration_response")
 def test_full_login_flow_with_credential_setup(mock_verify, testclient, user, backend):
     """Test complete login flow requiring FIDO2 credential setup."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password", "fido2"]
     assert len(user.webauthn_credentials) == 0
 
     res = testclient.get("/login", status=200)
@@ -219,6 +224,13 @@ def test_full_login_flow_with_credential_setup(mock_verify, testclient, user, ba
     res = testclient.post(
         "/login",
         {"login": user.user_name, "remember": "y"},
+        status=302,
+    )
+    assert res.location == "/auth/password"
+
+    res = testclient.post(
+        "/auth/password",
+        {"password": "correct horse battery staple"},
         status=302,
     )
     assert res.location == "/auth/fido2"
@@ -286,6 +298,7 @@ def test_generate_registration_options(mock_gen_options, testclient, user):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
     with patch("webauthn.options_to_json") as mock_to_json:
@@ -306,6 +319,7 @@ def test_successful_registration(mock_verify, testclient, user, backend, caplog)
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9yZWdfY2hhbGxlbmdl"},
         ).serialize()
 
@@ -348,6 +362,7 @@ def test_fido_disabled(testclient, user):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
     testclient.get("/auth/fido2", status=404)
@@ -360,6 +375,7 @@ def test_auth_without_credential(testclient, user):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
     res = testclient.get("/auth/fido2", status=302)
@@ -372,6 +388,7 @@ def test_auth_response_empty_body(testclient, user, fido_credential):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -390,6 +407,7 @@ def test_auth_response_missing_raw_id(testclient, user, fido_credential):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -417,6 +435,7 @@ def test_auth_response_without_challenge(testclient, user, fido_credential):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
         # No challenge in session
 
@@ -435,6 +454,7 @@ def test_auth_response_with_exception(testclient, user, fido_credential, caplog)
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -466,9 +486,11 @@ def test_setup_without_user(testclient):
         session["auth"] = AuthenticationSession(
             user_name="nonexistent",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
-    testclient.get("/auth/fido2-setup", status=400)
+    res = testclient.get("/auth/fido2-setup", status=302)
+    assert res.location == "/auth/fido2"
 
 
 def test_setup_from_profile_without_auth(testclient, logged_user):
@@ -488,6 +510,7 @@ def test_registration_empty_body(testclient, user):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -506,6 +529,7 @@ def test_registration_missing_credential(testclient, user):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -524,6 +548,7 @@ def test_registration_invalid_session(testclient, user):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
         # No challenge or user_id in session
 
@@ -544,6 +569,7 @@ def test_registration_with_exception(testclient, user, caplog):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdA"},
         ).serialize()
 
@@ -568,6 +594,7 @@ def test_registration_with_string_aaguid(testclient, user, backend):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdA"},
         ).serialize()
 
@@ -600,6 +627,7 @@ def test_registration_with_uuid_aaguid(testclient, user, backend):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdA"},
         ).serialize()
 
@@ -652,6 +680,7 @@ def test_auth_with_credential_without_transports(
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
     with patch("webauthn.options_to_json") as mock_to_json:
@@ -690,6 +719,7 @@ def test_auth_with_credential_empty_transports(
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
         ).serialize()
 
     with patch("webauthn.options_to_json") as mock_to_json:
@@ -709,6 +739,7 @@ def test_registration_with_none_aaguid(mock_verify, testclient, user, backend):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -747,6 +778,7 @@ def test_auth_response_with_wrong_credential_id(testclient, user, fido_credentia
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            achieved=["password"],
             data={"fido_challenge": "dGVzdF9jaGFsbGVuZ2U"},
         ).serialize()
 
@@ -768,8 +800,9 @@ def test_auth_response_with_wrong_credential_id(testclient, user, fido_credentia
     assert "Credential not found" in response.json["error"]
 
 
-def test_max_credentials_reached_during_setup_get(testclient, user, backend):
+def test_max_credentials_reached_during_setup_get(testclient, logged_user, backend):
     """Test setup GET when user has reached max credentials limit."""
+    user = logged_user
     # Create 5 credentials (default max)
     for i in range(5):
         credential = models.WebAuthnCredential(
@@ -788,6 +821,7 @@ def test_max_credentials_reached_during_setup_get(testclient, user, backend):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            data={"enrollment": True},
         ).serialize()
 
     res = testclient.get("/auth/fido2-setup", status=302)
@@ -795,8 +829,9 @@ def test_max_credentials_reached_during_setup_get(testclient, user, backend):
     assert any("Maximum number of passkeys reached" in msg for _, msg in res.flashes)
 
 
-def test_max_credentials_reached_during_setup_post(testclient, user, backend):
+def test_max_credentials_reached_during_setup_post(testclient, logged_user, backend):
     """Test setup POST when user has reached max credentials limit (safety check)."""
+    user = logged_user
     # Create 5 credentials (default max)
     for i in range(5):
         credential = models.WebAuthnCredential(
@@ -815,7 +850,7 @@ def test_max_credentials_reached_during_setup_post(testclient, user, backend):
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
-            data={"fido_challenge": "dGVzdA"},
+            data={"fido_challenge": "dGVzdA", "enrollment": True},
         ).serialize()
 
     response = testclient.post_json(
@@ -831,9 +866,10 @@ def test_max_credentials_reached_during_setup_post(testclient, user, backend):
 
 @patch("webauthn.generate_registration_options")
 def test_setup_with_existing_credentials_with_transports(
-    mock_gen_options, testclient, user, backend
+    mock_gen_options, testclient, logged_user, backend
 ):
     """Test setup with existing credentials that have transports (exclude_credentials)."""
+    user = logged_user
     for i in range(2):
         credential = models.WebAuthnCredential(
             credential_id=f"existing_{i}".encode(),
@@ -856,6 +892,7 @@ def test_setup_with_existing_credentials_with_transports(
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            data={"enrollment": True},
         ).serialize()
 
     with patch("webauthn.options_to_json") as mock_to_json:
@@ -871,9 +908,10 @@ def test_setup_with_existing_credentials_with_transports(
 
 @patch("webauthn.generate_registration_options")
 def test_setup_with_credentials_without_and_empty_transports(
-    mock_gen_options, testclient, user, backend
+    mock_gen_options, testclient, logged_user, backend
 ):
     """Test setup with credentials that have None or empty transports."""
+    user = logged_user
     credential1 = models.WebAuthnCredential(
         credential_id=b"no_transports",
         public_key=b"test_public_key",
@@ -907,6 +945,7 @@ def test_setup_with_credentials_without_and_empty_transports(
         session["auth"] = AuthenticationSession(
             user_name="user",
             remaining=["fido2"],
+            data={"enrollment": True},
         ).serialize()
 
     with patch("webauthn.options_to_json") as mock_to_json:
@@ -934,7 +973,7 @@ def test_registration_from_profile_while_logged_in(
     # Simulate challenge set by GET /auth/fido2-setup
     with testclient.session_transaction() as session:
         auth = session["auth"]
-        auth["data"] = {"fido_challenge": "dGVzdA"}
+        auth["data"]["fido_challenge"] = "dGVzdA"
         session["auth"] = auth
 
     mock_verification = MagicMock()
@@ -966,4 +1005,153 @@ def test_registration_from_profile_while_logged_in(
     assert len(user_reloaded.webauthn_credentials) > 0
 
     with testclient.session_transaction() as session:
+        assert "auth" not in session
+
+
+REGISTRATION_RESPONSE = {
+    "credential": {
+        "id": "YXR0YWNrZXI",
+        "rawId": "YXR0YWNrZXI",
+        "type": "public-key",
+        "response": {"attestationObject": "dGVzdA", "clientDataJSON": "dGVzdA"},
+    },
+}
+
+
+def mock_registration(mock_verify):
+    mock_verify.return_value = MagicMock(
+        credential_id=b"attacker",
+        credential_public_key=b"attacker_public_key",
+        sign_count=0,
+        aaguid=None,
+    )
+
+
+def set_fido_challenge(testclient):
+    with testclient.session_transaction() as session:
+        auth = session["auth"]
+        auth["data"] = {"fido_challenge": "dGVzdA"}
+        session["auth"] = auth
+
+
+@patch("webauthn.verify_registration_response")
+def test_fido_setup_before_password(mock_verify, testclient, backend, user):
+    """The passkey setup page cannot be used to skip the password step."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password"]
+    mock_registration(mock_verify)
+
+    res = testclient.get("/login/user", status=302)
+    assert res.location == "/auth/password"
+
+    res = testclient.get("/auth/fido2-setup", status=302)
+    assert res.location == "/auth/password"
+
+    set_fido_challenge(testclient)
+    res = testclient.post_json("/auth/fido2-setup", REGISTRATION_RESPONSE, status=400)
+    assert res.json == {"success": False, "error": "Invalid session"}
+
+    backend.reload(user)
+    assert not user.webauthn_credentials
+    with testclient.session_transaction() as session:
+        assert not session.get("sessions")
+
+
+@patch("webauthn.verify_registration_response")
+def test_fido_setup_with_existing_credential(
+    mock_verify, testclient, backend, user, fido_credential
+):
+    """Users who have a passkey cannot add another one during the login."""
+    mock_registration(mock_verify)
+    with testclient.session_transaction() as session:
+        session["auth"] = AuthenticationSession(
+            user_name="user",
+            remaining=["fido2"],
+            achieved=["password"],
+            data={"fido_challenge": "dGVzdA"},
+        ).serialize()
+
+    res = testclient.get("/auth/fido2-setup", status=302)
+    assert res.location == "/auth/fido2"
+
+    res = testclient.post_json("/auth/fido2-setup", REGISTRATION_RESPONSE, status=400)
+    assert res.json == {"success": False, "error": "Invalid session"}
+
+    backend.reload(user)
+    assert len(user.webauthn_credentials) == 1
+
+
+def test_fido_setup_as_first_step(testclient, backend, user, caplog):
+    """Users cannot enroll a passkey when it is the first authentication step."""
+    res = testclient.post("/login", {"login": "user"}, status=302)
+    assert res.location == "/auth/fido2"
+
+    res = testclient.get("/auth/fido2", status=302)
+    assert res.location == "/login"
+    assert (
+        "error",
+        "This authentication method is not set up for your account. "
+        "Please contact your administrator.",
+    ) in res.flashes
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Authentication factor enrollment refused for user",
+    ) in caplog.record_tuples
+
+    res = testclient.get("/auth/fido2-setup", status=302)
+    assert res.location == "/login"
+
+    backend.reload(user)
+    assert not user.webauthn_credentials
+
+
+@patch("webauthn.verify_registration_response")
+def test_fido_setup_for_another_user_while_logged_in(
+    mock_verify, testclient, backend, logged_user, admin
+):
+    """Logged-in users cannot enroll a passkey on another account they log in."""
+    testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password"]
+    mock_registration(mock_verify)
+
+    res = testclient.post("/login", {"login": "admin"}, status=302)
+    assert res.location == "/auth/password"
+
+    set_fido_challenge(testclient)
+    res = testclient.post_json("/auth/fido2-setup", REGISTRATION_RESPONSE, status=400)
+    assert res.json == {"success": False, "error": "Invalid session"}
+
+    backend.reload(admin)
+    assert not admin.webauthn_credentials
+
+
+def test_fido_setup_without_auth_session(testclient):
+    """The passkey setup page needs a login in progress."""
+    res = testclient.get("/auth/fido2-setup", status=302)
+    assert res.location == "/login"
+
+    res = testclient.post_json("/auth/fido2-setup", REGISTRATION_RESPONSE, status=400)
+    assert res.json == {"success": False, "error": "Invalid session"}
+
+
+@patch("webauthn.verify_registration_response")
+def test_fido_setup_first_passkey_of_another_account(
+    mock_verify, testclient, backend, logged_user, admin
+):
+    """Enrolling a first passkey while logging in to a second account finishes this login."""
+    mock_registration(mock_verify)
+    with testclient.session_transaction() as session:
+        session["auth"] = AuthenticationSession(
+            user_name="admin",
+            remaining=["fido2"],
+            achieved=["password"],
+            data={"fido_challenge": "dGVzdA"},
+        ).serialize()
+
+    res = testclient.post_json("/auth/fido2-setup", REGISTRATION_RESPONSE, status=200)
+    assert res.json == {"success": True, "redirect": "/"}
+
+    backend.reload(admin)
+    assert len(admin.webauthn_credentials) == 1
+    with testclient.session_transaction() as session:
+        assert len(session["sessions"]) == 2
         assert "auth" not in session
