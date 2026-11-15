@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-29 22:02+0100\n"
+"POT-Creation-Date: 2026-11-15 09:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,33 +92,43 @@ msgstr ""
 msgid "LDAP authentication failed with user '{user}'"
 msgstr ""
 
-#: canaille/core/auth.py:48 canaille/core/endpoints/auth/otp.py:85
+#: canaille/core/auth.py:55 canaille/core/endpoints/auth/otp.py:100
 msgid "Cannot remember the login you attempted to sign in with."
 msgstr ""
 
-#: canaille/core/auth.py:232 canaille/core/endpoints/account/__init__.py:847
+#: canaille/core/auth.py:267
+msgid ""
+"This authentication method is not set up for your account. Please contact"
+" your administrator."
+msgstr ""
+
+#: canaille/core/auth.py:305
+msgid "Too many failed attempts. Please try again later."
+msgstr ""
+
+#: canaille/core/auth.py:316 canaille/core/endpoints/account/__init__.py:847
 #, python-format
 msgid "Connection successful. Welcome %(user)s"
 msgstr ""
 
-#: canaille/core/auth.py:247
+#: canaille/core/auth.py:331
 msgid "An error happened during your authentication process. Please try again."
 msgstr ""
 
-#: canaille/core/auth.py:281
+#: canaille/core/auth.py:365
 msgid "John Doe"
 msgstr ""
 
-#: canaille/core/auth.py:282 canaille/core/endpoints/forms.py:196
+#: canaille/core/auth.py:366 canaille/core/endpoints/forms.py:196
 #: canaille/core/endpoints/forms.py:678
 msgid "jdoe"
 msgstr ""
 
-#: canaille/core/auth.py:283
+#: canaille/core/auth.py:367
 msgid "john.doe@example.com"
 msgstr ""
 
-#: canaille/core/auth.py:290
+#: canaille/core/auth.py:374
 msgid " or "
 msgstr ""
 
@@ -776,7 +786,7 @@ msgid "Locked users cannot be impersonated."
 msgstr ""
 
 #: canaille/core/endpoints/account/__init__.py:987
-#: canaille/core/endpoints/auth/password.py:299
+#: canaille/core/endpoints/auth/password.py:324
 msgid "Your password has been updated successfully."
 msgstr ""
 
@@ -841,8 +851,8 @@ msgid "You switched to {user_name} session."
 msgstr ""
 
 #: canaille/core/endpoints/auth/__init__.py:108
-#: canaille/core/endpoints/auth/password.py:85
-#: canaille/core/endpoints/auth/password.py:100
+#: canaille/core/endpoints/auth/password.py:89
+#: canaille/core/endpoints/auth/password.py:104
 msgid "Login failed. Please check your information."
 msgstr ""
 
@@ -859,96 +869,96 @@ msgstr ""
 msgid "All sessions have been closed."
 msgstr ""
 
-#: canaille/core/endpoints/auth/email.py:61
-#: canaille/core/endpoints/auth/otp.py:45
-#: canaille/core/endpoints/auth/otp.py:59
-#: canaille/core/endpoints/auth/otp.py:120
-#: canaille/core/endpoints/auth/sms.py:61
+#: canaille/core/endpoints/auth/email.py:74
+#: canaille/core/endpoints/auth/otp.py:56
+#: canaille/core/endpoints/auth/otp.py:74
+#: canaille/core/endpoints/auth/otp.py:139
+#: canaille/core/endpoints/auth/sms.py:74
 msgid "The passcode you entered is invalid. Please try again."
 msgstr ""
 
-#: canaille/core/endpoints/auth/email.py:97
+#: canaille/core/endpoints/auth/email.py:107
 msgid "Sending new verification code."
 msgstr ""
 
-#: canaille/core/endpoints/auth/fido.py:210
+#: canaille/core/endpoints/auth/fido.py:226
 #, python-brace-format
 msgid ""
 "Maximum number of passkeys reached ({max}). Please remove one before "
 "adding another."
 msgstr ""
 
-#: canaille/core/endpoints/auth/fido.py:332
+#: canaille/core/endpoints/auth/fido.py:348
 #: canaille/templates/core/account/auth/fido2.html:81
 msgid "My passkey"
 msgstr ""
 
-#: canaille/core/endpoints/auth/fido.py:341
+#: canaille/core/endpoints/auth/fido.py:357
 msgid "Passkey successfully registered."
 msgstr ""
 
-#: canaille/core/endpoints/auth/otp.py:138
+#: canaille/core/endpoints/auth/otp.py:157
 msgid "Authenticator application correctly configured."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:132
+#: canaille/core/endpoints/auth/password.py:136
 msgid ""
 "Sending password initialization link at your email address. It should be "
 "received within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:141
+#: canaille/core/endpoints/auth/password.py:145
 msgid ""
 "Sending password initialization code at your email address. It should be "
 "received within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:166
-#: canaille/core/endpoints/auth/password.py:261
+#: canaille/core/endpoints/auth/password.py:176
+#: canaille/core/endpoints/auth/password.py:277
 msgid "This code is invalid or has expired. Please request a new one."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:185
+#: canaille/core/endpoints/auth/password.py:195
 msgid "Could not send the password reset link."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:187
+#: canaille/core/endpoints/auth/password.py:197
 msgid "Could not send the password reset code."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:193
+#: canaille/core/endpoints/auth/password.py:203
 msgid ""
 "Sending password reset link to your email address. You should receive it "
 "within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:198
+#: canaille/core/endpoints/auth/password.py:208
 msgid ""
 "Sending password reset code to your email address. You should receive it "
 "within a few minutes."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:210
+#: canaille/core/endpoints/auth/password.py:220
 #, python-format
 msgid ""
 "The user '%(user)s' does not have permissions to update their password. "
 "We cannot send a password reset email."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:246
+#: canaille/core/endpoints/auth/password.py:256
 #, python-format
 msgid "The user '%(user)s' does not have permissions to update their password. "
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:280
+#: canaille/core/endpoints/auth/password.py:304
 msgid "The password reset link that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/auth/password.py:285
+#: canaille/core/endpoints/auth/password.py:309
 msgid "The password reset code that brought you here was invalid."
 msgstr ""
 
-#: canaille/core/endpoints/auth/sms.py:97
+#: canaille/core/endpoints/auth/sms.py:107
 msgid "The new verification code has been sent."
 msgstr ""
 
