@@ -97,9 +97,9 @@ def send_sms_otp(flashes=True):
             return
 
         otp = g.auth.user.generate_sms_or_mail_otp()
-        send_one_time_password_sms(g.auth.user.preferred_email, otp)
-        Backend.instance.save(g.auth.user)
         phone_number = g.auth.user.phone_numbers[0]
+        send_one_time_password_sms(phone_number, otp)
+        Backend.instance.save(g.auth.user)
         current_app.logger.security(
             f"Sent one-time passcode for {g.auth.user_name} at {phone_number}"
         )

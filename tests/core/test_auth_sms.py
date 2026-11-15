@@ -71,6 +71,9 @@ def test_signin_with_sms_otp(smpp_client, testclient, backend, user, caplog):
         user.one_time_password
         in smpp_client.send_message.call_args.kwargs["short_message"].decode()
     )
+    assert smpp_client.send_message.call_args.kwargs["destination_addr"] == (
+        "555-000-000"
+    )
 
     res.form["otp"] = user.one_time_password
     res = res.form.submit(status=302, name="action", value="confirm")
