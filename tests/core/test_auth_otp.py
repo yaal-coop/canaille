@@ -9,7 +9,11 @@ from canaille.app import models
 from canaille.app.otp import HOTP_LOOK_AHEAD_WINDOW
 from canaille.app.otp import HOTP_START_COUNTER
 from canaille.app.otp import make_otp_secret
+from canaille.core.auth import PASSCODE_MAX_FAILURES
 from canaille.core.auth import AuthenticationSession
+from canaille.core.auth import clear_passcode_failures
+from canaille.core.auth import has_too_many_passcode_failures
+from canaille.core.auth import record_passcode_failure
 
 
 @pytest.fixture
@@ -416,6 +420,44 @@ def test_signin_outside_hotp_look_ahead_window(testclient, backend, user, caplog
 
 
 @pytest.mark.usefixtures("totp_window")
+def test_too_many_wrong_otp(testclient, user, caplog):
+    """Wrong passcodes end the login, and lock passcodes for a while."""
+    testclient.app.config["CANAILLE"]["OTP_METHOD"] = "TOTP"
+    good_passcode = generate_otp("TOTP", user.secret_token)
+    wrong_passcode = str((int(good_passcode) + 1) % 10**6).zfill(6)
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+
+    for _ in range(PASSCODE_MAX_FAILURES - 1):
+        res.form["otp"] = wrong_passcode
+        res = res.form.submit(status=200)
+
+    res.form["otp"] = wrong_passcode
+    res = res.form.submit(status=302)
+    assert res.location == "/login"
+    assert (
+        "error",
+        "Too many failed attempts. Please try again later.",
+    ) in res.flashes
+    assert (
+        "canaille",
+        logging.SECURITY,
+        "Too many wrong passcodes for user",
+    ) in caplog.record_tuples
+
+    res = testclient.get("/login", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=302)
+    assert res.location == "/login"
+    with testclient.session_transaction() as session:
+        assert not session.get("sessions")
+
+
+@pytest.mark.usefixtures("totp_window")
 def test_setup_otp_before_password(testclient, backend, user):
     """The OTP setup page cannot be used to skip the password step."""
     testclient.app.config["CANAILLE"]["AUTHENTICATION_FACTORS"] = ["password"]
@@ -546,6 +588,17 @@ def test_setup_otp_logged_in_wrong_step(testclient, backend, logged_user):
 
     backend.reload(logged_user)
     assert logged_user.secret_token == secret_token
+
+
+def test_passcode_failures_are_counted_by_kind(testclient, user):
+    """A good emailed code does not reset the count of wrong authenticator passcodes."""
+    for _ in range(PASSCODE_MAX_FAILURES - 1):
+        assert not record_passcode_failure(user, "otp")
+
+    clear_passcode_failures(user, "code")
+    assert not has_too_many_passcode_failures(user, "code")
+    assert record_passcode_failure(user, "otp")
+    assert has_too_many_passcode_failures(user, "otp")
 
 
 def test_login_with_another_user_restarts_the_steps(testclient, backend, user, admin):

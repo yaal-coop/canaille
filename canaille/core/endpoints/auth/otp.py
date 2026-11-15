@@ -13,8 +13,12 @@ from canaille.app import get_b64encoded_qr_image
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.core.auth import abort_passcode_authentication
 from canaille.core.auth import auth_step
 from canaille.core.auth import can_enroll_factor
+from canaille.core.auth import clear_passcode_failures
+from canaille.core.auth import has_too_many_passcode_failures
+from canaille.core.auth import record_passcode_failure
 from canaille.core.auth import redirect_to_next_auth_step
 from canaille.core.auth import refuse_factor_enrollment
 from canaille.core.endpoints.forms import TwoFactorForm
@@ -39,6 +43,9 @@ def otp():
             return refuse_factor_enrollment()
         return redirect(url_for(".setup"))
 
+    if g.auth.user and has_too_many_passcode_failures(g.auth.user, "otp"):
+        return abort_passcode_authentication()
+
     form = TwoFactorForm(request.form or None)
 
     if not form.validate_on_submit() or not g.auth.user:
@@ -59,13 +66,17 @@ def otp():
         g.auth.user.hotp_counter,
     )
     if not otp_valid:
+        current_app.logger.security(f"Failed OTP authentication for {g.auth.user_name}")
+        if record_passcode_failure(g.auth.user, "otp"):
+            return abort_passcode_authentication()
+
         flash(
             _("The passcode you entered is invalid. Please try again."),
             "error",
         )
-        current_app.logger.security(f"Failed OTP authentication for {g.auth.user_name}")
         return render_template("core/auth/otp.html", form=form)
 
+    clear_passcode_failures(g.auth.user, "otp")
     g.auth.user.last_otp_login = datetime.datetime.now(datetime.UTC)
     g.auth.user.hotp_counter = hotp_counter
     Backend.instance.save(g.auth.user)

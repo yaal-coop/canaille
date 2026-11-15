@@ -6,6 +6,7 @@ from unittest import mock
 import pytest
 
 from canaille.app import models
+from canaille.core.auth import PASSCODE_MAX_FAILURES
 
 
 def test_password_forgotten_disabled(testclient, user, smtpd):
@@ -348,3 +349,55 @@ def test_password_reset_with_wrong_host(
     # Raises an attribute error but a Security Error is raised before during host validation, causing the attribute error later
     with pytest.raises(AttributeError):
         res.form.submit(headers={"Host": "test.test"}, status=400)
+
+
+def test_password_forgotten_too_many_wrong_codes(testclient, user, backend, smtpd):
+    """Wrong reset codes are limited, so the code cannot be guessed."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    res = res.follow(status=200)
+    backend.reload(user)
+    code = user.one_time_password
+    wrong_code = "000000" if code != "000000" else "111111"
+
+    for _ in range(PASSCODE_MAX_FAILURES - 1):
+        res.forms[0]["code"] = wrong_code
+        res = res.forms[0].submit(status=200)
+
+    res.forms[0]["code"] = wrong_code
+    res = res.forms[0].submit(status=302)
+    assert res.location == "/login"
+    assert (
+        "error",
+        "Too many failed attempts. Please try again later.",
+    ) in res.flashes
+
+    res = testclient.get(f"/reset/user/{code}", status=302)
+    assert res.location == "/login"
+
+
+def test_password_reset_link_too_many_wrong_codes(testclient, user, backend, smtpd):
+    """Wrong codes in the reset URL are limited, so the code cannot be guessed."""
+    testclient.app.config["TRUSTED_HOSTS"] = None
+    res = testclient.get("/reset", status=200)
+    res.form["login"] = "user"
+    res = res.form.submit(status=302)
+    backend.reload(user)
+    code = user.one_time_password
+    wrong_code = "000000" if code != "000000" else "111111"
+
+    for _ in range(PASSCODE_MAX_FAILURES - 1):
+        res = testclient.get(f"/reset/user/{wrong_code}", status=302)
+        assert res.location == "/"
+
+    res = testclient.get(f"/reset/user/{wrong_code}", status=302)
+    assert res.location == "/login"
+
+    res = testclient.get(f"/reset/user/{code}", status=302)
+    assert res.location == "/login"
+    assert (
+        "error",
+        "Too many failed attempts. Please try again later.",
+    ) in res.flashes

@@ -11,6 +11,12 @@ Security
   users who have not set up this factor cannot log in.
   New users can set it up from their profile, after they create their account
   from an invitation.
+- One-time passcodes sent by email or SMS, passcodes from authenticator applications,
+  and password reset codes could be guessed by trying many of them.
+  After 5 wrong passcodes, the login or the password reset stops,
+  and passcodes are refused for 15 minutes.
+  The wrong passcodes are counted in the cache. When Canaille runs in several processes,
+  set ``CACHE_TYPE`` to a shared cache, such as Redis.
 
 [0.4.3] - 2026-10-29
 --------------------

@@ -16,9 +16,13 @@ from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import auth_step
+from canaille.core.auth import clear_passcode_failures
 from canaille.core.auth import get_user_from_login
+from canaille.core.auth import has_too_many_passcode_failures
 from canaille.core.auth import needs_password_initialization
+from canaille.core.auth import record_passcode_failure
 from canaille.core.auth import redirect_to_next_auth_step
+from canaille.core.auth import refuse_passcode
 from canaille.core.captcha import should_show_captcha_on_login
 
 from ...mails import generate_password_reset_url_or_code
@@ -156,11 +160,17 @@ def firstlogin_code(user):
         abort(404)
 
     form = ForgottenPasswordCodeForm(request.form)
+    if request.form and has_too_many_passcode_failures(user, "code"):
+        return refuse_passcode(user.user_name)
+
     if not form.validate_on_submit() or not user.is_email_or_sms_otp_valid(
         form.code.data
     ):
         if not request.form:
             return render_template("core/auth/firstlogin-code.html", form=form)
+
+        if record_passcode_failure(user, "code"):
+            return refuse_passcode(user.user_name)
 
         flash(
             _("This code is invalid or has expired. Please request a new one."), "error"
@@ -251,11 +261,17 @@ def forgotten_code(user):
         return redirect(url_for(".forgotten"))
 
     form = ForgottenPasswordCodeForm(request.form)
+    if request.form and has_too_many_passcode_failures(user, "code"):
+        return refuse_passcode(user.user_name)
+
     if not form.validate_on_submit() or not user.is_email_or_sms_otp_valid(
         form.code.data
     ):
         if not request.form:
             return render_template("core/auth/forgotten-password-code.html", form=form)
+
+        if record_passcode_failure(user, "code"):
+            return refuse_passcode(user.user_name)
 
         flash(
             _("This code is invalid or has expired. Please request a new one."), "error"
@@ -271,10 +287,18 @@ def reset(user, token):
         abort(404)
     form = PasswordResetForm(request.form)
 
+    # Reset links are long random tokens. Only short reset codes need a limit.
+    count_failures = user and not current_app.features.has_trusted_hosts
     if current_app.features.has_trusted_hosts:
         token = build_hash(token)
 
+    if count_failures and has_too_many_passcode_failures(user, "code"):
+        return refuse_passcode(user.user_name)
+
     if not user or not user.is_email_or_sms_otp_valid(token):
+        if count_failures and record_passcode_failure(user, "code"):
+            return refuse_passcode(user.user_name)
+
         if current_app.features.has_trusted_hosts:
             flash(
                 _("The password reset link that brought you here was invalid."),
@@ -295,6 +319,7 @@ def reset(user, token):
     Backend.instance.set_user_password(user, form.password.data)
     user.clear_otp()
     Backend.instance.save(user)
+    clear_passcode_failures(user, "code")
 
     flash(_("Your password has been updated successfully."), "success")
 

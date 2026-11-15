@@ -9,6 +9,7 @@ from flask import redirect
 from flask import session
 from flask import url_for
 
+from canaille.app.flask import cache
 from canaille.app.i18n import gettext as _
 from canaille.app.session import is_user_in_login_history
 from canaille.app.session import login_user
@@ -16,6 +17,12 @@ from canaille.backends import Backend
 from canaille.core.models import User
 
 AUTHENTICATION_FACTORS = {}
+
+PASSCODE_MAX_FAILURES = 5
+"""Number of wrong passcodes after which a user cannot try passcodes anymore."""
+
+PASSCODE_LOCK_DURATION = datetime.timedelta(minutes=15)
+"""How long wrong passcodes are counted after the last one."""
 
 
 def needs_password_initialization(user):
@@ -260,6 +267,46 @@ def refuse_factor_enrollment():
         "error",
     )
     return redirect(url_for("core.auth.login"))
+
+
+def _passcode_failures_key(user, kind):
+    return f"passcode-failures:{kind}:{user.id}"
+
+
+def has_too_many_passcode_failures(user, kind) -> bool:
+    """Indicate whether the user made too many wrong passcodes of a kind recently.
+
+    The ``otp`` kind is for authenticator applications. The ``code`` kind is for
+    the codes sent by email or SMS, for the login and for the password reset.
+    """
+    failures = cache.get(_passcode_failures_key(user, kind)) or 0
+    return failures >= PASSCODE_MAX_FAILURES
+
+
+def record_passcode_failure(user, kind) -> bool:
+    """Count a wrong passcode, and indicate whether the user made too many."""
+    key = _passcode_failures_key(user, kind)
+    failures = (cache.get(key) or 0) + 1
+    cache.set(key, failures, timeout=int(PASSCODE_LOCK_DURATION.total_seconds()))
+    return failures >= PASSCODE_MAX_FAILURES
+
+
+def clear_passcode_failures(user, kind) -> None:
+    cache.delete(_passcode_failures_key(user, kind))
+
+
+def refuse_passcode(user_name):
+    """Refuse a passcode after too many wrong ones."""
+    current_app.logger.security(f"Too many wrong passcodes for {user_name}")
+    flash(_("Too many failed attempts. Please try again later."), "error")
+    return redirect(url_for("core.auth.login"))
+
+
+def abort_passcode_authentication():
+    """End the login after too many wrong passcodes."""
+    user_name = g.auth.user_name
+    del g.auth
+    return refuse_passcode(user_name)
 
 
 def redirect_to_next_auth_step():

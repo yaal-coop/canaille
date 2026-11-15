@@ -11,7 +11,11 @@ from flask import url_for
 from canaille.app.i18n import gettext as _
 from canaille.app.templating import render_template
 from canaille.backends import Backend
+from canaille.core.auth import abort_passcode_authentication
 from canaille.core.auth import auth_step
+from canaille.core.auth import clear_passcode_failures
+from canaille.core.auth import has_too_many_passcode_failures
+from canaille.core.auth import record_passcode_failure
 from canaille.core.auth import redirect_to_next_auth_step
 from canaille.core.endpoints.forms import TwoFactorForm
 from canaille.core.mails import send_one_time_password_mail
@@ -30,6 +34,9 @@ def global_processor():
 @bp.route("/auth/email", methods=["GET", "POST"])
 @auth_step("email")
 def email():
+    if g.auth.user and has_too_many_passcode_failures(g.auth.user, "code"):
+        return abort_passcode_authentication()
+
     # Automatically send a passcode when users access the form for the first time
     if g.auth.user and (
         not g.auth.user.one_time_password_emission_date
@@ -58,15 +65,18 @@ def email():
                 "core/auth/email.html", form=form, resend_delay=resend_delay
             )
 
-        flash(_("The passcode you entered is invalid. Please try again."), "error")
-
         current_app.logger.security(
             f"Failed email code authentication for {g.auth.user_name}"
         )
+        if g.auth.user and record_passcode_failure(g.auth.user, "code"):
+            return abort_passcode_authentication()
+
+        flash(_("The passcode you entered is invalid. Please try again."), "error")
         return render_template(
             "core/auth/email.html", form=form, resend_delay=resend_delay
         )
 
+    clear_passcode_failures(g.auth.user, "code")
     current_app.logger.security(
         f"Successful email code authentication for {g.auth.user_name}"
     )
