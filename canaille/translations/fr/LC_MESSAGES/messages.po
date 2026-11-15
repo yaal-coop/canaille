@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Report-Msgid-Bugs-To: contact@yaal.coop\n"
 "POT-Creation-Date: 2026-11-15 10:44+0100\n"
-"PO-Revision-Date: 2026-10-29 21:23+0000\n"
+"PO-Revision-Date: 2026-11-16 14:21+0000\n"
 "Last-Translator: Éloi Rivard <azmeuk@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/canaille/canaille/"
 "fr/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.11.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: canaille/app/combobox.py:31
@@ -119,10 +119,12 @@ msgid ""
 "This authentication method is not set up for your account. Please contact "
 "your administrator."
 msgstr ""
+"Cette méthode d'authentification n'est pas configurée pour ce compte. "
+"Veuillez contacter un administrateur."
 
 #: canaille/core/auth.py:301
 msgid "Too many failed attempts. Please try again later."
-msgstr ""
+msgstr "Trop de tentatives infructueuses. Veuillez ré-essayer plus tard."
 
 #: canaille/core/auth.py:319 canaille/core/endpoints/account/__init__.py:847
 #, python-format
@@ -1136,12 +1138,12 @@ msgstr "Cette valeur n'est pas un JWK valide."
 msgid ""
 "Private and symmetric keys are not allowed, as the client keys are public."
 msgstr ""
+"Les clés privées et symétriques ne sont pas autorisées, puisque les clés du "
+"client sont publiques."
 
 #: canaille/oidc/endpoints/forms.py:88
-#, fuzzy
-#| msgid "This user does not have a password yet"
 msgid "This URL must not have a fragment"
-msgstr "L'utilisateur n'a pas encore de mot de passe"
+msgstr "Cette URL ne doit pas contenir de fragment"
 
 #: canaille/oidc/endpoints/forms.py:95 canaille/oidc/endpoints/forms.py:569
 msgid "None"
@@ -1287,11 +1289,13 @@ msgstr ""
 
 #: canaille/oidc/endpoints/forms.py:412
 msgid "Back-channel logout URI"
-msgstr ""
+msgstr "Déconnexion back-channel"
 
 #: canaille/oidc/endpoints/forms.py:416
 msgid "URI where Canaille sends a logout token when a user session ends."
 msgstr ""
+"L'URI vers laquelle Canaille envoie un jeton de déconnexion quand une "
+"session utilisateur prends fin."
 
 #: canaille/oidc/endpoints/forms.py:421
 msgid "Require the session identifier in logout tokens"
