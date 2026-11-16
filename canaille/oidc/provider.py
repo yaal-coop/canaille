@@ -203,7 +203,8 @@ class JWTClientAuth(rfc7523.JWTBearerClientAssertion):
         return super().__call__(query_client, request)
 
     def get_audiences(self):
-        return [url_for("oidc.endpoints.issue_token", _external=True)]
+        """RFC 7523 §3 uses the token endpoint, and RFC 10070 the issuer."""
+        return [url_for("oidc.endpoints.issue_token", _external=True), get_issuer()]
 
     def validate_jti(self, claims, jti):
         """Indicate whether the jti was used before."""

@@ -503,3 +503,36 @@ def test_private_key_jwt_invalid_key_set(
 
     assert res.status_code == 400
     assert res.json["error"] == "invalid_client"
+
+
+def test_private_key_jwt_issuer_audience(
+    testclient, client, client_jwk, authorization, backend
+):
+    """Per RFC 10070, the issuer is a valid audience for client assertions."""
+    client.token_endpoint_auth_method = "private_key_jwt"
+    backend.save(client)
+
+    payload = {**client_assertion_payload(client), "aud": "http://canaille.test"}
+    assertion = jwt.encode({"alg": "RS256"}, payload, client_jwk)
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 200
+
+
+def test_private_key_jwt_other_audience(
+    testclient, client, client_jwk, authorization, backend
+):
+    """A client assertion for another audience is refused."""
+    client.token_endpoint_auth_method = "private_key_jwt"
+    backend.save(client)
+
+    payload = {**client_assertion_payload(client), "aud": "https://other.test"}
+    assertion = jwt.encode({"alg": "RS256"}, payload, client_jwk)
+    res = client_assertion_request(
+        testclient, client, authorization, backend, assertion
+    )
+
+    assert res.status_code == 400
+    assert res.json["error"] == "invalid_client"

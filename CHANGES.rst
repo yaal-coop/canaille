@@ -1,3 +1,12 @@
+Unreleased
+----------
+
+Fixed
+^^^^^
+- Clients can authenticate with ``private_key_jwt`` and ``client_secret_jwt`` assertions
+  whose ``aud`` claim is the issuer, as RFC 10070 requires.
+  The token endpoint is still accepted.
+
 [0.5.0b1] - 2026-11-16
 -----------------------
 
