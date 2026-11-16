@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-15 10:44+0100\n"
+"POT-Creation-Date: 2026-11-16 10:25+0100\n"
 "PO-Revision-Date: 2026-07-09 12:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/canaille/"
@@ -973,7 +973,7 @@ msgstr "Enviando código nuevo de verificación."
 msgid "This page has expired. Please reload it."
 msgstr "Este código no es válido o ha vencido. Solicite uno nuevo."
 
-#: canaille/core/endpoints/auth/fido.py:233
+#: canaille/core/endpoints/auth/fido.py:232
 #, python-brace-format
 msgid ""
 "Maximum number of passkeys reached ({max}). Please remove one before adding "
@@ -982,12 +982,12 @@ msgstr ""
 "Se ha alcanzado el número máximo de claves de acceso ({max}). Elimine uno "
 "antes de añadir otro."
 
-#: canaille/core/endpoints/auth/fido.py:355
+#: canaille/core/endpoints/auth/fido.py:354
 #: canaille/templates/core/account/auth/fido2.html:81
 msgid "My passkey"
 msgstr "Mi clave de acceso"
 
-#: canaille/core/endpoints/auth/fido.py:364
+#: canaille/core/endpoints/auth/fido.py:363
 msgid "Passkey successfully registered."
 msgstr "Clave de acceso registrada correctamente."
 

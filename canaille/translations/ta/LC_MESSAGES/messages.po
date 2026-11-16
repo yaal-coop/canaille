@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-15 10:44+0100\n"
+"POT-Creation-Date: 2026-11-16 10:25+0100\n"
 "PO-Revision-Date: 2026-06-24 15:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/canaille/canaille/"
@@ -943,7 +943,7 @@ msgstr "புதிய சரிபார்ப்புக் குறிய�
 msgid "This page has expired. Please reload it."
 msgstr "இந்தக் குறியீடு தவறானது அல்லது காலாவதியானது. புதியதைக் கோரவும்."
 
-#: canaille/core/endpoints/auth/fido.py:233
+#: canaille/core/endpoints/auth/fido.py:232
 #, python-brace-format
 msgid ""
 "Maximum number of passkeys reached ({max}). Please remove one before adding "
@@ -952,12 +952,12 @@ msgstr ""
 "கடவுச் சாவிகளின் அதிகபட்ச எண்ணிக்கையை அடைந்தது ({max}). ஒன்றைச் சேர்ப்பதற்கு முன் ஒன்றை "
 "அகற்றவும்."
 
-#: canaille/core/endpoints/auth/fido.py:355
+#: canaille/core/endpoints/auth/fido.py:354
 #: canaille/templates/core/account/auth/fido2.html:81
 msgid "My passkey"
 msgstr "என் பாச்கீ"
 
-#: canaille/core/endpoints/auth/fido.py:364
+#: canaille/core/endpoints/auth/fido.py:363
 msgid "Passkey successfully registered."
 msgstr "பாச்கீ வெற்றிகரமாக பதிவுசெய்யப்பட்டது."
 
