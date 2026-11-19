@@ -7,7 +7,8 @@ Security
   grant and request any scope, including the SCIM scopes.
   When registration was open, anyone could read and edit the users and groups with the SCIM API.
   Dynamic client registration now refuses the ``client_credentials`` and ``jwt-bearer`` grants.
-  If registration was open, check the clients that have these grants.
+  If registration was open, delete the unknown clients that have these grants.
+  This also deletes their tokens.
 - Clients without a scope can only get the scopes that users can consent to.
   Clients that need other scopes, such as the SCIM scopes, must list them in their scope.
 
