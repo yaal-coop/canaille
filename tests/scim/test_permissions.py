@@ -442,3 +442,27 @@ def test_client_credentials_token_audience(
         headers={"Authorization": f"Bearer {access_token}"},
         status=200,
     )
+
+
+def test_client_without_scope_cannot_get_scim_scopes(
+    testclient, backend, oidc_client, monkeypatch
+):
+    """A client without a scope cannot get SCIM scopes, so it cannot use the SCIM API."""
+    monkeypatch.setenv("AUTHLIB_INSECURE_TRANSPORT", "true")
+    oidc_client.scope = []
+    backend.save(oidc_client)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(grant_type="client_credentials", scope="scim:write"),
+        headers={"Authorization": f"Basic {client_credentials(oidc_client)}"},
+        status=200,
+    )
+    assert "scope" not in res.json
+    access_token = res.json["access_token"]
+
+    testclient.get(
+        "/scim/v2/Users",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=403,
+    )

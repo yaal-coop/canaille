@@ -595,3 +595,81 @@ def test_management_without_token_when_registration_is_open(
         "https://client.test/redirect1",
         "https://client.test/redirect2",
     ]
+
+
+def test_update_refuses_grants_without_consent(testclient, backend, client):
+    """Dynamically registered clients cannot add grants that issue tokens without a user consent."""
+    client.grant_types = ["authorization_code"]
+    backend.save(client)
+    jwk_key = server_jwks(include_inactive=False).keys[0]
+    now = datetime.now(UTC)
+    jwt_payload = {
+        "iss": get_issuer(),
+        "exp": int((now + timedelta(hours=1)).timestamp()),
+        "aud": get_issuer(),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "sub": client.client_id,
+        "scope": "client:manage",
+    }
+    token = jwt.encode(
+        {"alg": get_alg_for_key(jwk_key)}, jwt_payload, jwk_key, registry=registry
+    )
+    payload = {
+        "client_id": client.client_id,
+        "redirect_uris": client.redirect_uris,
+        "token_endpoint_auth_method": "client_secret_basic",
+        "grant_types": ["authorization_code", "client_credentials"],
+        "response_types": ["code"],
+    }
+    res = testclient.put_json(
+        f"/oauth/register/{client.client_id}",
+        payload,
+        headers={"Authorization": f"Bearer {token}"},
+        status=400,
+    )
+
+    assert res.json == {
+        "error": "invalid_client_metadata",
+        "error_description": "Grant types not allowed: client_credentials.",
+    }
+    backend.reload(client)
+    assert client.grant_types == ["authorization_code"]
+
+
+def test_update_keeps_grants_without_consent(testclient, backend, client):
+    """Clients created by administrators keep their grants on updates."""
+    client.grant_types = ["authorization_code", "client_credentials"]
+    backend.save(client)
+    jwk_key = server_jwks(include_inactive=False).keys[0]
+    now = datetime.now(UTC)
+    jwt_payload = {
+        "iss": get_issuer(),
+        "exp": int((now + timedelta(hours=1)).timestamp()),
+        "aud": get_issuer(),
+        "iat": int(now.timestamp()),
+        "jti": str(uuid.uuid4()),
+        "sub": client.client_id,
+        "scope": "client:manage",
+    }
+    token = jwt.encode(
+        {"alg": get_alg_for_key(jwk_key)}, jwt_payload, jwk_key, registry=registry
+    )
+
+    payload = {
+        "client_id": client.client_id,
+        "redirect_uris": ["https://client.test/new-callback"],
+        "token_endpoint_auth_method": "client_secret_basic",
+        "grant_types": ["authorization_code", "client_credentials"],
+        "response_types": ["code"],
+    }
+    testclient.put_json(
+        f"/oauth/register/{client.client_id}",
+        payload,
+        headers={"Authorization": f"Bearer {token}"},
+        status=200,
+    )
+
+    backend.reload(client)
+    assert client.grant_types == ["authorization_code", "client_credentials"]
+    assert client.redirect_uris == ["https://client.test/new-callback"]

@@ -20,12 +20,13 @@ from .basemodels import Client as BaseClient
 from .basemodels import Consent as BaseConsent
 from .basemodels import DeviceCode as BaseDeviceCode
 from .basemodels import Token as BaseToken
+from .utils import USER_SCOPES
 
 OWNED_CLIENT_FORBIDDEN_GRANT_TYPES = {
     "client_credentials",
     "urn:ietf:params:oauth:grant-type:jwt-bearer",
 }
-"""The grants that owned clients cannot use, as they issue tokens without a user consent."""
+"""The grants that owned and dynamically registered clients cannot use, as they issue tokens without a user consent."""
 
 
 class Client(BaseClient, ClientMixin):
@@ -86,17 +87,14 @@ class Client(BaseClient, ClientMixin):
     def get_allowed_scope(self, scope: str | None) -> str:
         """Return the allowed scope for a token request.
 
-        Per RFC 6749 Section 3.3, if the client omits the scope parameter,
-        the server should use a pre-defined default (client's scope).
-        If client has no maximum scope defined, any requested scope is allowed.
+        Per RFC 6749 §3.3, if the client omits the scope parameter,
+        the server uses the scope of the client.
+        A client without a scope can only get the scopes that users can consent to.
         """
         if not scope:
             return util.list_to_scope(self.scope) if self.scope else ""
 
-        if not self.scope:
-            return scope
-
-        allowed = set(self.scope)
+        allowed = set(self.scope or USER_SCOPES)
         requested = scope.split()
         return util.list_to_scope([s for s in requested if s in allowed])
 

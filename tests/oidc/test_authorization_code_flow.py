@@ -835,7 +835,7 @@ def test_request_scope_too_large(testclient, logged_user, client, backend):
 
 
 def test_client_has_no_maximum_scope(testclient, logged_user, client, backend):
-    """If a client has no maximum scope defined, any scope is allowed."""
+    """A client without a scope can only get the scopes that users can consent to."""
     assert not backend.query(models.Consent, client=client, subject=logged_user)
     client.scope = []
     backend.save(client)
@@ -845,7 +845,7 @@ def test_client_has_no_maximum_scope(testclient, logged_user, client, backend):
         params=dict(
             response_type="code",
             client_id=client.client_id,
-            scope="openid profile email",
+            scope="openid profile email scim:write",
             nonce="somenonce",
             redirect_uri="https://client.test/redirect1",
         ),

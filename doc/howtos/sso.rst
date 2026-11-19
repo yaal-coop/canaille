@@ -83,6 +83,9 @@ The registration response contains a different token, the :rfc:`registration acc
 
 For test environments where authenticated registration is not needed, enable :attr:`~canaille.oidc.configuration.OIDCSettings.DYNAMIC_CLIENT_REGISTRATION_OPEN` to allow clients to register without a token.
 
+Clients registered this way cannot use the ``client_credentials`` and ``jwt-bearer`` grant types, as those issue tokens without a user consent.
+Clients without a scope can only request the scopes that users consent to.
+
 Manual client registration
 ==========================
 

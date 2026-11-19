@@ -837,3 +837,28 @@ def test_client_registration_refuses_invalid_key_sets(testclient, backend):
         "error_description": "Invalid claim: 'jwks'",
         "error": "invalid_client_metadata",
     }
+
+
+def test_client_registration_refuses_grants_without_consent(testclient, backend):
+    """Dynamically registered clients cannot get tokens without a user consent."""
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+
+    payload = {
+        "redirect_uris": ["https://client.test/callback"],
+        "client_name": "My Example Client",
+        "token_endpoint_auth_method": "client_secret_basic",
+        "grant_types": [
+            "authorization_code",
+            "client_credentials",
+            "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        ],
+        "response_types": ["code"],
+    }
+    res = testclient.post_json("/oauth/register", payload, status=400)
+
+    assert res.json == {
+        "error": "invalid_client_metadata",
+        "error_description": "Grant types not allowed: client_credentials, "
+        "urn:ietf:params:oauth:grant-type:jwt-bearer.",
+    }
+    assert not backend.query(models.Client, client_name="My Example Client")

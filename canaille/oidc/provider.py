@@ -27,6 +27,7 @@ from authlib.oauth2.rfc6749 import InvalidGrantError
 from authlib.oauth2.rfc6749 import InvalidScopeError
 from authlib.oauth2.rfc6749 import OAuth2Response
 from authlib.oauth2.rfc6749 import UnauthorizedClientError
+from authlib.oauth2.rfc7591 import InvalidClientMetadataError
 from authlib.oauth2.rfc9101.errors import InvalidRequestObjectError
 from authlib.oidc import backchannel
 from authlib.oidc import core as oidc_core
@@ -47,6 +48,7 @@ from canaille.app.session import logout_user
 from canaille.app.templating import render_template
 from canaille.backends import Backend
 from canaille.core.auth import get_user_from_login
+from canaille.oidc.models import OWNED_CLIENT_FORBIDDEN_GRANT_TYPES
 from canaille.oidc.utils import fetch_document
 from canaille.oidc.utils import is_trusted_domain
 from canaille.oidc.utils import prompt_values_supported
@@ -824,6 +826,21 @@ class ClientManagementMixin:
 
         result = openid_configuration()
         return result
+
+    def extract_client_metadata(self, request):
+        """Refuse the grants that issue tokens without a user consent.
+
+        On updates, clients keep the grants that they already have.
+        """
+        client_metadata = super().extract_client_metadata(request)
+        client = getattr(request, "client", None)
+        kept = set(client.grant_types or []) if client else set()
+        added = set(client_metadata.get("grant_types") or []) - kept
+        if forbidden := added & OWNED_CLIENT_FORBIDDEN_GRANT_TYPES:
+            raise InvalidClientMetadataError(
+                f"Grant types not allowed: {', '.join(sorted(forbidden))}."
+            )
+        return client_metadata
 
     def resolve_public_key(self, request):
         return server_jwks().keys[0]
