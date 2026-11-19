@@ -23,7 +23,7 @@ from canaille.oidc.jose import supported_verification_algorithms
 from canaille.oidc.models import OWNED_CLIENT_FORBIDDEN_GRANT_TYPES
 from canaille.oidc.models import managed_owners
 from canaille.oidc.models import owns_group
-from canaille.oidc.utils import SCOPE_DETAILS
+from canaille.oidc.utils import USER_SCOPES
 
 
 class AuthorizeForm(Form):
@@ -87,10 +87,6 @@ def _get_algorithm_choices(algorithms, include_empty=True):
 def describe_group(group):
     """Return the name of ``group``, telling it is a group."""
     return str(_("%(name)s (group)", name=group.display_name))
-
-
-USER_SCOPES = {"openid", *SCOPE_DETAILS}
-"""The scopes that users who cannot manage all clients can give to their clients."""
 
 
 OWNER_MODELS = {

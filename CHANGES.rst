@@ -1,3 +1,16 @@
+Unreleased
+----------
+
+Security
+^^^^^^^^
+- Clients registered with dynamic client registration could use the ``client_credentials``
+  grant and request any scope, including the SCIM scopes.
+  When registration was open, anyone could read and edit the users and groups with the SCIM API.
+  Clients without a scope can now only get the scopes that users can consent to.
+  Clients that need other scopes, such as the SCIM scopes, must list them in their scope.
+  If registration was open, delete the unknown clients that have the ``client_credentials`` grant.
+  This also deletes their tokens.
+
 [0.4.4] - 2026-11-15
 --------------------
 

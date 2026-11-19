@@ -94,6 +94,7 @@ The client must also have one of these scopes:
 - ``scim:read`` and ``scim:write`` to read or write both.
 
 The write scopes also allow reading.
+The SCIM scopes must be listed in the scope of the client: a client without a scope cannot get them.
 
 User tokens only give access to the user they belong to,
 on the :rfc:`/Me <7644#section-3.11>` endpoint or on ``/Users/<id>``.

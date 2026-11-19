@@ -20,6 +20,9 @@ SCOPE_DETAILS = {
     "scim:me": ("user edit", _("Read and edit your account, including your password.")),
 }
 
+USER_SCOPES = {"openid", *SCOPE_DETAILS}
+"""The scopes that users can consent to."""
+
 
 def fetch_document(url: str, max_size: int = MAX_DOCUMENT_SIZE) -> str:
     """Download a document at a URI a client indicated.

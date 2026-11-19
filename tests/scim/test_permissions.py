@@ -9,6 +9,7 @@ from canaille.app import models
 from canaille.core.configuration import Permission
 from canaille.scim.client import get_or_create_token
 
+from ..oidc import client_credentials
 from .conftest import _scim_headers
 
 
@@ -414,3 +415,59 @@ def test_token_without_user_of_an_owned_client_is_refused(
 
     response = client.get("/scim/v2/Users", headers=_scim_headers(app, oidc_token))
     assert response.status_code == 401
+
+
+def test_client_without_scope_cannot_get_scim_scopes(
+    testclient, backend, oidc_client, monkeypatch
+):
+    """A client without a scope cannot get SCIM scopes, so it cannot use the SCIM API."""
+    monkeypatch.setenv("AUTHLIB_INSECURE_TRANSPORT", "true")
+    oidc_client.scope = []
+    backend.save(oidc_client)
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(grant_type="client_credentials", scope="scim:write"),
+        headers={"Authorization": f"Basic {client_credentials(oidc_client)}"},
+        status=200,
+    )
+    assert "scope" not in res.json
+    access_token = res.json["access_token"]
+
+    testclient.get(
+        "/scim/v2/Users",
+        headers={"Authorization": f"Bearer {access_token}"},
+        status=403,
+    )
+
+
+def test_dynamic_client_cannot_get_scim_scopes(testclient, backend, monkeypatch):
+    """A client from open dynamic registration cannot use the SCIM API."""
+    monkeypatch.setenv("AUTHLIB_INSECURE_TRANSPORT", "true")
+    testclient.app.config["CANAILLE_OIDC"]["DYNAMIC_CLIENT_REGISTRATION_OPEN"] = True
+
+    res = testclient.post_json(
+        "/oauth/register",
+        {
+            "client_name": "Attacker",
+            "grant_types": ["client_credentials"],
+            "token_endpoint_auth_method": "client_secret_basic",
+        },
+        status=201,
+    )
+    client = backend.get(models.Client, client_id=res.json["client_id"])
+
+    res = testclient.post(
+        "/oauth/token",
+        params=dict(grant_type="client_credentials", scope="scim:write"),
+        headers={"Authorization": f"Basic {client_credentials(client)}"},
+        status=200,
+    )
+    assert "scope" not in res.json
+
+    testclient.get(
+        "/scim/v2/Users",
+        headers={"Authorization": f"Bearer {res.json['access_token']}"},
+        status=403,
+    )
+    backend.delete(client)
